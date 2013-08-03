@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<script>
+		addstyle("../css/sluch2.css");
+	</script>
+	<title>
+		Тренажёр "Час ЕГЭ". Режим случайного задания.
+	</title>
+</head>
+<body>
+	<script>
+		addscript('../lib/init.js');
+	</script>
+	<div id="pole" class="vopr">
+	</div>
+	<div id="otvet"></div>
+	<div id="never"></div>
+	<div id="wrap">
+		<div id="protv">
+		</div>
+		<div id="panel">
+			<div id="wrap2">
+				<span id="notv">
+					Ответ:
+				</span>
+				<input id="otv"/>
+				<button id="prov">Ответить!
+				</button>
+				<button id="sozd" onclick="sozdat();">Случайное задание
+				</button>
+			</div>
+			<table id="galki">
+			</table>
+			<br/>
+			<div>
+				<input type="checkbox" id="cPRZ" /><label for="cPRZ" >Без производной</label>
+				<input type="checkbox" id="cLOG" /><label for="cLOG" >Без логарифмов</label>
+				<input type="checkbox" id="cTRI" /><label for="cTRI" >Без тригонометрии</label>
+				<input type="checkbox" id="cDRS" /><label for="cDRS" >Без дробных степеней</label>
+			</div>
+			<button onclick="vybrv()">Выбрать все</button>
+			<button onclick="vybr0()">Снять все</button>
+		</div>
+	</div>
+	<script>
+		addscript('sluchmat.js');
+		addscript('../ext/keyboard/keyboard.js');
+	</script>
+<!--
+	<script src="../ext/keyboard/keyboard.js"></script>
+	<script src='sluchmat.js'></script>
+	-->
+</body>
+</html>

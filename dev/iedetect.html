@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<script src="../lib/init.js">
+		</script>
+	</head>
+	<body>
+		<img src="[ProfD]\\ping.png"/>
+		Найдите наибольшее значение функции $y = x^3 &#8211; 12x + 7$ на отрезке $[-3; 0]$.
+		<br/>
+		When $a \ne 0$, there are two solutions to $ax^2 + bx + c = 0$ and they are
+$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
+	</body>
+</html><!--
+(function(){
+var sc=document.createElement('script');
+sc.src="1.js";
+document.getElementById('scripts').appendChild(sc);
+});
+-->
+<html>
+	<script>
+		var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+		var rph = ios. getProtocolHandler ("resource"). QueryInterface (Components. interfaces. nsIResProtocolHandler);
+		var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile);
+		var uri = ios. newFileURI (dir);
+		rph. setSubstitution ("profile", uri);
+		document.location.href="resource://";
+	</script>
+	<a href="[ProfD]">[ProfD]</a>
+	<a href="[ProfD]\\">[ProfD]\\</a>
+	<a href="[ProfD]//">[ProfD]//</a>
+</html>
+
+[ProfD]
+
+<html>
+	<script>
+		const {Cc,Ci,Cu} = require("chrome");
+		var ios = Components. classes ["@mozilla.org/network/io-service;1"]. getService (Components. interfaces. nsIIOService);
+		var rph = ios. getProtocolHandler ("resource"). QueryInterface (Components. interfaces. nsIResProtocolHandler);
+		var dir = Components. classes ["@mozilla.org/file/directory_service;1"]. getService (Components. interfaces. nsIProperties). get ("ProfD", Components. interfaces. nsIFile);
+		var uri = ios. newFileURI (dir);
+		rph. setSubstitution ("profile", uri);
+		document.location.href="resource://";
+	</script>
+</html>
+
+
+data:text/html;base64,DQo8aHRtbD4NCgk8c2NyaXB0Pg0KCQljb25zdCB7Q2MsQ2ksQ3V9ID0gcmVxdWlyZSgiY2hyb21lIik7DQoJCXZhciBpb3MgPSBDb21wb25lbnRzLiBjbGFzc2VzIFsiQG1vemlsbGEub3JnL25ldHdvcmsvaW8tc2VydmljZTsxIl0uIGdldFNlcnZpY2UgKENvbXBvbmVudHMuIGludGVyZmFjZXMuIG5zSUlPU2VydmljZSk7DQoJCXZhciBycGggPSBpb3MuIGdldFByb3RvY29sSGFuZGxlciAoInJlc291cmNlIikuIFF1ZXJ5SW50ZXJmYWNlIChDb21wb25lbnRzLiBpbnRlcmZhY2VzLiBuc0lSZXNQcm90b2NvbEhhbmRsZXIpOw0KCQl2YXIgZGlyID0gQ29tcG9uZW50cy4gY2xhc3NlcyBbIkBtb3ppbGxhLm9yZy9maWxlL2RpcmVjdG9yeV9zZXJ2aWNlOzEiXS4gZ2V0U2VydmljZSAoQ29tcG9uZW50cy4gaW50ZXJmYWNlcy4gbnNJUHJvcGVydGllcykuIGdldCAoIlByb2ZEIiwgQ29tcG9uZW50cy4gaW50ZXJmYWNlcy4gbnNJRmlsZSk7DQoJCXZhciB1cmkgPSBpb3MuIG5ld0ZpbGVVUkkgKGRpcik7DQoJCXJwaC4gc2V0U3Vic3RpdHV0aW9uICgicHJvZmlsZSIsIHVyaSk7DQoJCWRvY3VtZW50LmxvY2F0aW9uLmhyZWY9InJlc291cmNlOi8vIjsNCgk8L3NjcmlwdD4NCjwvaHRtbD4NCg==

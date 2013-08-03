@@ -1,0 +1,107 @@
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>
+		Система координат
+	</title>
+</head>
+<body>
+	<script src="../lib/canvas.js"></script>
+<script>
+	//Параметры рисования
+	var h=200, //Высота поля
+	w=300,//Ширина поля
+	t=3,//Толщина осей
+	s=50,//Шаг сетки
+	z=20;//Размер засечки
+	var osc="#777";
+
+	document.body.style.backgroundColor="#CCC";
+
+	var pole=document.createElement("canvas");
+//	pole.style.height=h;
+//	pole.style.width=w;
+	pole.height=h;
+	pole.width=w;
+	document.body.appendChild(pole);
+
+	var br1=document.createElement("br");
+	document.body.appendChild(br1);
+	var mat=document.createElement("button");
+	mat.innerHTML="Математическая";
+	mat.onclick=function(){matem();};
+	document.body.appendChild(mat);
+	var inf=document.createElement("button");
+	inf.innerHTML="Компьютерная";
+	inf.onclick=function(){infor();};
+	document.body.appendChild(inf);
+	var ct = pole.getContext('2d');
+	ct.fillStyle="#fff";
+	ct.strokeStyle="#888";
+	ct.fillRect (0, 0, w, h);
+	ct.lineWidth=t;//Толщина линии
+	var bMat=false;
+	ct.drawLine=function(x1,y1,x2,y2){
+		ct.beginPath();
+		ct.moveTo(x1,y1);
+		ct.lineTo(x2,y2);
+		ct.stroke();
+		ct.closePath();
+	}
+	ct.font = 'italic 15px sans-serif';
+	ct.textBaseline = 'top';
+	
+	
+	
+	function matem(){
+
+		ct.fillRect(-w, -h, 2*w, 2*h);
+	
+		if(!bMat){
+			ct.translate(w/2,h/2);
+			bMat=true;
+		}
+
+		ct.drawLine(-w,0,w,0);
+		ct.drawLine(0,-h,0,h);
+
+		ct.fillStyle="#000";
+		for(var x=-w;x<=w;x+=50){
+			ct.drawLine(x,-10,x,10);
+			ct.fillText(""+x,x+3,-25);
+		}
+		for(var y=-h;y<=h;y+=50){
+			ct.drawLine(-10,y,10,y);
+			ct.fillText(""+(-y),3,y+3);
+		}
+		ct.fillStyle="#fff";
+
+	}
+	
+	function infor(){
+
+		ct.fillRect(-w, -h, 2*w, 2*h);
+	
+		if(bMat){
+			ct.translate(-w/2,-h/2);
+			bMat=false;
+		}
+
+		ct.drawLine(-w,0,w,0);
+		ct.drawLine(0,-h,0,h);
+
+		ct.fillStyle="#000";
+		for(var x=-w;x<=w;x+=50){
+			ct.drawLine(x,-10,x,10);
+			ct.fillText(""+x,x+3,3);
+		}
+		for(var y=-h;y<=h;y+=50){
+			ct.drawLine(-10,y,10,y);
+			ct.fillText(""+y,3,y+3);
+		}
+		ct.fillStyle="#fff";
+
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html><head></head><body>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<script>
+		addscript('../lib/init.js');
+	</script>
+	<script>
+		for(var i=1;i<=14;i++){
+			addscript('../zdn/mat/B'+i+'/main.js','" async="1')
+		}
+	</script>
+</body></html>
