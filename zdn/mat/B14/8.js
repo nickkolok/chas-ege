@@ -1,9 +1,9 @@
 (function() {
 
-var a=sluchch(2,9);
+var a=sluchch(2,90);
 
 var fn=fn_zadan({
-	slag:[a.pow(2).frac('x'),'x'],
+	slag:[[a.pow(2).frac('x'),'x'],[[a.pow(2),'x^2'].slag().frac('x')]].iz(),
 	minx:a,
 	maxx:-a,
 	nech:1,
