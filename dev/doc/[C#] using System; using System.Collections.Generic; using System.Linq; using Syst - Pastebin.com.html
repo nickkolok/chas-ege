@@ -1,0 +1,551 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0028)http://pastebin.com/w50j64MK -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<title>[C#] using System;  using System.Collections.Generic;  using System.Linq;  using Syst - Pastebin.com</title>
+		<link rel="shortcut icon" href="http://pastebin.com/favicon.ico">
+<link href="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/csharp.css" rel="stylesheet" type="text/css">		<link href="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/main_v4.css" rel="stylesheet" type="text/css">
+				
+		<script type="text/javascript" async="" src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/ga.js"></script><script type="text/javascript" src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/jquery.js"></script><style type="text/css"></style><style type="text/css"></style>
+		<script type="text/javascript" src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/main_v1.js"></script>
+		<meta property="fb:app_id" content="231493360234820">
+		<meta property="og:title" content="[C#] using System;  using System.Collections.Generic;  using System.Linq;  using Syst - Pastebin.com">
+		<meta property="og:type" content="article">
+	    <meta property="og:url" content="http://pastebin.com/w50j64MK">
+	    <meta property="og:image" content="http://pastebin.com/i/fb2.jpg">
+	    <meta property="og:site_name" content="Pastebin">
+		<meta name="google-site-verification" content="jkUAIOE8owUXu8UXIhRLB9oHJsWBfOgJbZzncqHoF4A">
+		<link rel="canonical" href="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com.html">
+				<!--[if SafMob]>
+			<style>body{-webkit-text-size-adjust:none;}</style>
+		<![endif]-->
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-58643-34']);
+		  _gaq.push(['_trackPageview']);
+			setTimeout("_gaq.push(['_trackEvent', '15_seconds', 'read'])", 15000);
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+	</head>
+	<body>
+	<div id="super_frame">
+		<div id="logo" onclick="location.href=&#39;/&#39;" title="Create New Paste"></div>
+		<div id="header">
+			<div id="header_top">
+				<span class="span_left more">PASTEBIN</span><span class="span_left less"> &nbsp;|&nbsp; #1 paste tool since 2002</span><span class="min_max_span narrow_it" title="Change layout width"></span><span class="min_max_span wide_it" style="display:none" title="Change layout width"></span>				<ul class="top_menu">
+					<li class="no_border_li"><a href="http://pastebin.com/" accesskey="n">create new paste</a></li><li><a href="http://pastebin.com/tools">tools</a></li><li><a href="http://pastebin.com/api">api</a></li><li><a href="http://pastebin.com/archive">archive</a></li><li><a href="http://pastebin.com/faq">faq</a></li>
+				</ul>
+			</div>
+			<div id="header_middle">
+				<span class="span_left big"><a href="http://pastebin.com/">PASTEBIN</a></span> 
+				<a href="http://twitter.com/pastebin" target="_blank"><img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="i_tf" width="122" height="20" border="0"></a>	<iframe src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/like.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;margin:13px 0 0 10px;vertical-align:top" allowtransparency="true"></iframe>
+				<div id="header_middle_search">
+					<form class="search_form" name="search_form" method="get" action="http://pastebin.com/search" id="cse-search-box">
+					    <input type="hidden" name="cx" value="partner-pub-7089230323117142:2864958357">
+					    <input type="hidden" name="cof" value="FORID:10">
+					    <input type="hidden" name="ie" value="UTF-8">
+						<input class="search_input" type="text" name="q" size="5" value="" placeholder="search..." x-webkit-speech=""><input name="sa" class="search_button" src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="Search..." type="image" value="Search">
+					</form>
+				</div>					
+			</div>
+			<div id="header_bottom">
+				<div class="div_top_menu">
+					<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" class="i_n" width="16" height="16" alt="" border="0"> <a href="http://pastebin.com/">create new paste</a> 
+					&nbsp;&nbsp;&nbsp; <img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" class="i_t" width="16" height="16" alt="" border="0"> <a href="http://pastebin.com/trends">trending pastes</a>
+				</div>
+				<ul class="top_menu">
+					<li class="no_border_li"><a href="http://pastebin.com/signup">sign up</a></li><li><a href="http://pastebin.com/login">login</a></li><li><a href="http://pastebin.com/alerts">my alerts</a></li><li><a href="http://pastebin.com/settings">my settings</a></li><li><a href="http://pastebin.com/profile">my profile</a></li>				</ul>		
+			</div>			
+		</div>
+
+			<div class="frame_spacer"><!-- --></div>
+			<div style="height:35px;line-height:35px;font-size:0.85em;"><span style="float:right;text-align:right;">Don't like ads? <a href="http://pastebin.com/pro">PRO users</a> don't see any ads ;-)</span></div>		<div class="frame_spacer"><!-- --></div>
+		<div id="monster_frame">
+			<div id="content_frame">
+				<div id="content_right">
+										<div class="content_right_menu">
+									<div class="content_right_title"><a href="http://pastebin.com/archive">Public Pastes</a></div>	
+									<div id="menu_2">
+										<ul class="right_menu"><li><a href="http://pastebin.com/3wZ5DUkp">Untitled</a><span>2 sec ago</span></li><li><a href="http://pastebin.com/2gw2hL2G">Morgana v1.0</a><span>Lua | 4 sec ago</span></li><li><a href="http://pastebin.com/wNFB9XLk">Untitled</a><span>Java | 5 sec ago</span></li><li><a href="http://pastebin.com/NyZuQhxb">Untitled</a><span>8 sec ago</span></li><li><a href="http://pastebin.com/Jp8pVmqy">Untitled</a><span>8 sec ago</span></li><li><a href="http://pastebin.com/vxXikmE4">Untitled</a><span>9 sec ago</span></li><li><a href="http://pastebin.com/XpSYy0mK">Untitled</a><span>13 sec ago</span></li><li><a href="http://pastebin.com/waysZNJN">ser_1375719798046</a><span>14 sec ago</span></li></ul></div></div>										
+			<div style="padding: 0; width:300px;height:260px;clear:left;">
+				
+			</div>				</div>
+				<div id="content_left">
+	<div class="paste_box_frame">
+		<div class="tweet">
+			<div onclick="facebookpopup(&#39;/w50j64MK&#39;); return false;" id="b_facebook2"><span id="b_facebook">0</span></div>
+			<div onclick="twitpopup(&#39;/w50j64MK&#39;); return false;" id="b_twitter2"><span id="b_twitter">0</span></div>
+		</div>
+		<div class="paste_box_icon">
+			<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" class="i_gb" alt="Guest" border="0">	
+		</div>
+		<div class="paste_box_info">
+			<div class="paste_box_line1" title="Untitled"><img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" class="i_p0" width="16" height="16" title="Public paste, everybody can see this paste." alt="" border="0"><h1>Untitled</h1> </div>
+			<div class="paste_box_line2">By: a guest  on <span title="Friday 2nd of August 2013 03:18:55 PM CDT" style="cursor:help">Aug 2nd, 2013</span> &nbsp;|&nbsp; syntax: <a href="http://pastebin.com/archive/csharp">C#</a> &nbsp;|&nbsp; size: 3.72 KB &nbsp;|&nbsp; hits: 22 &nbsp;|&nbsp; expires: Never</div>
+			<div class="paste_box_line3"><a href="http://pastebin.com/download.php?i=w50j64MK" rel="nofollow">download</a> &nbsp;|&nbsp; <a href="http://pastebin.com/raw.php?i=w50j64MK" target="_blank" rel="nofollow">raw</a> &nbsp;|&nbsp; <a href="http://pastebin.com/embed.php?i=w50j64MK" rel="nofollow">embed</a> &nbsp;|&nbsp; <a href="http://pastebin.com/report.php?i=w50j64MK" rel="nofollow">report abuse</a> &nbsp;|&nbsp; <a href="http://pastebin.com/print.php?i=w50j64MK" rel="nofollow">print</a></div>
+		</div>
+	</div>
+	
+			<div class="banner_728">
+				
+			</div>
+			<div class="layout_clear"></div><div id="code_frame2">
+	<div id="code_frame">
+		<div id="code_buttons">
+		<span class="diffspan">This paste has a previous version, <a href="http://pastebin.com/diff.php?i=w50j64MK">view the difference</a>.</span>
+		<a href="javascript:togglev();" title="Show/Hide line numbers"><img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" border="0" alt="" class="i16 line"></a> 
+		<a href="javascript:togglew('csharp');" title="Toggle text wrapping"><img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" border="0" alt="" class="i16 wrap"></a> 
+		<a href="http://pastebin.com/w50j64MK#" class="copyme" onclick="selectText(&#39;selectable&#39;);showdiv(&#39;copied&#39;);" title="Copy text to clipboard"><img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" border="0" alt="" class="i16 clipboard"></a> <span id="copied">Text below is selected. Please press Ctrl+C to copy to your clipboard. (⌘+C on Mac)</span>
+
+		</div>
+		<div id="selectable">		
+		<div class="csharp"><ol><li class="li1"><div class="de1"><span class="kw1">using</span> <span class="co3">System</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2"><span class="kw1">using</span> <span class="co3">System.Collections.Generic</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">using</span> <span class="co3">System.Linq</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2"><span class="kw1">using</span> <span class="co3">System.Text</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">using</span> <span class="co3">ExtensionMethods</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">namespace</span> ConsoleApplication1</div></li>
+<li class="li2"><div class="de2"><span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw4">class</span> Program</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">static</span> <span class="kw4">void</span> Main<span class="br0">(</span><span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> args<span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">var</span> word <span class="sy0">=</span> Console<span class="sy0">.</span><span class="me1">ReadLine</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">var</span> rod <span class="sy0">=</span> Convert<span class="sy0">.</span><span class="me1">ToInt32</span><span class="br0">(</span>Console<span class="sy0">.</span><span class="me1">ReadLine</span><span class="br0">(</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">var</span> sklon <span class="sy0">=</span> <span class="kw3">new</span> SklonForSush<span class="br0">(</span>word, rod<span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">(</span><span class="kw4">int</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="nu0">6</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Console<span class="sy0">.</span><span class="me1">WriteLine</span><span class="br0">(</span>sklon<span class="sy0">.</span><span class="me1">EdCh</span><span class="br0">[</span>i<span class="br0">]</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Console<span class="sy0">.</span><span class="me1">ReadLine</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li1"><div class="de1"><span class="br0">}</span></div></li>
+<li class="li2"><div class="de2">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">public</span> <span class="kw4">class</span> SklonForSush</div></li>
+<li class="li2"><div class="de2"><span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">public</span> <span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> EdCh <span class="sy0">=</span> <span class="kw3">new</span> <span class="kw4">string</span><span class="br0">[</span><span class="nu0">6</span><span class="br0">]</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw1">public</span> <span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> MnCh <span class="sy0">=</span> <span class="kw3">new</span> <span class="kw4">string</span><span class="br0">[</span><span class="nu0">6</span><span class="br0">]</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw1">private</span> <span class="kw1">static</span> <span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> SKL1A <span class="sy0">=</span> <span class="br0">{</span> <span class="st0">"а"</span>, <span class="st0">"ы"</span>, <span class="st0">"е"</span>, <span class="st0">"у"</span>, <span class="st0">"ой"</span>, <span class="st0">"е"</span> <span class="br0">}</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">private</span> <span class="kw1">static</span> <span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> SKL1YA <span class="sy0">=</span> <span class="br0">{</span> <span class="st0">"я"</span>, <span class="st0">"и"</span>, <span class="st0">"е"</span>, <span class="st0">"ю"</span>, <span class="st0">"ей"</span>, <span class="st0">"е"</span> <span class="br0">}</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw1">private</span> <span class="kw1">static</span> <span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> SKL3 <span class="sy0">=</span> <span class="br0">{</span> <span class="st0">"ь"</span>, <span class="st0">"и"</span>, <span class="st0">"и"</span>, <span class="st0">"ь"</span>, <span class="st0">"ью"</span>, <span class="st0">"и"</span> <span class="br0">}</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">private</span> <span class="kw1">static</span> <span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> SKL2O <span class="sy0">=</span> <span class="br0">{</span> <span class="st0">"о"</span>, <span class="st0">"а"</span>, <span class="st0">"у"</span>, <span class="st0">"о"</span>, <span class="st0">"ом"</span>, <span class="st0">"е"</span> <span class="br0">}</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw1">private</span> <span class="kw1">static</span> <span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> SKL2E <span class="sy0">=</span> <span class="br0">{</span> <span class="st0">"е"</span>, <span class="st0">"я"</span>, <span class="st0">"ю"</span>, <span class="st0">"е"</span>, <span class="st0">"ем"</span>, <span class="st0">"е"</span> <span class="br0">}</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">private</span> <span class="kw1">static</span> <span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span><span class="br0">[</span><span class="br0">]</span> VARIANTS <span class="sy0">=</span> <span class="br0">{</span> SKL1A, SKL1YA, SKL2O, SKL2E <span class="br0">}</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp;</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">public</span> SklonForSush<span class="br0">(</span><span class="kw4">string</span> word, <span class="kw4">int</span> rod, <span class="kw4">int</span> skl <span class="sy0">=</span> <span class="nu0">4</span>, <span class="kw4">bool</span> odush <span class="sy0">=</span> <span class="kw1">false</span><span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>skl <span class="sy0">==</span> <span class="nu0">4</span><span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; skl <span class="sy0">=</span> GetSklonFromRod<span class="br0">(</span>word, rod<span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>skl <span class="sy0">==</span> <span class="nu0">4</span><span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">(</span><span class="kw4">int</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> EdCh<span class="sy0">.</span><span class="me1">Length</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; EdCh<span class="br0">[</span>i<span class="br0">]</span> <span class="sy0">=</span> word<span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">foreach</span> <span class="br0">(</span><span class="kw1">var</span> variant <span class="kw1">in</span> VARIANTS<span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>Convert<span class="sy0">.</span><span class="me1">ToChar</span><span class="br0">(</span>variant<span class="br0">[</span><span class="nu0">0</span><span class="br0">]</span><span class="br0">)</span> <span class="sy0">==</span> word<span class="sy0">.</span><span class="me1">Last</span><span class="br0">(</span><span class="br0">)</span><span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; word <span class="sy0">=</span> word<span class="sy0">.</span><span class="kw1">Remove</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">(</span><span class="kw4">int</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="nu0">6</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; EdCh<span class="br0">[</span>i<span class="br0">]</span> <span class="sy0">=</span> word <span class="sy0">+</span> variant<span class="br0">[</span>i<span class="br0">]</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>skl <span class="sy0">==</span> <span class="nu0">2</span><span class="br0">)</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>word<span class="sy0">.</span><span class="me1">Last</span><span class="br0">(</span><span class="br0">)</span> <span class="sy0">==</span> <span class="st0">'ь'</span><span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">var</span> variant <span class="sy0">=</span> SKL2E<span class="sy0">.</span><span class="me1">Replace</span><span class="br0">(</span>Pairing<span class="sy0">.</span><span class="me1">Of</span><span class="br0">(</span><span class="nu0">0</span>, <span class="st0">""</span><span class="br0">)</span>, Pairing<span class="sy0">.</span><span class="me1">Of</span><span class="br0">(</span><span class="nu0">3</span>, <span class="st0">""</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>odush<span class="br0">)</span> variant <span class="sy0">=</span> SKL2E<span class="sy0">.</span><span class="me1">Replace</span><span class="br0">(</span>Pairing<span class="sy0">.</span><span class="me1">Of</span><span class="br0">(</span><span class="nu0">0</span>, <span class="st0">""</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">(</span><span class="kw4">int</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="nu0">6</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; EdCh<span class="br0">[</span>i<span class="br0">]</span> <span class="sy0">=</span> word <span class="sy0">+</span> variant<span class="br0">[</span>i<span class="br0">]</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">var</span> variant <span class="sy0">=</span> SKL2O<span class="sy0">.</span><span class="me1">Replace</span><span class="br0">(</span>Pairing<span class="sy0">.</span><span class="me1">Of</span><span class="br0">(</span><span class="nu0">0</span>, <span class="st0">""</span><span class="br0">)</span>, Pairing<span class="sy0">.</span><span class="me1">Of</span><span class="br0">(</span><span class="nu0">3</span>, <span class="st0">""</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>odush<span class="br0">)</span> variant <span class="sy0">=</span> SKL2E<span class="sy0">.</span><span class="me1">Replace</span><span class="br0">(</span>Pairing<span class="sy0">.</span><span class="me1">Of</span><span class="br0">(</span><span class="nu0">0</span>, <span class="st0">""</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">(</span><span class="kw4">int</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="nu0">6</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; EdCh<span class="br0">[</span>i<span class="br0">]</span> <span class="sy0">=</span> word <span class="sy0">+</span> variant<span class="br0">[</span>i<span class="br0">]</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>skl <span class="sy0">==</span> <span class="nu0">3</span><span class="br0">)</span> <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">var</span> variant <span class="sy0">=</span> SKL3<span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; word <span class="sy0">=</span> word<span class="sy0">.</span><span class="kw1">Remove</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">(</span><span class="kw4">int</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="nu0">6</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; EdCh<span class="br0">[</span>i<span class="br0">]</span> <span class="sy0">=</span> word <span class="sy0">+</span> variant<span class="br0">[</span>i<span class="br0">]</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li2"><div class="de2">&nbsp;</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">static</span> <span class="kw4">int</span> GetSklonFromRod<span class="br0">(</span><span class="kw4">string</span> word, <span class="kw4">int</span> rod<span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="br0">{</span> </div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp;<span class="kw1">if</span> <span class="br0">(</span><span class="st0">"ая"</span><span class="sy0">.</span><span class="me1">Contains</span><span class="br0">(</span>word<span class="sy0">.</span><span class="me1">Last</span><span class="br0">(</span><span class="br0">)</span><span class="br0">)</span><span class="br0">)</span> <span class="kw1">return</span> <span class="nu0">1</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp;<span class="kw1">if</span> <span class="br0">(</span><span class="st0">"ое"</span><span class="sy0">.</span><span class="me1">Contains</span><span class="br0">(</span>word<span class="sy0">.</span><span class="me1">Last</span><span class="br0">(</span><span class="br0">)</span><span class="br0">)</span> <span class="sy0">||</span> <span class="sy0">!</span>word<span class="sy0">.</span><span class="me1">Last</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">.</span><span class="me1">IsVowel</span><span class="br0">(</span><span class="br0">)</span> <span class="sy0">&amp;&amp;</span> rod <span class="sy0">==</span> <span class="nu0">1</span><span class="br0">)</span> <span class="kw1">return</span> <span class="nu0">2</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp;<span class="kw1">if</span> <span class="br0">(</span>word<span class="sy0">.</span><span class="me1">Last</span><span class="br0">(</span><span class="br0">)</span> <span class="sy0">==</span> <span class="st0">'ь'</span><span class="br0">)</span> <span class="kw1">return</span> <span class="nu0">3</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp;<span class="kw1">return</span> <span class="nu0">4</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li2"><div class="de2"><span class="br0">}</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li2"><div class="de2"><span class="kw1">namespace</span> ExtensionMethods</div></li>
+<li class="li1"><div class="de1"><span class="br0">{</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">class</span> StringAndCharExtensions</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">static</span> <span class="kw4">string</span> VOWEL <span class="sy0">=</span> <span class="st0">"ауоыиэяюёе"</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">string</span> <span class="kw1">Remove</span><span class="br0">(</span><span class="kw1">this</span> <span class="kw4">String</span> str<span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span> str<span class="sy0">.</span><span class="kw1">Remove</span><span class="br0">(</span>str<span class="sy0">.</span><span class="me1">Length</span> <span class="sy0">-</span> <span class="nu0">1</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">bool</span> IsVowel<span class="br0">(</span><span class="kw1">this</span> <span class="kw4">char</span> c<span class="br0">)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span> VOWEL<span class="sy0">.</span><span class="me1">Contains</span><span class="br0">(</span>c<span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> Replace<span class="br0">(</span><span class="kw1">this</span> <span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> c, <span class="kw1">params</span> KeyValuePair<span class="sy0">&lt;</span><span class="kw4">int</span>, <span class="kw4">string</span><span class="sy0">&gt;</span><span class="br0">[</span><span class="br0">]</span> pairs<span class="br0">)</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">(</span><span class="kw4">int</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> pairs<span class="sy0">.</span><span class="me1">Length</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; c<span class="br0">[</span>pairs<span class="br0">[</span>i<span class="br0">]</span><span class="sy0">.</span><span class="me1">Key</span><span class="br0">]</span> <span class="sy0">=</span> pairs<span class="br0">[</span>i<span class="br0">]</span><span class="sy0">.</span><span class="kw1">Value</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span> c<span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">class</span> Pairing</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> KeyValuePair<span class="sy0">&lt;</span><span class="kw4">int</span>, <span class="kw4">string</span><span class="sy0">&gt;</span> Of<span class="br0">(</span><span class="kw4">int</span> key, <span class="kw4">string</span> <span class="kw1">value</span><span class="br0">)</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">{</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="kw1">return</span> <span class="kw3">new</span> KeyValuePair<span class="sy0">&lt;</span><span class="kw4">int</span>, <span class="kw4">string</span><span class="sy0">&gt;</span><span class="br0">(</span>key, <span class="kw1">value</span><span class="br0">)</span><span class="sy0">;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="br0">}</span></div></li>
+<li class="li1"><div class="de1"><span class="br0">}</span></div></li>
+</ol></div>
+		</div>
+	</div></div>
+	<div class="content_title">
+		<span class="span_right raw_links"><a href="http://pastebin.com/index/w50j64MK" rel="nofollow">create a <u>new version</u> of this paste</a></span>
+		RAW Paste Data
+	</div>
+	<form class="paste_form" id="myform" method="post" action="http://pastebin.com/post.php">
+		<div class="textarea_border">
+			<textarea id="paste_code" class="paste_code" name="paste_code" onkeydown="return catchTab(this,event)" style="resize: none; height: 250px;">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using ExtensionMethods;
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var word = Console.ReadLine();
+            var rod = Convert.ToInt32(Console.ReadLine());
+            var sklon = new SklonForSush(word, rod);
+            for (int i = 0; i &lt; 6; i++)
+                Console.WriteLine(sklon.EdCh[i]);
+            Console.ReadLine();
+        }
+    }
+}
+
+public class SklonForSush
+{
+    public string[] EdCh = new string[6];
+    public string[] MnCh = new string[6];
+
+    private static string[] SKL1A = { "а", "ы", "е", "у", "ой", "е" };
+    private static string[] SKL1YA = { "я", "и", "е", "ю", "ей", "е" };
+    private static string[] SKL3 = { "ь", "и", "и", "ь", "ью", "и" };
+    private static string[] SKL2O = { "о", "а", "у", "о", "ом", "е" };
+    private static string[] SKL2E = { "е", "я", "ю", "е", "ем", "е" };
+    private static string[][] VARIANTS = { SKL1A, SKL1YA, SKL2O, SKL2E };
+
+    public SklonForSush(string word, int rod, int skl = 4, bool odush = false)
+    {
+        if (skl == 4)
+            skl = GetSklonFromRod(word, rod);
+        if (skl == 4)
+        {
+            for (int i = 0; i &lt; EdCh.Length; i++)
+                EdCh[i] = word;
+            return;
+        }
+        foreach (var variant in VARIANTS)
+        {
+            if (Convert.ToChar(variant[0]) == word.Last())
+            {
+                word = word.Remove();
+                for (int i = 0; i &lt; 6; i++)
+                    EdCh[i] = word + variant[i];
+                return;
+            }
+        }
+
+        if (skl == 2)
+            if (word.Last() == 'ь')
+            {
+                var variant = SKL2E.Replace(Pairing.Of(0, ""), Pairing.Of(3, ""));
+                if (odush) variant = SKL2E.Replace(Pairing.Of(0, ""));
+                for (int i = 0; i &lt; 6; i++)
+                    EdCh[i] = word + variant[i];
+                return;
+            }
+            else
+            {
+                var variant = SKL2O.Replace(Pairing.Of(0, ""), Pairing.Of(3, ""));
+                if (odush) variant = SKL2E.Replace(Pairing.Of(0, ""));
+                for (int i = 0; i &lt; 6; i++)
+                    EdCh[i] = word + variant[i];
+                return;
+            }
+
+        if (skl == 3) {
+            var variant = SKL3;
+            word = word.Remove();
+            for (int i = 0; i &lt; 6; i++)
+                EdCh[i] = word + variant[i];
+            return;
+        }
+    }
+
+    static int GetSklonFromRod(string word, int rod)
+    { 
+       if ("ая".Contains(word.Last())) return 1;
+       if ("ое".Contains(word.Last()) || !word.Last().IsVowel() &amp;&amp; rod == 1) return 2;
+       if (word.Last() == 'ь') return 3;
+       return 4;
+    }
+}
+
+namespace ExtensionMethods
+{
+    public static class StringAndCharExtensions
+    {
+        static string VOWEL = "ауоыиэяюёе";
+        public static string Remove(this String str)
+        {
+            return str.Remove(str.Length - 1);
+        }
+        public static bool IsVowel(this char c)
+        {
+            return VOWEL.Contains(c);
+        }
+
+        public static string[] Replace(this string[] c, params KeyValuePair&lt;int, string&gt;[] pairs)
+        {
+            for (int i = 0; i &lt; pairs.Length; i++)
+            {
+                c[pairs[i].Key] = pairs[i].Value;
+            }
+            return c;
+        }
+    }
+
+    public static class Pairing
+    {
+        public static KeyValuePair&lt;int, string&gt; Of(int key, string value)
+        {
+             return new KeyValuePair&lt;int, string&gt;(key, value);
+        }
+    }
+}</textarea>
+		</div>			
+	</form>
+	<script type="text/javascript" language="javascript">
+	$(document).ready(function(){
+	$('textarea').autoResize({minHeight: 80,maxHeight: 250});
+	geturl = "http://pastebin.com/w50j64MK";
+		$.getJSON("http://graph.facebook.com/fql?q=SELECT total_count FROM link_stat WHERE url='http://pastebin.com/w50j64MK'",
+	function(data) {
+	$('#b_facebook').append(data.data[0].total_count);
+	}); 
+	$.getJSON('http://urls.api.twitter.com/1/urls/count.json?url='+geturl+'&callback=?',
+	function(data) {
+	$('#b_twitter').append(data.count);
+	});
+	})
+    </script>						<div style="margin:10px 0;clear:left"></div>
+					</div>
+					<div class="frame_spacer"><!-- --></div>
+					<div id="footer_top" style="clear:both">	
+						<div class="footer_top_title">Pastebin.com Tools &amp; Applications</div>
+						<div class="footer_top_text">
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 iphone"><a href="http://pastebin.com/tools#iphone">iPhone/iPad</a>
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 windows"><a href="http://pastebin.com/tools#windows">Windows</a>
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 firefox"><a href="http://pastebin.com/tools#firefox">Firefox</a>
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 chrome"><a href="http://pastebin.com/tools#chrome">Chrome</a>
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 webos"><a href="http://pastebin.com/tools#webos">WebOS</a>
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 android"><a href="http://pastebin.com/tools#android">Android</a>
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 macos"><a href="http://pastebin.com/tools#macos">Mac</a>
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 opera"><a href="http://pastebin.com/tools#opera">Opera</a>
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 clickto"><a href="http://pastebin.com/tools#clickto">Click.to</a>
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 unix"><a href="http://pastebin.com/tools#pastebincl">UNIX</a>
+							<img src="./[C#] using System; using System.Collections.Generic; using System.Linq; using Syst - Pastebin.com_files/t.gif" alt="" class="icon24 windowsphone"><a href="http://pastebin.com/tools#windowsphone">WinPhone</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="footer">
+			<div id="logo_small"></div>
+			<div id="footer_links">
+				<a href="http://pastebin.com/">create new paste</a> &nbsp;|&nbsp; <a href="http://pastebin.com/api">api</a> &nbsp;|&nbsp; <a href="http://pastebin.com/trends">trends</a> &nbsp;|&nbsp; <a href="http://pastebin.com/users">users</a> &nbsp;|&nbsp; <a href="http://pastebin.com/faq">faq</a> &nbsp;|&nbsp; <a href="http://pastebin.com/tools">tools</a> &nbsp;|&nbsp; <a href="http://pastebin.com/privacy">privacy</a> &nbsp;|&nbsp; <a href="http://pastebin.com/cookies_policy">cookies policy</a> &nbsp;|&nbsp; <a href="http://pastebin.com/contact">contact</a> &nbsp;|&nbsp; <a href="http://pastebin.com/stats">stats</a> &nbsp;|&nbsp; <a href="http://pastebin.com/pro">go pro</a> 
+				<br>Follow us: <a href="http://www.facebook.com/pages/Pastebincom/150549571626327" target="_blank">pastebin on facebook</a> &nbsp;|&nbsp; <a href="http://twitter.com/#!/pastebin" target="blank">pastebin on twitter</a> &nbsp;|&nbsp; <a href="https://www.google.com/search?gl=us&pz=1&cf=all&ned=us&hl=en&tbm=nws&as_oq=pastebin&as_occt=any&as_qdr=d&authuser=0" target="_blank">pastebin in the news</a>
+
+
+				<br>Pastebin v3.1 rendered in: 0.029 seconds				
+			</div>
+			<div id="footer_right" title="DDoS Protection and Dedicated Server provided by Gigenet.com" onclick="location.href=&#39;http://www.gigenet.com/&#39;"></div>
+		</div>
+		<script type="text/javascript">
+		$('.narrow_it').click(function(){
+		    $('#super_frame').animate({width:'100%'}, 500);
+		    $('#footer').animate({width:'100%'}, 500);
+			$(".narrow_it").hide();
+			$(".wide_it").show();
+			$.get('/layout.php', function(data) {
+			});
+		});
+		$('.wide_it').click(function(){
+		    $('#super_frame').animate({width:'1200px'}, 500);
+		    $('#footer').animate({width:'1200px'}, 500);
+			$(".wide_it").hide();
+			$(".narrow_it").show();
+			$.get('/layout.php', function(data) {
+			});
+		});
+		</script>
+
+	
+<arclones><textarea class="paste_code ar1375825283682" onkeydown="return catchTab(this,event)" style="resize: none; overflow: hidden; line-height: 21px; text-decoration: none; letter-spacing: 0px; font-size: 12px; font-family: Consolas, Menlo, Monaco, &#39;Lucida Console&#39;, &#39;Liberation Mono&#39;, &#39;DejaVu Sans Mono&#39;, &#39;Bitstream Vera Sans Mono&#39;, monospace, serif; font-style: normal; font-weight: 400; text-transform: none; text-align: start; direction: ltr; word-spacing: 0px; padding: 8.4375px; width: 827.125px; position: absolute; top: -9999px; left: -9999px; opacity: 0; height: 0px;" tabindex="-1">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using ExtensionMethods;
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var word = Console.ReadLine();
+            var rod = Convert.ToInt32(Console.ReadLine());
+            var sklon = new SklonForSush(word, rod);
+            for (int i = 0; i &lt; 6; i++)
+                Console.WriteLine(sklon.EdCh[i]);
+            Console.ReadLine();
+        }
+    }
+}
+
+public class SklonForSush
+{
+    public string[] EdCh = new string[6];
+    public string[] MnCh = new string[6];
+
+    private static string[] SKL1A = { "а", "ы", "е", "у", "ой", "е" };
+    private static string[] SKL1YA = { "я", "и", "е", "ю", "ей", "е" };
+    private static string[] SKL3 = { "ь", "и", "и", "ь", "ью", "и" };
+    private static string[] SKL2O = { "о", "а", "у", "о", "ом", "е" };
+    private static string[] SKL2E = { "е", "я", "ю", "е", "ем", "е" };
+    private static string[][] VARIANTS = { SKL1A, SKL1YA, SKL2O, SKL2E };
+
+    public SklonForSush(string word, int rod, int skl = 4, bool odush = false)
+    {
+        if (skl == 4)
+            skl = GetSklonFromRod(word, rod);
+        if (skl == 4)
+        {
+            for (int i = 0; i &lt; EdCh.Length; i++)
+                EdCh[i] = word;
+            return;
+        }
+        foreach (var variant in VARIANTS)
+        {
+            if (Convert.ToChar(variant[0]) == word.Last())
+            {
+                word = word.Remove();
+                for (int i = 0; i &lt; 6; i++)
+                    EdCh[i] = word + variant[i];
+                return;
+            }
+        }
+
+        if (skl == 2)
+            if (word.Last() == 'ь')
+            {
+                var variant = SKL2E.Replace(Pairing.Of(0, ""), Pairing.Of(3, ""));
+                if (odush) variant = SKL2E.Replace(Pairing.Of(0, ""));
+                for (int i = 0; i &lt; 6; i++)
+                    EdCh[i] = word + variant[i];
+                return;
+            }
+            else
+            {
+                var variant = SKL2O.Replace(Pairing.Of(0, ""), Pairing.Of(3, ""));
+                if (odush) variant = SKL2E.Replace(Pairing.Of(0, ""));
+                for (int i = 0; i &lt; 6; i++)
+                    EdCh[i] = word + variant[i];
+                return;
+            }
+
+        if (skl == 3) {
+            var variant = SKL3;
+            word = word.Remove();
+            for (int i = 0; i &lt; 6; i++)
+                EdCh[i] = word + variant[i];
+            return;
+        }
+    }
+
+    static int GetSklonFromRod(string word, int rod)
+    { 
+       if ("ая".Contains(word.Last())) return 1;
+       if ("ое".Contains(word.Last()) || !word.Last().IsVowel() &amp;&amp; rod == 1) return 2;
+       if (word.Last() == 'ь') return 3;
+       return 4;
+    }
+}
+
+namespace ExtensionMethods
+{
+    public static class StringAndCharExtensions
+    {
+        static string VOWEL = "ауоыиэяюёе";
+        public static string Remove(this String str)
+        {
+            return str.Remove(str.Length - 1);
+        }
+        public static bool IsVowel(this char c)
+        {
+            return VOWEL.Contains(c);
+        }
+
+        public static string[] Replace(this string[] c, params KeyValuePair&lt;int, string&gt;[] pairs)
+        {
+            for (int i = 0; i &lt; pairs.Length; i++)
+            {
+                c[pairs[i].Key] = pairs[i].Value;
+            }
+            return c;
+        }
+    }
+
+    public static class Pairing
+    {
+        public static KeyValuePair&lt;int, string&gt; Of(int key, string value)
+        {
+             return new KeyValuePair&lt;int, string&gt;(key, value);
+        }
+    }
+}</textarea></arclones></body></html>

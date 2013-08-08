@@ -1,0 +1,350 @@
+body, td, p, li {
+	font-family: Arial, Verdana, Sans-Serif;
+	font-size: 10pt;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	text-decoration: none;
+} 
+
+.slink {
+	text-decoration: underline;
+	font-size: 8pt;
+	color: #cfedb9;
+}
+
+a.slink {
+	text-decoration: underline;
+	font-size: 8pt;
+	color: #cfedb9;
+}
+
+.slinkgray {
+	text-decoration: underline;
+	font-size: 8pt;
+	color: #888888;
+}
+
+a.slinkgray {
+	text-decoration: underline;
+	font-size: 8pt;
+	color: #888888;
+}
+
+.linkTask {
+	font-size: 8pt;
+}
+
+a.linkTask {
+	font-size: 8pt;
+}
+
+.menu {
+	text-decoration: underline;
+	font-size: 8pt;
+	color: #ffffff;
+}
+
+a.menu {
+	text-decoration: underline;
+	font-size: 9pt;
+	color: #ffffff;
+}
+
+a:hover.menu {
+	text-decoration: none;
+	font-size: 9pt;
+	color: #ffffff;
+}
+
+.menuPad_on {
+	text-decoration: none;
+	font-size: 10pt;
+	font-weight : bold;
+	color: #7f650f;
+}
+
+a.menuPad_on {
+	text-decoration: none;
+	font-size: 10pt;
+	font-weight : bold;
+	color: #7f650f;
+}
+
+a:hover.menuPad_on {
+	text-decoration: none;
+	font-size: 10pt;
+	font-weight : bold;
+	color: #7f650f;
+}
+
+.menuPad_off {
+	text-decoration: underline;
+	font-size: 10pt;
+	font-weight : bold;
+	color: #a6a6a6;
+}
+
+a.menuPad_off {
+	text-decoration: underline;
+	font-size: 10pt;
+	font-weight : bold;
+	color: #a6a6a6;
+}
+
+a:hover.menuPad_off {
+	text-decoration: underline;
+	font-size: 10pt;
+	font-weight : bold;
+	color: #a6a6a6;
+}
+
+.table1 {
+	font-size: 10pt;
+	color: #333333;
+	font-weight: normal;
+	border: 1px solid #787878;
+}
+
+.TakeEntryUnopened {
+	font-size: 10pt;
+	color: #333333;
+	font-weight: normal;
+	border: 1px solid #787878;
+	text-decoration: none;
+	background-color: #e0e0e0;
+}
+
+.TakeEntryOpened {
+	font-size: 10pt;
+	color: #333333;
+	font-weight: normal;
+	border: 1px solid #787878;
+	text-decoration: none;
+	background-color: #ffffff;
+}
+
+.TakeEntryAccepted {
+	font-size: 10pt;
+	color: #333333;
+	font-weight: normal;
+	border: 1px solid #787878;
+	text-decoration: none;
+	background-color: #aee03b;
+}
+
+.TakeEntryCurrent {
+	font-size: 10pt;
+	font-weight: bold;
+	color: #333333;
+	font-weight: normal;
+	border: 1px solid #787878;
+	text-decoration: none;
+	background-color: #ffe967;
+}
+
+a { 
+	text-decoration: underline;
+	font-size: 9pt;
+	color: #716b4a;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.left_menu_on {
+	text-decoration: underline;
+	font-size: 9pt;
+	color: #ffffff;
+}
+
+a.left_menu_on {
+	text-decoration: underline;
+	font-size: 9pt;
+	color: #ffffff;
+}
+
+.left_menu_off {
+	text-decoration: underline;
+	font-size: 9pt;
+	color: #165a96;
+}
+
+a.left_menu_off {
+	text-decoration: underline;
+	font-size: 9pt;
+	color: #165a96;
+}
+
+.form {
+	font-family: Arial, Verdana, Sans-Serif;
+	font-size: 9pt;
+	color : #000000;
+	background-color: #FFFFFF;
+	border: 1 outside #4E4A30;
+}
+
+.button {
+	font-family: Arial, Verdana, Sans-Serif;
+	font-size : 8pt;
+	color : #000000;
+	background-color : #CCCCCC;
+	border : 1 solid #3E371E;
+	font-weight: bold;
+}
+
+.button_gray {
+	font-family: Arial, Verdana, Sans-Serif;
+	font-size : 8pt;
+	color : #000000;
+	background-color : #FFFFFF;
+	background-image : url(/images/button_bg_grey.gif);
+	border : 1 solid #6F6F6F;
+}
+
+img.bord
+	{
+	border: 1 solid #DEF5E8;
+	}
+
+
+.imgL {
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 16px;
+	margin-bottom: 16px;
+	border-color: #ffffff;
+}
+
+.imgR {
+	margin-top: 0px;
+	margin-left: 10px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	border-color: #DEE5E8;
+}
+
+.imgC {
+	border-color: #cfcfcf;
+	margin-bottom: 5px;
+}
+
+.table_list {
+	border: #EFEFEF solid 1px;
+}
+
+.opacity {
+	filter:alpha(opacity=40);
+}
+
+
+#QuizTitle p {
+	font-family: Arial, Verdana, Sans-Serif;
+	font-size: 12pt; 
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	text-decoration: none;
+} 
+
+#QuizBody p, #QuizBody li {
+	font-family: Arial, Verdana, Sans-Serif;
+	font-size: 12pt;  
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	text-decoration: none;
+} 
+#QuizChoose {
+	font-family: Arial, Verdana, Sans-Serif;
+	font-size: 12pt;  
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	text-decoration: none;
+} 
+
+table.b1 {
+        border-style: none;
+        border-collapse: collapse;
+        border: solid;
+        border-width: 1px;
+        border-color: #000000;
+        margin: 1px;
+}
+
+td.b1 {
+        border: solid;
+        border-width: 1px;
+        border-color: #000000;
+        margin: 1px;
+}
+
+th.b1 {
+        border: solid;
+        border-width: 1px;
+        border-color: #000000;
+        margin: 1px;
+}
+
+div.dotted {
+        border-style: dotted;
+        border-width: 1px;
+        padding: 0px 10px 10px 10px;
+        margin: 10px 10px 10px 10px;
+}
+
+/* Attributes for TakeFinished page */
+td.TFCell {
+        background-color: #fdf5ce;
+}
+
+/* Attributes for TakeTest page */
+td.TTProbPos {
+	background-color: #ffe967;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #333333;
+	border: 1px solid #787878;
+	text-align: center;
+}
+
+td.TTSubmit {
+	background-color: #fdf5ce;
+}
+
+td.TTAnsCellHor {
+	background-color: #fefcec;
+	text-align: center;
+	vertical-align: middle;
+	font-family: 'Times New Roman', Times, Serif;
+	font-size: 24px;
+	color: #000000;
+}
+
+td.TTAnsCellVert {
+	background-color: #fefcec;
+	text-align: left;
+	vertical-align: middle;
+	font-family: 'Times New Roman', Times, Serif;
+	font-size: 24px;
+	color: #000000;
+}
+
+td.TTTimeCell1 {
+	background-color: #c5c5c2;
+}
+
+td.TTTimeCell2 {
+	background-color: #fefcec;
+	text-align: center;
+	font-size: 10pt;
+}
+
+td.TTTimeCell3 {
+	background-color: #fef7c9;
+	text-align: center;
+	font-size: 10pt;
+	font-weight: bold;
+}
