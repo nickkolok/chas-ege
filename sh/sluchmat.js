@@ -3,21 +3,29 @@ var intervPole;
 var intervZadan;
 var n;
 
-var galki='<tr>';
-for(var i=1;i<=nZad;i++){
-	galki+='<td><input type="checkbox" id="cB'+i+'" /><label for="cB'+i+'" >B'+i+' </label></td>';
+var nas=200;
+var zelen={r:0,g:nas,b:0};
+var krasn={r:nas,g:0,b:0};
+var zhelt={r:nas,g:nas,b:0};
+	
+var galki;
+function sozdGalki(){
+	galki='<tr>';
+	for(var i=1;i<=nZad;i++){
+		galki+='<td><input type="checkbox" id="cB'+i+'" /><label for="cB'+i+'" >B'+i+' </label></td>';
+	}
+	galki+='<td></td></tr><tr>';
+	for(var i=1;i<=nZad;i++){
+		galki+='<td><span id="pB'+i+'"></span></td>';
+	}
+	galki+='<td><span id="pB"></span></td></tr><tr>';
+	for(var i=1;i<=nZad;i++){
+		galki+='<td><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';	
+	}
+	galki+='<td><span class="kolvoprav" id="pravB"></span><br/>из<br/><span id="vsegB"></span></td></tr>';
+	$('#galki').html(galki);
 }
-galki+='</tr><tr>';
-for(var i=1;i<=nZad;i++){
-	galki+='<td><span id="pB'+i+'"></span></td>';
-}
-galki+='</tr><tr>';
-for(var i=1;i<=nZad;i++){
-	galki+='<td><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';
-}
-galki+='</tr>';
-$('#galki').html(galki);
-
+sozdGalki();
 /*
 window.tmpvopr=$.jStorage.get('sluchvopr');
 if(window.tmpvopr){
@@ -38,10 +46,12 @@ if(!umka){
 veroyatn();
 
 function veroyatn(){
+	var pr;
 	for(var i=1;i<=nZad;i++){
+		pr=umka.verno[i]/umka.vsego[i];
 		$('#pB'+i).html(
 			umka.vsego[i]>4?
-			(umka.verno[i]/umka.vsego[i]*100).toFixedLess(0)+'%':
+			(pr*100).toFixedLess(0)+'%':
 			''
 		);
 		$('#pravB'+i).html(
@@ -50,7 +60,26 @@ function veroyatn(){
 		$('#vsegB'+i).html(
 			umka.vsego[i]
 		);
+		$('#pB'+i).css(
+			'color',
+			pr>0.5?
+			cvetMezhdu(zhelt,zelen,pr*2-1):
+			cvetMezhdu(krasn,zhelt,pr*2)
+		);
 	}
+	$('#pB').html(
+		umka.vsego.sum()>4?
+		(umka.verno.sum()/umka.vsego.sum()*100).toFixedLess(0)+'%':
+		''
+	);
+	$('#pravB').html(
+		umka.verno.sum()
+	);
+	$('#vsegB').html(
+		umka.vsego.sum()
+	);
+
+	
 }
 
 function obnov(){
