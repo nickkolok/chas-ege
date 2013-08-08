@@ -25,8 +25,8 @@ var g=[
 var p=[
 		d1+b.pervSovp(b[v]),
 		d1+b.poslSovp(b[v]),
-		d1+b.max(),
 		d1+b.max(1),
+		d1+b.max(),
 		b.sovp(b[v])
 		];
 
