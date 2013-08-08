@@ -2,7 +2,6 @@ var startxt;
 var intervPole;
 var intervZadan;
 var n;
-var nZad=14;
 
 var galki='<tr>';
 for(var i=1;i<=nZad;i++){
@@ -10,7 +9,11 @@ for(var i=1;i<=nZad;i++){
 }
 galki+='</tr><tr>';
 for(var i=1;i<=nZad;i++){
-	galki+='<td><span id=pB'+i+'></span></td>';
+	galki+='<td><span id="pB'+i+'"></span></td>';
+}
+galki+='</tr><tr>';
+for(var i=1;i<=nZad;i++){
+	galki+='<td><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';
 }
 galki+='</tr>';
 $('#galki').html(galki);
@@ -40,6 +43,12 @@ function veroyatn(){
 			umka.vsego[i]>4?
 			(umka.verno[i]/umka.vsego[i]*100).toFixedLess(0)+'%':
 			''
+		);
+		$('#pravB'+i).html(
+			umka.verno[i]
+		);
+		$('#vsegB'+i).html(
+			umka.vsego[i]
 		);
 	}
 }
