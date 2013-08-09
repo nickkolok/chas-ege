@@ -28,6 +28,12 @@ body{
 	vertical-align:baseline;
 	height:auto;
 }
+.kolvoprav{
+	color:#0d0;
+}
+.kolvonepr{
+	color:#f00;
+}
 ul.pureCssMenu ul{
 	display:none;
 	z-index:10;
