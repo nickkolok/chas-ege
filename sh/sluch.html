@@ -37,14 +37,18 @@
 			<table id="galki">
 			</table>
 			<br/>
-			<div>
-				<input type="checkbox" id="cPRZ" /><label for="cPRZ" >Без производной</label>
-				<input type="checkbox" id="cLOG" /><label for="cLOG" >Без логарифмов</label>
-				<input type="checkbox" id="cTRI" /><label for="cTRI" >Без тригонометрии</label>
-				<input type="checkbox" id="cDRS" /><label for="cDRS" >Без дробных степеней</label>
+			<button class="spoiler-show">Показать настройки...</button>
+			<button class="spoiler-hide">Скрыть настройки</button>
+			<div class="spoiler-body">
+				<div>
+					<input type="checkbox" id="cPRZ" /><label for="cPRZ" >Без производной</label>
+					<input type="checkbox" id="cLOG" /><label for="cLOG" >Без логарифмов</label>
+					<input type="checkbox" id="cTRI" /><label for="cTRI" >Без тригонометрии</label>
+					<input type="checkbox" id="cDRS" /><label for="cDRS" >Без дробных степеней</label>
+				</div>
+				<button onclick="vybrv()">Выбрать все задания</button>
+				<button onclick="vybr0()">Снять все задания</button>
 			</div>
-			<button onclick="vybrv()">Выбрать все</button>
-			<button onclick="vybr0()">Снять все</button>
 		</div>
 	</div>
 	<script>

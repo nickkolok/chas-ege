@@ -67,6 +67,7 @@ function veroyatn(){
 			cvetMezhdu(krasn,zhelt,pr*2)
 		);
 	}
+	pr=umka.verno.sum()/umka.vsego.sum();
 	$('#pB').html(
 		umka.vsego.sum()>4?
 		(umka.verno.sum()/umka.vsego.sum()*100).toFixedLess(0)+'%':
@@ -77,6 +78,12 @@ function veroyatn(){
 	);
 	$('#vsegB').html(
 		umka.vsego.sum()
+	);
+	$('#pB').css(
+		'color',
+		pr>0.5?
+		cvetMezhdu(zhelt,zelen,pr*2-1):
+		cvetMezhdu(krasn,zhelt,pr*2)
 	);
 
 	
@@ -191,8 +198,6 @@ stavGalki();
 
 function vybrv(){
 	for(var i=1;i<=nZad;i++){
-//		$('#cB'+i).removeAttr('checked');
-		$('#cB'+i).not(':checked').attr('checked','checked');
 		$('#cB'+i).not(':checked').click();
 	}
 }
@@ -204,3 +209,5 @@ function vybr0(){
 }
 
 $('#prov').hide();
+
+spoiler();
