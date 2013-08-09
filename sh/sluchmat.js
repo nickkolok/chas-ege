@@ -81,8 +81,6 @@ function veroyatn(){
 	);	
 }
 
-
-
 function obnov(){
 	if((window.vopr.txt!=0)*(startxt!=window.vopr.txt)){
 		clearInterval(intervPole);
@@ -103,16 +101,33 @@ function obnov(){
 function vybrZad(){
 	for(var i=1;i<=nZad;i++)
 		v[i]=($('#cB'+i).is(':checked')?1:0);
-
 	localStorage.sluchmatb=v;
 	var w=[];
 	for(var i=1;i<=nZad;i++)
 		if(v[i])
 			w.push(i);
-	
 	if(!w.length){
 		$('#pole').html('Хотя бы один тип заданий должен быть выбран!');
 		return;
+	}
+	if($("#radio-sluch").prop("checked"))
+		return w.iz();
+	if($("#radio-porad").prop("checked")){
+		var tekzad=n?n:0;
+		for(var i=0;w[i]<=tekzad;i++);
+		return w[i]?w[i]:w[0];
+	}
+	if($("#radio-umka" ).prop("checked")){
+		var masV=[];
+		for(var i=1;i<=nZad;i++)
+			if(v[i] && (umka.vsego[i]<5))
+				return i;
+		for(var i=1;i<=nZad;i++)
+			if(v[i])
+				masV.push(1.1-umka.verno[i]/umka.vsego[i])
+			else
+				masV.push(0);
+		return masV.sVeroyatn()+1;
 	}
 	return w.iz();
 }
