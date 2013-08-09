@@ -36,7 +36,7 @@ if(window.tmpvopr){
 	
 }
 */
-loadUmka();
+zagrUmka();
 veroyatn();
 
 function veroyatn(){
@@ -81,12 +81,6 @@ function veroyatn(){
 	);	
 }
 
-function sootvKat(){
-	for(var key in window.vopr.kat)
-		if(window.vopr.kat[key] && $('#bez_'+key).length && $('#bez_'+key).is(':checked'))
-			return 0;
-	return 1;
-}
 
 
 function obnov(){
@@ -171,7 +165,7 @@ function prover(){
 	}
 	$('#prov').hide();
 	$('#sozd').show();
-	$.jStorage.set('umka',umka);
+	sohrUmka();
 	veroyatn();
 }
 
