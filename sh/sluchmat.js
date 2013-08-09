@@ -36,13 +36,7 @@ if(window.tmpvopr){
 	
 }
 */
-var umka=$.jStorage.get('umka');
-if(!umka){
-	umka={
-			verno:[].zapslch(0,nZad,0,0,0),
-			vsego:[].zapslch(0,nZad,0,0,0),
-		}
-}
+loadUmka();
 veroyatn();
 
 function veroyatn(){
@@ -84,21 +78,22 @@ function veroyatn(){
 		pr>0.5?
 		cvetMezhdu(zhelt,zelen,pr*2-1):
 		cvetMezhdu(krasn,zhelt,pr*2)
-	);
-
-	
+	);	
 }
+
+function sootvKat(){
+	for(var key in window.vopr.kat)
+		if(window.vopr.kat[key] && $('#bez_'+key).length && $('#bez_'+key).is(':checked'))
+			return 0;
+	return 1;
+}
+
 
 function obnov(){
 	if((window.vopr.txt!=0)*(startxt!=window.vopr.txt)){
 		clearInterval(intervPole);
 		clearInterval(intervZadan);
-		if(
-			($('#cPRZ').is(':checked'))*(window.vopr.kat["prz"])+
-			($('#cLOG').is(':checked'))*(window.vopr.kat["log"])+
-			($('#cTRI').is(':checked'))*(window.vopr.kat["tri"])+
-			($('#cDRS').is(':checked'))*(window.vopr.kat["drs"])
-		){
+		if(!sootvKat()){
 			sozdat();
 			return;
 		}
@@ -110,6 +105,24 @@ function obnov(){
 //		$.jStorage.set('sluchvopr',window.vopr);
 	}
 }
+
+function vybrZad(){
+	for(var i=1;i<=nZad;i++)
+		v[i]=($('#cB'+i).is(':checked')?1:0);
+
+	localStorage.sluchmatb=v;
+	var w=[];
+	for(var i=1;i<=nZad;i++)
+		if(v[i])
+			w.push(i);
+	
+	if(!w.length){
+		$('#pole').html('Хотя бы один тип заданий должен быть выбран!');
+		return;
+	}
+	return w.iz();
+}
+
 function sozdat(){
 	if(!$){
 		zagr('../ext/jquery-1.9.0.js');
@@ -121,25 +134,9 @@ function sozdat(){
 	$('#protv').hide();
 	startxt=window.vopr.txt;
 	window.vopr.podg();
-	for(var i=1;i<=15;i++){
-		if($('#cB'+i).is(':checked')){
-			v[i]=1;
-		}else{
-			v[i]=0;
-		}
-	}
-	localStorage.sluchmatb=v;
-	var w=[];
-	for(var i=1;i<=14;i++){
-		if(v[i]){
-			w.push(i);
-		}
-	}
-	if(!w.length){
-		$('#pole').html('Хотя бы один тип заданий должен быть выбран!');
+	n=vybrZad();
+	if(n==undefined)
 		return;
-	}
-	n=w.iz();
 	zagr('../zdn/mat/B'+n+'/main.js');
 	intervZadan=setInterval("zagr('../zdn/mat/B'+"+n+"+'/'+nomer+'.js');",300);
 	intervPole=setInterval("obnov();",100);
