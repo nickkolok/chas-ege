@@ -61,7 +61,6 @@ function razrstr(){
 	d2.style.width="100%";
 	d2.style.overflow="hidden";
 	d2.style.pageBreakBefore='always';
-//	din.style.float="left";
 	d2.style.height='1px';
 	document.getElementById('rez').appendChild(d2);
 
@@ -96,10 +95,7 @@ function zadan(){
 			iZ=aZ.slice();
 			stardate=novdate;
 			novdate=new Date().getTime();
-//			strVopr='<hr class="pbb"/><div class="d"><h2>Вариант №'+novdate+'</h2></div>';
-//			strVopr='<hr class="pbb"/><div class="d"><hr class="pbb"/><h2>Вариант №'+novdate+'</h2></div>';
 			strVopr='<div class="d"><h2>Вариант №'+novdate+'</h2></div>';
-//			strVopr='<td colspan="2"><hr class="pbb"/><div class="d"><h2>Вариант №'+novdate+'</h2></div></td>';
 
 			if((!(navigator.userAgent.search('Gecko/')+1))*(aV!=nV)){
 				razrstr();
@@ -109,9 +105,6 @@ function zadan(){
 			din.innerHTML=strVopr;
 			din.class='d';
 			din.style.width="100%";
-//			din.style.overflow="hidden";
-//			din.style.float="left";
-//			din.style.minHeight='1.2em';
 			document.getElementById('rez').appendChild(din);
 			strOtv+='<table class="normtabl" style="float:left; margin:1em;"><tr><th colspan="3">';
 			strOtv+='Ответы к варианту<br/>№'+novdate+'</th></tr>';
@@ -127,7 +120,6 @@ function zadan(){
 			iZ[nZ]--;
 			zagr('../zdn/mat/B'+nZ+'/main.js');
 			vopr.podg();
-//			setTimeout("zagr('../zdn/mat/B'+"+nZ+"+'/'+nomer+'.js');",1000);
 			zagr('../zdn/mat/B'+nZ+'/'+nomer+'.js');
 			intervPole=setTimeout('obnov('+');',vr1+vr2);
 		}
@@ -148,63 +140,28 @@ function obnov(){
 			return;
 		}
 		starttxt=window.vopr.txt;
-//		strVopr='<br/><div class="d"><div class="b">B'+nZ+'-'+(iZ[nZ]+1)+'</div>'+window.vopr.txt+'</div>';
 		strVopr='<br/><div class="d"><div class="b">B'+nZ+((aZ[nZ]==1)?(''):('-'+(aZ[nZ]-iZ[nZ])))+'</div>'+window.vopr.txt+'</div>';
-//		strVopr='<td><div class="b">B'+nZ+((aZ[nZ]==1)?(''):('-'+(aZ[nZ]-iZ[nZ])))+'</div></td><td><div class="d">'+window.vopr.txt+'</div></td>';
 		var din=document.createElement('div');
 		din.innerHTML=strVopr;
 		din.class='d';
 		din.width="100%";
 		din.style.width='100%';
-//		din.style.overflow='hidden';
 		din.style.float='left';
 		document.getElementById('rez').appendChild(din);
-		strOtv+='<tr><td>'+novdate+'</td><td>B'+nZ+((aZ[nZ]==1)?(''):('-'+(aZ[nZ]-iZ[nZ])))+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
+		strOtv+='<tr><td>'+novdate+'</td><td>B'+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
 		try{
 			window.vopr.dey();
 		}catch(e){}
-//		window.vopr.dey=function(){};
-//		nZ++;
 		var sdel=aZ.sum()*(aV-nV+1)-iZ.sum();
 		var w=sdel/kZ;
-		$('.tx').text(''+(100*w).toFixedLess(1).dopdo(' ',4)+'%');
+		$('.tx').text((100*w).toFixedLess(1).dopdo(' ',4)+'%');
 		$('#pr1').width($('#pr0').width()*w);
 		var v=(vr1+vr2)*(kZ-sdel)/1000;
-		$('#vrem').text(''+sdel+' из '+kZ+' '+Math.floor(v/60)+':'+(Math.floor(v%60).dopdo('0',2).dopdo('0',2)));
+		$('#vrem').text(''+sdel+' из '+kZ+' '+v.toDvoet());
 		zadan();
 	}else{
 		setTimeout("zagr('../zdn/mat/B'+"+nZ+"+'/'+nomer+'.js');",vr1);
-//		setTimeout('zadan('+');',100);
-		intervPole=setTimeout('obnov('+');',vr1+vr2);
+		intervPole=setTimeout('obnov();',vr1+vr2);
 		
 	}
-//	zadan();
 }
-/*function sozdat(){
-
-
-	for(var i=1;i<=15;i++){
-		if($('#cB'+i).is(':checked')){
-			v[i]=1;
-		}else{
-			v[i]=0;
-		}
-	}
-	localStorage.sluchmatb=v;
-	var w=[];
-	for(var i=1;i<=14;i++){
-		if(v[i]){
-			w.push(i);
-		}
-	}
-}*/
-/*
-
-var v=[];
-if(!localStorage.sluchmatb){
-	v=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
-	localStorage.sluchmatb=v;
-}else{
-	v=localStorage.sluchmatb.split(',');
-}
-*/
