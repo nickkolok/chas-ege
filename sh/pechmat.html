@@ -12,7 +12,7 @@
 		Тренажёр "Час ЕГЭ": создание теста для печати
 	</title>
 </head>
-<body>
+<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
 	<script>
 		addscript('../lib/init.js');
 	</script>
@@ -41,12 +41,12 @@
 		<br/>
 		<div>
 			<div>
-				<input type="checkbox" id="cPRZ" /><label for="cPRZ" >Без производной</label>
-				<input type="checkbox" id="cLOG" /><label for="cLOG" >Без логарифмов</label>
-				<input type="checkbox" id="cTRI" /><label for="cTRI" >Без тригонометрии</label>
-				<input type="checkbox" id="cDRS" /><label for="cDRS" >Без дробных степеней</label>
+				<input type="checkbox" id="cPRZ" data-jstorage-id="pech-cPRZ" /><label for="cPRZ" >Без производной</label>
+				<input type="checkbox" id="cLOG" data-jstorage-id="pech-cLOG" /><label for="cLOG" >Без логарифмов</label>
+				<input type="checkbox" id="cTRI" data-jstorage-id="pech-cTRI" /><label for="cTRI" >Без тригонометрии</label>
+				<input type="checkbox" id="cDRS" data-jstorage-id="pech-cDRS" /><label for="cDRS" >Без дробных степеней</label>
 			</div>
-			<label for="cV">Количество вариантов:</label><input id="cV" class="kolvo" value="1" type='text'/>
+			<label for="cV">Количество вариантов:</label><input id="cV" class="kolvo" value="1" type='text'  data-jstorage-id="pech-cV"/>
 			<button onclick="zapusk();">Запуск!</button>
 			<button onclick="vse1();">Стандартный тест</button>
 		</div>

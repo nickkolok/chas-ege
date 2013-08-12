@@ -4,13 +4,13 @@ if(top.location.href!=document.location.href)
 $('#zadaniya').html('');
 for(var i=1;i<=14;i++){
 	document.getElementById('zadaniya').innerHTML+='<tr><td><label for="cB'+i+'" >B'+i+'</label></td>'+
-	'<td><input type="text" class="kolvo" value="1" id="cB'+i+'"></td></tr>';
+	'<td><input type="text" class="kolvo" value="1" id="cB'+i+'" data-jstorage-id="pech-cB'+i+'"></td></tr>';
 }
 
 $('#gotov').hide();
 var vr1=200;
 var vr2=1500;
-if(!(document.location.href.search('file://'))){
+if(svinta){
 	vr1=100;
 	vr2=100;
 }
