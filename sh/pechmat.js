@@ -1,10 +1,8 @@
-if(top.location.href!=document.location.href){
-	top.location.href!=document.location.href;
-}
+if(top.location.href!=document.location.href)
+	top.location.href=document.location.href;
+
 $('#zadaniya').html('');
 for(var i=1;i<=14;i++){
-//	$('#zadaniya').html($('#zadaniya').html()+'<tr><td><label for="cB'+i+'" >B'+i+'</label></td>');
-//	$('#zadaniya').html($('#zadaniya').html()+'<td><input type="text" class="kolvo" value="1" id="cB'+i+'"></td></tr>');
 	document.getElementById('zadaniya').innerHTML+='<tr><td><label for="cB'+i+'" >B'+i+'</label></td>'+
 	'<td><input type="text" class="kolvo" value="1" id="cB'+i+'"></td></tr>';
 }
