@@ -12,7 +12,7 @@
 		Тренажёр "Час ЕГЭ". Режим случайного задания.
 	</title>
 </head>
-<body>
+<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
 	<script>
 		addscript('../lib/init.js');
 	</script>
@@ -37,22 +37,22 @@
 			<table id="galki">
 			</table>
 			<br/>
-			<button class="spoiler-show">Показать настройки...</button>
-			<button class="spoiler-hide">Скрыть настройки</button>
-			<div class="spoiler-body">
+			<button class="spoiler-show" data-jstorage-id="sluch-nastr-show">Показать настройки...</button>
+			<button class="spoiler-hide" data-jstorage-id="sluch-nastr-hide">Скрыть настройки</button>
+			<div    class="spoiler-body" data-jstorage-id="sluch-nastr-body" data-jstorage-ne="ih">
 				<div>
-					<input type="checkbox" id="bez_prz" /><label for="bez_prz" >Без производной</label>
-					<input type="checkbox" id="bez_log" /><label for="bez_log" >Без логарифмов</label>
-					<input type="checkbox" id="bez_tri" /><label for="bez_tri" >Без тригонометрии</label>
-					<input type="checkbox" id="bez_drs" /><label for="bez_drs" >Без дробных степеней</label>
+					<input type="checkbox" id="bez_prz" data-jstorage-id="sluch-bez_prz"/><label for="bez_prz" >Без производной</label>
+					<input type="checkbox" id="bez_log" data-jstorage-id="sluch-bez_log"/><label for="bez_log" >Без логарифмов</label>
+					<input type="checkbox" id="bez_tri" data-jstorage-id="sluch-bez_tri"/><label for="bez_tri" >Без тригонометрии</label>
+					<input type="checkbox" id="bez_drs" data-jstorage-id="sluch-bez_drs"/><label for="bez_drs" >Без дробных степеней</label>
 				</div>
 				<button onclick="vybrv()">Выбрать все задания</button>
 				<button onclick="vybr0()">Снять все задания</button>
 				<button onclick="sbrosUmka(veroyatn)">Сбросить статистику</button>
 				<br/>
-				<input type="radio" name="metod" value="sluch" id="radio-sluch"/> <label for="radio-sluch">Задания в случайном порядке</label>
-				<input type="radio" name="metod" value="porad" id="radio-porad"/> <label for="radio-porad">Задания по порядку</label>
-				<input type="radio" name="metod" value="umka"  id="radio-umka" /> <label for="radio-umka" >"Умка"</label>
+				<input type="radio" name="metod" value="sluch" id="radio-sluch" data-jstorage-id="sluch-radio-sluch"/> <label for="radio-sluch">Задания в случайном порядке</label>
+				<input type="radio" name="metod" value="porad" id="radio-porad" data-jstorage-id="sluch-radio-porad"/> <label for="radio-porad">Задания по порядку</label>
+				<input type="radio" name="metod" value="umka"  id="radio-umka"  data-jstorage-id="sluch-radio-umka "/> <label for="radio-umka" >"Умка"</label>
 			</div>
 		</div>
 	</div>
