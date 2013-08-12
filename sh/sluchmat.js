@@ -185,23 +185,7 @@ function prover(){
 }
 
 var v=[];
-/*if(!localStorage.sluchmatb){
-	v=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
-	localStorage.sluchmatb=v;
-}else{
-	v=localStorage.sluchmatb.split(',');
-}*/
-/*
-function stavGalki(){
-	for(var i=1;i<=nZad;i++){
-		$('#cB'+i).removeAttr('checked');
-		if(v[i]=='1'){
-			$('#cB'+i).attr('checked','checked');
-		}
-	}		
-}
-stavGalki();
-*/
+
 function vybrv(){
 	for(var i=1;i<=nZad;i++){
 		$('#cB'+i).not(':checked').click();
