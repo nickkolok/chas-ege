@@ -7,7 +7,6 @@ function obnov(){
 	if((window.vopr.txt)&&(startxt!=window.vopr.txt)){
 		clearInterval(intervPole);
 		intervPole=0;
-//		console.log(1);
 		$('#pole').html(window.vopr.txt);
 		window.vopr.dey();
 		MathJax.Hub.Typeset();
@@ -64,4 +63,9 @@ function prover(){
 	}else{
 		alert('Неправильно!\nПравильный ответ: '+window.vopr.ver.join(' или '));
 	}
+}
+
+function izTextarea(){
+	eval($('#textarea-script').val());
+	obnov();
 }

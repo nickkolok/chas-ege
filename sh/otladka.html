@@ -12,9 +12,9 @@
 	  Тренажёр "Час ЕГЭ" - режим отладки шаблона
   </title>
 </head>
-<body style="padding:0;margin:0;min-height:100%;">
+<body style="">
 	<script>
-		document.write('<script src="../lib/init.js?'+Math.random()+'"></sc'+'ript>');
+		addscript('../lib/init.js');
 	</script>
 	<div id="pole" class="vopr">
 	</div>
@@ -35,12 +35,21 @@
 				<button onclick="sozdat();">Составить задание
 				</button>
 			</div>
+			или ввести программу:
+			<div>
+				<textarea id="textarea-script"></textarea>
+				<br/>
+				<button onclick="izTextarea();">Составить задание
+				</button>
+			</div>
 		</div>
 	</div>
 	<div>
 		<iframe src="" id="shabl" charset="utf-8" type="text/javascript" lang="ru"></iframe>
 	</div>
-	<script src="../ext/keyboard/keyboard.js"></script>
-	<script src='otladka.js'></script>
+	<script>
+		addscript('otladka.js');
+		addscript('../ext/keyboard/keyboard.js');
+	</script>
 </body>
 </html>

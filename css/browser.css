@@ -6,25 +6,3 @@
 	background-color:#ccffcc;
 	border-radius:0.2em;
 }
-body{
-	min-width:800px;
-}
-#inf{
-	border:2px dotted;
-	-moz-box-sizing:border-box;
-	padding:0.5em;
-	box-sizing:border-box;
-	width:100%;
-	h_eight:5em;
-	margin-bottom:2em;
-	clear:left;
-	position:relative;
-}
-#sovety{
-	width:100%;
-}
-.lisov{
-	text-align:center;
-	vertical-align:baseline;
-	height:auto;
-}
