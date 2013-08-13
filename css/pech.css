@@ -3,21 +3,17 @@ body{
 	min-height:100%;
 	background-color:#ffffcc;
 }
-
 input,body,button{
 	font-size:16px;
 	font-family:'liberation_serif',serif;
 }
-
 .b{
-/*	min-width:100%;*/
 	width:3em;
 	font-weight:700;
 	margin-bottom:3px;
 	margin-left:3px;
 	border:solid 1px;
 	text-align:center;
-	/*float:left;*/
 	left:-4em;
 	top:1.2em;
 	position:relative;
@@ -25,9 +21,7 @@ input,body,button{
 }
 .d{
 	min-width:90%;
-	/*margin:10px;*/
 	float:left;
-	/*overflow:hidden;*/
 	page-break-inside:avoid;
 	padding-left:4em;
 }
@@ -52,7 +46,6 @@ input,body,button{
 #rez tr td{
 	vertical-align:top;
 }
-
 .normtabl{
 	border-spacing:0px;
 	margin-top:0.5em;
@@ -62,7 +55,6 @@ input,body,button{
 	border:1px solid #000000;
 	margin: 0px;
 	padding:3px;
-/*	page-break-inside:avoid;*/
 }
 em{
 	margin-right:0.5em;
@@ -89,7 +81,6 @@ em{
 #pr0,#pr1{
 	height:1.4em;
 	overflow:hidden;
-/*	padding-left:1.8em;*/
 	vertical-align:center;
 	opacity:1;
 }
@@ -119,7 +110,6 @@ em{
 #vrem{
 	text-align:center;
 }
-
 h2{
 	page-break-before:always;
 }
