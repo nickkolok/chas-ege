@@ -52,17 +52,10 @@ function sozdat(){
 	VKI_attach(document.getElementById('otv'));
 }
 function prover(){
-	var fl=0;
-	var otvet=$('#otv').val();
-	otvet=otvet.replace(/[.]/g,",");
-	for(var i=0;i<window.vopr.ver.length;i++){
-		fl+=(window.vopr.ver[i].toStandart()==otvet.toStandart())
-	}
-	if(fl){
+	if(window.vopr.vrn($('#otv').val()))
 		alert('Правильно!');
-	}else{
+	else
 		alert('Неправильно!\nПравильный ответ: '+window.vopr.ver.join(' или '));
-	}
 }
 
 function izTextarea(){
