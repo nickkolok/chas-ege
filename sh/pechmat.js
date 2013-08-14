@@ -8,12 +8,9 @@ for(var i=1;i<=14;i++){
 }
 
 $('#gotov').hide();
-var vr1=200;
-var vr2=1500;
-if(svinta){
-	vr1=100;
-	vr2=100;
-}
+var vr1=svinta?100:200;
+var vr2=svinta?100:1500;
+
 var startxt='';
 window.vopr.txt='';
 var stardate=new Date().getTime();
@@ -28,18 +25,16 @@ var strVopr='';
 var strOtv='';
 var ogran=[];
 function vse1(){
-	for(var i=1;i<=14;i++){
+	for(var i=1;i<=nabor.nZad;i++)
 		$('#cB'+i).val(1);
-	}
 	$('#cV').val(1);
 }
 function zapusk(){
-	nV=$('#cV').val();
-	nV=1*nV;
+	nV=1*$('#cV').val();
 	aV=nV;
-	for(var i=1;i<=14;i++){
+	for(var i=1;i<=nabor.nZad;i++)
 		aZ[i]=1*($('#cB'+i).val());
-	}
+	
 	ogran['prz']=$('#cPRZ').is(':checked');
 	ogran['log']=$('#cLOG').is(':checked');
 	ogran['tri']=$('#cTRI').is(':checked');
@@ -64,7 +59,7 @@ function razrstr(){
 
 }
 function zadan(){
-	if(nZ==15){
+	if(nZ==nabor.nZad+1){
 		nV--;
 		nZ=0;
 		strOtv+='</table>';
@@ -119,7 +114,7 @@ function zadan(){
 			zagr('../zdn/mat/B'+nZ+'/main.js');
 			vopr.podg();
 			zagr('../zdn/mat/B'+nZ+'/'+nomer+'.js');
-			intervPole=setTimeout('obnov('+');',vr1+vr2);
+			intervPole=setTimeout('obnov();',vr1+vr2);
 		}
 		return;
 	}
@@ -159,7 +154,6 @@ function obnov(){
 		zadan();
 	}else{
 		setTimeout("zagr('../zdn/mat/B'+"+nZ+"+'/'+nomer+'.js');",vr1);
-		intervPole=setTimeout('obnov();',vr1+vr2);
-		
+		intervPole=setTimeout('obnov();',vr1+vr2);		
 	}
 }
