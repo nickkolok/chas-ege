@@ -11,15 +11,15 @@ var zhelt={r:nas,g:nas,b:0};
 var galki;
 function sozdGalki(){
 	galki='<tr>';
-	for(var i=1;i<=nZad;i++){
+	for(var i=1;i<=nabor.nZad;i++){
 		galki+='<td><input type="checkbox" id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'" /><label for="cB'+i+'" >B'+i+' </label></td>';
 	}
 	galki+='<td></td></tr><tr>';
-	for(var i=1;i<=nZad;i++){
+	for(var i=1;i<=nabor.nZad;i++){
 		galki+='<td><span id="pB'+i+'"></span></td>';
 	}
 	galki+='<td><span id="pB"></span></td></tr><tr>';
-	for(var i=1;i<=nZad;i++){
+	for(var i=1;i<=nabor.nZad;i++){
 		galki+='<td><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';	
 	}
 	galki+='<td><span class="kolvoprav" id="pravB"></span><br/>из<br/><span id="vsegB"></span></td></tr>';
@@ -41,7 +41,7 @@ veroyatn();
 
 function veroyatn(){
 	var pr;
-	for(var i=1;i<=nZad;i++){
+	for(var i=1;i<=nabor.nZad;i++){
 		pr=umka.verno[i]/umka.vsego[i];
 		$('#pB'+i).html(
 			umka.vsego[i]>4?
@@ -99,11 +99,11 @@ function obnov(){
 }
 
 function vybrZad(){
-	for(var i=1;i<=nZad;i++)
+	for(var i=1;i<=nabor.nZad;i++)
 		v[i]=($('#cB'+i).is(':checked')?1:0);
 	localStorage.sluchmatb=v;
 	var w=[];
-	for(var i=1;i<=nZad;i++)
+	for(var i=1;i<=nabor.nZad;i++)
 		if(v[i])
 			w.push(i);
 	if(!w.length){
@@ -119,10 +119,10 @@ function vybrZad(){
 	}
 	if($("#radio-umka" ).prop("checked")){
 		var masV=[];
-		for(var i=1;i<=nZad;i++)
+		for(var i=1;i<=nabor.nZad;i++)
 			if(v[i] && (umka.vsego[i]<5))
 				return i;
-		for(var i=1;i<=nZad;i++)
+		for(var i=1;i<=nabor.nZad;i++)
 			if(v[i])
 				masV.push(1.1-umka.verno[i]/umka.vsego[i])
 			else
@@ -159,14 +159,10 @@ function sozdat(){
 		setTimeout('sozdat()',200);
 		return;
 	}
-	VKI_imageURI='../ext/keyboard/keyboard.png';
-	VKI_kts='Russian';
-	VKI_kt='Russian';
-	VKI_size=5;
+	setVKI();
 	VKI_attach(document.getElementById('otv'));
 	$('#prov').show();
 	$('#sozd').hide();
-
 }
 
 function prover(){
@@ -187,13 +183,13 @@ function prover(){
 var v=[];
 
 function vybrv(){
-	for(var i=1;i<=nZad;i++){
+	for(var i=1;i<=nabor.nZad;i++){
 		$('#cB'+i).not(':checked').click();
 	}
 }
 
 function vybr0(){
-	for(var i=1;i<=nZad;i++){
+	for(var i=1;i<=nabor.nZad;i++){
 		$('#cB'+i).removeAttr('checked');
 	}
 }

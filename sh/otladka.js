@@ -45,10 +45,7 @@ function sozdat(){
 		setTimeout('sozdat()',1000);
 		return;
 	}
-	VKI_imageURI='../ext/keyboard/keyboard.png';
-	VKI_kts='Russian';
-	VKI_kt='Russian';
-	VKI_size=5;
+	setVKI();
 	VKI_attach(document.getElementById('otv'));
 }
 function prover(){
