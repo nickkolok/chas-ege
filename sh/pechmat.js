@@ -76,7 +76,7 @@ function konecSozd(){
 	document.body.style.backgroundColor="#FFF";
 	if(!bGecko)
 		razrstr();
-	$('body').append('<script>udalPanel()</script>');			
+	$('body').append('<script>udalPanel();</script>');			
 
 	setTimeout("testGotov()",3000);
 }
