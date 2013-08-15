@@ -25,6 +25,20 @@ input,body,button{
 	page-break-inside:avoid;
 	padding-left:4em;
 }
+.d2{
+	width:100%;
+	overflow:hidden;
+	page-break-before:always;
+	height:1px;
+
+}
+.d3{
+	width:100%;
+	float:left;
+}
+.d4{
+	width:100%;
+}
 .kolvo{
 	width:40px;
 	margin-right:10px;
@@ -112,4 +126,11 @@ em{
 }
 h2{
 	page-break-before:always;
+}
+h2:first{
+	page-break-before:avoid;
+}
+.tablpech{
+	float:left;
+	margin:1em;
 }

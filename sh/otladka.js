@@ -1,7 +1,5 @@
 var startxt;
 var intervPole;
-var v=localStorage.otladka;
-$('#adres').val(v);
 
 function obnov(){
 	if((window.vopr.txt)&&(startxt!=window.vopr.txt)){
@@ -15,12 +13,8 @@ function obnov(){
 	}
 }
 function sozdat(){
-	if(!$){
-		zagr('../ext/jquery-1.9.0.js?'+Math.random());
-		document.getElementById('pole').innerHTML='Проблемы с внешней библиотекой JQuery. Устранение неполадок, подождите...';
-		setTimeout('sozdat()',1000);
+	if(!checkJQuery('sozdat()','pole'))
 		return;
-	}
 	$('#pole').html('Задание составляется, подождите...');
 	startxt=window.vopr.txt;
 	v=$('#adres').val();
@@ -31,20 +25,16 @@ function sozdat(){
 	$('#shabl').attr('src',v);
 	window.vopr.podg();
 	zagr(v+'?'+Math.random());
-	localStorage.otladka=v;
 	if(!intervPole){
 		intervPole=setInterval("obnov();",500);
 	}
 	var otvet=$('#otv').val('');
 	$('#prov').unbind('click');
 	$('#prov').bind('click',prover);
-	if(!MathJax){
-		$('#pole').html('Проблемы при обращении к библиотеке отрисовки формул, пытаемся дотянуться...');
-		zagr('http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full');
-		zagr('../ext/mathjax/MathJax.js?config=TeX-AMS_HTML-full');
-		setTimeout('sozdat()',1000);
+
+	if(!checkMathJax('sozdat()','pole'))
 		return;
-	}
+
 	setVKI();
 	VKI_attach(document.getElementById('otv'));
 }

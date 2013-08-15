@@ -26,16 +26,6 @@ function sozdGalki(){
 	$('#galki').html(galki);
 }
 sozdGalki();
-/*
-window.tmpvopr=$.jStorage.get('sluchvopr');
-if(window.tmpvopr){
-	window.vopr=window.tmpvopr;
-	obnov();
-}else{
-//	window.vopr.podg();
-	
-}
-*/
 zagrUmka();
 veroyatn();
 
@@ -94,7 +84,6 @@ function obnov(){
 		MathJax.Hub.Typeset();
 		$('#otvet').html(window.vopr.ver.join(';;'));
 		$('#never').html(window.vopr.nev.join(';;'));
-//		$.jStorage.set('sluchvopr',window.vopr);
 	}
 }
 
@@ -133,12 +122,8 @@ function vybrZad(){
 }
 
 function sozdat(){
-	if(!$){
-		zagr('../ext/jquery-1.9.0.js');
-		document.getElementById('pole').innerHTML='Проблемы с внешней библиотекой JQuery. Устранение неполадок, подождите...';
-		setTimeout('sozdat()',1000);
+	if(!checkJQuery('sozdat()','pole'))
 		return;
-	}
 	$('#pole').html('Задание составляется, подождите...');
 	$('#protv').hide();
 	startxt=window.vopr.txt;
@@ -146,19 +131,16 @@ function sozdat(){
 	n=vybrZad();
 	if(n==undefined)
 		return;
-	zagr('../zdn/mat/B'+n+'/main.js');
-	intervZadan=setInterval("zagr('../zdn/mat/B'+"+n+"+'/'+nomer+'.js');",300);
+	zagr(nabor.adres+nabor.prefix+n+'/main.js');
+	intervZadan=setInterval("zagr(nabor.adres+nabor.prefix+"+n+"+'/'+nomer+'.js');",300);
 	intervPole=setInterval("obnov();",100);
 	var otvet=$('#otv').val('');
 	$('#prov').unbind('click');
 	$('#prov').bind('click',prover);
-	if(!MathJax){
-		$('#pole').html('Проблемы при обращении к библиотеке отрисовки формул, пытаемся дотянуться...');
-		zagr('http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full');
-		zagr('../ext/mathjax/MathJax.js?config=TeX-AMS_HTML-full');
-		setTimeout('sozdat()',200);
+
+	if(!checkMathJax('sozdat()','pole'))
 		return;
-	}
+
 	setVKI();
 	VKI_attach(document.getElementById('otv'));
 	$('#prov').show();
