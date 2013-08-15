@@ -56,7 +56,29 @@ function razrstr(){
 
 function testGotov(){
 	$('#gotov').hide();
-	alert('Тесты составлены.\\nТеперь Вы можете распечатать их с помощью Вашего браузера.');
+	allCanvasToBackgroundImage();
+	alert('Тесты составлены.\nТеперь Вы можете распечатать их с помощью Вашего браузера.');
+}
+
+function udalPanel(){
+	$('#panel').remove();
+	$('#menucenter').remove();
+	$('#inf').remove();
+}
+
+function konecSozd(){
+	strOtv='<hr class="pbb"/><h2>Ответы</h2>'+strOtv;
+	$('#otv').html(strOtv);
+	MathJax.Hub.Typeset();
+	udalPanel();
+	$("hr:first").remove();
+	$("hr:first").remove();
+	document.body.style.backgroundColor="#FFF";
+	if(!bGecko)
+		razrstr();
+	$('body').append('<script>udalPanel()</script>');			
+
+	setTimeout("testGotov()",3000);
 }
 
 function zadan(){
@@ -68,19 +90,7 @@ function zadan(){
 		return;
 	}else if (nZ==0){
 		if(nV==0){
-			strOtv='<hr class="pbb"/><h2>Ответы</h2>'+strOtv;
-			$('#otv').html(strOtv);
-			MathJax.Hub.Typeset();
-			$('#panel').remove();
-			$('#menucenter').remove();
-			$('#inf').remove();
-			$("hr:first").remove();
-			$("hr:first").remove();
-			document.body.style.backgroundColor="#FFF";
-			if(!bGecko)
-				razrstr();					
-
-			setTimeout("testGotov()",3000);
+			konecSozd();
 			return;
 		}else{
 			MathJax.Hub.Typeset();
