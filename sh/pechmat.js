@@ -29,6 +29,7 @@ function vse1(){
 	$('#cV').val(1);
 }
 function zapusk(){
+	$.jStorage.sohrData()
 	nV=1*$('#cV').val();
 	aV=nV;
 	for(var i=1;i<=nabor.nZad;i++)
@@ -76,17 +77,21 @@ function konecSozd(){
 	document.body.style.backgroundColor="#FFF";
 	if(!bGecko)
 		razrstr();
-	$('body').append('<script>udalPanel();</script>');			
+	$('body').append('<script>udalPanel()</script>');			
 
 	setTimeout("testGotov()",3000);
 }
 
+function vNachaloVarianta(){
+	nV--;
+	nZ=0;
+	strOtv+='</table>';
+	zadan();
+}
+
 function zadan(){
 	if(nZ==nabor.nZad+1){
-		nV--;
-		nZ=0;
-		strOtv+='</table>';
-		zadan();
+		vNachaloVarianta()
 		return;
 	}else if (nZ==0){
 		if(nV==0){
@@ -120,7 +125,7 @@ function zadan(){
 			iZ[nZ]--;
 			zagr(nabor.adres+nabor.prefix+nZ+'/main.js');
 			vopr.podg();
-			zagr(nabor.adres+nabor.prefix+nZ+'/'+nomer+'.js');
+			intervPole=setTimeout("zagr(nabor.adres+nabor.prefix+nZ+'/'+nomer+'.js');",vr1);
 			intervPole=setTimeout('obnov();',vr1+vr2);
 		}
 		return;
