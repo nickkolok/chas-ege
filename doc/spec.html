@@ -287,13 +287,12 @@
 				Функция
 			</td>
 			<td>
-				function(kand){<br/>
-		var fl=0;<br/>
-		for(var i2=0;i2&lt;this.ver.length;i2++){<br/>
-			fl+=(this.ver[i2].toStandart()==kand.toStandart())<br/>
-		}<br/>
-		return fl;<br/>
-	};
+			function(kand){
+			<br/>	for(var i2=0;i2&lt;this.ver.length;i2++)
+			<br/>		if(this.ver[i2].ts()==kand.ts())
+			<br/>			return 1;
+			<br/>	return 0;
+			<br/>};
 			</td>
 			<td>
 				Функция, определяющая, является ли ответ верным. Нужна, например, в тех случаях, когда верных ответов бесконечно много.
