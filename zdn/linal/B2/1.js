@@ -1,8 +1,8 @@
 (function() {
 
 var a=sl(1,9);
-var perest=[].N(a);
-window.vopr.txt='Сколько всего существует перестановок '+a+'-й степени?';
-window.vopr.ver=[a.fct().ts()];
+var perest=[].N(a).shuffle();
+window.vopr.txt='Сколько инверсий содержится в перестановке '+perest.pe_txt()+'?';
+window.vopr.ver=[perest.pe_inv()];
 
 })();
