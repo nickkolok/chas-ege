@@ -29,9 +29,6 @@ function sozdat(){
 		intervPole=setInterval("obnov();",500);
 	}
 	var otvet=$('#otv').val('');
-	$('#prov').unbind('click');
-	$('#prov').bind('click',prover);
-
 	if(!checkMathJax('sozdat()','pole'))
 		return;
 
