@@ -70,7 +70,7 @@ function udalPanel(){
 function konecSozd(){
 	strOtv='<hr class="pbb"/><h2>Ответы</h2>'+strOtv;
 	$('#otv').html(strOtv);
-	MathJax.Hub.Typeset();
+	MathJax.Hub.Typeset('rez',testGotov);
 	udalPanel();
 	$("hr:first").remove();
 	$("hr:first").remove();
@@ -78,8 +78,6 @@ function konecSozd(){
 	if(!bGecko)
 		razrstr();
 	$('body').append('<script>udalPanel()</script>');			
-
-	setTimeout("testGotov()",3000);
 }
 
 function vNachaloVarianta(){
@@ -91,14 +89,13 @@ function vNachaloVarianta(){
 
 function zadan(){
 	if(nZ==nabor.nZad+1){
-		vNachaloVarianta()
+		vNachaloVarianta();
 		return;
 	}else if (nZ==0){
-		if(nV==0){
+		if(!nV){
 			konecSozd();
 			return;
 		}else{
-			MathJax.Hub.Typeset();
 			iZ=aZ.slice();
 			stardate=novdate;
 			novdate=new Date().getTime();
