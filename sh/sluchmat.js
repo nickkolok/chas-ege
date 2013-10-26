@@ -90,7 +90,6 @@ function obnov(){
 function vybrZad(){
 	for(var i=1;i<=nabor.nZad;i++)
 		v[i]=($('#cB'+i).is(':checked')?1:0);
-	localStorage.sluchmatb=v;
 	var w=[];
 	for(var i=1;i<=nabor.nZad;i++)
 		if(v[i])
