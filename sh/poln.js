@@ -1,5 +1,3 @@
-escapeFromIframe();
-
 $('#zadaniya').html('');
 for(var i=1;i<=nabor.nZad;i++){
 	document.getElementById('zadaniya').innerHTML+='<tr><td><label for="cB'+i+'" >B'+i+'</label></td>'+

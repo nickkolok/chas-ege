@@ -1,1 +1,57 @@
-Здесь будет оболочка полного теста. Пока она только разрабатывается.
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<script>
+		addstyle("../css/pech.css");
+	</script>
+	<title>
+		Тренажёр "Час ЕГЭ": полный интерактивный тест
+	</title>
+</head>
+<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+	<script class="udal">
+		addscript('../lib/init.js');
+	</script>
+	<iframe src='../lib/cacheBmain.iframe.html' style="visibility:none;position:absolute;top:-9999px;"></iframe>
+	<div id="gotov">
+		<div id="pr0">
+			<div id="t0" class="tx">
+				0%
+			</div>
+		</div>
+		<div id="pr1">
+			<div id="t1" class="tx">
+			</div>
+		</div>
+		<div id="vrem">		
+		</div>
+	</div>
+	<div id="panel">
+		<div>
+			Выберите необходимое количество заданий каждого типа:
+		</div>
+		<br/>
+		<table class="bezramok" id="zadaniya">
+		</table>
+		<br/>
+		<div>
+			<div>
+				<input type="checkbox" id="cPRZ" data-jstorage-id="pech-cPRZ" /><label for="cPRZ" >Без производной</label>
+				<input type="checkbox" id="cLOG" data-jstorage-id="pech-cLOG" /><label for="cLOG" >Без логарифмов</label>
+				<input type="checkbox" id="cTRI" data-jstorage-id="pech-cTRI" /><label for="cTRI" >Без тригонометрии</label>
+				<input type="checkbox" id="cDRS" data-jstorage-id="pech-cDRS" /><label for="cDRS" >Без дробных степеней</label>
+			</div>
+			<button onclick="zapusk();">Запуск!</button>
+			<button onclick="vse1();">Стандартный тест</button>
+		</div>
+	</div>
+	<div id="rez">
+	</div>	
+	<script src='poln.js'></script>
+</body>
+</html>
+
