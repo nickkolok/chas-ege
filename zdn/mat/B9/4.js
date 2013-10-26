@@ -24,7 +24,6 @@ for(;!p
 	d=[A,B,C,D];
 	p=d.mt_isMnug(4);
 	g=d.mt_imen4ug();
-//	console.log(((g.ie=='четырёхугольник')&&(sluchch(0,100))));
 }
 p=d.mt_s4ug();
 
@@ -34,7 +33,6 @@ window.vopr.dey=function(){
 	var ct = ris.getContext('2d');
 	var w=480;
 	var h=480;
-//	ct.translate(w/2,h/2);
 	ct.lineWidth=2;
 	var s=20;
 	ct.setka(20,s);
@@ -50,14 +48,10 @@ window.vopr.dey=function(){
 	ct.fill();//Ax*s,Ay*s,-(Ax-Bx)*s,-(Ay-By)*s);
 	ct.globalAlpha=1;
 	ct.stroke();//Ax*s,Ay*s,-(Ax-Bx)*s,-(Ay-By)*s);
-
-
 };
 
-
-
-window.vopr.txt='Найдите площадь '+g.re+' на клетчатой бумаге с размером клетки 1 см $\\times$ 1 см (см. рис.). Ответ дайте в квадратных сантиметрах.';
-window.vopr.txt+='<canvas style="float:left;margin-right:1em;" width="480" height="480" id="ris'+slid+'" style="text-align:center"></canvas>';
+window.vopr.txt='Найдите площадь '+g.re+' на клетчатой бумаге с размером клетки 1 см $\\times$ 1 см (см. рис.). Ответ дайте в квадратных сантиметрах.'+
+	'<canvas style="float:left;margin-right:1em;" width="480" height="480" id="ris'+slid+'" style="text-align:center"></canvas>';
 window.vopr.ver=[p.ts()];
 
 window.vopr.kat['log']=0;
