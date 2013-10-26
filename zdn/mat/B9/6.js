@@ -24,12 +24,10 @@ for(;!p
 	d=[A,B,C,D];
 	p=d.mt_isMnug(4);
 	g=d.mt_imen4ug();
-//	console.log(((g.ie=='четырёхугольник')&&(sluchch(0,100))));
 }
 p=d.mt_s4ug();
 
 window.vopr.txt='Найдите площадь '+g.re+' с вершинами, имеющими координаты '+d.mt_join()+'.';
-window.vopr.txt+='';
 window.vopr.ver=[p.ts()];
 
 window.vopr.kat['log']=0;
