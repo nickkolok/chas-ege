@@ -22,7 +22,6 @@ var iZ=[];
 var aV;
 var strVopr='';
 var strOtv='';
-var ogran=[];
 
 function vse1(){
 	for(var i=1;i<=nabor.nZad;i++)
@@ -44,6 +43,10 @@ function zapusk(){
 		aZ[i]=1*($('#cB'+i).val());
 	cacheKat();
 	kZ=aZ.sum()*aV;
+	if(!kZ){
+		alert('Ни одно задание не выбрано.');
+		return;
+	}
 	iZ=aZ.slice();
 	nZ=0;
 	$('#panel').html('Тесты составляются, подождите...');
