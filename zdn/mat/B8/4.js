@@ -18,7 +18,7 @@ window.vopr.txt=(
 window.vopr.ver=[p.ts()];
 
 window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
+window.vopr.kat['prz']=1;
 window.vopr.kat['drs']=0;
 window.vopr.kat['tri']=0;
 })();
