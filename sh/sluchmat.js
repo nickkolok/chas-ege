@@ -153,7 +153,7 @@ function prover(){
 		$('#protv').html('Правильно!');
 		umka.verno[n]++;
 	}else{
-		$('#protv').html('Неправильно!\nПравильный ответ: '+window.vopr.ver.join(' или '));
+		$('#protv').html('Неправильно!<br/>Правильный ответ: '+window.vopr.ver.join(' или '));
 	}
 	$('#prov').hide();
 	$('#sozd').show();
@@ -176,5 +176,5 @@ function vybr0(){
 }
 
 $('#prov').hide();
-
+galkiKat('#galki_kat','sluch');
 spoiler();
