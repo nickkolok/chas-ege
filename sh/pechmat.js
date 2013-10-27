@@ -34,12 +34,12 @@ function zapusk(){
 	aV=nV;
 	for(var i=1;i<=nabor.nZad;i++)
 		aZ[i]=1*($('#cB'+i).val());
-	
-	ogran['prz']=$('#cPRZ').is(':checked');
+	cacheKat();
+/*	ogran['prz']=$('#cPRZ').is(':checked');
 	ogran['log']=$('#cLOG').is(':checked');
 	ogran['tri']=$('#cTRI').is(':checked');
 	ogran['drs']=$('#cDRS').is(':checked');
-	kZ=aZ.sum()*aV;
+*/	kZ=aZ.sum()*aV;
 	iZ=aZ.slice();
 	nZ=0;
 	$('#panel').html('Тесты составляются, подождите...');
@@ -129,13 +129,17 @@ function zadan(){
 	}
 }
 function obnov(){
-	if((window.vopr.txt!=0)*(startxt!=window.vopr.txt)){
+	if((window.vopr.txt!=0)&&(startxt!=window.vopr.txt)){
 		clearInterval(intervPole);
+		console.log(vopr.kat);
+		console.log(ogranKat);
+		console.log(sootvKat());
 		if(
-			(ogran['prz'])*(window.vopr.kat["prz"])+
+/*			(ogran['prz'])*(window.vopr.kat["prz"])+
 			(ogran['log'])*(window.vopr.kat["log"])+
 			(ogran['tri'])*(window.vopr.kat["tri"])+
 			(ogran['drs'])*(window.vopr.kat["drs"])
+*/		!sootvKat()
 		){
 			iZ[nZ]++;
 			zadan();
