@@ -131,3 +131,25 @@ h2{
 	float:left;
 	margin:1em;
 }
+
+#prov_knopki{
+	border-radius: 2.5em;
+	background-color:pink;
+	margin-left:5%;
+	margin-right:5%;
+	padding:1em;
+	float:right;
+}
+.r{
+	width: 800px;
+	text-align: right;
+	clear:both;
+}
+.otv_ver{
+	display:none;
+	color:#090;
+}
+.otv_nev{
+	display:none;
+	color:#900;
+}

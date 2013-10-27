@@ -13,7 +13,7 @@
 	</title>
 </head>
 <body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
-	<script class="udal">
+	<script>
 		addscript('../lib/init.js');
 	</script>
 	<iframe src='../lib/cacheBmain.iframe.html' style="visibility:none;position:absolute;top:-9999px;"></iframe>
@@ -39,17 +39,23 @@
 		</table>
 		<br/>
 		<div>
-			<div>
-				<input type="checkbox" id="cPRZ" data-jstorage-id="pech-cPRZ" /><label for="cPRZ" >Без производной</label>
-				<input type="checkbox" id="cLOG" data-jstorage-id="pech-cLOG" /><label for="cLOG" >Без логарифмов</label>
-				<input type="checkbox" id="cTRI" data-jstorage-id="pech-cTRI" /><label for="cTRI" >Без тригонометрии</label>
-				<input type="checkbox" id="cDRS" data-jstorage-id="pech-cDRS" /><label for="cDRS" >Без дробных степеней</label>
+			<div id="galki_kat">
 			</div>
 			<button onclick="zapusk();">Запуск!</button>
 			<button onclick="vse1();">Стандартный тест</button>
+			<button onclick="vse0();">Сбросить все</button>
 		</div>
 	</div>
 	<div id="rez">
+	</div>	
+	<div id="prov_knopki">
+		<button id="but_prov" onclick="prov();">
+			Проверить!
+		</button>
+		<button onclick="location.reload();">
+			Другой тест
+		</button>
+		
 	</div>	
 	<script src='poln.js'></script>
 </body>
