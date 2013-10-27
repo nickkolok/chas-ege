@@ -23,11 +23,19 @@ var aV;
 var strVopr='';
 var strOtv='';
 var ogran=[];
+
 function vse1(){
 	for(var i=1;i<=nabor.nZad;i++)
 		$('#cB'+i).val(1);
 	$('#cV').val(1);
 }
+
+function vse0(){
+	for(var i=1;i<=nabor.nZad;i++)
+		$('#cB'+i).val(0);
+	$('#cV').val(1);
+}
+
 function zapusk(){
 	$.jStorage.sohrData()
 	nV=1*$('#cV').val();
@@ -156,4 +164,4 @@ function obnov(){
 	}
 }
 
-galkiKat('#galki_kat','sluch');
+galkiKat('#galki_kat','pech');
