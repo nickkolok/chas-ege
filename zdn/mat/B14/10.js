@@ -6,7 +6,7 @@ var b=c-x;
 var a=(1/c).ts();
 
 var fn=fn_zadan({
-	slag:[a+'x','-\\ln(x+'+b+')'],
+	slag:[a+'x','-\\ln(x+'+b.ts()+')'],
 	minx:x,
 });
 
