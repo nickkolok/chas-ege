@@ -83,7 +83,7 @@ em{
 	margin:15px;
 	float:right;
 	overflow:hidden;
-	vertical-align:center;
+	vertical-align:middle;
 	border-radius:1em;
 	opacity:0.85;
 	background-color:#e8f0f0;
@@ -95,7 +95,7 @@ em{
 #pr0,#pr1{
 	height:1.4em;
 	overflow:hidden;
-	vertical-align:center;
+	vertical-align:middle;
 	opacity:1;
 }
 #pr0{
@@ -116,7 +116,7 @@ em{
 }
 .tx{
 	margin-left:7.3em;
-	vertical-align:center;
+	vertical-align:middle;
 	height:100%;
 	padding-top:0.1em;
 	padding-bottom:0.1em;
@@ -126,9 +126,6 @@ em{
 }
 h2{
 	page-break-before:always;
-}
-h2:first{
-	page-break-before:avoid;
 }
 .tablpech{
 	float:left;
