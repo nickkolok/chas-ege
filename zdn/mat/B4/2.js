@@ -23,7 +23,7 @@ for(var i=0;i<c;i++){
 }
 				
 window.vopr.txt+=(y+z.soed()).vTabl();
-window.vopr.ver=[''+s];
+window.vopr.ver=[s.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;
