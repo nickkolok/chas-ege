@@ -4,13 +4,7 @@ var a=sluchch(2,9);
 var b=sluchch(2,9);
 var h=sluchch(2,9);
 
-var v3=sluchch(0,1);
-var v0=sluchch(0,2);
-for(var v1=v0;v1==v0;v1=sluchch(0,2));
-for(var v2=v0;(v2==v0)||(v2==v1);v2=sluchch(0,2));
-
-var v4=sluchch(0,2);
-switch(v4){
+switch(sluchch(2)){//Что домножаем на 3
 	case 0:
 		a*=(a%3)?3:1;
 	break;
@@ -22,19 +16,22 @@ switch(v4){
 	break;
 }
 
-var m=[v3?'второй катет основания':'вторая сторона основания','высота пирамиды','объём пирамиды'];
-var n=[v3?'второй катет основания':'вторую сторону основания','высоту пирамиды','объём пирамиды'];
+var figur=['прямоугольный треугольник','прямоугольник','ромб'];
+var vFigur=sluchch(2);
+var koefPl=[0.5,1,0.5];
+var nazvOtr=['второй катет','вторая сторона','вторая диагональ'];
+var nazvOtrV=['второй катет','вторую сторону','вторую диагональ'];
+var nazvOtrRod=[0,1,1];
+var mas=[
+	{vel:nazvOtr[vFigur]+' основания',zna:b,nah:1,rod:nazvOtrRod[vFigur],vin:nazvOtrV[vFigur],},
+	{vel:'высота пирамиды',zna:h,nah:1,rod:1,vin:'высоту пирамиды',},
+	{vel:'объём пирамиды',zna:a*b*h/3*koefPl[vFigur],nah:1,rod:0,vin:1},
+	{vel:['первый катет','первая сторона','первая диагональ'][vFigur],zna:a,rod:nazvOtrRod[vFigur],},
+];
 
-var p=[b,h,((v3?0.5:1)*a*b*h/3).ts()];
-var g=[v3?'равен':'равна','равна','равен'];
-var y='Основанием пирамиды является '+(v3?'прямоугольный треугольник':'прямоугольник')+', в котором '+
-		(v3?'один из катетов равен ':'одна из сторон равна ')+a+', a '+m[v0]+' '+g[v0]+' '+p[v0]+
-		', при этом '+m[v1]+' '+g[v1]+' '+p[v1]+'. '+
-		'Найдите '+n[v2]+'.';
-
-
-window.vopr.txt=y;
-window.vopr.ver=[''+p[v2]];
+mas=svVel(mas);
+window.vopr.ver=mas.splice(0,1);
+window.vopr.txt='Основанием пирамиды является '+figur[vFigur]+'. '+mas.soed();
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;
