@@ -1,31 +1,13 @@
-(function(){'use strict';
+(function() {
 
-var v3=-1;
-var a;
-var b;
-var c;
-var d;
-for(;(v3==-1) || (!v3)&&(sl(0,10));){
-	a=sl(1,9);
-	b=sl(1,9);
-	c=sl(1,9);
-
-	d=a*a+b*b+c*c;
-	v3=d.isPolnKvadr();
-}
-
-d=v3?d.sqrt():d;
-
-var s=2*(a*c+a*b+b*c);
-var v1=sl(0,3);
-var v2=slKrome(v1,0,3);
-var m=['площадь поверхности',v3?'диагональ':'квадрат диагонали','объём','третье выходящее из той же вершины ребро'];
-var n=[s,d,a*b*c,c];
-window.vopr.txt='Два ребра прямоугольного параллелепипеда, выходящие из одной вершины, равны '+a+' и '+b+'. '+
-	'Известно, что '+m[v1]+' составляет '+n[v1]+'. '+
-	'Найдите '+m[v2]+' параллелепипеда.';
-
-window.vopr.ver=[''+n[v2]];
+var a=1;
+var b=1;
+for(;a.isPolnKvadr();a=sluchch(10,99));
+for(;b.isPolnKvadr();b=sluchch(10,99));
+var c=['+','-'].shuffle();
+//var d=[a,b].shuffle();
+window.vopr.txt='Найдите значение выражения $$(\\sqrt{'+a+'}'+c[0]+'\\sqrt{'+b+'})(\\sqrt{'+a+'}'+c[1]+'\\sqrt{'+b+'})$$';
+window.vopr.ver=[''+(a-b)];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

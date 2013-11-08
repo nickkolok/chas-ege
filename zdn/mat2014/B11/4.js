@@ -1,23 +1,13 @@
 (function() {
 
-var a=sluchch(2,9);//Ребро было
-var b=sluchch(2,9);//Изменение ребра
-var c=a+b;//Ребро стало
-
-var v0=sluchch(0,1);
-var v2=sluchch(1,2);;
-var v4=sluchch(0,1);
-
-var m=['ребро',(v4?'площадь поверхности':'квадрат диагонали'),'объём'];
-var n=[c-a,(v4?6*(c*c-a*a):3*(c*c-a*a)),c*c*c-a*a*a];
-a=v0?c:a;
-var p=[a,v4?6*a*a:3*a*a,a*a*a];
-
-var q=['увеличит','уменьшит'][v0];
-var y='Eсли '+m[0]+' куба '+q+'ь на '+n[0]+', то '+m[1]+' '+q+'ся на '+n[1]+'. '+'Найдите '+m[v2]+' куба.';
-
-window.vopr.txt=y;
-window.vopr.ver=[''+p[v2]];
+var a=sluchch(1,37);
+var b;
+for(b=1;b.isPolnKvadr();b=sluchch(2,99));
+var c
+for(c=1;c==1;c=a.pow(sluchch(0,2))*c.pow(sluchch(0,1))*(2).pow(sluchch(0,1))*(5).pow(sluchch(0,1)).pm());
+var x=(a*a*b/c).toFixedLess(5);
+window.vopr.txt=('Найдите значение выражения $$\\frac{\\left ({'+a+'\\sqrt{'+b+'}}\\right )^{2}}{'+c+'}$$').plusminus();
+window.vopr.ver=[''+x];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

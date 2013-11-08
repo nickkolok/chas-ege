@@ -1,27 +1,18 @@
 (function() {
 
-var a=sluchch(2,9);
-var h=sluchch(2,9);
-
-var v0=sluchch(0,1);
-var v1=sluchch(0,1);
-var v2=sluchch(0,1);
-for(var v3=v0;v3==v0;v3=sluchch(0,5));
-for(var v4=v0;(v4==v0)||(v4==v3);v4=sluchch(0,5));
-
-var m=['высота',(v1?'площадь основания':'сторона основания'),(v2?'площадь боковой грани':'площадь боковой поверхности'),'объём','площадь полной поверхности','квадрат диагонали'];
-var n=['высоту',(v1?'площадь основания':'сторону основания'),(v2?'площадь боковой грани':'площадь боковой поверхности'),'объём','площадь полной поверхности','квадрат диагонали'];
-var p=[h,(v1?(a*a):(a)),(v2?(a*h):(4*a*h)),a*a*h,4*a*h+2*a*a,2*a*a+h*h];
-var g=['равна','равна','равна','равен','равна','равен'];
-var y='В правильной четырёхугольной призме '+m[v0]+' '+g[v0]+' '+p[v0]+', при этом '+m[v3]+' '+g[v3]+' '+p[v3]+'. '+
-		'Найдите '+n[v4]+'.';
-
-
-window.vopr.txt=y;
-window.vopr.ver=[''+p[v4]];
+var a=sluchch(2,19);
+var b=sluchch(1,3);
+var c=sluchch(0.01,0.99,0.01);
+var d=sluchch(1,2);
+var z=sluchch(1,4);
+var f=(z-b*c)/d;
+var m=[[a.pow(b).toFixedLess(5).toStandart(),c.toFixedLess(5).toStandart()],[a.pow(d).toFixedLess(5).toStandart(),f.toFixedLess(5).toStandart()]].shuffle();
+var x=(a*a*b/c).toFixedLess(5);
+window.vopr.txt=('Найдите значение выражения $$'+m[0][0]+'^{'+m[0][1]+'}\\cdot'+m[1][0]+'^{'+m[1][1]+'}$$').plusminus();
+window.vopr.ver=[''+a.pow(z)];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
+window.vopr.kat['drs']=1;
 window.vopr.kat['tri']=0;
 })();

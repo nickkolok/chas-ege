@@ -1,25 +1,15 @@
-(function() {'use strict';
+(function() {
 
 var a=sluchch(2,9);
-for(var b=a;b==a;b=sluchch(2,9));
-
-var v0=sluchch(0,1);
-var m=[a*a,a*b,b*b].shuffle();
-
-var y=v0?(
-		'Три ребра прямоугольного параллелепипеда, выходящие из одной вершины, равны '+m[0]+', '+m[1]+' и '+m[2]+'. '+
-		'Найдите ребро равновеликого ему куба.'
-		):(
-		'Два ребра прямоугольного параллелепипеда, выходящие из одной вершины, равны '+m[1]+' и '+m[2]+'. '+
-		'Ребро куба, равновеликого данному параллелепипеду, равно '+(a*b)+'. '+
-		'Найдите третье ребро параллелепипеда, выходящее из той же вершины.'
-		);
-
-window.vopr.txt=y;
-window.vopr.ver=[''+(v0?(a*b):m[0])];
+var b=sluchch(2,3);
+var f=sluchch(1,b-1);
+var c=sluchch(0.01,9.99,0.01);
+var z=sluchch(1,4);
+window.vopr.txt=('Найдите значение выражения $$\\frac{'+a.pow(b)+'^{'+(z+c).toFixedLess(5).toStandart()+'}}{'+a.pow(f)+'^{'+(z+c*b/f).toFixedLess(5).toStandart()+'}}$$').plusminus();
+window.vopr.ver=[''+a.pow(z)];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
+window.vopr.kat['drs']=1;
 window.vopr.kat['tri']=0;
 })();

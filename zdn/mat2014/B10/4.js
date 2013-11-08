@@ -1,34 +1,23 @@
 (function() {
 
-var a;
-var b;
-var c;
-var d;
-for(c=0.5;!c.isZ();){
-	a=sluchch(1,50);
-	b=sluchch(1,50);
-	c1=sluchch(1,7);
-	d=sluchch(100,1000)*b;
-	c=a*d/b;
-	a*=c1;
-	b*=c1;
-}
-var f1=[
-	{vel:'первоначальный уровень воды',zna:a,rod:0,nah:1,nmn:'см'},
-	{vel:'изменение уровня воды',zna:b,rod:2,nah:1,nmn:'см'},
-	{vel:'первоначальный уровень воды',zna:a+b,rod:0,nah:1,nmn:'см'}
-	].sluchiz(2);
-var f2=[
-	{vel:'первоначальный объём воды',zna:c,rod:0,nah:1,nmn:'$см^3$'},
-	{vel:'объём детали',zna:d,rod:0,nah:1,nmn:'$см^3$'},
-	{vel:'общий объём воды и детали',zna:c+d,rod:0,nah:1,nmn:'$см^3$'}
-	].sluchiz(2);
+var a=sluchch(2,9);//Ребро было
+var b=sluchch(2,9);//Изменение ребра
+var c=a+b;//Ребро стало
 
+var v0=sluchch(0,1);
+var v2=sluchch(1,2);;
+var v4=sluchch(0,1);
 
-var f=svVel(f1.concat(f2));
+var m=['ребро',(v4?'площадь поверхности':'квадрат диагонали'),'объём'];
+var n=[c-a,(v4?6*(c*c-a*a):3*(c*c-a*a)),c*c*c-a*a*a];
+a=v0?c:a;
+var p=[a,v4?6*a*a:3*a*a,a*a*a];
 
-window.vopr.ver=[''+f.splice(0,1)];
-window.vopr.txt='В сосуд, имеющий форму '+['цилиндра','параллелепипеда','правильной '.esli(sl1())+['треугольной','четырёхугольной','пятиугодной','шестиугольной'].iz()+' призмы'].iz()+', наливают воду, замеряют её уровень, затем опускают деталь и замеряют новый уровень. '+f.shuffle().soed();
+var q=['увеличит','уменьшит'][v0];
+var y='Eсли '+m[0]+' куба '+q+'ь на '+n[0]+', то '+m[1]+' '+q+'ся на '+n[1]+'. '+'Найдите '+m[v2]+' куба.';
+
+window.vopr.txt=y;
+window.vopr.ver=[''+p[v2]];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

@@ -1,18 +1,20 @@
 (function() {
 
-var r=sluchch(1,10);
+var a=sluchch(2,9);
 
-var f=svVel([
-	{vel:'радиус сферы',zna:r,rod:0,nah:1},
-	{vel:'диаметр сферы',zna:2*r,rod:0,nah:1},
-	{vel:'объём параллелепипеда',zna:8*r*r*r,rod:0,nah:1},
-	{vel:'квадрат диагонали параллелепипеда',zna:3*4*r*r,rod:0,nah:1},
-	{vel:'площадь поверхности параллелепипеда',zna:4*6*r*r,rod:1,nah:1},
-	{vel:'среднее арифметическое длин рёбер параллелепипеда',zna:2*r,rod:2,nah:1}
-].sluchiz(2));
 
-window.vopr.ver=[''+f.splice(0,1)];
-window.vopr.txt='Прямоугольный параллелепипед описан около сферы. '+f.shuffle().soed();
+var v1=sluchch(0,3);
+var v2;
+for(v2=v1;v2==v1;v2=sluchch(0,3));
+
+var m=['ребро','площадь поверхности','квадрат диагонали','объём'];
+var n=[a,6*a*a,3*a*a,a*a*a];
+var y=m[v1].toZagl()+' куба составляет '+n[v1]+'. '+
+	'Найдите '+m[v2]+' куба.';
+
+
+window.vopr.txt=y;
+window.vopr.ver=[''+n[v2]];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

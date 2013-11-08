@@ -1,20 +1,40 @@
 (function() {
 
-var a=sluchch(2,9);
+var m=sluchch(1,37);
+var n=sluchch(1,m-1);
 
-
-var v1=sluchch(0,3);
-var v2;
-for(v2=v1;v2==v1;v2=sluchch(0,3));
-
-var m=['ребро','площадь поверхности','квадрат диагонали','объём'];
-var n=[a,6*a*a,3*a*a,a*a*a];
-var y=m[v1].toZagl()+' куба составляет '+n[v1]+'. '+
-	'Найдите '+m[v2]+' куба.';
-
-
-window.vopr.txt=y;
-window.vopr.ver=[''+n[v2]];
+var a=m*m-n*n;
+var b=2*m*n;
+var c=m*m+n*n;
+var d='-';
+var f;
+var g;
+var h;
+var v=sluchch(1,3);
+switch(v){
+	case 1:{
+		h=a;
+		f=c;
+		g=b;
+		break;
+	}
+	case 2:{
+		h=b;
+		f=c;
+		g=a;
+		break;
+	}
+	case 3:{
+		d='+';
+		h=c;
+		f=a;
+		g=b;
+		break;
+	}
+	
+}
+window.vopr.txt='Найдите значение выражения $$\\sqrt{'+f+'^{2}'+d+g+'{^2}}$$';
+window.vopr.ver=[''+h];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

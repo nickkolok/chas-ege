@@ -1,24 +1,31 @@
-(function() {
+(function(){'use strict';
 
-var r=sl(1,10);
-var h=sl(1,10);
-var v=4*r*r*h;
-var p=8*r*(r+h);
-var d=8*r*r+h*h;
+var v3=-1;
+var a;
+var b;
+var c;
+var d;
+for(;(v3==-1) || (!v3)&&(sl(0,10));){
+	a=sl(1,9);
+	b=sl(1,9);
+	c=sl(1,9);
 
-var f=svVel([
-	{vel:'радиус основания цилиндра',zna:r,rod:0,nah:1},
-	{vel:'высота цилиндра',zna:h,rod:1,nah:1},
-	{vel:'площадь осевого сечения цилиндра',zna:2*r*h,rod:1,nah:1},
-	[
-		{vel:'объём параллелепипеда',zna:v,rod:0,nah:1},
-		{vel:'площадь поверхности параллелепипеда',zna:v,rod:1,nah:1},
-		{vel:(d.isPolnKvadr()?'диагональ':'квадрат диагонали')+' параллелепипеда',zna:(d.isPolnKvadr()?d.sqrt():d),rod:(d.isPolnKvadr()?1:0),nah:1}
-	].iz()
-].sluchiz(3));
+	d=a*a+b*b+c*c;
+	v3=d.isPolnKvadr();
+}
 
-window.vopr.ver=[''+f.splice(0,1)];
-window.vopr.txt='Прямоугольный параллелепипед описан около цилиндра. '+f.shuffle().soed();
+d=v3?d.sqrt():d;
+
+var s=2*(a*c+a*b+b*c);
+var v1=sl(0,3);
+var v2=slKrome(v1,0,3);
+var m=['площадь поверхности',v3?'диагональ':'квадрат диагонали','объём','третье выходящее из той же вершины ребро'];
+var n=[s,d,a*b*c,c];
+window.vopr.txt='Два ребра прямоугольного параллелепипеда, выходящие из одной вершины, равны '+a+' и '+b+'. '+
+	'Известно, что '+m[v1]+' составляет '+n[v1]+'. '+
+	'Найдите '+m[v2]+' параллелепипеда.';
+
+window.vopr.ver=[''+n[v2]];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;
