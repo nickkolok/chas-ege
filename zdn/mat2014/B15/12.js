@@ -10,7 +10,7 @@ var fn=fn_zadan({
 		!a%3 ? '-'+a/3+'\\sqrt{3}\\pi' : '-'+a+'\\frac{\\sqrt{3}\\pi}{3}',
 	],
 	maxy: a,
-	prnz: v1==1 ? 1 .pina(3) : [0,1 .pina (sl(4,12))].iz(),
+	prnz: v1==1 ? 1 .pina(3) : [sl(-5,1).pina(4),sl(-2,0).pina(3),sl(-7,1).pina(6),sl(-5,1).pina(5),1 .pm().pina(sl(4,12))].iz(),
 	prnb: v1==1 ? 0 : sl(1),
 	prkz: v1==2 ? 1 .pina(3) : 1 .pina(2),
 	prkb: v1==2 ? 0 : sl(1),
