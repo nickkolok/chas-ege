@@ -1,4 +1,4 @@
-(function() {
+(function(){'use strict';
 
 var a=sluchch(2,90);
 var b=sluchch(a+1,99);
@@ -26,5 +26,5 @@ window.vopr.kat['drs']=0;
 window.vopr.kat['tri']=1;
 })();
 
-//Обзад 26694 26695 26696 26697 
+//Обзад 26702 26703 26706 26707
 //Николай Авдеев

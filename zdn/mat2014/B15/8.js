@@ -1,4 +1,4 @@
-(function() {
+(function(){'use strict';
 
 var a=sluchch(2,90);
 
