@@ -95,7 +95,7 @@ function vNachaloVarianta(){
 }
 
 function zadan(){
-	if(nZ==nabor.nZad+1){
+	if(nZ==1+1*nabor.nZad){
 		vNachaloVarianta();
 		return;
 	}else if (nZ==0){
