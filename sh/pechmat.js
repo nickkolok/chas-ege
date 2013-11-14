@@ -2,7 +2,7 @@ escapeFromIframe();
 
 $('#zadaniya').html('');
 for(var i=1;i<=nabor.nZad;i++){
-	document.getElementById('zadaniya').innerHTML+='<tr><td><label for="cB'+i+'" >B'+i+'</label></td>'+
+	document.getElementById('zadaniya').innerHTML+='<tr><td><label for="cB'+i+'" >'+nabor.prefix+i+'</label></td>'+
 	'<td><input type="text" class="kolvo" value="1" id="cB'+i+'" data-jstorage-id="pech-cB'+i+'"></td></tr>';
 }
 
@@ -144,13 +144,13 @@ function obnov(){
 			return;
 		}
 		starttxt=window.vopr.txt;
-		strVopr='<br/><div class="d"><div class="b">B'+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</div>'+window.vopr.txt+'</div>';
+		strVopr='<br/><div class="d"><div class="b">'+nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</div>'+window.vopr.txt+'</div>';
 		var din=document.createElement('div');
 		din.innerHTML=strVopr;
 		din.class='d d3';
 		din.width="100%";
 		document.getElementById('rez').appendChild(din);
-		strOtv+='<tr><td>'+novdate+'</td><td>B'+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
+		strOtv+='<tr><td>'+novdate+'</td><td>'+nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
 		try{
 			window.vopr.dey();
 		}catch(e){}

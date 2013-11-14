@@ -1,6 +1,6 @@
 $('#zadaniya').html('');
 for(var i=1;i<=nabor.nZad;i++){
-	document.getElementById('zadaniya').innerHTML+='<tr><td><label for="cB'+i+'" >B'+i+'</label></td>'+
+	document.getElementById('zadaniya').innerHTML+='<tr><td><label for="cB'+i+'" >'+nabor.prefix+i+'</label></td>'+
 	'<td><input type="text" class="kolvo" value="1" id="cB'+i+'" data-jstorage-id="poln-cB'+i+'"></td></tr>';
 }
 
