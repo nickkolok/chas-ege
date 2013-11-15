@@ -3,6 +3,7 @@ cd css
 ./make-css-ui.sh
 cd ../lib
 ./make-chas-uijs.sh
+cd ..
 git add .
 git commit -m "Выпуск"
 echo "Выпуск успешно произведён. Отправляем изменения в репозиторий..."
