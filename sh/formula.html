@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<script>
+		addstyle("../css/pech.css");
+	</script>
+	<title>
+		Тренажёр "Час ЕГЭ": склонение существительных
+	</title>
+</head>
+<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+	<script>
+		addscript('../lib/init.js');
+	</script>
+	Введите формулу (можно с кавычками, можно без): 
+	<br/>
+	<textarea cols="80" id="ish" data-jstorage-id="formula-textarea"></textarea>
+	<br/>
+	<button onclick="pokaz();">
+		Показать
+	</button>
+	Результат:
+	<br/>
+	<div id="rez">
+		
+	</div>
+	<script src='formula.js'></script>
+</body>
+</html>
+
