@@ -8,7 +8,7 @@ window.vopr.nev=[
   	'$ \\sin{a}  $',
   	'$ \\mathrm{tg~}{a}  $',
   	'$ -\\cos{a}  $',
-  	'$ -\\sin{a}  $',
+  	'$ -\\sin{a}   $',
 ];
 AtoB();
 
