@@ -1,0 +1,16 @@
+body{
+	background-color:white;
+}
+input,body,button{
+	font-size:20px;
+	font-family:'liberation_mono',monospace;
+}
+#panel, ul.pureCssMenu,ul.pureCssMenu ul, ul.pureCssMenu a, ul.pureCssMenu li.dis a:hover, ul.pureCssMenu li.sep a:hover, ul.pureCssMenu li a.pureCssMenui0{
+	background-color:#DED;
+}
+ul.pureCssMenu li:hover>a, ul.pureCssMenu li a:hover, ul.pureCssMenu li a.pureCssMenui0:hover, ul.pureCssMenu li.dis a:hover, ul.pureCssMenu li.sep a:hover {
+	background-color:white;
+}
+.anythingSlider .arrow span {
+	color:#DED;
+}
