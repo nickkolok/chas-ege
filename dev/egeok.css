@@ -1,10 +1,6 @@
 body{
 	background-color:white;
 }
-input,body,button{
-	font-size:20px;
-	font-family:'liberation_mono',monospace;
-}
 #panel, ul.pureCssMenu,ul.pureCssMenu ul, ul.pureCssMenu a, ul.pureCssMenu li.dis a:hover, ul.pureCssMenu li.sep a:hover, ul.pureCssMenu li a.pureCssMenui0{
 	background-color:#DED;
 }

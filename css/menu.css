@@ -147,12 +147,13 @@ ul.pureCssMenu a:hover ul{
 }
 ul.pureCssMenu span{
 	display:block;
-   padding-right:13px;}
+   padding-right:13px;
+  }
 ul.pureCssMenu li a.pureCssMenui0{
 	background-color:pink;
 }
 ul.pureCssMenu li a.pureCssMenui0:hover{
-background-color:#FFFFCC;
+	background-color:#FFFFCC;
 }
 #menucenter{
 	width:100%;
