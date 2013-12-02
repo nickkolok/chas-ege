@@ -79,6 +79,8 @@ function konecSozd(){
 	$('#otv').html(strOtv);
 	MathJax.Hub.Typeset('rez',testGotov);
 	udalPanel();
+	spoiler();
+	$('.spoiler-show').click();
 	$("hr:first").remove();
 	$("hr:first").remove();
 	document.body.style.backgroundColor="#FFF";

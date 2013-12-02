@@ -153,3 +153,6 @@ h2{
 	display:none;
 	color:#900;
 }
+.spoiler-show, .spoiler-hide{
+	margin-top:50px;
+}

@@ -25,3 +25,8 @@ body{
 	vertical-align:baseline;
 	height:auto;
 }
+@media print{
+	.noprint{
+		visibility:hidden;
+	}
+}
