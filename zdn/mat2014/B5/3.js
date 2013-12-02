@@ -15,10 +15,8 @@ for(;!p;){
 	Cx=sluchch(1,16);
 	Cy=sluchch(1,16);
 	p=s3ug(Ax,Ay,Bx,By,Cx,Cy);
-//	fl=((Ax==Bx)&&(Ay==By))||((Ax==Cx)&&(Ay==Cy))||((Bx==Cx)&&(By==Cy)||((Ax==Bx)&&(Ax==Cx))||(()&&()));
 }
 
-//var p=0.5*(Ax*By+Ay*Cx+Bx*Cy-By*Cx-Cy*Ax-Ay*Bx).abs();
 p=p.ts();
 
 var slid=Math.random();
@@ -27,11 +25,11 @@ window.vopr.dey=function(){
 	var ct = ris.getContext('2d');
 	var w=480;
 	var h=480;
-//	ct.translate(w/2,h/2);
 	ct.lineWidth=2;
 	var s=20;
 	ct.setka(20,s);
-	ct.lineWidth=5;
+	ct.lineWidth=4;
+	ct.lineJoin='round';
 	ct.fillStyle='777';
 	ct.beginPath();
 		ct.moveTo(Ax*s,Ay*s);

@@ -36,7 +36,8 @@ window.vopr.dey=function(){
 	ct.lineWidth=2;
 	var s=20;
 	ct.setka(20,s);
-	ct.lineWidth=5;
+	ct.lineWidth=4;
+	ct.lineJoin='round';
 	ct.fillStyle='777';
 	ct.beginPath();
 		ct.moveTo(A.x*s,A.y*s);
