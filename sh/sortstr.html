@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<script>
+		addstyle("../css/pech.css");
+	</script>
+	<title>
+		Тренажёр "Час ЕГЭ": сортировка строк
+	</title>
+</head>
+<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+	<script>
+		addscript('../lib/init.js');
+	</script>
+	<h2>
+		Построчная алфавитная сортировка
+	</h2>
+	Текст (построчно):
+	<br/>
+	<textarea cols="80" rows="5" id="ish" data-jstorage-id="sortstr-ish-textarea">
+	</textarea>
+	<br/>
+	<button onclick="sortstr();">
+		Сортировать
+	</button>
+	<br/>
+	<textarea cols="80" rows="5" id="rez" data-jstorage-id="sortstr-rez-textarea">
+	</textarea>
+	<script>
+		function sortstr(){
+			var txt=$('#ish').val()
+				.replace(/\r/g,'\n')
+				.replace(/\n+/g,'\n')
+				.split('\n')
+				.sortDelDubl()
+				.join('\r\n')
+			;
+			$('#rez').val(txt);
+		}
+	</script>
+</body>
+</html>
+
