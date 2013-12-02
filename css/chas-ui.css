@@ -33,6 +33,11 @@ body{
 	vertical-align:baseline;
 	height:auto;
 }
+@media print{
+	.noprint{
+		visibility:hidden;
+	}
+}
 ul.pureCssMenu ul{
 	display:none;
 	z-index:10;
