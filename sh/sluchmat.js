@@ -144,7 +144,32 @@ function sozdat(){
 	VKI_attach(document.getElementById('otv'));
 	$('#prov').show();
 	$('#sozd').hide();
+	$('#podob').hide();
 }
+
+function podobnoe(){
+	if(!checkJQuery('sozdat()','pole'))
+		return;
+	$('#pole').html('Задание составляется, подождите...');
+	$('#protv').hide();
+	startxt=window.vopr.txt;
+	window.vopr.podg();
+	zagr(nabor.adres+nabor.prefix+n+'/'+nomer+'.js');
+	intervPole=setInterval("obnov();",100);
+	var otvet=$('#otv').val('');
+	$('#prov').unbind('click');
+	$('#prov').bind('click',prover);
+
+	if(!checkMathJax('sozdat()','pole'))
+		return;
+
+	setVKI();
+	VKI_attach(document.getElementById('otv'));
+	$('#prov').show();
+	$('#sozd').hide();
+	$('#podob').hide();
+}
+
 
 function prover(){
 	$('#protv').show();
@@ -157,6 +182,7 @@ function prover(){
 	}
 	$('#prov').hide();
 	$('#sozd').show();
+	$('#podob').show();
 	sohrUmka();
 	veroyatn();
 }
@@ -176,5 +202,6 @@ function vybr0(){
 }
 
 $('#prov').hide();
+$('#podob').hide();
 galkiKat('#galki_kat','sluch');
 spoiler();
