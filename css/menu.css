@@ -39,7 +39,6 @@ ul.pureCssMenu ul{
 ul.pureCssMenu li{
 	display:block;
 	margin:2px 0px 0px 2px;
-	font-size:0px;
 }
 ul.pureCssMenu a:active, ul.pureCssMenu a:focus {
 	outline-style:none;
@@ -53,7 +52,7 @@ ul.pureCssMenu a, ul.pureCssMenu li.dis a:hover, ul.pureCssMenu li.sep a:hover {
 	text-align:left;
 	text-decoration:none;
 	padding:3px;
-	font:bold 18px 'liberation_sans';
+	font:bold 'liberation_sans';
 	color: #000000;
 	text-decoration:none;
 	cursor:pointer;
@@ -95,7 +94,7 @@ ul.pureCssMenu li:hover{
 ul.pureCssMenu li:hover>a{
 	background-color:#FFFFCC;
 	border-style:solid;
-	font:bold 18px 'liberation_sans';
+	font:bold 'liberation_sans';
 	color: #091B2D;
 	text-decoration:none;
 }
@@ -103,7 +102,7 @@ ul.pureCssMenu li a:hover{
 	position:relative;
 	background-color:#FFFFCC;
 	border-style:solid;
-	font:bold 18px 'liberation_sans';
+	font:bold 'liberation_sans';
 	color: #091B2D;
 	text-decoration:none;
 }
