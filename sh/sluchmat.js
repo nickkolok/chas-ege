@@ -142,6 +142,7 @@ function sozdat(){
 
 	setVKI();
 	VKI_attach(document.getElementById('otv'));
+	strelkaEst=0;
 	$('#prov').show();
 	$('#sozd').hide();
 	$('#podob').hide();
@@ -201,6 +202,20 @@ function vybr0(){
 	}
 }
 
+var strelkaEst=1;
+
+function strelkaDvig(){
+	if(!strelkaEst){
+		$('#strelka').remove();
+		return;
+	}
+	$('#strelka').animate({left:'-=20'},{duration:1000});
+	$('#strelka').animate({left:'+=20'},{duration:1000,complete:strelkaDvig});
+	$('#sozd').animate({opacity:'0.5'},{duration:1000});
+	$('#sozd').animate({opacity:'1'},{duration:1000});
+	
+}
+strelkaDvig();
 $('#prov').hide();
 $('#podob').hide();
 galkiKat('#galki_kat','sluch');
