@@ -77,7 +77,7 @@ function udalPanel(){
 function konecSozd(){
 	strOtv='<hr class="pbb"/><h2>Ответы</h2>'+strOtv;
 	$('#otv').html(strOtv);
-	MathJax.Hub.Typeset('rez',testGotov);
+	MathJax.Hub.Typeset(testGotov);
 	udalPanel();
 	spoiler();
 	$('.spoiler-show').click();
