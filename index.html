@@ -1,0 +1,13 @@
+<html>
+	<body>
+		<script>
+			if(location.href.match('index.html')){
+				location.href=location.href.replace('index.html','doc/index.html');
+			}else if(location.href.match(/\/$/)){
+				location.href+='doc/index.html';
+			}else{
+				location.href+='/doc/index.html';
+			}
+		</script>
+	</body>
+</html>
