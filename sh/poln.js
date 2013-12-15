@@ -107,7 +107,7 @@ function obnov(){
 				'</div>';
 		var din=document.createElement('div');
 		din.innerHTML=strVopr;
-		din.class='d d3';
+		din["class"]='d d3';
 		din.width="100%";
 		document.getElementById('rez').appendChild(din);
 		try{
