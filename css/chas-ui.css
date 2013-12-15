@@ -33,6 +33,14 @@ body{
 	vertical-align:baseline;
 	height:auto;
 }
+h1{
+	font-size:160%;
+	text-align:center;
+}
+h2{
+	font-size:128%;
+}
+
 @media print{
 	.noprint{
 		visibility:hidden;
