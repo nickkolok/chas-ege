@@ -4,6 +4,7 @@ cd css
 cd ../lib
 ./make-chas-uijs.sh
 cd ..
+java -jar ext/compiler.jar --jscomp_off internetExplorerChecks --charset UTF-8 --js lib/chas-uijs.js --js_output_file lib/chas-uijs.min.js
 git add .
 git commit -m "Выпуск"
 echo "Выпуск успешно произведён. Отправляем изменения в репозиторий..."
