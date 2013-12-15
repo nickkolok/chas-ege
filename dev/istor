@@ -1,0 +1,4 @@
+#!/bin/sh
+git add doc/istor.html
+git commit -m "Запись в историю"
+echo "Запись в историю закоммичена."
