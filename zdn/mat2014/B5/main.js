@@ -1,1 +1,1 @@
-window.nomer=sluchch(1,10);
+window.nomer=slKrome(7,1,10);
