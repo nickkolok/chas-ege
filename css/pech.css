@@ -24,6 +24,7 @@ input,body,button{
 	float:left;
 	page-break-inside:avoid;
 	padding-left:4em;
+	font-family:auto;
 }
 .d2{
 	width:100%;
