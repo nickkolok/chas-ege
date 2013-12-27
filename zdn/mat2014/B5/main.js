@@ -1,1 +1,1 @@
-window.nomer=slKrome(7,1,10);
+window.nomer=sl(1,10);
