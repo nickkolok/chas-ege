@@ -71,20 +71,60 @@ function veroyatn(){
 	);	
 }
 
-function obnov(){
-	if((window.vopr.txt!=0)*(startxt!=window.vopr.txt)){
-		clearInterval(intervPole);
-		clearInterval(intervZadan);
+var dvig={};
+dvig.ping=svinta?100:500;
+dvig.startxt='1';
+dvig.flObn=0;
+
+dvig.obnov=function(cb,kat,nom){'use strict';//cb - функция, вызываемая, когда вопрос успешно обновился
+	if(dvig.flObn)
+		return;
+	if((window.vopr.txt!=0)&&(dvig.startxt!=window.vopr.txt)){
+		clearInterval(dvig.intervZapros);
+		clearInterval(dvig.intervZadan);
 		if(!sootvKat()){
-			sozdat();
+			dvig.zapros(cb,kat,nom);
 			return;
 		}
-		$('#pole').html(window.vopr.txt);
-		window.vopr.dey();
-		MathJax.Hub.Typeset();
-		$('#otvet').html(window.vopr.ver.join(';;'));
-		$('#never').html(window.vopr.nev.join(';;'));
-	}
+		dvig.flObn=1;
+		cb(window.vopr.clone());
+	}else
+		setTimeout('dvig.obnov('+cb+','+kat+','+nom+');',10);
+}
+
+dvig.zapros=function(cb,kat,nom){'use strict';
+	if(dvig.flObn)
+		return;
+	if(kat === undefined)
+		kat=kategory;
+	if(nom === undefined)
+		nom=nomer;
+	dvig.startxt=window.vopr.txt;
+	window.vopr.podg();
+	window.vopr.dop.nomer=nom;
+	zagr(nabor.adres+nabor.prefix+n+'/'+nomer+'.js');
+	setTimeout('dvig.obnov('+cb+','+kat+','+nom+');',dvig.ping);
+	dvig.intervZapros=setTimeout('dvig.zapros('+cb+','+kat+','+nomer+');',dvig.ping*4);
+}
+
+dvig.zadan=function(cb,kat,nom,ekz){'use strict';
+	dvig.flObn=0;
+	window.vopr.dop={prefix:nabor.prefix,kategory:kat,nomer:nom,ekz:ekz,};
+	if(nom !== undefined)
+		return dvig.zapros(cb,kat,nom);
+	zagr(nabor.adres+nabor.prefix+n+'/main.js');
+	setTimeout('dvig.zapros('+cb+','+kat+','+nomer+');',dvig.ping);
+	dvig.intervZadan=setTimeout('dvig.zadan('+cb+','+kat+');',dvig.ping*8)
+}
+
+var slvopr;
+function obnov(p1){
+	slvopr=p1;
+	$('#pole').html(slvopr.txt);
+	slvopr.dey();
+	MathJax.Hub.Typeset();
+	$('#otvet').html(slvopr.ver.join(';;'));
+	$('#never').html(slvopr.nev.join(';;'));
 }
 
 function vybrZad(){
@@ -121,65 +161,43 @@ function vybrZad(){
 }
 
 function sozdat(){
-	if(!checkJQuery('sozdat()','pole'))
-		return;
-	$('#pole').html('Задание составляется, подождите...');
-	$('#protv').hide();
-	startxt=window.vopr.txt;
-	window.vopr.podg();
 	n=vybrZad();
 	if(n==undefined)
 		return;
-	zagr(nabor.adres+nabor.prefix+n+'/main.js');
-	intervZadan=setInterval("zagr(nabor.adres+nabor.prefix+"+n+"+'/'+nomer+'.js');",300);
-	intervPole=setInterval("obnov();",100);
-	var otvet=$('#otv').val('');
-	$('#prov').unbind('click');
-	$('#prov').bind('click',prover);
-
-	if(!checkMathJax('sozdat()','pole'))
-		return;
-
-	setVKI();
-	VKI_attach(document.getElementById('otv'));
-	strelkaEst=0;
-	$('#prov').show();
-	$('#sozd').hide();
-	$('#podob').hide();
+	dvig.zadan(obnov,n);
+	zdnSost();
 }
 
 function podobnoe(){
+	dvig.zadan(obnov,n,nomer);
+	zdnSost();
+}
+
+function zdnSost(){
 	if(!checkJQuery('sozdat()','pole'))
+		return;
+	if(!checkMathJax('sozdat()','pole'))
 		return;
 	$('#pole').html('Задание составляется, подождите...');
 	$('#protv').hide();
-	startxt=window.vopr.txt;
-	window.vopr.podg();
-	zagr(nabor.adres+nabor.prefix+n+'/'+nomer+'.js');
-	intervPole=setInterval("obnov();",100);
-	var otvet=$('#otv').val('');
+	$('#otv').val('');
 	$('#prov').unbind('click');
 	$('#prov').bind('click',prover);
-
-	if(!checkMathJax('sozdat()','pole'))
-		return;
-
-	setVKI();
-	VKI_attach(document.getElementById('otv'));
 	$('#prov').show();
 	$('#sozd').hide();
 	$('#podob').hide();
+	setVKI();
+	VKI_attach(document.getElementById('otv'));
 }
-
 
 function prover(){
 	$('#protv').show();
 	umka.vsego[n]++;
-	if(window.vopr.vrn($('#otv').val())){
+	if(slvopr.vrn($('#otv').val())){
 		$('#protv').html('Правильно!');
 		umka.verno[n]++;
 	}else{
-		$('#protv').html('Неправильно!<br/>Правильный ответ: '+window.vopr.ver.join(' или '));
+		$('#protv').html('Неправильно!<br/>Правильный ответ: '+slvopr.ver.join(' или '));
 	}
 	$('#prov').hide();
 	$('#sozd').show();
