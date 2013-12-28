@@ -56,10 +56,9 @@ function zapusk(){
 
 function razrstr(){
 	var d2=document.createElement('div');
-	d2.innerHTML='<hr class="pbb"/><div class="d"></div>';
-	d2.className='d d2';
+	d2.innerHTML='<hr class="pbb" clear="all"/><div class="d"></div>';
+	d2["class"]='d d2';
 	document.getElementById('rez').appendChild(d2);
-
 }
 
 function testGotov(){
@@ -75,7 +74,7 @@ function udalPanel(){
 }
 
 function konecSozd(){
-	strOtv='<hr class="pbb"/><h2>Ответы</h2>'+strOtv;
+	strOtv='<p style="page-break-before: always"></p><h2>Ответы</h2>'+strOtv;
 	$('#otv').html(strOtv);
 	MathJax.Hub.Typeset(testGotov);
 	udalPanel();
@@ -107,6 +106,12 @@ function zadan(){
 		}else{
 			iZ=aZ.slice();
 			stardate=novdate;
+
+/*			var rstr=document.createElement('p');
+			rstr.style='page-break-before: always;';
+			rstr.style.pageBreakBefore="always";
+			document.getElementById('rez').appendChild(rstr);
+*/
 			novdate=new Date().getTime();
 			strVopr='<div class="d"><h2>Вариант №'+novdate+'</h2></div>';
 
