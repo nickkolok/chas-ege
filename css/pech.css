@@ -21,10 +21,16 @@ input,body,button{
 }
 .d{
 	min-width:90%;
-	float:left;
-	page-break-inside:avoid;
 	padding-left:4em;
+	padding-right:1em;
 	font-family:auto;
+	overflow:hidden;
+}
+.d>*{
+	float:none !important;
+}
+div.d{
+	page-break-inside:avoid;
 }
 .d2{
 	width:100%;
@@ -124,9 +130,6 @@ em{
 }
 #vrem{
 	text-align:center;
-}
-h2{
-	page-break-before:always;
 }
 .tablpech{
 	float:left;

@@ -20,6 +20,7 @@ var iZ=[];
 var aV;
 var strVopr='';
 var strOtv='';
+var voprosy=[];
 
 function vse1(){
 	$('.kolvo').val(1);
@@ -50,7 +51,7 @@ function zapusk(){
 	zadan();
 }
 
-function razrstr(){
+function razrstr(){return;
 	var d2=document.createElement('div');
 	d2.innerHTML='<hr class="pbb" clear="all"/><div class="d"></div>';
 	d2["class"]='d d2';
@@ -70,8 +71,14 @@ function udalPanel(){
 }
 
 function konecSozd(){
-	strOtv='<p style="page-break-before: always"></p><h2>Ответы</h2>'+strOtv;
+	strOtv='<h2>Ответы</h2>'+strOtv;
 	$('#otv').html(strOtv);
+	$('#rez').html(strVopr);
+//	$('#rez')[0].outerHTML=strVopr;
+	for(var i=voprosy.length;i;i--)
+		try{
+			voprosy[i-1].dey();
+		}catch(e){};
 	MathJax.Hub.Typeset(testGotov);
 	udalPanel();
 	spoiler();
@@ -88,6 +95,8 @@ function vNachaloVarianta(){
 	nV--;
 	nZ=0;
 	strOtv+='</table>';
+	strVopr+='<p style="page-break-before: always"></p>';
+//	strVopr+='</div>';
 	zadan();
 }
 
@@ -104,15 +113,10 @@ function zadan(){
 			stardate=novdate;
 
 			novdate=new Date().getTime();
-			strVopr='<div class="d"><h2>Вариант №'+novdate+'</h2></div>';
+			strVopr+='<h2 class="d">Вариант №'+novdate+'</h2>';
 
 			if(!bGecko && aV!=nV)
 				razrstr();
-
-			var din=document.createElement('div');
-			din.innerHTML=strVopr;
-			din.class='d d4';
-			document.getElementById('rez').appendChild(din);
 			strOtv+='<table class="normtabl tablpech"><tr><th colspan="3">';
 			strOtv+='Ответы к варианту<br/>№'+novdate+'</th></tr>';
 			nZ=1;
@@ -131,16 +135,10 @@ function zadan(){
 	}
 }
 function obnov(){
-		strVopr='<br/><div class="d"><div class="b">'+nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</div>'+window.vopr.txt+'</div>';
-		var din=document.createElement('div');
-		din.innerHTML=strVopr;
-		din.class='d d3';
-		din.width="100%";
-		document.getElementById('rez').appendChild(din);
+		strVopr+='<br/><div class="d"><div class="b">'+nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</div>'+window.vopr.txt+'</div>';
 		strOtv+='<tr><td>'+novdate+'</td><td>'+nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
-		try{
-			window.vopr.dey();
-		}catch(e){}
+		voprosy.push(vopr.clone());
+
 		var sdel=aZ.sum()*(aV-nV+1)-iZ.sum();
 		var w=sdel/kZ;
 		$('.tx').text((100*w).toFixedLess(1).dopdo(' ',4)+'%');
