@@ -44,5 +44,5 @@ window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;
 window.vopr.kat['drs']=0;
 window.vopr.kat['tri']=0;
-//})();
+})();
 
