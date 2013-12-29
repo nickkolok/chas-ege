@@ -1,4 +1,4 @@
-(function() {
+(function(){'use strict';
 	
 var d1=sluchch(1,10);
 var d2=sluchch(20,28);
@@ -29,7 +29,8 @@ var p=[
 		];
 
 var v=sluchch(4);
-var slid=sluchch(1000000000);
+
+var slid=sl(1000000000);
 
 var ny=[].N(7);
 ny.unshift(0);

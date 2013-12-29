@@ -1,4 +1,4 @@
-(function() {
+(function(){'use strict';
 	
 var c=1*(sluchch(0.1,0.5,0.1).toFixedLess(2));
 var a=sluchch(30,50,c);
@@ -21,7 +21,7 @@ var g=[	'Каков минимальный курс за этот период?'
 var h=sluchch(0,6);
 var m=[b[b.min()],b[b.max()],b[b.max()]-b[b.min()],b.min(1),b.max(1),b.min(),b.max()];
 if(!m[h])m[h]=1;
-var slid=Math.random();
+var slid=sl(1000000000);
 
 window.vopr.dey=function(){
 	var ris=document.getElementById('ris'+slid);
