@@ -1,4 +1,4 @@
-(function() {
+(function(){'use strict';
 	
 var a=sluchch(8,12);
 var b=[].N(a);
@@ -8,15 +8,16 @@ var d2=c.maxE()+1;
 var d1=c.minE()-2;
 var a1=sluchch(c.minE()+1,c.maxE()-2);
 var a2=sluchch(a1,c.maxE());
-d=om.strany.ie.sluchiz(a);
-f=[b,c,d].T();
+var d=om.strany.ie.sluchiz(a);
+var f=[b,c,d].T();
 f.shuffle();
 var h=f.T()[2];
 f=f.T();
 f=[[].N(a),f[1]];
 f=f.T();
 
-var slid=sluchch(0,1000000000);
+var slid=sl(1000000000);
+
 var ny=[].N(d2);
 ny.splice(0,d1);
 ny=[ny,ny.toFixedLess(3)].T();
