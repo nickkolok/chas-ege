@@ -1,6 +1,3 @@
-var startxt;
-var intervPole;
-
 function obnov(){
 	$('#pole').html(window.vopr.txt);
 	window.vopr.dey();
@@ -23,6 +20,7 @@ function sozdat(){
 	$('#shabl').attr('src',v);
 	zagr(v+'?'+Math.random());
 	dvig.flObn=0;
+	dvig.startxt=window.vopr.txt;
 	dvig.obnov(obnov);
 	$('#otv').val('');
 	setVKI();
