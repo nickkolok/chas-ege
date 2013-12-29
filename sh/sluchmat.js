@@ -1,6 +1,3 @@
-var startxt;
-var intervPole;
-var intervZadan;
 var n;
 
 var nas=200;
@@ -75,7 +72,7 @@ var slvopr;
 function obnov(p1){
 	slvopr=p1;
 	$('#pole').html(slvopr.txt);
-	slvopr.dey();
+	slvopr.trd();
 	MathJax.Hub.Typeset();
 	$('#otvet').html(slvopr.ver.join(';;'));
 	$('#never').html(slvopr.nev.join(';;'));
@@ -115,6 +112,7 @@ function vybrZad(){
 }
 
 function sozdat(){
+	strelkaEst=0;
 	n=vybrZad();
 	if(n==undefined)
 		return;

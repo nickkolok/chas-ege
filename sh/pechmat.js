@@ -10,11 +10,9 @@ $('#gotov').hide();
 var vr1=svinta?100:200;
 var vr2=svinta?100:1500;
 
-var startxt='';
 window.vopr.txt='';
 var stardate=new Date().getTime();
 var novdate;
-var intervPole;
 var nV=1;
 var nZ=1;
 var aZ=[];
@@ -24,9 +22,7 @@ var strVopr='';
 var strOtv='';
 
 function vse1(){
-	for(var i=1;i<=nabor.nZad;i++)
-		$('#cB'+i).val(1);
-	$('#cV').val(1);
+	$('.kolvo').val(1);
 }
 
 function vse0(){
@@ -107,11 +103,6 @@ function zadan(){
 			iZ=aZ.slice();
 			stardate=novdate;
 
-/*			var rstr=document.createElement('p');
-			rstr.style='page-break-before: always;';
-			rstr.style.pageBreakBefore="always";
-			document.getElementById('rez').appendChild(rstr);
-*/
 			novdate=new Date().getTime();
 			strVopr='<div class="d"><h2>Вариант №'+novdate+'</h2></div>';
 
@@ -134,23 +125,12 @@ function zadan(){
 			zadan();
 		}else{
 			iZ[nZ]--;
-			zagr(nabor.adres+nabor.prefix+nZ+'/main.js');
-			vopr.podg();
-			intervPole=setTimeout("zagr(nabor.adres+nabor.prefix+nZ+'/'+nomer+'.js');",vr1);
-			intervPole=setTimeout('obnov();',vr1+vr2);
+			dvig.zadan(obnov,nZ);
 		}
 		return;
 	}
 }
 function obnov(){
-	if((window.vopr.txt!=0)&&(startxt!=window.vopr.txt)){
-		clearInterval(intervPole);
-		if(!sootvKat()){
-			iZ[nZ]++;
-			zadan();
-			return;
-		}
-		starttxt=window.vopr.txt;
 		strVopr='<br/><div class="d"><div class="b">'+nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</div>'+window.vopr.txt+'</div>';
 		var din=document.createElement('div');
 		din.innerHTML=strVopr;
@@ -168,10 +148,6 @@ function obnov(){
 		var v=(vr1+vr2)*(kZ-sdel)/1000;
 		$('#vrem').text(sdel+' из '+kZ+' '+v.toDvoet());
 		zadan();
-	}else{
-		setTimeout("zagr('nabor.adres+nabor.prefix+"+nZ+"+'/'+nomer+'.js');",vr1);
-		intervPole=setTimeout('obnov();',vr1+vr2);		
-	}
 }
 
 galkiKat('#galki_kat','pech');
