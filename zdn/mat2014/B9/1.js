@@ -1,12 +1,12 @@
-(function() {
+(function(){'use strict';
 
 var x=sluchch(-9,9);
-var b=sluchch(1,9)*sluchiz([-1,1])[0];
-var a=sluchch(1,9)*sluchiz([-1,1])[0];
-var c=sluchch(1,9)*sluchiz([-1,1])[0];
-var f=sluchch(1,9)*sluchiz([-1,1])[0];
+var b=sluchch(1,9).pm();
+var a=sluchch(1,9).pm();
+var c=sluchch(1,9).pm();
+var f=sluchch(1,9).pm();
 var d=2*a*x+b;
-var g=sluchch(0,1);
+var g=sl1();
 var y=a*x*x+b*x+c;
 var h=['абсциссу','ординату'];
 var m=[x,y];

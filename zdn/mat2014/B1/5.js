@@ -1,4 +1,4 @@
-(function(){'use_strict';
+(function(){'use strict';
 
 var t1=sluchch(0,om.uchrezhd.ie.length-1);
 var t2=sluchch(0,om.sroki.re.length-1);

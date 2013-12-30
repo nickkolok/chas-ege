@@ -1,12 +1,14 @@
-(function() {
+(function(){'use strict';
 
 var a=sluchch(1,37);
-var b;
-for(b=1;b.isPolnKvadr();b=sluchch(2,99));
-var c
-for(c=1;c==1;c=a.pow(sluchch(0,2))*c.pow(sluchch(0,1))*(2).pow(sluchch(0,1))*(5).pow(sluchch(0,1)).pm());
+var b=slKrome(isPolnKvadr,2,99);
+do{
+	var c=a.pow(sl(0,2))*2 .pow(sl1())*5 .pow(sl1()).pm()
+}while(c==1);
+
 var x=(a*a*b/c).toFixedLess(5);
-window.vopr.txt=('Найдите значение выражения $$\\frac{\\left ({'+a+'\\sqrt{'+b+'}}\\right )^{2}}{'+c+'}$$').plusminus();
+window.vopr.txt=('Найдите значение выражения $$\\frac{\\left ({'+a+
+	'\\sqrt{'+b+'}}\\right )^{2}}{'+c+'}$$').plusminus();
 window.vopr.ver=[''+x];
 
 window.vopr.kat['log']=0;
