@@ -1,10 +1,10 @@
 (function() {
 
 var a=sluchch(2,9);
-for(var c=a;c==a;c=sluchch(2,9));
-for(var b=0;b.isZ();b=sluchch(0.1,4.9,0.1));
+var c=slKrome(a,2,9);
+var b=slKrome(isZ,0.1,4.9,0.1);
 var f=sluchch(1,4);
-for(var d=f;d==f;d=sluchch(1,4));
+var d=slKrome(f,1,4);
 var g=sluchch(1,[f,d][[f,d].min()]-1);
 (a-1)*(a-2)*(a-4)||(f-=sluchch(1,4));
 (c-1)*(c-2)*(c-4)||(d-=sluchch(1,4));

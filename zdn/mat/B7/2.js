@@ -1,11 +1,11 @@
-(function() {
+(function(){'use strict';
 
-var a=1;
-var b=1;
-for(;a.isPolnKvadr();a=sluchch(10,99));
-for(;b.isPolnKvadr();b=sluchch(10,99));
+var a=slKrome(isPolnKvadr,10,99);
+do{
+	var b=slKrome(isPolnKvadr,10,99);
+}while(b==a);
+
 var c=['+','-'].shuffle();
-//var d=[a,b].shuffle();
 window.vopr.txt='Найдите значение выражения $$(\\sqrt{'+a+'}'+c[0]+'\\sqrt{'+b+'})(\\sqrt{'+a+'}'+c[1]+'\\sqrt{'+b+'})$$';
 window.vopr.ver=[''+(a-b)];
 

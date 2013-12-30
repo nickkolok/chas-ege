@@ -1,12 +1,11 @@
-(function() {
+(function(){'use strict';
 
-var a=sluchch(2,10);//*sluchiz([-1,1]);
-var b=sluchiz([2,4,5,8,10])*sluchiz([-1,1]);
+var a=sluchch(2,10);
+var b=[2,4,5,8,10].iz().pm();
 var c=sluchiz(latbukv,3);
-var d=sluchch(0,1);
+var d=sl1();
 var f=a/b;
 var g;
-//if(d){g=a;a=b;b=g};
 var slid=Math.random();
 
 window.vopr.dey=function(){
@@ -28,14 +27,12 @@ window.vopr.dey=function(){
 	ct.fillText(c[0],Math.abs(b)*s,0);
 	ct.fillText(c[2],b*s,a*s);
 	$('#ris').attr('id','');
-
-
 };
 
 //(scr.toString().udalPosl().udalPerv(12))
 
-window.vopr.txt='Найдите тангенс угла $'+c.soed()+'$.'
-window.vopr.txt+='<canvas style="float:left;margin-right:1em;" width="480" height="480" id="ris'+slid+'" style="text-align:center"></canvas>';
+window.vopr.txt='Найдите тангенс угла $'+c.soed()+'$.'+
+	'<canvas style="float:left;margin-right:1em;" width="480" height="480" id="ris'+slid+'" style="text-align:center"></canvas>';
 window.vopr.ver=[''+f];
 
 window.vopr.kat['log']=0;

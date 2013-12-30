@@ -1,12 +1,11 @@
-(function() {'use strict';
+(function(){'use strict';
 
 var a=sluchch(2,9);
-for(var b=a;b==a;b=sluchch(2,9));
-
-var v0=sluchch(0,1);
+var b=slKrome(a,2,9);
+var v0=sl1();
 var m=[a*a,a*b,b*b].shuffle();
 
-var y=v0?(
+window.vopr.txt=v0?(
 		'Три ребра прямоугольного параллелепипеда, выходящие из одной вершины, равны '+m[0]+', '+m[1]+' и '+m[2]+'. '+
 		'Найдите ребро равновеликого ему куба.'
 		):(
@@ -14,8 +13,6 @@ var y=v0?(
 		'Ребро куба, равновеликого данному параллелепипеду, равно '+(a*b)+'. '+
 		'Найдите третье ребро параллелепипеда, выходящее из той же вершины.'
 		);
-
-window.vopr.txt=y;
 window.vopr.ver=[''+(v0?(a*b):m[0])];
 
 window.vopr.kat['log']=0;
