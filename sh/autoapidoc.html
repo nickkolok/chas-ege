@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<script>
+		addstyle("../css/main.css");
+	</script>
+	<title>
+		Тренажёр "Час ЕГЭ": документация к библиотекам
+	</title>
+</head>
+<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+	<script>
+		var svinta=1;
+		addscript('../lib/init.js');
+	</script>
+	<div style="margin:2em;">
+	<h1>
+		Документация к библиотекам,
+	</h1>
+	<p>
+		<i>
+			сгенерированная автоматически этими же библиотеками.
+		</i>
+	</p>
+	<h1>
+		Функции (тип Function)
+	</h1>
+	<div id="divFunction"></div>
+	<h1>
+		Массивы (тип Array)
+	</h1>
+	<div id="divArray"></div>
+	</div>
+	<script>
+		function docdiv(spisok,nazv){
+			var rez='';
+			for(var chto in spisok)
+				rez+=docFromCode(spisok[chto],chto);
+			$(nazv).html(rez);
+		}
+		docdiv(docsFunction	,'#divFunction'	);
+		docdiv(docsArray	,'#divArray'	);
+		spoiler();
+	</script>
+	<style>
+		.spoiler-show,.spoiler-hide{
+			float:right;
+		}
+	</style>
+</body>
+</html>
+
