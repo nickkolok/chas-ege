@@ -18,22 +18,30 @@
 		addscript('../lib/init.js');
 	</script>
 	<div style="margin:2em;">
-	<h1>
-		Документация к библиотекам,
-	</h1>
-	<p>
-		<i>
-			сгенерированная автоматически этими же библиотеками.
-		</i>
-	</p>
-	<h1>
-		Функции (тип Function)
-	</h1>
-	<div id="divFunction"></div>
-	<h1>
-		Массивы (тип Array)
-	</h1>
-	<div id="divArray"></div>
+		<h1>
+			Документация к библиотекам,
+		</h1>
+		<p>
+			<i>
+				сгенерированная автоматически этими же библиотеками.
+			</i>
+		</p>
+		<h1>
+			Функции (тип Function)
+		</h1>
+		<div id="divFunction"></div>
+		<h1>
+			Массивы (тип Array)
+		</h1>
+		<div id="divArray"></div>
+		<h1>
+			Числа (тип Number)
+		</h1>
+		<div id="divNumber"></div>
+		<h1>
+			Строки (тип String)
+		</h1>
+		<div id="divString"></div>
 	</div>
 	<script>
 		function docdiv(spisok,nazv){
@@ -44,6 +52,8 @@
 		}
 		docdiv(docsFunction	,'#divFunction'	);
 		docdiv(docsArray	,'#divArray'	);
+		docdiv(docsNumber	,'#divNumber'	);
+		docdiv(docsString	,'#divString'	);
 		spoiler();
 	</script>
 	<style>
