@@ -1,4 +1,4 @@
-escapeFromIframe();
+//escapeFromIframe();
 
 $('#zadaniya').html('');
 for(var i=1;i<=nabor.nZad;i++){
