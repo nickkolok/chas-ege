@@ -17,7 +17,7 @@ input,body,button{
 	left:-4em;
 	top:1.2em;
 	position:relative;
-	height:1.2em;
+	min-height:1.2em;
 }
 .d{
 	min-width:90%;
