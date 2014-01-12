@@ -1,3 +1,5 @@
+dvig.dgn=0;//Отключаем диагностический режим движка. Под корень.
+
 function obnov(){
 	$('#pole').html(window.vopr.txt);
 	window.vopr.dey();
