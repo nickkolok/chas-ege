@@ -1,4 +1,4 @@
-(function() {
+(function(){
 
 var a=sluchch(0.1,2.5,0.1);
 var b=sluchch(2,4);
@@ -17,3 +17,4 @@ window.vopr.kat['prz']=0;
 window.vopr.kat['drs']=0;
 window.vopr.kat['tri']=0;
 })();
+//Обзад 26624

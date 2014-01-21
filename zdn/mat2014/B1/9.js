@@ -1,4 +1,4 @@
-(function() {
+(function(){
 
 var a=sl(1,9);
 var b=sl(2,20);
@@ -17,3 +17,4 @@ window.vopr.kat['prz']=0;
 window.vopr.kat['drs']=0;
 window.vopr.kat['tri']=0;
 })();
+//Обзад 26625

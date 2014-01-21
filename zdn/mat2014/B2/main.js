@@ -1,1 +1,1 @@
-window.nomer=sluchch(7,11);
+window.nomer=[4,6,8,11,].iz();

@@ -1,4 +1,4 @@
-(function() {
+(function(){
 
 var t=sluchch(0,om.meltov.ie.length-1);
 var a=sluchch(20,200,10);
@@ -19,3 +19,4 @@ window.vopr.kat['prz']=0;
 window.vopr.kat['drs']=0;
 window.vopr.kat['tri']=0;
 })();
+//Обзад 26618 26619 26620
