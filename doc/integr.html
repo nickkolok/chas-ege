@@ -39,7 +39,7 @@
 		Всё, что Вам нужно сделать - это добавить в нужное место Вашей страницы несложный код, например:
 	</p>
 	<tt><pre>
-	&lt;script src="//www.math.vsu.ru/chas-ege/lib/browser.js"&gt;
+	&lt;script src="//www.math.vsu.ru/chas-ege/lib/browser.js" charset="UTF-8"&gt;
 	&lt;/script&gt;
 	&lt;script&gt;
 		chas.integrate("https://www.math.vsu.ru/chas-ege/sh/polnmat.html",{
@@ -49,7 +49,7 @@
 				fon:'#fff',
 				menuLinkTarget:'_self',
 			},
-		},"98%",1500);
+		},900,150%,"chas-predupr");
 	&lt;/script&gt;
 	</pre></tt>
 	<p>
@@ -96,6 +96,9 @@
 					Третий и четвёртый параметры - ширина и высота формируемого iframe.
 					По умолчанию 900 и 1500 пикселей соответственно.
 				</li>
+				<li>
+					Пятый параметр - id HTML-элемента, в котором содержится предупреждающее сообщение - на случай, если интеграция не удалась.
+				</li>
 			</ol></li>
 		</ul>
 	</p>
@@ -112,7 +115,7 @@
 				fon:'white',
 				menuLinkTarget:'_self',
 			},
-		},"95%",1500);
+		},900,"150%");
 	</script>
 
 </body>
