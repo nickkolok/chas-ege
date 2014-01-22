@@ -18,8 +18,9 @@ window.vopr.ver=[fn.ver];
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=1;
 window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=1;
+window.vopr.kat['tri']=0;
 })();
 
-//Обзад 26694 26695 26696 26697 
+//Обзад 77473
+//Расширяемо на 77467 77468 77469 77470 77471 77472 77474
 //Николай Авдеев
