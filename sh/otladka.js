@@ -20,6 +20,7 @@ function sozdat(){
 		return;
 	}
 	$('#shabl').attr('src',v);
+	window.vopr.podg();
 	zagr(v+'?'+Math.random());
 	dvig.flObn=0;
 	dvig.startxt=window.vopr.txt;
