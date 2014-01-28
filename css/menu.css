@@ -33,9 +33,6 @@ ul.pureCssMenu {
 	zoom:1;
 	float: left;
 }
-ul.pureCssMenu ul{
-	width:250px;
-}
 ul.pureCssMenu li{
 	display:block;
 	margin:2px 0px 0px 2px;
@@ -162,7 +159,7 @@ ul.pureCssMenu li a.pureCssMenui0:hover{
 	text-align:center;
 }
 ul.pureCssMenum{
-	width:100%;
+	min-width:100%;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 }
