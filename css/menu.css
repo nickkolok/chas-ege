@@ -106,40 +106,8 @@ ul.pureCssMenu li a:hover{
 ul.pureCssMenu li.dis a {
 	color: #AAAAAA !important;
 }
-ul.pureCssMenu img {
-	border: none;
-	float:left;
-	margin-right:3px;
-	width:16px;
-	height:16px;
-}
-ul.pureCssMenu ul img {
-	width:16px;
-	height:16px;
-}
-ul.pureCssMenu img.over{
-	display:none
-}
-ul.pureCssMenu li.dis a:hover img.over{
-	display:none !important
-}
-ul.pureCssMenu li.dis a:hover img.def {
-	display:inline !important
-}
-ul.pureCssMenu li:hover > a img.def  {
-	display:none;
-}
-ul.pureCssMenu li:hover > a img.over {
-	display:inline;
-}
-ul.pureCssMenu a:hover img.over,ul.pureCssMenu a:hover ul img.def,ul.pureCssMenu a:hover a:hover img.over{
-	display:inline;
-}
-ul.pureCssMenu a:hover img.def,ul.pureCssMenu a:hover ul img.over,ul.pureCssMenu a:hover a:hover img.def{
-	display:none
-}
 ul.pureCssMenu a:hover ul{
-	display:block
+	display:block;
 }
 ul.pureCssMenu span{
 	display:block;
