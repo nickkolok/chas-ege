@@ -1,0 +1,9 @@
+if(!window.nabor)
+	window.nabor={};
+window.nabor.importFrom({
+	nZad:6,
+	adres:'../zdn/rus2014/',
+	name:'rus2014',
+	prefix:'G',
+	kat:[],
+});

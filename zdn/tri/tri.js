@@ -1,0 +1,9 @@
+if(!window.nabor)
+	window.nabor={};
+window.nabor.importFrom({
+	nZad:4,
+	adres:'../zdn/tri/',
+	name:'tri',
+	prefix:'E',
+	kat:[],
+});
