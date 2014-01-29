@@ -9,7 +9,7 @@ var galki;
 function sozdGalki(){
 	galki='<tr>';
 	for(var i=1;i<=nabor.nZad;i++){
-		galki+='<td><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'" /><label for="cB'+i+'" >'+nabor.prefix+i+' </label></td>';
+		galki+='<td><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'-'+nabor.name+'" /><label for="cB'+i+'" >'+nabor.prefix+i+' </label></td>';
 	}
 	galki+='<td></td></tr><tr>';
 	for(var i=1;i<=nabor.nZad;i++){

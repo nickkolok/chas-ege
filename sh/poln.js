@@ -1,7 +1,7 @@
 $('#zadaniya').html('');
 for(var i=1;i<=nabor.nZad;i++){
 	document.getElementById('zadaniya').innerHTML+='<tr><td><label for="cB'+i+'" >'+nabor.prefix+i+'</label></td>'+
-	'<td><input type="text" class="kolvo" value="1" id="cB'+i+'" data-jstorage-id="poln-cB'+i+'"></td></tr>';
+	'<td><input type="text" class="kolvo" value="1" id="cB'+i+'" data-jstorage-id="poln-cB'+i+'-'+nabor.name+'"></td></tr>';
 }
 $('#gotov').hide();
 
@@ -76,7 +76,7 @@ function obnov(){
 		strVopr+=
 			'<br/>'+
 			'<div class="d">'+
-				'<div class="b">B'+kategory+(aZ[kategory]==1?'':(iZ[kategory]-aZ[kategory]))+
+				'<div class="b">'+nabor.prefix+kategory+(aZ[kategory]==1?'':(iZ[kategory]-aZ[kategory]))+
 				'</div>'+
 				window.vopr.txt+
 				'<div class="r">'+
