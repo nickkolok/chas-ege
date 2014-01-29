@@ -9,7 +9,7 @@ var galki;
 function sozdGalki(){
 	galki='<tr>';
 	for(var i=1;i<=nabor.nZad;i++){
-		galki+='<td><input type="checkbox" id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'" /><label for="cB'+i+'" >'+nabor.prefix+i+' </label></td>';
+		galki+='<td><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'" /><label for="cB'+i+'" >'+nabor.prefix+i+' </label></td>';
 	}
 	galki+='<td></td></tr><tr>';
 	for(var i=1;i<=nabor.nZad;i++){
@@ -86,7 +86,7 @@ function vybrZad(){
 		if(v[i])
 			w.push(i);
 	if(!w.length){
-		$('#pole').html('Хотя бы один тип заданий должен быть выбран!');
+		$('#pole').html('Хотя бы один тип заданий должен быть выбран! <button onclick="vybrv();">Выбрать все</button>');
 		return;
 	}
 	if($("#radio-sluch").prop("checked"))
