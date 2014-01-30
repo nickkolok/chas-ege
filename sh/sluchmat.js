@@ -4,24 +4,7 @@ var nas=200;
 var zelen={r:0,g:nas,b:0};
 var krasn={r:nas,g:0,b:0};
 var zhelt={r:nas,g:nas,b:0};
-	
-var galki;
-function sozdGalki(){
-	galki='<tr>';
-	for(var i=1;i<=nabor.nZad;i++){
-		galki+='<td><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'-'+nabor.name+'" /><label for="cB'+i+'" >'+nabor.prefix+i+' </label></td>';
-	}
-	galki+='<td></td></tr><tr>';
-	for(var i=1;i<=nabor.nZad;i++){
-		galki+='<td><span id="pB'+i+'"></span></td>';
-	}
-	galki+='<td><span id="pB"></span></td></tr><tr>';
-	for(var i=1;i<=nabor.nZad;i++){
-		galki+='<td><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';	
-	}
-	galki+='<td><span class="kolvoprav" id="pravB"></span><br/>из<br/><span id="vsegB"></span></td></tr>';
-	$('#galki').html(galki);
-}
+
 sozdGalki();
 zagrUmka();
 veroyatn();

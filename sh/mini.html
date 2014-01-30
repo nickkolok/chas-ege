@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<script>
+		addstyle("../css/mini.css");
+	</script>
+	<title>
+		Тренажёр "Час ЕГЭ". Оболочка мини-интеграции.
+	</title>
+</head>
+<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+	<script>
+		addscript('../lib/init.js');
+	</script>
+	<div id="matfak">
+		Тренажёр
+		<a href="https://www.math.vsu.ru/chas-ege/doc/index.html" target="blank">"Час ЕГЭ"</a>
+		разработан при
+		<a href="https://www.math.vsu.ru/" target="blank">Математическом факультете ВГУ</a>.
+	</div>
+	<div id="wrap-pole">
+		<div id="pole" class="vopr">
+		</div>
+	</div>
+	<div id="wrap">
+		<div id="panel">
+			<span id="notv">
+				Ответ:
+			</span>
+			<button id="prov">Ответить!
+			</button>
+			<button id="sozd" onclick="sozdat();">Составить задание
+			</button>
+			<div id="wrap-otv">
+				<input id="otv"/>
+			</div>
+			<div id="protv">
+			</div>
+		</div>
+	</div>
+	<script>
+		addscript('mini.js');
+		addscript('../ext/keyboard/keyboard.js');
+	</script>
+</body>
+</html>

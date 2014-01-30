@@ -1,0 +1,44 @@
+body{
+	padding:0px;
+	margin:0px;
+	min-width:300px;
+}
+#panel{
+	position:fixed;
+	bottom:0px;
+	width:100%;
+	margin:0px;
+	padding:0.5em;
+}
+#wrap{
+	margin:0px;
+}
+#wrap-otv{
+	overflow:hidden;
+	padding-left:0.5em;
+	padding-right:0.5em;
+}
+#sozd,#prov{
+	float:right;
+	margin-right:0.5em;
+}
+#otv{
+	width:100%;
+}
+#notv{
+	float:left;
+}
+#wrap-pole{
+	padding:1em;
+	padding-bottom:3em;
+	overflow:hidden;
+}
+#protv{
+	clear:both;
+	text-align:center;
+}
+#matfak{
+	border:1px grey;
+	background-color:white;
+	text-align:center;
+}
