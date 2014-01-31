@@ -4,7 +4,7 @@ for nbr in `ls -F | grep -e ./ | tr -d \/`
 do
 	cd $nbr;
 	echo 'nabor.upak={' > upak.js
-	for ktg in `ls -F | grep -e ./ | tr -d \/`
+	for ktg in `ls -Fv | grep -e ./ | tr -d \/`
 	do 
 		echo "$ktg :{" >> upak.js
 		cd $ktg
