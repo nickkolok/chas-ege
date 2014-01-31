@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<script>
+		addstyle("../css/pech.css");
+	</script>
+	<title>
+		Тренажёр "Час ЕГЭ": каталог заданий набора
+	</title>
+</head>
+<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+	<script>
+		addscript('../lib/init.js');
+	</script>
+	<div>
+		Ниже для каждого шаблона приводится пример сгенерированного им задания. 
+		Обратите внимание: как правило, один шаблон может генерировать очень много заданий,
+		которые в той или иной мере похожи между собой!
+	</div>
+	<div id="divrez">
+		<script>
+			var masdey=[];
+			var br='<br/>';
+			for(var kat in nabor.upak){
+				document.write(('Категория '+kat).vTag('h1'));
+				for(var zdn in nabor.upak[kat])
+					if(zdn!='main'){
+						vopr.podg();
+						document.write((nabor.adres+kat+'/'+zdn+'.js').vTag('h2'));
+						try{
+							nabor.upak[kat][zdn]();
+							document.write(br+vopr.txt.vTag('div')+br);
+							document.write(('Ответ: '+vopr.ver.join('или')).vTag('div')+'<br/>');
+							masdey.push(vopr.dey);
+						}catch(e){
+							divrez.innerHTML+=e+'<br/>';
+						}
+					}
+			}
+//			$(function(){
+				var len=masdey.length;
+				for(var i=0;i<len;i++){
+					try{
+						masdey[i]();
+					}catch(e){}
+					console.log(i);
+				}
+//			});
+		</script>
+	</div>
+	<style>
+		h1,h2{
+			clear:both;
+			padding-top:2em;
+		}
+	</style>
+</body>
+</html>
+
