@@ -46,3 +46,4 @@ function prover(){
 	$('#sozd').show();
 }
 $('#prov').hide();
+$(sozdat);
