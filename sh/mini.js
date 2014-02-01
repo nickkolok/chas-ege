@@ -46,4 +46,12 @@ function prover(){
 	$('#sozd').show();
 }
 $('#prov').hide();
-$(sozdat);
+
+function trysozd(){
+	if(window.MathJax===undefined){
+		setTimeout(trysozd,10);
+	}else{
+		sozdat();
+	}
+}
+$(trysozd);
