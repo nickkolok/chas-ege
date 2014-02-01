@@ -157,6 +157,7 @@ function prover(){
 	$('#podob').show();
 	sohrUmka();
 	veroyatn();
+	specCounter('sluch');
 }
 
 var v=[];

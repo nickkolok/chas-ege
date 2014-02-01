@@ -62,6 +62,7 @@ function testGotov(){
 	$('#gotov').hide();
 	allCanvasToBackgroundImage();
 	alert('Тесты составлены.\nТеперь Вы можете распечатать их с помощью Вашего браузера.');
+	specCounter('pech');
 }
 
 function udalPanel(){

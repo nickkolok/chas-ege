@@ -44,6 +44,7 @@ function prover(){
 	}
 	$('#prov').hide();
 	$('#sozd').show();
+	specCounter('mini');
 }
 $('#prov').hide();
 

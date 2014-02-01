@@ -119,6 +119,7 @@ function prov(){
 	}
 	$('#but_prov').hide();
 	$('#prov_knopki').append('<br/>Правильно решено '+chislitlx(nVer,'задание')+' из '+aZ.sum());
+	specCounter('poln');
 }
 
 galkiKat('#galki_kat','pech');
