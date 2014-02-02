@@ -6,20 +6,16 @@ var krasn={r:nas,g:0,b:0};
 var zhelt={r:nas,g:nas,b:0};
 
 function sozdGalki(){
-	var galki;
-	galki='<tr>';
+	var galki,g1='',g2='',g3='';
 	for(var i=1;i<=nabor.nZad;i++){
-		galki+='<td><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'-'+nabor.name+'" /><label for="cB'+i+'" >'+nabor.prefix+i+' </label></td>';
+		if(!nabor.vykl[i]){
+			g1+='<td><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'-'+nabor.name+'" /><label for="cB'+i+'" >'+nabor.prefix+i+' </label></td>';
+			g2+='<td><span id="pB'+i+'"></span></td>';
+			g3+='<td><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';	
+		}
 	}
-	galki+='<td></td></tr><tr>';
-	for(var i=1;i<=nabor.nZad;i++){
-		galki+='<td><span id="pB'+i+'"></span></td>';
-	}
-	galki+='<td><span id="pB"></span></td></tr><tr>';
-	for(var i=1;i<=nabor.nZad;i++){
-		galki+='<td><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';	
-	}
-	galki+='<td><span class="kolvoprav" id="pravB"></span><br/>из<br/><span id="vsegB"></span></td></tr>';
+	galki='<tr>'+g1+'<td></td></tr><tr>'+g2+'<td><span id="pB"></span></td></tr><tr>'+g3+
+		'<td><span class="kolvoprav" id="pravB"></span><br/>из<br/><span id="vsegB"></span></td></tr>';
 	$('#galki').html(galki);
 }
 
