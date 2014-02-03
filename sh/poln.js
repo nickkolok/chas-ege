@@ -52,7 +52,6 @@ function testGotov(){
 		}catch(e){};
 	allCanvasToBackgroundImage();
 	$('#panel').remove();
-	podgonIframeHeight();
 	alert('Тест составлен.\nМожно приступать к решению!');
 }
 
@@ -124,10 +123,7 @@ function prov(){
 	$('#but_prov').hide();
 	$('#prov_knopki').append('<br/>Правильно решено '+chislitlx(nVer,'задание')+' из '+aZ.sum());
 	specCounter('poln');
-	podgonIframeHeight();
 }
 
 galkiKat('#galki_kat','pech');
 $('#prov_knopki').hide();
-
-$(podgonIframeHeight);
