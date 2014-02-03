@@ -1,10 +1,5 @@
 #!/bin/sh
-cd css
-./make-css-ui.sh
-cd ..
-cd lib
-./make-chas-uijs.sh
-cd ..
+./dev/build
 java -jar ext/compiler.jar --jscomp_off internetExplorerChecks --charset UTF-8 --js lib/chas-uijs.js --js_output_file lib/chas-uijs.min.js
 ./dev/upak.sh
 git add .
