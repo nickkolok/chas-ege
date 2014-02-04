@@ -1,11 +1,15 @@
+#inf,#menucenter{
+	display:none;
+}
 body{
 	padding:0px;
 	margin:0px;
 	min-width:300px;
+	min-height:100px;
 }
 #panel{
-	position:fixed;
-	bottom:0px;
+	/*position:fixed;*/
+	/*bottom:0px;*/
 	width:100%;
 	margin:0px;
 	padding:0.5em;
