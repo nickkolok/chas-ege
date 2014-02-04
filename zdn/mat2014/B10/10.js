@@ -1,14 +1,15 @@
-(function(){'use strict';
+(function() {
 
-var a=sluchch(0.1,9.9,0.1);
-var b=[[1,6,8,9],[3,4,5,6]].iz();
-
-window.vopr.txt='Радиусы трёх шаров равны $'+(b[0]*a).ts()+'$ , $'+(b[1]*a).ts()+'$ и $'+(b[2]*a).ts()+'$. '+
-	'Найдите радиус шара, объём которого равен сумме их объёмов.';
-window.vopr.ver=[''+(b[3]*a).ts()];
+var a=sluchch(1,99);
+var v1=sluchch(1);
+var b=['площадь сечения, проходящего через середины четырёх рёбер правильного тетраэдра','ребро правильного тетраэдра'];
+var c=[(a*a/4).ts(),a];
+var d=[', равна',' равно'];
+window.vopr.txt=b[v1].toZagl()+d[v1]+' '+c[v1]+'. Найдите '+b[1-v1]+'.';
+window.vopr.ver=[c[1-v1]];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=1;
+window.vopr.kat['drs']=0;
 window.vopr.kat['tri']=0;
 })();

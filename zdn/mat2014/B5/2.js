@@ -1,12 +1,21 @@
 (function() {
 
-var a=sluchch(1,99);
-var v1=sluchch(1);
-var b=['площадь сечения, проходящего через середины четырёх рёбер правильного тетраэдра','ребро правильного тетраэдра'];
-var c=[(a*a/4).ts(),a];
-var d=[', равна',' равно'];
-window.vopr.txt=b[v1].toZagl()+d[v1]+' '+c[v1]+'. Найдите '+b[1-v1]+'.';
-window.vopr.ver=[c[1-v1]];
+var b=sluchiz(latbukv,5); 
+var tA=b[0],tB=b[1],tC=b[2],tD=b[3],tE=b[4];
+var nS=sluchch(11,99);
+var aV=[1,2,3,4];
+aV.shuffle();
+var nS1=nS*aV[0];
+var nS2=nS*aV[1];
+var tTr=[];
+
+tTr[1]='треугольника $'+(sluchiz([sluchiz([tC,tA,tB]).soed()+tD+tE,sluchiz([tD,tE]).soed()+tA+tB]).soed()).mesh()+'$ ';
+tTr[2]='треугольника $'+(sluchiz([tC+tD+tB,tC+tE+tA]).soed()).mesh()+'$ ';
+tTr[3]='трапеции $'+sluchiz([tA+tD+tE+tB,tB+tE+tD+tA])+'$ ';
+tTr[4]='треугольника $'+(tA+tB+tC).mesh()+'$ ';
+
+window.vopr.txt='В треугольнике $'+tA+tB+tC+'$  $'+tD+tE+'$ – средняя линия, $'+tD+' \\in '+tA+tC+'$, $'+tE+' \\in '+tC+tB+'$. Площадь '+tTr[aV[0]]+'равна '+nS1+'. Найдите площадь '+tTr[aV[1]]+'.';
+window.vopr.ver=[''+nS2];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;
