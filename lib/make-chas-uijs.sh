@@ -1,7 +1,9 @@
 #!/bin/sh
 ./make-chas-lib.sh
 
-cat ../ext/jquery-2.1.0.min.js 											> chas-uijs.js
+echo '"use strict";//' > chas-uijs.js
+
+cat ../ext/jquery-2.1.0.min.js 											>> chas-uijs.js
 cat ../ext/jqplot/jquery.jqplot.min.js 									>> chas-uijs.js
 cat ../ext/jqplot/plugins/jqplot.barRenderer.min.js 					>> chas-uijs.js
 cat ../ext/jqplot/plugins/jqplot.categoryAxisRenderer.min.js			>> chas-uijs.js
