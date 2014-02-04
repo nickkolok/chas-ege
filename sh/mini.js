@@ -50,7 +50,7 @@ $('#prov').hide();
 
 function trysozd(){
 	if(window.MathJax===undefined){
-		setTimeout(trysozd,10);
+		setTimeout(trysozd,100);
 	}else{
 		sozdat();
 	}
