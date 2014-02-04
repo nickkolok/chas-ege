@@ -21,12 +21,19 @@
 		Обратите внимание: как правило, один шаблон может генерировать очень много заданий,
 		которые в той или иной мере похожи между собой!
 	</div>
+	<br/>
+	<br/>
 	<div id="divrez">
 		<script>
 			var masdey=[];
 			var br='<br/>';
 			for(var kat in nabor.upak){
-				document.write(('Категория '+kat).vTag('h1'));
+				document.write(
+					('Показать категорию '+kat).vTag('button','class="spoiler-show"')+
+					('Скрыть   категорию '+kat).vTag('button','class="spoiler-hide"')+
+					'<div class="spoiler-body">'+
+					('Категория '+kat).vTag('h1')+
+				'');
 				for(var zdn in nabor.upak[kat])
 					if(zdn!='main'){
 						vopr.podg();
@@ -40,6 +47,7 @@
 							divrez.innerHTML+=e+'<br/>';
 						}
 					}
+					document.write('</div>');
 			}
 			var len=masdey.length;
 			for(var i=0;i<len;i++){
@@ -47,12 +55,17 @@
 					masdey[i]();
 				}catch(e){}
 			}
+			spoiler();
+			$('.spoiler-show').click();
 		</script>
 	</div>
 	<style>
 		h1,h2{
 			clear:both;
 			padding-top:2em;
+		}
+		.spoiler-show,.spoiler-hide,.spoiler-body{
+			margin-top:auto;
 		}
 	</style>
 </body>
