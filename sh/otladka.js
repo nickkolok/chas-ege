@@ -2,6 +2,7 @@ dvig.dgn=0;//Отключаем диагностический режим дви
 
 function obnov(){
 	$('#pole').html(window.vopr.txt);
+	$('#resh').html('');
 	window.vopr.dey();
 	MathJax.Hub.Typeset();
 	$('#otvet').html(window.vopr.ver.join(';;'));
@@ -9,7 +10,7 @@ function obnov(){
 }
 
 function sozdat(){
-	if(!checkJQuery('sozdat()','pole'))
+	if(!checkJQuery ('sozdat()','pole'))
 		return;
 	if(!checkMathJax('sozdat()','pole'))
 		return;
@@ -35,6 +36,8 @@ function prover(){
 		alert('Правильно!');
 	else
 		alert('Неправильно!\nПравильный ответ: '+window.vopr.ver.join(' или '));
+	$('#resh').html(vopr.rsh);
+	MathJax.Hub.Typeset();
 }
 
 function izTextarea(){
