@@ -1,4 +1,4 @@
-//escapeFromIframe();
+'use strict';
 
 $('#zadaniya').html('');
 for(var i=1;i<=nabor.nZad;i++){
@@ -21,8 +21,10 @@ var nZ=1;
 var aZ=[];
 var iZ=[];
 var aV;
+var kZ;
 var strVopr='';
 var strOtv='';
+var strResh='';
 var voprosy=[];
 
 function vse1(){
@@ -76,9 +78,11 @@ function udalPanel(){
 
 function konecSozd(){
 	strOtv='<h2>Ответы</h2>'+strOtv;
+	if(strResh){
+		strOtv+='<h2>Решения</h2>'+strResh;
+	}
 	$('#otv').html(strOtv);
 	$('#rez').html(strVopr);
-//	$('#rez')[0].outerHTML=strVopr;
 	for(var i=voprosy.length;i;i--)
 		try{
 			voprosy[i-1].dey();
@@ -100,7 +104,6 @@ function vNachaloVarianta(){
 	nZ=0;
 	strOtv+='</table>';
 	strVopr+='<p style="page-break-before: always"></p>';
-//	strVopr+='</div>';
 	zadan();
 }
 
@@ -141,6 +144,11 @@ function zadan(){
 function obnov(){
 		strVopr+='<br/><div class="d"><div class="b">'+nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</div>'+window.vopr.txt+'</div>';
 		strOtv+='<tr><td>'+novdate+'</td><td>'+nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
+		if(vopr.rsh)
+			strResh+='<br/><h3>Вариант №'+novdate+', задача '+
+				nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</h3><br/>'+vopr.rsh+
+				'<br/><br/>';
+			
 		voprosy.push(vopr.clone());
 
 		var sdel=aZ.sum()*(aV-nV+1)-iZ.sum();
