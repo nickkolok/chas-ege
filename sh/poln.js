@@ -93,6 +93,7 @@ function obnov(){
 						'Правильный ответ: '+window.vopr.ver.join('или')+
 					'</div>'+
 				'</div>'+
+				('<br/>Решение:<br/><br/>'+vopr.rsh).vTag('div','class="resh-poln"').esli(vopr.rsh)+
 			'</div>';
 		//Копируем вопрос в массив
 		voprosy.push(vopr.clone());
@@ -109,7 +110,6 @@ function prov(){
 	var nVer=0;
 	var nNev=0;
 	var textareas=$('textarea');
-	console.log(textareas[0]);
 	for(var i=0;i<aZ.sum();i++)
 	{
 		if(voprosy[i].vrn.call(voprosy[i],textareas[i].value)){
@@ -121,6 +121,7 @@ function prov(){
 		}
 	}
 	$('#but_prov').hide();
+	$('.resh-poln').show();
 	$('#prov_knopki').append('<br/>Правильно решено '+chislitlx(nVer,'задание')+' из '+aZ.sum());
 	specCounter('poln');
 }
