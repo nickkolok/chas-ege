@@ -43,8 +43,18 @@
 							document.write(br+vopr.txt.vTag('div')+br);
 							document.write(('Ответ: '+vopr.ver.join('или')).vTag('div')+'<br/>');
 							masdey.push(vopr.dey);
+							if(vopr.rsh){
+								document.write(
+									('Показать решение ').vTag('button','class="spoiler-show"')+
+									('Скрыть   решение ').vTag('button','class="spoiler-hide"')+
+									'<div class="spoiler-body">'+
+									'Решение: '+br+
+									vopr.rsh+
+									'</div>'+
+								'');
+								
+							}
 						}catch(e){
-							divrez.innerHTML+=e+'<br/>';
 						}
 					}
 					document.write('</div>');
