@@ -37,11 +37,16 @@ function sozdat(){
 
 function prover(){
 	$('#protv').show();
+	var txt='';
 	if(slvopr.vrn($('#otv').val())){
-		$('#protv').html('Правильно!');
+		txt='Правильно!';
 	}else{
-		$('#protv').html('Неправильно! Правильный ответ: '+slvopr.ver.join(' или '));
+		txt='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
 	}
+	if(vopr.rsh)
+		txt+='<br/><br/>'+vopr.rsh;
+	$('#protv').html(txt);
+	MathJax.Hub.Typeset();
 	$('#prov').hide();
 	$('#sozd').show();
 	specCounter('mini');
