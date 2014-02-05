@@ -142,13 +142,18 @@ function zdnSost(){
 function prover(){
 	$('#protv').show();
 	umka.vsego[n]++;
+	var txt='';
 	if(slvopr.vrn($('#otv').val())){
-		$('#protv').html('Правильно!');
-		umka.verno[n]++;
+		txt='Правильно!';
 	}else{
-		$('#protv').html('Неправильно!<br/>Правильный ответ: '+slvopr.ver.join(' или '));
+		txt='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
 	}
-	$('#prov').hide();
+	if(vopr.rsh)
+		txt+='<br/><br/>'+vopr.rsh;
+	$('#protv').html(txt);
+	MathJax.Hub.Typeset();
+
+
 	$('#sozd').show();
 	$('#podob').show();
 	sohrUmka();
