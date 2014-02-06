@@ -36,9 +36,13 @@ function sozdat(){
 }
 
 function prover(){
+	var kand=$('#otv').val();
+	if(kand==='')
+		if(!confirm('Вы не ввели ответ, нажмите "Отмена" для того, чтобы ввести ответ или "ОК", чтобы сдаться и посмотреть ответ.'))
+			return;
 	$('#protv').show();
 	var txt='';
-	if(slvopr.vrn($('#otv').val())){
+	if(slvopr.vrn(kand)){
 		txt='Правильно!';
 	}else{
 		txt='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
