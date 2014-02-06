@@ -1,15 +1,8 @@
 'use strict';
 
-$('#zadaniya').html('');
-for(var i=1;i<=nabor.nZad;i++){
-	if(!nabor.vykl[i])
-		document.getElementById('zadaniya').innerHTML+='<tr><td><label for="cB'+i+'" >'+nabor.prefix+i+'</label></td>'+
-			'<td><input type="text" class="kolvo" value="1" id="cB'+i+'" data-jstorage-id="pech-cB'+i+'-'+nabor.name+'"></td></tr>';
-	else
-		document.getElementById('zadaniya').innerHTML+='<tr hidden><td hidden><input type="text" value="0" id="cB'+i+'"></td></tr>';
-}
-
+$('#zadaniya').html(sozdKolvoHtml('pech'));
 $('#gotov').hide();
+
 var vr1=svinta?100:200;
 var vr2=svinta?100:1500;
 

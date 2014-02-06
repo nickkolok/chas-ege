@@ -1,11 +1,6 @@
-$('#zadaniya').html('');
-for(var i=1;i<=nabor.nZad;i++){
-	if(!nabor.vykl[i])
-		document.getElementById('zadaniya').innerHTML+='<tr><td><label for="cB'+i+'" >'+nabor.prefix+i+'</label></td>'+
-			'<td><input type="text" class="kolvo" value="1" id="cB'+i+'" data-jstorage-id="pech-cB'+i+'-'+nabor.name+'"></td></tr>';
-	else
-		document.getElementById('zadaniya').innerHTML+='<tr hidden><td hidden><input type="text" value="0" id="cB'+i+'"></td></tr>';
-}
+'use strict';
+
+$('#zadaniya').html(sozdKolvoHtml('poln'));
 $('#gotov').hide();
 
 window.vopr.txt='';
@@ -13,11 +8,11 @@ var nV=1;
 var kategory=1;
 var aZ=[];
 var iZ=[];
+var kZ;
 var aV;
 var strVopr='';
 var strOtv='';
 var voprosy=[];
-var kategory=1;
 
 function vse1(){
 	$('.kolvo').val(1);
