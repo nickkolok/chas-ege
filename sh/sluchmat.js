@@ -9,9 +9,16 @@ function sozdGalki(){
 	var galki,g1='',g2='',g3='';
 	for(var i=1;i<=nabor.nZad;i++){
 		if(!nabor.vykl[i]){
-			g1+='<td><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'-'+nabor.name+'" /><label for="cB'+i+'" >'+nabor.prefix+i+' </label></td>';
-			g2+='<td><span id="pB'+i+'"></span></td>';
-			g3+='<td><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';	
+			var title='';
+			window.comment='';
+			try{
+				nabor.upak[nabor.prefix+i].main();
+				title=' title="'+window.comment+'"';
+			}catch(e){}
+			
+			g1+='<td'+title+'><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'-'+nabor.name+'" /><label for="cB'+i+'" >'+nabor.prefix+i+' </label></td>';
+			g2+='<td'+title+'><span id="pB'+i+'"></span></td>';
+			g3+='<td'+title+'><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';	
 		}
 	}
 	galki='<tr>'+g1+'<td></td></tr><tr>'+g2+'<td><span id="pB"></span></td></tr><tr>'+g3+
