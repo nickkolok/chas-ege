@@ -1,2 +1,0 @@
-Firefox source code is available from the SeaMonkey Portable page:
-http://portableapps.com/apps/internet/seamonkey_portable
