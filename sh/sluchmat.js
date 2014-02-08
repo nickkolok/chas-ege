@@ -4,6 +4,8 @@ var nas=200;
 var zelen={r:0,g:nas,b:0};
 var krasn={r:nas,g:0,b:0};
 var zhelt={r:nas,g:nas,b:0};
+var flProv=1;
+
 
 function sozdGalki(){
 	var galki,g1='',g2='',g3='';
@@ -144,6 +146,7 @@ function zdnSost(){
 	$('#podob').hide();
 	setVKI();
 	VKI_attach(document.getElementById('otv'));
+	flProv=0;
 }
 
 function prover(){
@@ -170,6 +173,7 @@ function prover(){
 	sohrUmka();
 	veroyatn();
 	specCounter('sluch');
+	flProv=1;
 }
 
 var v=[];
@@ -204,3 +208,12 @@ $('#prov').hide();
 $('#podob').hide();
 galkiKat('#galki_kat','sluch');
 spoiler();
+
+$("#otv").keyup(function(event) {
+	if(nabor.mnogostrOtvet || flProv)
+		return true;
+	if(event.keyCode==13){
+		prover();
+		return false;
+	}
+});
