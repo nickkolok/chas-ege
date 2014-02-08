@@ -148,6 +148,7 @@ function zdnSost(){
 	setVKI();
 	VKI_attach(document.getElementById('otv'));
 	flProv=0;
+	$('#bnomer').show().html(nabor.prefix+n);
 }
 
 function prover(){

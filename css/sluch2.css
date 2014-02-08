@@ -13,6 +13,7 @@ body{
 	padding:2em;
 	height:auto;
 	overflow:hidden;
+	padding-top:1em;
 }
 #wrap2{
 	margin-left:auto;
@@ -38,4 +39,18 @@ input,body,button{
 #galki{
 	margin-left:auto;
 	margin-right:auto;
+}
+#bwrap{
+	 overflow:hidden;
+	 margin-left:2em;
+	 margin-top:1em;
+	 padding:0;
+}
+#bnomer{
+	display:none;
+	border:1px solid;
+	width:3em;
+	font-weight:bold;
+	text-align:center;
+	padding:0;
 }
