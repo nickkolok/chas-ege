@@ -40,6 +40,7 @@ function zapusk(){
 }
 
 function testGotov(){
+	vazhnOn();
 	$('#gotov').hide();
 	for(var i=0;i<aZ.sum();i++)
 		try{
@@ -102,6 +103,7 @@ function obnov(){
 }
 
 function prov(){
+	vazhnOff();
 	var nVer=0;
 	var nNev=0;
 	var textareas=$('textarea');

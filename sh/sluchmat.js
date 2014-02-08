@@ -132,6 +132,7 @@ function podobnoe(){
 }
 
 function zdnSost(){
+	vazhnOn();
 	if(!checkJQuery('sozdat()','pole'))
 		return;
 	if(!checkMathJax('sozdat()','pole'))
@@ -150,6 +151,7 @@ function zdnSost(){
 }
 
 function prover(){
+	vazhnOff();
 	var kand=$('#otv').val();
 	if(kand==='')
 		if(!confirm('Вы не ввели ответ, нажмите "Отмена" для того, чтобы ввести ответ или "ОК", чтобы сдаться и посмотреть ответ.'))
