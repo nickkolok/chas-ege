@@ -47,8 +47,7 @@ h2{
 	margin:1px;
 }
 .otstup{
-	padding-left:2em;
-	padding-right:2em;
+	padding:2em;
 }
 .smallerfont{
 	font-size:75%;
@@ -64,6 +63,22 @@ h2{
 	.noprint{
 		visibility:hidden;
 	}
+}
+.normtabl{
+	border-spacing:0px;
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+}
+.normtabl td, th{
+	border:1px solid #000000;
+	margin: 0px;
+	padding:3px;
+}
+.pagewidth{
+	width:21cm;
+	overflow-x:hidden;
+	margin-left:auto;
+	margin-right:auto;
 }
 ul.pureCssMenu ul{
 	display:none;
