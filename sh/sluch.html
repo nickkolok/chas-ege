@@ -23,7 +23,7 @@
 	<div id="wrap">
 		<div id="protv">
 		</div>
-		<div id="panel">
+		<div id="panel" class="polosa">
 			<div id="wrap2">
 				<span id="notv">
 					Ответ:
@@ -37,21 +37,24 @@
 				<button id="podob" onclick="podobnoe();">Похожее задание
 				</button>
 			</div>
-			<table id="galki">
-			</table>
-			<br/>
-			<button class="spoiler-show" data-jstorage-id="sluch-nastr-show">Показать настройки...</button>
-			<button class="spoiler-hide" data-jstorage-id="sluch-nastr-hide">Скрыть настройки</button>
-			<div    class="spoiler-body" data-jstorage-id="sluch-nastr-body" data-jstorage-ne="ih">
-				<div id="galki_kat">
+			<div class="forscroll">
+				<table id="galki" class="smallerfont fon zakrugl">
+				</table>
+			</div>
+			<div class="smallerfont">
+				<button class="spoiler-show" data-jstorage-id="sluch-nastr-show">Показать настройки...</button>
+				<button class="spoiler-hide" data-jstorage-id="sluch-nastr-hide">Скрыть настройки</button>
+				<div    class="spoiler-body" data-jstorage-id="sluch-nastr-body" data-jstorage-ne="ih">
+					<div id="galki_kat">
+					</div>
+					<button onclick="vybrv()">Выбрать все задания</button>
+					<button onclick="vybr0()">Снять все задания</button>
+					<button onclick="sbrosUmka(veroyatn)">Сбросить статистику</button>
+					<br/>
+					<input type="radio" name="metod" value="sluch" id="radio-sluch" data-jstorage-id="sluch-radio-sluch"/> <label for="radio-sluch">Задания в случайном порядке</label>
+					<input type="radio" name="metod" value="porad" id="radio-porad" data-jstorage-id="sluch-radio-porad"/> <label for="radio-porad">Задания по порядку</label>
+					<input type="radio" name="metod" value="umka"  id="radio-umka"  data-jstorage-id="sluch-radio-umka "/> <label for="radio-umka" >"Умка"</label>
 				</div>
-				<button onclick="vybrv()">Выбрать все задания</button>
-				<button onclick="vybr0()">Снять все задания</button>
-				<button onclick="sbrosUmka(veroyatn)">Сбросить статистику</button>
-				<br/>
-				<input type="radio" name="metod" value="sluch" id="radio-sluch" data-jstorage-id="sluch-radio-sluch"/> <label for="radio-sluch">Задания в случайном порядке</label>
-				<input type="radio" name="metod" value="porad" id="radio-porad" data-jstorage-id="sluch-radio-porad"/> <label for="radio-porad">Задания по порядку</label>
-				<input type="radio" name="metod" value="umka"  id="radio-umka"  data-jstorage-id="sluch-radio-umka "/> <label for="radio-umka" >"Умка"</label>
 			</div>
 		</div>
 	</div>

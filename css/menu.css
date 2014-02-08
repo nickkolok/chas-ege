@@ -19,7 +19,6 @@ ul.pureCssMenu,ul.pureCssMenu ul {
 	margin:0px;
 	list-style:none;
 	padding:0px 2px 2px 0px;
-	background-color:pink;
 	background-repeat:repeat;
 	border-color:#EEEEEE #AAAAAA #AAAAAA #FFFFFF;
 	border-width:2px;
@@ -43,13 +42,12 @@ ul.pureCssMenu a:active, ul.pureCssMenu a:focus {
 ul.pureCssMenu a, ul.pureCssMenu li.dis a:hover, ul.pureCssMenu li.sep a:hover {
 	display:block;
 	vertical-align:middle;
-	background-color:pink;
 	border-width:0px;
 	border-style:solid;
 	text-align:left;
 	text-decoration:none;
 	padding:3px;
-	font:bold 'liberation_sans';
+	_font:bold 'liberation_sans';
 	color: #000000;
 	text-decoration:none;
 	cursor:pointer;
@@ -89,15 +87,12 @@ ul.pureCssMenu li:hover{
 	position:relative;
 }
 ul.pureCssMenu li:hover>a{
-	background-color:#FFFFCC;
 	border-style:solid;
-	font:bold 'liberation_sans';
 	color: #091B2D;
 	text-decoration:none;
 }
 ul.pureCssMenu li a:hover{
 	position:relative;
-	background-color:#FFFFCC;
 	border-style:solid;
 	font:bold 'liberation_sans';
 	color: #091B2D;
@@ -113,18 +108,13 @@ ul.pureCssMenu span{
 	display:block;
    padding-right:13px;
   }
-ul.pureCssMenu li a.pureCssMenui0{
-	background-color:pink;
-}
-ul.pureCssMenu li a.pureCssMenui0:hover{
-	background-color:#FFFFCC;
-}
 #menucenter{
 	width:100%;
 	display:block;
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
+	font:14px bold 'liberation_sans';
 }
 ul.pureCssMenum{
 	min-width:100%;

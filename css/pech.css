@@ -1,7 +1,5 @@
 body{
-	padding:1em;
 	min-height:100%;
-	background-color:#ffffcc;
 }
 input,body,button{
 	font-size:16px;
@@ -66,16 +64,6 @@ div.d{
 }
 #rez tr td{
 	vertical-align:top;
-}
-.normtabl{
-	border-spacing:0px;
-	margin-top:0.5em;
-	margin-bottom:0.5em;
-}
-.normtabl td, th{
-	border:1px solid #000000;
-	margin: 0px;
-	padding:3px;
 }
 em{
 	margin-right:0.5em;

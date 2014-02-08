@@ -6,19 +6,22 @@
 }
 body{
 	min-width:800px;
+	margin:0;
+	padding:0;
 }
 #inf{
-	border:2px dotted;
 	-moz-box-sizing:border-box;
-	padding:0.5em;
+	padding:0.2em;
 	box-sizing:border-box;
 	width:100%;
-	margin-bottom:2em;
 	clear:left;
 	position:relative;
 }
 #sovety{
 	width:100%;
+}
+#panel{
+	padding:1em;
 }
 .lisov{
 	text-align:center;
@@ -32,9 +35,40 @@ h1{
 h2{
 	font-size:128%;
 }
-
+.polosa{
+	margin:1px;
+}
+.otstup{
+	padding:2em;
+}
+.smallerfont{
+	font-size:75%;
+}
+.zakrugl{
+	border-radius:1em;
+	padding:1em;
+}
+.forscroll{
+	overflow:auto;
+}
 @media print{
 	.noprint{
 		visibility:hidden;
 	}
+}
+.normtabl{
+	border-spacing:0px;
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+}
+.normtabl td, th{
+	border:1px solid #000000;
+	margin: 0px;
+	padding:3px;
+}
+.pagewidth{
+	width:21cm;
+	overflow-x:hidden;
+	margin-left:auto;
+	margin-right:auto;
 }

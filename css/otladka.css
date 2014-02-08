@@ -11,7 +11,6 @@
 	top:-9999px;
 }
 body{
-	background-color:#ffffcc;
 	padding:0;
 	margin:0;
 	min-height:100%;
@@ -29,22 +28,13 @@ body{
 #otv{
 		width:10em;
 }
-#panel{
-	border-radius: 2.5em;
-	background-color:pink;
-	margin-left:5%;
-	margin-right:5%;
-	padding:1em;
-}
 #wrap{
 	text-align: center;
-	margin-left:auto;
-	margin-right:auto;
 	font-size:20px;
 }
 input,body,button{
-		font-size:20px;
-		font-family:monospace;
+	font-size:20px;
+	font-family:monospace;
 }
 #textarea-script{
 	max-width:100%;

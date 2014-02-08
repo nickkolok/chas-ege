@@ -22,13 +22,6 @@ body{
 #otv{
 	width:10em;
 }
-#panel{
-	border-radius: 2.5em;
-	background-color:pink;
-	margin-left:5%;
-	margin-right:5%;
-	padding:1em;
-}
 #wrap{
 	text-align: center;
 	margin-left:auto;
@@ -38,6 +31,9 @@ body{
 input,body,button{
 	font-size:20px;
 	font-family:'liberation_mono',monospace;
+}
+.smallerfont > input,button{
+	font-size:100%;
 }
 #galki{
 	margin-left:auto;

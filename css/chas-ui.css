@@ -14,19 +14,22 @@
 }
 body{
 	min-width:800px;
+	margin:0;
+	padding:0;
 }
 #inf{
-	border:2px dotted;
 	-moz-box-sizing:border-box;
-	padding:0.5em;
+	padding:0.2em;
 	box-sizing:border-box;
 	width:100%;
-	margin-bottom:2em;
 	clear:left;
 	position:relative;
 }
 #sovety{
 	width:100%;
+}
+#panel{
+	padding:1em;
 }
 .lisov{
 	text-align:center;
@@ -40,7 +43,23 @@ h1{
 h2{
 	font-size:128%;
 }
-
+.polosa{
+	margin:1px;
+}
+.otstup{
+	padding-left:2em;
+	padding-right:2em;
+}
+.smallerfont{
+	font-size:75%;
+}
+.zakrugl{
+	border-radius:1em;
+	padding:1em;
+}
+.forscroll{
+	overflow:auto;
+}
 @media print{
 	.noprint{
 		visibility:hidden;
@@ -67,7 +86,6 @@ ul.pureCssMenu,ul.pureCssMenu ul {
 	margin:0px;
 	list-style:none;
 	padding:0px 2px 2px 0px;
-	background-color:pink;
 	background-repeat:repeat;
 	border-color:#EEEEEE #AAAAAA #AAAAAA #FFFFFF;
 	border-width:2px;
@@ -91,13 +109,12 @@ ul.pureCssMenu a:active, ul.pureCssMenu a:focus {
 ul.pureCssMenu a, ul.pureCssMenu li.dis a:hover, ul.pureCssMenu li.sep a:hover {
 	display:block;
 	vertical-align:middle;
-	background-color:pink;
 	border-width:0px;
 	border-style:solid;
 	text-align:left;
 	text-decoration:none;
 	padding:3px;
-	font:bold 'liberation_sans';
+	_font:bold 'liberation_sans';
 	color: #000000;
 	text-decoration:none;
 	cursor:pointer;
@@ -137,15 +154,12 @@ ul.pureCssMenu li:hover{
 	position:relative;
 }
 ul.pureCssMenu li:hover>a{
-	background-color:#FFFFCC;
 	border-style:solid;
-	font:bold 'liberation_sans';
 	color: #091B2D;
 	text-decoration:none;
 }
 ul.pureCssMenu li a:hover{
 	position:relative;
-	background-color:#FFFFCC;
 	border-style:solid;
 	font:bold 'liberation_sans';
 	color: #091B2D;
@@ -161,18 +175,13 @@ ul.pureCssMenu span{
 	display:block;
    padding-right:13px;
   }
-ul.pureCssMenu li a.pureCssMenui0{
-	background-color:pink;
-}
-ul.pureCssMenu li a.pureCssMenui0:hover{
-	background-color:#FFFFCC;
-}
 #menucenter{
 	width:100%;
 	display:block;
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
+	font:14px bold 'liberation_sans';
 }
 ul.pureCssMenum{
 	min-width:100%;

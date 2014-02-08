@@ -5,9 +5,6 @@
 	<script>
 		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
 	</script>
-	<script>
-		addstyle("../css/pech.css");
-	</script>
 	<title>
 		Тренажёр "Час ЕГЭ": склонение существительных
 	</title>
@@ -16,222 +13,224 @@
 	<script>
 		addscript('../lib/init.js');
 	</script>
-	<h2>
-		Инструкция
-	</h2>
-	<ol>
-		<li>
-			Введите существительное в именительном падеже:
-			<input type="text" id="slovo"/>
-			Программа предположит падежные формы и некоторые другие характеристики существительного. 
-			<div style="color:red;" id="est">Слово уже есть в словаре. Отправляйте нам данные только в том случае, если вносите исправления.</div>
-		</li>
-<!--		<li>
-			Нажмите <button onclick="sklon();">эту кнопку</button>, и программа предположит падежные формы и некоторые другие характеристики существительного. 
--->		</li>
-		<li id="svoystva">
-			При необходимости откорректируйте их:
-			<div>
-				<span>
-					<select size="1" id="sel_sklon">
-						<option value="1">
-							Первого склонения
-						</option>
-						<option value="2">
-							Второго склонения
-						</option>
-						<option value="3">
-							Третьего склонения
-						</option>
-						<option value="0">
-							Несклоняемое существительное
-						</option>
-						<option value="4">
-							Разносклоняемое существительное
-						</option>
-					</select>
-				</span>
-				<span>
-					<select size="1" id="sel_rod">
-						<option value="0">
-							Мужского рода
-						</option>
-						<option value="1">
-							Женского рода
-						</option>
-						<option value="2">
-							Среднего рода
-						</option>
-						<option value="3">
-							Употребляется только во множественном числе*
-						</option>
-					</select>
-				</span>
-				<span>
-					<input type="checkbox" id="odu" style="width:auto;"/>
-					<label for="odu">
-						Одушевлённое
-					</label>
-				</span>
-				<span>
-					<input type="checkbox" id="sbs" style="width:auto;"/>
-					<label for="sbs">
-						Собственное
-					</label>
-				</span>
-				<table class="normtabl" width="95%" id="padtabl">
+	<div class="otstup">
+		<h2>
+			Инструкция
+		</h2>
+		<ol>
+			<li>
+				Введите существительное в именительном падеже:
+				<input type="text" id="slovo"/>
+				Программа предположит падежные формы и некоторые другие характеристики существительного. 
+				<div style="color:red;" id="est">Слово уже есть в словаре. Отправляйте нам данные только в том случае, если вносите исправления.</div>
+			</li>
+	<!--		<li>
+				Нажмите <button onclick="sklon();">эту кнопку</button>, и программа предположит падежные формы и некоторые другие характеристики существительного. 
+	-->		</li>
+			<li id="svoystva">
+				При необходимости откорректируйте их:
+				<div>
+					<span>
+						<select size="1" id="sel_sklon">
+							<option value="1">
+								Первого склонения
+							</option>
+							<option value="2">
+								Второго склонения
+							</option>
+							<option value="3">
+								Третьего склонения
+							</option>
+							<option value="0">
+								Несклоняемое существительное
+							</option>
+							<option value="4">
+								Разносклоняемое существительное
+							</option>
+						</select>
+					</span>
+					<span>
+						<select size="1" id="sel_rod">
+							<option value="0">
+								Мужского рода
+							</option>
+							<option value="1">
+								Женского рода
+							</option>
+							<option value="2">
+								Среднего рода
+							</option>
+							<option value="3">
+								Употребляется только во множественном числе*
+							</option>
+						</select>
+					</span>
+					<span>
+						<input type="checkbox" id="odu" style="width:auto;"/>
+						<label for="odu">
+							Одушевлённое
+						</label>
+					</span>
+					<span>
+						<input type="checkbox" id="sbs" style="width:auto;"/>
+						<label for="sbs">
+							Собственное
+						</label>
+					</span>
+					<table class="normtabl" width="95%" id="padtabl">
+							<tr>
+								<td>
+								</td>
+								<td>
+									Единственное число
+								</td>
+								<td>
+									Множественное число
+								</td>
+								<td>
+									Неверная форма
+									<br/>
+									единственного числа
+									<br/>
+									(необязательно)
+								</td>
+								<td>
+									Неверная форма
+									<br/>
+									множественного числа
+									<br/>
+									(необязательно)
+								</td>
+							</tr>
 						<tr>
 							<td>
+								Именительный падеж
 							</td>
 							<td>
-								Единственное число
+								<input type="text" id="ie" class="pad_neobh"/>
 							</td>
 							<td>
-								Множественное число
+								<input type="text" id="im" class="pad_neobh"/>
 							</td>
 							<td>
-								Неверная форма
-								<br/>
-								единственного числа
-								<br/>
-								(необязательно)
+								<input type="text" id="ien"/>
 							</td>
 							<td>
-								Неверная форма
-								<br/>
-								множественного числа
-								<br/>
-								(необязательно)
+								<input type="text" id="imn"/>
 							</td>
 						</tr>
-					<tr>
-						<td>
-							Именительный падеж
-						</td>
-						<td>
-							<input type="text" id="ie" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="im" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="ien"/>
-						</td>
-						<td>
-							<input type="text" id="imn"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Родительный падеж
-						</td>
-						<td>
-							<input type="text" id="re" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="rm" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="ren"/>
-						</td>
-						<td>
-							<input type="text" id="rmn"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Дательный падеж
-						</td>
-						<td>
-							<input type="text" id="de" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="dm" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="den"/>
-						</td>
-						<td>
-							<input type="text" id="dmn"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Винительный падеж
-						</td>
-						<td>
-							<input type="text" id="ve" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="vm" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="ven"/>
-						</td>
-						<td>
-							<input type="text" id="vmn"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Творительный падеж
-						</td>
-						<td>
-							<input type="text" id="te" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="tm" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="ten"/>
-						</td>
-						<td>
-							<input type="text" id="tmn"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Предложный падеж
-						</td>
-						<td>
-							<input type="text" id="pe" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="pm" class="pad_neobh"/>
-						</td>
-						<td>
-							<input type="text" id="pen"/>
-						</td>
-						<td>
-							<input type="text" id="pmn"/>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</li>
-		<li>
-			Отправьте весь текст из этого окошка нам в группу или на <a href="mailto:nickkolok@mail.ru">nickkolok@mail.ru</a>
-			<br/>
-			<textarea id="kod" rows="21" cols="80">
-			</textarea>
-		</li>
-		<li>
-			Спасибо! Когда мы получим код, мы Вам обязательно ответим и включим слово в словарь!
-		</li>
-		<li>
-			При желании повторите :-)
-		</li>
-	</ol>
-	<p>
-		P. S. Сейчас в словаре уже <span id="kolvoslov"></span>!
-	</p>
-	<br/>
-	<h3>
-		Примечания
-	</h3>
-	<p>
-		* В таком случае единственное число считайте равным множественному
-	</p>
+						<tr>
+							<td>
+								Родительный падеж
+							</td>
+							<td>
+								<input type="text" id="re" class="pad_neobh"/>
+							</td>
+							<td>
+								<input type="text" id="rm" class="pad_neobh"/>
+							</td>
+							<td>
+								<input type="text" id="ren"/>
+							</td>
+							<td>
+								<input type="text" id="rmn"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Дательный падеж
+							</td>
+							<td>
+								<input type="text" id="de" class="pad_neobh"/>
+							</td>
+							<td>
+								<input type="text" id="dm" class="pad_neobh"/>
+							</td>
+							<td>
+								<input type="text" id="den"/>
+							</td>
+							<td>
+								<input type="text" id="dmn"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Винительный падеж
+							</td>
+							<td>
+								<input type="text" id="ve" class="pad_neobh"/>
+							</td>
+							<td>
+								<input type="text" id="vm" class="pad_neobh"/>
+							</td>
+							<td>
+								<input type="text" id="ven"/>
+							</td>
+							<td>
+								<input type="text" id="vmn"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Творительный падеж
+							</td>
+							<td>
+								<input type="text" id="te" class="pad_neobh"/>
+							</td>
+							<td>
+								<input type="text" id="tm" class="pad_neobh"/>
+							</td>
+							<td>
+								<input type="text" id="ten"/>
+							</td>
+							<td>
+								<input type="text" id="tmn"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Предложный падеж
+							</td>
+							<td>
+								<input type="text" id="pe" class="pad_neobh"/>
+							</td>
+							<td>
+								<input type="text" id="pm" class="pad_neobh"/>
+							</td>
+							<td>
+								<input type="text" id="pen"/>
+							</td>
+							<td>
+								<input type="text" id="pmn"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</li>
+			<li>
+				Отправьте весь текст из этого окошка нам в группу или на <a href="mailto:nickkolok@mail.ru">nickkolok@mail.ru</a>
+				<br/>
+				<textarea id="kod" rows="21" cols="80">
+				</textarea>
+			</li>
+			<li>
+				Спасибо! Когда мы получим код, мы Вам обязательно ответим и включим слово в словарь!
+			</li>
+			<li>
+				При желании повторите :-)
+			</li>
+		</ol>
+		<p>
+			P. S. Сейчас в словаре уже <span id="kolvoslov"></span>!
+		</p>
+		<br/>
+		<h3>
+			Примечания
+		</h3>
+		<p>
+			* В таком случае единственное число считайте равным множественному
+		</p>
+	</div>
 	<style>
 		input{
 			width:95%;
