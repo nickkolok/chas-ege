@@ -1,2 +1,2 @@
-window.nomer=sluchch(1,23);
+window.nomer=sluchch(1,24);
 window.comment='Экстремум функции. Точки экстремума функции.';
