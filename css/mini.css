@@ -8,9 +8,6 @@ body{
 	min-height:100px;
 }
 #panel{
-	/*position:fixed;*/
-	/*bottom:0px;*/
-	width:100%;
 	margin:0px;
 	padding:0.5em;
 }
