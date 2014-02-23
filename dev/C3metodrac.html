@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+  <title>
+	  Метод рационализации
+  </title>
+</head>
+<body>
+	<script>
+		document.write('<script src="../lib/init.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<div class="otstup">
+		<h2>
+			Метод рационализации
+		</h2>
+		<ul>
+			<li>
+				$\mathrm{sgn}(\log_a x)=\mathrm{sgn} ( (a-1) (x-1) )$
+				<br/>
+				Следствие:
+			</li>
+			<li>
+				$
+				\mathrm{sgn}(\log_a x - \log_a y)=
+				\mathrm{sgn}(\log_a \frac{x}{y})=
+				\mathrm{sgn} ( (a-1) (\frac{x}{y}-1))=
+				\mathrm{sgn} ( (a-1) (x-y) )
+				$
+				Последний переход возможен, т. к. по ОДЗ логарифма $\mathrm{sgn}(y)=1$
+			</li>
+			<li>
+				$\mathrm{sgn}(a^x - a^y)=\mathrm{sgn} ( (a-1) (x-y))$
+				<br/>
+				Следствие:
+			</li>
+		</ul>
+		<h3>
+			Пример применения:
+		</h3>
+		<p>
+			Неравнество
+			$$\log_{x+7}(x^2-x+3) \leq \log_{x+7}(x-5)$$
+			равносильно неравенству
+			$$\log_{x+7}(x^2-x+3) - \log_{x+7}(x-5) \leq 0$$
+			а следовательно, и неравенству 
+			$$((x+7)-1)((x^2-x+3) - (x-5)) \leq 0$$
+			(с учётом ОДЗ!)
+			
+		</p>
+		<p>
+			Неравнество
+			$$(x+7)^{x^2-x+3} \leq (x+7)^{x-5}$$
+			равносильно неравенству
+			$$(x+7)^{x^2-x+3} - (x+7)^{x-5} \leq 0$$
+			а следовательно, и неравенству 
+			$$((x+7)-1)((x^2-x+3) - (x-5)) \leq 0$$
+			(с учётом ОДЗ!)
+			
+		</p>
+	</div>
+</body>
+</html>
