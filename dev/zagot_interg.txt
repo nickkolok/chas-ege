@@ -1,0 +1,17 @@
+
+<div id="chas-predupr" style="color:red;font-size:200%;">
+Вероятно, Ваш браузер не поддерживается. Попробуйте скачать 
+<a href="http://mozilla-russia.org/">Firefox</a>
+</div>
+
+<script src="//www.math.vsu.ru/chas-ege/lib/browser.js" charset="UTF-8"></script>
+<script>
+  chas.integrate("https://www.math.vsu.ru/chas-ege/sh/mini.html",{
+    mini:{
+      src:[
+        "../zdn/mat2014/B5/7.js",
+      ],
+    },
+  },"100%",200,'chas-predupr');
+</script>
+
