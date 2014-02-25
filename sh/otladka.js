@@ -27,15 +27,18 @@ function sozdat(){
 	dvig.startxt=window.vopr.txt;
 	dvig.obnov(obnov);
 	$('#otv').val('');
+	$('#otvet').hide();
 	setVKI();
 	VKI_attach(document.getElementById('otv'));
 }
 
 function prover(){
-	if(window.vopr.vrn($('#otv').val()))
+	if(window.vopr.vrn($('#otv').val())){
 		alert('Правильно!');
-	else
+	}else{
 		alert('Неправильно!\nПравильный ответ: '+window.vopr.ver.join(' или '));
+		$('#otvet').show();
+	}
 	$('#resh').html(vopr.rsh);
 	MathJax.Hub.Typeset();
 }

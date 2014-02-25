@@ -6,9 +6,9 @@
 	top:-9999px;
 }
 #otvet, #never{
-	visibility:none;
-	position:absolute;
-	top:-9999px;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
 }
 body{
 	padding:0;
