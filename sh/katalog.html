@@ -22,58 +22,11 @@
 			Обратите внимание: как правило, один шаблон может генерировать очень много заданий,
 			которые в той или иной мере похожи между собой!
 		</div>
+		<button onclick="generateKatalog()">Генерировать</button>
 		<br/>
 		<br/>
+		<script src="katalog.js"></script>
 		<div id="divrez">
-			<script>
-				var masdey=[];
-				var br='<br/>';
-				for(var kat in nabor.upak){
-					window.comment='';
-					try{
-						nabor.upak[kat].main()
-					}catch(e){}
-					document.write(
-						('Показать категорию '+kat).vTag('button','class="spoiler-show"')+
-						('Скрыть   категорию '+kat).vTag('button','class="spoiler-hide"')+
-						'<div class="spoiler-body">'+
-						('Категория '+kat).vTag('h1')+
-						window.comment+
-					'');
-					for(var zdn in nabor.upak[kat])
-						if(zdn!='main'){
-							vopr.podg();
-							document.write((nabor.adres+kat+'/'+zdn+'.js').vTag('h2'));
-							try{
-								nabor.upak[kat][zdn]();
-								document.write(br+vopr.txt.vTag('div')+br);
-								document.write(('Ответ: '+vopr.ver.join('или')).vTag('div')+'<br/>');
-								masdey.push(vopr.dey);
-								if(vopr.rsh){
-									document.write(
-										('Показать решение ').vTag('button','class="spoiler-show"')+
-										('Скрыть   решение ').vTag('button','class="spoiler-hide"')+
-										'<div class="spoiler-body">'+
-										'Решение: '+br+
-										vopr.rsh+
-										'</div>'+
-									'');
-									
-								}
-							}catch(e){
-							}
-						}
-						document.write('</div>');
-				}
-				var len=masdey.length;
-				for(var i=0;i<len;i++){
-					try{
-						masdey[i]();
-					}catch(e){}
-				}
-				spoiler();
-				$('.spoiler-show').click();
-			</script>
 		</div>
 	</div>
 	<style>
