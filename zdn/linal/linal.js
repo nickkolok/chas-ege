@@ -1,7 +1,7 @@
 if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
-	nZad:8,
+	nZad:9,
 	adres:'../zdn/linal/',
 	name:'linal',
 	kat:[],
