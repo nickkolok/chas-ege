@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<title>
+		Тренажёр "Час ЕГЭ": матрицы
+	</title>
+</head>
+<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+	<script>
+		addscript('../lib/init.js');
+	</script>
+	<div class="otstup">
+		<h2>
+			Работа с матрицами
+		</h2>
+		<div id="leftcolumn" style="float:left;">
+			<div id="matrica">
+				<div style="display:block;float:left;padding-right:0.1em;border-right:black solid">
+					<textarea id="osnmatr" style="" rows="10" cols="15">
+					</textarea>
+				</div>
+				<textarea id="stolbec" style="display:block;float:left;" rows="10" cols="10">
+				</textarea>
+			</div>
+			<br/>
+			<div id="poyasn">
+				Внимание! Вектора нужно ставить в столбцы.
+			</div>
+		</div>
+		<div id="rightcolumn" style="_float:right;">
+			<h3>Ранг матрицы</h3>
+			<div>
+				<button onclick="peres_rang();">
+					Пересчитать
+				</button>
+				<br/>
+				Ранг матрицы системы: <span id="rk"></span>
+				<br/>
+				Ранг расширенной матрицы системы: <span id="rkr"></span>
+			</div>
+			<div>
+				<h3>Проверка вектора</h3>
+				Введите вектор, чтобы проверить, является ли он решением СЛУ.
+				<br/>
+				<textarea id="vector" cols="10" rows="5">
+				</textarea>
+				<button onclick="prov_vector();">Проверить</button>
+			</div>
+			<div>
+				<h3>Проверка ФСР</h3>
+				Введите вектора предполагаемой фундаментальной системы решений (в столбцах!),
+				чтобы проверить, является ли она ФСР однородной (столбец свободных членов
+				игнорируется) СЛУ.
+				<br/>
+				<textarea id="fsr" cols="20" rows="5">
+				</textarea>
+				<button onclick="prov_fsr();">Проверить</button>
+			</div>
+		</div>
+
+	</div>
+	<script>
+		function peres_rang(){
+			var a=$('#osnmatr').val().toMtr().T();
+			$('#rk').text(a.rk());
+			var s=$('#stolbec').val().toMtr().T();
+			$('#rkr').text(a.concat(s).rk());
+		}
+		
+		function prov_vector(){
+			if(
+				$('#vector').val().toMtr().testSLU(
+					$('#osnmatr').val().toMtr(),
+					$('#stolbec').val().toMtr()
+				)
+			){
+				alert('Вектор является решением.');
+			}else{
+				alert('Вектор не является решением.');
+			}
+		}
+
+		function prov_fsr(){
+			if(
+				$('#fsr').val().toMtr().isFSR(
+					$('#osnmatr').val().toMtr()
+				)
+			){
+				alert('ФСР верна.');
+			}else{
+				alert('ФСР неверна.');
+			}
+		}
+	</script>
+</body>
+</html>
+
