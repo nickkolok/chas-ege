@@ -1,3 +1,4 @@
+<noindex><nofollow>
 
 <div id="chas-predupr" style="color:red;font-size:200%;">
 Вероятно, Ваш браузер не поддерживается. Чтобы использовать тренажёр "Час ЕГЭ", попробуйте скачать 
@@ -15,3 +16,4 @@
   },"100%",200,'chas-predupr');
 </script>
 
+</nofollow></noindex>
