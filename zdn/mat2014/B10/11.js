@@ -1,21 +1,6 @@
 (function(){'use strict';
-	
 
-function makeStruct(names) 
-{
-  var names = names.split(' ');
-  var count = names.length;
-  function constructor() 
-  {
-    for (var i = 0; i < count; i++) 
-    {
-      this[names[i]] = arguments[i];
-    }
-  }
-  return constructor;
-}
-
-var Cube = makeStruct("lowAx lowAy lowBx lowBy lowCx lowCy height");
+var Cube = makeStruct('lowAx lowAy lowBx lowBy lowCx lowCy height');
 var bCube = new Cube(260, 200, 260, 300, 300, 200, -120);
 
 bCube.lowAx = Math.floor((((Math.random(1)*10)+6.7))*10)+100;
@@ -39,30 +24,29 @@ var g=[	'Найдите площадь поверхности'+q_end,
 		'Найдите объём'+q_end];
 
 var slid=sl(1000000000);
-	var q_id = getRandomInt(0,2);
-	var ab = getLen(bCube.lowAx, bCube.lowBx, bCube.lowAy, bCube.lowBy)/10;
-    var ac = getLen(bCube.lowAx, bCube.lowCx, bCube.lowAy, bCube.lowCy)/10;
-    var hh = Math.abs(bCube.height)/10;	
 
-	if(q_id==0)
-	{
-		console.log('Q_ID == 0');
-		var q_val = ((ab*ac)+(ab*hh)+(ac*hh))*2;
-	}
-	if(q_id==1)
-	{
-		console.log('Q_ID == 1');
-		var q_val = (ab*ac);
-	}
-	if(q_id==2)
-	{
-		console.log('Q_ID == 2');
-		var q_val = (ab*ac*hh);
-	}
+var q_id = getRandomInt(0,2);
+var ab = getLen(bCube.lowAx, bCube.lowBx, bCube.lowAy, bCube.lowBy)/10;
+var ac = getLen(bCube.lowAx, bCube.lowCx, bCube.lowAy, bCube.lowCy)/10;
+var hh = Math.abs(bCube.height)/10;	
+
+if(!q_id){
+	console.log('Q_ID == 0');
+	var q_val = ((ab*ac)+(ab*hh)+(ac*hh))*2;
+}
+
+if(q_id==1){
+	console.log('Q_ID == 1');
+	var q_val = (ab*ac);
+}
+
+if(q_id==2){
+	console.log('Q_ID == 2');
+	var q_val = (ab*ac*hh);
+}
 	
-	
-	console.log('Q_VAL == '+q_val);
-	console.log('AB='+ab+'; AC='+ac+'; HH = '+hh);
+console.log('Q_VAL == '+q_val);
+console.log('AB='+ab+'; AC='+ac+'; HH = '+hh);
 
 
 window.vopr.dey=function(){
@@ -101,9 +85,6 @@ window.vopr.dey=function(){
     
     ct.font = '12pt sans-serif';
     
-    
-
-    
 	ct.fillText(Math.abs(bCube.lowAy-bCube.lowBy)/10,(bCube.lowAx+bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy))/2 -20, ((bCube.lowAy+bCube.lowBy)/2)+bCube.height-20);
 	ct.fillText(Math.abs(bCube.lowAx-bCube.lowCx)/10, Math.abs(bCube.lowAx+Math.abs(bCube.lowAx-bCube.lowCx)/2), bCube.lowAy+bCube.height-5);
 	ct.fillText(-bCube.height/10, bCube.lowCx+5, bCube.lowCy+(bCube.height/2));
@@ -114,14 +95,11 @@ window.vopr.dey=function(){
     ct.drawLine(600,400,0,400);
     ct.drawLine(0,400,0,0);
     
-
     ct.fillKrug(0,0,10);
     ct.fillKrug(0,400,10);
     ct.fillKrug(600,400,10);
     ct.fillKrug(600,0,10);
     
-	ct.fillStyle='black';
-	
 	$('#ris').attr('id','');
 };
 
