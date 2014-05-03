@@ -11,7 +11,7 @@ var t = slKrome(0,-5,5);
 
 window.vopr.ver=[(c*a*e+c*b+q*a*t+q*b).plusminus()];
 
-window.vopr.txt = ('Найдите значение выражения '+c+'p('+d+'x+'+e+')+'+q+'p('+r+'x+'+t+'), если p(x)=('+a+'x+'+b+').').plusminus();
+window.vopr.txt = ('Найдите значение выражения '+c+'p('+d+'x+'+e+')+'+q+'p('+r+'x+'+t+'), если p(x)='+a+'x+'+b+'.').plusminus();
 })();
 //Обзад 26821
 //by _zevs
