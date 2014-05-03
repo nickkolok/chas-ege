@@ -17,11 +17,7 @@ function p(_x)
 
 window.vopr.ver=[ ((c*a*d+q*a*r)+'x+'+(c*a*e+c*b + q*a*t + q*b)+'').plusminus()+''];
 
-var s =('Найдите значение выражения ('+c+'p('+d+'x+'+e+')+'+q+'p('+r+'x+'+t+'), если p=('+a+'x+'+b+').');
-s = s.plusminus();
-window.vopr.txt=(s+'');
- 
-
+window.vopr.txt = (('Найдите значение выражения ('+c+'p('+d+'x+'+e+')+'+q+'p('+r+'x+'+t+'), если p=('+a+'x+'+b+').').plusminus()+'');
 })();
 //Обзад 26821
 //by _zevs
