@@ -40,6 +40,8 @@
 
 * [Дополнительное зеркало](https://favorgems.ru/sh/sluch.html) (обновляется редко).
 
+* [Зеркало на GitHub Pages](https://chas-ege.github.io/doc/index.html)
+
 * [Исходный код](https://github.com/nickkolok/chas-ege).
 
 ## Лицензия
