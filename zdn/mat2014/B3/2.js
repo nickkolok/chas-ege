@@ -40,7 +40,9 @@ window.vopr.dey=function(){
 					show:true,
 					location:'se',
 				},
-				series:[{label:t3[0]},{label:t3[1]},
+				series:[
+					{label:t3[0],color:"#ccc",shadowAlpha:0},
+					{label:t3[1],color:"#111",shadowAlpha:0},
 				],
 			}
 		);
