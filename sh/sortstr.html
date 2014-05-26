@@ -25,6 +25,8 @@
 		<button onclick="sortstr();">
 			Сортировать
 		</button>
+		<input type="checkbox" id="vydmail"/><label for="vydmail">Только e-mail</label>
+		<input type="checkbox" id="vyvzap" /><label for="vyvzap" >Вывод через запятую</label>
 		<br/>
 		<textarea cols="80" rows="5" id="rez" data-jstorage-id="sortstr-rez-textarea">
 		</textarea>
@@ -33,9 +35,17 @@
 				var txt=$('#ish').val()
 					.replace(/\r/g,'\n')
 					.replace(/\n+/g,'\n')
-					.split('\n')
+				;
+				if($('#vydmail').is(':checked')){
+					txt=txt.match(
+						/[\-._a-z0-9A-Z]+@(?:[a-z0-9A-Z][\-a-z0-9A-Z]+\.)+[a-zA-Z]{2,6}/g
+					);
+				}else{
+					txt=txt.split('\n')
+				}
+				txt=txt
 					.sortDelDubl()
-					.join('\r\n')
+					.join($('#vyvzap').is(':checked')?',':'\r\n')
 				;
 				$('#rez').val(txt);
 			}
