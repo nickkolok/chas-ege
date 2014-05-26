@@ -14,11 +14,12 @@ function sozdGalki(){
 			var title='';
 			window.comment='';
 			try{
-				nabor.upak[nabor.prefix+i].main();
+				nabor.upak[dvig.getzadname(i)].main();
 				title=' title="'+window.comment+'"';
 			}catch(e){}
 			
-			g1+='<td'+title+'><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'-'+nabor.name+'" /><label for="cB'+i+'" >'+nabor.prefix+i+' </label></td>';
+			g1+='<td'+title+'><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'-'+nabor.name+'" /><label for="cB'+i+'" >'+
+				dvig.getzadname(i)+' </label></td>';
 			g2+='<td'+title+'><span id="pB'+i+'"></span></td>';
 			g3+='<td'+title+'><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';	
 		}
@@ -148,7 +149,7 @@ function zdnSost(){
 	setVKI();
 	VKI_attach(document.getElementById('otv'));
 	flProv=0;
-	$('#bnomer').show().html(nabor.prefix+n);
+	$('#bnomer').show().html(dvig.getzadname(n));
 }
 
 function prover(){
