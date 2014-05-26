@@ -72,10 +72,11 @@ function zadan(){
 
 function obnov(){
 		var sdel=aZ.sum()-iZ.sum();
+		var nazvzad=dvig.getzadname(kategory)+(aZ[kategory]==1?'':(iZ[kategory]-aZ[kategory]));
 		strVopr+=
 			'<br/>'+
 			'<div class="d">'+
-				'<div class="b">'+nabor.prefix+kategory+(aZ[kategory]==1?'':(iZ[kategory]-aZ[kategory]))+
+				'<div class="b">'+nazvzad+
 				'</div>'+
 				window.vopr.txt+
 				'<div class="r">'+

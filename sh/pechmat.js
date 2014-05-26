@@ -117,8 +117,8 @@ function zadan(){
 
 			if(!bGecko && aV!=nV)
 				razrstr();
-			strOtv+='<table class="normtabl tablpech"><tr><th colspan="3">';
-			strOtv+='Ответы к варианту<br/>№'+novdate+'</th></tr>';
+			strOtv+='<table class="normtabl tablpech"><tr><th colspan="3">'+
+				'Ответы к варианту<br/>№'+novdate+'</th></tr>';
 			nZ=1;
 			zadan();
 			return;
@@ -135,11 +135,11 @@ function zadan(){
 	}
 }
 function obnov(){
-		strVopr+='<br/><div class="d"><div class="b">'+nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</div>'+window.vopr.txt+'</div>';
-		strOtv+='<tr><td>'+novdate+'</td><td>'+nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
+		var nazvzad=dvig.getzadname(nZ)+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))
+		strVopr+='<br/><div class="d"><div class="b">'+nazvzad+'</div>'+window.vopr.txt+'</div>';
+		strOtv+='<tr><td>'+novdate+'</td><td>'+nazvzad+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
 		if(vopr.rsh)
-			strResh+='<br/><h3>Вариант №'+novdate+', задача '+
-				nabor.prefix+nZ+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))+'</h3><br/>'+vopr.rsh+
+			strResh+='<br/><h3>Вариант №'+novdate+', задача '+nazvzad+'</h3><br/>'+vopr.rsh+
 				'<br/><br/>';
 			
 		voprosy.push(vopr.clone());
