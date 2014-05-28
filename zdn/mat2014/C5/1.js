@@ -1,7 +1,7 @@
 (function(){
 
 var b=sluchch(1,50);
-var d=sluchch(1,50);
+var d=sluchch(2,50);
 
 window.vopr.txt='Решите уравнение при всех $a$:'+
 	'$$(a^2 - '+b*b+')x='+d+'(a-'+b+')$$';
