@@ -9,6 +9,7 @@ window.nabor.importFrom({
 		prz:'Без производной'		,
 	}
 });
+nabor.altz=[];
 nabor.altz[16]='C1';
 nabor.altz[17]='C2';
 nabor.altz[18]='C3';
