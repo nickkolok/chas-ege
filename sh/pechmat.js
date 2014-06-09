@@ -20,6 +20,8 @@ var strOtv='';
 var strResh='';
 var voprosy=[];
 
+var redakt;
+
 function vse1(){
 	$('.kolvo').val(1);
 }
@@ -31,7 +33,11 @@ function vse0(){
 }
 
 function zapusk(){
-	$.jStorage.sohrData()
+	$.jStorage.sohrData();
+	redakt=$('#redakt').is(':checked');
+	if($('#htmlcss').is(':checked')){
+		MathJax.Hub.setRenderer('HTML-CSS');
+	}
 	nV=1*$('#cV').val();
 	aV=nV;
 	for(var i=1;i<=nabor.nZad;i++)
@@ -59,6 +65,11 @@ function razrstr(){return;
 function testGotov(){
 	$('#gotov').hide();
 	allCanvasToBackgroundImage();
+	if(redakt){
+		$('#rez').attr('contenteditable','true');
+		$('#otv').attr('contenteditable','true');
+	}
+	$('#dopoln').show();
 	alert('Тесты составлены.\nТеперь Вы можете распечатать их с помощью Вашего браузера.');
 	specCounter('pech');
 }
@@ -136,7 +147,7 @@ function zadan(){
 }
 function obnov(){
 		var nazvzad=dvig.getzadname(nZ)+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))
-		strVopr+='<br/><div class="d"><div class="b">'+nazvzad+'</div>'+window.vopr.txt+'</div>';
+		strVopr+='<br/><div class="d"><div class="b">'+nazvzad+'</div><div class="z">'+window.vopr.txt+'</div></div>';
 		strOtv+='<tr><td>'+novdate+'</td><td>'+nazvzad+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
 		if(vopr.rsh)
 			strResh+='<br/><h3>Вариант №'+novdate+', задача '+nazvzad+'</h3><br/>'+vopr.rsh+
@@ -151,6 +162,22 @@ function obnov(){
 		var v=(vr1+vr2)*(kZ-sdel)/1000;
 		$('#vrem').text(sdel+' из '+kZ+' '+v.toDvoet());
 		zadan();
+}
+
+function shirprim(){
+	$('.z').css("width",$('#shir').val()+'cm');
+}
+
+function optimcopy(){
+	$('.jqplot-target').each(function(){
+		innerHTMLtoImg(this);
+	});
+	$('.MathJax>nobr>span>span>span').each(function(){
+		innerHTMLtoImg(this);
+	});
+	$('canvas').each(function(){
+		replaceWithImg(this);
+	});
 }
 
 galkiKat('#galki_kat','pech');

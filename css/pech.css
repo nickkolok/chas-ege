@@ -23,8 +23,9 @@ input,body,button{
 	padding-right:1em;
 	font-family:auto;
 	overflow:hidden;
+	background-color:white;
 }
-.d>*{
+.z>*{
 	float:none !important;
 }
 div.d{
@@ -153,5 +154,8 @@ em{
 	margin-right:auto;
 }
 .resh-poln{
+	display:none;
+}
+#dopoln{
 	display:none;
 }
