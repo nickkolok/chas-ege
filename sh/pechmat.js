@@ -69,6 +69,7 @@ function testGotov(){
 		$('#rez').attr('contenteditable','true');
 		$('#otv').attr('contenteditable','true');
 	}
+	$('#dopoln').show();
 	alert('Тесты составлены.\nТеперь Вы можете распечатать их с помощью Вашего браузера.');
 	specCounter('pech');
 }
@@ -177,24 +178,6 @@ function optimcopy(){
 	$('canvas').each(function(){
 		replaceWithImg(this);
 	});
-/*	$('.z').each(function(){
-		if(this.innerHTML.search(/canvas|table/)+1){
-			innerHTMLtoImg(this);
-		}
-	});
-*/
-/*	$('canvas').each(function(){
-		html2canvas(elem, {
-			onrendered: function(canvas) {
-				var img=document.createElement('img');
-				img.src=canvas.toDataURL();
-				elem.innerHTML='';
-				elem.appendChild(img);
-			}
-		});
-	});
-*/
-//	alert('Формулы и графики заменены на изображения.');
 }
 
 galkiKat('#galki_kat','pech');
