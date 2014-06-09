@@ -44,6 +44,7 @@ function prover(){
 }
 
 function izTextarea(){
+	$('#pole').html('Если Вы видите эту надпись - задание не составлено, скорее всего, в программе ошибка.');
 	eval($('#textarea-script').val());
 	obnov();
 }
