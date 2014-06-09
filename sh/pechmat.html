@@ -48,6 +48,10 @@
 			<button onclick="zapusk();">Запуск!</button>
 			<button onclick="vse1();">Стандартный тест</button>
 			<button onclick="vse0();">Сбросить все</button>
+			<br/>
+			<input type="checkbox" id="redakt"/><label for="redakt">Редактируемый текст</label>
+			<br/>
+			<input type="checkbox" id="htmlcss"/><label for="htmlcss">Отрисовывать формулы не в SVG, а в HTML+CSS (не рекомендуется в большинстве случаев)</label>
 		</div>
 	</div>
 	<div class="otstup pagewidth">
@@ -56,6 +60,13 @@
 		<button class="spoiler-show noprint" hidden>Показать ответы</button>	
 		<button class="spoiler-hide noprint" hidden>Скрыть ответы</button>	
 		<div id="otv" class="d spoiler-body" style="padding-left:0">	
+		</div>
+		<div id="dopoln" class="noprint">
+			<h2>Дополнительные параметры (beta)</h2>
+			Ширина задания:
+			<input id="shir"/>cm
+			<button onclick="shirprim()">Применить</button>
+			<button onclick="optimcopy()" id="optimcopy">Преобразовать в текст и изображения (для копирования)</button>
 		</div>	
 	</div>
 	<script src='pechmat.js'></script>
