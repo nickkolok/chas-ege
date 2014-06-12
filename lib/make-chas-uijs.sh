@@ -8,6 +8,7 @@ cat ../ext/jqplot/jquery.jqplot.min.js 									>> chas-uijs.js
 cat ../ext/jqplot/plugins/jqplot.barRenderer.min.js 					>> chas-uijs.js
 cat ../ext/jqplot/plugins/jqplot.categoryAxisRenderer.min.js			>> chas-uijs.js
 cat ../ext/jstorage.min.js 												>> chas-uijs.js
+cat ../ext/html2canvas.js 												>> chas-uijs.js
 cat ../ext/anyslider/js/jquery.anythingslider.js 						>> chas-uijs.js
 cat ../ext/keyboard/keyboard.js					 						>> chas-uijs.js
 
