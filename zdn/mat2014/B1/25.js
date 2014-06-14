@@ -1,5 +1,3 @@
-//B1 - 323609
-
 (function(){
 	var installing_coast = sl(1500, 3000);
 	var water_coast_berfore = sl(800, 1100);
@@ -14,3 +12,5 @@
 	window.vopr.ver = [(installing_coast / (water_coast_berfore - water_coast_after)).ceil()];
 
 })();
+//Обзад 323609
+// Sergey Naumov aka DrMGC
