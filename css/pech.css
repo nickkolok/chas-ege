@@ -12,18 +12,19 @@ input,body,button{
 	margin-left:3px;
 	border:solid 1px;
 	text-align:center;
-	left:-4em;
-	top:1.2em;
+	float:left;
 	position:relative;
 	min-height:1.2em;
 }
 .d{
 	min-width:90%;
-	padding-left:4em;
 	padding-right:1em;
 	font-family:auto;
 	overflow:hidden;
 	background-color:white;
+}
+.z{
+	padding-left:4em;
 }
 .z>*{
 	float:none !important;
