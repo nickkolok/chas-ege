@@ -27,7 +27,7 @@ body{
 	text-align:center;
 	vertical-align:baseline;
 	height:auto;
-	width:100%;
+	width:450px; /*Что бы блок не менял высоту. Не менять!*/
 }
 h1{
 	font-size:160%;
