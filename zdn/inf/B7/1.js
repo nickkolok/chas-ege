@@ -1,6 +1,6 @@
 (function(){'use strict';
  
-  var osn=sluchch(2,8);
+  var osn=sluchch(2,9);
   var chislo=sluchch(20,200);
   var rez=intoAnotherSystem(chislo,10,osn);
  
