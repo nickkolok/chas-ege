@@ -10,7 +10,6 @@ for (var j=0; j<4; j++) {
 		if (!flag) 
 			f.push(f1);
 	}
-	console.log(f[j]);
 }
 
 var func = new Function("x","return "+parseLogic(f[0]));
