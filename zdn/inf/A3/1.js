@@ -33,7 +33,7 @@ for (var i=1; i<4; i++) {
 		var func1= new Function("x","return "+parseLogic(f[i]));
 		for (var j=0; j<3; j++)
 			res1[j]=func1(x[j]);
-		flag=equalAr(res1,res);
+		flag=res.equalAr(res1);
 		if (flag) {
 			f[i]=genLogFunc(k);
 		}
