@@ -37,5 +37,5 @@ window.vopr.txt = people[0].name + ' загружает на свой компь
 window.vopr.ver = [ required_file_size / speed ];
 
 })()
-//Обзад 246263
+//Обзад 77363
 // Sergey Naumov aka DrMGC <drmgc@yandex.ru>
