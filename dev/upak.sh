@@ -1,18 +1,18 @@
 #!/bin/sh
 cd zdn
-for nbr in `ls -F | grep -e ./ | tr -d \/`
+for nbr in `ls -Fv | grep -e .[/@] | tr -d [\/@]`
 do
 	cd $nbr;
 	echo 'nabor.upak={' > upak.js
-	for ktg in `ls -Fv | grep -e ./ | tr -d \/`
+	for ktg in `ls -Fv | grep -e .[/@] | tr -d [\/@]`
 	do 
 		echo "$ktg :{" >> upak.js
 		cd $ktg
 		for nmr in `ls *.js | tr -d \.js`
 		do
-			echo "$nmr :function(){" >> ../upak.js
-			cat "$nmr.js" >> ../upak.js
-			echo "}," >> ../upak.js
+			echo "$nmr :function(){" >> ../../$nbr/upak.js
+			cat "$nmr.js" >> ../../$nbr/upak.js
+			echo "}," >> ../../$nbr/upak.js
 		done
 		cd ..
 		echo "}," >> upak.js
