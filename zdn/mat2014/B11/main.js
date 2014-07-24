@@ -1,2 +1,2 @@
-window.nomer=sluchch(1,15);
+window.nomer=sluchch(1,16);
 window.comment='Вычисления и преобразования.';
