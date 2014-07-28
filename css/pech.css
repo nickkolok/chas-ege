@@ -22,6 +22,7 @@ input,body,button{
 	font-family:auto;
 	overflow:hidden;
 	background-color:white;
+	margin-bottom:1em;
 }
 .z{
 	padding-left:4em;

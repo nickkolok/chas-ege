@@ -147,7 +147,7 @@ function zadan(){
 }
 function obnov(){
 		var nazvzad=dvig.getzadname(nZ)+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))
-		strVopr+='<br/><div class="d"><div class="b">'+nazvzad+'</div><div class="z">'+window.vopr.txt+'</div></div>';
+		strVopr+='<div class="d"><div class="b">'+nazvzad+'</div><div class="z">'+window.vopr.txt+'</div></div>';
 		strOtv+='<tr><td>'+novdate+'</td><td>'+nazvzad+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
 		if(vopr.rsh)
 			strResh+='<br/><h3>Вариант №'+novdate+', задача '+nazvzad+'</h3><br/>'+vopr.rsh+
@@ -168,16 +168,38 @@ function shirprim(){
 	$('.z').css("width",$('#shir').val()+'cm');
 }
 
+var ds;
+var selector1='.jqplot-target, .MathJax>nobr>span>span>span';
+var selector2='canvas';
+
 function optimcopy(){
-	$('.jqplot-target').each(function(){
-		innerHTMLtoImg(this);
-	});
-	$('.MathJax>nobr>span>span>span').each(function(){
-		innerHTMLtoImg(this);
-	});
-	$('canvas').each(function(){
-		replaceWithImg(this);
-	});
+	ds=$('.d');
+	$('#otv').hide();
+	optimcopyd(1);
+}
+
+function optimcopyd(n){
+		if(n>=ds.length){
+			$('.d').show();
+			$('#otv').show();
+			return;
+		}
+		var d=$(ds[n]);
+		ds.hide();
+		var sel1=d.find(selector1);
+		var sel2=d.find(selector2);
+		if(!(sel1.length+sel2.length)){
+			setTimeout("optimcopyd("+n+"+1);",100);
+			return;
+		}
+		d.show();
+		sel1.each(function(){
+			innerHTMLtoImg(this);
+		});
+		sel2.each(function(){
+			replaceWithImg(this);
+		});
+		setTimeout("optimcopyd("+n+"+1);",100);
 }
 
 galkiKat('#galki_kat','pech');
