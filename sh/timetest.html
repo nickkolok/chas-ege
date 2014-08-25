@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script>
+		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	</script>
+	<script>
+		addstyle("../css/otladka.css");
+	</script>
+	<title>
+	  Тренажёр "Час ЕГЭ" - проверка скорости исполнения кода
+  </title>
+</head>
+<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+	<script>
+		addscript('../lib/init.js');
+	</script>
+	<div id="pole" class="vopr">
+	</div>
+	<div id="resh" class="vopr">
+	</div>
+	<div id="otvet"></div>
+	<div id="never"></div>
+	<div id="wrap">
+		<div id="panel" class="polosa">
+			<div>
+				<textarea id="textarea-script" data-jstorage-id="timetest-textarea-script" onkeydown="return catchTab(this,event)"></textarea>
+				<br/>
+				Количество итераций:
+				<input id="iter" data-jstorage-id="timetest-kolvo-iter" value="20000"/>
+				<button onclick="tt();">Проверить время
+				</button>
+			</div>
+		</div>
+	</div>
+	<div>
+		<iframe src="" id="shabl" charset="utf-8" type="text/javascript" lang="ru"></iframe>
+	</div>
+	<script>
+		addscript('timetest.js');
+	</script>
+</body>
+</html>
