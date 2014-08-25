@@ -30,10 +30,10 @@ body{
 }
 #wrap{
 	text-align: center;
-	font-size:20px;
+	font-size:18px;
 }
 input,body,button{
-	font-size:20px;
+	font-size:18px;
 	font-family:monospace;
 }
 #textarea-script{
