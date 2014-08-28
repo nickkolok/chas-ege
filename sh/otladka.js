@@ -90,6 +90,12 @@ function nabrano(){
 function saveAce(){
 	if(flAce)
 		$('#textarea-script').val(editor.getValue());
+	$.jStorage.sohrData();
+}
+
+function pastebin(){
+	saveAce();
+	$('#textarea-paste').val($('#textarea-script').val());
 }
 
 function startFullscreen(){
