@@ -65,4 +65,4 @@ function trysozd(){
 	}
 }
 $(trysozd);
-
+allLinksToSpans();

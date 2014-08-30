@@ -76,3 +76,8 @@ h2{
 .integrated{
 	display:none;
 }
+span.spanlink{
+	color: blue;
+	cursor: pointer;
+	text-decoration: underline;
+}
