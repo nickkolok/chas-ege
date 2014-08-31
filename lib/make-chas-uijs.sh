@@ -14,6 +14,7 @@ cat ../ext/keyboard/keyboard.js					 						>> chas-uijs.js
 
 cat chas-lib.js 														>> chas-uijs.js
 
+cat func_jquery.js		  												>> chas-uijs.js
 cat umka.js		  														>> chas-uijs.js
 cat core_vopr.js  														>> chas-uijs.js
 cat core_nabor.js  														>> chas-uijs.js
