@@ -84,6 +84,11 @@ h2{
 .integrated{
 	display:none;
 }
+span.spanlink{
+	color: blue;
+	cursor: pointer;
+	text-decoration: underline;
+}
 ul.pureCssMenu ul{
 	display:none;
 	z-index:10;
