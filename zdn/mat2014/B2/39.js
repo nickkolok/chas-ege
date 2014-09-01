@@ -6,9 +6,11 @@ var LearningGer=sluchch(15,90);
 var EduInst=sklonlxkand(['школа','университет','колледж','училище','гимназия'].iz());
 var Pupil=sklonlxkand(['ученик','студент','учащийся'].iz());
 var Lang=['немецкий','французский','итальянский','английский','испанский'].iz();
-window.vopr.txt='В '+EduInst.pe+' '+KidsCount+' '+Pupil.rm+', из них '+JuniorCount+'%  — '+Pupil.im+' начальной школы. Среди '+Pupil.rm+' средней и старшей'+
-' школы '+LearningGer+'% изучают '+Lang+' язык. Сколько '+Pupil.rm+' в '+EduInst.pe+' изучают'+
-' '+Lang+' язык, если в начальной школе '+Lang+' язык не изучается?';
+
+window.vopr.txt='В '+EduInst.pe+' '+KidsCount+' '+Pupil.rm+', из них '+JuniorCount+'%  — '+Pupil.im+
+	' начальной школы. Среди '+Pupil.rm+' средней и старшей'+
+	' школы '+LearningGer+'% изучают '+Lang+' язык. Сколько '+Pupil.rm+' в '+EduInst.pe+' изучают'+
+	' '+Lang+' язык, если в начальной школе '+Lang+' язык не изучается?';
 
 window.vopr.ver=[(KidsCount*(1-JuniorCount/100)*LearningGer/100).ts()];
 
