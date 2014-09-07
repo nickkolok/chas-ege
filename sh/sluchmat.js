@@ -5,10 +5,10 @@ var zelen={r:0,g:nas,b:0};
 var krasn={r:nas,g:0,b:0};
 var zhelt={r:nas,g:nas,b:0};
 var flProv=1;
-
+var vremyaStart;
 
 function sozdGalki(){
-	var galki,g1='',g2='',g3='';
+	var galki,g1='',g2='',g3='',g4='';
 	for(var i=1;i<=nabor.nZad;i++){
 		if(!nabor.vykl[i]){
 			var title='';
@@ -22,10 +22,12 @@ function sozdGalki(){
 				dvig.getzadname(i)+' </label></td>';
 			g2+='<td'+title+'><span id="pB'+i+'"></span></td>';
 			g3+='<td'+title+'><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';	
+			g4+='<td'+title+'><span class="vremya" id="vremyaB'+i+'"></span></td>';	
 		}
 	}
 	galki='<tr>'+g1+'<td></td></tr><tr>'+g2+'<td><span id="pB"></span></td></tr><tr>'+g3+
-		'<td><span class="kolvoprav" id="pravB"></span><br/>из<br/><span id="vsegB"></span></td></tr>';
+		'<td><span class="kolvoprav" id="pravB"></span><br/>из<br/><span id="vsegB"></span></td></tr>'+
+		'<td></td></tr><tr>'+g4;
 	$('#galki').html(galki);
 }
 
@@ -48,6 +50,11 @@ function veroyatn(){
 		$('#vsegB'+i).html(
 			umka.vsego[i]
 		);
+		if(umka.kvoNaVremya[i]){
+			$('#vremyaB'+i).html(
+				(umka.vremya[i]/umka.kvoNaVremya[i]).round().toDvoet()
+			);
+		}
 		$('#pB'+i).css(
 			'color',
 			pr>0.5?
@@ -83,6 +90,7 @@ function obnov(p1){
 	MathJax.Hub.Typeset();
 	$('#otvet').html(slvopr.ver.join(';;'));
 	$('#never').html(slvopr.nev.join(';;'));
+	vremyaStart=new Date().getTime();
 }
 
 function vybrZad(){
@@ -166,6 +174,10 @@ function prover(){
 		txt='Правильно!';
 	}else{
 		txt='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
+	}
+	if($('#check-na-vremya').is(':checked')){
+		umka.vremya[n]+=(new Date().getTime()-vremyaStart)/1000;
+		umka.kvoNaVremya[n]++;
 	}
 	if(vopr.rsh)
 		txt+='<br/><br/>'+vopr.rsh;
