@@ -21,6 +21,7 @@ cat core_nabor.js  														>> chas-uijs.js
 cat core_dvig.js  														>> chas-uijs.js
 cat dvig_fn.js  														>> chas-uijs.js
 cat dvig_rz.js  														>> chas-uijs.js
+cat dvig_lz.js  														>> chas-uijs.js
 cat urljson.js   														>> chas-uijs.js
 cat osnmas.js   														>> chas-uijs.js
 cat style.js   															>> chas-uijs.js
