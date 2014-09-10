@@ -25,9 +25,9 @@ function sozdGalki(){
 			g4+='<td'+title+'><span class="vremya" id="vremyaB'+i+'"></span></td>';	
 		}
 	}
-	galki='<tr>'+g1+'<td></td></tr><tr>'+g2+'<td><span id="pB"></span></td></tr><tr>'+g3+
+	galki='<tr>'+g1+'<td></td></tr><tr class="praviln">'+g2+'<td><span id="pB"></span></td></tr><tr class="praviln">'+g3+
 		'<td><span class="kolvoprav" id="pravB"></span><br/>из<br/><span id="vsegB"></span></td></tr>'+
-		'<td></td></tr><tr>'+g4;
+		'<td></td></tr><tr class="vremya">'+g4;
 	$('#galki').html(galki);
 }
 
@@ -167,14 +167,21 @@ function prover(){
 		if(!confirm('Вы не ввели ответ, нажмите "Отмена" для того, чтобы ввести ответ или "ОК", чтобы сдаться и посмотреть ответ.'))
 			return;
 	$('#protv').show();
-	umka.vsego[n]++;
+	var checkPraviln=$('#check-praviln').is(':checked')
+	if(checkPraviln){
+		umka.vsego[n]++;
+	}
 	var txt='';
+
 	if(slvopr.vrn(kand)){
-		umka.verno[n]++;
+		if(checkPraviln){
+			umka.verno[n]++;
+		}
 		txt='Правильно!';
 	}else{
 		txt='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
 	}
+
 	if($('#check-na-vremya').is(':checked')){
 		umka.vremya[n]+=(new Date().getTime()-vremyaStart)/1000;
 		umka.kvoNaVremya[n]++;
@@ -199,6 +206,24 @@ function vybrv(){
 		$('#cB'+i).not(':checked').click();
 	}
 }
+
+function obrabNaVremya(){
+	if($('#check-na-vremya').is(':checked')){
+		$('.vremya').show();
+	}else{
+		$('.vremya').hide();
+	}
+}
+$(obrabNaVremya);
+
+function obrabPraviln(){
+	if($('#check-praviln').is(':checked')){
+		$('.praviln').show();
+	}else{
+		$('.praviln').hide();
+	}
+}
+$(obrabPraviln);
 
 function vybr0(){
 	for(var i=1;i<=nabor.nZad;i++){
