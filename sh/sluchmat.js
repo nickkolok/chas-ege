@@ -162,10 +162,14 @@ function zdnSost(){
 
 function prover(){
 	vazhnOff();
+	var flUchetPrav=0;
 	var kand=$('#otv').val();
-	if(kand==='')
+	if(kand===''){
 		if(!confirm('Вы не ввели ответ, нажмите "Отмена" для того, чтобы ввести ответ или "ОК", чтобы сдаться и посмотреть ответ.'))
 			return;
+		uchetPrav(n,'N');
+		flUchetPrav=1;
+	}
 	$('#protv').show();
 	var checkPraviln=$('#check-praviln').is(':checked')
 	if(checkPraviln){
@@ -178,8 +182,11 @@ function prover(){
 			umka.verno[n]++;
 		}
 		txt='Правильно!';
+		uchetPrav(n,1);
 	}else{
 		txt='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
+		if(!flUchetPrav)
+			uchetPrav(n,0);
 	}
 
 	if($('#check-na-vremya').is(':checked')){
@@ -197,6 +204,17 @@ function prover(){
 	veroyatn();
 	specCounter('sluch');
 	flProv=1;
+}
+
+function uchetPrav(kat,prav,nom){
+	if(svinta)
+		return;
+	var ifr=document.createElement('iframe');
+	ifr.src='../sh/sluchcounter.html?'+nabor.name+'/'+kat+'#'+prav;
+	ifr.style.display='none';
+	ifr.style.top='-9999px';
+	ifr.style.position='absolute';
+	document.body.appendChild(ifr);
 }
 
 var v=[];
