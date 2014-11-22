@@ -17,7 +17,7 @@ var text = window.profesj.ie.iz().toZagl() + " " + om.imenaj.ie.iz() + " " + win
            window.dlina.ie[a].toZagl() + " - это " + g + " метра. Какое число отобразится на экране прибора для" +
            " выявления нарушителей скоростного режима?";
 
-NApi.task.set_task(text, "", [ (b * g / 1000).round() ], [], ["log", "prz", "drs", "tri"], undefined, undefined);
+NApi.task.set_task({text : text, answers : [ (b * g / 1000).round() ], tags : ["log", "prz", "drs", "tri"]});
 
 })();
 //Обзад 26640
