@@ -18,7 +18,7 @@ var text = window.profesj.ie.iz().toZagl() + " " + om.imenaj.ie.iz() + " " + win
 
 var task = NApi.task.Task(text, undefined, [ (b * g / 1000).round() ], ["log", "prz", "drs", "tri"], undefined, undefined);
 
-NApi.task.setCurrentTask(task);
+NApi.task.set_current_task(task);
 
 })();
 //Обзад 26640

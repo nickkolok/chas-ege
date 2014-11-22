@@ -16,183 +16,154 @@
 <span class='line'>  9</span> </span><span class="WHIT">		</span><span class="COMM">/**
 <span class='line'> 10</span> 		 * Версия API
 <span class='line'> 11</span> 		 */</span><span class="WHIT">
-<span class='line'> 12</span> </span><span class="WHIT">		</span><span class="NAME">VERSION</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"InDev"</span><span class="WHIT">
-<span class='line'> 13</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 14</span> 
+<span class='line'> 12</span> </span><span class="WHIT">		</span><span class="NAME">API_VERSION</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"InDev"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">		</span><span class="NAME">APPLICATION_RELEASE</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"__APPLICATION_RELEASE____"</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'> 15</span> 
-<span class='line'> 16</span> </span><span class="WHIT">	</span><span class="COMM">/** @namespace NApi._
-<span class='line'> 17</span> 	 * Функционал, используемый только внутри самого NApi
-<span class='line'> 18</span> 	 * @private
-<span class='line'> 19</span> 	 */</span><span class="WHIT">
-<span class='line'> 20</span> </span><span class="WHIT">	</span><span class="NAME">_</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 21</span> </span><span class="WHIT">		</span><span class="COMM">/**
-<span class='line'> 22</span> 		 * Флаг отладочного режима
-<span class='line'> 23</span> 		 */</span><span class="WHIT">
-<span class='line'> 24</span> </span><span class="WHIT">		</span><span class="NAME">debug_mode</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 25</span> 
+<span class='line'> 16</span> 
+<span class='line'> 17</span> </span><span class="WHIT">	</span><span class="COMM">/** @namespace NApi._
+<span class='line'> 18</span> 	 * Функционал, используемый только внутри самого NApi
+<span class='line'> 19</span> 	 * @private
+<span class='line'> 20</span> 	 */</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="WHIT">	</span><span class="NAME">_</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 23</span> 		 * Флаг отладочного режима
+<span class='line'> 24</span> 		 */</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">		</span><span class="NAME">debug_mode</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'> 26</span> 
-<span class='line'> 27</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.Linfo
-<span class='line'> 28</span> 		 * Занести в лог информацию
-<span class='line'> 29</span> 		 * @param {String} msg текст сообщения
-<span class='line'> 30</span> 		 * @private
-<span class='line'> 31</span> 		 */</span><span class="WHIT">
-<span class='line'> 32</span> </span><span class="WHIT">		</span><span class="NAME">Linfo</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 33</span> </span><span class="WHIT">			</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[NApi][info] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 34</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 35</span> 
+<span class='line'> 27</span> 
+<span class='line'> 28</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.Linfo
+<span class='line'> 29</span> 		 * Занести в лог информацию
+<span class='line'> 30</span> 		 * @param {String} msg текст сообщения
+<span class='line'> 31</span> 		 * @private
+<span class='line'> 32</span> 		 */</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">		</span><span class="NAME">Linfo</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">			</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[NApi][info] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'> 36</span> 
-<span class='line'> 37</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.Lmsg
-<span class='line'> 38</span> 		 * Занести в лог сообщение
-<span class='line'> 39</span> 		 * @param {String} msg текст сообщения
-<span class='line'> 40</span> 		 * @private
-<span class='line'> 41</span> 		 */</span><span class="WHIT">
-<span class='line'> 42</span> </span><span class="WHIT">		</span><span class="NAME">Lmsg</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 43</span> </span><span class="WHIT">			</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[NApi][msg] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 44</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 45</span> 
+<span class='line'> 37</span> 
+<span class='line'> 38</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.Lmsg
+<span class='line'> 39</span> 		 * Занести в лог сообщение
+<span class='line'> 40</span> 		 * @param {String} msg текст сообщения
+<span class='line'> 41</span> 		 * @private
+<span class='line'> 42</span> 		 */</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">		</span><span class="NAME">Lmsg</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">			</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[NApi][msg] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'> 46</span> 
-<span class='line'> 47</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.Lwarn
-<span class='line'> 48</span> 		 * Занести в лог предупреждение
-<span class='line'> 49</span> 		 * @param {String} msg текст сообщения
-<span class='line'> 50</span> 		 * @private
-<span class='line'> 51</span> 		 */</span><span class="WHIT">
-<span class='line'> 52</span> </span><span class="WHIT">		</span><span class="NAME">Lwarn</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 53</span> </span><span class="WHIT">			</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[NApi][WARN] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 54</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 55</span> 
+<span class='line'> 47</span> 
+<span class='line'> 48</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.Lwarn
+<span class='line'> 49</span> 		 * Занести в лог предупреждение
+<span class='line'> 50</span> 		 * @param {String} msg текст сообщения
+<span class='line'> 51</span> 		 * @private
+<span class='line'> 52</span> 		 */</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">		</span><span class="NAME">Lwarn</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">			</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[NApi][WARN] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'> 56</span> 
-<span class='line'> 57</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.Lerr
-<span class='line'> 58</span> 		 * Занести в лог информацию об ощибке
-<span class='line'> 59</span> 		 * @param {String} msg текст сообщения
-<span class='line'> 60</span> 		 * @private
-<span class='line'> 61</span> 		 */</span><span class="WHIT">
-<span class='line'> 62</span> </span><span class="WHIT">		</span><span class="NAME">Lerr</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 63</span> </span><span class="WHIT">			</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[NApi][ERROR] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 64</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 65</span> 
+<span class='line'> 57</span> 
+<span class='line'> 58</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.Lerr
+<span class='line'> 59</span> 		 * Занести в лог информацию об ощибке
+<span class='line'> 60</span> 		 * @param {String} msg текст сообщения
+<span class='line'> 61</span> 		 * @private
+<span class='line'> 62</span> 		 */</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="WHIT">		</span><span class="NAME">Lerr</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">			</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[NApi][ERROR] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'> 66</span> 
-<span class='line'> 67</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.Ldebug
-<span class='line'> 68</span> 		 * Занести в лог отладочную информацию
-<span class='line'> 69</span> 		 * @param {String} msg текст сообщения
-<span class='line'> 70</span> 		 * @note Выводиться только в режиме отладки
-<span class='line'> 71</span> 		 * @private
-<span class='line'> 72</span> 		 */</span><span class="WHIT">
-<span class='line'> 73</span> </span><span class="WHIT">		</span><span class="NAME">Ldebug</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 74</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">NApi.state.is_debug</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 75</span> </span><span class="WHIT">				</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[NApi][DEBUG] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 76</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 77</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 78</span> 
+<span class='line'> 67</span> 
+<span class='line'> 68</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.Ldebug
+<span class='line'> 69</span> 		 * Занести в лог отладочную информацию
+<span class='line'> 70</span> 		 * @param {String} msg текст сообщения
+<span class='line'> 71</span> 		 * @note Выводиться только в режиме отладки
+<span class='line'> 72</span> 		 * @private
+<span class='line'> 73</span> 		 */</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">		</span><span class="NAME">Ldebug</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">NApi.state.isDebug</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">				</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[NApi][DEBUG] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 78</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'> 79</span> 
-<span class='line'> 80</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.load_js
-<span class='line'> 81</span> 		 * Загрузить .js-файл
-<span class='line'> 82</span> 		 * @param {String} path путь к .js-файлу
-<span class='line'> 83</span> 		 * @private
-<span class='line'> 84</span> 		 */</span><span class="WHIT">
-<span class='line'> 85</span> </span><span class="WHIT">		</span><span class="NAME">load_js</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">path</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 86</span> </span><span class="WHIT">			</span><span class="NAME">document.write</span><span class="PUNC">(</span><span class="STRN">"&lt;script charset=\"utf-8\" src=\""</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"\" onload=\"console.log('Loaded "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"');\">&lt;/script>"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 87</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 88</span> 
+<span class='line'> 80</span> 
+<span class='line'> 81</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.load_js
+<span class='line'> 82</span> 		 * Загрузить .js-файл
+<span class='line'> 83</span> 		 * @param {String} path путь к .js-файлу
+<span class='line'> 84</span> 		 * @private
+<span class='line'> 85</span> 		 */</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">		</span><span class="NAME">load_js</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">path</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="WHIT">			</span><span class="NAME">document.write</span><span class="PUNC">(</span><span class="STRN">"&lt;script charset=\"utf-8\" src=\""</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"\" onload=\"console.log('Loaded "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"');\">&lt;/script>"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'> 89</span> 
-<span class='line'> 90</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.load_api_module
-<span class='line'> 91</span> 		 * Загрузить модуль API
-<span class='line'> 92</span> 		 * @param {String} name название модуля
-<span class='line'> 93</span> 		 * @private
-<span class='line'> 94</span> 		 */</span><span class="WHIT">
-<span class='line'> 95</span> </span><span class="WHIT">		</span><span class="NAME">load_api_module</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">name</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 96</span> </span><span class="WHIT">			</span><span class="NAME">document.write</span><span class="PUNC">(</span><span class="STRN">"&lt;script charset=\"utf-8\" src=\"../lib/napi/"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">".js\" onload=\"NApi._.Linfo('Loaded API module "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"');\">&lt;/script>"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 97</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 98</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 99</span> 
+<span class='line'> 90</span> 
+<span class='line'> 91</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.load_api_module
+<span class='line'> 92</span> 		 * Загрузить модуль API
+<span class='line'> 93</span> 		 * @param {String} name название модуля
+<span class='line'> 94</span> 		 * @private
+<span class='line'> 95</span> 		 */</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">		</span><span class="NAME">load_api_module</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">name</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="WHIT">			</span><span class="NAME">document.write</span><span class="PUNC">(</span><span class="STRN">"&lt;script charset=\"utf-8\" src=\"../lib/napi/"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">".js\" onload=\"NApi._.Linfo('Loaded API module "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"');\">&lt;/script>"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'>100</span> 
-<span class='line'>101</span> </span><span class="WHIT">	</span><span class="COMM">/** @namespace NApi.state
-<span class='line'>102</span> 	 * Состояние приложения
-<span class='line'>103</span> 	 */</span><span class="WHIT">
-<span class='line'>104</span> </span><span class="WHIT">	</span><span class="NAME">state</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>105</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi.state.is_debug
-<span class='line'>106</span> 		 * Занести в лог информацию
-<span class='line'>107</span> 		 * @return {Boolean} включен ли режим отладки
-<span class='line'>108</span> 		 */</span><span class="WHIT">
-<span class='line'>109</span> </span><span class="WHIT">		</span><span class="NAME">is_debug</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>110</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">NApi._.debug_mode</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>111</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>112</span> 
-<span class='line'>113</span> 
-<span class='line'>114</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.enable_debug_mode
-<span class='line'>115</span> 		 * Включить отладочный режим
-<span class='line'>116</span> 		 */</span><span class="WHIT">
-<span class='line'>117</span> </span><span class="WHIT">		</span><span class="NAME">enable_debug_mode</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>118</span> </span><span class="WHIT">			</span><span class="NAME">NApi._.debug_mode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>119</span> </span><span class="WHIT">			</span><span class="NAME">NApi._.Linfo</span><span class="PUNC">(</span><span class="STRN">"debug-mode enabled"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>120</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>121</span> 
-<span class='line'>122</span> 
-<span class='line'>123</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi._.disable_debug_mode
-<span class='line'>124</span> 		 * Выключить отладочный режим
-<span class='line'>125</span> 		 */</span><span class="WHIT">
-<span class='line'>126</span> </span><span class="WHIT">		</span><span class="NAME">disable_debug_mode</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>127</span> </span><span class="WHIT">			</span><span class="NAME">NApi._.debug_mode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>128</span> </span><span class="WHIT">			</span><span class="NAME">NApi._.Linfo</span><span class="PUNC">(</span><span class="STRN">"debug-mode disabled"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>129</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>130</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>131</span> 
+<span class='line'>101</span> 
+<span class='line'>102</span> </span><span class="WHIT">	</span><span class="COMM">/** @namespace NApi.state
+<span class='line'>103</span> 	 * Состояние приложения
+<span class='line'>104</span> 	 */</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">	</span><span class="NAME">state</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NApi.state.isDebug
+<span class='line'>107</span> 		 * Занести в лог информацию
+<span class='line'>108</span> 		 * @return {Boolean} включен ли режим отладки
+<span class='line'>109</span> 		 */</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">		</span><span class="NAME">isDebug</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">NApi._.debug_mode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>114</span> 
+<span class='line'>115</span> 
+<span class='line'>116</span> </span><span class="WHIT">	</span><span class="COMM">/** @function NApi.Linfo
+<span class='line'>117</span> 	 * Занести в лог информацию
+<span class='line'>118</span> 	 * @param {String} msg текст сообщения
+<span class='line'>119</span> 	 */</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">	</span><span class="NAME">Linfo</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">		</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[info] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>123</span> 
+<span class='line'>124</span> 
+<span class='line'>125</span> </span><span class="WHIT">	</span><span class="COMM">/** @function NApi.Lmsg
+<span class='line'>126</span> 	 * Занести в лог сообщение
+<span class='line'>127</span> 	 * @param {String} msg текст сообщения
+<span class='line'>128</span> 	 */</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">	</span><span class="NAME">Lmsg</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">		</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[msg] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'>132</span> 
-<span class='line'>133</span> </span><span class="WHIT">	</span><span class="COMM">/** @function NApi.Linfo
-<span class='line'>134</span> 	 * Занести в лог информацию
-<span class='line'>135</span> 	 * @param {String} msg текст сообщения
-<span class='line'>136</span> 	 */</span><span class="WHIT">
-<span class='line'>137</span> </span><span class="WHIT">	</span><span class="NAME">Linfo</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>138</span> </span><span class="WHIT">		</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[info] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>139</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>140</span> 
+<span class='line'>133</span> 
+<span class='line'>134</span> </span><span class="WHIT">	</span><span class="COMM">/** @function NApi.Lwarn
+<span class='line'>135</span> 	 * Занести в лог предупреждение
+<span class='line'>136</span> 	 * @param {String} msg текст сообщения
+<span class='line'>137</span> 	 */</span><span class="WHIT">
+<span class='line'>138</span> </span><span class="WHIT">	</span><span class="NAME">Lwarn</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">		</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[WARN] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'>141</span> 
-<span class='line'>142</span> </span><span class="WHIT">	</span><span class="COMM">/** @function NApi.Lmsg
-<span class='line'>143</span> 	 * Занести в лог сообщение
-<span class='line'>144</span> 	 * @param {String} msg текст сообщения
-<span class='line'>145</span> 	 */</span><span class="WHIT">
-<span class='line'>146</span> </span><span class="WHIT">	</span><span class="NAME">Lmsg</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>147</span> </span><span class="WHIT">		</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[msg] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>148</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>149</span> 
-<span class='line'>150</span> 
-<span class='line'>151</span> </span><span class="WHIT">	</span><span class="COMM">/** @function NApi.Lwarn
-<span class='line'>152</span> 	 * Занести в лог предупреждение
-<span class='line'>153</span> 	 * @param {String} msg текст сообщения
-<span class='line'>154</span> 	 */</span><span class="WHIT">
-<span class='line'>155</span> </span><span class="WHIT">	</span><span class="NAME">Lwarn</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>156</span> </span><span class="WHIT">		</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[WARN] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>157</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>158</span> 
-<span class='line'>159</span> 
-<span class='line'>160</span> </span><span class="WHIT">	</span><span class="COMM">/** @function NApi.Lerr
-<span class='line'>161</span> 	 * Занести в лог информацию об ощибке
-<span class='line'>162</span> 	 * @param {String} msg текст сообщения
-<span class='line'>163</span> 	 */</span><span class="WHIT">
-<span class='line'>164</span> </span><span class="WHIT">	</span><span class="NAME">Lerr</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>165</span> </span><span class="WHIT">		</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[ERROR] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>166</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'>167</span> 
-<span class='line'>168</span> 
-<span class='line'>169</span> </span><span class="WHIT">	</span><span class="COMM">/** @function NApi.Ldebug
-<span class='line'>170</span> 	 * Занести в лог отладочную информацию
-<span class='line'>171</span> 	 * @param {String} msg текст сообщения
-<span class='line'>172</span> 	 * @note Выводиться только в режиме отладки
-<span class='line'>173</span> 	 */</span><span class="WHIT">
-<span class='line'>174</span> </span><span class="WHIT">	</span><span class="NAME">Ldebug</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>175</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">NApi.state.is_debug</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>176</span> </span><span class="WHIT">			</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[DEBUG] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>177</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>178</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>179</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>180</span> 
-<span class='line'>181</span> 
-<span class='line'>182</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>183</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.Linfo</span><span class="PUNC">(</span><span class="STRN">"NApi "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">NApi.info.VERSION</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>184</span> 
-<span class='line'>185</span> </span><span class="WHIT">	</span><span class="NAME">NApi.state.enable_debug_mode</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>186</span> 
-<span class='line'>187</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.Linfo</span><span class="PUNC">(</span><span class="STRN">"Loading API modules..."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>188</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"task"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>189</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>190</span> 
-<span class='line'>191</span> </span></pre></body></html>
+<span class='line'>142</span> 
+<span class='line'>143</span> </span><span class="WHIT">	</span><span class="COMM">/** @function NApi.Lerr
+<span class='line'>144</span> 	 * Занести в лог информацию об ощибке
+<span class='line'>145</span> 	 * @param {String} msg текст сообщения
+<span class='line'>146</span> 	 */</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">	</span><span class="NAME">Lerr</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">msg</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">		</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">"[ERROR] "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">msg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>151</span> 
+<span class='line'>152</span> 
+<span class='line'>153</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.Linfo</span><span class="PUNC">(</span><span class="STRN">"NApi "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">NApi.info.VERSION</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>155</span> 
+<span class='line'>156</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.Linfo</span><span class="PUNC">(</span><span class="STRN">"Loading API modules..."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>157</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"util"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>158</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"debug"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>159</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"task"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>161</span> 
+<span class='line'>162</span> </span></pre></body></html>
