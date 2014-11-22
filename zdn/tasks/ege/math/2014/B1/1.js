@@ -1,4 +1,5 @@
 (function() {
+NApi.info.require_api_version(0, 0);
 
 NApi.Linfo("Обзад 26640");
 
@@ -16,9 +17,7 @@ var text = window.profesj.ie.iz().toZagl() + " " + om.imenaj.ie.iz() + " " + win
            window.dlina.ie[a].toZagl() + " - это " + g + " метра. Какое число отобразится на экране прибора для" +
            " выявления нарушителей скоростного режима?";
 
-var task = NApi.task.Task(text, undefined, [ (b * g / 1000).round() ], ["log", "prz", "drs", "tri"], undefined, undefined);
-
-NApi.task.set_current_task(task);
+NApi.task.set_task(text, "", [ (b * g / 1000).round() ], [], ["log", "prz", "drs", "tri"], undefined, undefined);
 
 })();
 //Обзад 26640
