@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - NApi.util</title>
+		<title>JsDoc Reference - NApi.util.math</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -222,7 +222,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Namespace NApi.util
+				Namespace NApi.util.math
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -230,8 +230,8 @@ ul.inheritsList
 				
 				
 			
-				NApi.util
-Утилиты
+				napi.util.math
+Работа с числами
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/lib_napi_util.js.html">util.js</a>.
@@ -240,7 +240,7 @@ ul.inheritsList
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class NApi.util.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class NApi.util.math.">
 				<caption>Namespace Summary</caption>
 				<thead>
 					<tr>
@@ -253,7 +253,7 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/NApi.util.html#constructor">NApi.util</a></b>
+								<b><a href="../symbols/NApi.util.math.html#constructor">NApi.util.math</a></b>
 							</div>
 							<div class="description"></div>
 						</td>
@@ -264,13 +264,44 @@ ul.inheritsList
 
 <!-- ============================== properties summary ===================== -->
 			
-				
-				
-				
-				
-			
 
 <!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class NApi.util.math.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">NApi.util.math.<b><a href="../symbols/NApi.util.math.html#.randomize">randomize</a></b>(min, max, dec_places)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">NApi.util.math.<b><a href="../symbols/NApi.util.math.html#.round">round</a></b>(num, dec_places)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
 			
 <!-- ============================== events summary ======================== -->
 			
@@ -283,7 +314,7 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>NApi.util</b>
+						<b>NApi.util.math</b>
 				</div>
 				
 				<div class="description">
@@ -309,6 +340,115 @@ ul.inheritsList
 			
 
 <!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name=".randomize"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">NApi.util.math.</span><b>randomize</b>(min, max, dec_places)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>min</b>
+									
+								</dt>
+								<dd>минимальное значение</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>max</b>
+									
+								</dt>
+								<dd>минимальное значение</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>dec_places</b>
+									
+								</dt>
+								<dd>кол-во знаков после запятой</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>случайное число</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".round"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">NApi.util.math.</span><b>round</b>(num, dec_places)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>num</b>
+									
+								</dt>
+								<dd>округляемое число</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>dec_places</b>
+									
+								</dt>
+								<dd>точность округления</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>число num округлённое до dp</dd>
+							
+							</dl>
+						
+						
+						
+
+					
+				
 			
 			
 <!-- ============================== event details ========================= -->		
