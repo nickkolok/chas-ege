@@ -149,22 +149,16 @@
 <span class='line'>142</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>143</span> 
 <span class='line'>144</span> 
-<span class='line'>145</span> </span><span class="COMM">/**
-<span class='line'>146</span>  * Алиас на NApi.info
-<span class='line'>147</span>  */</span><span class="WHIT">
-<span class='line'>148</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">Ninfo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">NApi.info</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>149</span> 
-<span class='line'>150</span> 
-<span class='line'>151</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>152</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.Linfo</span><span class="PUNC">(</span><span class="STRN">"NApi v"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">NApi.info.API_VERSION.major</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"."</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">NApi.info.API_VERSION.minor</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>145</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>146</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.Linfo</span><span class="PUNC">(</span><span class="STRN">"NApi v"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">NApi.info.API_VERSION.major</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"."</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">NApi.info.API_VERSION.minor</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>147</span> 
+<span class='line'>148</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.Linfo</span><span class="PUNC">(</span><span class="STRN">"Loading API modules..."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"util"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"debug"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>151</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"task"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>152</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"ui"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>153</span> 
-<span class='line'>154</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.Linfo</span><span class="PUNC">(</span><span class="STRN">"Loading API modules..."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>155</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"util"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>156</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"debug"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>157</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"task"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>158</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"ui"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>159</span> 
-<span class='line'>160</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"alias"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>161</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>162</span> 
-<span class='line'>163</span> </span></pre></body></html>
+<span class='line'>154</span> </span><span class="WHIT">	</span><span class="NAME">NApi._.load_api_module</span><span class="PUNC">(</span><span class="STRN">"alias"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>156</span> 
+<span class='line'>157</span> </span></pre></body></html>

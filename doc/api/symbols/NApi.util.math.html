@@ -205,6 +205,10 @@ ul.inheritsList
 	
 	<li><a href="../symbols/NApi.info.html">NApi.info</a></li>
 	
+	<li><a href="../symbols/NApi.opt.html">NApi.opt</a></li>
+	
+	<li><a href="../symbols/NApi.opt._.html">NApi.opt._</a></li>
+	
 	<li><a href="../symbols/NApi.task.html">NApi.task</a></li>
 	
 	<li><a href="../symbols/NApi.task._.html">NApi.task._</a></li>
@@ -219,7 +223,7 @@ ul.inheritsList
 	
 	<li><a href="../symbols/NApi.util.math.html">NApi.util.math</a></li>
 	
-	<li><a href="../symbols/NApi.util.str.html">NApi.util.str</a></li>
+	<li><a href="../symbols/NApi.util.math.Triangle.html">NApi.util.math.Triangle</a></li>
 	
 	<li><a href="../symbols/Number.html">Number</a></li>
 	
@@ -296,6 +300,33 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont">NApi.util.math.<b><a href="../symbols/NApi.util.math.html#.get_divisors">get_divisors</a></b>(num)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">NApi.util.math.<b><a href="../symbols/NApi.util.math.html#.get_random_divisor">get_random_divisor</a></b>(num)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">NApi.util.math.<b><a href="../symbols/NApi.util.math.html#.is_divisor">is_divisor</a></b>(num, divisor)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont">NApi.util.math.<b><a href="../symbols/NApi.util.math.html#.randomize">randomize</a></b>(min, max, dec_places)
 								</div>
 								<div class="description"></div>
@@ -306,6 +337,24 @@ ul.inheritsList
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">NApi.util.math.<b><a href="../symbols/NApi.util.math.html#.round">round</a></b>(num, dec_places)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">NApi.util.math.<b><a href="../symbols/NApi.util.math.html#.Vec2">Vec2</a></b>(x, y)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">NApi.util.math.<b><a href="../symbols/NApi.util.math.html#.Vec3">Vec3</a></b>(x, y, z)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -358,6 +407,141 @@ ul.inheritsList
 				<div class="sectionTitle">
 					Method Detail
 				</div>
+				
+					<a name=".get_divisors"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">NApi.util.math.</span><b>get_divisors</b>(num)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/Number.html">Number</a>}</span> <b>num</b>
+									
+								</dt>
+								<dd>делимое</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>Массив делителей числа num</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".get_random_divisor"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">NApi.util.math.</span><b>get_random_divisor</b>(num)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/Number.html">Number</a>}</span> <b>num</b>
+									
+								</dt>
+								<dd>делимое</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>Случайный делитель числа num</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".is_divisor"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">NApi.util.math.</span><b>is_divisor</b>(num, divisor)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/Number.html">Number</a>}</span> <b>num</b>
+									
+								</dt>
+								<dd>делимое</dd>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/Number.html">Number</a>}</span> <b>divisor</b>
+									
+								</dt>
+								<dd>делитель</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>Кратно ли число a числу divisor</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
 				
 					<a name=".randomize"> </a>
 					<div class="fixedFont">&lt;static&gt; 
@@ -461,6 +645,96 @@ ul.inheritsList
 						
 						
 
+					<hr />
+				
+					<a name=".Vec2"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">NApi.util.math.</span><b>Vec2</b>(x, y)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".Vec3"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">NApi.util.math.</span><b>Vec3</b>(x, y, z)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>z</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
 					
 				
 			
@@ -475,7 +749,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Sun Nov 23 2014 14:33:41 GMT+0400 (MSK)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Nov 24 2014 19:52:55 GMT+0400 (MSK)
 		</div>
 	</body>
 </html>
