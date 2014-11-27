@@ -217,7 +217,11 @@ ul.inheritsList
 	
 	<li><a href="../symbols/NLib.math.html">NLib.math</a></li>
 	
-	<li><a href="../symbols/NLib.math.math.html">NLib.math.math</a></li>
+	<li><a href="../symbols/NLib.sets.html">NLib.sets</a></li>
+	
+	<li><a href="../symbols/NLib.sets.alphabets.html">NLib.sets.alphabets</a></li>
+	
+	<li><a href="../symbols/NLib.sets.units.html">NLib.sets.units</a></li>
 	
 	<li><a href="../symbols/Number.html">Number</a></li>
 	
@@ -248,8 +252,8 @@ ul.inheritsList
 				
 				
 			
-				NLib
-Утилиты
+				NLib.math
+Работа с числами
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/lib_nlib_math.js.html">math.js</a>.
@@ -282,13 +286,53 @@ ul.inheritsList
 
 <!-- ============================== properties summary ===================== -->
 			
-				
-				
-				
-				
-			
 
 <!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class NLib.math.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">NLib.math.<b><a href="../symbols/NLib.math.html#.randomize">randomize</a></b>(min, max, dec_places)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">NLib.math.<b><a href="../symbols/NLib.math.html#.Vec2">Vec2</a></b>(x, y)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">NLib.math.<b><a href="../symbols/NLib.math.html#.Vec3">Vec3</a></b>(x, y, z)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
 			
 <!-- ============================== events summary ======================== -->
 			
@@ -328,6 +372,156 @@ ul.inheritsList
 
 <!-- ============================== method details ========================= -->		
 			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name=".randomize"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">NLib.math.</span><b>randomize</b>(min, max, dec_places)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/Number.html">Number</a>}</span> <b>min</b>
+									
+								</dt>
+								<dd>минимальное значение</dd>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/Number.html">Number</a>}</span> <b>max</b>
+									
+								</dt>
+								<dd>минимальное значение</dd>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/Number.html">Number</a>}</span> <b>dec_places</b>
+									
+								</dt>
+								<dd>кол-во знаков после запятой</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>случайное число</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".Vec2"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">NLib.math.</span><b>Vec2</b>(x, y)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".Vec3"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">NLib.math.</span><b>Vec3</b>(x, y, z)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>z</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					
+				
+			
 			
 <!-- ============================== event details ========================= -->		
 			
@@ -339,7 +533,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Nov 25 2014 00:08:35 GMT+0400 (MSK)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Nov 27 2014 15:59:05 GMT+0400 (MSK)
 		</div>
 	</body>
 </html>
