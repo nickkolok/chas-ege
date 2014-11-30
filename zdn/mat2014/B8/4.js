@@ -1,7 +1,7 @@
 (function() {
 
 var t1=[['sin','cos'],['tg','ctg']].iz().shuffle();
-var t2=sluchiz(om.latbukv,3);
+var t2 = sluchiz(NLsets.alphabets.english, 3);
 
 var a=sluchch(0.01,0.99,0.01).ts();
 

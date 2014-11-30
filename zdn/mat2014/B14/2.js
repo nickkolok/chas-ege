@@ -1,7 +1,7 @@
 (function() {
 
 var t1=sluchch(om.transportm.ie.length-1);
-var t2=sluchiz(om.latbukv,2);
+var t2 = NLsets.alphabets.english.get_random_items(2);
 var v3=sluchch(1);
 var t3=['Первый','Второй'];
 var t4=['первого','второго'];

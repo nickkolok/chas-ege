@@ -1,7 +1,7 @@
 (function() {
 
 
-var t1=om.latbukv.sluchiz(3);
+var t1=NLsets.alphabets.english.sluchiz(3);
 var A=t1[0], B=t1[1], C=t1[2];
 var a1=om.pifagtr.iz();
 var c=sluchch(1,10);

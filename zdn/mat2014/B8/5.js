@@ -1,6 +1,6 @@
 (function() {
 
-var t2=sluchiz(om.latbukv,3);
+var t2=sluchiz(NLsets.alphabets.english,3);
 var t1=[['sin',['tg~} '+t2[1],'ctg~} '+t2[2]].iz()],['cos',['ctg~} '+t2[1],'tg~} '+t2[2]].iz()]].iz();
 var v1=sluchch(1);
 

@@ -1,7 +1,7 @@
 //(function() {
 
 
-var t1=om.latbukv.sluchiz(3);
+var t1 = NLsets.alphabets.english.get_random_items(3);
 var A=t1[0], B=t1[1], C=t1[2];
 var c=sluchch(2,10),
 	d=sluchch(0.1,0.9,0.1),

@@ -4,9 +4,9 @@ for(var t=0.5;!t.isZ();){
 	var a=sl(10,20);
 	var b=sl(a+1,110);
 	var s=sl(b,990);
-	var t=60*s*(b-a)/a/b; 
+	var t=60*s*(b-a)/a/b;
 }
-var t2=sluchiz(om.latbukv,2);
+var t2 = NLsets.alphabets.english.get_random_item(2);
 
 var t1=[].N(om.transportm.ie.length-1).sluchiz(2);
 var t3=[om.transportm.ie[t1[0]],om.transportm.ie[t1[1]]];

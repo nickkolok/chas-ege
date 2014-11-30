@@ -1,6 +1,6 @@
 (function() {
 
-var t1=om.latbukv.sluchiz(3);
+var t1 = NLsets.alphabets.english.get_random_items(3);
 var p1=sl(1,100);
 var p2=sl(1,100);
 var p3=sl(1,100);

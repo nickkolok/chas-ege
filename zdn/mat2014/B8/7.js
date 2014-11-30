@@ -1,6 +1,6 @@
 (function() {
 
-var t2=sluchiz(om.latbukv,3);
+var t2=sluchiz(NLsets.alphabets.english,3);
 var t1=['tg~','ctg~'].shuffle();
 
 var c=[2,5,10].iz();

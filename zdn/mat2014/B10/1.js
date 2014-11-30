@@ -1,6 +1,6 @@
 (function() {
 
-var a=sluchiz(latbukv,4);
+var a = NLsets.alphabets.english.get_random_items(4);
 var b='В прямоугольном параллелепипеде ';
 var c=sluchiz(window.pifagtr,1)[0];
 var d=sluchch(1,5);

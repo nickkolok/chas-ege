@@ -1,7 +1,7 @@
 (function() {
 
 var t1=['sin','cos'].shuffle();
-var t2=sluchiz(om.latbukv,3);
+var t2 = NLsets.alphabets.english.get_random_items(3);
 var v1=sluchch(1);
 
 var c=om.znamenat.iz();

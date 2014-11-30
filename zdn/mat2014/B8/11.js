@@ -1,6 +1,6 @@
 (function() {
 
-var t1=om.latbukv.sluchiz(4);
+var t1 = NLsets.alphabets.english.get_random_items(4);
 var t2=['центральный'	,'вписанный'	];
 var t3=['больше'		,'меньше'		];
 var t4=['вписанного'	,'центрального'	];

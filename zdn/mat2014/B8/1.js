@@ -2,7 +2,7 @@
 
 var a=sluchch(2,10);
 var b=[2,4,5,8,10].iz().pm();
-var c=sluchiz(latbukv,3);
+var c = NLsets.alphabets.english.get_random_items(3);
 var d=sl1();
 var f=a/b;
 var g;

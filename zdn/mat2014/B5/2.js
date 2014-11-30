@@ -1,6 +1,6 @@
 (function() {
 
-var b=sluchiz(latbukv,5); 
+var b = NLsets.alphabets.english.get_random_items(5);
 var tA=b[0],tB=b[1],tC=b[2],tD=b[3],tE=b[4];
 var nS=sluchch(11,99);
 var aV=[1,2,3,4];
