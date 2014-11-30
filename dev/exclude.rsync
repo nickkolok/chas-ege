@@ -70,6 +70,9 @@ lib/umka.js
 lib/urljson.js
 lib/yametrika.js
 
+lib/nlib/core.js
+lib/nlib/sets.js
+
 ext/jquery*.min.js 
 ext/jqplot/jquery.jqplot.min.js
 ext/jqplot/plugins/jqplot.barRenderer.min.js
