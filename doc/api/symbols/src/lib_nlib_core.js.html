@@ -15,22 +15,35 @@
 <span class='line'>  8</span> 	 * Функционал, используемый только внутри модуля NLib
 <span class='line'>  9</span> 	 * @private
 <span class='line'> 10</span> 	 */</span><span class="WHIT">
-<span class='line'> 11</span> </span><span class="WHIT">	</span><span class="NAME">_</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 12</span> 
-<span class='line'> 13</span> 
-<span class='line'> 14</span> </span><span class="WHIT">	</span><span class="NAME">loadJs</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">path</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 15</span> </span><span class="WHIT">		</span><span class="NAME">document.write</span><span class="PUNC">(</span><span class="STRN">"&lt;script charset=\"utf-8\" src=\""</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"\" onload=\"console.log('Loaded "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"');\">&lt;/script>"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 16</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 17</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 18</span> 
-<span class='line'> 19</span> 
-<span class='line'> 20</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 21</span> </span><span class="WHIT">	</span><span class="NAME">NLib.loadJs</span><span class="PUNC">(</span><span class="STRN">"../lib/nlib/Array.js"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 22</span> </span><span class="WHIT">	</span><span class="NAME">NLib.loadJs</span><span class="PUNC">(</span><span class="STRN">"../lib/nlib/Number.js"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 23</span> </span><span class="WHIT">	</span><span class="NAME">NLib.loadJs</span><span class="PUNC">(</span><span class="STRN">"../lib/nlib/math.js"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 24</span> </span><span class="WHIT">	</span><span class="NAME">NLib.loadJs</span><span class="PUNC">(</span><span class="STRN">"../lib/nlib/sets.js"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 25</span> 
-<span class='line'> 26</span> </span><span class="WHIT">	</span><span class="NAME">NLib.loadJs</span><span class="PUNC">(</span><span class="STRN">"../lib/nlib/alias.js"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 27</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 28</span> 
-<span class='line'> 29</span> </span></pre></body></html>
+<span class='line'> 11</span> </span><span class="WHIT">	</span><span class="NAME">_</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="WHIT">		</span><span class="COMM">/** @function NLib._.loadLibModule
+<span class='line'> 13</span> 		 * Загрузить модуль NLib
+<span class='line'> 14</span> 		 * @param {String} name название модуля
+<span class='line'> 15</span> 		 * @private
+<span class='line'> 16</span> 		 */</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="WHIT">		</span><span class="NAME">loadLibModule</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">name</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="WHIT">			</span><span class="NAME">document.write</span><span class="PUNC">(</span><span class="STRN">"&lt;script charset=\"utf-8\" src=\"../lib/nlib/"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">".js\" onload=\"console.log('[NLib] Загружен модуль "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"');\">&lt;/script>"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 21</span> 
+<span class='line'> 22</span> 
+<span class='line'> 23</span> </span><span class="WHIT">	</span><span class="COMM">/** @function NLib._.getTypeOf
+<span class='line'> 24</span> 	 * @param object объект
+<span class='line'> 25</span> 	 * @return тип объекта ввиде [object ТИП]
+<span class='line'> 26</span> 	 */</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">	</span><span class="NAME">getTypeOf</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">object</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Object.prototype.toString.call</span><span class="PUNC">(</span><span class="NAME">object</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 31</span> 
+<span class='line'> 32</span> 
+<span class='line'> 33</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">	</span><span class="NAME">NLib._.loadLibModule</span><span class="PUNC">(</span><span class="STRN">"Array"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">	</span><span class="NAME">NLib._.loadLibModule</span><span class="PUNC">(</span><span class="STRN">"Number"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">	</span><span class="NAME">NLib._.loadLibModule</span><span class="PUNC">(</span><span class="STRN">"math"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">	</span><span class="NAME">NLib._.loadLibModule</span><span class="PUNC">(</span><span class="STRN">"sets"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> 
+<span class='line'> 39</span> </span><span class="WHIT">	</span><span class="NAME">NLib._.loadLibModule</span><span class="PUNC">(</span><span class="STRN">"alias"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> 
+<span class='line'> 42</span> </span></pre></body></html>
