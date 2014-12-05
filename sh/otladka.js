@@ -3,80 +3,80 @@ var flAce=0;
 var editor;
 var flFullscreen=0;
 
-function obnov(){
-	$('#pole').html(window.vopr.txt);
-	$('#resh').html('');
+function updateQuestion(){
+	$("#question").html(window.vopr.txt);
+	$("#resh").html("");
 	window.vopr.dey();
 	MathJax.Hub.Typeset();
-	$('#otvet').html(window.vopr.ver.join(';;'));
-	$('#never').html(window.vopr.nev.join(';;'));
+	$("#answer").html(window.vopr.ver.join(";;"));
+	$("#wrongAnswer").html(window.vopr.nev.join(";;"));
 }
 
-function sozdat(){
-	if(!checkJQuery ('sozdat()','pole'))
+function createFromFile(){
+	if(!checkJQuery ("createFromFile()","pole"))
 		return;
-	if(!checkMathJax('sozdat()','pole'))
+	if(!checkMathJax("createFromFile()","pole"))
 		return;
-	$('#pole').html('Задание составляется, подождите...');
-	v=$('#adres').val();
+	$("#question").html("Задание составляется, подождите...");
+	v=$("#filepath").val();
 	if(!v.length){
-		$('#pole').html('Нужно указать путь к загружаемому файлу!');
+		$("#question").html("Нужно указать путь к загружаемому файлу!");
 		return;
 	}
-	$('#shabl').attr('src',v);
+	$("#shabl").attr("src",v);
 	window.vopr.podg();
-	zagr(v+'?'+Math.random());
+	zagr(v+"?"+Math.random());
 	dvig.flObn=0;
 	dvig.startxt=window.vopr.txt;
-	dvig.obnov(obnov);
-	$('#otv').val('');
-	$('#otvet').hide();
+	dvig.obnov(updateQuestion);
+	$("#answer-input").val("");
+	$("#answer").hide();
 	setVKI();
-	VKI_attach(document.getElementById('otv'));
+	VKI_attach(document.getElementById("answer-input"));
 }
 
-function prover(){
-	if(window.vopr.vrn($('#otv').val())){
-		alert('Правильно!');
+function checkAnswer(){
+	if(window.vopr.vrn($("#answer-input").val())){
+		alert("Правильно!");
 	}else{
-		alert('Неправильно!\nПравильный ответ: '+window.vopr.ver.join(' или '));
-		$('#otvet').show();
+		alert("Неправильно!\nПравильный ответ: " + window.vopr.ver.join(" или "));
+		$("#answer").show();
 	}
-	$('#resh').html(vopr.rsh);
+	$("#resh").html(vopr.rsh);
 	MathJax.Hub.Typeset();
 }
 
-function izTextarea(){
+function createFromTextarea(){
 	saveAce();
-	$('#pole').html('Если Вы видите эту надпись - задание не составлено, скорее всего, в программе ошибка.');
+	$("#question").html("Если Вы видите эту надпись - задание не составлено, скорее всего, в программе ошибка.");
 	eval(nabrano());
-	obnov();
+	updateQuestion();
 }
 
 function tt(){
 	saveAce();
 	var t1=new Date().getTime();
 	var code=nabrano();
-	var iter=1*$('#iter').val();
+	var iter=1*$("#iter").val();
 	for(var i=iter;i;i--)
 		eval(code);
 	var t2=new Date().getTime();
-	alert('Примерно '+(t2-t1)/iter+' сек.');
+	alert("Примерно "+(t2-t1)/iter+" сек.");
 }
 
-function podsvet(){
-	var aceSize=1*$('#ace-size').val();
-	var aceRows=1*$('#ace-rows').val();
-	$('#ace-script')[0].style.position='relative';
-	$('#ace-script')[0].style.height=aceSize*aceRows+'px';
-	$('#ace-script')[0].style.textAlign='left';
+function enableAce(){
+	var aceSize=1*$("#ace-size").val();
+	var aceRows=1*$("#ace-rows").val();
+	$("#ace-script")[0].style.position="relative";
+	$("#ace-script")[0].style.height=aceSize*aceRows+"px";
+	$("#ace-script")[0].style.textAlign="left";
 
-	$('#ace-script').html($('#textarea-script').val().replace(/</g,'&lt;').replace(/>/g,'&gt;'));
-	$('#textarea-script').hide();
-	editor = ace.edit('ace-script');
-	editor.getSession().setMode('ace/mode/javascript');
+	$("#ace-script").html($("#textarea-script").val().replace(/</g,"&lt;").replace(/>/g,"&gt;"));
+	$("#textarea-script").hide();
+	editor = ace.edit("ace-script");
+	editor.getSession().setMode("ace/mode/javascript");
 	editor.setFontSize(aceSize);
-	$('#vklpodsv').hide();
+	$("#vklpodsv").hide();
 	flAce=1;
 }
 
@@ -84,18 +84,18 @@ function nabrano(){
 	if(flAce)
 		return editor.getValue();
 	else
-		return $('#textarea-script').val();
+		return $("#textarea-script").val();
 }
 
 function saveAce(){
 	if(flAce)
-		$('#textarea-script').val(editor.getValue());
+		$("#textarea-script").val(editor.getValue());
 	$.jStorage.sohrData();
 }
 
 function pastebin(){
 	saveAce();
-	$('#textarea-paste').val($('#textarea-script').val());
+	$("#textarea-paste").val($("#textarea-script").val());
 }
 
 function startFullscreen(){
@@ -148,7 +148,7 @@ document.onkeydown = function(e) {
     if (e.keyCode == 27) { // escape
         stopFullscreen();
         return false;
-    } else if ((e.ctrlKey && e.shiftKey && e.keyCode == 'F'.charCodeAt(0))) {
+    } else if ((e.ctrlKey && e.shiftKey && e.keyCode == "F".charCodeAt(0))) {
         startFullscreen();
         return false;
     }

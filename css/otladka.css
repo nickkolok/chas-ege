@@ -1,46 +1,46 @@
-#shabl{
+#shabl {
 	width:100%;
 	height:100%;
 	visibility:none;
 	position:absolute;
 	top:-9999px;
 }
-#otvet, #never{
+#answer, #wrongAnswer {
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
 }
-body{
+body {
 	padding:0;
 	margin:0;
 	min-height:100%;
 }
-.vopr{
+.question {
 	padding:2em;
 	height:auto;
 	overflow:hidden;
 }
-#wrap2{
+#wrap2 {
 	margin-left:auto;
 	margin-right:auto;
 	text-align: center;
 }
-#otv{
+#reply {
 		width:10em;
 }
-#wrap{
+#wrap {
 	text-align: center;
 	font-size:18px;
 }
-input,body,button{
+input,body,button {
 	font-size:18px;
 	font-family:monospace;
 }
-#textarea-script{
+#textarea-script {
 	max-width:100%;
 	min-width:100%;
 	height:100px;
 }
-#adres{
+#filepath {
 	width:292px;
 }
