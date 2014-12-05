@@ -1,7 +1,7 @@
 (function(){'use strict';
 
 var percent=sluchch(85,95);
-var people=sluchch(25000,31000);
+var people=sluchch(25000,31000,100);
 var area=sklonlxkand(om.naspunkt.iz());
 var example=sluchch(1,10);
 var child=sklonlxkand(['ученик','выпускник'].iz());
