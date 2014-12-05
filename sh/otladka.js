@@ -49,8 +49,13 @@ function checkAnswer(){
 function createFromTextarea(){
 	saveAce();
 	$("#question").html("Если Вы видите эту надпись - задание не составлено, скорее всего, в программе ошибка.");
-	eval(nabrano());
-	updateQuestion();
+	try {
+		eval(nabrano());
+	} catch (e) {
+		$("#question").html(e.name + " : " + e.message);
+		return;
+	}
+		updateQuestion();
 }
 
 function tt(){
@@ -153,3 +158,9 @@ document.onkeydown = function(e) {
         return false;
     }
 }
+
+if ($("#textarea-script").val() == "") {
+	$("#textarea-script").val("(function(){\n\n})();");
+	$.jStorage.sohrData();
+}
+

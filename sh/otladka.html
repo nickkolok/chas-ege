@@ -25,13 +25,14 @@
 					<input id="answer-input"/>
 					<button id="reply" onclick="checkAnswer()">Ответить!</button>
 				</div>
+				<hr/>
 				<div>
 					Адрес подключаемого шаблона:
 					<input type="text" id="filepath" data-jstorage-id="otladka-filepath"/>
 					<button onclick="createFromFile();">Составить задание</button>
 				</div>
 				<hr/>
-				или ввести программу:
+				Ввести программу:
 				<div>
 					<textarea id="textarea-script" data-jstorage-id="otladka-textarea-script" data-jstorage-ne="vi" onkeydown="return catchTab(this,event)"></textarea>
 					<div id="ace-script"></div>
@@ -47,8 +48,9 @@
 					<input id="ace-size" value="12" data-jstorage-id="ace-size"/>
 					<button onclick="enableAce();">Включить редактор ACE</button>
 					<br/>
-					<hr/>
 				</div>
+				<hr/>
+				<!--
 				<div>
 					Количество итераций:
 					<input id="iter" data-jstorage-id="timetest-kolvo-iter" value="20000"/>
@@ -59,6 +61,7 @@
 					Тем не менее, общие тенденции оценить можно.
 				</div>
 				<hr/>
+				-->
 				<div>
 					<form method="post" action="http://pastebin.ru/" target="_blank" onsubmit="pastebin();">
 						<input id="std-x" name="std-x" type="hidden" value="600">
