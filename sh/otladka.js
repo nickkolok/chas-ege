@@ -159,8 +159,10 @@ document.onkeydown = function(e) {
     }
 }
 
-if ($("#textarea-script").val() == "") {
-	$("#textarea-script").val("(function(){\n\n})();");
-	$.jStorage.sohrData();
+function defaultCode(){
+	$.jStorage.zagrData();
+	if ($("#textarea-script").val() == "") {
+		$("#textarea-script").val("(function(){\n\n})();");
+		$.jStorage.sohrData();
+	}
 }
-
