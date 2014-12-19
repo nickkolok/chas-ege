@@ -159,8 +159,10 @@ document.onkeydown = function(e) {
     }
 }
 
+var templateTemplate = "(function(){\n\tNAinfo.requireApiVersion(" + NAinfo.API_VERSION.major + ", " + NAinfo.API_VERSION.minor + ");\n\t\n})();";
+
 if ($("#textarea-script").val() == "") {
-	$("#textarea-script").val("(function(){\n\n})();");
+	$("#textarea-script").val(templateTemplate);
 	$.jStorage.sohrData();
 }
 
