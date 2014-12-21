@@ -159,7 +159,7 @@ document.onkeydown = function(e) {
     }
 }
 
-var templateTemplate = "(function(){\n\tNAinfo.requireApiVersion(" + NAinfo.API_VERSION.major + ", " + NAinfo.API_VERSION.minor + ");\n\t\n})();";
+var templateTemplate = "(function(){\nNAinfo.requireApiVersion(" + NAinfo.API_VERSION.major + ", " + NAinfo.API_VERSION.minor + ");\n\n})();\n";
 
 if ($("#textarea-script").val() == "") {
 	$("#textarea-script").val(templateTemplate);
