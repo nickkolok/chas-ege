@@ -1,6 +1,11 @@
 #!/bin/sh
+
 ./dev/build
 ./dev/upak.sh
+
+# Генерация документации
+jsdoc -d=./doc/api -e=utf-8 -r=8 -a -p ./lib/
+
 git add .
 git commit -m "Выпуск"
 echo "Выпуск успешно произведён. Отправляем изменения в репозиторий..."
