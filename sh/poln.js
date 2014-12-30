@@ -78,7 +78,9 @@ function obnov(){
 			'<div class="d">'+
 				'<div class="b">'+nazvzad+
 				'</div>'+
+				'<div class="z">'+
 				window.vopr.txt+
+				'</div>'+
 				'<div class="r">'+
 					'Ответ:'+
 					'<textarea class="text_otv" rows="1"></textarea>'+
