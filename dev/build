@@ -1,11 +1,9 @@
 #!/bin/sh
+
 cd css
 ./make-css-ui.sh
 cd ..
-cd lib
-./make-chas-uijs.sh
-cd ..
-#cat lib/chas-uijs.js | sed '/^.use strict.;$/d' > lib/chas-uijs.js
+lib/make-chas-uijs.sh
 sed '/^.use strict.;$/d' lib/chas-uijs.js > lib/chas-uijs.js.tmp
 mv lib/chas-uijs.js.tmp lib/chas-uijs.js
 java -jar ext/compiler.jar --jscomp_off internetExplorerChecks --charset UTF-8 --js lib/chas-uijs.js --js_output_file lib/chas-uijs.min.js
