@@ -19,7 +19,7 @@
             'Считайте, что ускорение свободного падения $g=$' + phys_g + '$\\frac{м}{с^2}$. ' +
             'Дайте в качестве ответа синус угла $\\'+ angname +'$. Ответ округлите до десятых.');
 
-    window.vopr.ver=[Res];
+    window.vopr.ver=[(time * phys_g / 2.0 / velbeg * 10).round() / 10];
     window.vopr.kat['log'] = 0;
     window.vopr.kat['prz'] = 0;
     window.vopr.kat['drs'] = 0;
