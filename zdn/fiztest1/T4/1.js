@@ -4,7 +4,7 @@ NAinfo.requireApiVersion(0, 0);
 var v1=sl1();
 var right=[
     ["$2\\pi\\sqrt{\\frac{l}{g}}$",],
-    ["$\\frac{1}{2\\pi\\}sqrt{\\frac{g}{l}}$","$\\frac{1}{2\\pi\\sqrt{\\frac{l}{g}}}$",],
+    ["$\\frac{1}{2\\pi}sqrt{\\frac{g}{l}}$","$\\frac{1}{2\\pi\\sqrt{\\frac{l}{g}}}$",],
 ];
 
 
