@@ -1,1 +1,1 @@
-window.nomer=sl(1,1);
+window.nomer=sl(1,2);
