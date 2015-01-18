@@ -59,8 +59,9 @@
             }                   }
 
     space_after_anon_function (default false) - should the space before an anonymous function's parens be added, "function()" vs "function ()",
-          NOTE: This option is overriden by jslint_happy (i.e. if jslint_happy is true, space_after_anon_function is true by design)
-
+          Earlier: NOTE: This option is overriden by jslint_happy (i.e. if jslint_happy is true, space_after_anon_function is true by design)
+          No more. NickKolok.
+          
     brace_style (default "collapse") - "collapse" | "expand" | "end-expand" | "none"
             put braces on the same line as control statements (default), or put braces on own line (Allman / ANSI style), or just put end braces on own line, or attempt to keep them where they are.
 
@@ -272,11 +273,11 @@
         opt.end_with_newline = (options.end_with_newline === undefined) ? false : options.end_with_newline;
 
 
-        // force opt.space_after_anon_function to true if opt.jslint_happy
+/*       // force opt.space_after_anon_function to true if opt.jslint_happy
         if(opt.jslint_happy) {
             opt.space_after_anon_function = true;
         }
-
+*/
         if(options.indent_with_tabs){
             opt.indent_char = '\t';
             opt.indent_size = 1;
