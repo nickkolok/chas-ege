@@ -100,7 +100,20 @@ function saveAce(){
 
 function pastebin(){
 	saveAce();
-	$("#textarea-paste").val($("#textarea-script").val());
+	var code=$("#textarea-script").val();
+	var beautifiedCode=js_beautify(code, {
+      'indent_size': 1,
+      'indent_char': '\t',
+      'end_with_newline':true,
+      'wrap_line_length':120,
+      'jslint_happy':true,
+      'opt.space_after_anon_function':false,
+    });
+	if(code!=beautifiedCode){
+		alert("Обратите внимание: код шаблона не соответствует соглашениям, принятым в проекте."+
+			"На pastebin отправлена скорректированная версия.");
+	}
+	$("#textarea-paste").val(beautifiedCode);
 }
 
 function startFullscreen(){
