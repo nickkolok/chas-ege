@@ -8,7 +8,7 @@ var discount=sluchch(5,12);                                        // скидк
 var client=['покупатель','школьник','ученик'].iz();                // покупатель
 var build=['киоск','ларёк','магазин'].iz()                         // заведение
 window.vopr.txt=goods.ie.toZagl()+' стоит '+chislitlx(cost,'рубль')+'. Сколько рублей заплатит '+
-	client+' за '+chislitlx(sum,goods)+' если при покупке больше '+chislitlx(sumd,goods)+
+	client+' за '+chislitlx(sum,goods)+', если при покупке больше '+chislitlx(sumd,goods)+
 	' '+build+' делает скидку '+discount+'% от стоимости всей покупки?';
 if (sumd<sum){
 	window.vopr.ver=[(cost*sum*discount/100).ceil()];//чтобы лишний раз не пересчитывать
