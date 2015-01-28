@@ -20,7 +20,7 @@ var strOtv='';
 var strResh='';
 var voprosy=[];
 
-var redakt;
+var options={};
 
 function vse1(){
 	$('.kolvo').val(1);
@@ -34,10 +34,18 @@ function vse0(){
 
 function zapusk(){
 	$.jStorage.sohrData();
-	redakt=$('#redakt').is(':checked');
+	options.editable=$('#redakt').is(':checked');
+	options.customNumber=$('#customNumber').is(':checked');
+	options.nopagebreak=$('#nopagebreak').is(':checked');
+
+	if(customNumber){
+		novdate=$('#start-number').val()-1;
+	}
+	
 	if($('#htmlcss').is(':checked')){
 		MathJax.Hub.setRenderer('HTML-CSS');
 	}
+	
 	nV=1*$('#cV').val();
 	aV=nV;
 	for(var i=1;i<=nabor.nZad;i++)
@@ -65,7 +73,7 @@ function razrstr(){return;
 function testGotov(){
 	$('#gotov').hide();
 	allCanvasToBackgroundImage();
-	if(redakt){
+	if(options.editable){
 		$('#rez').attr('contenteditable','true');
 		$('#otv').attr('contenteditable','true');
 	}
@@ -107,7 +115,8 @@ function vNachaloVarianta(){
 	nV--;
 	nZ=0;
 	strOtv+='</table>';
-	strVopr+='<p style="page-break-before: always"></p>';
+	if(!options.nopagebreak)
+		strVopr+='<p style="page-break-before: always"></p>';
 	zadan();
 }
 
@@ -122,8 +131,12 @@ function zadan(){
 		}else{
 			iZ=aZ.slice();
 			stardate=novdate;
-
-			novdate=new Date().getTime();
+			
+			if(options.customNumber){
+				novdate++;
+			}else{
+				novdate=new Date().getTime();
+			}
 			strVopr+='<h2 class="d">Вариант №'+novdate+'</h2>';
 
 			if(!bGecko && aV!=nV)
