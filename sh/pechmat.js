@@ -7,8 +7,7 @@ var vr1=svinta?100:200;
 var vr2=svinta?100:1500;
 
 window.vopr.txt='';
-var stardate=new Date().getTime();
-var novdate;
+var variantNumber;
 var nV=1;
 var nZ=1;
 var aZ=[];
@@ -27,29 +26,33 @@ function vse1(){
 }
 
 function vse0(){
-	for(var i=1;i<=nabor.nZad;i++)
-		$('#cB'+i).val(0);
+	$('.kolvo').val(0);
 	$('#cV').val(1);
 }
 
 function zapusk(){
+	//Сохраняем параметры генерации
 	$.jStorage.sohrData();
+
+	//Читаем настройки
 	options.editable=$('#redakt').is(':checked');
 	options.customNumber=$('#customNumber').is(':checked');
 	options.nopagebreak=$('#nopagebreak').is(':checked');
+	options.nobackground=$('#nobackground').is(':checked');
 
 	if(customNumber){
-		novdate=$('#start-number').val()-1;
+		variantNumber=$('#start-number').val()-1;
 	}
-	
+
 	if($('#htmlcss').is(':checked')){
 		MathJax.Hub.setRenderer('HTML-CSS');
 	}
-	
-	nV=1*$('#cV').val();
-	aV=nV;
+
+	//Читаем количество заданий
+	aV=nV=1*$('#cV').val();
 	for(var i=1;i<=nabor.nZad;i++)
 		aZ[i]=1*($('#cB'+i).val());
+
 	cacheKat();
 	kZ=aZ.sum()*aV;
 	if(!kZ){
@@ -63,19 +66,13 @@ function zapusk(){
 	zadan();
 }
 
-function razrstr(){return;
-	var d2=document.createElement('div');
-	d2.innerHTML='<hr class="pbb" clear="all"/><div class="d"></div>';
-	d2["class"]='d d2';
-	document.getElementById('rez').appendChild(d2);
-}
-
 function testGotov(){
 	$('#gotov').hide();
-	allCanvasToBackgroundImage();
+	if(!options.nobackground){
+		allCanvasToBackgroundImage();
+	}
 	if(options.editable){
-		$('#rez').attr('contenteditable','true');
-		$('#otv').attr('contenteditable','true');
+		$('#rez, #otv').attr('contenteditable','true');
 	}
 	$('#dopoln').show();
 	alert('Тесты составлены.\nТеперь Вы можете распечатать их с помощью Вашего браузера.');
@@ -83,9 +80,7 @@ function testGotov(){
 }
 
 function udalPanel(){
-	$('#panel').remove();
-	$('#menucenter').remove();
-	$('#inf').remove();
+	$('#panel, #menucenter, #inf').remove();
 }
 
 function konecSozd(){
@@ -95,6 +90,7 @@ function konecSozd(){
 	}
 	$('#otv').html(strOtv);
 	$('#rez').html(strVopr);
+
 	for(var i=voprosy.length;i;i--)
 		try{
 			voprosy[i-1].dey();
@@ -105,9 +101,7 @@ function konecSozd(){
 	$('.spoiler-show').click();
 	$("hr:first").remove();
 	$("hr:first").remove();
-	document.body.style.backgroundColor="#FFF";
-	if(!bGecko)
-		razrstr();
+	document.body.style.backgroundColor="white";
 	$('body').append('<script>udalPanel()</script>');			
 }
 
@@ -130,19 +124,16 @@ function zadan(){
 			return;
 		}else{
 			iZ=aZ.slice();
-			stardate=novdate;
 			
 			if(options.customNumber){
-				novdate++;
+				variantNumber++;
 			}else{
-				novdate=new Date().getTime();
+				variantNumber=new Date().getTime();
 			}
-			strVopr+='<h2 class="d">Вариант №'+novdate+'</h2>';
+			strVopr+='<h2 class="d">Вариант №'+variantNumber+'</h2>';
 
-			if(!bGecko && aV!=nV)
-				razrstr();
 			strOtv+='<table class="normtabl tablpech"><tr><th colspan="3">'+
-				'Ответы к варианту<br/>№'+novdate+'</th></tr>';
+				'Ответы к варианту<br/>№'+variantNumber+'</th></tr>';
 			nZ=1;
 			zadan();
 			return;
@@ -161,9 +152,9 @@ function zadan(){
 function obnov(){
 		var nazvzad=dvig.getzadname(nZ)+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))
 		strVopr+='<div class="d"><div class="b">'+nazvzad+'</div><div class="z">'+window.vopr.txt+'</div></div>';
-		strOtv+='<tr><td>'+novdate+'</td><td>'+nazvzad+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
+		strOtv+='<tr><td>'+variantNumber+'</td><td>'+nazvzad+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
 		if(vopr.rsh)
-			strResh+='<br/><h3>Вариант №'+novdate+', задача '+nazvzad+'</h3><br/>'+vopr.rsh+
+			strResh+='<br/><h3>Вариант №'+variantNumber+', задача '+nazvzad+'</h3><br/>'+vopr.rsh+
 				'<br/><br/>';
 			
 		voprosy.push(vopr.clone());
