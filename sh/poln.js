@@ -128,3 +128,4 @@ function prov(){
 
 galkiKat('#galki_kat','pech');
 $('#prov_knopki').hide();
+assertCheckability();

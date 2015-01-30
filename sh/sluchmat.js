@@ -276,3 +276,5 @@ $("#otv").keyup(function(event) {
 		return false;
 	}
 });
+
+assertCheckability();
