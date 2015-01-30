@@ -7,9 +7,9 @@ function updateQuestion(){
 	$("#question").html(window.vopr.txt);
 	$("#resh").html("");
 	window.vopr.dey();
-	MathJax.Hub.Typeset();
 	$("#answer").html(window.vopr.ver.join(";;"));
 	$("#wrongAnswer").html(window.vopr.nev.join(";;"));
+	MathJax.Hub.Typeset();
 }
 
 function createFromFile(){
@@ -55,7 +55,7 @@ function createFromTextarea(){
 		$("#question").html(e.name + " : " + e.message);
 		return;
 	}
-		updateQuestion();
+	updateQuestion();
 }
 
 function tt(){
