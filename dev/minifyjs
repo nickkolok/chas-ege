@@ -1,0 +1,2 @@
+#!/bin/sh
+java -jar ext/compiler.jar --jscomp_off internetExplorerChecks --charset UTF-8 --js $1.js --js_output_file $1.min.js
