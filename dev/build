@@ -6,4 +6,12 @@ cd ..
 lib/make-chas-uijs.sh
 sed '/^.use strict.;$/d' lib/chas-uijs.js > lib/chas-uijs.js.tmp
 mv lib/chas-uijs.js.tmp lib/chas-uijs.js
-java -jar ext/compiler.jar --jscomp_off internetExplorerChecks --charset UTF-8 --js lib/chas-uijs.js --js_output_file lib/chas-uijs.min.js
+dev/minifyjs lib/head
+dev/minifyjs lib/chas-uijs
+dev/minifyjs sh/sluchmat
+dev/minifyjs lib/init
+#cat lib/init.js lib/chas-uijs.js > lib/init.min.js
+cat lib/init.js lib/chas-uijs.js > lib/init.tmp.js
+dev/minifyjs lib/init.tmp
+cp lib/init.tmp.min.js lib/init.min.js
+java -jar ext/yuicompressor-2.4.8.jar lib/init.tmp.min.js -o lib/init.min.js --charset utf-8
