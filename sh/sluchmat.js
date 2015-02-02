@@ -108,7 +108,7 @@ function vybrZad(){
 		return w.iz();
 	if($("#radio-porad").prop("checked")){
 		var tekzad=n?n:0;
-		for(var i=0;w[i]<=tekzad;i++);
+		for(var i=0;w[i]<=tekzad;i++){};
 		return w[i]?w[i]:w[0];
 	}
 	if($("#radio-umka" ).prop("checked")){
