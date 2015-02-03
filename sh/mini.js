@@ -1,7 +1,3 @@
-//Удаляем лишнее
-$('#menucenter').remove();
-$('#inf').remove();
-
 var slvopr;
 function obnov(p1){
 	slvopr=p1;
@@ -55,7 +51,6 @@ function prover(){
 	$('#sozd').show();
 	specCounter('mini');
 }
-$('#prov').hide();
 
 function trysozd(){
 	if(window.MathJax===undefined){
@@ -64,5 +59,13 @@ function trysozd(){
 		sozdat();
 	}
 }
-$(trysozd);
-allLinksToSpans();
+
+function startShell(){
+	//Удаляем лишнее
+	$('#menucenter').remove();
+	$('#inf').remove();
+
+	$('#prov').hide();
+	$(trysozd);
+	allLinksToSpans();
+}

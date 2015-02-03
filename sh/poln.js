@@ -1,8 +1,5 @@
 'use strict';
 
-$('#zadaniya').html(sozdKolvoHtml('poln'));
-$('#gotov').hide();
-
 window.vopr.txt='';
 var nV=1;
 var kategory=1;
@@ -126,6 +123,10 @@ function prov(){
 	specCounter('poln');
 }
 
-galkiKat('#galki_kat','pech');
-$('#prov_knopki').hide();
-assertCheckability();
+function startShell(){
+	$('#zadaniya').html(sozdKolvoHtml('poln'));
+	$('#gotov').hide();
+	galkiKat('#galki_kat','pech');
+	$('#prov_knopki').hide();
+	assertCheckability();
+}

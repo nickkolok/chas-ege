@@ -1,12 +1,8 @@
 'use strict';
 
-$('#zadaniya').html(sozdKolvoHtml('pech'));
-$('#gotov').hide();
-
 var vr1=svinta?100:200;
 var vr2=svinta?100:1500;
 
-window.vopr.txt='';
 var variantNumber;
 var nV=1;
 var nZ=1;
@@ -206,4 +202,9 @@ function optimcopyd(n){
 		setTimeout("optimcopyd("+n+"+1);",100);
 }
 
-galkiKat('#galki_kat','pech');
+function startShell(){
+	window.vopr.txt='';
+	$('#zadaniya').html(sozdKolvoHtml('pech'));
+	$('#gotov').hide();
+	galkiKat('#galki_kat','pech');
+}

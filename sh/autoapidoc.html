@@ -9,7 +9,7 @@
 		Тренажёр "Час ЕГЭ": документация к библиотекам
 	</title>
 </head>
-<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()">
 	<script>
 		var svinta=1;
 		addinitjs();
@@ -63,11 +63,14 @@
 				rez+=docFromCode(spisok[chto],chto);
 			$(nazv).html(rez);
 		}
-		docdiv(docsFunction	,'#divFunction'	);
-		docdiv(docsArray	,'#divArray'	);
-		docdiv(docsNumber	,'#divNumber'	);
-		docdiv(docsString	,'#divString'	);
-		spoiler();
+
+		function startShell(){ 
+			docdiv(docsFunction	,'#divFunction'	);
+			docdiv(docsArray	,'#divArray'	);
+			docdiv(docsNumber	,'#divNumber'	);
+			docdiv(docsString	,'#divString'	);
+			spoiler();
+	}
 	</script>
 	<style>
 		.spoiler-show,.spoiler-hide{

@@ -9,7 +9,7 @@
 		Тренажёр "Час ЕГЭ": склонение существительных
 	</title>
 </head>
-<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()">
 	<script>
 		addinitjs();
 	</script>
@@ -24,9 +24,6 @@
 				Программа предположит падежные формы и некоторые другие характеристики существительного. 
 				<div style="color:red;" id="est">Слово уже есть в словаре. Отправляйте нам данные только в том случае, если вносите исправления.</div>
 			</li>
-	<!--		<li>
-				Нажмите <button onclick="sklon();">эту кнопку</button>, и программа предположит падежные формы и некоторые другие характеристики существительного. 
-	-->		</li>
 			<li id="svoystva">
 				При необходимости откорректируйте их:
 				<div>

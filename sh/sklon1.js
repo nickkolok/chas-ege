@@ -1,21 +1,3 @@
-var kolvo=0;
-for(var sl in lx)
-	kolvo++;
-$('#kolvoslov').text(kolvo.chislitlx('слово'));
-
-$('#sel_sklon').change(nesklon);
-function nesklon(){
-	if($('#sel_sklon :selected').val()==0)
-		$('.pad_neobh').val($('#slovo').val());
-	formkod();
-}
-
-$('#sel_rod').change(formkod);
-$('#odu').click(formkod);
-$('#sbs').click(formkod);
-$('label').click(formkod);
-
-
 function sklon(){
 	var sl=$('#slovo').val();
 	var rez=sklonlxkand(sl,undefined,0);
@@ -41,15 +23,6 @@ function sklon(){
 	formkod();
 }
 
-setInterval(function(){
-    var curVal = $("#slovo").val();
-    var prevVal = $("#slovo").data("prevVal") || null;
-    if (prevVal !== curVal) {
-		$("#slovo").data("prevVal",curVal);
-		sklon();
-    }
-}, 100);
-
 function formkod(){
 	var sl=$('#slovo').val();
 	lxkand[sl]={};
@@ -67,18 +40,47 @@ function formkod(){
 	$('#kod').val(strlxkand(sl));
 }
 
-setInterval(function(){
-	var fl_form=0;
-	$('#padtabl input').each(function(){
-		var curVal = $(this).val();
-		var prevVal  = $(this).data("prevVal") || null;
-		if (prevVal !== curVal) {
-			$(this).data("prevVal",curVal);
-			fl_form=1;
+function startShell(){
+	setInterval(function(){
+		  var curVal = $("#slovo").val();
+		  var prevVal = $("#slovo").data("prevVal") || null;
+		  if (prevVal !== curVal) {
+			$("#slovo").data("prevVal",curVal);
+			sklon();
+		  }
+	}, 100);
+
+	setInterval(function(){
+		var fl_form=0;
+		$('#padtabl input').each(function(){
+			var curVal = $(this).val();
+			var prevVal  = $(this).data("prevVal") || null;
+			if (prevVal !== curVal) {
+				$(this).data("prevVal",curVal);
+				fl_form=1;
+				formkod();
+			}else
+				return true;
+		});
+		if(fl_form)
 			formkod();
-		}else
-			return true;
-	});
-	if(fl_form)
+	}, 100);
+
+	var kolvo=0;
+	for(var sl in lx)
+		kolvo++;
+	$('#kolvoslov').text(kolvo.chislitlx('слово'));
+
+	$('#sel_sklon').change(nesklon);
+	function nesklon(){
+		if($('#sel_sklon :selected').val()==0)
+			$('.pad_neobh').val($('#slovo').val());
 		formkod();
-}, 100);
+	}
+
+	$('#sel_rod').change(formkod);
+	$('#odu').click(formkod);
+	$('#sbs').click(formkod);
+	$('label').click(formkod);
+}
+

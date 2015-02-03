@@ -31,10 +31,6 @@ function sozdGalki(){
 	$('#galki').html(galki);
 }
 
-sozdGalki();
-zagrUmka();
-veroyatn();
-
 function veroyatn(){
 	var pr;
 	for(var i=1;i<=nabor.nZad;i++){
@@ -232,7 +228,6 @@ function obrabNaVremya(){
 		$('.vremya').hide();
 	}
 }
-$(obrabNaVremya);
 
 function obrabPraviln(){
 	if($('#check-praviln').is(':checked')){
@@ -241,7 +236,6 @@ function obrabPraviln(){
 		$('.praviln').hide();
 	}
 }
-$(obrabPraviln);
 
 function vybr0(){
 	for(var i=1;i<=nabor.nZad;i++){
@@ -262,19 +256,30 @@ function strelkaDvig(){
 	$('#sozd').animate({opacity:'1'},{duration:1000});
 	
 }
-strelkaDvig();
-$('#prov').hide();
-$('#podob').hide();
-galkiKat('#galki_kat','sluch');
-spoiler();
 
-$("#otv").keyup(function(event) {
-	if(nabor.mnogostrOtvet || flProv)
-		return true;
-	if(event.keyCode==13){
-		prover();
-		return false;
-	}
-});
 
-assertCheckability();
+function startShell(){
+	sozdGalki();
+	zagrUmka();
+	veroyatn();
+
+	$(obrabNaVremya);
+
+	$(obrabPraviln);
+	strelkaDvig();
+	$('#prov').hide();
+	$('#podob').hide();
+	galkiKat('#galki_kat','sluch');
+	spoiler();
+
+	$("#otv").keyup(function(event) {
+		if(nabor.mnogostrOtvet || flProv)
+			return true;
+		if(event.keyCode==13){
+			prover();
+			return false;
+		}
+	});
+
+	assertCheckability();
+}
