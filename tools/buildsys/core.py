@@ -68,6 +68,8 @@ class BuildSysCore(api.IApi, api.IConfigurationApi, api.IPluginApi):
 		if not self._build_dir.exists():
 			self._build_dir.mkdir(parents=True)
 
+		logging.info("Сборка...")
+
 		for t in mode.tasks:
 			if t.toolid not in self._tools:
 				logging.critical("Инструмент '%s' не найден" % t.toolid)
@@ -75,6 +77,8 @@ class BuildSysCore(api.IApi, api.IConfigurationApi, api.IPluginApi):
 			if not self._tools[t.toolid](task=t, api=self):
 				logging.critical("Выполнение инструмента '%s' завершилось не удачно" % t.toolid)
 				return
+
+		logging.info("Успешно собранно")
 
 	def set_build_directory(self, path: str):
 		assert isinstance(path, str), "path must be str"

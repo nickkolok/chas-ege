@@ -3,12 +3,10 @@
 class Task:
 	"""Задача"""
 
-	def __init__(self, toolid: str, files: (str, list), *args, **kwargs):
+	def __init__(self, toolid: str, *args, **kwargs):
 		assert isinstance(toolid, str), "toolid must be str"
-		assert isinstance(files, (str, list)), "files must be str or list of str"
 
 		self._toolid = toolid
-		self._files = files
 		self._args = args
 		self._kwargs = kwargs
 
@@ -16,11 +14,6 @@ class Task:
 	def toolid(self) -> str:
 		"""Строковый индекс инструмента, который будет выполнять эту задачу"""
 		return self._toolid
-
-	@property
-	def files(self) -> (str, list):
-		"""Путь (или шаблон пути) к файлам"""
-		return self._files
 
 	@property
 	def args(self) -> list:

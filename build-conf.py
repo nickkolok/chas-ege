@@ -8,12 +8,10 @@ class DevMode(mode.Mode):
 		mode.Mode.__init__(self, name="dev")
 
 		self._append_task(mode.Task("mkdirs",
-						 [
-							 "html",
-							 "js",
-						 ]
-		))
+									"html",
+									"js"))
 
 def bs_config(api: IConfigurationApi):
+	# TODO: директория сборки
 	api.set_build_directory("./build/dev/")
 	api.add_mode(DevMode())

@@ -3,7 +3,10 @@ from mode import Task
 
 
 def mkdirs(api: IApi, task: Task) -> bool:
-	for f in task.files:
+	"""Создание директорий
+	Параметры в task:
+	args -- название директорий, которые должны быть созданы"""
+	for f in task.args:
 		p = api.build_directory / f
 		if not p.exists():
 			p.mkdir(parents=True)
@@ -14,5 +17,10 @@ def mkdirs(api: IApi, task: Task) -> bool:
 	return True
 
 
+def copy(api: IApi, task: Task) -> bool:
+	return True
+
+
 def bs_plugin(api: IPluginApi):
 	api.add_tool("mkdirs", mkdirs)
+	api.add_tool("copy", copy)
