@@ -3,3 +3,4 @@
 *.log
 *.~lock.*
 *__pycache__
+build/
