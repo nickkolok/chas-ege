@@ -1,4 +1,6 @@
 
+from pathlib import Path
+
 import mode
 
 
@@ -11,7 +13,12 @@ class IApi:
 		raise NotImplementedError()
 
 	@property
-	def build_directory(self) -> str:
+	def tools(self) -> dict:
+		"""Инструменты"""
+		raise NotImplementedError()
+
+	@property
+	def build_directory(self) -> Path:
 		"""Директория сборки"""
 		raise NotImplementedError()
 
@@ -23,6 +30,16 @@ class IApi:
 	@property
 	def debug(self) -> bool:
 		"""Флаг отладочного режима"""
+		raise NotImplementedError()
+
+
+class IPluginApi:
+	"""API, предоставляемый плагину"""
+
+	def add_tool(self, toolid: str, tool):
+		"""Добавить интструмент
+		:param toolid: строковый индекс инструмента
+		:param tool: обработчик mode.Task"""
 		raise NotImplementedError()
 
 

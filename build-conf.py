@@ -7,7 +7,13 @@ class DevMode(mode.Mode):
 	def __init__(self):
 		mode.Mode.__init__(self, name="dev")
 
+		self._append_task(mode.Task("mkdirs",
+						 [
+							 "html",
+							 "js",
+						 ]
+		))
 
-def bs_configure(api: IConfigurationApi):
-	api.set_build_directory("./build/")
+def bs_config(api: IConfigurationApi):
+	api.set_build_directory("./build/dev/")
 	api.add_mode(DevMode())
