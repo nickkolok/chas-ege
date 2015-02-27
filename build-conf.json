@@ -1,0 +1,16 @@
+{
+	"modes": {
+		"dev": {
+				"build-dir": "./build/dev",
+				"tasks": [
+					{
+						"toolid": "mkdirs",
+						"files": [
+							"html",
+							"js"
+						]
+					}
+				]
+		}
+	}	
+}

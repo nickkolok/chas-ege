@@ -8,8 +8,8 @@ class IApi:
 	"""Центральный API"""
 
 	@property
-	def modes(self) -> dict:
-		"""Режимы сборки"""
+	def config(self) -> dict:
+		"""Конфиг"""
 		raise NotImplementedError()
 
 	@property
@@ -43,15 +43,15 @@ class IPluginApi:
 		raise NotImplementedError()
 
 
-class IConfigurationApi:
-	"""API, предоставляемый конфигу"""
+# class IConfigurationApi:
+# 	"""API, предоставляемый конфигу"""
 
-	def set_build_directory(self, path: str):
-		"""Установить директорию сборки
-		:param path: директория сбокри"""
-		raise NotImplementedError()
+# 	def set_build_directory(self, path: str):
+# 		"""Установить директорию сборки
+# 		:param path: директория сбокри"""
+# 		raise NotImplementedError()
 
-	def add_mode(self, build_mode: mode.Mode):
-		"""Добавить режим сборки
-		:param mode: режим"""
-		raise NotImplementedError()
+# 	def add_mode(self, build_mode: mode.Mode):
+# 		"""Добавить режим сборки
+# 		:param mode: режим"""
+# 		raise NotImplementedError()

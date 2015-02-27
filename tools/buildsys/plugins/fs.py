@@ -1,13 +1,13 @@
+from pathlib import Path
+
 from api import IPluginApi, IApi
 from mode import Task
 
 
-def mkdirs(api: IApi, task: Task) -> bool:
-	"""Создание директорий
-	Параметры в task:
-	args -- название директорий, которые должны быть созданы"""
-	for f in task.args:
-		p = api.build_directory / f
+def mkdirs(api: IApi, build_dir: Path, task: dict) -> bool:
+	"""Создание директорий"""
+	for f in task["files"]:
+		p = build_dir / f
 		if not p.exists():
 			p.mkdir(parents=True)
 		elif not p.is_dir():

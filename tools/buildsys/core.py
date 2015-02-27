@@ -2,19 +2,19 @@
 import sys
 import logging
 import importlib
+import json
 from pathlib import Path
 
 import api
 import mode
 
 
-class BuildSysCore(api.IApi, api.IConfigurationApi, api.IPluginApi):
+class BuildSysCore(api.IApi, api.IPluginApi):
 	"""Ядро системы"""
 	
 	def __init__(self):
 		self._debug = False
-		self._build_dir = Path("./build/")
-		self._modes = {}
+		self._config = {}
 		self._tools = {}
 
 		# TODO: Может оставить дату и время сообщения? "[%(asctime)s] %(levelname)-8s %(message)s",
@@ -50,49 +50,48 @@ class BuildSysCore(api.IApi, api.IConfigurationApi, api.IPluginApi):
 		"""Загрузить конфиг
 		:param path: путь к конфигу"""
 		assert isinstance(path, Path), "path must be pathlib.Path"
-		INIT_FUNC = "bs_configure"
-		loader = importlib.machinery.SourceFileLoader("config", str(path))
-		config = loader.load_module()
-
-		config.bs_config(self)
+		with path.open() as f:
+		    self._config = json.loads(f.read())
 
 	def build(self, build_mode: str):
 		"""Собрать проект
 		:param build_mode: название режима"""
-		if build_mode not in self._modes:
+		if build_mode not in self._config["modes"]:
 			logging.critical("Режим '%s' не найден" % build_mode)
 			return
 
-		mode = self._modes[build_mode]
+		mode = self._config["modes"][build_mode]
+		build_dir = Path(mode["build-dir"])
 
-		if not self._build_dir.exists():
-			self._build_dir.mkdir(parents=True)
+		if not build_dir.exists():
+			build_dir.mkdir(parents=True)
 
 		logging.info("Сборка...")
 
-		for t in mode.tasks:
-			if t.toolid not in self._tools:
-				logging.critical("Инструмент '%s' не найден" % t.toolid)
+		for t in mode["tasks"]:
+			toolid = t["toolid"]
+			if toolid not in self._tools:
+				logging.critical("Инструмент '%s' не найден" % toolid)
 				return
-			if not self._tools[t.toolid](task=t, api=self):
-				logging.critical("Выполнение инструмента '%s' завершилось не удачно" % t.toolid)
+			if not self._tools[toolid](task=t, build_dir=build_dir, api=self):
+				logging.critical("Выполнение инструмента '%s' завершилось не удачно" % toolid)
 				return
 
 		logging.info("Успешно собранно")
 
-	def set_build_directory(self, path: str):
-		assert isinstance(path, str), "path must be str"
-		self._build_dir = Path(path)
-		logging.debug("Директорией сборки выбрана '%s'" % path)
+	# def set_build_directory(self, path: str):
+	# 	assert isinstance(path, str), "path must be str"
+	# 	self._build_dir = Path(path)
+	# 	logging.debug("Директорией сборки выбрана '%s'" % path)
 
-	def add_mode(self, build_mode: mode.Mode):
-		assert isinstance(build_mode, mode.Mode), "build_mode must be instance of mode.Mode"
+	# def add_mode(self, build_mode: mode.Mode):
+	# 	assert isinstance(build_mode, mode.Mode), "build_mode must be instance of mode.Mode"
 
-		if build_mode.name in self._modes:
-			raise NameError("Режим с именем '%s' уже существует" % build_mode.name)
+	# 	if build_mode.name in self._modes:
+	# 		raise NameError("Режим с именем '%s' уже существует" % build_mode.name)
 
-		self._modes[build_mode.name] = build_mode
-		logging.debug("Добавлен режим сборки '%s'" % build_mode.name)
+	# 	self._modes[build_mode.name] = build_mode
+	# 	logging.debug("Добавлен режим сборки '%s'" % build_mode.name)
 
 	def add_tool(self, toolid: str, tool):
 		assert isinstance(toolid, str), "toolid must be str"
@@ -104,16 +103,16 @@ class BuildSysCore(api.IApi, api.IConfigurationApi, api.IPluginApi):
 		logging.debug("Добавлен инструмент '%s'" % toolid)
 
 	@property
-	def modes(self) -> dict:
-		return self._modes
+	def config(self) -> dict:
+		return self._config
 
 	@property
 	def tools(self) -> dict:
 		return self._tools
 
-	@property
-	def build_directory(self) -> Path:
-		return self._build_dir
+	# @property
+	# def build_directory(self) -> Path:
+		# return self._build_dir
 
 	@property
 	def version(self) -> str:
