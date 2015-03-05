@@ -37,19 +37,23 @@ def jinja_render(api: IApi, build_dir: Path, task: Task) -> bool:
 		return False
 
 	if not dest.exists():
-		p.mkdir(parents=True)
+		dest.mkdir(parents=True)
 	elif not dest.is_dir():
 		logging.error("'%s' существует, но не является директорией" % templdir)
 		return False
 
 	env = Environment(loader=FileSystemLoader(str(templdir)))
 
+	variables = {}
+	for k, v in api.variables.items():
+		variables[k.replace("-", "_")] = v
+
 	for t in templates:
 		out = dest / Path(t)
 		logging.info("Сборка шаблона {t} в {d}".format(t=t, d=out))
 		templ = env.get_template(t)
 		with out.open("w") as f:
-			f.write(templ.render(**api.variables))
+			f.write(templ.render(**variables))
 
 	return True
 
