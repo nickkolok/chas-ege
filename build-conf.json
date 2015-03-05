@@ -4,6 +4,14 @@
 				"build-dir": "./build/dev",
 				"tasks": [
 					{
+						"toolid": "git.get-current-tag-last",
+						"dest-var": "version-title"
+					},
+					{
+						"toolid": "git.get-current-tag-exact",
+						"dest-var": "version-exact"
+					},
+					{
 						"toolid": "mkdirs",
 						"files": [
 							"html",
