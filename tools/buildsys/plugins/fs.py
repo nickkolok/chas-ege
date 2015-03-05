@@ -18,10 +18,5 @@ def mkdirs(api: IApi, build_dir: Path, task: dict) -> bool:
 	return True
 
 
-def copy(api: IApi, build_dir: Path, task: Task) -> bool:
-	return True
-
-
 def bs_plugin(api: IPluginApi):
-	api.add_tool("mkdirs", mkdirs)
-	api.add_tool("copy", copy)
+	api.add_tool("fs.mkdirs", mkdirs)

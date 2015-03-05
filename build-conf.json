@@ -12,14 +12,14 @@
 						"dest-var": "version-exact"
 					},
 					{
-						"toolid": "mkdirs",
+						"toolid": "fs.mkdirs",
 						"files": [
 							"html",
 							"js"
 						]
 					},
 					{
-						"toolid": "jinja-render",
+						"toolid": "jinja.render",
 						"templates-dir": "html",
 						"dest": "html",
 						"templates": [

@@ -59,4 +59,4 @@ def jinja_render(api: IApi, build_dir: Path, task: Task) -> bool:
 
 
 def bs_plugin(api: IPluginApi):
-	api.add_tool("jinja-render", jinja_render)
+	api.add_tool("jinja.render", jinja_render)
