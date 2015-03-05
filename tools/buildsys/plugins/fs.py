@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 from api import IPluginApi, IApi
@@ -17,7 +18,7 @@ def mkdirs(api: IApi, build_dir: Path, task: dict) -> bool:
 	return True
 
 
-def copy(api: IApi, task: Task) -> bool:
+def copy(api: IApi, build_dir: Path, task: Task) -> bool:
 	return True
 
 
