@@ -13,6 +13,10 @@ class IApi:
 		raise NotImplementedError()
 
 	@property
+	def variables(self) -> dict:
+		raise NotImplementedError()
+
+	@property
 	def tools(self) -> dict:
 		"""Инструменты"""
 		raise NotImplementedError()

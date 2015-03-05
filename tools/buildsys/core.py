@@ -15,6 +15,7 @@ class BuildSysCore(api.IApi, api.IPluginApi):
 	def __init__(self):
 		self._debug = False
 		self._config = {}
+		self._variables = {}
 		self._tools = {}
 
 		# TODO: Может оставить дату и время сообщения? "[%(asctime)s] %(levelname)-8s %(message)s",
@@ -79,20 +80,6 @@ class BuildSysCore(api.IApi, api.IPluginApi):
 
 		logging.info("Успешно собранно")
 
-	# def set_build_directory(self, path: str):
-	# 	assert isinstance(path, str), "path must be str"
-	# 	self._build_dir = Path(path)
-	# 	logging.debug("Директорией сборки выбрана '%s'" % path)
-
-	# def add_mode(self, build_mode: mode.Mode):
-	# 	assert isinstance(build_mode, mode.Mode), "build_mode must be instance of mode.Mode"
-
-	# 	if build_mode.name in self._modes:
-	# 		raise NameError("Режим с именем '%s' уже существует" % build_mode.name)
-
-	# 	self._modes[build_mode.name] = build_mode
-	# 	logging.debug("Добавлен режим сборки '%s'" % build_mode.name)
-
 	def add_tool(self, toolid: str, tool):
 		assert isinstance(toolid, str), "toolid must be str"
 
@@ -110,9 +97,9 @@ class BuildSysCore(api.IApi, api.IPluginApi):
 	def tools(self) -> dict:
 		return self._tools
 
-	# @property
-	# def build_directory(self) -> Path:
-		# return self._build_dir
+	@property
+	def variables(self) -> dict:
+		return self._variables
 
 	@property
 	def version(self) -> str:
