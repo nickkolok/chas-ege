@@ -33,7 +33,7 @@ def main(debug, config, mode, dump_variables):
 		for k, v in core.variables.items():
 			name = "\"%s\"" % k if isinstance(k, str) else k
 			value = "\"%s\"" % v if isinstance(v, str) else v
-			logging.info("\t{n} = {v}".format(n=name, v=value))
+			logging.info("\t{n}: {v}".format(n=name, v=value))
 
 
 if __name__ == "__main__":
