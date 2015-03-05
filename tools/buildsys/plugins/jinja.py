@@ -53,7 +53,7 @@ def jinja_render(api: IApi, build_dir: Path, task: Task) -> bool:
 		logging.info("Сборка шаблона {t} в {d}".format(t=t, d=out))
 		templ = env.get_template(t)
 		with out.open("w") as f:
-			f.write(templ.render(**variables))
+			f.write(templ.render(CURRENT_TEMPLATE=t, **variables))
 
 	return True
 
