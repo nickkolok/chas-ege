@@ -9,6 +9,14 @@
 							"html",
 							"js"
 						]
+					},
+					{
+						"toolid": "jinja-render",
+						"templates-dir": "html",
+						"dest": "html",
+						"templates": [
+							"index.html"
+						]
 					}
 				]
 		}
