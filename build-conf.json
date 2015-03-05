@@ -23,7 +23,8 @@
 						"templates-dir": "html",
 						"dest": "html",
 						"templates": [
-							"index.html"
+							"index.html",
+							"random-task.html"
 						]
 					}
 				]

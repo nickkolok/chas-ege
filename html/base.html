@@ -44,9 +44,15 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Тесты <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="#">Случайное задание</a></li>
-								<li><a href="#">Каталог заданий набора</a></li>
-								<li><a href="#">Тест на печать</a></li>
+								<li>
+									<a href="#">Случайное задание</a>
+								</li>
+								<li>
+									<a href="#">Каталог заданий набора</a>
+								</li>
+								<li>
+									<a href="#">Тест на печать</a>
+								</li>
 							</ul>
 						</li>
 						<li><a href="../doc/download.html">Скачать</a></li>
@@ -72,7 +78,9 @@
 					<div class="panel-heading">Навигация</div>
 					<div class="panel-body">
 						<ul class="nav nav-pills nav-stacked">
-							<li role="presentation"><a href="#">Случайное задание</a></li>
+							<li role="presentation" {% if CURRENT_TEMPLATE == "random-task.html" %}class="active"{% endif %}>
+								<a href="./random-task.html">Случайное задание</a>
+							</li>
 							<li role="presentation" class="dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">Тесты по предметам <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
@@ -144,59 +152,62 @@
 	</footer>
 
 	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
-	<script src="../../../ext/jquery-2.1.0.min.js">
+	<script src="../../../ext/jquery-2.1.0.min.js"></script>
 	<script src="../../../js/bootstrap.min.js"></script>
 
-	<script src="../../../ext/jqplot/jquery.jqplot.min.js">
-	<script src="../../../ext/jqplot/plugins/jqplot.barRenderer.min.js">
-	<script src="../../../ext/jqplot/plugins/jqplot.categoryAxisRenderer.min.js">
-	<script src="../../../ext/anyslider/js/jquery.anythingslider.js">
-	<script src="../../../ext/jstorage.min.js">
-	<script src="../../../ext/keyboard/keyboard.js">
-	<script src="../../../ext/html2canvas.js">
+	<script src="../../../ext/jqplot/jquery.jqplot.min.js"></script>
+	<script src="../../../ext/jqplot/plugins/jqplot.barRenderer.min.js"></script>
+	<script src="../../../ext/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+	<script src="../../../ext/anyslider/js/jquery.anythingslider.js"></script>
+	<script src="../../../ext/jstorage.min.js"></script>
+	<script src="../../../ext/keyboard/keyboard.js"></script>
+	<script src="../../../ext/html2canvas.js"></script>
 
-	<script src="../../../lib/func.js">
-	<script src="../../../lib/func_ui.js">
-	<script src="../../../lib/object.js">
-	<script src="../../../lib/array.js">
-	<script src="../../../lib/array_mt.js">
-	<script src="../../../lib/array_mp.js">
-	<script src="../../../lib/array_mn.js">
-	<script src="../../../lib/array_pe.js">
-	<script src="../../../lib/string.js">
-	<script src="../../../lib/number.js">
-	<script src="../../../lib/number_math.js">
-	<script src="../../../lib/canvas.js">
-	<script src="../../../lib/regexp.js">
-	<script src="../../../lib/function.js">
-	<script src="../../../lib/lx.js">
-	<script src="../../../lib/lxnar.js">
-	<script src="../../../lib/lxsoch.js">
-	<script src="../../../lib/lxskl.js">
-	<script src="../../../lib/lxchisl.js">
-	<script src="../../../lib/sklon.js">
-	<script src="../../../lib/complex.js">
-	<script src="../../../lib/namealias.js">
+	<script src="../../../lib/func.js"></script>
+	<script src="../../../lib/func_ui.js"></script>
+	<script src="../../../lib/object.js"></script>
+	<script src="../../../lib/array.js"></script>
+	<script src="../../../lib/array_mt.js"></script>
+	<script src="../../../lib/array_mp.js"></script>
+	<script src="../../../lib/array_mn.js"></script>
+	<script src="../../../lib/array_pe.js"></script>
+	<script src="../../../lib/string.js"></script>
+	<script src="../../../lib/number.js"></script>
+	<script src="../../../lib/number_math.js"></script>
+	<script src="../../../lib/canvas.js"></script>
+	<script src="../../../lib/regexp.js"></script>
+	<script src="../../../lib/function.js"></script>
+	<script src="../../../lib/lx.js"></script>
+	<script src="../../../lib/lxnar.js"></script>
+	<script src="../../../lib/lxsoch.js"></script>
+	<script src="../../../lib/lxskl.js"></script>
+	<script src="../../../lib/lxchisl.js"></script>
+	<script src="../../../lib/sklon.js"></script>
+	<script src="../../../lib/complex.js"></script>
+	<script src="../../../lib/namealias.js"></script>
 
-	<script src="../../../lib/func_jquery.js">
-	<script src="../../../lib/umka.js">
-	<script src="../../../lib/core_vopr.js">
-	<script src="../../../lib/core_nabor.js">
-	<script src="../../../lib/core_dvig.js">
-	<script src="../../../lib/dvig_fn.js">
-	<script src="../../../lib/dvig_rz.js">
-	<script src="../../../lib/dvig_lz.js">
-	<script src="../../../lib/urljson.js">
-	<script src="../../../lib/style.js">
-	<script src="../../../lib/menu.js">
-	<script src="../../../lib/yametrika.js">
-	<script src="../../../lib/browser.js">
-	<script src="../../../lib/osnmas.js">
-	<script src="../../../lib/cache.js">
-	<script src="../../../lib/jstorage.zapomni.js">
-	<script src="../../../lib/sovety.js">
+	<script src="../../../lib/func_jquery.js"></script>
+	<script src="../../../lib/umka.js"></script>
+	<script src="../../../lib/core_vopr.js"></script>
+	<script src="../../../lib/core_nabor.js"></script>
+	<script src="../../../lib/core_dvig.js"></script>
+	<script src="../../../lib/dvig_fn.js"></script>
+	<script src="../../../lib/dvig_rz.js"></script>
+	<script src="../../../lib/dvig_lz.js"></script>
+	<script src="../../../lib/urljson.js"></script>
+	<script src="../../../lib/style.js"></script>
+	<script src="../../../lib/menu.js"></script>
+	<script src="../../../lib/yametrika.js"></script>
+	<script src="../../../lib/browser.js"></script>
+	<script src="../../../lib/osnmas.js"></script>
+	<script src="../../../lib/cache.js"></script>
+	<script src="../../../lib/jstorage.zapomni.js"></script>
+	<script src="../../../lib/sovety.js"></script>
 
-	<script src="../../../lib/nlib/core.js">
-	<script src="../../../lib/napi/core.js">
+	<script src="../../../lib/nlib/core.js"></script>
+	<script src="../../../lib/napi/core.js"></script>
+
+	{% block js %}
+	{% endblock %}
 </body>
 </html>
