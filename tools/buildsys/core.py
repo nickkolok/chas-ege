@@ -22,6 +22,9 @@ class BuildSysCore(api.IApi, api.IPluginApi):
 		logging.basicConfig(format="%(levelname)-8s %(message)s",
 							datefmt="%Y.%m.%d %H:%M:%S", level=logging.INFO)
 
+		self._variables["buildsys.version"] = self.version
+		self._variables["buildsys.debug"] = self.debug
+
 	def enable_debug(self):
 		"""Включить режим отладки"""
 		self._debug = True
