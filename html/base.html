@@ -22,7 +22,7 @@
 	<link href="../ext/keyboard/keyboard.css" rel="stylesheet">
 	<link href="../ext/jqplot/jquery.jqplot.css" rel="stylesheet">
 </head>
-<body>
+<body onload="$.jStorage.zagrData();" onunload="$.jStorage.sohrData()">
 	<script>
 		document.write('<script src="../../../js/init.js?'+Math.random()+'"></sc'+'ript>');
 	</script>
