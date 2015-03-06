@@ -14,8 +14,17 @@
 					{
 						"toolid": "fs.mkdirs",
 						"files": [
-							"html",
-							"js"
+							"html"
+						]
+					},
+					{
+						"toolid": "fs.ln-s",
+						"files": [
+							["lib", "lib"],
+							["js", "js"],
+							["zdn", "zdn"],
+							["css", "css"],
+							["ext", "ext"]
 						]
 					},
 					{
