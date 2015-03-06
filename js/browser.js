@@ -119,5 +119,5 @@ if(bIE){
 	chas.resizeIframes=function(interval){
 		setInterval(chas.resizeIframesOnce,interval);
 	}
-	document.write('<script src="https://www.math.vsu.ru/chas-ege/lib/autointegr.js"></script>');
+	document.write('<script src="https://www.math.vsu.ru/chas-ege/js/autointegr.js"></script>');
 }

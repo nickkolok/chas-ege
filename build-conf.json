@@ -20,7 +20,6 @@
 					{
 						"toolid": "fs.ln-s",
 						"files": [
-							["lib", "lib"],
 							["js", "js"],
 							["zdn", "zdn"],
 							["css", "css"],

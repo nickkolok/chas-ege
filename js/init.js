@@ -73,7 +73,7 @@ if(svinta && !chas.mode.trunc){
 	// addscript("../lib/nlib/core.js");
 	// addscript("../lib/napi/core.js");
 }else
-	addscript('../lib/chas-uijs.min.js'+'?'+chas.version);
+	addscript('../js/chas-uijs.min.js'+'?'+chas.version);
 
 if(izvk  && !chas.mode.trunc)
 	addscript(chas.libs.remoteVK,'VK.init(function(){}, function(){}, \'5.0\'); ');
@@ -157,7 +157,7 @@ function specCounter(str){
 	if(svinta)
 		return;
 	var ifr=document.createElement('iframe');
-	ifr.src='../lib/speccounter.html?'+str;
+	ifr.src='../js/speccounter.html?'+str;
 	ifr.style.display='none';
 	ifr.style.top='-9999px';
 	ifr.style.position='absolute';

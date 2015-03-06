@@ -5,5 +5,5 @@ document.write(
 '<span id="chas-ege-span-to-link" style="text-decoration:underline;color:blue;cursor: pointer;" onclick="document.location.replace(\'http://mozilla-russia.org/\');">Firefox</span>'+
 '</div>'+
 '</nofollow></noindex>'+
-'<script src="//www.math.vsu.ru/chas-ege/lib/browser.js" charset="UTF-8"></script>'+
+'<script src="//www.math.vsu.ru/chas-ege/js/browser.js" charset="UTF-8"></script>'+
 '');
