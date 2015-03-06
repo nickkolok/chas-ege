@@ -90,6 +90,8 @@ function obnov(p1){
 	MathJax.Hub.Typeset();
 	$('#otvet').html(slvopr.ver.join(';;'));
 	$('#never').html(slvopr.nev.join(';;'));
+	$("#otvet").css("display", "block");
+	$("#never").css("display", "block");
 	vremyaStart=new Date().getTime();
 }
 
@@ -151,13 +153,15 @@ function zdnSost(){
 	$('#otv').val('');
 	$('#prov').unbind('click');
 	$('#prov').bind('click',prover);
-	$('#prov').show();
-	$('#sozd').hide();
-	$('#podob').hide();
-	setVKI();
-	VKI_attach(document.getElementById('otv'));
+	$("#prov").removeClass("disabled");
+	$("#sozd").addClass("disabled");
+	$("#podob").addClass("disabled");
+	// FIXME: setVKI();
+	// VKI_attach(document.getElementById('otv'));
 	flProv=0;
 	$('#bnomer').show().html(dvig.getzadname(n));
+
+	$("#qst").css("display", "block");
 }
 
 function prover(){
@@ -197,9 +201,9 @@ function prover(){
 		txt+='<br/><br/>'+vopr.rsh;
 	$('#protv').html(txt);
 	MathJax.Hub.Typeset();
-	$('#prov').hide();
-	$('#sozd').show();
-	$('#podob').show();
+	$("#prov").addClass("disabled");
+	$("#sozd").removeClass("disabled");
+	$("#podob").removeClass("disabled");
 	sohrUmka();
 	veroyatn();
 	specCounter('sluch');
@@ -258,13 +262,13 @@ function strelkaDvig(){
 	}
 	$('#strelka').animate({left:'-=20'},{duration:1000});
 	$('#strelka').animate({left:'+=20'},{duration:1000,complete:strelkaDvig});
-	$('#sozd').animate({opacity:'0.5'},{duration:1000});
-	$('#sozd').animate({opacity:'1'},{duration:1000});
+	// $('#sozd').animate({opacity:'0.5'},{duration:1000});
+	// $('#sozd').animate({opacity:'1'},{duration:1000});
 	
 }
 strelkaDvig();
-$('#prov').hide();
-$('#podob').hide();
+$("#prov").addClass("disabled");
+$("#podob").addClass("disabled");
 galkiKat('#galki_kat','sluch');
 spoiler();
 

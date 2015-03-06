@@ -11,16 +11,21 @@
 		document.write('<script src="../js/head.js?'+Math.random()+'"></sc'+'ript>');
 	</script>
 
-	<link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
+	<link href="../ext/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 	<link href="../ext/anyslider/css/anythingslider.css" rel="stylesheet">
 	<link href="../ext/anyslider/css/theme-minimalist-square.css" rel="stylesheet">
-	<link href="../css/browser.css" rel="stylesheet">
-	<link href="../css/menu.css" rel="stylesheet">
-	<link href="../css/main.css" rel="stylesheet">
+	<!-- <link href="../css/browser.css" rel="stylesheet"> -->
+	<!-- <link href="../css/main.css" rel="stylesheet"> -->
 	<link href="../ext/fonts/stylesheet.css" rel="stylesheet">
 	<link href="../ext/keyboard/keyboard.css" rel="stylesheet">
 	<link href="../ext/jqplot/jquery.jqplot.css" rel="stylesheet">
+
+	<!-- <style> -->
+		<!-- .panel-default { -->
+			<!-- border-color: #fff; /* TODO: убрать костыль */ -->
+		}
+	<!-- </style> -->
 </head>
 <body onload="$.jStorage.zagrData();" onunload="$.jStorage.sohrData()">
 	<script>
@@ -29,7 +34,7 @@
 
 	<div class="container" style="margin-top: 70px">
 		<nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="navbar-header">
 					<a class="navbar-brand" href="index.html">Тренажёр "Час ЕГЭ"</a>
 				</div>
@@ -151,7 +156,7 @@
 
 	<!-- <script src="https://ajax.googleapis.com/ajax/jss/jquery/1.11.2/jquery.min.js"></script> -->
 	<script src="../ext/jquery-2.1.0.min.js"></script>
-	<script src="../ext/bootstrap.min.js"></script>
+	<script src="../ext/bootstrap/js/bootstrap.min.js"></script>
 
 	<script src="../ext/jqplot/jquery.jqplot.min.js"></script>
 	<script src="../ext/jqplot/plugins/jqplot.barRenderer.min.js"></script>
@@ -193,7 +198,7 @@
 	<script src="../js/dvig_rz.js"></script>
 	<script src="../js/dvig_lz.js"></script>
 	<script src="../js/urljson.js"></script>
-	<script src="../js/style.js"></script>
+	<!-- <script src="../js/style.js"></script> -->
 	<script src="../js/menu.js"></script>
 	<script src="../js/yametrika.js"></script>
 	<script src="../js/browser.js"></script>

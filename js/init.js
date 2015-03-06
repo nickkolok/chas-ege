@@ -191,14 +191,14 @@ var flVazhn=0;
 function vazhnOn(){
 	flVazhn=1;
 	allLinksToBlankTarget();
-	$('#sovety').data('AnythingSlider').startStop(0);
+	// $('#sovety').data('AnythingSlider').startStop(0);
 	$('.arrow.forward').click();
 }
 
 function vazhnOff(){
 	flVazhn=0;
 	restoreLinksTarget();
-	$('#sovety').data('AnythingSlider').startStop(1);
+	// $('#sovety').data('AnythingSlider').startStop(1);
 	$('.arrow.forward').click();
 }
 
