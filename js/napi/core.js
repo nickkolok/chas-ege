@@ -9,25 +9,26 @@ window.NApi = {
 	 */
 	info : {
 		/**
-		 * Версия API
+		   Версия API
 		 */
-		API_VERSION : { major : 0, minor : 0 },
+		API_VERSION : { major : 0, minor : 1 },
 
 
 		/**
-		 Версия для заголовков
+		   Версия для заголовков
 		 */
 		VERSION_TITLE : "??VERSION_TITLE??",
 
 
 		/**
-		 Точная версия
+		   Точная версия
 		 */
 		VERSION_EXACT : "??VERSION_EXACT??",
 
 
 		/**
-		 * Выпуск приложения
+		   Выпуск приложения
+		   @deprecated
 		 */
 		APPLICATION_RELEASE : "__APPLICATION_RELEASE____",
 
