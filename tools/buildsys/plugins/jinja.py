@@ -46,7 +46,7 @@ def jinja_render(api: IApi, build_dir: Path, task: Task) -> bool:
 
 	variables = {}
 	for k, v in api.variables.items():
-		variables[k.replace("-", "_")] = v
+		variables[k.replace("-", "_").replace(".", "__")] = v
 
 	for t in templates:
 		out = dest / Path(t)
