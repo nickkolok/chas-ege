@@ -70,6 +70,8 @@ class BuildSysCore(api.IApi, api.IPluginApi):
 		if not build_dir.exists():
 			build_dir.mkdir(parents=True)
 
+		self._variables["buildsys.mode"] = build_mode
+
 		logging.info("Сборка...")
 
 		for t in mode["tasks"]:
