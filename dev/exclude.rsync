@@ -1,6 +1,8 @@
 .git
 .gitignore
 dev
+tools
+ext/python-libs
 ext/fonts
 ext/mathjax/fonts/HTML-CSS/TeX/png
 ext/*.jar

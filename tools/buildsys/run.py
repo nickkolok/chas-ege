@@ -1,11 +1,16 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.4
 
 import sys
 import argparse
 import logging
 from pathlib import Path
+import imp
 
-import click
+#Загрузка сторонних библиотек
+click      = imp.load_source('click'     , './ext/python-libs/click/__init__.py'     )
+markupsafe = imp.load_source('markupsafe', './ext/python-libs/markupsafe/__init__.py')
+jinja2     = imp.load_source('jinja2'    , './ext/python-libs/jinja2/__init__.py'    )
+
 
 from core import BuildSysCore
 
