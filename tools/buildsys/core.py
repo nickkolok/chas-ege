@@ -83,7 +83,7 @@ class BuildSysCore(api.IApi, api.IPluginApi):
 				logging.critical("Выполнение инструмента '%s' завершилось не удачно" % toolid)
 				return
 
-		logging.info("Успешно собранно")
+		logging.info("Успешно собрано")
 
 	def add_tool(self, toolid: str, tool):
 		assert isinstance(toolid, str), "toolid must be str"
