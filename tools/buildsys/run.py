@@ -1,19 +1,12 @@
-#!/usr/bin/env python3.4
+#!/usr/bin/env python3
 
 import sys
+sys.path.append("./ext/python-libs")
 import argparse
 import logging
 from pathlib import Path
-import imp
-
-#Загрузка сторонних библиотек
-click      = imp.load_source('click'     , './ext/python-libs/click/__init__.py'     )
-markupsafe = imp.load_source('markupsafe', './ext/python-libs/markupsafe/__init__.py')
-jinja2     = imp.load_source('jinja2'    , './ext/python-libs/jinja2/__init__.py'    )
-
-
+import click
 from core import BuildSysCore
-
 
 @click.command()
 @click.option("--debug", is_flag=True, default=False, help="Включить режим отладки")
