@@ -1,0 +1,28 @@
+#shabl {
+	width:100%;
+	height:100%;
+	visibility:none;
+	position:absolute;
+	top:-9999px;
+}
+#answer, #wrongAnswer {
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+}
+.question {
+	padding:2em;
+	height:auto;
+	overflow:hidden;
+}
+#textarea-script {
+	max-width:100%;
+	min-width:100%;
+	height:100px;
+}
+input.numberinput {
+	width:3.1415em;
+}
+.smallertext {
+	font-size:73%;/*146%/2*/
+}

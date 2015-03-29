@@ -32,7 +32,8 @@
 						"dest": "html",
 						"templates": [
 							"index.html",
-							"random-task.html"
+							"random-task.html",
+							"debug-shell.html"
 						]
 					}
 				]

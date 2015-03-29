@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title%}Оболочка отладки шаблона - {%endblock%}
+
+{% block content %}
+<!-- <noscript> -->
+	<!-- Для работы тренажёра необходим javascript. -->
+<!-- </noscript> -->
+<script>
+	addstyle("../css/debug.css");
+</script>
+	<div id="question" class="question"></div>
+	<div id="resh" class="question"></div>
+	<div id="answer"></div>
+	<div id="wrongAnswer"></div>
+	<div class="input-group">
+		<input class="form-control" id="answer-input" placeholder="Ответ"/>
+		<span class="input-group-btn">
+			<button id="reply" onclick="checkAnswer()" class="btn btn-default">Ответить!</button>
+		</span>
+	</div>
+	<hr/>
+	<div class="input-group">
+		<input class="form-control" type="text" id="filepath" data-jstorage-id="otladka-filepath" placeholder="Адрес подключаемого шаблона"/>
+		<span class="input-group-btn">
+			<button onclick="createFromFile();" class="btn btn-default">Составить задание</button>
+		</span>
+	</div>
+	<hr/>
+	Ввести программу:
+	<div>
+		<textarea id="textarea-script" data-jstorage-id="otladka-textarea-script" data-jstorage-ne="vi" onkeydown="return catchTab(this,event)"></textarea>
+		<div id="ace-script">
+		</div>
+		<script src="../ext/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../ext/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+		<button onclick="createFromTextarea();" class="btn btn-default">Составить задание по программе</button>
+	</div>
+	<hr/>
+	<div id="vklpodsv" class="form form-inline">
+		Cтрок:
+		<input class="form-control" id="ace-rows" value="32" data-jstorage-id="ace-rows" class="numberinput"/>
+		Размер шрифта:
+		<input class="form-control" id="ace-size" value="12" data-jstorage-id="ace-size" class="numberinput"/>
+		<button onclick="enableAce();" class="btn btn-default">Включить редактор ACE</button>
+	</div>
+	<hr/>
+	<div>
+		<div class="form form-inline">
+			Количество итераций:
+			<input class="form-control" id="iter" data-jstorage-id="timetest-kolvo-iter" value="20000"/>
+			<button onclick="tt();" class="btn btn-default">Проверить время</button>
+		</div>
+		<br/>
+		<span class="smallertext">
+			Помните, что время приблизительно и зависит от конкретной ЭВМ.
+			Тем не менее, общие тенденции оценить можно.
+		</span>
+	</div>
+	<hr/>
+	<div>
+		<form method="post" action="http://pastebin.ru/" target="_blank" onsubmit="pastebin();" class="form-inline">
+			<input id="std-x" name="std-x" type="hidden" value="600">
+			<input id="std-y" name="std-y" type="hidden" value="800">
+			<label for="your_name">Ваше имя</label>
+			<input id="your_name" type="text" name="poster" value="" maxlength="32">
+			<label for="names">Название</label>
+			<input id="names" type="text" name="code_name" value="" maxlength="256">
+			<input type="hidden" name="mode" value="92">
+			<textarea hidden id="textarea-paste" name="code"></textarea>
+			<input class="btn btn-default" type="submit" name="paste" value="Отправить на pastebin.ru">
+		</form>
+	</div>
+	<div>
+		<iframe src="" id="shabl" charset="utf-8" type="text/javascript" lang="ru"></iframe>
+	</div>
+{% endblock %}
+
+{% block js %}
+<script src="../js/page/debug-shell.js"></script>
+{% endblock %}
