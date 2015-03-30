@@ -82,6 +82,16 @@
 							<li role="presentation" {% if CURRENT_TEMPLATE == "random-task.html" %}class="active"{% endif %}>
 								<a href="./random-task.html">Случайное задание</a>
 							</li>
+
+							<li class="divider"></li>
+
+							<!-- <li role="presentation" {% if CURRENT_TEMPLATE == "contrib.html" %}class="active"{% endif %}> -->
+							<li role="presentation">
+								<a class="btn {% if CURRENT_TEMPLATE == "contrib.html" %}btn-primary{% else %}btn-success{% endif %}" href="./contrib.html">
+									<span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>
+									Помочь проекту
+								</a>
+							</li>
 							<!-- <li role="presentation" class="dropdown"> -->
 								<!-- <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">Тесты по предметам <span class="caret"></span></a> -->
 								<!-- <ul class="dropdown-menu" role="menu"> -->

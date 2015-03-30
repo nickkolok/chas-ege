@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Помощь проекту – {% endblock %}
+
+{% block content %}
+<div class="panel panel-default">
+	<div class="panel-body">
+		<p class="text-center">
+			<span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>
+		</p>
+		<h1 class="text-center">Вступай в ряды тружеников open source!</h1>
+
+		<p>
+			«Час ЕГЭ» – open source проект, из чего следует, что все участники проекта работают на добровольных
+			основах. Мы как и любой открытый проект всегда рады новым участником, особенно в связи с большими
+			переменами в проекте нам важен каждый кто может помочь.
+		</p>
+		<p>
+			Чтобы помочь проекту <b>не обязательно</b> уметь программировать.
+			<br>
+			Но если вы нём хоть сколько-нибудь разбираетесь в нём, то можете попробовать себя в создании
+			шаблонов задач (с помощью которых и генерируются задания, решаемые вами).
+		</p>
+
+	</div>
+	<div class="panel-footer">
+		<div class="list-group">
+			<a href="./contrib-guide.html#developer" class="list-group-item">
+				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+				<strong>Веб-разработчики</strong>
+				– пожалуй одна из самых необходимых в нашем проекте, поскольку в коде тренажёра всё ещё остаётся
+				объёмное <abbr title="легаси с версии v1.x">наследие старых версий</abbr>
+				<br>
+			</a>
+			<a href="./contrib-guide.html#templat-writter" class="list-group-item">
+				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+				<strong>Шаблонописатель</strong>
+				– второй самый необходимый в нашем проекте род занятий, от Веб-разработчика его отличает намного
+				более низкий порог входа (достаточно хоть знать программирование на школьном уравне).
+				<br>
+			</a>
+			<a href="./contrib-guide.html#designer" class="list-group-item">
+				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+				<strong>Дизайнер-верстальщик</strong>
+				– сейчас дизайн нашего тренажёра, конечно, красив, по сравнению с тем, что было в версии
+				<abbr title="то были тёмные времена с дизайном а-ля Web 1.0">v1.x</abbr>, но как известно
+				<em>"нет предела совершенству"</em>
+			</a>
+		</div>
+	</div>
+</div>
+{% endblock %}

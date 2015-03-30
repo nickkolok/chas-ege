@@ -33,7 +33,8 @@
 						"templates": [
 							"index.html",
 							"random-task.html",
-							"debug-shell.html"
+							"debug-shell.html",
+							"contrib.html"
 						]
 					}
 				]
