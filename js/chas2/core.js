@@ -12,6 +12,8 @@ window.chas2 = {};
  * @private
  */
 chas2._ = {
+	debug_mode : false,
+
 	/** @function chas2._.Linfo
 	 * Занести в лог информацию
 	 * @param {String} msg текст сообщения
@@ -139,6 +141,23 @@ chas2.Lerr = function(msg) {
 };
 
 
+/** @function chas2.Ldebug
+	Занести в лог отладочную информацию
+	@param {String} msg текст сообщения
+	@note Выводиться только в режиме отладки
+*/
+chas2.Ldebug = function(msg) {
+	if (chas2.isDebug()) {
+		console.log("[DEBUG] " + msg);
+	}
+};
+
+
+chas2.isDebug = function() {
+	return chas2._.debug_mode;
+};
+
+
 /** @function chas2.panic
  * Сообщить о серёзной проблеме (с последующей остановкой)
  * @param cause причина
@@ -174,23 +193,41 @@ chas2.args = {};
    @param argument Аргумент
  */
 chas2.has_argument = function(argument) {
-	return chas2.args[argument] != undefined;
+	chas2.Linfo(argument)
+	return !!chas2.args[argument] || chas2.args[argument] == "";
 };
 
 
 (function(){
-	var hashroot = location.hash.split("?");
-	if (hashroot[0].length != 0) { 
-		chas2.hash = hashroot.slice(1);
-	}
-	if (hashroot.length > 1) {
-		var hashvars = hashroot[1].split("&");
+	// Инициализация chas2.hash и chas2.args
+	chas2.hash = location.hash.split("?")[0].slice(1);
+
+	// var hashroot = location.hash.split("?");
+	// if (hashroot[0].length != 0 && hashroot[0][0] == "#") { 
+		// chas2.hash = hashroot.slice(1);
+	// }
+	// if (hashroot.length > 1 || (hashroot[0].length != 1 && hashroot[0][0] != "#")) {
+	// var hashvarsstr = "";
+
+	// if (hashroot[0].length != 0 && hashroot[0][1] != "#") {
+		// hashvarsstr = hashroot[0];
+	// } else if (hashroot.length > 1) {
+		// hashvarsstr = hashroot[1];
+	// }
+
+	var href = location.href.split("?");
+	var hashvarsstr = href[href.length - 1];
+
+	// chas2.Linfo(hashroot);
+
+
+		var hashvars = hashvarsstr.split("&");
 		for (var i = 0; i < hashvars.length; i++) {
 			var varstr = hashvars[i];
 			var vararr = varstr.split("=");
 
 			var name = vararr[0];
-			var value = null;
+			var value = "";
 			if (vararr.length > 1) {
 				value = vararr[1];
 				if (vararr.length > 2) {
@@ -202,5 +239,11 @@ chas2.has_argument = function(argument) {
 
 			chas2.args[name] = value;
 		}
+	// }
+
+	// Инициализация режима отладки
+	if (chas2.has_argument("debug")) {
+		chas2._.debug_mode = true;
+		chas2.Ldebug("Режим отладки включен");
 	}
 })();

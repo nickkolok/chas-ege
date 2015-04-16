@@ -25,6 +25,11 @@ window.NA =window.NApi;
 window.NAinfo =window.NApi.info;
 
 
+window.NApi.debug = {};
+window.NApi.debug.Ldebug = chas2.Ldebug;
+window.NApi.debug.Ldebug = chas2.isDebug;
+
+
 /**
    Алиас на window.NApi.debug
    TODO: Убрать устаревший алиас
