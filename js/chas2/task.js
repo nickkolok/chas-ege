@@ -1,17 +1,17 @@
 "use strict";
 
-/** @namespace NApi.task
+/** @namespace chas2.task
  * Параметры задания
  */
-NApi.task = {
-	/** @namespace NApi.task._
-	 * Функционал, используемый только внутри модуля NApi.task
+chas2.task = {
+	/** @namespace chas2.task._
+	 * Функционал, используемый только внутри модуля chas2.task
 	 * @private
 	 */
 	_ : {},
 
 
-	/** @function NApi.task.setTask
+	/** @function chas2.task.setTask
 	 * Установить задание
 	 * @param {String} text текст задания
 	 * @param {String} analys текс разбора задания
@@ -79,7 +79,7 @@ NApi.task = {
 
 		var voprcheck = dvig.validateVopr();
 		if (voprcheck) {
-			NApi._.Lwarn("Результат проверки вопроса:\n\t" + voprcheck);
+			chas2._.Lwarn("Результат проверки вопроса:\n\t" + voprcheck);
 		}
 	}
 }

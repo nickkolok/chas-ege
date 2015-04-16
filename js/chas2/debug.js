@@ -1,11 +1,11 @@
 "use strict";
 
-/** @namespace NApi.debug
+/** @namespace chas2.debug
  * Параметры задания
  */
-NApi.debug = {
-	/** @namespace NApi.debug._
-	 * Функционал, используемый только внутри модуля NApi.debug
+chas2.debug = {
+	/** @namespace chas2.debug._
+	 * Функционал, используемый только внутри модуля chas2.debug
 	 * @private
 	 */
 	_ : {
@@ -14,33 +14,33 @@ NApi.debug = {
 
 
 	isDebug : function() {
-		return NApi.debug._.debug_mode;
+		return chas2.debug._.debug_mode;
 	},
 
 
-	/** @function NApi.debug.enableDebugging
+	/** @function chas2.debug.enableDebugging
 	 * Включить режим отладки
 	 */
 	enableDebugging : function() {
-		NApi.debug._.debug_mode = true;
+		chas2.debug._.debug_mode = true;
 	},
 
 
-	/** @function NApi.debug.disableDebugging
+	/** @function chas2.debug.disableDebugging
 	 * Выключить режим отладки
 	 */
 	disableDebugging : function() {
-		NApi.debug._.debug_mode = false;
+		chas2.debug._.debug_mode = false;
 	},
 
 
-	/** @function NApi.debug.Ldebug
+	/** @function chas2.debug.Ldebug
 	 * Занести в лог отладочную информацию
 	 * @param {String} msg текст сообщения
 	 * @note Выводиться только в режиме отладки
 	 */
 	Ldebug : function(msg) {
-		if (NApi.debug.isDebug()) {
+		if (chas2.debug.isDebug()) {
 			console.log("[DEBUG] " + msg);
 		}
 	}
@@ -48,6 +48,6 @@ NApi.debug = {
 
 
 (function() {
-	NApi.debug.enableDebugging();
+	chas2.debug.enableDebugging();
 })();
 
