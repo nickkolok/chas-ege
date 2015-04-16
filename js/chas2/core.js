@@ -202,48 +202,35 @@ chas2.has_argument = function(argument) {
 	// Инициализация chas2.hash и chas2.args
 	chas2.hash = location.hash.split("?")[0].slice(1);
 
-	// var hashroot = location.hash.split("?");
-	// if (hashroot[0].length != 0 && hashroot[0][0] == "#") { 
-		// chas2.hash = hashroot.slice(1);
-	// }
-	// if (hashroot.length > 1 || (hashroot[0].length != 1 && hashroot[0][0] != "#")) {
-	// var hashvarsstr = "";
-
-	// if (hashroot[0].length != 0 && hashroot[0][1] != "#") {
-		// hashvarsstr = hashroot[0];
-	// } else if (hashroot.length > 1) {
-		// hashvarsstr = hashroot[1];
-	// }
-
 	var href = location.href.split("?");
 	var hashvarsstr = href[href.length - 1];
 
-	// chas2.Linfo(hashroot);
+	var hashvars = hashvarsstr.split("&");
+	for (var i = 0; i < hashvars.length; i++) {
+		var varstr = hashvars[i];
+		var vararr = varstr.split("=");
 
-
-		var hashvars = hashvarsstr.split("&");
-		for (var i = 0; i < hashvars.length; i++) {
-			var varstr = hashvars[i];
-			var vararr = varstr.split("=");
-
-			var name = vararr[0];
-			var value = "";
-			if (vararr.length > 1) {
-				value = vararr[1];
-				if (vararr.length > 2) {
-					for (var vl = 2; vl < vararr.length; vl++) {
-						value += "=" + vararr[vl];
-					}
+		var name = vararr[0];
+		var value = "";
+		if (vararr.length > 1) {
+			value = vararr[1];
+			if (vararr.length > 2) {
+				for (var vl = 2; vl < vararr.length; vl++) {
+					value += "=" + vararr[vl];
 				}
 			}
-
-			chas2.args[name] = value;
 		}
-	// }
+
+		chas2.args[name] = value;
+	}
 
 	// Инициализация режима отладки
 	if (chas2.has_argument("debug")) {
 		chas2._.debug_mode = true;
 		chas2.Ldebug("Режим отладки включен");
 	}
+
+	// Получение текущей версии
+	chas2.info.VERSION_EXACT = document.getElementById("var-version-exact").value;
+	chas2.info.VERSION_TITLE = document.getElementById("var-version-title").value;
 })();
