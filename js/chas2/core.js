@@ -105,7 +105,7 @@ window.NApi = {
 		 * @private
 		 */
 		// loadApiModule : function(name) {
-			// document.write("<script charset=\"utf-8\" src=\"../js/napi/" + name + ".js\" onload=\"NApi._.Linfo('Загружен модуль " + name + "');\"></script>");
+			// document.write("<script charset=\"utf-8\" src=\"../js/chas2/" + name + ".js\" onload=\"NApi._.Linfo('Загружен модуль " + name + "');\"></script>");
 		// }
 	},
 
