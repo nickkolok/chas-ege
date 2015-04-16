@@ -104,9 +104,9 @@ window.NApi = {
 		 * @param {String} name название модуля
 		 * @private
 		 */
-		loadApiModule : function(name) {
-			document.write("<script charset=\"utf-8\" src=\"../js/napi/" + name + ".js\" onload=\"NApi._.Linfo('Загружен модуль " + name + "');\"></script>");
-		}
+		// loadApiModule : function(name) {
+			// document.write("<script charset=\"utf-8\" src=\"../js/napi/" + name + ".js\" onload=\"NApi._.Linfo('Загружен модуль " + name + "');\"></script>");
+		// }
 	},
 
 
@@ -165,17 +165,17 @@ window.NApi = {
 };
 
 
-(function() {
-	NApi.info.VERSION_TITLE = $("#var-version-title").val();
-	NApi.info.VERSION_EXACT = $("#var-version-exact").val();
-	NApi._.Linfo("NApi v" + NApi.info.API_VERSION.major + "." + NApi.info.API_VERSION.minor);
+// (function() {
+// 	NApi.info.VERSION_TITLE = $("#var-version-title").val();
+// 	NApi.info.VERSION_EXACT = $("#var-version-exact").val();
+// 	NApi._.Linfo("NApi v" + NApi.info.API_VERSION.major + "." + NApi.info.API_VERSION.minor);
 
-	NApi._.Linfo("Загрузка модулей...");
-	NApi._.loadApiModule("debug");
-	NApi._.loadApiModule("task");
-	NApi._.loadApiModule("ui");
-	NApi._.loadApiModule("test");
+// 	NApi._.Linfo("Загрузка модулей...");
+// 	NApi._.loadApiModule("debug");
+// 	NApi._.loadApiModule("task");
+// 	NApi._.loadApiModule("ui");
+// 	NApi._.loadApiModule("test");
 
-	NApi._.loadApiModule("alias");
-})();
+// 	NApi._.loadApiModule("alias");
+// })();
 

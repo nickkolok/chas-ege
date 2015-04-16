@@ -14,9 +14,9 @@ var NLib = {
 		 * @param {String} name название модуля
 		 * @private
 		 */
-		loadLibModule : function(name) {
-			document.write("<script charset=\"utf-8\" src=\"../js/nlib/" + name + ".js\" onload=\"console.log('[NLib] Загружен модуль " + name + "');\"></script>");
-		}
+		// loadLibModule : function(name) {
+			// document.write("<script charset=\"utf-8\" src=\"../js/nlib/" + name + ".js\" onload=\"console.log('[NLib] Загружен модуль " + name + "');\"></script>");
+		// }
 	},
 
 
@@ -61,12 +61,12 @@ var NLib = {
 };
 
 
-(function() {
-	NLib._.loadLibModule("Array");
-	NLib._.loadLibModule("Number");
-	NLib._.loadLibModule("math");
-	NLib._.loadLibModule("sets");
+// (function() {
+// 	NLib._.loadLibModule("Array");
+// 	NLib._.loadLibModule("Number");
+// 	NLib._.loadLibModule("math");
+// 	NLib._.loadLibModule("sets");
 
-	NLib._.loadLibModule("alias");
-})();
+// 	NLib._.loadLibModule("alias");
+// })();
 
