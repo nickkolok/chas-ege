@@ -228,6 +228,7 @@ chas2.has_argument = function(argument) {
 	if (chas2.has_argument("debug")) {
 		chas2._.debug_mode = true;
 		chas2.Ldebug("Режим отладки включен");
+		$("#debug-badge").show()
 	}
 
 	// Получение текущей версии

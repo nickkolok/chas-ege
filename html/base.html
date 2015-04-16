@@ -24,7 +24,7 @@
 	<!-- <style> -->
 		<!-- .panel-default { -->
 			<!-- border-color: #fff; /* TODO: убрать костыль */ -->
-		}
+		<!-- } -->
 	<!-- </style> -->
 </head>
 <body onload="$.jStorage.zagrData();" onunload="$.jStorage.sohrData()">
@@ -38,7 +38,10 @@
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="index.html">Тренажёр "Час ЕГЭ"</a>
+					<a class="navbar-brand" href="index.html">
+						Тренажёр "Час ЕГЭ"
+						<span class="badge" id="debug-badge" style="display:none">DEBUG</span>
+					</a>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
