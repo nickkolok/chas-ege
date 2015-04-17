@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Отображение формулы - {% endblock %}
+
+{% block content %}
+
+Введите формулу (можно с кавычками, можно без): 
+<br/>
+<textarea cols="80" id="ish" data-jstorage-id="formula-textarea"></textarea>
+<br/>
+<button onclick="pokaz();">
+	Показать
+</button>
+Результат:
+<br/>
+<div id="rez">
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="../js/page/formula.js"></script>
+{% endblock %}

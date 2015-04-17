@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Документация к библиотекам - {% endblock %}
+
+{% block content %}
+
+<script>
+	var svinta=1;
+</script>
+	<h1>
+		Документация к библиотекам,
+	</h1>
+	<p>
+		<i>
+			сгенерированная автоматически этими же библиотеками.
+		</i>
+	</p>
+	<h1>
+		Функции (тип Function)
+	</h1>
+	<div id="divFunction"></div>
+	<h1>
+		Массивы (тип Array)
+	</h1>
+	<div id="divArray"></div>
+	<h1>
+		Числа (тип Number)
+	</h1>
+	<div id="divNumber"></div>
+	<h1>
+		Строки (тип String)
+	</h1>
+	<div id="divString"></div>
+<style>
+	.spoiler-show,.spoiler-hide{
+		float:right;
+	}
+</style>
+{% endblock %}
+
+{% block js %}
+<script src="../js/page/auto-api-reference.js"></script>
+{% endblock %}
