@@ -35,7 +35,11 @@
 	</script>
 
 	<div style="position: fixed; left: 16px; top: 16px; z-index: 2048">
-		<span class="label label-warning" id="debug-badge" style="display: none">DEBUG</span>
+		{% if buildsys__mode == "dev" %}
+		<span class="label label-success" id="mark-dev-build">dev-сборка</span>
+		{% endif %}
+		<span class="label label-info" id="mark-local" style="display: none">Локальный</span>
+		<span class="label label-warning" id="mark-debug" style="display: none">DEBUG</span>
 	</div>
 
 	<div class="container" style="margin-top: 70px">

@@ -13,6 +13,7 @@ window.chas2 = {};
  */
 chas2._ = {
 	debug_mode : false,
+	local : false,
 
 	/** @function chas2._.Linfo
 	 * Занести в лог информацию
@@ -158,6 +159,11 @@ chas2.isDebug = function() {
 };
 
 
+chas2.isLocal = function() {
+	return chas2._.local;
+};
+
+
 /** @function chas2.panic
  * Сообщить о серёзной проблеме (с последующей остановкой)
  * @param cause причина
@@ -188,11 +194,11 @@ chas2.hash = "";
 chas2.args = {};
 
 
-/** @function chas3.has_argument
+/** @function chas3.hasArgument
    Проверка на наличия аругмента
    @param argument Аргумент
  */
-chas2.has_argument = function(argument) {
+chas2.hasArgument = function(argument) {
 	chas2.Linfo(argument)
 	return !!chas2.args[argument] || chas2.args[argument] == "";
 };
@@ -224,14 +230,23 @@ chas2.has_argument = function(argument) {
 		chas2.args[name] = value;
 	}
 
+
 	// Инициализация режима отладки
-	if (chas2.has_argument("debug")) {
+	if (chas2.hasArgument("debug")) {
 		chas2._.debug_mode = true;
 		chas2.Ldebug("Режим отладки включен");
-		$("#debug-badge").show()
+		$("#mark-debug").show();
 	}
+
 
 	// Получение текущей версии
 	chas2.info.VERSION_EXACT = document.getElementById("var-version-exact").value;
 	chas2.info.VERSION_TITLE = document.getElementById("var-version-title").value;
+
+
+	// Проверка откуда запущен тренажёр
+	if (location.href.split(":")[0] == "file") {
+		chas2._.local = true;
+		$("#mark-local").show();
+	}
 })();
