@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог заданий набора - {% endblock %}
+
+{% block content %}
+<div>
+	Ниже для каждого шаблона приводится пример сгенерированного им задания. 
+	Обратите внимание: как правило, один шаблон может генерировать очень много заданий,
+	которые в той или иной мере похожи между собой!
+</div>
+<button onclick="generateKatalog()">Генерировать</button>
+<br/>
+<br/>
+<div id="divrez">
+</div>
+<style>
+	h1,h2{
+		clear:both;
+		padding-top:2em;
+	}
+	.spoiler-show,.spoiler-hide,.spoiler-body{
+		margin-top:auto;
+	}
+</style>
+{% endblock %}
+
+{% block js %}
+<script src="../js/page/katalog.js"></script>
+{% endblock %}

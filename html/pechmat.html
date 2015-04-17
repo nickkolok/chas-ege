@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Тест на печать - {% endblock %}
+
+{% block content %}
+<script >
+	window.mjConfig='TeX-AMS-MML_SVG-full';
+	addstyle("../css/pech.css");
+</script>
+<div id="gotov">
+	<div id="pr0">
+		<div id="t0" class="tx">
+			0%
+		</div>
+	</div>
+	<div id="pr1">
+		<div id="t1" class="tx">
+		</div>
+	</div>
+	<div id="vrem">		
+	</div>
+</div>
+<div id="panel">
+	<div>
+		Выберите необходимое количество заданий каждого типа:
+	</div>
+	<br/>
+	<table class="bezramok" id="zadaniya">
+	</table>
+	<br/>
+	<div>
+		<div id="galki_kat">
+		</div>
+		<label for="cV">Количество вариантов:</label><input id="cV" class="kolvo" value="1" type='text'  data-jstorage-id="pech-cV"/>
+		<button onclick="zapusk();">Запуск!</button>
+		<button onclick="vse1();">Стандартный тест</button>
+		<button onclick="vse0();">Сбросить все</button>
+		<br/>
+		<input type="checkbox" id="redakt"/><label for="redakt">Редактируемый текст</label>
+		<br/>
+		<input type="checkbox" id="htmlcss"/><label for="htmlcss">Отрисовывать формулы не в SVG, а в HTML+CSS (не рекомендуется в большинстве случаев)</label>
+	</div>
+</div>
+<div class="otstup pagewidth">
+	<div id="rez">
+	</div>
+	<button class="spoiler-show noprint" hidden>Показать ответы</button>	
+	<button class="spoiler-hide noprint" hidden>Скрыть ответы</button>	
+	<div id="otv" class="d spoiler-body" style="padding-left:0">	
+	</div>
+	<div id="dopoln" class="noprint">
+		<h2>
+			Дополнительные параметры (beta)
+		</h2>
+		Ширина задания:
+		<input id="shir"/>cm
+		<button onclick="shirprim()">
+			Применить
+		</button>
+		<button onclick="optimcopy()" id="optimcopy">
+			Преобразовать в текст и изображения (для копирования)
+		</button>
+	</div>	
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="../js/page/pechmat.js"></script>
+{% endblock %}

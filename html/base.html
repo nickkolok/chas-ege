@@ -34,7 +34,7 @@
 		document.write('<script src="../../../js/legacy/init.js?'+Math.random()+'"></sc'+'ript>');
 	</script>
 
-	<div style="position: fixed; left: 0; top: 48px; z-index: 2048">
+	<div style="position: fixed; left: 0; top: 48px; z-index: 2048" id="build-markers">
 		{% if buildsys__mode == "dev" %}
 		<span class="label label-success" id="mark-dev-build">dev-сборка</span>
 		{% endif %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Сортировка строк - {% endblock %}
+
+{% block content %}
+<h2>
+	Построчная алфавитная сортировка
+</h2>
+Текст (построчно):
+<br/>
+<textarea cols="80" rows="5" id="ish" data-jstorage-id="sortstr-ish-textarea">
+</textarea>
+<br/>
+<button onclick="sortstr();">
+	Сортировать
+</button>
+<input type="checkbox" id="vydmail"/><label for="vydmail">Только e-mail</label>
+<input type="checkbox" id="vyvzap" /><label for="vyvzap" >Вывод через запятую</label>
+<br/>
+<textarea cols="80" rows="5" id="rez" data-jstorage-id="sortstr-rez-textarea">
+</textarea>
+{% endblock %}
+
+{% block js %}
+<script src="../js/page/sortstr.js"></script>
+{% endblock %}

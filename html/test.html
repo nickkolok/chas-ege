@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Автоматическая проверка набора - {% endblock %}
+
+{% block content %}
+<h3>
+	Проверка шаблонов
+</h3>
+<button onclick="start()">
+	Проверить
+</button>
+<p>
+	<i>Полный лог смотрите в консоли</i>
+</p>
+<textarea id="output" contenteditable="false" style="width:100%; height:256px">
+</textarea>
+{% endblock %}
+
+{% block js %}
+<script src="../js/page/test.js"></script>
+{% endblock %}

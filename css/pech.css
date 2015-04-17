@@ -165,3 +165,8 @@ h2{
 	float:none;
 	clear:both;
 }
+.normtabl td, th{
+	border:1px solid #000000;
+	margin: 0px;
+	padding:3px;
+}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Оболочка мини-интеграции - {% endblock %}
+
+{% block content %}
+<script>
+	addstyle("../css/mini.css");
+</script>
+<div id="matfak">
+	Тренажёр
+	<a href="https://www.math.vsu.ru/chas-ege/doc/index.html" target="_blank">"Час ЕГЭ"</a>
+	разработан при
+	<a href="https://www.math.vsu.ru/" target="_blank">Математическом факультете ВГУ</a>.
+</div>
+<div id="wrap-pole">
+<div>
+	<div class="integrated egeok" style="background-color:#8B8;text-align:center;padding:0.5em;vertical-align:middle;margin-bottom:0.5em;">
+		<b style="font-size:146%;color:white;">
+			Проверь себя
+		</b>
+	</div>
+</div>
+	<div id="pole" class="vopr">
+	</div>
+</div>
+<div id="protv">
+</div>
+<div id="wrap">
+	<div id="panel">
+		<span id="notv">
+			Ответ:
+		</span>
+		<button id="prov">Ответить!
+		</button>
+		<button id="sozd" onclick="sozdat();">Составить задание
+		</button>
+		<div id="wrap-otv">
+			<input id="otv"/>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="../js/page/mini.js"></script>
+{% endblock %}
