@@ -34,13 +34,16 @@
 		document.write('<script src="../../../js/legacy/init.js?'+Math.random()+'"></sc'+'ript>');
 	</script>
 
+	<div style="position: fixed; left: 16px; top: 16px; z-index: 2048">
+		<span class="label label-warning" id="debug-badge" style="display: none">DEBUG</span>
+	</div>
+
 	<div class="container" style="margin-top: 70px">
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
 					<a class="navbar-brand" href="index.html">
 						Тренажёр "Час ЕГЭ"
-						<span class="badge" id="debug-badge" style="display:none">DEBUG</span>
 					</a>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -71,6 +74,14 @@
 						<!-- </li> -->
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="./contrib.html">
+								<span class="label {% if CURRENT_TEMPLATE == "contrib.html" %}label-primary{% else %}label-success{% endif %}">
+									<span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>
+									Помочь проекту
+								</span>
+							</a>
+						</li>
 						<li><a href="https://www.math.vsu.ru/">Сайт Математического факультета ВГУ</a></li>
 					</ul>
 				</div>
@@ -86,15 +97,6 @@
 								<a href="./random-task.html">Случайное задание</a>
 							</li>
 
-							<li class="divider"></li>
-
-							<!-- <li role="presentation" {% if CURRENT_TEMPLATE == "contrib.html" %}class="active"{% endif %}> -->
-							<li role="presentation">
-								<a class="btn {% if CURRENT_TEMPLATE == "contrib.html" %}btn-primary{% else %}btn-success{% endif %}" href="./contrib.html">
-									<span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>
-									Помочь проекту
-								</a>
-							</li>
 							<!-- <li role="presentation" class="dropdown"> -->
 								<!-- <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">Тесты по предметам <span class="caret"></span></a> -->
 								<!-- <ul class="dropdown-menu" role="menu"> -->
