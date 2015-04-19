@@ -1,17 +1,38 @@
-(function(){'use strict';
+(function(){
+	"use strict";
+	var a, b, c, d, e, f, g, h, u, x, p, answer, expression_text, p_text;
 
-var a = slKrome(0,-5,5);
-var b = slKrome(0,-5,5);
-var c = slKrome(0,-5,5);
-var d = slKrome(0,-5,5);
-var e = slKrome(0,-5,5);
-var r = slKrome(0,-5,5);
-var t = slKrome(0,-5,5);
+	/**
+	   a * (u * p(b * x + c) - d * p(e * x + f))
 
-window.vopr.ver=[''+r*(c*a*e+c*b-d*a*t-d*b)];
+	   p(x) = g * x - h
+	*/
 
-window.vopr.txt = ('Найдите значение выражения $'+r+'(' +c+'p('+d+'x+'+e+')+'+
-	(-1*d)+'p('+c+'x+'+t+'))$, если $ p(x)='+a+'x+'+b+'$.').plusminus();
+	a = slKrome(0, -5, 5);
+	b = slKrome(0, -5, 5);
+	c = slKrome(0, -5, 5);
+	d = slKrome(0, -5, 5);
+	e = slKrome(0, -5, 5);
+	f = slKrome(0, -5, 5);
+	g = slKrome(0, -5, 5);
+	h = slKrome(0, -5, 5);
+	u = slKrome(0, -5, 5);
+	x = 1;
+
+	p = function(x) {
+		return g * x + h;
+	};
+
+	answer = a * (u * p(b * x + c) - d * p(e * x + f));
+
+	expression_text = "$" + a + "(" + u + "p(" + b + "x+" + c + ") " + d + "p(" + e + "x+" + f + "))$";
+	p_text = "$p(x) = " + g + "x+" + h + "$";
+
+	chas2.task.setTask({
+		text: "Найдите значение выражения " + expression_text.plusminus() + ", если " + p_text.plusminus(),
+		answers: [ "" + answer ]
+	});
 })();
 //Обзад 26821
 //by _zevs
+//Испарвление: Сергей Наумов
