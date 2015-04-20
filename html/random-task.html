@@ -2,6 +2,14 @@
 
 {% block title %}Случайное задание - {% endblock %}
 
+{% block css %}
+<link href="../css/random-task.css" rel="stylesheet">
+{% endblock %}
+
+{% block js %}
+<script src="../js/page/random-task.js"></script>
+{% endblock %}
+
 {% block content %}
 <!-- <noscript> -->
 	<!-- Для работы тренажёра необходим javascript. -->
@@ -48,39 +56,39 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="panel-body">
-			<table id="galki" class="table table-bordered table-condensed"></table>
-			<div class="smallerfont">
-				<button class="btn btn-default spoiler-show" data-jstorage-id="sluch-nastr-show">
-					Показать настройки...
-				</button>
-				<button class="btn btn-default spoiler-hide" data-jstorage-id="sluch-nastr-hide">Скрыть настройки</button>
-				<div class="spoiler-bady" data-jstorage-id="sluch-nastr-body" data-jstorage-ne="ih">
-					<div id="galki_kat">
-					</div>
-					<button class="btn btn-default" onclick="vybrv()">Выбрать все задания</button>
-					<button class="btn btn-default" onclick="vybr0()">Снять все задания</button>
-					<button class="btn btn-default" onclick="sbrosUmka(veroyatn)">Сбросить статистику</button>
-					<br/>
-					<input type="radio" name="metod" value="sluch" id="radio-sluch" data-jstorage-id="sluch-radio-sluch"/>
-					<label for="radio-sluch">Задания в случайном порядке</label>
-					<input type="radio" name="metod" value="porad" id="radio-porad" data-jstorage-id="sluch-radio-porad"/>
-					<label for="radio-porad">Задания по порядку</label>
-					<input type="radio" name="metod" value="umka"  id="radio-umka"  data-jstorage-id="sluch-radio-umka "/>
-					<label for="radio-umka" >"Умка"</label>
-					<br>
-					<input type="checkbox" id="check-praviln" data-jstorage-id="sluch-check-praviln" checked onclick="obrabPraviln()"/>
-					<label for="check-praviln">Вести учёт правильности ответов</label>
-					<input type="checkbox" id="check-na-vremya" data-jstorage-id="sluch-check-na-vremya" checked onclick="obrabNaVremya()"/>
-					<label for="check-na-vremya">Вести учёт времени</label>
+			<div id="stats-table-slot"></div>			
+		</div>
+
+		<div class="panel-footer">
+			<button class="btn btn-default spoiler-show" data-jstorage-id="random-task_options-show">
+				<span class="caret"></span>
+				Показать настройки...
+			</button>
+			<button class="btn btn-default spoiler-hide" data-jstorage-id="random-task_options-hide">
+				<span class="caret"></span>
+				Скрыть настройки
+			</button>
+			<div class="spoiler-bady" data-jstorage-id="random-task_options-body" data-jstorage-ne="ih">
+				<div id="galki_kat">
 				</div>
+				<button class="btn btn-default" onclick="vybrv()">Выбрать все задания</button>
+				<button class="btn btn-default" onclick="vybr0()">Снять все задания</button>
+				<button class="btn btn-default" onclick="sbrosUmka(veroyatn)">Сбросить статистику</button>
+				<br/>
+				<input type="radio" name="metod" value="sluch" id="radio-sluch" data-jstorage-id="sluch-radio-sluch"/>
+				<label for="radio-sluch">Задания в случайном порядке</label>
+				<input type="radio" name="metod" value="porad" id="radio-porad" data-jstorage-id="sluch-radio-porad"/>
+				<label for="radio-porad">Задания по порядку</label>
+				<input type="radio" name="metod" value="umka"  id="radio-umka"  data-jstorage-id="sluch-radio-umka "/>
+				<label for="radio-umka" >"Умка"</label>
+				<br>
+				<input type="checkbox" id="check-praviln" data-jstorage-id="sluch-check-praviln" checked onclick="obrabPraviln()"/>
+				<label for="check-praviln">Вести учёт правильности ответов</label>
+				<input type="checkbox" id="check-na-vremya" data-jstorage-id="sluch-check-na-vremya" checked onclick="obrabNaVremya()"/>
+				<label for="check-na-vremya">Вести учёт времени</label>
 			</div>
 		</div>
 	</div>
 </div>
-{% endblock %}
-
-{% block js %}
-<script src="../js/page/random-task.js"></script>
 {% endblock %}

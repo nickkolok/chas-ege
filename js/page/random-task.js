@@ -7,74 +7,154 @@ var zhelt={r:nas,g:nas,b:0};
 var flProv=1;
 var vremyaStart;
 
-function sozdGalki(){
-	var galki,g1='',g2='',g3='',g4='';
-	for(var i=1;i<=nabor.nZad;i++){
-		if(!nabor.vykl[i]){
-			var title='';
-			window.comment='';
-			try{
-				nabor.upak[dvig.getzadname(i)].main();
-				title=' title="'+window.comment+'"';
-			}catch(e){}
-			
-			g1+='<td'+title+'><input type="checkbox" checked id="cB'+i+'" data-jstorage-id="sluch-cB'+i+'-'+nabor.name+'" /><label for="cB'+i+'" >'+
-				dvig.getzadname(i)+' </label></td>';
-			g2+='<td'+title+'><span id="pB'+i+'"></span></td>';
-			g3+='<td'+title+'><span class="kolvoprav" id="pravB'+i+'"></span><br/>из<br/><span id="vsegB'+i+'"></span></td>';	
-			g4+='<td'+title+'><span class="vremya" id="vremyaB'+i+'"></span></td>';	
-		}
-	}
-	galki='<tr>'+g1+'<td></td></tr><tr class="praviln">'+g2+'<td><span id="pB"></span></td></tr><tr class="praviln">'+g3+
-		'<td><span class="kolvoprav" id="pravB"></span><br/>из<br/><span id="vsegB"></span></td></tr>'+
-		'<td></td></tr><tr class="vremya">'+g4;
-	$('#galki').html(galki);
-}
+var slvopr;
 
-sozdGalki();
-zagrUmka();
-veroyatn();
+var v=[];
+
+var strelkaEst=1;
+
+
+var initializeStatsTable = function() {
+	var statstable = $(document.createElement("table"));
+	statstable.attr("id", "stats-table");
+	statstable.addClass("table table-bordered");
+	
+	var row_indexes = $(document.createElement("tr"))
+		.attr("id", "stats-table-indexes");
+	var row_right = $(document.createElement("tr"))
+		.attr("id", "stats-table-right");
+	var row_stats = $(document.createElement("tr"))
+		.attr("id", "stats-table-stats");
+	var row_time = $(document.createElement("tr"))
+		.attr("id", "stats-table-time");
+
+	var create_data_indexes = function(index, title, taskset_name) {
+		return $(document.createElement("td"))
+			.attr("title", title)
+			.append(
+				$(document.createElement("input"))
+					.attr({
+						"id": "checkbox-B" + index,
+						"type": "checkbox",
+						"checked": "",
+						"data-jstorage-id": "sluch-checkbox-B" + index + "-" + taskset_name
+					})
+			)
+			.append(
+				$(document.createElement("label"))
+					.attr({
+						"for": "checkbox-B" + index
+					})
+					.html(
+						dvig.getzadname(index)
+					)
+			);
+	};
+
+	var create_data_right = function(index, title) {
+		return $(document.createElement("td"))
+			.attr("title", title)
+			.append(
+				$(document.createElement("span"))
+					.attr("id", "r-B" + index)
+			);
+	};
+
+	var create_data_stats = function(index, title) {
+		return $(document.createElement("td"))
+			.attr("title", title)
+			.append(
+				$(document.createElement("span"))
+					.attr("id", "right-B" + index)
+			)
+			.append("<br>из<br>")
+			.append(
+				$(document.createElement("span"))
+					.attr("id", "total-B" + index)
+			);
+	};
+
+	var create_data_time = function(index, title) {
+		return $(document.createElement("td"))
+			.attr("title", title)
+			.append(
+				$(document.createElement("span"))
+					.addClass("time")
+					.attr("id", "time-B" + index)
+			);
+	};
+
+	for (var i = 1; i <= nabor.nZad; i++) {
+		if (nabor.vykl[i]) {
+			continue;
+		}
+
+		var title = "";
+		window.comment = ""; // TODO: что за фигня?
+
+		try {
+			nabor.upak[dvig.getzadname(i)].main();
+			title = window.comment;
+		} catch (e) {} // FIXME: Надо бы проверять, но нужно ли?
+
+		row_indexes.append(create_data_indexes(i, title, nabor.name));
+		row_right.append(create_data_right(i, title));
+		row_stats.append(create_data_stats(i, title));
+		row_time.append(create_data_time(i, title));
+	}
+
+	
+	row_right.append(create_data_right("", ""));
+	row_stats.append(create_data_stats("", ""));
+
+	statstable.append(row_indexes);
+	statstable.append(row_right);
+	statstable.append(row_stats);
+	statstable.append(row_time);
+	$("#stats-table-slot").append(statstable);
+};
+
 
 function veroyatn(){
 	var pr;
 	for(var i=1;i<=nabor.nZad;i++){
 		pr=umka.verno[i]/umka.vsego[i];
-		$('#pB'+i).html(
+		$('#r-B'+i).html(
 			umka.vsego[i]>4?
 			(pr*100).toFixedLess(0)+'%':
 			''
 		);
-		$('#pravB'+i).html(
+		$('#right-B'+i).html(
 			umka.verno[i]
 		);
-		$('#vsegB'+i).html(
+		$('#total-B'+i).html(
 			umka.vsego[i]
 		);
 		if(umka.kvoNaVremya[i]){
-			$('#vremyaB'+i).html(
+			$('#time-B'+i).html(
 				(umka.vremya[i]/umka.kvoNaVremya[i]).round().toDvoet()
 			);
 		}
-		$('#pB'+i).css(
-			'color',
+		$('#r-B'+i).css(
+			'background-color',
 			pr>0.5?
 			cvetMezhdu(zhelt,zelen,pr*2-1):
 			cvetMezhdu(krasn,zhelt,pr*2)
 		);
 	}
 	pr=umka.verno.sum()/umka.vsego.sum();
-	$('#pB').html(
+	$('#r-B').html(
 		umka.vsego.sum()>4?
 		(umka.verno.sum()/umka.vsego.sum()*100).toFixedLess(0)+'%':
 		''
 	);
-	$('#pravB').html(
+	$('#right-B').html(
 		umka.verno.sum()
 	);
-	$('#vsegB').html(
+	$('#total-B').html(
 		umka.vsego.sum()
 	);
-	$('#pB').css(
+	$('#r-B').css(
 		'color',
 		pr>0.5?
 		cvetMezhdu(zhelt,zelen,pr*2-1):
@@ -82,7 +162,6 @@ function veroyatn(){
 	);	
 }
 
-var slvopr;
 function obnov(p1){
 	slvopr=p1;
 	$('#pole').html(slvopr.txt);
@@ -97,7 +176,7 @@ function obnov(p1){
 
 function vybrZad(){
 	for(var i=1;i<=nabor.nZad;i++)
-		v[i]=($('#cB'+i).is(':checked')?1:0);
+		v[i]=($('#checkbox-B'+i).is(':checked')?1:0);
 	var w=[];
 	for(var i=1;i<=nabor.nZad;i++)
 		if(v[i])
@@ -128,6 +207,7 @@ function vybrZad(){
 	return w.iz();
 }
 
+
 function sozdat(){
 	strelkaEst=0;
 	n=vybrZad();
@@ -137,10 +217,12 @@ function sozdat(){
 	zdnSost();
 }
 
+
 function podobnoe(){
 	dvig.zadan(obnov,n,nomer);
 	zdnSost();
 }
+
 
 function zdnSost(){
 	vazhnOn();
@@ -210,6 +292,7 @@ function prover(){
 	flProv=1;
 }
 
+
 function uchetPrav(kat,prav,nom){
 	if(svinta)
 		return;
@@ -221,13 +304,13 @@ function uchetPrav(kat,prav,nom){
 	document.body.appendChild(ifr);
 }
 
-var v=[];
 
 function vybrv(){
 	for(var i=1;i<=nabor.nZad;i++){
-		$('#cB'+i).not(':checked').click();
+		$('#checkbox-B'+i).not(':checked').click();
 	}
 }
+
 
 function obrabNaVremya(){
 	if($('#check-na-vremya').is(':checked')){
@@ -236,7 +319,7 @@ function obrabNaVremya(){
 		$('.vremya').hide();
 	}
 }
-$(obrabNaVremya);
+
 
 function obrabPraviln(){
 	if($('#check-praviln').is(':checked')){
@@ -245,15 +328,14 @@ function obrabPraviln(){
 		$('.praviln').hide();
 	}
 }
-$(obrabPraviln);
+
 
 function vybr0(){
 	for(var i=1;i<=nabor.nZad;i++){
-		$('#cB'+i).removeAttr('checked');
+		$('#checkbox-B'+i).removeAttr('checked');
 	}
 }
 
-var strelkaEst=1;
 
 function strelkaDvig(){
 	if(!strelkaEst){
@@ -264,19 +346,30 @@ function strelkaDvig(){
 	$('#strelka').animate({left:'+=20'},{duration:1000,complete:strelkaDvig});
 	// $('#sozd').animate({opacity:'0.5'},{duration:1000});
 	// $('#sozd').animate({opacity:'1'},{duration:1000});
-	
-}
-strelkaDvig();
-$("#prov").addClass("disabled");
-$("#podob").addClass("disabled");
-galkiKat('#galki_kat','sluch');
-spoiler();
 
-$("#otv").keyup(function(event) {
-	if(nabor.mnogostrOtvet || flProv)
-		return true;
-	if(event.keyCode==13){
-		prover();
-		return false;
-	}
-});
+}
+
+
+(function() {
+	initializeStatsTable();
+	zagrUmka();
+	veroyatn();
+
+	$(obrabNaVremya);
+	$(obrabPraviln);
+
+	strelkaDvig();
+	$("#prov").addClass("disabled");
+	$("#podob").addClass("disabled");
+	galkiKat('#galki_kat','sluch');
+	spoiler();
+
+	$("#otv").keyup(function(event) {
+		if(nabor.mnogostrOtvet || flProv)
+			return true;
+		if(event.keyCode==13){
+			prover();
+			return false;
+		}
+	});
+})();
