@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Опросы - {% endblock %}
+
+{% block content %}
+"Час ЕГЭ", являясь OpenSource-проектом, создаётся в первую очередь для пользователей.
+Поэтому нам, разработчикам, очень важно <b>ваше</b> мнение о том, как должен развиваться проект дальше.
+Это - еженедельный опрос, определяющий нововведение, которое будет включено в выпуск в первую очередь.
+(Каждую неделю список изменяется, результаты голосования сбрасываются.)
+<br/>
+<br/>
+Ниже есть ещё два опроса (в опросе ВКонтакте не более 10 вариантов, поэтому пришлось разделить) о том, 
+какие именно задания будут добавляться в комплекс по математике.
+<br/>
+<br/>
+<script type="text/javascript" src="https://vk.com/js/api/openapi.js?101"></script>
+<div id="vk_poll_napr">
+</div>
+<br/>
+<br/>
+<div style="/* display:table-row; */min-width:100%" width="100%">
+	<div style="display: inline-table;min-width: 50%;float: left;" width="50%">
+		<div id="vk_poll_mat1">
+		</div>
+	</div>
+	<div style="display: inline-table;min-width: 50%;" width="50%">
+		<div id="vk_poll_mat2">
+		</div>
+	</div>
+</div>	
+
+<script>
+	VK.Widgets.Poll(
+		"vk_poll_napr",
+		{
+			pageUrl: "https://www.math.vsu.ru/chasege/doc/oprosy.html",
+		},
+		"110596450_2274d2ec1c235cb451"
+	);
+	VK.Widgets.Poll(
+		"vk_poll_mat1",
+		{
+			pageUrl: "https://www.math.vsu.ru/chasege/doc/oprosy.html",
+		},
+		"110146591_502a5e37d095847d23"
+	);
+	VK.Widgets.Poll(
+		"vk_poll_mat2",
+		{
+			pageUrl: "https://www.math.vsu.ru/chasege/doc/oprosy.html",
+		},
+		"110146696_dbf949cefd7b37986b"
+	);
+</script>
+{% endblock %}

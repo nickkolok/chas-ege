@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Руководство по интеграции - {% endblock %}
+
+{% block content %}
+		<p>
+			Вы можете бесплатно интегрировать (вставить) окно "Час ЕГЭ" в свой сайт через iframe.
+			Примеры:
+			<ul>
+				<li>
+					<a href="http://ege-ok.ru/trenazher-chas-ege/">ege-ok.ru</a>
+				</li>
+				<li>
+					<a href="http://matematikalegko.ru/proiti-onlajn-test-chast-v-ege-po-matematike">matematikalegko.ru</a>
+				</li>
+				<li>
+					<a href="http://4ege.ru/om/">4ege.ru - оболочка случайного задания</a>
+				</li>
+				<li>
+					<a href="http://4ege.ru/omf/">4ege.ru - полный тест</a>
+				</li>
+				<li>
+					<a href="http://ege-online-test.ru/chasege.php">ege-online-test.ru</a>
+				</li>
+				<li>
+					<a href="http://www.edu.ru/abitur/act.77/index.php">edu.ru</a>
+				</li>
+			</ul>
+		</p>
+		<p>
+			На данный момент рекомендуется интеграция через скрипты. 
+			Всё, что Вам нужно сделать - это добавить в нужное место Вашей страницы несложный код, например:
+		</p>
+	<tt><pre>
+	&lt;script src="//www.math.vsu.ru/chas-ege/lib/browser.js" charset="UTF-8"&gt;
+	&lt;/script&gt;
+	&lt;script&gt;
+		chas.integrate("https://www.math.vsu.ru/chas-ege/sh/polnmat.html",{
+			style:{
+				strCSS:"#menucenter{font-size:12px;} #inf{height:110px;}",
+				pan:'lightblue',
+				fon:'#fff',
+				menuLinkTarget:'_self',
+			},
+		},900,500,"chas-predupr");
+	&lt;/script&gt;
+	</pre></tt>
+		<p>
+			Пример выполнения такого кода приведён ниже.
+			Поясним теперь значение каждого элемента кода.
+			<ul>
+				<li>
+					Первый тэг script подключает собственно скрипт интеграции.
+				</li>
+				<li>
+					Второй тэг script содержит вызов единственной функции chas.integrate();
+					Всё её параметры являются необязательными
+					(в понимании javascript, т. е. можно не указывать параметры, начиная с некоторого).
+				</li>
+				<li><ol>
+					<li>
+						Первый параметр - адрес интегрируемой страницы.
+						Рекомендется использовать случайное задание https://www.math.vsu.ru/chas-ege/sh/sluch.html
+						или полный тест https://www.math.vsu.ru/chas-ege/sh/polnmat.html
+					</li>
+					<li>
+						Второй параметр - настройки.
+						Пока доступен только один подпараметр - настройки оформления style.
+						Могут иметь следующие необязательные свойства
+						(в понимании JSON, т. е. можно опускать любые):
+						<ul>
+							<li>
+								strCSS - самый мощный параметр настройки. 
+								Строка со стилями, которая будет записана в тэг style внутри страницы тренажёра.
+								Может содержать любые CSS-выражения, исключая символы &lt; и &gt;
+							</li>
+							<li>
+								pan и fon - цвета панелей и фона соотвественно.
+								Указываются как в HTML.
+							</li>
+							<li>
+								menuLinkTarget - значение атрибута target у ссылок в меню.
+								Для того, чтобы всё, что возможно, открывалось внутри iframe,
+								установить в значение '_self'.
+							</li>
+						</ul>
+					</li>
+					<li>
+						Третий и четвёртый параметры - ширина и высота формируемого iframe.
+						По умолчанию 900 и 1500 пикселей соответственно.
+						Обратите внимание: если тренажёр не будет умещаться в iframe по высоте,
+						высота автоматически увеличится.
+						Если же тренажёр не будет умещаться по ширине,
+						окно тренажёра будет отмасштабировано так,
+						чтобы избежать появления горизонтальной полосы прокрутки.
+					</li>
+					<li>
+						Пятый параметр - id HTML-элемента, в котором содержится предупреждающее сообщение - на случай, если интеграция не удалась.
+					</li>
+				</ol></li>
+			</ul>
+		</p>
+		<p>
+			В случае возникновения вопросов по поводу сотрудничества пишите на <a href="mailto:nickkolok@mail.ru">nickkolok@mail.ru</a>
+		</p>
+		<script src="//www.math.vsu.ru/chas-ege/lib/browser.js">
+		</script>
+		<script>
+			chas.integrate("https://www.math.vsu.ru/chas-ege/sh/polnmat.html",{
+				style:{
+					strCSS:"#menucenter{font-size:12px;} #inf{height:110px;}",
+					pan:'lightblue',
+					fon:'white',
+					menuLinkTarget:'_self',
+				},
+			},900,"150%");
+		</script>
+{% endblock %}
