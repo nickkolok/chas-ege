@@ -8,7 +8,7 @@
 	<title>{% block title %}{% endblock %}Тренажёр "Час ЕГЭ" {{version_title}}</title>
 
 	<script>
-		document.write('<script src="../js/legacy/head.js?'+Math.random()+'"></sc'+'ript>');
+		<!-- document.write('<script src="../js/legacy/head.js?'+Math.random()+'"></sc'+'ript>'); -->
 	</script>
 
 	<link href="../ext/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -34,13 +34,13 @@
 	<input type="hidden" id="var-version-exact" value="{{version_exact}}"/>
 	<input type="hidden" id="var-version-title" value="{{version_title}}"/>
 	<script>
-		document.write('<script src="../../../js/legacy/init.js?'+Math.random()+'"></sc'+'ript>');
+		<!-- document.write('<script src="../../../js/legacy/init.js?'+Math.random()+'"></sc'+'ript>'); -->
 	</script>
 
 	<div style="position: fixed; left: 0; top: 48px; z-index: 2048" id="build-markers">
-		{% if buildsys__mode == "dev" %}
-		<span class="label label-success" id="mark-dev-build">dev-сборка</span>
-		{% endif %}
+		<!-- TODO: {% if build_target == "dev" %} -->
+		<!-- <span class="label label-success" id="mark-dev-build">dev-сборка</span> -->
+		<!-- {% endif %} -->
 		<span class="label label-info" id="mark-local" style="display: none">Локальный</span>
 		<span class="label label-warning" id="mark-debug" style="display: none">DEBUG</span>
 	</div>
@@ -201,58 +201,59 @@
 	<script src="../ext/keyboard/keyboard.js"></script>
 	<script src="../ext/html2canvas.js"></script>
 
-	<script src="../js/legacy/func.js"></script>
-	<script src="../js/legacy/func_ui.js"></script>
-	<script src="../js/legacy/object.js"></script>
-	<script src="../js/legacy/array.js"></script>
-	<script src="../js/legacy/array_mt.js"></script>
-	<script src="../js/legacy/array_mp.js"></script>
-	<script src="../js/legacy/array_mn.js"></script>
-	<script src="../js/legacy/array_pe.js"></script>
-	<script src="../js/legacy/string.js"></script>
-	<script src="../js/legacy/number.js"></script>
-	<script src="../js/legacy/number_math.js"></script>
-	<script src="../js/legacy/canvas.js"></script>
-	<script src="../js/legacy/regexp.js"></script>
-	<script src="../js/legacy/function.js"></script>
-	<script src="../js/legacy/lx.js"></script>
-	<script src="../js/legacy/lxnar.js"></script>
-	<script src="../js/legacy/lxsoch.js"></script>
-	<script src="../js/legacy/lxskl.js"></script>
-	<script src="../js/legacy/lxchisl.js"></script>
-	<script src="../js/legacy/sklon.js"></script>
-	<script src="../js/legacy/complex.js"></script>
-	<script src="../js/legacy/namealias.js"></script>
+	<!-- <script src="../js/legacy/func.js"></script> -->
+	<!-- <script src="../js/legacy/func_ui.js"></script> -->
+	<!-- <script src="../js/legacy/object.js"></script> -->
+	<!-- <script src="../js/legacy/array.js"></script> -->
+	<!-- <script src="../js/legacy/array_mt.js"></script> -->
+	<!-- <script src="../js/legacy/array_mp.js"></script> -->
+	<!-- <script src="../js/legacy/array_mn.js"></script> -->
+	<!-- <script src="../js/legacy/array_pe.js"></script> -->
+	<!-- <script src="../js/legacy/string.js"></script> -->
+	<!-- <script src="../js/legacy/number.js"></script> -->
+	<!-- <script src="../js/legacy/number_math.js"></script> -->
+	<!-- <script src="../js/legacy/canvas.js"></script> -->
+	<!-- <script src="../js/legacy/regexp.js"></script> -->
+	<!-- <script src="../js/legacy/function.js"></script> -->
+	<!-- <script src="../js/legacy/lx.js"></script> -->
+	<!-- <script src="../js/legacy/lxnar.js"></script> -->
+	<!-- <script src="../js/legacy/lxsoch.js"></script> -->
+	<!-- <script src="../js/legacy/lxskl.js"></script> -->
+	<!-- <script src="../js/legacy/lxchisl.js"></script> -->
+	<!-- <script src="../js/legacy/sklon.js"></script> -->
+	<!-- <script src="../js/legacy/complex.js"></script> -->
+	<!-- <script src="../js/legacy/namealias.js"></script> -->
 
-	<script src="../js/legacy/func_jquery.js"></script>
-	<script src="../js/legacy/umka.js"></script>
-	<script src="../js/legacy/core_vopr.js"></script>
-	<script src="../js/legacy/core_nabor.js"></script>
-	<script src="../js/legacy/core_dvig.js"></script>
-	<script src="../js/legacy/dvig_fn.js"></script>
-	<script src="../js/legacy/dvig_rz.js"></script>
-	<script src="../js/legacy/dvig_lz.js"></script>
-	<script src="../js/legacy/urljson.js"></script>
+	<!-- <script src="../js/legacy/func_jquery.js"></script> -->
+	<!-- <script src="../js/legacy/umka.js"></script> -->
+	<!-- <script src="../js/legacy/core_vopr.js"></script> -->
+	<!-- <script src="../js/legacy/core_nabor.js"></script> -->
+	<!-- <script src="../js/legacy/core_dvig.js"></script> -->
+	<!-- <script src="../js/legacy/dvig_fn.js"></script> -->
+	<!-- <script src="../js/legacy/dvig_rz.js"></script> -->
+	<!-- <script src="../js/legacy/dvig_lz.js"></script> -->
+	<!-- <script src="../js/legacy/urljson.js"></script> -->
 	<!-- <script src="../js/legacy/style.js"></script> -->
-	<script src="../js/legacy/menu.js"></script>
-	<script src="../js/legacy/yametrika.js"></script>
-	<script src="../js/legacy/browser.js"></script>
-	<script src="../js/legacy/osnmas.js"></script>
-	<script src="../js/legacy/cache.js"></script>
-	<script src="../js/legacy/jstorage.zapomni.js"></script>
-	<script src="../js/legacy/sovety.js"></script>
+	<!-- <script src="../js/legacy/menu.js"></script> -->
+	<!-- <script src="../js/legacy/yametrika.js"></script> -->
+	<!-- <script src="../js/legacy/browser.js"></script> -->
+	<!-- <script src="../js/legacy/osnmas.js"></script> -->
+	<!-- <script src="../js/legacy/cache.js"></script> -->
+	<!-- <script src="../js/legacy/jstorage.zapomni.js"></script> -->
+	<!-- <script src="../js/legacy/sovety.js"></script> -->
 
-	<script src="../js/nlib/core.js"></script>
-	<script src="../js/nlib/Array.js"></script>
-	<script src="../js/nlib/Number.js"></script>
-	<script src="../js/nlib/math.js"></script>
-	<script src="../js/nlib/sets.js"></script>
-	<script src="../js/nlib/alias.js"></script>
+	<!-- <script src="../js/nlib/core.js"></script> -->
+	<!-- <script src="../js/nlib/Array.js"></script> -->
+	<!-- <script src="../js/nlib/Number.js"></script> -->
+	<!-- <script src="../js/nlib/math.js"></script> -->
+	<!-- <script src="../js/nlib/sets.js"></script> -->
+	<!-- <script src="../js/nlib/alias.js"></script> -->
 
-	<script src="../js/chas2/core.js"></script>
-	<script src="../js/chas2/task.js"></script>
-	<script src="../js/chas2/test.js"></script>
-	<script src="../js/chas2/compat.js"></script>
+	<!-- <script src="../js/chas2/core.js"></script> -->
+	<!-- <script src="../js/chas2/task.js"></script> -->
+	<!-- <script src="../js/chas2/test.js"></script> -->
+	<!-- <script src="../js/chas2/compat.js"></script> -->
+	<script src="../js/chas2.min.js"></script>
 
 	{% block js %}
 	{% endblock %}

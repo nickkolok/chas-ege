@@ -4,5 +4,11 @@
 *.~lock.*
 *__pycache__
 *.pyc
-build/
 ext/
+
+build/
+dist/
+
+node_modules/
+.lock-wscript
+.grunt
