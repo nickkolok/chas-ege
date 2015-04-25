@@ -85,6 +85,8 @@ module.exports = function(grunt) {
 					"js/legacy/jstorage.zapomni.js",
 					"js/legacy/sovety.js",
 
+					"js/page/icon.js",
+
 					"js/nlib/core.js",
 					"js/nlib/Array.js",
 					"js/nlib/Number.js",
