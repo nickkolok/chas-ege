@@ -12,7 +12,7 @@
 	{% block css %}
 	{% endblock %}
 </head>
-<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()">
 	{% block preinit %}
 	{% endblock %}
 	<script>
