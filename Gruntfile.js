@@ -66,6 +66,11 @@ module.exports = function(grunt) {
 					{ expand: true, src: ["ext/**"], dest: "dist/" }
 				]
 			},
+			other: {
+				files: [
+					{ expand: true, src: ["index.html"], dest: "dist/" },
+				]
+			},
 		},
 		concat: {
 			options: {
