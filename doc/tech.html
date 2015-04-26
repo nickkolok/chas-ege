@@ -1,97 +1,84 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
-	<title>
-		Тренажёр "Час ЕГЭ" - техдокументация
-	</title>
-</head>
-<body>
-	<script>
-		addinitjs();
-	</script>
-	<div class="otstup">
-		<ul>
-			<li>
-				<a href="../doc/api/index.html">
-					Справка по API
-				</a>
-			</li>
-			<li>
-				<a href="../doc/spec.html">
-					Сведения об архитектуре
-				</a>
-			</li>
-			<li>
-				<a href="../sh/autoapidoc.html">
-					Документация по библиотекам
-				</a>
-			</li>
-			<li>
-				<a href="../doc/integr.html">
-					Краткое руководство по интеграции
-				</a>
-			</li>
-			<li>
-				<a href="../sh/formula.html">
-					Проверить формулу в $\TeX$-нотации
-				</a>
-			</li>
-			<li>
-				<a href="../sh/sklon1.html">
-					Вспомогательная оболочка склонения существительных
-				</a>
-			</li>
-			<li>
-				<a href="../sh/sortstr.html">
-					Построчная алфавитная сортировка текста с удалением повторяющихся строк
-				</a>
-			</li>
-			<li>
-				<a href="../doc/prchavo.html">
-					ЧаВо для разработчиков
-				</a>
-			</li>
-			<li>
-				<a href="../doc/dobrovolcam.html">
-					Информация для добровольцев
-				</a>
-			</li>
-			<li>
-				<a href="../doc/analogPascalJS.html">
-					Таблица аналогий языков Паскаль и Javascript
-				</a>
-			</li>
-			<li>
-				<a href="../doc/shabl-b1-po-shagam.html">
-					Пошаговая инструкция по созданию элементарных шаблонов
-				</a>
-			</li>
-			<li>
-				<a href="https://www.liveinternet.ru/stat/math.vsu.ru/chas-ege/index.html">
-					Статистика LiveInternet
-				</a>
-			</li>
-			<li>
-				Счётчики:
-				<!-- Yandex.Metrika informer -->
-					<a href="http://metrika.yandex.ru/stat/?id=22534447&amp;from=informer" target="_blank" rel="nofollow">
-						<img src="https://bs.yandex.ru/informer/22534447/3_1_FFFFFFFF_EFEFEFFF_0_pageviews" style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" />
-					</a>
-				<!-- /Yandex.Metrika informer -->
-				<!--LiveInternet logo-->
-					<a href="http://www.liveinternet.ru/click" target="_blank">
-						<img src="https://counter.yadro.ru/logo?22.6" 
-							title="LiveInternet: показано число просмотров и посетителей за 24 часа"
-							alt="" border="0" width="88" height="31"
-						/>
-					</a>
-				<!--/LiveInternet-->
-			</li>
-		</ul>
-	</div>
-</body>
-</html>
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Техдокументация - {% endblock %}
+
+{% block textcontent %}
+<ul>
+	<!--<li>
+		<a href="../doc/api/index.html">
+			Справка по API
+		</a>
+	</li>-->
+	<li>
+		<a href="spec.html">
+			Сведения об архитектуре
+		</a>
+	</li>
+	<li>
+		<a href="autoapidoc.html">
+			Документация по библиотекам
+		</a>
+	</li>
+	<li>
+		<a href="integr.html">
+			Краткое руководство по интеграции
+		</a>
+	</li>
+	<li>
+		<a href="formula.html">
+			Проверить формулу в $\TeX$-нотации
+		</a>
+	</li>
+	<li>
+		<a href="sklon1.html">
+			Вспомогательная оболочка склонения существительных
+		</a>
+	</li>
+	<li>
+		<a href="sortstr.html">
+			Построчная алфавитная сортировка текста с удалением повторяющихся строк
+		</a>
+	</li>
+	<li>
+		<a href="prchavo.html">
+			ЧаВо для разработчиков
+		</a>
+	</li>
+	<li>
+		<a href="dobrovolcam.html">
+			Информация для добровольцев
+		</a>
+	</li>
+	<li>
+		<a href="analogPascalJS.html">
+			Таблица аналогий языков Паскаль и Javascript
+		</a>
+	</li>
+	<li>
+		<a href="shabl-b1-po-shagam.html">
+			Пошаговая инструкция по созданию элементарных шаблонов
+		</a>
+	</li>
+	<li>
+		<a href="https://www.liveinternet.ru/stat/math.vsu.ru/chas-ege/index.html">
+			Статистика LiveInternet
+		</a>
+	</li>
+	<li>
+		Счётчики:
+		<!-- Yandex.Metrika informer -->
+			<a href="http://metrika.yandex.ru/stat/?id=22534447&amp;from=informer" target="_blank" rel="nofollow">
+				<img src="https://bs.yandex.ru/informer/22534447/3_1_FFFFFFFF_EFEFEFFF_0_pageviews" style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" />
+			</a>
+		<!-- /Yandex.Metrika informer -->
+		<!--LiveInternet logo-->
+			<a href="http://www.liveinternet.ru/click" target="_blank">
+				<img src="https://counter.yadro.ru/logo?22.6" 
+					title="LiveInternet: показано число просмотров и посетителей за 24 часа"
+					alt="" border="0" width="88" height="31"
+				/>
+			</a>
+		<!--/LiveInternet-->
+	</li>
+</ul>
+{% endblock %}

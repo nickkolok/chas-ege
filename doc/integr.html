@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
-	<title>
-		Тренажёр "Час ЕГЭ" - руководство по интеграции
-	</title>
-</head>
-<body>
-	<script>
-		addinitjs();
-	</script>
-	<div class="otstup">
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Руководство по интеграции - {% endblock %}
+
+{% block textcontent %}
 		<p>
 			Вы можете бесплатно интегрировать (вставить) окно "Час ЕГЭ" в свой сайт через iframe.
 			Примеры:
@@ -126,6 +115,4 @@
 				},
 			},900,"150%");
 		</script>
-	</div>
-</body>
-</html>
+{% endblock %}
