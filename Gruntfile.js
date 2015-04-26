@@ -19,18 +19,18 @@ module.exports = function(grunt) {
 		swigtemplates: {
 			options: {
 				defaultContext: {
-					"version_title": "TODO: version-title",
-					"version_exact": "TODO: version-exact",
+					"version_title": "",
+					"version_exact": "",
 				},
-				templatesDir: "sh/"
+				templatesDir: "sh/",
 			},
 			sh: {
 				dest: "dist/sh/",
-				src: ["sh/*.html",]
+				src: ["sh/*.html",],
 			},
 			doc: {
 				dest: "dist/doc/",
-				src: ["doc/*.html",]
+				src: ["doc/*.html",],
 			},
 		},
 		copy: {
