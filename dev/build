@@ -15,3 +15,4 @@ cat lib/init.js lib/chas-uijs.js > lib/init.tmp.js
 dev/minifyjs lib/init.tmp
 cp lib/init.tmp.min.js lib/init.min.js
 java -jar ext/yuicompressor-2.4.8.jar lib/init.tmp.min.js -o lib/init.min.js --charset utf-8
+grunt build-except-ext

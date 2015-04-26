@@ -151,8 +151,11 @@ module.exports = function(grunt) {
 			},
 			html: {
 				files: [
-					"doc/*.html",
-					"sh/*.html",
+					"css/*",
+					"doc/*",
+					"lib/*",
+					"sh/*",
+					"zdn/*",
 				],
 				tasks: ["process-html",]
 			},
@@ -164,12 +167,14 @@ module.exports = function(grunt) {
 				tasks: ["process-chas2"]
 			},
 */
+/*
 			pagesJs: {
 				files: [
 					"sh/*.js",
 				],
 				tasks: ["process-pages-js"]
 			}
+*/
 		}
 	});
 
@@ -185,5 +190,8 @@ module.exports = function(grunt) {
 	grunt.registerTask("process-chas2", ["concat:chas2", "uglify:chas2"]);
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
 	grunt.registerTask("process-task-sets", ["newer:copy:taskSets"]);
-	grunt.registerTask("default", ["swigtemplates", "swigtemplates", "copy", "concat", "uglify", "watch"])
+	grunt.registerTask("process-lib", ["newer:copy:lib"]);
+	grunt.registerTask("process-css", ["newer:copy:css"]);
+	grunt.registerTask("default", ["swigtemplates", "copy", "concat", "uglify", "watch"])
+	grunt.registerTask("build-except-ext", ["process-html", "process-pages-js", "process-task-sets", "process-lib", "process-css",]);
 };
