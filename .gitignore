@@ -2,3 +2,6 @@
 *.kate-swp
 *.log
 *.~lock.*
+*.orig
+*.local
+node_modules
