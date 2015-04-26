@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
-    <title>
-		Лицензия
-    </title>
-</head>
-<body>
-	<script>
-		addinitjs();
-	</script>
-	<div class="otstup">
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Лицензия GNU GPL - {% endblock %}
+
+{% block textcontent %}
 	Тренажёр "ЧАС-ЕГЭ" распространяется на условиях GNU/GPLv3, за исключением папки dev, которая не является необходимой для работы (и, как правило, не публикуется на сервере). 
 	Всё находящееся в ней предоставлено большей частью для ознакомления. 
 	<br/>
@@ -31,7 +20,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
 	
-	<pre>
+<pre>
 	  Preamble
 
 The GNU General Public License is a free, copyleft license for software and other kinds of works.
@@ -214,7 +203,5 @@ If the disclaimer of warranty and limitation of liability provided above cannot 
 END OF TERMS AND CONDITIONS
 
 
-	</pre>
-</div>	
-</body>
-</html>
+</pre>
+{% endblock %}
