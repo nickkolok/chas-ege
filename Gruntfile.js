@@ -1,21 +1,6 @@
 module.exports = function(grunt) {
 	'use strict';
 	grunt.initConfig({
-/*
-		swigtemplates: {
-			options: {
-				defaultContext: {
-					"version_title": "TODO: version-title",
-					"version_exact": "TODO: version-exact",
-				},
-				templatesDir: "html/"
-			},
-			templates: {
-				dest: "dist/c2",
-				src: ["html/*.html","doc/*.html","sh/*.html",]
-			}
-		},
-*/
 		swigtemplates: {
 			options: {
 				defaultContext: {
@@ -34,13 +19,6 @@ module.exports = function(grunt) {
 			},
 		},
 		copy: {
-/*
-			pagesJs: {
-				files: [
-					{ expand: true, src: ["js/page/*.js"], dest: "dist/" },
-				]
-			},
-*/
 			pagesJs: {
 				files: [
 					{ expand: true, src: ["sh/*.js",], dest: "dist/" },
@@ -144,11 +122,16 @@ module.exports = function(grunt) {
 		},
 
 		uglify: {
+			head: {
+				files: {
+					"lib/head.min.js": ["lib/head.js"]
+				}
+			},
 			chas2: {
 				files: {
 					// "dist/js/chas2.min.js": ["build/js/chas2.js"]
 				}
-			}
+			},
 		},
 		watch: {
 			options: {
@@ -191,7 +174,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-mincss");
 	grunt.loadNpmTasks("grunt-newer");
 
-	grunt.registerTask("process-html", ["newer:swigtemplates",]);
+	grunt.registerTask("process-html", ["newer:uglify:head","newer:swigtemplates",]);
 	grunt.registerTask("process-chas2", ["concat:chas2", "uglify:chas2"]);
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
 	grunt.registerTask("process-task-sets", ["newer:copy:taskSets"]);

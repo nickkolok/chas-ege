@@ -7,12 +7,14 @@
 
 	<title>{% block title %}{% endblock %}Тренажёр "Час ЕГЭ" {{version_title}}</title>
 	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
+	{% include "../lib/head.min.js" %}
 	</script>
 	{% block css %}
 	{% endblock %}
 </head>
 <body>
+	{% block preinit %}
+	{% endblock %}
 	<script>
 		addinitjs();
 	</script>
