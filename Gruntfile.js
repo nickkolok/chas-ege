@@ -145,7 +145,7 @@ module.exports = function(grunt) {
 					"sh/*",
 					"zdn/*",
 				],
-				tasks: ["process-html",]
+				tasks: ["build-except-ext",]
 			},
 /*
 			chas2: {
