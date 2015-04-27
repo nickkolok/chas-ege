@@ -1,8 +1,5 @@
 #!/bin/sh
 
-cd css
-./make-css-ui.sh
-cd ..
 lib/make-chas-uijs.sh
 sed '/^.use strict.;$/d' lib/chas-uijs.js > lib/chas-uijs.js.tmp
 mv lib/chas-uijs.js.tmp lib/chas-uijs.js

@@ -133,13 +133,39 @@ module.exports = function(grunt) {
 				}
 			},
 		},
+		cssmin: {
+			options: {
+				shorthandCompacting: false,
+				roundingPrecision: -1,
+			},
+			target: {
+				files: [{
+					"dist/css/chas-ui.min.css": [
+						 "css/browser.css",
+						 "css/main.css",
+						 "css/menu.css",
+						 "ext/anyslider/css/anythingslider.css",
+						 "ext/anyslider/css/theme-minimalist-square.css",
+						 "ext/fonts/stylesheet.css",
+						 "ext/keyboard/keyboard.css",
+						 "ext/jqplot/jquery.jqplot.css",
+					],
+				},{
+					expand: true,
+					cwd: 'css',
+					src: ['*.css',],
+					dest: 'dist/css',
+					ext: '.min.css',
+				},],
+			},
+		},
+
 		watch: {
 			options: {
 				reload: true
 			},
 			html: {
 				files: [
-					"css/*",
 					"doc/*",
 					"lib/*",
 					"sh/*",
@@ -147,22 +173,12 @@ module.exports = function(grunt) {
 				],
 				tasks: ["build-except-ext",]
 			},
-/*
-			chas2: {
+			css: {
 				files: [
-					"js/{legacy,nlib,chas2}/*.js"
+					"css/*",
 				],
-				tasks: ["process-chas2"]
+				tasks: ["cssmin",]
 			},
-*/
-/*
-			pagesJs: {
-				files: [
-					"sh/*.js",
-				],
-				tasks: ["process-pages-js"]
-			}
-*/
 		}
 	});
 
@@ -171,7 +187,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-concat");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-contrib-copy");
-	grunt.loadNpmTasks("grunt-contrib-mincss");
+	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	grunt.loadNpmTasks("grunt-newer");
 
 	grunt.registerTask("process-html", ["newer:uglify:head","newer:swigtemplates",]);
@@ -179,7 +195,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
 	grunt.registerTask("process-task-sets", ["newer:copy:taskSets"]);
 	grunt.registerTask("process-lib", ["newer:copy:lib"]);
-	grunt.registerTask("process-css", ["newer:copy:css"]);
-	grunt.registerTask("default", ["swigtemplates", "copy", "concat", "uglify", "watch"])
+	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
+	grunt.registerTask("default", ["cssmin", "swigtemplates", "copy", "concat", "uglify", "watch"]);
 	grunt.registerTask("build-except-ext", ["process-html", "process-pages-js", "process-task-sets", "process-lib", "process-css",]);
 };
