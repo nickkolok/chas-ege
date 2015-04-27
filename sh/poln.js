@@ -123,7 +123,7 @@ function prov(){
 	specCounter('poln');
 }
 
-function startShell(){
+var startShell = function (){
 	$('#zadaniya').html(sozdKolvoHtml('poln'));
 	$('#gotov').hide();
 	galkiKat('#galki_kat','pech');

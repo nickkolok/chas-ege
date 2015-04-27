@@ -1,25 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Случайное задание - {% endblock %}
+
+{% block css %}
 	<script>
 		addstyle("../css/sluch2.css");
 	</script>
-	<title>
-		Тренажёр "Час ЕГЭ". Режим случайного задания.
-	</title>
-</head>
-<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()">
+{% endblock %}
+
+{% block preinit %}
 	<script>
 		chas.naborRequired=1;
-		addinitjs();
 	</script>
-	<noscript>
-		Для работы тренажёра необходим javascript.
-	</noscript>
+{% endblock %}
+
+{% block content %}
 	<div id="bwrap">
 		<div id="bnomer">
 		</div>
@@ -77,5 +72,4 @@
 	<script>
 		addscript('sluchmat.js');
 	</script>
-</body>
-</html>
+{% endblock %}

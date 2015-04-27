@@ -1,34 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Каталог заданий набора - {% endblock %}
+
+{% block css %}
 	<script>
 		addstyle("../css/pech.css");
 	</script>
-	<title>
-		Тренажёр "Час ЕГЭ": каталог заданий набора
-	</title>
-</head>
-<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+{% endblock %}
+
+{% block preinit %}
 	<script>
-		chas.naborRequired=1;
-		addinitjs();
+		chas.naborRequired=1;	
 	</script>
-	<div class="otstup">
-		<div>
-			Ниже для каждого шаблона приводится пример сгенерированного им задания. 
-			Обратите внимание: как правило, один шаблон может генерировать очень много заданий,
-			которые в той или иной мере похожи между собой!
-		</div>
-		<button onclick="generateKatalog()">Генерировать</button>
-		<br/>
-		<br/>
-		<script src="katalog.js"></script>
-		<div id="divrez">
-		</div>
+{% endblock %}
+
+{% block textcontent %}
+	<div>
+		Ниже для каждого шаблона приводится пример сгенерированного им задания. 
+		Обратите внимание: как правило, один шаблон может генерировать очень много заданий,
+		которые в той или иной мере похожи между собой!
+	</div>
+	<button onclick="generateKatalog()">Генерировать</button>
+	<br/>
+	<br/>
+	<script src="katalog.js"></script>
+	<div id="divrez">
 	</div>
 	<style>
 		h1,h2{
@@ -39,6 +35,5 @@
 			margin-top:auto;
 		}
 	</style>
-</body>
-</html>
+{% endblock %}
 

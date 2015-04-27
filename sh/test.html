@@ -1,48 +1,40 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
-	<title>
-		Тренажёр "Час ЕГЭ": автоматическая проверка набора
-	</title>
-</head>
-<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Автоматическая проверка набора - {% endblock %}
+
+{% block preinit %}
 	<script>
 		chas.naborRequired=1;
-		addscript("../lib/init.js");
 	</script>
-	<div class="otstup">
-		<div>
-			<h3>
-				Проверка шаблонов
-			</h3>
-			<button onclick="start()">
-				Проверить
-			</button>
-			<p>
-				<i>Полный лог смотрите в консоли</i>
-			</p>
-			<textarea id="output" contenteditable="false" style="width:100%; height:256px"></textarea>
-			<script>
-				function start(){
-					var output = document.getElementById("output");
-					output.className = "body";
-					function warn(s) {
-						output.value += "Внимание:" + s + "\n";
-						NA.Lwarn(s);
-					}
-					function err(s) {
-						output.value += "ОШИБКА:" + s + "\n";
-						NA.Lerr(s);
-					}
-					NAtest.testTemplates({ triesCount : 5, warnFunc : warn, errCount : err });
+{% endblock %}
+
+{% block textcontent %}
+	<div>
+		<h3>
+			Проверка шаблонов
+		</h3>
+		<button onclick="start()">
+			Проверить
+		</button>
+		<p>
+			<i>Полный лог смотрите в консоли</i>
+		</p>
+		<textarea id="output" contenteditable="false" style="width:100%; height:256px"></textarea>
+		<script>
+			function start(){
+				var output = document.getElementById("output");
+				output.className = "body";
+				function warn(s) {
+					output.value += "Внимание:" + s + "\n";
+					NA.Lwarn(s);
 				}
-			</script>
-		</div>
+				function err(s) {
+					output.value += "ОШИБКА:" + s + "\n";
+					NA.Lerr(s);
+				}
+				NAtest.testTemplates({ triesCount : 5, warnFunc : warn, errCount : err });
+			}
+		</script>
 	</div>
-</body>
-</html>
+{% endblock %}
 

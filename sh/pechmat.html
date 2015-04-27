@@ -1,26 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Создание теста для печати - {% endblock %}
+
+{% block css %}
 	<script>
 		addstyle("../css/pech.css");
 	</script>
-	<title>
-		Тренажёр "Час ЕГЭ": создание теста для печати
-	</title>
-</head>
-<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()">
+{% endblock %}
+
+{% block preinit %}
 	<script class="udal">
 		window.mjConfig='TeX-AMS-MML_SVG-full';
 		chas.naborRequired=1;
-		addinitjs();
 	</script>
-	<noscript>
-		Для работы тренажёра необходим javascript.
-	</noscript>
+{% endblock %}
+
+{% block content %}
 	<div id="gotov">
 		<div id="pr0">
 			<div id="t0" class="tx">
@@ -88,6 +83,5 @@
 		</div>	
 	</div>
 	<script src='pechmat.js'></script>
-</body>
-</html>
+{% endblock %}
 

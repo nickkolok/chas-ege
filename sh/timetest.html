@@ -1,21 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Проверка скорости исполнения кода - {% endblock %}
+
+{% block css %}
 	<script>
 		addstyle("../css/otladka.css");
 	</script>
-	<title>
-	  Тренажёр "Час ЕГЭ" - проверка скорости исполнения кода
-  </title>
-</head>
-<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
-	<script>
-		addinitjs();
-	</script>
+{% endblock %}
+
+{% block preinit %}
+{% endblock %}
+
+{% block content %}
 	<div id="pole" class="vopr">
 	</div>
 	<div id="resh" class="vopr">
@@ -40,5 +36,4 @@
 	<script>
 		addscript('timetest.js');
 	</script>
-</body>
-</html>
+{% endblock %}

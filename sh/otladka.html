@@ -1,97 +1,83 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8"/>
-		<!-- __EC
-		<script>
-		#include "../lib/head.min.js"
-		</script>
-		#ifndef _RELEASE
-		-->
-		<script>
-			document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-		</script>
-		<!-- 
-		#endif
-		__BC -->
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Режим отладки шаблона - {% endblock %}
+
+{% block css %}
 		<script>
 			addstyle("../css/otladka.css");
 		</script>
-		<title>
-		  Тренажёр "Час ЕГЭ" - режим отладки шаблона
-	  </title>
-	</head>
-	<body onload="defaultCode();" onunload="$.jStorage.sohrData()">
-		<script>
-			addinitjs();
-		</script>
-		<div id="question" class="question"></div>
-		<div id="resh" class="question"></div>
-		<div id="answer"></div>
-		<div id="wrongAnswer"></div>
-		<div id="wrap">
-			<div id="panel" class="polosa">
-				<div id="wrap2">
-					<span id="notv">Ответ:</span>
-					<input id="answer-input"/>
-					<button id="reply" onclick="checkAnswer()">Ответить!</button>
-				</div>
-				<hr/>
-				<div>
-					Адрес подключаемого шаблона:
-					<input type="text" id="filepath" data-jstorage-id="otladka-filepath"/>
-					<button onclick="createFromFile();">Составить задание</button>
-				</div>
-				<hr/>
-				Ввести программу:
-				<div>
-					<textarea id="textarea-script" data-jstorage-id="otladka-textarea-script" data-jstorage-ne="vi" onkeydown="return catchTab(this,event)"></textarea>
-					<div id="ace-script"></div>
-					<script src="../ext/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-					<script src="../ext/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
-					<script src="../ext/js-beautify/js/lib/beautify.js" type="text/javascript" charset="utf-8"></script>
-					<button onclick="createFromTextarea();">Составить задание по программе</button>
-				</div>
-				<hr/>
-				<div id="vklpodsv">
-					Cтрок:
-					<input id="ace-rows" value="32" data-jstorage-id="ace-rows"/>
-					Размер шрифта:
-					<input id="ace-size" value="12" data-jstorage-id="ace-size"/>
-					<button onclick="enableAce();">Включить редактор ACE</button>
-					<br/>
-				</div>
-				<hr/>
-				<div>
-					Количество итераций:
-					<input id="iter" data-jstorage-id="timetest-kolvo-iter" value="20000"/>
-					<button onclick="tt();">Проверить время</button>
-					<br/>
-					Помните, что время приблизительно и зависит от конкретной ЭВМ.
-					<br/>
-					Тем не менее, общие тенденции оценить можно.
-				</div>
-				<hr/>
-				<div>
-					<form method="post" action="http://pastebin.ru/" target="_blank" onsubmit="pastebin();">
-						<input id="std-x" name="std-x" type="hidden" value="600">
-						<input id="std-y" name="std-y" type="hidden" value="800">
-						<label for="your_name">Ваше имя</label>
-						<input id="your_name" type="text" name="poster" value="" maxlength="32">
-						<label for="names">Название</label>
-						<input id="names" type="text" name="code_name" value="" maxlength="256">
-						<input type="hidden" name="mode" value="92">
-						<textarea hidden id="textarea-paste" name="code"></textarea>
-						<input type="submit" name="paste" value="Отправить на pastebin.ru">
-					</form>
-				</div>
+{% endblock %}
+
+{% block preinit %}
+{% endblock %}
+
+{% block content %}
+	<div id="question" class="question"></div>
+	<div id="resh" class="question"></div>
+	<div id="answer"></div>
+	<div id="wrongAnswer"></div>
+	<div id="wrap">
+		<div id="panel" class="polosa">
+			<div id="wrap2">
+				<span id="notv">Ответ:</span>
+				<input id="answer-input"/>
+				<button id="reply" onclick="checkAnswer()">Ответить!</button>
+			</div>
+			<hr/>
+			<div>
+				Адрес подключаемого шаблона:
+				<input type="text" id="filepath" data-jstorage-id="otladka-filepath"/>
+				<button onclick="createFromFile();">Составить задание</button>
+			</div>
+			<hr/>
+			Ввести программу:
+			<div>
+				<textarea id="textarea-script" data-jstorage-id="otladka-textarea-script" data-jstorage-ne="vi" onkeydown="return catchTab(this,event)"></textarea>
+				<div id="ace-script"></div>
+				<script src="../ext/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+				<script src="../ext/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+				<script src="../ext/js-beautify/js/lib/beautify.js" type="text/javascript" charset="utf-8"></script>
+				<button onclick="createFromTextarea();">Составить задание по программе</button>
+			</div>
+			<hr/>
+			<div id="vklpodsv">
+				Cтрок:
+				<input id="ace-rows" value="32" data-jstorage-id="ace-rows"/>
+				Размер шрифта:
+				<input id="ace-size" value="12" data-jstorage-id="ace-size"/>
+				<button onclick="enableAce();">Включить редактор ACE</button>
+				<br/>
+			</div>
+			<hr/>
+			<div>
+				Количество итераций:
+				<input id="iter" data-jstorage-id="timetest-kolvo-iter" value="20000"/>
+				<button onclick="tt();">Проверить время</button>
+				<br/>
+				Помните, что время приблизительно и зависит от конкретной ЭВМ.
+				<br/>
+				Тем не менее, общие тенденции оценить можно.
+			</div>
+			<hr/>
+			<div>
+				<form method="post" action="http://pastebin.ru/" target="_blank" onsubmit="pastebin();">
+					<input id="std-x" name="std-x" type="hidden" value="600">
+					<input id="std-y" name="std-y" type="hidden" value="800">
+					<label for="your_name">Ваше имя</label>
+					<input id="your_name" type="text" name="poster" value="" maxlength="32">
+					<label for="names">Название</label>
+					<input id="names" type="text" name="code_name" value="" maxlength="256">
+					<input type="hidden" name="mode" value="92">
+					<textarea hidden id="textarea-paste" name="code"></textarea>
+					<input type="submit" name="paste" value="Отправить на pastebin.ru">
+				</form>
 			</div>
 		</div>
-		<div>
-			<iframe src="" id="shabl" charset="utf-8" type="text/javascript" lang="ru"></iframe>
-		</div>
-		<script>
-			addscript('otladka.js');
-		</script>
-	</body>
-</html>
+	</div>
+	<div>
+		<iframe src="" id="shabl" charset="utf-8" type="text/javascript" lang="ru"></iframe>
+	</div>
+	<script>
+		addscript('otladka.js');
+	</script>
+{% endblock %}

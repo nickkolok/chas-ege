@@ -1,25 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Полный интерактивный тест - {% endblock %}
+
+{% block css %}
 	<script>
 		addstyle("../css/pech.css");
 	</script>
-	<title>
-		Тренажёр "Час ЕГЭ": полный интерактивный тест
-	</title>
-</head>
-<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()">
+{% endblock %}
+
+{% block preinit %}
 	<script>
 		chas.naborRequired=1;
-		addinitjs();
 	</script>
-	<noscript>
-		Для работы тренажёра необходим javascript.
-	</noscript>
+{% endblock %}
+
+{% block content %}
 	<div id="gotov">
 		<div id="pr0">
 			<div id="t0" class="tx">
@@ -62,6 +57,5 @@
 		</div>	
 	</div>
 	<script src='poln.js'></script>
-</body>
-</html>
+{% endblock %}
 

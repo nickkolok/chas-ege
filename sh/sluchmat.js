@@ -258,7 +258,7 @@ function strelkaDvig(){
 }
 
 
-function startShell(){
+var startShell = function (){
 	sozdGalki();
 	zagrUmka();
 	veroyatn();

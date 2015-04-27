@@ -1,21 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Оболочка мини-интеграции - {% endblock %}
+
+{% block css %}
 	<script>
 		addstyle("../css/mini.css");
 	</script>
-	<title>
-		Тренажёр "Час ЕГЭ". Оболочка мини-интеграции.
-	</title>
-</head>
-<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()">
-	<script>
-		addinitjs();
-	</script>
+{% endblock %}
+
+{% block content %}
 	<div id="matfak">
 		Тренажёр
 		<a href="https://www.math.vsu.ru/chas-ege/doc/index.html" target="_blank">"Час ЕГЭ"</a>
@@ -52,5 +45,4 @@
 	<script>
 		addscript('mini.js');
 	</script>
-</body>
-</html>
+{% endblock %}

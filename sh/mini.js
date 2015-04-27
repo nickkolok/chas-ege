@@ -60,7 +60,7 @@ function trysozd(){
 	}
 }
 
-function startShell(){
+var startShell = function (){
 	//Удаляем лишнее
 	$('#menucenter').remove();
 	$('#inf').remove();

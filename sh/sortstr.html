@@ -1,56 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Сортировка строк - {% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block preinit %}
+{% endblock %}
+
+{% block textcontent %}
+	<h2>
+		Построчная алфавитная сортировка
+	</h2>
+	Текст (построчно):
+	<br/>
+	<textarea cols="80" rows="5" id="ish" data-jstorage-id="sortstr-ish-textarea">
+	</textarea>
+	<br/>
+	<button onclick="sortstr();">
+		Сортировать
+	</button>
+	<input type="checkbox" id="vydmail"/><label for="vydmail">Только e-mail</label>
+	<input type="checkbox" id="vyvzap" /><label for="vyvzap" >Вывод через запятую</label>
+	<br/>
+	<textarea cols="80" rows="5" id="rez" data-jstorage-id="sortstr-rez-textarea">
+	</textarea>
 	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
-	<title>
-		Тренажёр "Час ЕГЭ": сортировка строк
-	</title>
-</head>
-<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
-	<script>
-		addinitjs();
-	</script>
-	<div class="otstup">
-		<h2>
-			Построчная алфавитная сортировка
-		</h2>
-		Текст (построчно):
-		<br/>
-		<textarea cols="80" rows="5" id="ish" data-jstorage-id="sortstr-ish-textarea">
-		</textarea>
-		<br/>
-		<button onclick="sortstr();">
-			Сортировать
-		</button>
-		<input type="checkbox" id="vydmail"/><label for="vydmail">Только e-mail</label>
-		<input type="checkbox" id="vyvzap" /><label for="vyvzap" >Вывод через запятую</label>
-		<br/>
-		<textarea cols="80" rows="5" id="rez" data-jstorage-id="sortstr-rez-textarea">
-		</textarea>
-		<script>
-			function sortstr(){
-				var txt=$('#ish').val()
-					.replace(/\r/g,'\n')
-					.replace(/\n+/g,'\n')
-				;
-				if($('#vydmail').is(':checked')){
-					txt=txt.match(
-						/[\-._a-z0-9A-Z]+@(?:[a-z0-9A-Z][\-a-z0-9A-Z]+\.)+[a-zA-Z]{2,6}/g
-					);
-				}else{
-					txt=txt.split('\n')
-				}
-				txt=txt
-					.sortDelDubl()
-					.join($('#vyvzap').is(':checked')?',':'\r\n')
-				;
-				$('#rez').val(txt);
+		function sortstr(){
+			var txt=$('#ish').val()
+				.replace(/\r/g,'\n')
+				.replace(/\n+/g,'\n')
+			;
+			if($('#vydmail').is(':checked')){
+				txt=txt.match(
+					/[\-._a-z0-9A-Z]+@(?:[a-z0-9A-Z][\-a-z0-9A-Z]+\.)+[a-zA-Z]{2,6}/g
+				);
+			}else{
+				txt=txt.split('\n')
 			}
-		</script>
-	</div>
-</body>
-</html>
+			txt=txt
+				.sortDelDubl()
+				.join($('#vyvzap').is(':checked')?',':'\r\n')
+			;
+			$('#rez').val(txt);
+		}
+	</script>
+{% endblock %}
 

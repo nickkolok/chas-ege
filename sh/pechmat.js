@@ -202,7 +202,7 @@ function optimcopyd(n){
 		setTimeout("optimcopyd("+n+"+1);",100);
 }
 
-function startShell(){
+var startShell = function (){
 	window.vopr.txt='';
 	$('#zadaniya').html(sozdKolvoHtml('pech'));
 	$('#gotov').hide();

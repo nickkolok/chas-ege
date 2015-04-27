@@ -174,8 +174,7 @@ document.onkeydown = function(e) {
 
 var templateTemplate = "(function() {\n\tNAinfo.requireApiVersion(" + NAinfo.API_VERSION.major + ", " + NAinfo.API_VERSION.minor + ");\n\n})();\n";
 
-function defaultCode(){
-	$.jStorage.zagrData();
+var startShell = function (){
 	if ($("#textarea-script").val() == "") {
 		$("#textarea-script").val(templateTemplate);
 		$.jStorage.sohrData();

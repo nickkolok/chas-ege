@@ -1,35 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
-	<script>
-		addstyle("../css/pech.css");
-	</script>
-	<title>
-		Тренажёр "Час ЕГЭ": отображение формулы
-	</title>
-</head>
-<body onload="$.jStorage.zagrData()" onunload="$.jStorage.sohrData()">
-	<script>
-		addinitjs();
-	</script>
-	<div class="otstup">
-		Введите формулу (можно с кавычками, можно без): 
-		<br/>
-		<textarea cols="80" id="ish" data-jstorage-id="formula-textarea"></textarea>
-		<br/>
-		<button onclick="pokaz();">
-			Показать
-		</button>
-		Результат:
-		<br/>
-		<div id="rez">
-		</div>
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Отображение формулы - {% endblock %}
+
+{% block textcontent %}
+	Введите формулу (можно с кавычками, можно без): 
+	<br/>
+	<textarea cols="80" id="ish" data-jstorage-id="formula-textarea"></textarea>
+	<br/>
+	<button onclick="pokaz();">
+		Показать
+	</button>
+	Результат:
+	<br/>
+	<div id="rez">
 	</div>
 	<script src='formula.js'></script>
-</body>
-</html>
+{% endblock %}
 

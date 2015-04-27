@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8"/>
-	<script>
-		document.write('<script src="../lib/head.js?'+Math.random()+'"></sc'+'ript>');
-	</script>
-	<title>
-		Тренажёр "Час ЕГЭ": документация к библиотекам
-	</title>
-</head>
-<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()">
+{% extends "../sh/legacy.html" %}
+
+{% block title %}Документация к библиотекам - {% endblock %}
+
+{% block preinit %}
 	<script>
 		var svinta=1;
-		addinitjs();
 	</script>
-	<div class="otstup">
+{% endblock %}
+
+{% block textcontent %}
 		<h1>
 			Документация к библиотекам,
 		</h1>
@@ -77,6 +71,4 @@
 			float:right;
 		}
 	</style>
-</body>
-</html>
-
+{% endblock %}
