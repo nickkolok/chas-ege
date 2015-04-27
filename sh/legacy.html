@@ -7,17 +7,24 @@
 
 	<title>{% block title %}{% endblock %}Тренажёр "Час ЕГЭ" {{version_title}}</title>
 	<script>
-	{% include "../lib/head.min.js" %}
+		{% include "../lib/head.min.js" %}
 	</script>
+	<link rel="shortcut icon" id="link_icon1"/>
+	<link rel="icon" id="link_icon2"/>
 	{% block css %}
 	{% endblock %}
 </head>
 <body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()">
 	{% block preinit %}
 	{% endblock %}
+	<div id="document-write">
+	</div>
 	<script>
 		addinitjs();
 	</script>
+	<noscript>
+		Для работы тренажёра необходим javascript.
+	</noscript>
 	{% block content %}
 	{% endblock %}
 	<div class="otstup" align="justify">
