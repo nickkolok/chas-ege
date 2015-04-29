@@ -175,8 +175,10 @@ module.exports = function(grunt) {
 
 	//С make начинаются задания, результат которых - готовый *.min.{js,css}
 
-	grunt.registerTask('version-in-head-js', 'Прописываем версию в head.js', function() {
-		exec('date +chas.version=\"%Y%m%d%H%M%S\" >> lib/head.js;');
+	grunt.registerTask("write-version-to-head-js", "Прописываем версию в head.js", function() {
+		exec('sed \'/chas.version=/d\' lib/head.js > lib/head.js.tmp');
+		exec('mv lib/head.js.tmp lib/head.js');
+		exec('date +chas.version=\\\"%Y%m%d%H%M%S\\\" >> lib/head.js;');
 	});
 	grunt.registerTask('unify-use-strict-chas-uijs', 'Убираем лишние use strict из chas-uijs.js', function() {
 		exec('sed \'1 a "use strict";//\' dist/lib/chas-uijs.js > dist/lib/chas-uijs.js.tmp');
@@ -184,13 +186,14 @@ module.exports = function(grunt) {
 		exec('rm dist/lib/chas-uijs.js.tmp');
 	});
 	grunt.registerTask("make-init", ["concat:init", "uglify:init",]);
+	grunt.registerTask("make-head", ["write-version-to-head-js", "uglify:head",]);
 	grunt.registerTask("make-chas-lib" , ["concat:chasLib", "uglify:chasLib",]);
 	grunt.registerTask("make-chas-uijs", ["concat:chasUijs", /*"unify-use-strict-chas-uijs", "uglify:chasUijs",*/]);
 
-	grunt.registerTask("process-html", ["newer:uglify:head","newer:swigtemplates",]);
+	grunt.registerTask("process-html", ["newer:uglify:head","newer:swigtemplates", "make-head",]);
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
 	grunt.registerTask("process-task-sets", ["newer:copy:taskSets","uglify:tasksPacks",]);
-	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init",]);
+	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init", "make-head",]);
 	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
 
 	grunt.registerTask("build-except-ext", ["process-html", "process-pages-js", "process-task-sets", "process-lib", "process-css",]);
