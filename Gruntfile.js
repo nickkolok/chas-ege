@@ -13,6 +13,7 @@ module.exports = function(grunt) {
 				defaultContext: {
 					"version_title": "",
 					"version_exact": "",
+					"version_cache": new Date().getTime(),
 				},
 				templatesDir: "sh/",
 			},
@@ -175,18 +176,13 @@ module.exports = function(grunt) {
 
 	//С make начинаются задания, результат которых - готовый *.min.{js,css}
 
-	grunt.registerTask("write-version-to-head-js", "Прописываем версию в head.js", function() {
-		exec('sed \'/chas.version=/d\' lib/head.js > lib/head.js.tmp');
-		exec('mv lib/head.js.tmp lib/head.js');
-		exec('date +chas.version=\\\"%Y%m%d%H%M%S\\\" >> lib/head.js;');
-	});
 	grunt.registerTask('unify-use-strict-chas-uijs', 'Убираем лишние use strict из chas-uijs.js', function() {
 		exec('sed \'1 a "use strict";//\' dist/lib/chas-uijs.js > dist/lib/chas-uijs.js.tmp');
 		exec('sed \'/^.use strict.;$/d\' dist/lib/chas-uijs.js.tmp > dist/lib/chas-uijs.js');
 		exec('rm dist/lib/chas-uijs.js.tmp');
 	});
 	grunt.registerTask("make-init", ["concat:init", "uglify:init",]);
-	grunt.registerTask("make-head", ["write-version-to-head-js", "uglify:head",]);
+	grunt.registerTask("make-head", ["uglify:head",]);
 	grunt.registerTask("make-chas-lib" , ["concat:chasLib", "uglify:chasLib",]);
 	grunt.registerTask("make-chas-uijs", ["concat:chasUijs", /*"unify-use-strict-chas-uijs", "uglify:chasUijs",*/]);
 
