@@ -282,4 +282,5 @@ var startShell = function (){
 	});
 
 	assertCheckability();
+	zagr("../ext/keyboard/keyboard.js");
 }
