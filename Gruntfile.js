@@ -87,6 +87,14 @@ module.exports = function(grunt) {
 					dest: 'dist/sh',
 				}],
 			},
+			tasksPacks: {
+				files: [{
+					expand: true,
+					cwd: 'zdn',
+					src: '*/upak.js',
+					dest: 'dist/zdn',
+				}],
+			},
 			head: {
 				files: {
 					"lib/head.min.js": ["lib/head.js"],
@@ -181,7 +189,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("process-html", ["newer:uglify:head","newer:swigtemplates",]);
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
-	grunt.registerTask("process-task-sets", ["newer:copy:taskSets"]);
+	grunt.registerTask("process-task-sets", ["newer:copy:taskSets","uglify:tasksPacks",]);
 	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init",]);
 	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
 

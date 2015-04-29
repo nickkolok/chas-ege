@@ -4,11 +4,11 @@
 ./dev/upak.sh
 
 # Генерация документации
-jsdoc -d=./doc/api -e=utf-8 -r=8 -a -p ./lib/
-markdown doc/coding-guide-javascript.md > doc/coding-guide-javascript.html
+#jsdoc -d=./doc/api -e=utf-8 -r=8 -a -p ./lib/
+#markdown doc/coding-guide-javascript.md > doc/coding-guide-javascript.html
 
-git add .
-git commit -m "Выпуск"
-echo "Выпуск успешно произведён. Отправляем изменения в репозиторий..."
-git push origin
+#git add .
+#git commit -m "Выпуск"
+#echo "Выпуск успешно произведён. Отправляем изменения в репозиторий..."
+#git push origin
 

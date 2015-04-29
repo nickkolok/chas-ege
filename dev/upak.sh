@@ -19,7 +19,8 @@ do
 	done
 	echo '};' >> upak.js
 	cd ..
-	java -jar ../ext/compiler.jar --jscomp_off internetExplorerChecks --charset UTF-8 --js $nbr/upak.js --js_output_file $nbr/upak.min.js
-	mv $nbr/upak.min.js $nbr/upak.js
+#	java -jar ../ext/compiler.jar --jscomp_off internetExplorerChecks --charset UTF-8 --js $nbr/upak.js --js_output_file $nbr/upak.min.js
+#	mv $nbr/upak.min.js $nbr/upak.js
 done
 cd ..
+grunt uglify:tasksPacks
