@@ -25,6 +25,10 @@ module.exports = function(grunt) {
 				dest: "dist/doc/",
 				src: ["doc/*.html",],
 			},
+			html: {
+				dest: "dist/html/",
+				src: ["html/*.html",],
+			},
 		},
 		copy: {
 			pagesJs: {
@@ -151,6 +155,7 @@ module.exports = function(grunt) {
 			html: {
 				files: [
 					"doc/*",
+					"html/*",
 					"lib/head.js",
 					"sh/*",
 				],
