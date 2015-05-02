@@ -61,9 +61,6 @@ function trysozd(){
 }
 
 var startShell = function (){
-	//Удаляем лишнее
-	$('#inf').remove();
-
 	$('#prov').hide();
 	$(trysozd);
 	allLinksToSpans();
