@@ -62,7 +62,6 @@ function trysozd(){
 
 var startShell = function (){
 	//Удаляем лишнее
-	$('#menucenter').remove();
 	$('#inf').remove();
 
 	$('#prov').hide();
