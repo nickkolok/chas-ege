@@ -138,6 +138,16 @@ module.exports = function(grunt) {
 						 "ext/keyboard/keyboard.css",
 						 "ext/jqplot/jquery.jqplot.css",
 					],
+					"dist/css/chas-ui-bs.min.css": [
+						 "css/browser.css",
+						 "css/menu.css",
+						 "ext/anyslider/css/anythingslider.css",
+						 "ext/anyslider/css/theme-minimalist-square.css",
+						 "ext/fonts/stylesheet.css",
+						 "ext/keyboard/keyboard.css",
+						 "ext/jqplot/jquery.jqplot.css",
+						 "ext/bootstrap/css/bootstrap.min.css",
+					],
 				},{
 					expand: true,
 					cwd: 'css',

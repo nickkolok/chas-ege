@@ -21,6 +21,8 @@ ul.pureCssMenu,ul.pureCssMenu ul {
 	padding:0px 2px 2px 0px;
 	background-repeat:repeat;
 	border-color:#EEEEEE #AAAAAA #AAAAAA #FFFFFF;
+}
+body.legacy * ul.pureCssMenu,ul.pureCssMenu ul {
 	border-width:2px;
 	border-style:groove;
 }
@@ -104,10 +106,10 @@ ul.pureCssMenu li.dis a {
 ul.pureCssMenu a:hover ul{
 	display:block;
 }
-ul.pureCssMenu span{
+ul.pureCssMenu span.menuitem-span{
 	display:block;
-   padding-right:13px;
-  }
+	padding-right:13px;
+}
 #menucenter{
 	width:100%;
 	display:block;
@@ -116,7 +118,7 @@ ul.pureCssMenu span{
 	text-align:center;
 	font:14px bold 'liberation_sans';
 }
-ul.pureCssMenum{
+body.legacy * ul.pureCssMenum{
 	min-width:100%;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;

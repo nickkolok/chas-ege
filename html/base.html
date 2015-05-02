@@ -6,36 +6,30 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>{% block title %}{% endblock %}Тренажёр "Час ЕГЭ" {{version_title}}</title>
-
 	<script>
-		<!-- document.write('<script src="../js/legacy/head.js?'+Math.random()+'"></sc'+'ript>'); -->
+		window.bootstrapdesign=1;
+		{% include "../lib/head.min.js" %}
 	</script>
-
-	<link href="../ext/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-	<link href="../ext/anyslider/css/anythingslider.css" rel="stylesheet">
-	<link href="../ext/anyslider/css/theme-minimalist-square.css" rel="stylesheet">
-	<!-- <link href="../css/browser.css" rel="stylesheet"> -->
-	<!-- <link href="../css/main.css" rel="stylesheet"> -->
-	<link href="../ext/fonts/stylesheet.css" rel="stylesheet">
-	<link href="../ext/keyboard/keyboard.css" rel="stylesheet">
-	<link href="../ext/jqplot/jquery.jqplot.css" rel="stylesheet">
+	<link rel="shortcut icon" id="link_icon1"/>
+	<link rel="icon" id="link_icon2"/>
 
 	{% block css %}
 	{% endblock %}
 
-	<!-- <style> -->
-		<!-- .panel-default { -->
-			<!-- border-color: #fff; /* TODO: убрать костыль */ -->
-		<!-- } -->
-	<!-- </style> -->
 </head>
-<body onload="$.jStorage.zagrData();" onunload="$.jStorage.sohrData()">
+<body onload="$.jStorage.zagrData();" onunload="$.jStorage.sohrData()" class="newdesign">
 	<input type="hidden" id="var-version-exact" value="{{version_exact}}"/>
 	<input type="hidden" id="var-version-title" value="{{version_title}}"/>
 	<script>
-		<!-- document.write('<script src="../../../js/legacy/init.js?'+Math.random()+'"></sc'+'ript>'); -->
+		chas.mode.withoutSlider=1;
 	</script>
+	{% block preinit %}
+	{% endblock %}
+	<div id="document-write">
+	</div>
+	<noscript>
+		Для работы тренажёра необходим javascript.
+	</noscript>
 
 	<div style="position: fixed; left: 0; top: 48px; z-index: 2048" id="build-markers">
 		<!-- TODO: {% if build_target == "dev" %} -->
@@ -188,73 +182,11 @@
 			</div>
 		</div>
 	</footer>
-
-	<!-- <script src="https://ajax.googleapis.com/ajax/jss/jquery/1.11.2/jquery.min.js"></script> -->
-	<script src="../ext/jquery-2.1.0.min.js"></script>
+	<script>
+		chas.design.menuKeeperId='bs-example-navbar-collapse-1';
+		addinitjs();
+	</script>
 	<script src="../ext/bootstrap/js/bootstrap.min.js"></script>
-
-	<script src="../ext/jqplot/jquery.jqplot.min.js"></script>
-	<script src="../ext/jqplot/plugins/jqplot.barRenderer.min.js"></script>
-	<script src="../ext/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
-	<script src="../ext/anyslider/js/jquery.anythingslider.js"></script>
-	<script src="../ext/jstorage.min.js"></script>
-	<script src="../ext/keyboard/keyboard.js"></script>
-	<script src="../ext/html2canvas.js"></script>
-
-	<!-- <script src="../js/legacy/func.js"></script> -->
-	<!-- <script src="../js/legacy/func_ui.js"></script> -->
-	<!-- <script src="../js/legacy/object.js"></script> -->
-	<!-- <script src="../js/legacy/array.js"></script> -->
-	<!-- <script src="../js/legacy/array_mt.js"></script> -->
-	<!-- <script src="../js/legacy/array_mp.js"></script> -->
-	<!-- <script src="../js/legacy/array_mn.js"></script> -->
-	<!-- <script src="../js/legacy/array_pe.js"></script> -->
-	<!-- <script src="../js/legacy/string.js"></script> -->
-	<!-- <script src="../js/legacy/number.js"></script> -->
-	<!-- <script src="../js/legacy/number_math.js"></script> -->
-	<!-- <script src="../js/legacy/canvas.js"></script> -->
-	<!-- <script src="../js/legacy/regexp.js"></script> -->
-	<!-- <script src="../js/legacy/function.js"></script> -->
-	<!-- <script src="../js/legacy/lx.js"></script> -->
-	<!-- <script src="../js/legacy/lxnar.js"></script> -->
-	<!-- <script src="../js/legacy/lxsoch.js"></script> -->
-	<!-- <script src="../js/legacy/lxskl.js"></script> -->
-	<!-- <script src="../js/legacy/lxchisl.js"></script> -->
-	<!-- <script src="../js/legacy/sklon.js"></script> -->
-	<!-- <script src="../js/legacy/complex.js"></script> -->
-	<!-- <script src="../js/legacy/namealias.js"></script> -->
-
-	<!-- <script src="../js/legacy/func_jquery.js"></script> -->
-	<!-- <script src="../js/legacy/umka.js"></script> -->
-	<!-- <script src="../js/legacy/core_vopr.js"></script> -->
-	<!-- <script src="../js/legacy/core_nabor.js"></script> -->
-	<!-- <script src="../js/legacy/core_dvig.js"></script> -->
-	<!-- <script src="../js/legacy/dvig_fn.js"></script> -->
-	<!-- <script src="../js/legacy/dvig_rz.js"></script> -->
-	<!-- <script src="../js/legacy/dvig_lz.js"></script> -->
-	<!-- <script src="../js/legacy/urljson.js"></script> -->
-	<!-- <script src="../js/legacy/style.js"></script> -->
-	<!-- <script src="../js/legacy/menu.js"></script> -->
-	<!-- <script src="../js/legacy/yametrika.js"></script> -->
-	<!-- <script src="../js/legacy/browser.js"></script> -->
-	<!-- <script src="../js/legacy/osnmas.js"></script> -->
-	<!-- <script src="../js/legacy/cache.js"></script> -->
-	<!-- <script src="../js/legacy/jstorage.zapomni.js"></script> -->
-	<!-- <script src="../js/legacy/sovety.js"></script> -->
-
-	<!-- <script src="../js/nlib/core.js"></script> -->
-	<!-- <script src="../js/nlib/Array.js"></script> -->
-	<!-- <script src="../js/nlib/Number.js"></script> -->
-	<!-- <script src="../js/nlib/math.js"></script> -->
-	<!-- <script src="../js/nlib/sets.js"></script> -->
-	<!-- <script src="../js/nlib/alias.js"></script> -->
-
-	<!-- <script src="../js/chas2/core.js"></script> -->
-	<!-- <script src="../js/chas2/task.js"></script> -->
-	<!-- <script src="../js/chas2/test.js"></script> -->
-	<!-- <script src="../js/chas2/compat.js"></script> -->
-	<script src="../js/chas2.min.js"></script>
-
 	{% block js %}
 	{% endblock %}
 </body>
