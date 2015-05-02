@@ -172,7 +172,7 @@ module.exports = function(grunt) {
 				files: [
 					"css/*",
 				],
-				tasks: ["cssmin",]
+				tasks: ["process-css",]
 			},
 		}
 	});
