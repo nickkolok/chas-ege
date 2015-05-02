@@ -4,7 +4,7 @@
 .kolvonepr{
 	color:#f00;
 }
-body{
+body.legacy{
 	min-width:800px;
 	margin:0;
 	padding:0;
@@ -23,17 +23,17 @@ body{
 #panel{
 	padding:1em;
 }
-.lisov{
+body.legacy * .lisov{
 	text-align:center;
 	vertical-align:baseline;
 	height:auto;
 	width:100%;
 }
-h1{
+body.legacy * h1{
 	font-size:160%;
 	text-align:center;
 }
-h2{
+body.legacy * h2{
 	font-size:128%;
 }
 .polosa{
