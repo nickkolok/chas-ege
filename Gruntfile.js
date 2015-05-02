@@ -151,10 +151,16 @@ module.exports = function(grunt) {
 			html: {
 				files: [
 					"doc/*",
-					"lib/*",
+					"lib/head.js",
 					"sh/*",
 				],
-				tasks: ["build-except-ext",]
+				tasks: ["process-html",]
+			},
+			lib: {
+				files: [
+					"lib/*","!lib/head*",
+				],
+				tasks: ["process-lib",]
 			},
 			taskSets: {
 				files: [
@@ -190,14 +196,14 @@ module.exports = function(grunt) {
 		exec('dev/upak.sh');
 	});
 	grunt.registerTask("make-init", ["concat:init", "uglify:init",]);
-	grunt.registerTask("make-head", ["uglify:head",]);
+	grunt.registerTask("make-head", ["newer:uglify:head",]);
 	grunt.registerTask("make-chas-lib" , ["concat:chasLib", "uglify:chasLib",]);
 	grunt.registerTask("make-chas-uijs", ["concat:chasUijs", /*"unify-use-strict-chas-uijs", "uglify:chasUijs",*/]);
 
-	grunt.registerTask("process-html", ["newer:uglify:head","newer:swigtemplates", "make-head",]);
+	grunt.registerTask("process-html", ["make-head", "newer:swigtemplates", ]);
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
 	grunt.registerTask("process-task-sets", ["newer:copy:taskSets",'packTasks',"uglify:tasksPacks",]);
-	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init", "make-head",]);
+	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init",]);
 	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
 
 	grunt.registerTask("build-except-ext", ["process-html", "process-pages-js", "process-task-sets", "process-lib", "process-css",]);
