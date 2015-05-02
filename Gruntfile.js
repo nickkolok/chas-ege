@@ -153,9 +153,14 @@ module.exports = function(grunt) {
 					"doc/*",
 					"lib/*",
 					"sh/*",
-					"zdn/*",
 				],
 				tasks: ["build-except-ext",]
+			},
+			taskSets: {
+				files: [
+					"zdn/*",
+				],
+				tasks: ["process-task-sets",]
 			},
 			css: {
 				files: [
@@ -181,6 +186,9 @@ module.exports = function(grunt) {
 		exec('sed \'/^.use strict.;$/d\' dist/lib/chas-uijs.js.tmp > dist/lib/chas-uijs.js');
 		exec('rm dist/lib/chas-uijs.js.tmp');
 	});
+	grunt.registerTask('packTasks', 'Упаковываем задания в соответствующие upak.js', function() {
+		exec('dev/upak.sh');
+	});
 	grunt.registerTask("make-init", ["concat:init", "uglify:init",]);
 	grunt.registerTask("make-head", ["uglify:head",]);
 	grunt.registerTask("make-chas-lib" , ["concat:chasLib", "uglify:chasLib",]);
@@ -188,7 +196,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("process-html", ["newer:uglify:head","newer:swigtemplates", "make-head",]);
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
-	grunt.registerTask("process-task-sets", ["newer:copy:taskSets","uglify:tasksPacks",]);
+	grunt.registerTask("process-task-sets", ["newer:copy:taskSets",'packTasks',"uglify:tasksPacks",]);
 	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init", "make-head",]);
 	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
 

@@ -23,4 +23,3 @@ do
 #	mv $nbr/upak.min.js $nbr/upak.js
 done
 cd ..
-grunt uglify:tasksPacks
