@@ -217,7 +217,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("process-html", ["make-head", "newer:swigtemplates", ]);
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
-	grunt.registerTask("process-task-sets", ["newer:copy:taskSets",'packTasks',"uglify:tasksPacks",]);
+	grunt.registerTask("process-task-sets", ["newer:copy:taskSets",'packTasks']);
 	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init",]);
 	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
 
