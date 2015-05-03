@@ -33,7 +33,7 @@ module.exports = function(grunt) {
 		copy: {
 			pagesJs: {
 				files: [
-					{ expand: true, src: ["sh/*.js",], dest: "dist/" },
+					{ expand: true, src: ["sh/*.js","html/*.js",], dest: "dist/" },
 				]
 			},
 			taskSets: {
