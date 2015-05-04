@@ -8,8 +8,10 @@
 	<title>{% block title %}{% endblock %} – Тренажёр "Час ЕГЭ" {{version_title}}</title>
 	<script>
 		window.bootstrapdesign=1;
+		{% include "../lib/head.min.js" %}
+		chas.mode.withoutSlider=1;
+		chas.mode.withoutMenu=1;
 	</script>
-	<script src="../lib/head.min.js"></script>
 	<link rel="shortcut icon" id="link_icon1"/>
 	<link rel="icon" id="link_icon2"/>
 
@@ -19,19 +21,24 @@
 <body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()" class="newdesign">
 	<input type="hidden" id="var-version-exact" value="{{version_exact}}"/>
 	<input type="hidden" id="var-version-title" value="{{version_title}}"/>
-	<div id="document-write">
-	</div>
 	<noscript>
 		Для работы тренажёра необходим javascript.
 	</noscript>
 
 	{% block body %}
 	{% endblock %}
+	<div id="document-write">
+	</div>
 
 	<script>
-		chas.mode.withoutSlider=1;
-		chas.mode.withoutMenu=1;
 		addinitjs();
+	</script>
+	<!--
+		Тут не просто так два script подряд, надо дождаться, пока init.js отработает
+		TODO: в отношении новой карусели тоже сделать флаг, как про старую вертушку
+	-->
+	<script>
+		generateCarousel('#advert');
 	</script>
 
 	<script src="../ext/bootstrap/js/bootstrap.min.js"></script>
