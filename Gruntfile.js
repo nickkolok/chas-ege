@@ -164,12 +164,20 @@ module.exports = function(grunt) {
 			},
 			html: {
 				files: [
-					"doc/*",
-					"html/*",
+					"doc/*.html",
+					"html/*.html",
 					"lib/head.js",
-					"sh/*",
+					"sh/*.html",
 				],
 				tasks: ["process-html",]
+			},
+			pagesJs: {
+				files: [
+					"doc/*.js",
+					"html/*.js",
+					"sh/*.js",
+				],
+				tasks: ["process-pages-js",]
 			},
 			lib: {
 				files: [
