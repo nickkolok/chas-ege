@@ -19,16 +19,19 @@
 <body onload="$.jStorage.zagrData();" onunload="$.jStorage.sohrData()" class="newdesign">
 	<input type="hidden" id="var-version-exact" value="{{version_exact}}"/>
 	<input type="hidden" id="var-version-title" value="{{version_title}}"/>
-	<script>
-		chas.mode.withoutSlider=1;
-		chas.mode.withoutMenu=1;
-	</script>
+	<div id="document-write">
+	</div>
+	<noscript>
+		Для работы тренажёра необходим javascript.
+	</noscript>
 
 	{% block body %}
 	{% endblock %}
 
 	<script>
-	addinitjs();
+		chas.mode.withoutSlider=1;
+		chas.mode.withoutMenu=1;
+		addinitjs();
 	</script>
 
 	<script src="../ext/bootstrap/js/bootstrap.min.js"></script>
