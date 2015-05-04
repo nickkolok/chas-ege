@@ -11,39 +11,34 @@
 	.btn-mini {
 		width: 100%;
 	}
+
+	.integrated {
+		display: none;
+	}
 </style>
+<script>
+	addstyle("../css/mini.css");
+</script>
 {% endblock %}
 
 {% block preinit %}
 <script>
 	chas.mode.withoutMenu=1;
 	chas.mode.withoutSlider=1;
+	chas.design.menuKeeperId="mini-menu-replaced";
 </script>
 {% endblock %}
 
 {% block content %}
-<div class="alert alert-info" style="margin-bottom: 0">
-	Тренажёр 
-	<a class="badge" href="#">
-		Час ЕГЭ 2.0
-	</a>
-	разработан при поддержке <a href="http://www.math.vsu.ru/">Математическом факультете ВГУ</a>.
+<div class="alert alert-info" style="margin-bottom: 0" id="mini-menu-replaced">
 </div>
-<div class="alert alert-success">
+<div class="alert alert-success integrated egeok">
 	<h1 class="text-center">
 		<b>
 			Проверь себя
 		</b>
 	</h1>
 </div>
-<!-- <div> -->
-	<!-- <div class="integrated egeok" style="background-color:#8B8;text-align:center;padding:0.5em;vertical-align:middle;margin-bottom:0.5em;"> -->
-		<!-- <b style="font-size:146%;color:white;"> -->
-			<!-- Проверь себя -->
-		<!-- </b> -->
-	<!-- </div> -->
-<!-- </div> -->
-
 <div class="panel panel-default root-el">
 	<div class="panel-heading">
 		
