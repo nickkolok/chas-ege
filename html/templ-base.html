@@ -16,7 +16,7 @@
 	{% block css %}
 	{% endblock %}
 </head>
-<body onload="$.jStorage.zagrData();" onunload="$.jStorage.sohrData()" class="newdesign">
+<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()" class="newdesign">
 	<input type="hidden" id="var-version-exact" value="{{version_exact}}"/>
 	<input type="hidden" id="var-version-title" value="{{version_title}}"/>
 	<div id="document-write">
