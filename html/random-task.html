@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Случайное задание - {% endblock %}
+
+{% block css %}
+<link href="../css/random-task.css" rel="stylesheet">
+{% endblock %}
+
+{% block preinit %}
+	<script>
+		chas.naborRequired=1;
+	</script>
+{% endblock %}
+
+{% block js %}
+<script src="random-task.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="panel panel-default" id="qst" style="display: none">
+	<div class="panel-heading">
+		<span class="badge" id="bnomer"></h4>
+	</div>
+	<div class="panel-body" id="pole"></div>
+	<div class="panel-footer">
+		<div class="alert alert-info" style="display: none" id="protv"></div>
+		<!-- TODO: alert-danger и alert-info -->
+		<p style="display: none">
+			Ответ: <span class="badge" id="otvet"></span>
+		</p>
+		
+		<div class="input-group">
+			<input type="text" class="form-control" id="otv" placeholder="Ответ">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" id="prov">
+					Ответить!
+				</button>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div id="never"></div>
+
+<div id="wrap">
+	<div class="panel panel-default" id="panel">
+		<div class="panel-heading" id="wrap2">
+			<div class="btn-group btn-group-justified" role="group">
+				<div class="btn-group" role="group">
+					<button class="btn btn-info" id="sozd" onclick="sozdat();">
+						Случайное задание
+					</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button class="btn btn-default" id="podob" onclick="podobnoe();">
+						Похожее задание
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div id="stats-table-slot"></div>			
+		</div>
+
+		<div class="panel-footer">
+			<button class="btn btn-default spoiler-show" data-jstorage-id="random-task_options-show">
+				<span class="caret"></span>
+				Показать настройки...
+			</button>
+			<button class="btn btn-default spoiler-hide" data-jstorage-id="random-task_options-hide">
+				<span class="caret"></span>
+				Скрыть настройки
+			</button>
+			<div class="spoiler-body" data-jstorage-id="random-task_options-body" data-jstorage-ne="ih">
+				<div id="galki_kat">
+				</div>
+				<button class="btn btn-default" onclick="vybrv()">Выбрать все задания</button>
+				<button class="btn btn-default" onclick="vybr0()">Снять все задания</button>
+				<button class="btn btn-default" onclick="sbrosUmka(veroyatn)">Сбросить статистику</button>
+				<br/>
+				<input type="radio" name="metod" value="sluch" id="radio-sluch" data-jstorage-id="sluch-radio-sluch"/>
+				<label for="radio-sluch">Задания в случайном порядке</label>
+				<input type="radio" name="metod" value="porad" id="radio-porad" data-jstorage-id="sluch-radio-porad"/>
+				<label for="radio-porad">Задания по порядку</label>
+				<input type="radio" name="metod" value="umka"  id="radio-umka"  data-jstorage-id="sluch-radio-umka "/>
+				<label for="radio-umka" >"Умка"</label>
+				<br>
+				<input type="checkbox" id="check-praviln" data-jstorage-id="sluch-check-praviln" checked onclick="obrabPraviln()"/>
+				<label for="check-praviln">Вести учёт правильности ответов</label>
+				<input type="checkbox" id="check-na-vremya" data-jstorage-id="sluch-check-na-vremya" checked onclick="obrabNaVremya()"/>
+				<label for="check-na-vremya">Вести учёт времени</label>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
