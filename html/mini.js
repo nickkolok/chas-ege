@@ -49,7 +49,7 @@ function prover(){
 	MathJax.Hub.Typeset();
 	$('#prov').hide();
 	$('#sozd').show();
-	specCounter('mini');
+	specCounter('mini-new');
 }
 
 function trysozd(){
