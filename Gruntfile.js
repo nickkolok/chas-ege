@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 			},
 			lib: {
 				files: [
-					{ expand: true, src: ["lib/**"], dest: "dist/" },
+					{ expand: true, src: ["lib/**", "js/chas2/**"], dest: "dist/" },
 				]
 			},
 			externals: {

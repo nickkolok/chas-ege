@@ -1,17 +1,17 @@
 "use strict";
 
-/** @namespace NApi.test
+/** @namespace chas2.test
  * Тесты
  */
-NApi.test = {
-	/** @namespace NApi.test._
-	 * Функционал, используемый только внутри модуля NApi.test
+chas2.test = {
+	/** @namespace chas2.test._
+	 * Функционал, используемый только внутри модуля chas2.test
 	 * @private
 	 */
 	_ : {},
 
 
-	/** @function NApi.test.testTemplates
+	/** @function chas2.test.testTemplates
 	 * Проверить шаблоны в текущем наборе
 	 * @param {Number} triesCount кол-во прогонов каждого шаблона
 	 * @param {Function} infoFunc функция вывода информационной строки
@@ -19,9 +19,9 @@ NApi.test = {
 	 * @param {Function} errFunc функция вывода строки об ошибке
 	 */
 	testTemplates : function(p) {
-		var infoFunc = p.infoFunc || NApi.Linfo;
-		var warnFunc = p.warnFunc || NApi.Lwarn;
-		var errFunc  = p.errFunc || NApi.Lerr;
+		var infoFunc = p.infoFunc || chas2.Linfo;
+		var warnFunc = p.warnFunc || chas2.Lwarn;
+		var errFunc  = p.errFunc || chas2.Lerr;
 
 		infoFunc("Проверка шаблонов в наборе '" + nabor.adres + "'");
 
