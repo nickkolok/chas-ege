@@ -27,7 +27,7 @@ module.exports = function(grunt) {
 			},
 			html: {
 				dest: "dist/html/",
-				src: ["html/*.html",],
+				src: ["html/*.html", "!html/templ-*.html"],
 			},
 		},
 		copy: {
