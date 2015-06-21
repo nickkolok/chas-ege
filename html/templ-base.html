@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>{% block title %}{% endblock %} – Тренажёр "Час ЕГЭ" {{version_title}}</title>
+	<script>
+		window.bootstrapdesign=1;
+	</script>
+	<script src="../lib/head.min.js"></script>
+	<link rel="shortcut icon" id="link_icon1"/>
+	<link rel="icon" id="link_icon2"/>
+
+	{% block css %}
+	{% endblock %}
+</head>
+<body onload="$.jStorage.zagrData();" onunload="$.jStorage.sohrData()" class="newdesign">
+	<input type="hidden" id="var-version-exact" value="{{version_exact}}"/>
+	<input type="hidden" id="var-version-title" value="{{version_title}}"/>
+	<script>
+		chas.mode.withoutSlider=1;
+	</script>
+
+	{% block body %}
+	{% endblock %}
+
+	<script>
+	addinitjs();
+	</script>
+
+	<script src="../ext/bootstrap/js/bootstrap.min.js"></script>
+
+	{% block js%}
+	{% endblock %}
+</body>
+</html>
