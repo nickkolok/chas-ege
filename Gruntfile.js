@@ -230,5 +230,5 @@ module.exports = function(grunt) {
 	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
 
 	grunt.registerTask("build-except-ext", ["process-html", "process-pages-js", "process-task-sets", "process-lib", "process-css",]);
-	grunt.registerTask("default", ["build-except-ext", "swigtemplates", "copy", "concat", "uglify", "watch"]);
+	grunt.registerTask("default", ["build-except-ext", "swigtemplates", "copy", "concat", "uglify"]);
 };
