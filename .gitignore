@@ -4,6 +4,10 @@
 *.~lock.*
 *.orig
 *.local
+*.LOCAL.*
+*.BACKUP.*
+*.BASE.*
+*.REMOTE.*
 
 node_modules
 dist

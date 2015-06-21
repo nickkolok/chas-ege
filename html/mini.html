@@ -1,0 +1,76 @@
+{% extends "templ-min.html" %}
+
+{% block title %}Оболочка мини-интеграции{% endblock %}
+
+{% block css %}
+<style>
+	.root-el {
+		margin: 8px;
+	}
+
+	.btn-mini {
+		width: 100%;
+	}
+
+	.integrated {
+		display: none;
+	}
+</style>
+{% endblock %}
+
+{% block preinit %}
+<script>
+	chas.mode.withoutMenu=1;
+	chas.mode.withoutSlider=1;
+	chas.design.menuKeeperId="mini-menu-replaced";
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="alert alert-info" style="margin-bottom: 0" id="mini-menu-replaced">
+</div>
+<div class="alert alert-success integrated egeok">
+	<h1 class="text-center">
+		<b>
+			Проверь себя
+		</b>
+	</h1>
+</div>
+<div class="panel panel-default root-el">
+	<div class="panel-heading">
+		
+	<button class="btn btn-mini btn-info" id="sozd" onclick="sozdat();">
+		<h4>
+		<b>
+		Составить задание
+		</b>
+		</h4>
+	</button>
+	</div>
+	<div class="panel-body">
+		<div id="pole" class="vopr">
+		</div>
+
+		<div id="protv" class="alert alert-info">
+		</div>
+	</div>
+
+	<div class="panel-footer">
+		<div class="form-group">
+			<label for="otv">
+				Ответ:
+			</label>
+			<input class="form-control" placeholder="Ответ" id="otv"/>
+		</div>
+		<div class="form-group">
+			<button type="button" class="btn btn-mini btn-success" id="prov" role="button" style="display:none">
+				Ответить!
+			</button>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="mini.js"></script>
+{% endblock %}
