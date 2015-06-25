@@ -26,14 +26,14 @@ module.exports = function(grunt) {
 				src: ["doc/*.html",],
 			},
 			html: {
-				dest: "dist/html/",
-				src: ["html/*.html", "!html/templ-*.html"],
+				dest: "dist/c2/",
+				src: ["c2/*.html", "!c2/templ-*.html"],
 			},
 		},
 		copy: {
 			pagesJs: {
 				files: [
-					{ expand: true, src: ["sh/*.js","html/*.js",], dest: "dist/" },
+					{ expand: true, src: ["sh/*.js","c2/*.js",], dest: "dist/" },
 				]
 			},
 			taskSets: {
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 			},
 			lib: {
 				files: [
-					{ expand: true, src: ["lib/**", "js/chas2/**"], dest: "dist/" },
+					{ expand: true, src: ["lib/**", "src/chas2/**"], dest: "dist/" },
 				]
 			},
 			externals: {
@@ -165,7 +165,7 @@ module.exports = function(grunt) {
 			html: {
 				files: [
 					"doc/*.html",
-					"html/*.html",
+					"c2/*.html",
 					"lib/head.js",
 					"sh/*.html",
 				],
@@ -174,7 +174,7 @@ module.exports = function(grunt) {
 			pagesJs: {
 				files: [
 					"doc/*.js",
-					"html/*.js",
+					"c2/*.js",
 					"sh/*.js",
 				],
 				tasks: ["process-pages-js",]
