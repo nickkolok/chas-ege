@@ -67,22 +67,9 @@ chas2.info = {
 
 
 	/**
-	   Версия для заголовков
+	   Версия
 	 */
-	VERSION_TITLE : "??VERSION_TITLE??",
-
-
-	/**
-	   Точная версия
-	 */
-	VERSION_EXACT : "??VERSION_EXACT??",
-
-
-	/**
-	   Выпуск приложения
-	   @deprecated
-	 */
-	APPLICATION_RELEASE : "__APPLICATION_RELEASE____",
+	VERSION : "?.?.?",
 
 
 	/**
@@ -240,8 +227,7 @@ chas2.hasArgument = function(argument) {
 
 
 	// Получение текущей версии
-	chas2.info.VERSION_EXACT = document.getElementById("var-version-exact").value;
-	chas2.info.VERSION_TITLE = document.getElementById("var-version-title").value;
+	chas2.info.VERSION = document.getElementById("var-version").value;
 
 
 	// Проверка откуда запущен тренажёр

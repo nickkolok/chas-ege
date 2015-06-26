@@ -8,11 +8,11 @@ var exec = require('child_process').exec;
 module.exports = function(grunt) {
 	'use strict';
 	grunt.initConfig({
+		pkg: grunt.file.readJSON("package.json"),
 		swigtemplates: {
 			options: {
 				defaultContext: {
-					"version_title": "",
-					"version_exact": "",
+					"version": "<%= pkg.version %>",
 					"version_cache": new Date().getTime(),
 				},
 				templatesDir: "sh/",
