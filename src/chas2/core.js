@@ -72,22 +72,14 @@ chas2.info = {
 	VERSION : "?.?.?",
 
 
-	/**
-	 * Версия в которой была (последний раз) сломана обратная совметсимость
-	 */
-	LAST_BACKWARD_COMPATIBILITY_BREAK : { major : 0, minor : 2 },
-
-
 	/** @function chas2.info.requireApiVersion
-	 * Проверить совместимость с текущего API, с API версии major.minor
+	 * Проверить совместимость
 	 * @param {Number} major
 	 * @param {Number} minor
 	 */
 	requireApiVersion : function(major, minor) {
-		if (major < chas2.info.LAST_BACKWARD_COMPATIBILITY_BREAK.major || minor < chas2.info.LAST_BACKWARD_COMPATIBILITY_BREAK.minor) {
-			throw new Error("Была запрошена устаревшая версия chas2");
-		} else if (major > chas2.info.API_VERSION.major || minor > chas2.info.API_VERSION.minor) {
-			throw new Error("Была запрошена более новая версия chas2");
+		if (major > chas2.info.API_VERSION.major || minor > chas2.info.API_VERSION.minor) {
+			console.warn("Была запрошена более новая версия chas2");
 		}
 	}
 };
