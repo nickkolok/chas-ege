@@ -4,16 +4,20 @@
 
 {% block css %}
 <style>
-	.root-el {
-		margin: 8px;
-	}
-
 	.btn-mini {
 		width: 100%;
 	}
 
 	.integrated {
 		display: none;
+	}
+
+	.vopr {
+		padding: 16px;
+	}
+	.form-control,
+	.btn-mini {
+		border-radius: 0;
 	}
 </style>
 {% endblock %}
@@ -36,37 +40,29 @@
 		</b>
 	</h1>
 </div>
-<div class="panel panel-default root-el">
-	<div class="panel-heading">
-		
-	<button class="btn btn-mini btn-info" id="sozd" onclick="sozdat();">
-		<h4>
-		<b>
-		Составить задание
-		</b>
-		</h4>
-	</button>
-	</div>
-	<div class="panel-body">
-		<div id="pole" class="vopr">
-		</div>
-
-		<div id="protv" class="alert alert-info">
-		</div>
-	</div>
-	<div class="panel-footer">
-		<table width="100%"><tr>
-			<td width="*">
-				<input class="form-control" placeholder="Ответ" id="otv" style="_width:calc(100% - 200px);width:100%;"/>
-			</td>
-			<td width="100">
-				<button type="button" class="btn btn-mini btn-success" id="prov" role="button" _style="width:100px;">
-					Ответить!
-				</button>
-			</td>
-		</tr></table>
-	</div>
+<button class="btn btn-mini btn-info" id="sozd" onclick="sozdat();">
+	<h4>
+	<b>
+	Составить задание
+	</b>
+	</h4>
+</button>
+<div id="pole" class="vopr">
 </div>
+
+<div id="protv" class="alert alert-info"></div>
+<table width="100%">
+	<tr>
+		<td width="*">
+			<input class="form-control" placeholder="Ответ" id="otv" style="width:100%;"/>
+		</td>
+		<td width="100">
+			<button type="button" class="btn btn-mini btn-success" id="prov" role="button">
+				Ответить!
+			</button>
+		</td>
+	</tr>
+</table>
 {% endblock %}
 
 {% block js %}
