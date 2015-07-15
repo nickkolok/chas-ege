@@ -219,8 +219,11 @@ chas2.hasArgument = function(argument) {
 
 
 	// Получение текущей версии
-	chas2.info.VERSION = document.getElementById("var-version").value;
-
+	try{//Обёртка на случай, если такого элемента нет
+		//TODO: прекратить передавать данные JS->HTML->JS! Нечего дёргать DOM без необходимости!
+		chas2.info.VERSION = document.getElementById("var-version").value;
+	}catch(e){
+	}
 
 	// Проверка откуда запущен тренажёр
 	if (location.href.split(":")[0] == "file") {
