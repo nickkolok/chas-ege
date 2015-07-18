@@ -2,6 +2,7 @@
 
 function generateKatalog(){
 	var rez='';
+	var toc='';
 	var masdey=[];
 	var br='<br/>';
 	for(var kat in nabor.upak){
@@ -13,8 +14,12 @@ function generateKatalog(){
 			('Показать категорию '+kat).vTag('button','class="spoiler-show"')+
 			('Скрыть   категорию '+kat).vTag('button','class="spoiler-hide"')+
 			'<div class="spoiler-body">'+
-			('Категория '+kat).vTag('h1')+
+			('Категория '+kat).vTag('h1','id="'+kat+'"')+
 			window.comment+
+		'');
+		toc+=(
+			(kat+'. '+window.comment).vTag('a','href="#'+kat+'"')+
+			br+
 		'');
 		for(var zdn in nabor.upak[kat])
 			if(zdn!='main'){
@@ -40,7 +45,7 @@ function generateKatalog(){
 			}
 			rez+=('</div>');
 	}
-	$('#divrez').html(rez);
+	$('#divrez').html(toc+br+rez);
 	MathJax.Hub.Typeset();
 	var len=masdey.length;
 	for(var i=0;i<len;i++){
