@@ -173,33 +173,43 @@ var selector1='.jqplot-target, .MathJax>nobr>span>span>span';
 var selector2='canvas';
 
 function optimcopy(){
+	//{{Лютый, бешеный костыль, который нужен, чтобы html2canvas не обрезал знаменатели у MathJax-овских дробей
+	var MJspans=$(".MathJax nobr * span");
+	for(var i=0; i<MJspans.length; i++){
+		if(MJspans[i].style.clip){
+			//И невозбранно возмножаем высоту на константу Чурова
+			MJspans[i].style.height=''+1.468*MJspans[i].offsetHeight+'px';
+		}
+	}
+
+	//}}
 	ds=$('.d');
 	$('#otv').hide();
 	optimcopyd(1);
 }
 
 function optimcopyd(n){
-		if(n>=ds.length){
-			$('.d').show();
-			$('#otv').show();
-			return;
-		}
-		var d=$(ds[n]);
-		ds.hide();
-		var sel1=d.find(selector1);
-		var sel2=d.find(selector2);
-		if(!(sel1.length+sel2.length)){
-			setTimeout("optimcopyd("+n+"+1);",100);
-			return;
-		}
-		d.show();
-		sel1.each(function(){
-			innerHTMLtoImg(this);
-		});
-		sel2.each(function(){
-			replaceWithImg(this);
-		});
+	if(n>=ds.length){
+		$('.d').show();
+		$('#otv').show();
+		return;
+	}
+	var d=$(ds[n]);
+	ds.hide();
+	var sel1=d.find(selector1);
+	var sel2=d.find(selector2);
+	if(!(sel1.length+sel2.length)){
 		setTimeout("optimcopyd("+n+"+1);",100);
+		return;
+	}
+	d.show();
+	sel1.each(function(){
+		innerHTMLtoImg(this);
+	});
+	sel2.each(function(){
+		replaceWithImg(this);
+	});
+	setTimeout("optimcopyd("+n+"+1);",100);
 }
 
 var startShell = function (){
