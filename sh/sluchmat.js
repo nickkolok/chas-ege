@@ -203,7 +203,7 @@ function prover(){
 }
 
 function uchetPrav(kat,prav,nom){
-	if(svinta)
+	if(chas.mode.svinta)
 		return;
 	var ifr=document.createElement('iframe');
 	ifr.src='../sh/sluchcounter.html?'+nabor.name+'/'+kat+'#'+prav;

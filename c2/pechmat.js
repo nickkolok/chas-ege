@@ -3,8 +3,8 @@
 $('#zadaniya').html(sozdKolvoHtml('pech'));
 $('#gotov').hide();
 
-var vr1=svinta?100:200;
-var vr2=svinta?100:1500;
+var vr1=chas.mode.svinta?100:200;
+var vr2=chas.mode.svinta?100:1500;
 
 window.vopr.txt='';
 var stardate=new Date().getTime();
