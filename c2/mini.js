@@ -74,4 +74,7 @@ var startShell = function() {
 	$("#prov").hide();
 	$(trysozd);
 	allLinksToSpans();
+	if (!chas.mode.egeok) {
+		$("#check-yourself-strip").show().css({ "background-color":"#999", "color":"white" });
+	}
 };
