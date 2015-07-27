@@ -18,15 +18,15 @@ module.exports = function(grunt) {
 				templatesDir: "sh/",
 			},
 			sh: {
-				dest: "dist/sh/",
+				dest: "build/sh/",
 				src: ["sh/*.html",],
 			},
 			doc: {
-				dest: "dist/doc/",
+				dest: "build/doc/",
 				src: ["doc/*.html",],
 			},
 			html: {
-				dest: "dist/c2/",
+				dest: "build/c2/",
 				src: ["c2/*.html", "!c2/templ-*.html"],
 			},
 		},
@@ -157,6 +157,36 @@ module.exports = function(grunt) {
 				},],
 			},
 		},
+		htmlmin: {
+			options: {
+				removeComments: true,
+				collapseWhitespace: true,
+				conservativeCollapse: true,
+				minifyJS: true,
+				minifyCSS: true,
+			},
+			sh: {
+				expand: true,
+				cwd: "build/",
+				src: ["sh/*.html"],
+				dest: "dist/",
+				ext: ".html"
+			},
+			doc: {
+				expand: true,
+				cwd: "build/",
+				src: ["doc/*.html"],
+				dest: "dist/",
+				ext: ".html"
+			},
+			html: {
+				expand: true,
+				cwd: "build/",
+				src: ["c2/*.html"],
+				dest: "dist/",
+				ext: ".html"
+			}
+		},
 
 		watch: {
 			options: {
@@ -206,6 +236,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-contrib-copy");
 	grunt.loadNpmTasks("grunt-contrib-cssmin");
+	grunt.loadNpmTasks("grunt-contrib-htmlmin");
 	grunt.loadNpmTasks("grunt-newer");
 
 	//С make начинаются задания, результат которых - готовый *.min.{js,css}
@@ -223,7 +254,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("make-chas-lib" , ["concat:chasLib", "uglify:chasLib",]);
 	grunt.registerTask("make-chas-uijs", ["concat:chasUijs", /*"unify-use-strict-chas-uijs", "uglify:chasUijs",*/]);
 
-	grunt.registerTask("process-html", ["make-head", "newer:swigtemplates", ]);
+	grunt.registerTask("process-html", ["make-head", "swigtemplates", "htmlmin" ]);
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
 	grunt.registerTask("process-task-sets", ["newer:copy:taskSets",'packTasks']);
 	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init",]);
