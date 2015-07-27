@@ -69,15 +69,15 @@ module.exports = function(grunt) {
 			},
 			chasLib: {
 				src: libListChasLib.libList,
-				dest: "dist/lib/chas-lib.js"
+				dest: "build/lib/chas-lib.js"
 			},
 			chasUijs: {
 				src: libListChasUijs.libList,
-				dest: "dist/lib/chas-uijs.js"
+				dest: "build/lib/chas-uijs.js"
 			},
 			init: {
-				src: ["dist/lib/init.js", "dist/lib/chas-uijs.js"],
-				dest: "dist/lib/init.cat.js"
+				src: ["build/lib/init.js", "build/lib/chas-uijs.js"],
+				dest: "build/lib/init.cat.js"
 			},
 		},
 		uglify: {
@@ -102,22 +102,22 @@ module.exports = function(grunt) {
 			},
 			head: {
 				files: {
-					"lib/head.min.js": ["lib/head.js"],
+					"build/lib/head.min.js": ["lib/head.js"],
 				}
 			},
 			chasLib: {
 				files: {
-					"dist/lib/chas-lib.min.js": ["dist/lib/chas-lib.js"],
+					"dist/lib/chas-lib.min.js": ["build/lib/chas-lib.js"],
 				}
 			},
 			chasUijs: {
 				files: {
-					"dist/lib/chas-uijs.min.js": ["dist/lib/chas-uijs.js"],
+					"dist/lib/chas-uijs.min.js": ["build/lib/chas-uijs.js"],
 				}
 			},
 			init: {
 				files: {
-					"dist/lib/init.min.js": ["dist/lib/init.cat.js",],
+					"dist/lib/init.min.js": ["build/lib/init.cat.js",],
 				}
 			},
 		},
@@ -242,15 +242,15 @@ module.exports = function(grunt) {
 	//С make начинаются задания, результат которых - готовый *.min.{js,css}
 
 	grunt.registerTask('unify-use-strict-chas-uijs', 'Убираем лишние use strict из chas-uijs.js', function() {
-		exec('sed \'1 a "use strict";//\' dist/lib/chas-uijs.js > dist/lib/chas-uijs.js.tmp');
-		exec('sed \'/^.use strict.;$/d\' dist/lib/chas-uijs.js.tmp > dist/lib/chas-uijs.js');
-		exec('rm dist/lib/chas-uijs.js.tmp');
+		exec('sed \'1 a "use strict";//\' build/lib/chas-uijs.js > build/lib/chas-uijs.js.tmp');
+		exec('sed \'/^.use strict.;$/d\' build/lib/chas-uijs.js.tmp > dist/lib/chas-uijs.js');
+		// exec('rm dist/lib/chas-uijs.js.tmp');
 	});
 	grunt.registerTask('packTasks', 'Упаковываем задания в соответствующие upak.js', function() {
 		exec('dev/upak.sh');
 	});
 	grunt.registerTask("make-init", ["concat:init", "uglify:init",]);
-	grunt.registerTask("make-head", ["newer:uglify:head",]);
+	grunt.registerTask("make-head", ["uglify:head",]);
 	grunt.registerTask("make-chas-lib" , ["concat:chasLib", "uglify:chasLib",]);
 	grunt.registerTask("make-chas-uijs", ["concat:chasUijs", /*"unify-use-strict-chas-uijs", "uglify:chasUijs",*/]);
 
