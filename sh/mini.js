@@ -4,6 +4,7 @@ function obnov(p1){
 	$('#pole').html(slvopr.txt);
 	slvopr.trd();
 	MathJax.Hub.Typeset();
+	setTimeout('MathJax.Hub.Typeset();',5000);//Костыль, на случай, если не отрисовалось
 }
 
 function sozdat(){
