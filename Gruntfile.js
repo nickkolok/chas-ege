@@ -212,6 +212,7 @@ module.exports = function(grunt) {
 			lib: {
 				files: [
 					"lib/*","!lib/head*",
+					"src/**",
 				],
 				tasks: ["process-lib",]
 			},
