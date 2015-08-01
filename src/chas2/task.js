@@ -102,15 +102,17 @@ chas2.task = {
 	 * @param {String} mainList[].vpr: альтернативный вопрос
 	 * @param {String|Number} mainList[].vin: величина в винительном падеже. Если равна 1, то именительный и винительный падежи совпадают. Если не определена, то конструкции, где нужен в. п., избегаются.
 	 * @param {Object} options: дополнительные опции
-	 * @param {String} options.pre то, что пишется в вопросе перед задачей
+	 * @param {String} options.preambula то, что пишется в вопросе перед задачей
+	 * @param {Object} taskOptions: дополнительные опции, передаваемые setTask
 	 */
-	setCountableTask : function(mainList,options) {
+	setCountableTask : function(mainList,options,taskOptions) {
 		var tmpObject=svVel(mainList);
 		if(options){
 			if(options.preambula){
 				tmpObject.text=options.preambula+tmpObject.text;
 			}
 		}
+		tmpObject.importFrom(taskOptions);
 		NAtask.setTask(tmpObject);
 	},
 
