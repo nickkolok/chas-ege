@@ -49,7 +49,7 @@ function prover(){
 	MathJax.Hub.Typeset();
 	$('#prov').hide();
 	$('#sozd').show();
-	specCounter('mini-new');
+	specCounter('mini-new'+'#egeok'.esli(chas.mode.egeok));
 }
 
 function trysozd(){
