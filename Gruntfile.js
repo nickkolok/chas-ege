@@ -218,7 +218,7 @@ module.exports = function(grunt) {
 			},
 			taskSets: {
 				files: [
-					"zdn/*",
+					"zdn/**",
 				],
 				tasks: ["process-task-sets",]
 			},
@@ -263,7 +263,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("process-html", ["make-head", "swigtemplates", "htmlmin" ]);
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
-	grunt.registerTask("process-task-sets", ["newer:copy:taskSets",'packTasks']);
+	grunt.registerTask("process-task-sets", ['packTasks',"newer:copy:taskSets"]);
 	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init",]);
 	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
 
