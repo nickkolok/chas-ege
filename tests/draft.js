@@ -72,7 +72,38 @@ expect((2).texfrac('4','x')).to.be('\\frac{2x}{4}');
 
 expect((2).texfracpi(4)).to.be('\\frac{\\pi}{2}');
 
-//expect(().texfrac()).to.be('');
+expect('12'.isNumeric()).to.be(true);
+expect('1.2'.isNumeric()).to.be(true);
+expect('1,2'.isNumeric()).to.be(true);
+expect('1'.isNumeric()).to.be(true);
+expect(''.isNumeric()).to.be(false);
+expect('-12'.isNumeric()).to.be(true);
+expect('-1'.isNumeric()).to.be(true);
+expect('-'.isNumeric()).to.be(false);
+expect('asd'.isNumeric()).to.be(false);
+expect('2a3'.isNumeric()).to.be(false);
+expect('2-3'.isNumeric()).to.be(false);
+expect('-2.'.isNumeric()).to.be(false);
+expect('2-'.isNumeric()).to.be(false);
+expect('.2.'.isNumeric()).to.be(false);
+
+expect('.2.'.isCyrillicWord()).to.be(false);
+expect('ёлки-палки'.isCyrillicWord()).to.be(true);
+expect('Ёлки-палки'.isCyrillicWord()).to.be(true);
+expect('ёлки- палки'.isCyrillicWord()).to.be(false);
+expect('ёлкипалки'.isCyrillicWord()).to.be(true);
+expect('ёлки/палки'.isCyrillicWord()).to.be(false);
+
+expect(' '.isSpace()).to.be(true);
+expect('ёлки/палки'.isSpace()).to.be(false);
+expect(' \t\r\n'.isSpace()).to.be(true);
+
+expect('Настя'.transliterate()).to.be('Nastya');
+expect('Nastya'.transliterate(true)).to.be('Настя');
+expect('НастяMurr7'.transliterate()).to.be('NastyaMurr7');
+expect('НастяMurr7'.transliterate(true)).to.be('НастяМурр7');
+
+
 
 
 console.log('А в остальном, прекрасная маркиза, всё хорошо, всё хорошо!');
