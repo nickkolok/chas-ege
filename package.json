@@ -19,7 +19,8 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-newer": "^1.1.0",
     "grunt-swigtemplates": "^0.1.2",
-    "node-regexp": "^0.1.1"
+    "node-regexp": "^0.1.1",
+    "expect.js": "^0.3.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
