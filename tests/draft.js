@@ -62,10 +62,13 @@ expect((-2).texfrac(4)).to.be('-\\frac{1}{2}');
 expect((2).texfrac(-4)).to.be('-\\frac{1}{2}');
 expect((-2).texfrac(-4)).to.be('\\frac{1}{2}');
 expect((2).texfrac(4,'x')).to.be('\\frac{x}{2}');
+expect((1).texfrac(1,'x')).to.be('x');
 expect((-2).texfrac(4,'x')).to.be('-\\frac{x}{2}');
 expect((2).texfrac(-4,'\\sin x')).to.be('-\\frac{\\sin x}{2}');
 expect((-2).texfrac(-4,'xy')).to.be('\\frac{xy}{2}');
 expect((-3).texfrac(4,'x')).to.be('-\\frac{3x}{4}');
+expect((-2).texfrac('4','x')).to.be('-\\frac{2x}{4}');
+expect((2).texfrac('4','x')).to.be('\\frac{2x}{4}');
 
 expect((2).texfracpi(4)).to.be('\\frac{\\pi}{2}');
 
