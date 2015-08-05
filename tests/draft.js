@@ -103,7 +103,9 @@ expect('Nastya'.transliterate(true)).to.be('Настя');
 expect('НастяMurr7'.transliterate()).to.be('NastyaMurr7');
 expect('НастяMurr7'.transliterate(true)).to.be('НастяМурр7');
 
-
+expect(NLib.toArray([],3)).to.eql([]);
+expect(NLib.toArray(1,3)).to.eql([1,1,1]);
+expect(NLib.toArray(undefined,1)).to.eql([undefined]);
 
 
 console.log('А в остальном, прекрасная маркиза, всё хорошо, всё хорошо!');
