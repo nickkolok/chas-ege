@@ -308,7 +308,7 @@ chas2.task = {
 			break;
 		}
 
-		taskOptions.text='Найдите корень уравнения $$' + (o.parts[0]+'='+o.parts[1]).plusminus() +'$$'+
+		taskOptions.text='Найдите корень уравнения $$' + o.parts[0]+'='+o.parts[1] +'$$'+
 			' В ответе укажите только целый корень. '.esli(o.filterWholeRoots)+
 			//При желании форсированно вызвать обработку нескольких корней - просто указать два одинаковых корня
 			(' Если '+'таких '.esli(o.filterWholeRoots)+'корней несколько, в ответе укажите '+multipleRootsPhrase+'.').
@@ -316,6 +316,7 @@ chas2.task = {
 		
 		//Наконец, устанавливаем задание
 		chas2.task.setTask(taskOptions);
+		chas2.task.modifiers.beautifyAlgebraicNotation();
 	},
 
 
@@ -386,6 +387,17 @@ chas2.task = {
 	
 	
 	modifiers : {
+		/** @function chas2.task.modifiers.beautifyAlgebraicNotation
+		 * Превращает (1x+-1) в (x-1) и тому подобное
+		 */
+		beautifyAlgebraicNotation : function(m){
+			var o = chas2.task.getTask();
+			o.text   = o.text  .plusminus();
+			o.analys = o.analys.plusminus();
+			chas2.task.setTask(o);
+		},
+	
+	
 		/** @function chas2.task.modifiers.addJqplot
 		 * Добавить график с применением jqplot
 		 * Нет, можно, конечно, и в лоб, но зачем?
