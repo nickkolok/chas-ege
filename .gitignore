@@ -19,6 +19,6 @@ temp
 zdn/*/upak.js
 
 #Прочие упакованные библиотеки
-#lib/head.min.js
+lib/head.min.js
 #lib/chas-uijs.js
 
