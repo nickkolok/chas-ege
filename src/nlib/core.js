@@ -31,7 +31,7 @@ var NLib = {
 
 	/** @function NLib.toStringsArray
 	 * @param arr объект, которые необходимо превратить
-	 * @return arr ввиде массива строк
+	 * @return arr в виде массива строк
 	 */
 	toStringsArray : function(arr) {
 		switch (NLib.getTypeOf(arr)) {
@@ -55,9 +55,24 @@ var NLib = {
 		case "[object String]":
 			return [arr];
 		default:
-			throw TypeError("Параметр answers должен");
+			throw TypeError("Параметр answers должен");//TODO: WTF?!
 		}
-	}
+	},
+	
+	/** @function NLib.toArray
+	 * @param arr объект, которые необходимо превратить
+	 * @param len длина массива из одинаковых значений
+	 * @return arr, если arr - массив, и массив длиной len из элементов arr в противном случае
+	 */
+	toArray : function(arr, len) {
+		if(NLib.getTypeOf(arr)=="[object Array]")
+			return arr;
+		var result=[];
+		for(var i=0;i<len;i++){
+			result.push(arr);
+		}
+		return result;
+	},
 };
 
 

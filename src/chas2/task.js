@@ -164,6 +164,161 @@ chas2.task = {
 	},
 
 
+	/** @function NApi.task.setEquationTask
+	 * Составить задание типа "уравнение"
+	 * @param {Array} o.parts части уравнения (левая и правая)
+	 * @param {String} o.handleMultipleRoots способ обработки случая, когда корней два или более
+	 * @param {Number|String|Number[]|String[]} o.roots корни уравнения
+	 * @param {Boolean} o.enablePartsExchange можно ли менять части уравнения местами?
+	 * @param {Boolean} o.filterWholeRoots отобрать ли только целые корни?
+	 * @param {Boolean[]} o.enablePartsSubtraction можно ли вычитать эту часть уравнения из другой?
+	 * @param {Boolean[]} o.enablePartsDivision можно ли делить на эту часть уравнения?
+	 * @param {String[]} o.wrapper обёртка для частей - иногда возникает
+	 * @param {Object} taskOptions - то, что будет передано setTask (тэги, решение и т. д.)
+	 */
+	setEquationTask : function(o,taskOptions){
+		function exchangeParts(){
+			//Функция обмена частей уравнения местами. Если, конечно, можно!
+			if(o.enablePartsExchange == 0)
+				return;
+			o.parts.reverse();
+			o.enablePartsSubtraction.reverse();
+			o.enablePartsDivision.reverse();
+		}
+		//Приводим необязательные параметры к массивам
+		(o.enablePartsSubtraction != undefined) || (o.enablePartsSubtraction = 0);
+		(o.enablePartsDivision    != undefined) || (o.enablePartsDivision    = 1);
+		o.enablePartsSubtraction = NLib.toArray(o.enablePartsSubtraction,2);
+		o.enablePartsDivision    = NLib.toArray(o.enablePartsDivision   ,2);
+		
+		//Заводим taskOptions, если он не указан
+		if(taskOptions === undefined){
+			taskOptions = {};
+		}
+		
+		//Применяем обёртку - ДО преобразований
+		if(o.wrapper){
+			o.parts[0]=o.wrapper[0]+o.parts[0]+o.wrapper[1];
+			o.parts[1]=o.wrapper[0]+o.parts[1]+o.wrapper[1];
+		}
+		
+		if(sl1()){
+			//Случайным образом меняем части местами
+			exchangeParts();
+		}
+		//Если среди частей уравнения есть голое число и не указано иное, то число всегда справа
+		if((''+o.parts[0]).isNumeric() && !(''+o.parts[1]).isNumeric() && o.enablePartsExchange != 1){
+			exchangeParts();
+			o.enablePartsExchange=0;
+		}
+		//Если справа ноль - делить нельзя, вычитать - только ставить минус
+		if(o.parts[1] == 0){
+			//Если можно и есть на то воля случая, перед левой частью ставим минус
+			if(o.enablePartsSubtraction[0] && !sl(3)){
+				o.parts[0]='-'+o.parts[0];
+			}
+			//Делить нельзя!
+			o.enablePartsDivision=[0,0];
+			//Вычитать тоже больше нельзя
+			o.enablePartsSubtraction=[0,0];
+			
+		} else if(o.enablePartsSubtraction[0] && o.enablePartsSubtraction[1] && !sl(4)){
+			//Если можно вычитать обе части, то с вероятностью 1/5 ставим перед обоими минус
+			o.parts[0]='-'+o.parts[0];
+			o.parts[1]='-'+o.parts[1];
+		} else if (o.enablePartsSubtraction[0] && !sl(3)){
+			//Если можно, вычитаем левую часть из правой
+			o.parts[0]=o.parts[1]+'-'+o.parts[0];
+			o.parts[1]=0;
+		} else if (o.enablePartsSubtraction[1] && !sl(3)){
+			//Или правую из левой...
+			o.parts[0]=o.parts[0]+'-'+o.parts[1];
+			o.parts[1]=0;
+		} else if(o.enablePartsDivision[0] && o.enablePartsDivision[1] && !sl(4)){
+			//Если можно делить на обе части, то с вероятностью 1/5 ставим обе в знаменатель
+			var numerator=sl(1,99).pm();
+			o.parts[0]=numerator.texfrac(o.parts[0]);
+			o.parts[1]=numerator.texfrac(o.parts[1]);
+		} else if (o.enablePartsDivision[0] && !sl(3)){
+			//Если можно, правую часть на левую
+			o.parts[0]=o.parts[1].frac(o.parts[0]);
+			o.parts[1]=1;
+		} else if (o.enablePartsDivision[1] && !sl(3)){
+			//Или, опять же, наоборот
+			o.parts[0]=o.parts[0].frac(o.parts[1]);
+			o.parts[1]=1;
+		}
+		//Если ничего из вышеперечисленного не получилось - стало быть, не судьба!
+
+		//Теперь разбираемся с корнями
+
+		o.roots=NLib.toArray(o.roots,1);
+
+		if(o.filterWholeRoots){
+			//Если нужно, отбираем целые корни
+			var wholeRoots=[];
+			for(var i=0; i<o.roots.length; i++){
+				if((''+o.roots[i]).isNumeric() && (1*o.roots[i]).isZ()){
+					wholeRoots.push(o.roots[i]);
+				}
+			}
+			o.roots=wholeRoots;
+		}
+		//Если множество корней пусто - ошибка!
+		if(o.roots.length==0){
+			throw new Error('Множество корней уравнения не должно быть пусто');
+		}
+		
+		var multiRoots = (o.roots.length > 1);
+		o.roots=o.roots.sortDelDubl();
+
+		var notListVariants=['sum','production','min','max'];
+		if(o.handleMultipleRoots == 'random'){
+			o.handleMultipleRoots = ['list'].concat(notListVariants).iz();
+		} else if (o.handleMultipleRoots == 'randomExceptList') {
+			o.handleMultipleRoots = notListVariants.iz();
+		}
+		var multipleRootsPhrase = '';
+		switch(o.handleMultipleRoots){
+			default:
+			case 'sum':
+				taskOptions.answers = o.roots.sum();
+				multipleRootsPhrase = 'их сумму';
+			break;
+			case 'production':
+				taskOptions.answers = o.roots.production();
+				multipleRootsPhrase = 'их произведение';
+			break;
+			case 'min':
+				taskOptions.answers = o.roots.minE();
+				multipleRootsPhrase = 'меньший из них';
+			break;
+			case 'max':
+				taskOptions.answers = o.roots.maxE();
+				multipleRootsPhrase = 'больший из них';
+			break;
+			case 'any':
+				taskOptions.answers = o.roots;
+				multipleRootsPhrase = 'любой из них';
+			break;
+			case 'list':
+				taskOptions.answers = o.roots.join(';');
+				multipleRootsPhrase = 'перечислите их через точку с запятой (;) в любом порядке';
+				taskOptions.checkAnswer = vopr.vrn_list;
+			break;
+		}
+
+		taskOptions.text='Найдите корень уравнения $$' + (o.parts[0]+'='+o.parts[1]).plusminus() +'$$'+
+			' В ответе укажите только целый корень. '.esli(o.filterWholeRoots)+
+			//При желании форсированно вызвать обработку нескольких корней - просто указать два одинаковых корня
+			(' Если '+'таких '.esli(o.filterWholeRoots)+'корней несколько, в ответе укажите '+multipleRootsPhrase+'.').
+				esli(multiRoots);
+		
+		//Наконец, устанавливаем задание
+		chas2.task.setTask(taskOptions);
+	},
+
+
 	/** @function NApi.task.setTwoStatementTask
 	 * Составить задание о двух утверждениях 
 	 * @param {String|Object[]} stA первое утверждение (или массив утверждений)
