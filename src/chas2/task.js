@@ -308,7 +308,7 @@ chas2.task = {
 			break;
 		}
 
-		taskOptions.text='Найдите корень уравнения $$' + o.parts[0]+'='+o.parts[1] +'$$'+
+		taskOptions.text='Найдите корень уравнения $$' + o.parts[0].plusminus()+'='+o.parts[1].plusminus() +'$$'+
 			' В ответе укажите только целый корень. '.esli(o.filterWholeRoots)+
 			//При желании форсированно вызвать обработку нескольких корней - просто указать два одинаковых корня
 			(' Если '+'таких '.esli(o.filterWholeRoots)+'корней несколько, в ответе укажите '+multipleRootsPhrase+'.').
@@ -316,7 +316,37 @@ chas2.task = {
 		
 		//Наконец, устанавливаем задание
 		chas2.task.setTask(taskOptions);
+		//И на всякий случай
 		chas2.task.modifiers.beautifyAlgebraicNotation();
+	},
+
+
+	/** @function NApi.task.setAdditiveEquationTask
+	 * Составить задание типа "уравнение, имеющее в основе сложение"
+	 * @param {Array} o.parts части уравнения (слагаемые, как будто справа 0)
+	 * @param {String} o.handleMultipleRoots способ обработки случая, когда корней два или более
+	 * @param {Number|String|Number[]|String[]} o.roots корни уравнения
+	 * @param {Boolean} o.filterWholeRoots отобрать ли только целые корни?
+	 * @param {Boolean[]} o.enablePartsDivision можно ли делить на эту часть уравнения?
+	 * @param {String[]} o.wrapper обёртка для частей - иногда возникает
+	 * @param {Object} taskOptions - то, что будет передано setTask (тэги, решение и т. д.)
+	 */
+	setAdditiveEquationTask : function(o,taskOptions){
+		//Сами всё, что нужно, вычтем!
+		o.enablePartsSubtraction=0;
+		//И местами поменяем!
+		o.enablePartsExchange=0;
+
+		o.parts=o.parts.shuffle();
+		var leftCount=sl(1,o.parts.length);
+		var left=o.parts.splice(0,leftCount);
+		var right= o.parts.length ? o.parts : ['0'];
+		//Ставим минусы в левой части
+		for(var i=0;i<left.length; i++){
+			left[i]='-'+left[i];
+		}
+		o.parts=[left.slag(),right.slag()];
+		chas2.task.setEquationTask(o,taskOptions);
 	},
 
 
