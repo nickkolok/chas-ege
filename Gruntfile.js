@@ -1,12 +1,46 @@
-//Запрашиваем списки библиотек оттуда же, откуда их берёт init.js
+var fs = require("fs");
+var regexp = require("node-regexp");
+
+var exec = require('child_process').exec;
+
 var libListChasUijs = require('./lib/load.js');
 var libListChasLib  = require('./lib/load-chas-lib.js');
 
-//Нам же нужно запускать скрипты на bash?
-var exec = require('child_process').exec;
 
 module.exports = function(grunt) {
-	'use strict';
+	"use strict";
+	var cwd = process.cwd();
+
+	// prefix должен заканчиваться на слеш (/)
+	// Например:
+	//     "file:///home/user/chas-ege/"
+	//     "file://" + cwd + "/"
+	var getHtmlFromDist = function(prefix) {
+		var prefix = prefix || "";
+
+		var pathes = [];
+
+		var re = regexp()
+			.end(".html")
+			.ignoreCase()
+			.toRegExp();
+
+		[
+			// В конце обязательно должен быть слеш (/)
+			"dist/c2/",
+			"dist/sh/",
+			"dist/doc/"
+		].forEach(function(dir) {
+			var prefixedDir = prefix + dir;
+			fs.readdirSync(dir).forEach(function(file) {
+				if (re.test(file)) {
+					pathes.push(prefixedDir + file);
+				}
+			});
+		});
+		return pathes;
+	}
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 		swigtemplates: {
@@ -188,6 +222,20 @@ module.exports = function(grunt) {
 			}
 		},
 
+		checkPages: {
+			dev: {
+				options: {
+					pageUrls: getHtmlFromDist("file://" + cwd + "/"),
+					checkLinks: true,
+					queryHashes: true,
+					// noRedirects: true,
+					noEmptyFragments: true,
+					maxResponseTime: 200,
+					summary: true
+				}
+			}
+		},
+
 		watch: {
 			options: {
 				reload: true
@@ -245,6 +293,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-htmlmin");
 	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-newer");
+	grunt.loadNpmTasks("grunt-check-pages");
 
 	//С make начинаются задания, результат которых - готовый *.min.{js,css}
 
@@ -266,6 +315,8 @@ module.exports = function(grunt) {
 	grunt.registerTask("process-task-sets", ['packTasks',"newer:copy:taskSets"]);
 	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init",]);
 	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
+
+	grunt.registerTask("check-urls", ["checkPages:dev"]);
 
 	grunt.registerTask("build-except-ext", ["process-html", "process-pages-js", "process-task-sets", "process-lib", "process-css",]);
 	grunt.registerTask("default", ["build-except-ext", "swigtemplates", "copy", "concat", "uglify"]);
