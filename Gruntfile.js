@@ -286,6 +286,22 @@ module.exports = function(grunt) {
 			},
 		},
 
+		eslint: {
+			options: {
+				configFile: "eslint.json"
+			},
+			target: [
+				"src/*/*.js",
+				"c2/*.js",
+				"Gruntfile.js"
+
+				// Всё равно никто исправлять их не будет
+				// ,"sh/*.js",
+				// "lib/*.js",
+				// "zdn/*/*/*.js"
+			]
+		},
+
 		clean: {
 			build: ["build/"],
 			dist: ["dist/"]
@@ -302,6 +318,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-newer");
 	grunt.loadNpmTasks("grunt-check-pages");
+	grunt.loadNpmTasks("grunt-eslint");
 
 	//С make начинаются задания, результат которых - готовый *.min.{js,css}
 
