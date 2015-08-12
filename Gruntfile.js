@@ -32,11 +32,19 @@ module.exports = function(grunt) {
 			"dist/doc/"
 		].forEach(function(dir) {
 			var prefixedDir = prefix + dir;
-			fs.readdirSync(dir).forEach(function(file) {
-				if (re.test(file)) {
-					pathes.push(prefixedDir + file);
+			try {
+				fs.readdirSync(dir).forEach(function(file) {
+					if (re.test(file)) {
+						pathes.push(prefixedDir + file);
+					}
+				});
+			} catch (e) {
+				if (e.code === "ENOENT") {
+					grunt.log.writeln("Директория '" + dir + "' не найдена. Видимо dist ещё не собран");
+				} else {
+					throw e;
 				}
-			});
+			}
 		});
 		return pathes;
 	}
