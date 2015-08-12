@@ -164,6 +164,46 @@ chas2.task = {
 	},
 
 
+	/** @function chas2.task.setJscppTask
+	 * Установить задание из кода на C++, используя JSCPP
+	 * @param {String} code
+	 */
+	setJscppTask : function(code) {
+
+		var input = "";
+		var output = "";
+		var config = {
+			stdio: {
+				write: function(s) {
+					output += s;
+				}
+			}
+		};
+		var exitCode = JSCPP.run(code, input, config);
+		//В переменной output хранится всё, что отправлялось на cout
+
+		chas2.task.setHumanReadableTask(output);
+	},
+
+
+	/** @function chas2.task.setHumanReadableTask
+	 * Установить задание из человекочитаемого формата
+	 * @param {String} output
+	 */
+	setHumanReadableTask : function(output) {
+		var parsedOptions=output.parseHumanReadableToJSON();
+		if(parsedOptions[0]){
+			parsedOptions["Задание"]='Необходимо указать ключевые слова! <br/> Текущий вывод: '+output.vTag('pre')+
+				'<br/>'+(parsedOptions["Задание"]||' ');
+		}
+		chas2.task.setTask({
+			text: parsedOptions["Задание"],
+			answers: parsedOptions["Ответ"],
+			analys: parsedOptions["Решение"],
+		});
+	},
+
+
 	/** @function NApi.task.setEquationTask
 	 * Составить задание типа "уравнение"
 	 * @param {Array} o.parts части уравнения (левая и правая)
