@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 				});
 			} catch (e) {
 				if (e.code === "ENOENT") {
-					grunt.log.writeln("Директория '" + dir + "' не найдена. Видимо dist ещё не собран");
+					grunt.verbose.errorlns("Директория '" + dir + "' не найдена. Возможно, сборка ещё не производилась?");
 				} else {
 					throw e;
 				}
