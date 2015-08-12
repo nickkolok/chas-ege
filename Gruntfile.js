@@ -118,7 +118,7 @@ module.exports = function(grunt) {
 				dest: "build/lib/chas-uijs.js"
 			},
 			init: {
-				src: ["build/lib/init.js", "build/lib/chas-uijs.js"],
+				src: ["lib/init.js", "build/lib/chas-uijs.js"],
 				dest: "build/lib/init.cat.js"
 			},
 		},
