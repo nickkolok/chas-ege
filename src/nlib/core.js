@@ -65,8 +65,9 @@ var NLib = {
 	 * @return arr, если arr - массив, и массив длиной len из элементов arr в противном случае
 	 */
 	toArray : function(arr, len) {
-		if(NLib.getTypeOf(arr)=="[object Array]")
+		if(NLib.getTypeOf(arr)=="[object Array]"){
 			return arr;
+		}
 		var result=[];
 		for(var i=0;i<len;i++){
 			result.push(arr);
