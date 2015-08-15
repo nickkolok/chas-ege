@@ -49,10 +49,19 @@ function checkAnswer(){
 function createFromTextarea(){
 	saveAce();
 	$("#question").html("Если Вы видите эту надпись - задание не составлено, скорее всего, в программе ошибка.");
+	var code=nabrano();
 	try {
-		eval(nabrano());
+		if(isCppCode(code)){
+			//Костыль, но положим, что это С++
+			//TODO: подумать, может, хоть переключатель сделать?
+			//TODO: ACE работает в режиме JS. Перевести в С++.
+			chas2.task.setJscppTask(code);
+		}else{
+				eval(code);
+		}
 	} catch (e) {
-		$("#question").html(e.name + " : " + e.message);
+		$("#question").html(e+'<br/>'+e.name + " : " + e.message);
+		console.error(e);
 		return;
 	}
 	updateQuestion();
@@ -101,19 +110,23 @@ function saveAce(){
 function pastebin(){
 	saveAce();
 	var code=$("#textarea-script").val();
-	var beautifiedCode=js_beautify(code, {
-      'indent_size': 1,
-      'indent_char': '\t',
-      'end_with_newline':true,
-      'wrap_line_length':120,
-      'jslint_happy':true,
-      'opt.space_after_anon_function':false,
-    });
-	if(code!=beautifiedCode){
-		alert("Обратите внимание: код шаблона не соответствует соглашениям, принятым в проекте."+
-			"На pastebin отправлена скорректированная версия.");
+    if(isCppCode(code)){
+		$("#textarea-paste").val(code);
+	} else {
+		var beautifiedCode=js_beautify(code, {
+		  'indent_size': 1,
+		  'indent_char': '\t',
+		  'end_with_newline':true,
+		  'wrap_line_length':120,
+		  'jslint_happy':true,
+		  'opt.space_after_anon_function':false,
+		});
+		if(code!=beautifiedCode){
+			alert("Обратите внимание: код шаблона не соответствует соглашениям, принятым в проекте."+
+				"На pastebin отправлена скорректированная версия.");
+		}
+		$("#textarea-paste").val(beautifiedCode);
 	}
-	$("#textarea-paste").val(beautifiedCode);
 }
 
 function startFullscreen(){
