@@ -1,4 +1,5 @@
 var fs = require("fs");
+var ls = require("ls");
 var regexp = require("node-regexp");
 
 var exec = require('child_process').exec;
@@ -49,6 +50,20 @@ module.exports = function(grunt) {
 		return pathes;
 	}
 
+	var packCppTasks = function () {
+		var tasks = ls("zdn/*/*/*.cpp")
+		for(var i=0; i<tasks.length; i++){
+			//Используем синхронное чтение/запись. Ибо вдруг дескрипторов не хватит?
+			fs.writeFileSync("dist/" + tasks[i].path + "/" + tasks[i].name + ".js", 
+				"'use strict';\n(function(){chas2.task.setJscppTask('" +
+				fs.readFileSync(tasks[i].full, "utf8")
+					.replace(/\\/g, "\\\\")
+					.replace(/'/g, "\\'")
+					.replace(/[\n\r]+/g, "\\n")
+				+ "');})();\n"
+			);
+		}
+	}
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 		swigtemplates: {
@@ -328,7 +343,9 @@ module.exports = function(grunt) {
 		// exec('rm dist/lib/chas-uijs.js.tmp');
 	});
 	grunt.registerTask('packTasks', 'Упаковываем задания в соответствующие upak.js', function() {
-		exec('dev/upak.sh');
+		packCppTasks(cwd);
+		//TODO: раскостылить, переписать на JS
+		exec('cd dist && ../dev/upak.sh');
 	});
 	grunt.registerTask("make-init", ["concat:init", "uglify:init",]);
 	grunt.registerTask("make-head", ["uglify:head",]);
