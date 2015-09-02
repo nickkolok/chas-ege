@@ -2,12 +2,12 @@
 
 /** @function Number#round
  * Округление числа
- * @param {Number} dec_places точность округления
+ * @param {Number} decPlaces точность округления
  * @return число num округлённое до dp
  */
-Number.prototype.round = function(dec_places) {
-	var dec_places = dec_places || 1;
-	return Math.round(this / dec_places) * dec_places;
+Number.prototype.round = function(decPlaces) {
+	var decPlaces = decPlaces || 1;
+	return Math.round(this / decPlaces) * decPlaces;
 };
 
 
@@ -57,4 +57,4 @@ Number.prototype.getRandomDivisor = function() {
 	return this.getDivisors().getRandomItem();
 };
 
-Number.prototype.addToGlobal('docsNumber',1);
+Number.prototype.addToGlobal("docsNumber", 1);

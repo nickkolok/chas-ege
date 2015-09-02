@@ -14,7 +14,7 @@ window.NApi = window.chas2;
    TODO: Убрать устаревший алиас
    @deprecated
  */
-window.NA =window.NApi;
+window.NA = window.NApi;
 
 
 /**
@@ -22,7 +22,7 @@ window.NA =window.NApi;
    TODO: Убрать устаревший алиас
    @deprecated
  */
-window.NAinfo =window.NApi.info;
+window.NAinfo = window.NApi.info;
 
 
 window.NApi.debug = {};
@@ -35,7 +35,7 @@ window.NApi.debug.Ldebug = chas2.isDebug;
    TODO: Убрать устаревший алиас
    @deprecated
  */
-window.NAdbg =window.NApi.debug;
+window.NAdbg = window.NApi.debug;
 
 
 /**
@@ -43,7 +43,7 @@ window.NAdbg =window.NApi.debug;
    TODO: Убрать устаревший алиас
    @deprecated
  */
-window.NAtask =window.NApi.task;
+window.NAtask = window.NApi.task;
 
 
 /**
@@ -51,7 +51,7 @@ window.NAtask =window.NApi.task;
    TODO: Убрать устаревший алиас
    @deprecated
  */
-window.NAui =window.NApi.ui;
+window.NAui = window.NApi.ui;
 
 
 /**
@@ -59,7 +59,7 @@ window.NAui =window.NApi.ui;
    TODO: Убрать устаревший алиас
    @deprecated
  */
-window.NAtask =window.NApi.task;
+window.NAtask = window.NApi.task;
 
 
 /**
@@ -67,7 +67,7 @@ window.NAtask =window.NApi.task;
    TODO: Убрать устаревший алиас
    @deprecated
  */
-window.NAopt =window.NApi.opt;
+window.NAopt = window.NApi.opt;
 
 
 /**
@@ -75,4 +75,4 @@ window.NAopt =window.NApi.opt;
    TODO: Убрать устаревший алиас
    @deprecated
  */
-window.NAtest =window.NApi.test;
+window.NAtest = window.NApi.test;

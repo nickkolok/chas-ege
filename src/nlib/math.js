@@ -17,11 +17,11 @@ NLib.math = {
 	 * Генерация случайного числа
 	 * @param {Number} min минимальное значение
 	 * @param {Number} max минимальное значение
-	 * @param {Number} dec_places кол-во знаков после запятой
+	 * @param {Number} decPlaces кол-во знаков после запятой
 	 * @return случайное число
 	 */
-	randomize : function(min, max, dec_places) {
-		return (Math.random() * ((max || 9007199254740992) - (min || 0))).round(dec_places || 1);
+	randomize : function(min, max, decPlaces) {
+		return (Math.random() * ((max || 9007199254740992) - (min || 0))).round(decPlaces || 1);
 	}
 };
 

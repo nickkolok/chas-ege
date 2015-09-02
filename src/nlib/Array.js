@@ -17,6 +17,7 @@
 	return items;
 };
 */
+
 //Так, как было, выдаёт повторяющиеся, что недопустимо.
 Array.prototype.getRandomItems = Array.prototype.iz;
 
@@ -26,6 +27,6 @@ Array.prototype.getRandomItems = Array.prototype.iz;
  */
 Array.prototype.getRandomItem = function() {
 	return this.getRandomItems(1);
-}
+};
 
-Array.prototype.addToGlobal('docsArray',1);
+Array.prototype.addToGlobal("docsArray", 1);

@@ -12,7 +12,7 @@ window.chas2 = {};
  * @private
  */
 chas2._ = {
-	debug_mode : false,
+	debugMode : false,
 	local : false,
 
 	/** @function chas2._.Linfo
@@ -134,7 +134,7 @@ chas2.Ldebug = function(msg) {
 
 
 chas2.isDebug = function() {
-	return chas2._.debug_mode;
+	return chas2._.debugMode;
 };
 
 
@@ -156,8 +156,9 @@ chas2.panic = function(cause) {
 	case "[object Error]":
 		chas2.Linfo("Причина: " + cause.msg);
 		break;
+	default:
+		throw Error("Паника");
 	}
-	throw Error("Паника");
 };
 
 
@@ -178,12 +179,12 @@ chas2.args = {};
    @param argument Аргумент
  */
 chas2.hasArgument = function(argument) {
-	chas2.Linfo(argument)
+	chas2.Linfo(argument);
 	return !!chas2.args[argument] || chas2.args[argument] == "";
 };
 
 
-(function(){
+(function() {
 	// Инициализация chas2.hash и chas2.args
 	chas2.hash = location.hash.split("?")[0].slice(1);
 
@@ -212,17 +213,18 @@ chas2.hasArgument = function(argument) {
 
 	// Инициализация режима отладки
 	if (chas2.hasArgument("debug")) {
-		chas2._.debug_mode = true;
+		chas2._.debugMode = true;
 		chas2.Ldebug("Режим отладки включен");
 		$("#mark-debug").show();
 	}
 
 
 	// Получение текущей версии
-	try{//Обёртка на случай, если такого элемента нет
+	try {//Обёртка на случай, если такого элемента нет
 		//TODO: прекратить передавать данные JS->HTML->JS! Нечего дёргать DOM без необходимости!
 		chas2.info.VERSION = document.getElementById("var-version").value;
-	}catch(e){
+	} catch (e) {
+		// TODO: А если #var-version нет в DOM?
 	}
 
 	// Проверка откуда запущен тренажёр

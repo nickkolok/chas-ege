@@ -58,25 +58,21 @@ var NLib = {
 			throw TypeError("Параметр answers должен");//TODO: WTF?!
 		}
 	},
-	
+
+
 	/** @function NLib.toArray
 	 * @param arr объект, которые необходимо превратить
 	 * @param len длина массива из одинаковых значений
 	 * @return arr, если arr - массив, и массив длиной len из элементов arr в противном случае
 	 */
 	toArray : function(arr, len) {
-		if(NLib.getTypeOf(arr)=="[object Array]"){
+		if (NLib.getTypeOf(arr) == "[object Array]") {
 			return arr;
 		}
-		var result=[];
-		for(var i=0;i<len;i++){
+		var result = [];
+		for (var i = 0; i < len; i++) {
 			result.push(arr);
 		}
 		return result;
 	},
 };
-
-
-(function() {
-})();
-
