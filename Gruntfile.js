@@ -8,6 +8,7 @@ var exec = require("child_process").exec;
 
 var libListChasUijs = require("./lib/load.js");
 var libListChasLib  = require("./lib/load-chas-lib.js");
+var pak             = require("./src/util/pak.js");
 
 
 module.exports = function(grunt) {
@@ -154,10 +155,10 @@ module.exports = function(grunt) {
 			tasksPacks: {
 				files: [{
 					expand: true,
-					cwd: "zdn",
+					cwd: "build/zdn/",
 					src: "*/upak.js",
 					dest: "dist/zdn",
-				}],
+				}]
 			},
 			head: {
 				files: {
@@ -349,8 +350,8 @@ module.exports = function(grunt) {
 	});
 	grunt.registerTask("packTasks", "Упаковываем задания в соответствующие upak.js", function() {
 		packCppTasks(cwd);
-		//TODO: раскостылить, переписать на JS
-		exec("cd dist && ../dev/upak.sh");
+		// exec("cd dist && ../dev/upak.sh");
+		pak.packZdnSync("zdn", "build/zdn");
 	});
 	grunt.registerTask("make-init", ["concat:init", "uglify:init"]);
 	grunt.registerTask("make-head", ["uglify:head"]);
