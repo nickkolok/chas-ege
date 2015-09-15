@@ -89,6 +89,10 @@ module.exports = function(grunt) {
 				dest: "build/c2/",
 				src: ["c2/*.html", "!c2/templ-*.html"],
 			},
+			unitTest: {
+				dest: "build/test/",
+				src: ["test/*.html", "!test/templ-*.html"],
+			}
 		},
 		copy: {
 			pagesJs: {
@@ -119,6 +123,11 @@ module.exports = function(grunt) {
 			other: {
 				files: [
 					{ expand: true, src: ["index.html"], dest: "dist/" },
+				]
+			},
+			unitTest: {
+				files: [
+					{ expand: true, src: ["test/*.js"], dest: "build/" },
 				]
 			},
 		},
@@ -305,6 +314,12 @@ module.exports = function(grunt) {
 				],
 				tasks: ["process-css"]
 			},
+			unitTest: {
+				files: [
+					"test/*"
+				],
+				tasks: ["process-unit-test"]
+			}
 		},
 
 		eslint: {
@@ -314,6 +329,7 @@ module.exports = function(grunt) {
 			target: [
 				"src/*/*.js",
 				"c2/*.js",
+				"test/*.js",
 				"Gruntfile.js"
 
 				// Всё равно никто исправлять их не будет
@@ -321,6 +337,10 @@ module.exports = function(grunt) {
 				// "lib/*.js",
 				// "zdn/*/*/*.js"
 			]
+		},
+
+		qunit: {
+			all: ["build/test/*.html"]
 		},
 
 		clean: {
@@ -337,6 +357,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	grunt.loadNpmTasks("grunt-contrib-htmlmin");
 	grunt.loadNpmTasks("grunt-contrib-clean");
+	grunt.loadNpmTasks("grunt-contrib-qunit");
 	grunt.loadNpmTasks("grunt-newer");
 	grunt.loadNpmTasks("grunt-check-pages");
 	grunt.loadNpmTasks("grunt-eslint");
@@ -363,6 +384,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("process-task-sets", ["packTasks", "newer:copy:taskSets"]);
 	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init"]);
 	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
+	grunt.registerTask("process-unit-test", ["swigtemplates:unitTest", "copy:unitTest"]);
 
 	grunt.registerTask("check-urls", ["checkPages:dev"]);
 
