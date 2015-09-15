@@ -25,7 +25,8 @@
     "ls": "^0.1.0",
     "node-regexp": "^0.1.1",
     "qunit-bdd": "^0.6.1",
-    "qunitjs": "^1.19.0"
+    "qunitjs": "^1.19.0",
+    "time-grunt": "^1.2.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

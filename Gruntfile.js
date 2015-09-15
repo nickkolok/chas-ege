@@ -317,6 +317,7 @@ module.exports = function(grunt) {
 		}
 	});
 
+	require("time-grunt")(grunt);
 	require("load-grunt-tasks")(grunt);
 
 	//С make начинаются задания, результат которых - готовый *.min.{js,css}
