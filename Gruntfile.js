@@ -14,44 +14,6 @@ var pak             = require("./src/util/pak.js");
 module.exports = function(grunt) {
 	var cwd = process.cwd();
 
-	// prefix должен заканчиваться на слеш (/)
-	// Например:
-	//     "file:///home/user/chas-ege/"
-	//     "file://" + cwd + "/"
-	var getHtmlFromDist = function(prefix) {
-		var prefix = prefix || "";
-
-		var pathes = [];
-
-		var re = regexp()
-			.end(".html")
-			.ignoreCase()
-			.toRegExp();
-
-		[
-			// В конце обязательно должен быть слеш (/)
-			"dist/c2/",
-			"dist/sh/",
-			"dist/doc/"
-		].forEach(function(dir) {
-			var prefixedDir = prefix + dir;
-			try {
-				fs.readdirSync(dir).forEach(function(file) {
-					if (re.test(file)) {
-						pathes.push(prefixedDir + file);
-					}
-				});
-			} catch (e) {
-				if (e.code === "ENOENT") {
-					grunt.verbose.errorlns("Директория '" + dir + "' не найдена. Возможно, сборка ещё не производилась?");
-				} else {
-					throw e;
-				}
-			}
-		});
-		return pathes;
-	};
-
 	var packCppTasks = function() {
 		var tasks = ls("zdn/*/*/*.cpp");
 		for (var i = 0; i < tasks.length; i++) {
@@ -263,7 +225,13 @@ module.exports = function(grunt) {
 		checkPages: {
 			dev: {
 				options: {
-					pageUrls: getHtmlFromDist("file://" + cwd + "/"),
+					pageUrls: ls([
+							"dist/c2/*.html",
+							"dist/sh/*.html",
+							"dist/doc/*.html"
+						]).map(function(p) {
+							return "file://" + cwd + "/" + p.full;
+						}),
 					checkLinks: true,
 					queryHashes: true,
 					// noRedirects: true,
