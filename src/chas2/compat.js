@@ -25,19 +25,6 @@ window.NA = window.NApi;
 window.NAinfo = window.NApi.info;
 
 
-window.NApi.debug = {};
-window.NApi.debug.Ldebug = chas2.Ldebug;
-window.NApi.debug.Ldebug = chas2.isDebug;
-
-
-/**
-   Алиас на window.NApi.debug
-   TODO: Убрать устаревший алиас
-   @deprecated
- */
-window.NAdbg = window.NApi.debug;
-
-
 /**
    Алиас на window.NApi.task
    TODO: Убрать устаревший алиас
@@ -76,3 +63,51 @@ window.NAopt = window.NApi.opt;
    @deprecated
  */
 window.NAtest = window.NApi.test;
+
+
+/**
+   Алиас на chas2.Linfo
+   TODO: Убрать устаревший алиас
+   @deprecated
+ */
+window.NAtest = window.NApi.test;
+
+
+/**
+   Алиас на chas2.Linfo
+   TODO: Убрать deprecated-алиас
+   @deprecated
+*/
+chas2.Linfo = chas2.log.info;
+
+
+/**
+   Алиас на chas2.Lmsg
+   TODO: Убрать deprecated-алиас
+   @deprecated
+*/
+chas2.Lmsg = chas2.log.msg;
+
+
+/**
+   Алиас на chas2.Lwarn
+   TODO: Убрать deprecated-алиас
+   @deprecated
+*/
+chas2.Lwarn = chas2.log.warn;
+
+
+/**
+   Алиас на chas2.Lerr
+   TODO: Убрать deprecated-алиас
+   @deprecated
+*/
+chas2.Lerr = chas2.log.error;
+
+
+/**
+   Алиас на chas2.Linfo
+   TODO: Убрать deprecated-алиас
+   @deprecated
+*/
+chas2.Ldebug = chas2.log.debug;
