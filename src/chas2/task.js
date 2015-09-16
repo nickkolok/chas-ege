@@ -100,7 +100,7 @@ chas2.task = {
 
 		var voprcheck = dvig.validateVopr();
 		if (voprcheck) {
-			chas2._.Lwarn("Результат проверки вопроса:\n\t" + voprcheck);
+			chas2.Lwarn("Результат проверки вопроса:\n\t" + voprcheck);
 		}
 	},
 
@@ -124,7 +124,7 @@ chas2.task = {
 
 		var voprcheck = dvig.validateVopr();
 		if (voprcheck) {
-			chas2._.Lwarn("Результат проверки вопроса:\n\t" + voprcheck);
+			chas2.Lwarn("Результат проверки вопроса:\n\t" + voprcheck);
 		}
 		return o;
 	},

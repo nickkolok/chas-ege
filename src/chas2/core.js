@@ -14,45 +14,6 @@ window.chas2 = {};
 chas2._ = {
 	debugMode : false,
 	local : false,
-
-	/** @function chas2._.Linfo
-	 * Занести в лог информацию
-	 * @param {String} msg текст сообщения
-	 * @private
-	 */
-	Linfo : function(msg) {
-		console.log("[chas2][info] " + msg);
-	},
-
-
-	/** @function chas2._.Lmsg
-	 * Занести в лог сообщение
-	 * @param {String} msg текст сообщения
-	 * @private
-	 */
-	Lmsg : function(msg) {
-		console.log("[chas2][msg] " + msg);
-	},
-
-
-	/** @function chas2._.Lwarn
-	 * Занести в лог предупреждение
-	 * @param {String} msg текст сообщения
-	 * @private
-	 */
-	Lwarn : function(msg) {
-		console.log("[chas2][WARN] " + msg);
-	},
-
-
-	/** @function chas2._.Lerr
-	 * Занести в лог информацию об ощибке
-	 * @param {String} msg текст сообщения
-	 * @private
-	 */
-	Lerr : function(msg) {
-		console.log("[chas2][ERROR] " + msg);
-	},
 };
 
 
@@ -126,21 +87,21 @@ chas2.Lerr = function(msg) {
 	@param {String} msg текст сообщения
 	@note Выводиться только в режиме отладки
 */
-chas2.Ldebug = function(msg) {
-	if (chas2.isDebug()) {
+chas2.log.debug = function(msg) {
+	if (chas2.debug) {
 		console.log("[DEBUG] " + msg);
 	}
 };
 
 
-chas2.isDebug = function() {
-	return chas2._.debugMode;
-};
+Object.defineProperty(chas2, "debug", {
+	get: function() { return chas2._.debug; }
+});
 
 
-chas2.isLocal = function() {
-	return chas2._.local;
-};
+Object.defineProperty(chas2, "local", {
+	get: function() { return chas2._.local; }
+});
 
 
 /** @function chas2.panic
