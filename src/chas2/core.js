@@ -14,6 +14,7 @@ window.chas2 = {};
 chas2._ = {
 	debugMode : false,
 	local : false,
+	verboseMode : false,
 };
 
 
@@ -107,6 +108,58 @@ Object.defineProperty(chas2, "local", {
 });
 
 
+Object.defineProperty(chas2, "verboseMode", {
+	get: function() { return chas2._.verboseMode; }
+});
+
+
+chas2.verbose = {};
+
+
+/** @function chas2.verbose.info
+ * Занести в лог информацию (только при verbose-режиме)
+ * @param {String} msg текст сообщения
+ */
+chas2.verbose.info = function(msg) {
+	if (chas2.verboseMode) {
+		console.log(msg);
+	}
+};
+
+
+/** @function chas2.verbose.msg
+ * Занести в лог сообщение (только при verbose-режиме)
+ * @param {String} msg текст сообщения
+ */
+chas2.verbose.msg = function(msg) {
+	if (chas2.verboseMode) {
+		console.info(msg);
+	}
+};
+
+
+/** @function chas2.verbose.warn
+ * Занести в лог предупреждение (только при verbose-режиме)
+ * @param {String} msg текст сообщения
+ */
+chas2.verbose.warn = function(msg) {
+	if (chas2.verboseMode) {
+		console.warn(msg);
+	}
+};
+
+
+/** @function chas2.verbose.error
+ * Занести в лог информацию об ощибке (только при verbose-режиме)
+ * @param {String} msg текст сообщения
+ */
+chas2.verbose.error = function(msg) {
+	if (chas2.verboseMode) {
+		console.error(msg);
+	}
+};
+
+
 /** @function chas2.panic
  * Сообщить о серёзной проблеме (с последующей остановкой)
  * @param cause причина
@@ -180,6 +233,12 @@ chas2.hasArgument = function(argument) {
 		chas2._.debugMode = true;
 		chas2.log.debug("Режим отладки включен");
 		$("#mark-debug").show();
+	}
+
+
+	if (chas2.hasArgument("verbose")) {
+		chas2._.verboseMode = true;
+		chas2.verbose.info("Включен verbose-режим");
 	}
 
 
