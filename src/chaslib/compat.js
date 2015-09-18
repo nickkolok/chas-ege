@@ -16,3 +16,8 @@ var NLmath = NLib.math;
  */
 var NLsets = NLib.sets;
 
+
+/**
+   @deprecated
+ */
+chaslib.getTypeOf = chaslib.typeOf;

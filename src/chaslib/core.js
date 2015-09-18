@@ -20,11 +20,11 @@ var chaslib = {
 	},
 
 
-	/** @function chaslib.getTypeOf
+	/** @function chaslib.typeOf
 	 * @param object объект
 	 * @return тип объекта ввиде [object ТИП]
 	 */
-	getTypeOf : function(object) {
+	typeOf : function(object) {
 		return Object.prototype.toString.call(object);
 	},
 
@@ -34,11 +34,11 @@ var chaslib = {
 	 * @return arr в виде массива строк
 	 */
 	toStringsArray : function(arr) {
-		switch (chaslib.getTypeOf(arr)) {
+		switch (chaslib.typeOf(arr)) {
 		case "[object Array]":
 			var newArr = [];
 			for (var i = 0; i < arr.length; i++) {
-				switch (chaslib.getTypeOf(arr[i])) {
+				switch (chaslib.typeOf(arr[i])) {
 				case "[object Number]":
 					newArr.push(arr[i].ts().toString());
 					break;
@@ -66,7 +66,7 @@ var chaslib = {
 	 * @return arr, если arr - массив, и массив длиной len из элементов arr в противном случае
 	 */
 	toArray : function(arr, len) {
-		if (chaslib.getTypeOf(arr) == "[object Array]") {
+		if (chaslib.typeOf(arr) == "[object Array]") {
 			return arr;
 		}
 		var result = [];
