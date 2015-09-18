@@ -90,8 +90,8 @@ test("String.prototype.transliterate", function() {
 	expect("НастяMurr7".transliterate(true)).to.be.equal("НастяМурр7");
 });
 
-test("NLib.toArray", function() {
-	expect(NLib.toArray([], 3)).to.eql([]);
-	expect(NLib.toArray(1, 3)).to.eql([1, 1, 1]);
-	expect(NLib.toArray(undefined, 1)).to.eql([undefined]);
+test("chaslib.toArray", function() {
+	expect(chaslib.toArray([], 3)).to.eql([]);
+	expect(chaslib.toArray(1, 3)).to.eql([1, 1, 1]);
+	expect(chaslib.toArray(undefined, 1)).to.eql([undefined]);
 });

@@ -1,9 +1,9 @@
 "use strict";
 
-/** @namespace NLib.math
+/** @namespace chaslib.math
  * Работа с числами
  */
-NLib.math = {
+chaslib.math = {
 	Vec2 : function(x, y) {
 		return { x : x || 0, y : y || 0 };
 	},
@@ -13,7 +13,7 @@ NLib.math = {
 		return { x : x || 0, y : y || 0, z : z || 0 };
 	},
 
-	/** @function NLib.math.randomize
+	/** @function chaslib.math.randomize
 	 * Генерация случайного числа
 	 * @param {Number} min минимальное значение
 	 * @param {Number} max минимальное значение
