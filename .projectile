@@ -1,9 +1,0 @@
--/ext
--/doc/api
--__pycache__
-
--ext/
--build/
--dist/
-
--node_modules/
