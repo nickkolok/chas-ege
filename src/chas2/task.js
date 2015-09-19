@@ -20,29 +20,29 @@ chas2.task = {
 		 * @param {Function} draw функция отрисовки
 		 */
 		validateTask : function(o) {
-			if (NLib.getTypeOf(o.text) != "[object String]") {
+			if (chaslib.getTypeOf(o.text) != "[object String]") {
 				throw TypeError("Параметр text должен быть строкой");
 			}
 
-			if (NLib.getTypeOf(o.analys) != "[object String]") {
+			if (chaslib.getTypeOf(o.analys) != "[object String]") {
 				throw TypeError("Параметр analys должен быть строкой");
 			}
 
-			if (o.checkAnswer != undefined && NLib.getTypeOf(o.checkAnswer) != "[object Function]") {
+			if (o.checkAnswer != undefined && chaslib.getTypeOf(o.checkAnswer) != "[object Function]") {
 				throw TypeError("Параметр checkAnswer должен быть функцией или отсутствовать");
 			}
 
-			if (o.draw != undefined && NLib.getTypeOf(o.draw) != "[object Function]") {
+			if (o.draw != undefined && chaslib.getTypeOf(o.draw) != "[object Function]") {
 				throw TypeError("Параметр draw должен быть функцией или отсутствовать");
 			}
 
-			if (o.tags != undefined && NLib.getTypeOf(o.tags) != "[object Object]") {
+			if (o.tags != undefined && chaslib.getTypeOf(o.tags) != "[object Object]") {
 				throw TypeError("Параметр tags должен быть массивом строк или отсутствовать");
 			}
 			if (o.tags) {
 				//Следующий цикл сомнителен: for-in разве не всегда возвращает строки?
 				for (var t in o.tags) {
-					if (NLib.getTypeOf(t) != "[object String]") {
+					if (chaslib.getTypeOf(t) != "[object String]") {
 						throw TypeError("Параметр tags (массив) должен содержать только строки");
 					}
 				}
@@ -63,8 +63,8 @@ chas2.task = {
 		normalizeTask : function(o) {
 			o.text = o.text || "";
 			o.analys = o.analys || "";
-			o.answers = NLib.toStringsArray(o.answers || []);
-			o.wrongAnswers = NLib.toStringsArray(o.wrongAnswers || []);
+			o.answers = chaslib.toStringsArray(o.answers || []);
+			o.wrongAnswers = chaslib.toStringsArray(o.wrongAnswers || []);
 		},
 
 	},
@@ -227,8 +227,8 @@ chas2.task = {
 		//Приводим необязательные параметры к массивам
 		(o.enablePartsSubtraction != undefined) || (o.enablePartsSubtraction == 0);
 		(o.enablePartsDivision != undefined) || (o.enablePartsDivision == 1);
-		o.enablePartsSubtraction = NLib.toArray(o.enablePartsSubtraction, 2);
-		o.enablePartsDivision = NLib.toArray(o.enablePartsDivision, 2);
+		o.enablePartsSubtraction = chaslib.toArray(o.enablePartsSubtraction, 2);
+		o.enablePartsDivision = chaslib.toArray(o.enablePartsDivision, 2);
 
 		//Заводим taskOptions, если он не указан
 		if (taskOptions === undefined) {
@@ -290,7 +290,7 @@ chas2.task = {
 
 		//Теперь разбираемся с корнями
 
-		o.roots = NLib.toArray(o.roots, 1);
+		o.roots = chaslib.toArray(o.roots, 1);
 
 		if (o.filterWholeRoots) {
 			//Если нужно, отбираем целые корни

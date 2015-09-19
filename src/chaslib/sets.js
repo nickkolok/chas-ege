@@ -1,10 +1,10 @@
 "use strict";
 
-/** @namespace NLib.sets
+/** @namespace chaslib.sets
  * Наборы
  */
-NLib.sets = {
-	/** @namespace NLib.sets.alphabets
+chaslib.sets = {
+	/** @namespace chaslib.sets.alphabets
 	 * Алфавиты/Азбуки
 	 */
 	alphabets : {
