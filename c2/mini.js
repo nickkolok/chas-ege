@@ -12,7 +12,7 @@ function sozdat() {
 	$("#pole").html("Задание составляется, подождите...");
 	try {
 		zagr(parsedJSON.mini.src.iz());
-	} catch(e) {
+	} catch (e) {
 		$("#pole").text("Не удалось выделить адреса шаблонов.");
 		$("#panel").hide();
 	}
