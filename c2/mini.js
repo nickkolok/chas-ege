@@ -6,6 +6,9 @@ function obnov(p1) {
 	$("#pole").html(slvopr.txt);
 	slvopr.trd();
 	MathJax.Hub.Typeset();
+	setTimeout(function() {
+		MathJax.Hub.Typeset();
+	}, 5000); //Костыль, на случай, если не отрисовалось
 }
 
 function sozdat() {
@@ -71,4 +74,7 @@ var startShell = function() {
 	$("#prov").hide();
 	$(trysozd);
 	allLinksToSpans();
+	if (!chas.mode.egeok) {
+		$("#check-yourself-strip").show().css({ "background-color":"#999", "color":"white" });
+	}
 };
