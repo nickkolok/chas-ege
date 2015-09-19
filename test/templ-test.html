@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>{% block title %}{% endblock %} – Тестирование тренажёра "Час ЕГЭ" {{version_title}}</title>
+	<script>
+		{% include "../build/lib/head.min.js" %}
+		chas.mode.withoutSlider=1;
+		chas.mode.withoutMenu=1;
+		chas.naborRequired=1;
+		chas.mode.root = "../../dist/";
+		chas.mode.extPath = "../../ext/";
+	</script>
+
+	<link rel="shortcut icon" id="link_icon1"/>
+	<link rel="icon" id="link_icon2"/>
+	<link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css" media="screen">
+</head>
+<body>
+	<input type="hidden" id="var-version" value="{{version}}"/>
+
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+	<script>
+		addinitjs();
+	</script>
+
+	<script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+	<script src="../../node_modules/qunit-bdd/lib/qunit-bdd.js"></script>
+
+	<script src="util.js"></script>
+	{% block js%}
+	{% endblock %}
+</body>
+</html>

@@ -11,7 +11,7 @@ window.vopr.txt=goods.ie.toZagl()+' стоит '+chislitlx(cost,'рубль')+'.
 	client+' за '+chislitlx(sum,goods)+', если при покупке больше '+chislitlx(sumd,goods)+
 	' '+build+' делает скидку '+discount+'% от стоимости всей покупки?';
 if (sumd<sum){
-	window.vopr.ver=[(cost*sum*discount/100).ceil()];//чтобы лишний раз не пересчитывать
+	window.vopr.ver=[(cost*sum*(1-discount/100)).ceil()];//чтобы лишний раз не пересчитывать
 }else{
 	window.vopr.ver=[(cost*sum).ceil()];
 }

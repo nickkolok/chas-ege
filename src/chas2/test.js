@@ -26,13 +26,13 @@ chas2.test = {
 		infoFunc("Проверка шаблонов в наборе '" + nabor.adres + "'");
 
 		var errCount = 0;
-		for (var category in nabor.upak){
+		for (var category in nabor.upak) {
 			infoFunc("\tПроверка категории " + category);
 
 			var errCountPerCat = 0;
 
 			for (var templ in nabor.upak[category]) {
-				if (templ != "main"){
+				if (templ != "main") {
 					infoFunc("\t\tПроверка шаблона B1/" + templ);
 					for (var i = p.triesCount || 10; i; i--) {
 						try {
@@ -52,5 +52,4 @@ chas2.test = {
 		}
 		infoFunc("Проверка шаблонов в наборе '" + nabor.adres + "' закончена с " + errCount + " ошибками");
 	}
-}
-
+};

@@ -1,53 +1,33 @@
+"use strict";
+
 var fs = require("fs");
+var ls = require("ls");
 var regexp = require("node-regexp");
 
-var exec = require('child_process').exec;
+var exec = require("child_process").exec;
 
-var libListChasUijs = require('./lib/load.js');
-var libListChasLib  = require('./lib/load-chas-lib.js');
+var libListChasUijs = require("./lib/load.js");
+var libListChasLib  = require("./lib/load-chas-lib.js");
+var pak             = require("./src/util/pak.js");
 
 
 module.exports = function(grunt) {
-	"use strict";
 	var cwd = process.cwd();
 
-	// prefix должен заканчиваться на слеш (/)
-	// Например:
-	//     "file:///home/user/chas-ege/"
-	//     "file://" + cwd + "/"
-	var getHtmlFromDist = function(prefix) {
-		var prefix = prefix || "";
-
-		var pathes = [];
-
-		var re = regexp()
-			.end(".html")
-			.ignoreCase()
-			.toRegExp();
-
-		[
-			// В конце обязательно должен быть слеш (/)
-			"dist/c2/",
-			"dist/sh/",
-			"dist/doc/"
-		].forEach(function(dir) {
-			var prefixedDir = prefix + dir;
-			try {
-				fs.readdirSync(dir).forEach(function(file) {
-					if (re.test(file)) {
-						pathes.push(prefixedDir + file);
-					}
-				});
-			} catch (e) {
-				if (e.code === "ENOENT") {
-					grunt.log.writeln("Директория '" + dir + "' не найдена. Видимо dist ещё не собран");
-				} else {
-					throw e;
-				}
-			}
-		});
-		return pathes;
-	}
+	var packCppTasks = function() {
+		var tasks = ls("zdn/*/*/*.cpp");
+		for (var i = 0; i < tasks.length; i++) {
+			//Используем синхронное чтение/запись. Ибо вдруг дескрипторов не хватит?
+			fs.writeFileSync("dist/" + tasks[i].path + "/" + tasks[i].name + ".js",
+				"'use strict';\n(function(){chas2.task.setJscppTask('" +
+				fs.readFileSync(tasks[i].full, "utf8")
+					.replace(/\\/g, "\\\\")
+					.replace(/'/g, "\\'")
+					.replace(/[\n\r]+/g, "\\n") +
+				"');})();\n"
+			);
+		}
+	};
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
@@ -61,21 +41,25 @@ module.exports = function(grunt) {
 			},
 			sh: {
 				dest: "build/sh/",
-				src: ["sh/*.html",],
+				src: ["sh/*.html"],
 			},
 			doc: {
 				dest: "build/doc/",
-				src: ["doc/*.html",],
+				src: ["doc/*.html"],
 			},
 			html: {
 				dest: "build/c2/",
 				src: ["c2/*.html", "!c2/templ-*.html"],
 			},
+			unitTest: {
+				dest: "build/test/",
+				src: ["test/*.html", "!test/templ-*.html"],
+			}
 		},
 		copy: {
 			pagesJs: {
 				files: [
-					{ expand: true, src: ["sh/*.js","c2/*.js",], dest: "dist/" },
+					{ expand: true, src: ["sh/*.js", "c2/*.js"], dest: "dist/" },
 				]
 			},
 			taskSets: {
@@ -103,6 +87,11 @@ module.exports = function(grunt) {
 					{ expand: true, src: ["index.html"], dest: "dist/" },
 				]
 			},
+			unitTest: {
+				files: [
+					{ expand: true, src: ["test/*.js"], dest: "build/" },
+				]
+			},
 		},
 		concat: {
 			options: {
@@ -118,7 +107,7 @@ module.exports = function(grunt) {
 				dest: "build/lib/chas-uijs.js"
 			},
 			init: {
-				src: ["build/lib/init.js", "build/lib/chas-uijs.js"],
+				src: ["lib/init.js", "build/lib/chas-uijs.js"],
 				dest: "build/lib/init.cat.js"
 			},
 		},
@@ -129,18 +118,18 @@ module.exports = function(grunt) {
 			pagesJS: {
 				files: [{
 					expand: true,
-					cwd: 'sh',
-					src: '*.js',
-					dest: 'dist/sh',
+					cwd: "sh",
+					src: "*.js",
+					dest: "dist/sh",
 				}],
 			},
 			tasksPacks: {
 				files: [{
 					expand: true,
-					cwd: 'zdn',
-					src: '*/upak.js',
-					dest: 'dist/zdn',
-				}],
+					cwd: "build/zdn/",
+					src: "*/upak.js",
+					dest: "dist/zdn",
+				}]
 			},
 			head: {
 				files: {
@@ -159,7 +148,7 @@ module.exports = function(grunt) {
 			},
 			init: {
 				files: {
-					"dist/lib/init.min.js": ["build/lib/init.cat.js",],
+					"dist/lib/init.min.js": ["build/lib/init.cat.js"],
 				}
 			},
 		},
@@ -169,34 +158,37 @@ module.exports = function(grunt) {
 				roundingPrecision: -1,
 			},
 			target: {
-				files: [{
-					"dist/css/chas-ui.min.css": [
-						 "css/browser.css",
-						 "css/main.css",
-						 "css/menu.css",
-						 "ext/anyslider/css/anythingslider.css",
-						 "ext/anyslider/css/theme-minimalist-square.css",
-						 "ext/fonts/stylesheet.css",
-						 "ext/keyboard/keyboard.css",
-						 "ext/jqplot/jquery.jqplot.css",
-					],
-					"dist/css/chas-ui-bs.min.css": [
-						 "css/browser.css",
-						 "css/menu.css",
-						 "ext/anyslider/css/anythingslider.css",
-						 "ext/anyslider/css/theme-minimalist-square.css",
-						 "ext/fonts/stylesheet.css",
-						 "ext/keyboard/keyboard.css",
-						 "ext/jqplot/jquery.jqplot.css",
-						 "ext/bootstrap/css/bootstrap.min.css",
-					],
-				},{
-					expand: true,
-					cwd: 'css',
-					src: ['*.css',],
-					dest: 'dist/css',
-					ext: '.min.css',
-				},],
+				files: [
+					{
+						"dist/css/chas-ui.min.css": [
+							 "css/browser.css",
+							 "css/main.css",
+							 "css/menu.css",
+							 "ext/anyslider/css/anythingslider.css",
+							 "ext/anyslider/css/theme-minimalist-square.css",
+							 "ext/fonts/stylesheet.css",
+							 "ext/keyboard/keyboard.css",
+							 "ext/jqplot/jquery.jqplot.css",
+						],
+						"dist/css/chas-ui-bs.min.css": [
+							 "css/browser.css",
+							 "css/menu.css",
+							 "ext/anyslider/css/anythingslider.css",
+							 "ext/anyslider/css/theme-minimalist-square.css",
+							 "ext/fonts/stylesheet.css",
+							 "ext/keyboard/keyboard.css",
+							 "ext/jqplot/jquery.jqplot.css",
+							 "ext/bootstrap/css/bootstrap.min.css",
+						],
+					},
+					{
+						expand: true,
+						cwd: "css",
+						src: ["*.css"],
+						dest: "dist/css",
+						ext: ".min.css",
+					}
+				]
 			},
 		},
 		htmlmin: {
@@ -233,7 +225,13 @@ module.exports = function(grunt) {
 		checkPages: {
 			dev: {
 				options: {
-					pageUrls: getHtmlFromDist("file://" + cwd + "/"),
+					pageUrls: ls([
+							"dist/c2/*.html",
+							"dist/sh/*.html",
+							"dist/doc/*.html"
+						]).map(function(p) {
+							return "file://" + cwd + "/" + p.full;
+						}),
 					checkLinks: true,
 					queryHashes: true,
 					// noRedirects: true,
@@ -255,7 +253,7 @@ module.exports = function(grunt) {
 					"lib/head.js",
 					"sh/*.html",
 				],
-				tasks: ["process-html",]
+				tasks: ["process-html"]
 			},
 			pagesJs: {
 				files: [
@@ -263,27 +261,54 @@ module.exports = function(grunt) {
 					"c2/*.js",
 					"sh/*.js",
 				],
-				tasks: ["process-pages-js",]
+				tasks: ["process-pages-js"]
 			},
 			lib: {
 				files: [
-					"lib/*","!lib/head*",
+					"lib/*", "!lib/head*",
 					"src/**",
 				],
-				tasks: ["process-lib",]
+				tasks: ["process-lib"]
 			},
 			taskSets: {
 				files: [
 					"zdn/**",
 				],
-				tasks: ["process-task-sets",]
+				tasks: ["process-task-sets"]
 			},
 			css: {
 				files: [
 					"css/*",
 				],
-				tasks: ["process-css",]
+				tasks: ["process-css"]
 			},
+			unitTest: {
+				files: [
+					"test/*"
+				],
+				tasks: ["process-unit-test"]
+			}
+		},
+
+		eslint: {
+			options: {
+				configFile: "eslint.json"
+			},
+			target: [
+				"src/*/*.js",
+				"c2/*.js",
+				"test/*.js",
+				"Gruntfile.js"
+
+				// Всё равно никто исправлять их не будет
+				// ,"sh/*.js",
+				// "lib/*.js",
+				// "zdn/*/*/*.js"
+			]
+		},
+
+		qunit: {
+			all: ["build/test/*.html"]
 		},
 
 		clean: {
@@ -292,40 +317,35 @@ module.exports = function(grunt) {
 		}
 	});
 
-	grunt.loadNpmTasks("grunt-swigtemplates");
-	grunt.loadNpmTasks("grunt-contrib-watch");
-	grunt.loadNpmTasks("grunt-contrib-concat");
-	grunt.loadNpmTasks("grunt-contrib-uglify");
-	grunt.loadNpmTasks("grunt-contrib-copy");
-	grunt.loadNpmTasks("grunt-contrib-cssmin");
-	grunt.loadNpmTasks("grunt-contrib-htmlmin");
-	grunt.loadNpmTasks("grunt-contrib-clean");
-	grunt.loadNpmTasks("grunt-newer");
-	grunt.loadNpmTasks("grunt-check-pages");
+	require("time-grunt")(grunt);
+	require("load-grunt-tasks")(grunt);
 
 	//С make начинаются задания, результат которых - готовый *.min.{js,css}
 
-	grunt.registerTask('unify-use-strict-chas-uijs', 'Убираем лишние use strict из chas-uijs.js', function() {
-		exec('sed \'1 a "use strict";//\' build/lib/chas-uijs.js > build/lib/chas-uijs.js.tmp');
-		exec('sed \'/^.use strict.;$/d\' build/lib/chas-uijs.js.tmp > dist/lib/chas-uijs.js');
-		// exec('rm dist/lib/chas-uijs.js.tmp');
+	grunt.registerTask("unify-use-strict-chas-uijs", "Убираем лишние use strict из chas-uijs.js", function() {
+		exec("sed '1 a \"use strict\";//' build/lib/chas-uijs.js > build/lib/chas-uijs.js.tmp");
+		exec("sed '/^.use strict.;$/d' build/lib/chas-uijs.js.tmp > dist/lib/chas-uijs.js");
+		// exec("rm dist/lib/chas-uijs.js.tmp");
 	});
-	grunt.registerTask('packTasks', 'Упаковываем задания в соответствующие upak.js', function() {
-		exec('dev/upak.sh');
+	grunt.registerTask("packTasks", "Упаковываем задания в соответствующие upak.js", function() {
+		packCppTasks(cwd);
+		// exec("cd dist && ../dev/upak.sh");
+		pak.packZdnSync("zdn", "build/zdn");
 	});
-	grunt.registerTask("make-init", ["concat:init", "uglify:init",]);
-	grunt.registerTask("make-head", ["uglify:head",]);
-	grunt.registerTask("make-chas-lib" , ["concat:chasLib", "uglify:chasLib",]);
+	grunt.registerTask("make-init", ["concat:init", "uglify:init"]);
+	grunt.registerTask("make-head", ["uglify:head"]);
+	grunt.registerTask("make-chas-lib", ["concat:chasLib", "uglify:chasLib"]);
 	grunt.registerTask("make-chas-uijs", ["concat:chasUijs", /*"unify-use-strict-chas-uijs", "uglify:chasUijs",*/]);
 
 	grunt.registerTask("process-html", ["make-head", "swigtemplates", "htmlmin" ]);
 	grunt.registerTask("process-pages-js", ["newer:copy:pagesJs"]);
-	grunt.registerTask("process-task-sets", ['packTasks',"newer:copy:taskSets"]);
-	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init",]);
+	grunt.registerTask("process-task-sets", ["packTasks", "newer:copy:taskSets"]);
+	grunt.registerTask("process-lib", ["newer:copy:lib", "make-chas-lib", "make-chas-uijs", "make-init"]);
 	grunt.registerTask("process-css", ["cssmin", "newer:copy:css"]);
+	grunt.registerTask("process-unit-test", ["swigtemplates:unitTest", "copy:unitTest"]);
 
 	grunt.registerTask("check-urls", ["checkPages:dev"]);
 
-	grunt.registerTask("build-except-ext", ["process-html", "process-pages-js", "process-task-sets", "process-lib", "process-css",]);
+	grunt.registerTask("build-except-ext", ["process-html", "process-pages-js", "process-task-sets", "process-lib", "process-css"]);
 	grunt.registerTask("default", ["build-except-ext", "swigtemplates", "copy", "concat", "uglify"]);
 };
