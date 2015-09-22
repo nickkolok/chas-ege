@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /** @namespace chas2.task
  * Параметры задания
@@ -20,30 +20,30 @@ chas2.task = {
 		 * @param {Function} draw функция отрисовки
 		 */
 		validateTask : function(o) {
-			if (chaslib.getTypeOf(o.text) != "[object String]") {
-				throw TypeError("Параметр text должен быть строкой");
+			if (chaslib.getTypeOf(o.text) != '[object String]') {
+				throw TypeError('Параметр text должен быть строкой');
 			}
 
-			if (chaslib.getTypeOf(o.analys) != "[object String]") {
-				throw TypeError("Параметр analys должен быть строкой");
+			if (chaslib.getTypeOf(o.analys) != '[object String]') {
+				throw TypeError('Параметр analys должен быть строкой');
 			}
 
-			if (o.checkAnswer != undefined && chaslib.getTypeOf(o.checkAnswer) != "[object Function]") {
-				throw TypeError("Параметр checkAnswer должен быть функцией или отсутствовать");
+			if (o.checkAnswer != undefined && chaslib.getTypeOf(o.checkAnswer) != '[object Function]') {
+				throw TypeError('Параметр checkAnswer должен быть функцией или отсутствовать');
 			}
 
-			if (o.draw != undefined && chaslib.getTypeOf(o.draw) != "[object Function]") {
-				throw TypeError("Параметр draw должен быть функцией или отсутствовать");
+			if (o.draw != undefined && chaslib.getTypeOf(o.draw) != '[object Function]') {
+				throw TypeError('Параметр draw должен быть функцией или отсутствовать');
 			}
 
-			if (o.tags != undefined && chaslib.getTypeOf(o.tags) != "[object Object]") {
-				throw TypeError("Параметр tags должен быть массивом строк или отсутствовать");
+			if (o.tags != undefined && chaslib.getTypeOf(o.tags) != '[object Object]') {
+				throw TypeError('Параметр tags должен быть массивом строк или отсутствовать');
 			}
 			if (o.tags) {
 				//Следующий цикл сомнителен: for-in разве не всегда возвращает строки?
 				for (var t in o.tags) {
-					if (chaslib.getTypeOf(t) != "[object String]") {
-						throw TypeError("Параметр tags (массив) должен содержать только строки");
+					if (chaslib.getTypeOf(t) != '[object String]') {
+						throw TypeError('Параметр tags (массив) должен содержать только строки');
 					}
 				}
 			}
@@ -61,8 +61,8 @@ chas2.task = {
 		 * @param {Function} draw функция отрисовки
 		 */
 		normalizeTask : function(o) {
-			o.text = o.text || "";
-			o.analys = o.analys || "";
+			o.text = o.text || '';
+			o.analys = o.analys || '';
 			o.answers = chaslib.toStringsArray(o.answers || []);
 			o.wrongAnswers = chaslib.toStringsArray(o.wrongAnswers || []);
 		},
@@ -100,7 +100,7 @@ chas2.task = {
 
 		var voprcheck = dvig.validateVopr();
 		if (voprcheck) {
-			chas2.Lwarn("Результат проверки вопроса:\n\t" + voprcheck);
+			chas2.Lwarn('Результат проверки вопроса:\n\t' + voprcheck);
 		}
 	},
 
@@ -124,7 +124,7 @@ chas2.task = {
 
 		var voprcheck = dvig.validateVopr();
 		if (voprcheck) {
-			chas2.Lwarn("Результат проверки вопроса:\n\t" + voprcheck);
+			chas2.Lwarn('Результат проверки вопроса:\n\t' + voprcheck);
 		}
 		return o;
 	},
@@ -168,8 +168,8 @@ chas2.task = {
 	 */
 	setJscppTask : function(code) {
 
-		var input = "";
-		var output = "";
+		var input = '';
+		var output = '';
 		var config = {
 			stdio: {
 				write: function(s) {
@@ -191,19 +191,19 @@ chas2.task = {
 	setHumanReadableTask : function(output) {
 		var parsedOptions = output.parseHumanReadableToJSON();
 		if (parsedOptions[0]) {
-			parsedOptions["Задание"] = "Необходимо указать ключевые слова! <br/> Текущий вывод: " +
-			                            output.vTag("pre") + "<br/>" + (parsedOptions["Задание"] || " ");
+			parsedOptions['Задание'] = 'Необходимо указать ключевые слова! <br/> Текущий вывод: ' +
+			                            output.vTag('pre') + '<br/>' + (parsedOptions['Задание'] || ' ');
 		}
 		chas2.task.setTask({
-			text: parsedOptions["Задание"],
-			answers: parsedOptions["Ответ"],
-			analys: parsedOptions["Решение"],
+			text: parsedOptions['Задание'],
+			answers: parsedOptions['Ответ'],
+			analys: parsedOptions['Решение'],
 		});
 	},
 
 
 	/** @function NApi.task.setEquationTask
-	 * Составить задание типа "уравнение"
+	 * Составить задание типа 'уравнение'
 	 * @param {Array} o.parts части уравнения (левая и правая)
 	 * @param {String} o.handleMultipleRoots способ обработки случая, когда корней два или более
 	 * @param {Number|String|Number[]|String[]} o.roots корни уравнения
@@ -246,7 +246,7 @@ chas2.task = {
 			exchangeParts();
 		}
 		//Если среди частей уравнения есть голое число и не указано иное, то число всегда справа
-		if (("" + o.parts[0]).isNumeric() && !("" + o.parts[1]).isNumeric() && o.enablePartsExchange != 1) {
+		if (('' + o.parts[0]).isNumeric() && !('' + o.parts[1]).isNumeric() && o.enablePartsExchange != 1) {
 			exchangeParts();
 			o.enablePartsExchange = 0;
 		}
@@ -254,7 +254,7 @@ chas2.task = {
 		if (o.parts[1] == 0) {
 			//Если можно и есть на то воля случая, перед левой частью ставим минус
 			if (o.enablePartsSubtraction[0] && !sl(3)) {
-				o.parts[0] = "-" + o.parts[0];
+				o.parts[0] = '-' + o.parts[0];
 			}
 			//Делить нельзя!
 			o.enablePartsDivision = [0, 0];
@@ -262,15 +262,15 @@ chas2.task = {
 			o.enablePartsSubtraction = [0, 0];
 		} else if (o.enablePartsSubtraction[0] && o.enablePartsSubtraction[1] && !sl(4)) {
 			//Если можно вычитать обе части, то с вероятностью 1/5 ставим перед обоими минус
-			o.parts[0] = "-" + o.parts[0];
-			o.parts[1] = "-" + o.parts[1];
+			o.parts[0] = '-' + o.parts[0];
+			o.parts[1] = '-' + o.parts[1];
 		} else if (o.enablePartsSubtraction[0] && !sl(3)) {
 			//Если можно, вычитаем левую часть из правой
-			o.parts[0] = o.parts[1] + "-" + o.parts[0];
+			o.parts[0] = o.parts[1] + '-' + o.parts[0];
 			o.parts[1] = 0;
 		} else if (o.enablePartsSubtraction[1] && !sl(3)) {
 			//Или правую из левой...
-			o.parts[0] = o.parts[0] + "-" + o.parts[1];
+			o.parts[0] = o.parts[0] + '-' + o.parts[1];
 			o.parts[1] = 0;
 		} else if (o.enablePartsDivision[0] && o.enablePartsDivision[1] && !sl(4)) {
 			//Если можно делить на обе части, то с вероятностью 1/5 ставим обе в знаменатель
@@ -296,7 +296,7 @@ chas2.task = {
 			//Если нужно, отбираем целые корни
 			var wholeRoots = [];
 			for (var i = 0; i < o.roots.length; i++) {
-				if (("" + o.roots[i]).isNumeric() && (1 * o.roots[i]).isZ()) {
+				if (('' + o.roots[i]).isNumeric() && (1 * o.roots[i]).isZ()) {
 					wholeRoots.push(o.roots[i]);
 				}
 			}
@@ -304,52 +304,52 @@ chas2.task = {
 		}
 		//Если множество корней пусто - ошибка!
 		if (o.roots.length == 0) {
-			throw new Error("Множество корней уравнения не должно быть пусто");
+			throw new Error('Множество корней уравнения не должно быть пусто');
 		}
 
 		var multiRoots = (o.roots.length > 1);
 		o.roots = o.roots.sortDelDubl();
 
-		var notListVariants = ["sum", "production", "min", "max"];
-		if (o.handleMultipleRoots == "random") {
-			o.handleMultipleRoots = ["list"].concat(notListVariants).iz();
-		} else if (o.handleMultipleRoots == "randomExceptList") {
+		var notListVariants = ['sum', 'production', 'min', 'max'];
+		if (o.handleMultipleRoots == 'random') {
+			o.handleMultipleRoots = ['list'].concat(notListVariants).iz();
+		} else if (o.handleMultipleRoots == 'randomExceptList') {
 			o.handleMultipleRoots = notListVariants.iz();
 		}
-		var multipleRootsPhrase = "";
+		var multipleRootsPhrase = '';
 		switch (o.handleMultipleRoots) {
 			default:
-			case "sum":
+			case 'sum':
 				taskOptions.answers = o.roots.sum();
-				multipleRootsPhrase = "их сумму";
+				multipleRootsPhrase = 'их сумму';
 			break;
-			case "production":
+			case 'production':
 				taskOptions.answers = o.roots.production();
-				multipleRootsPhrase = "их произведение";
+				multipleRootsPhrase = 'их произведение';
 			break;
-			case "min":
+			case 'min':
 				taskOptions.answers = o.roots.minE();
-				multipleRootsPhrase = "меньший из них";
+				multipleRootsPhrase = 'меньший из них';
 			break;
-			case "max":
+			case 'max':
 				taskOptions.answers = o.roots.maxE();
-				multipleRootsPhrase = "больший из них";
+				multipleRootsPhrase = 'больший из них';
 			break;
-			case "any":
+			case 'any':
 				taskOptions.answers = o.roots;
-				multipleRootsPhrase = "любой из них";
+				multipleRootsPhrase = 'любой из них';
 			break;
-			case "list":
-				taskOptions.answers = o.roots.join(";");
-				multipleRootsPhrase = "перечислите их через точку с запятой (;) в любом порядке";
+			case 'list':
+				taskOptions.answers = o.roots.join(';');
+				multipleRootsPhrase = 'перечислите их через точку с запятой (;) в любом порядке';
 				taskOptions.checkAnswer = vopr.vrn_list;
 			break;
 		}
 
-		taskOptions.text = "Найдите корень уравнения $$" + o.parts[0].plusminus() + "=" + o.parts[1].plusminus() + "$$" +
-			" В ответе укажите только целый корень. ".esli(o.filterWholeRoots) +
+		taskOptions.text = 'Найдите корень уравнения $$' + o.parts[0].plusminus() + '=' + o.parts[1].plusminus() + '$$' +
+			' В ответе укажите только целый корень. '.esli(o.filterWholeRoots) +
 			//При желании форсированно вызвать обработку нескольких корней - просто указать два одинаковых корня
-			(" Если " + "таких ".esli(o.filterWholeRoots) + "корней несколько, в ответе укажите " + multipleRootsPhrase + ".").
+			(' Если ' + 'таких '.esli(o.filterWholeRoots) + 'корней несколько, в ответе укажите ' + multipleRootsPhrase + '.').
 				esli(multiRoots);
 
 		//Наконец, устанавливаем задание
@@ -360,7 +360,7 @@ chas2.task = {
 
 
 	/** @function NApi.task.setAdditiveEquationTask
-	 * Составить задание типа "уравнение, имеющее в основе сложение"
+	 * Составить задание типа 'уравнение, имеющее в основе сложение'
 	 * @param {Array} o.parts части уравнения (слагаемые, как будто справа 0)
 	 * @param {String} o.handleMultipleRoots способ обработки случая, когда корней два или более
 	 * @param {Number|String|Number[]|String[]} o.roots корни уравнения
@@ -378,10 +378,10 @@ chas2.task = {
 		o.parts = o.parts.shuffle();
 		var leftCount = sl(1, o.parts.length);
 		var left = o.parts.splice(0, leftCount);
-		var right = o.parts.length ? o.parts : ["0"];
+		var right = o.parts.length ? o.parts : ['0'];
 		//Ставим минусы в левой части
 		for (var i = 0; i < left.length; i++) {
-			left[i] = "-" + left[i];
+			left[i] = '-' + left[i];
 		}
 		o.parts = [left.slag(), right.slag()];
 		chas2.task.setEquationTask(o, taskOptions);
@@ -404,12 +404,12 @@ chas2.task = {
 		}
 		if (!pre) {
 			pre = [[
-					"Какое утверждение является истинным?",
-					"Какое утверждение верно?",
+					'Какое утверждение является истинным?',
+					'Какое утверждение верно?',
 				], [
-					"Какое утверждение не является истинным?",
-					"Какое утверждение является ложным?",
-					"Какое утверждение неверно?",
+					'Какое утверждение не является истинным?',
+					'Какое утверждение является ложным?',
+					'Какое утверждение неверно?',
 				]];
 		}
 		if (pre.isArray && pre[1] && sl1()) {
@@ -428,14 +428,14 @@ chas2.task = {
 			}
 		}
 		var wrongAnswers = [
-			"Ни А, ни Б",
-			"Только Б",
-			"Только А",
-			"А и Б",
+			'Ни А, ни Б',
+			'Только Б',
+			'Только А',
+			'А и Б',
 		];
 		var answers = wrongAnswers.splice(2 * trueA + trueB, 1);
-		var br = "<br/>";
-		var text = pre + br + br + "А) " + stA + br + "Б) " + stB + br + br;
+		var br = '<br/>';
+		var text = pre + br + br + 'А) ' + stA + br + 'Б) ' + stB + br + br;
 		chas2.task.setTask({
 			text: text,
 			answers: answers,
@@ -477,13 +477,13 @@ chas2.task = {
 		 */
 		addJqplot : function(m) {
 			var o = chas2.task.getTask();
-			var randomDivId = "jqplotTarget" + sl(1000000);
-			var height = m.height || "320px";
-			var width = m.width || "auto";
-			typeof(height) == "string" || (height += "px");
-			typeof(width) == "string" || (width += "px");
-			o.text = "<div id='" + randomDivId + "' style='text-align:center;height:" + height + ";width:" + width +
-				"' data-html-differentiator='" + Math.random() + "'></div>" + o.text;
+			var randomDivId = 'jqplotTarget' + sl(1000000);
+			var height = m.height || '320px';
+			var width = m.width || 'auto';
+			typeof(height) == 'string' || (height += 'px');
+			typeof(width) == 'string' || (width += 'px');
+			o.text = '<div id="' + randomDivId + '" style="text-align:center;height:' + height + ';width:' + width +
+				'" data-html-differentiator="' + Math.random() + '"></div>' + o.text;
 			var previousDraw = o.draw;
 			o.draw = function() {
 				//Замыкание же!
@@ -498,14 +498,14 @@ chas2.task = {
 		 * Перемешать буквы латинского алфавита в заданиях, например, на геометрию
 		 */
 		variativeABC : (function() {
-			var alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+			var alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 			return function() {
 				var alph2 = alph.slice().shuffle();
 				chas2.task.setTask(
 					mapRecursive(
 						chas2.task.getTask(),
 						function(str) {
-							return ("" + str).cepZamena(alph, alph2);
+							return ('' + str).cepZamena(alph, alph2);
 						}
 					)
 				);

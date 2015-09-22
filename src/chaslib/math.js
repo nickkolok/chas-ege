@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /** @namespace chaslib.math
  * Работа с числами

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 String.prototype.parseHumanReadableToJSON = function() {
 	var result = {};
@@ -6,13 +6,13 @@ String.prototype.parseHumanReadableToJSON = function() {
 	var currentProperty = 0;
 	for (var i = 0; i < rows.length; i++) {
 		if (/:$/.test(rows[i])) {
-			currentProperty = rows[i].replace(/:$/, "");
-			result[currentProperty] = "";
+			currentProperty = rows[i].replace(/:$/, '');
+			result[currentProperty] = '';
 		} else {
-			result[currentProperty] += " ".esli(result[currentProperty]) + rows[i];
+			result[currentProperty] += ' '.esli(result[currentProperty]) + rows[i];
 		}
 	}
 	return result;
 };
 
-String.prototype.addToGlobal("docsString", 1);
+String.prototype.addToGlobal('docsString', 1);

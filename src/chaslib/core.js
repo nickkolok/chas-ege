@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /** @namespace chaslib
  * Утилиты
@@ -15,7 +15,7 @@ var chaslib = {
 		 * @private
 		 */
 		loadLibModule : function(name) {
-			document.write("<script charset=\"utf-8\" src=\"../lib/chaslib/" + name + ".js\" onload=\"console.log('[chaslib] Загружен модуль " + name + "');\"></script>");
+			document.write('<script charset="utf-8" src="../lib/chaslib/' + name + '.js" onload="console.log(\'[chaslib] Загружен модуль ' + name + '\');"></script>');
 		}
 	},
 
@@ -35,27 +35,27 @@ var chaslib = {
 	 */
 	toStringsArray : function(arr) {
 		switch (chaslib.typeOf(arr)) {
-		case "[object Array]":
+		case '[object Array]':
 			var newArr = [];
 			for (var i = 0; i < arr.length; i++) {
 				switch (chaslib.typeOf(arr[i])) {
-				case "[object Number]":
+				case '[object Number]':
 					newArr.push(arr[i].ts().toString());
 					break;
-				case "[object String]":
+				case '[object String]':
 					newArr.push(arr[i]);
 					break;
 				default:
-					throw TypeError("Параметр arr должен содержать только строки и числа");
+					throw TypeError('Параметр arr должен содержать только строки и числа');
 				}
 			}
 			return newArr;
-		case "[object Number]":
+		case '[object Number]':
 			return [arr.ts()];
-		case "[object String]":
+		case '[object String]':
 			return [arr];
 		default:
-			throw TypeError("Параметр answers должен");//TODO: WTF?!
+			throw TypeError('Параметр answers должен');//TODO: WTF?!
 		}
 	},
 
@@ -66,7 +66,7 @@ var chaslib = {
 	 * @return arr, если arr - массив, и массив длиной len из элементов arr в противном случае
 	 */
 	toArray : function(arr, len) {
-		if (chaslib.typeOf(arr) == "[object Array]") {
+		if (chaslib.typeOf(arr) == '[object Array]') {
 			return arr;
 		}
 		var result = [];
