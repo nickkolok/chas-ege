@@ -1,6 +1,6 @@
 {
   "name": "chas-ege",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Тренажёр для подготовки к экзаменам",
   "main": "index.js",
   "directories": {
