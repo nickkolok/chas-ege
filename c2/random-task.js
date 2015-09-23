@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var n;
 
@@ -17,35 +17,35 @@ var strelkaEst = 1;
 
 
 var initializeStatsTable = function() {
-	var statstable = $(document.createElement("table"));
-	statstable.attr("id", "stats-table");
-	statstable.addClass("table table-bordered");
+	var statstable = $(document.createElement('table'));
+	statstable.attr('id', 'stats-table');
+	statstable.addClass('table table-bordered');
 
-	var rowIndexes = $(document.createElement("tr"))
-		.attr("id", "stats-table-indexes");
-	var rowRight = $(document.createElement("tr"))
-		.attr("id", "stats-table-right");
-	var rowStats = $(document.createElement("tr"))
-		.attr("id", "stats-table-stats");
-	var rowTime = $(document.createElement("tr"))
-		.attr("id", "stats-table-time");
+	var rowIndexes = $(document.createElement('tr'))
+		.attr('id', 'stats-table-indexes');
+	var rowRight = $(document.createElement('tr'))
+		.attr('id', 'stats-table-right');
+	var rowStats = $(document.createElement('tr'))
+		.attr('id', 'stats-table-stats');
+	var rowTime = $(document.createElement('tr'))
+		.attr('id', 'stats-table-time');
 
 	var createDataIndexes = function(index, title, tasksetName) {
-		return $(document.createElement("td"))
-			.attr("title", title)
+		return $(document.createElement('td'))
+			.attr('title', title)
 			.append(
-				$(document.createElement("input"))
+				$(document.createElement('input'))
 					.attr({
-						"id": "checkbox-B" + index,
-						"type": "checkbox",
-						"checked": "",
-						"data-jstorage-id": "sluch-checkbox-B" + index + "-" + tasksetName
+						'id': 'checkbox-B' + index,
+						'type': 'checkbox',
+						'checked': '',
+						'data-jstorage-id': 'sluch-checkbox-B' + index + '-' + tasksetName
 					})
 			)
 			.append(
-				$(document.createElement("label"))
+				$(document.createElement('label'))
 					.attr({
-						"for": "checkbox-B" + index
+						'for': 'checkbox-B' + index
 					})
 					.html(
 						dvig.getzadname(index)
@@ -54,35 +54,35 @@ var initializeStatsTable = function() {
 	};
 
 	var createDataRight = function(index, title) {
-		return $(document.createElement("td"))
-			.attr("title", title)
+		return $(document.createElement('td'))
+			.attr('title', title)
 			.append(
-				$(document.createElement("span"))
-					.attr("id", "r-B" + index)
+				$(document.createElement('span'))
+					.attr('id', 'r-B' + index)
 			);
 	};
 
 	var createDataStats = function(index, title) {
-		return $(document.createElement("td"))
-			.attr("title", title)
+		return $(document.createElement('td'))
+			.attr('title', title)
 			.append(
-				$(document.createElement("span"))
-					.attr("id", "right-B" + index)
+				$(document.createElement('span'))
+					.attr('id', 'right-B' + index)
 			)
-			.append("<br>из<br>")
+			.append('<br>из<br>')
 			.append(
-				$(document.createElement("span"))
-					.attr("id", "total-B" + index)
+				$(document.createElement('span'))
+					.attr('id', 'total-B' + index)
 			);
 	};
 
 	var createDataTime = function(index, title) {
-		return $(document.createElement("td"))
-			.attr("title", title)
+		return $(document.createElement('td'))
+			.attr('title', title)
 			.append(
-				$(document.createElement("span"))
-					.addClass("time")
-					.attr("id", "time-B" + index)
+				$(document.createElement('span'))
+					.addClass('time')
+					.attr('id', 'time-B' + index)
 			);
 	};
 
@@ -91,8 +91,8 @@ var initializeStatsTable = function() {
 			continue;
 		}
 
-		var title = "";
-		window.comment = ""; // TODO: что за фигня?
+		var title = '';
+		window.comment = ''; // TODO: что за фигня?
 
 		try {
 			nabor.upak[dvig.getzadname(i)].main();
@@ -107,14 +107,14 @@ var initializeStatsTable = function() {
 		rowTime.append(createDataTime(i, title));
 	}
 
-	rowRight.append(createDataRight("", ""));
-	rowStats.append(createDataStats("", ""));
+	rowRight.append(createDataRight('', ''));
+	rowStats.append(createDataStats('', ''));
 
 	statstable.append(rowIndexes);
 	statstable.append(rowRight);
 	statstable.append(rowStats);
 	statstable.append(rowTime);
-	$("#stats-table-slot").append(statstable);
+	$('#stats-table-slot').append(statstable);
 };
 
 
@@ -122,43 +122,43 @@ function veroyatn() {
 	var pr;
 	for (var i = 1; i <= nabor.nZad; i++) {
 		pr = umka.verno[i] / umka.vsego[i];
-		$("#r-B" + i).html(
+		$('#r-B' + i).html(
 			umka.vsego[i] > 4 ?
-			(pr * 100).toFixedLess(0) + "%" :
-			""
+			(pr * 100).toFixedLess(0) + '%' :
+			''
 		);
-		$("#right-B" + i).html(
+		$('#right-B' + i).html(
 			umka.verno[i]
 		);
-		$("#total-B" + i).html(
+		$('#total-B' + i).html(
 			umka.vsego[i]
 		);
 		if (umka.kvoNaVremya[i]) {
-			$("#time-B" + i).html(
+			$('#time-B' + i).html(
 				(umka.vremya[i] / umka.kvoNaVremya[i]).round().toDvoet()
 			);
 		}
-		$("#r-B" + i).css(
-			"background-color",
+		$('#r-B' + i).css(
+			'background-color',
 			pr > 0.5 ?
 			cvetMezhdu(zhelt, zelen, pr * 2 - 1) :
 			cvetMezhdu(krasn, zhelt, pr * 2)
 		);
 	}
 	pr = umka.verno.sum() / umka.vsego.sum();
-	$("#r-B").html(
+	$('#r-B').html(
 		umka.vsego.sum() > 4 ?
-		(umka.verno.sum() / umka.vsego.sum() * 100).toFixedLess(0) + "%" :
-		""
+		(umka.verno.sum() / umka.vsego.sum() * 100).toFixedLess(0) + '%' :
+		''
 	);
-	$("#right-B").html(
+	$('#right-B').html(
 		umka.verno.sum()
 	);
-	$("#total-B").html(
+	$('#total-B').html(
 		umka.vsego.sum()
 	);
-	$("#r-B").css(
-		"color",
+	$('#r-B').css(
+		'color',
 		pr > 0.5 ?
 		cvetMezhdu(zhelt, zelen, pr * 2 - 1) :
 		cvetMezhdu(krasn, zhelt, pr * 2)
@@ -167,19 +167,19 @@ function veroyatn() {
 
 function obnov(p1) {
 	slvopr = p1;
-	$("#pole").html(slvopr.txt);
+	$('#pole').html(slvopr.txt);
 	slvopr.trd();
 	MathJax.Hub.Typeset();
-	$("#otvet").html(slvopr.ver.join(";;"));
-	$("#never").html(slvopr.nev.join(";;"));
-	$("#otvet").css("display", "block");
-	$("#never").css("display", "block");
+	$('#otvet').html(slvopr.ver.join(';;'));
+	$('#never').html(slvopr.nev.join(';;'));
+	$('#otvet').css('display', 'block');
+	$('#never').css('display', 'block');
 	vremyaStart = new Date().getTime();
 }
 
 function vybrZad() {
 	for (var i = 1; i <= nabor.nZad; i++) {
-		v[i] = ($("#checkbox-B" + i).is(":checked") ? 1 : 0);
+		v[i] = ($('#checkbox-B' + i).is(':checked') ? 1 : 0);
 	}
 	var w = [];
 	for (var i = 1; i <= nabor.nZad; i++) {
@@ -188,18 +188,18 @@ function vybrZad() {
 		}
 	}
 	if (!w.length) {
-		$("#pole").html('Хотя бы один тип заданий должен быть выбран! <button onclick="vybrv();">Выбрать все</button>');
+		$('#pole').html('Хотя бы один тип заданий должен быть выбран! <button onclick="vybrv();">Выбрать все</button>');
 		return;
 	}
-	if ($("#radio-sluch").prop("checked")) {
+	if ($('#radio-sluch').prop('checked')) {
 		return w.iz();
 	}
-	if ($("#radio-porad").prop("checked")) {
+	if ($('#radio-porad').prop('checked')) {
 		var tekzad = n ? n : 0;
 		for (var i = 0; w[i] <= tekzad; i++) { /**/ }
 		return w[i] ? w[i] : w[0];
 	}
-	if ($("#radio-umka").prop("checked")) {
+	if ($('#radio-umka').prop('checked')) {
 		var masV = [];
 		for (var i = 1; i <= nabor.nZad; i++) {
 			if (v[i] && (umka.vsego[i] < 5)) {
@@ -238,74 +238,74 @@ function podobnoe() {
 
 function zdnSost() {
 	vazhnOn();
-	if (!checkJQuery("sozdat()", "pole")) {
+	if (!checkJQuery('sozdat()', 'pole')) {
 		return;
 	}
-	if (!checkMathJax("sozdat()", "pole")) {
+	if (!checkMathJax('sozdat()', 'pole')) {
 		return;
 	}
-	$("#pole").html("Задание составляется, подождите...");
-	$("#protv").hide();
-	$("#otv").val("");
-	$("#prov").unbind("click");
-	$("#prov").bind("click", prover);
-	$("#prov").removeClass("disabled");
-	$("#sozd").addClass("disabled");
-	$("#podob").addClass("disabled");
+	$('#pole').html('Задание составляется, подождите...');
+	$('#protv').hide();
+	$('#otv').val('');
+	$('#prov').unbind('click');
+	$('#prov').bind('click', prover);
+	$('#prov').removeClass('disabled');
+	$('#sozd').addClass('disabled');
+	$('#podob').addClass('disabled');
 	// FIXME: setVKI();
-	// VKI_attach(document.getElementById("otv"));
+	// VKI_attach(document.getElementById('otv'));
 	flProv = 0;
-	$("#bnomer").show().html(dvig.getzadname(n));
+	$('#bnomer').show().html(dvig.getzadname(n));
 
-	$("#qst").css("display", "block");
+	$('#qst').css('display', 'block');
 }
 
 function prover() {
 	vazhnOff();
 	var flUchetPrav = 0;
-	var kand = $("#otv").val();
-	if (kand === "") {
+	var kand = $('#otv').val();
+	if (kand === '') {
 		if (!confirm('Вы не ввели ответ, нажмите "Отмена" для того, чтобы ввести ответ или "ОК", чтобы сдаться и посмотреть ответ.')) {
 			return;
 		}
-		uchetPrav(n, "N");
+		uchetPrav(n, 'N');
 		flUchetPrav = 1;
 	}
-	$("#protv").show();
-	var checkPraviln = $("#check-praviln").is(":checked");
+	$('#protv').show();
+	var checkPraviln = $('#check-praviln').is(':checked');
 	if (checkPraviln) {
 		umka.vsego[n]++;
 	}
-	var txt = "";
+	var txt = '';
 
 	if (slvopr.vrn(kand)) {
 		if (checkPraviln) {
 			umka.verno[n]++;
 		}
-		txt = "Правильно!";
+		txt = 'Правильно!';
 		uchetPrav(n, 1);
 	} else {
-		txt = "Неправильно! Правильный ответ: " + slvopr.ver.join(" или ");
+		txt = 'Неправильно! Правильный ответ: ' + slvopr.ver.join(' или ');
 		if (!flUchetPrav) {
 			uchetPrav(n, 0);
 		}
 	}
 
-	if ($("#check-na-vremya").is(":checked")) {
+	if ($('#check-na-vremya').is(':checked')) {
 		umka.vremya[n] += (new Date().getTime() - vremyaStart) / 1000;
 		umka.kvoNaVremya[n]++;
 	}
 	if (vopr.rsh) {
-		txt += "<br/><br/>" + vopr.rsh;
+		txt += '<br/><br/>' + vopr.rsh;
 	}
-	$("#protv").html(txt);
+	$('#protv').html(txt);
 	MathJax.Hub.Typeset();
-	$("#prov").addClass("disabled");
-	$("#sozd").removeClass("disabled");
-	$("#podob").removeClass("disabled");
+	$('#prov').addClass('disabled');
+	$('#sozd').removeClass('disabled');
+	$('#podob').removeClass('disabled');
 	sohrUmka();
 	veroyatn();
-	specCounter("sluch");
+	specCounter('sluch');
 	flProv = 1;
 }
 
@@ -314,56 +314,56 @@ function uchetPrav(kat, prav, nom) {
 	if (chas.mode.svinta) {
 		return;
 	}
-	var ifr = document.createElement("iframe");
-	ifr.src = "../sh/sluchcounter.html?" + nabor.name + "/" + kat + "#" + prav;
-	ifr.style.display = "none";
-	ifr.style.top = "-9999px";
-	ifr.style.position = "absolute";
+	var ifr = document.createElement('iframe');
+	ifr.src = '../sh/sluchcounter.html?' + nabor.name + '/' + kat + '#' + prav;
+	ifr.style.display = 'none';
+	ifr.style.top = '-9999px';
+	ifr.style.position = 'absolute';
 	document.body.appendChild(ifr);
 }
 
 
 function vybrv() {
 	for (var i = 1; i <= nabor.nZad; i++) {
-		$("#checkbox-B" + i).not(":checked").click();
+		$('#checkbox-B' + i).not(':checked').click();
 	}
 }
 
 
 function obrabNaVremya() {
-	if ($("#check-na-vremya").is(":checked")) {
-		$(".vremya").show();
+	if ($('#check-na-vremya').is(':checked')) {
+		$('.vremya').show();
 	} else {
-		$(".vremya").hide();
+		$('.vremya').hide();
 	}
 }
 
 
 function obrabPraviln() {
-	if ($("#check-praviln").is(":checked")) {
-		$(".praviln").show();
+	if ($('#check-praviln').is(':checked')) {
+		$('.praviln').show();
 	} else {
-		$(".praviln").hide();
+		$('.praviln').hide();
 	}
 }
 
 
 function vybr0() {
 	for (var i = 1; i <= nabor.nZad; i++) {
-		$("#checkbox-B" + i).removeAttr("checked");
+		$('#checkbox-B' + i).removeAttr('checked');
 	}
 }
 
 
 function strelkaDvig() {
 	if (!strelkaEst) {
-		$("#strelka").remove();
+		$('#strelka').remove();
 		return;
 	}
-	$("#strelka").animate({ left: "-=20" }, { duration: 1000 });
-	$("#strelka").animate({ left: "+=20" }, { duration: 1000, complete: strelkaDvig });
-	// $("#sozd").animate({opacity:"0.5"},{duration:1000});
-	// $("#sozd").animate({opacity:"1"},{duration:1000});
+	$('#strelka').animate({ left: '-=20' }, { duration: 1000 });
+	$('#strelka').animate({ left: '+=20' }, { duration: 1000, complete: strelkaDvig });
+	// $('#sozd').animate({opacity:'0.5'},{duration:1000});
+	// $('#sozd').animate({opacity:'1'},{duration:1000});
 
 }
 
@@ -377,12 +377,12 @@ function strelkaDvig() {
 	$(obrabPraviln);
 
 	strelkaDvig();
-	$("#prov").addClass("disabled");
-	$("#podob").addClass("disabled");
-	galkiKat("#galki_kat", "sluch");
+	$('#prov').addClass('disabled');
+	$('#podob').addClass('disabled');
+	galkiKat('#galki_kat', 'sluch');
 	spoiler();
 
-	$("#otv").keyup(function(event) {
+	$('#otv').keyup(function(event) {
 		if (nabor.mnogostrOtvet || flProv) {
 			return true;
 		}
