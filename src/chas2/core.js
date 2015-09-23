@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 
 /** @namespace chas2
@@ -31,7 +31,7 @@ chas2.info = {
 	/**
 	   Версия
 	 */
-	VERSION : "?.?.?",
+	VERSION : '?.?.?',
 
 
 	/** @function chas2.info.requireApiVersion
@@ -41,7 +41,7 @@ chas2.info = {
 	 */
 	requireApiVersion : function(major, minor) {
 		if (major > chas2.info.API_VERSION.major || minor > chas2.info.API_VERSION.minor) {
-			console.warn("Была запрошена более новая версия chas2");
+			console.warn('Была запрошена более новая версия chas2');
 		}
 	}
 };
@@ -93,22 +93,22 @@ chas2.log.error = function(msg) {
 */
 chas2.log.debug = function(msg) {
 	if (chas2.debug) {
-		console.log("[DEBUG] " + msg);
+		console.log('[DEBUG] ' + msg);
 	}
 };
 
 
-Object.defineProperty(chas2, "debug", {
+Object.defineProperty(chas2, 'debug', {
 	get: function() { return chas2._.debug; }
 });
 
 
-Object.defineProperty(chas2, "local", {
+Object.defineProperty(chas2, 'local', {
 	get: function() { return chas2._.local; }
 });
 
 
-Object.defineProperty(chas2, "verboseMode", {
+Object.defineProperty(chas2, 'verboseMode', {
 	get: function() { return chas2._.verboseMode; }
 });
 
@@ -165,16 +165,16 @@ chas2.verbose.error = function(msg) {
  * @param cause причина
  */
 chas2.panic = function(cause) {
-	chas2.log.err("chas2.panic()");
+	chas2.log.err('chas2.panic()');
 	switch (chas2.getTypeOf(cause)) {
-	case "[object String]":
-		chas2.log.info("Причина: " + cause);
+	case '[object String]':
+		chas2.log.info('Причина: ' + cause);
 		break;
-	case "[object Error]":
-		chas2.log.info("Причина: " + cause.msg);
+	case '[object Error]':
+		chas2.log.info('Причина: ' + cause.msg);
 		break;
 	default:
-		throw Error("Паника");
+		throw Error('Паника');
 	}
 };
 
@@ -182,7 +182,7 @@ chas2.panic = function(cause) {
 /**
    Хеш текущей страницы
  */
-chas2.hash = "";
+chas2.hash = '';
 
 
 /**
@@ -197,29 +197,29 @@ chas2.args = {};
  */
 chas2.hasArgument = function(argument) {
 	chas2.log.info(argument);
-	return !!chas2.args[argument] || chas2.args[argument] == "";
+	return !!chas2.args[argument] || chas2.args[argument] == '';
 };
 
 
 (function() {
 	// Инициализация chas2.hash и chas2.args
-	chas2.hash = location.hash.split("?")[0].slice(1);
+	chas2.hash = location.hash.split('?')[0].slice(1);
 
-	var href = location.href.split("?");
+	var href = location.href.split('?');
 	var hashvarsstr = href[href.length - 1];
 
-	var hashvars = hashvarsstr.split("&");
+	var hashvars = hashvarsstr.split('&');
 	for (var i = 0; i < hashvars.length; i++) {
 		var varstr = hashvars[i];
-		var vararr = varstr.split("=");
+		var vararr = varstr.split('=');
 
 		var name = vararr[0];
-		var value = "";
+		var value = '';
 		if (vararr.length > 1) {
 			value = vararr[1];
 			if (vararr.length > 2) {
 				for (var vl = 2; vl < vararr.length; vl++) {
-					value += "=" + vararr[vl];
+					value += '=' + vararr[vl];
 				}
 			}
 		}
@@ -229,30 +229,30 @@ chas2.hasArgument = function(argument) {
 
 
 	// Инициализация режима отладки
-	if (chas2.hasArgument("debug")) {
+	if (chas2.hasArgument('debug')) {
 		chas2._.debugMode = true;
-		chas2.log.debug("Режим отладки включен");
-		$("#mark-debug").show();
+		chas2.log.debug('Режим отладки включен');
+		$('#mark-debug').show();
 	}
 
 
-	if (chas2.hasArgument("verbose")) {
+	if (chas2.hasArgument('verbose')) {
 		chas2._.verboseMode = true;
-		chas2.verbose.info("Включен verbose-режим");
+		chas2.verbose.info('Включен verbose-режим');
 	}
 
 
 	// Получение текущей версии
 	try {//Обёртка на случай, если такого элемента нет
 		//TODO: прекратить передавать данные JS->HTML->JS! Нечего дёргать DOM без необходимости!
-		chas2.info.VERSION = document.getElementById("var-version").value;
+		chas2.info.VERSION = document.getElementById('var-version').value;
 	} catch (e) {
 		// TODO: А если #var-version нет в DOM?
 	}
 
 	// Проверка откуда запущен тренажёр
-	if (location.href.split(":")[0] == "file") {
+	if (location.href.split(':')[0] == 'file') {
 		chas2._.local = true;
-		$("#mark-local").show();
+		$('#mark-local').show();
 	}
 })();

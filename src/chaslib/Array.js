@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /** @function Array#getRandomItems
  * Получение случайные (не повторяющиеся) элементы массива
@@ -29,4 +29,4 @@ Array.prototype.getRandomItem = function() {
 	return this.getRandomItems(1);
 };
 
-Array.prototype.addToGlobal("docsArray", 1);
+Array.prototype.addToGlobal('docsArray', 1);

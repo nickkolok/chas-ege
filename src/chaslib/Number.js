@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /** @function Number#round
  * Округление числа
@@ -57,4 +57,4 @@ Number.prototype.getRandomDivisor = function() {
 	return this.getDivisors().getRandomItem();
 };
 
-Number.prototype.addToGlobal("docsNumber", 1);
+Number.prototype.addToGlobal('docsNumber', 1);
