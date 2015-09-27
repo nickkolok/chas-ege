@@ -308,6 +308,17 @@ module.exports = function(grunt) {
 		},
 
 		qunit: {
+			options: {
+				get console() {
+					var suppress = false;
+					process.argv.forEach(function(arg) {
+						if (arg == "--suppress-console") {
+							suppress = true;
+						}
+					});
+					return !suppress;
+				},
+			},
 			all: ['build/test/*.html']
 		},
 
