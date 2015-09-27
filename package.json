@@ -6,7 +6,9 @@
   "directories": {
     "doc": "doc"
   },
-  "dependencies": {},
+  "dependencies": {
+    "chasStorage": "git://github.com/drmgc/chasStorage.git"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-check-pages": "^0.9.0",

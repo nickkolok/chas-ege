@@ -79,7 +79,8 @@ module.exports = function(grunt) {
 			},
 			externals: {
 				files: [
-					{ expand: true, src: ['ext/**'], dest: 'dist/' }
+					{ expand: true, src: ['ext/**'], dest: 'dist/' },
+					{ src: 'node_modules/chasStorage/chasStorage.js', dest: 'dist/ext/chasStorage.js' },
 				]
 			},
 			other: {
