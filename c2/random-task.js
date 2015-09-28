@@ -39,7 +39,7 @@ var initializeStatsTable = function() {
 						'id': 'checkbox-B' + index,
 						'type': 'checkbox',
 						'checked': '',
-						'data-jstorage-id': 'sluch-checkbox-B' + index + '-' + tasksetName
+						'data-chasstorage-id': 'sluch-checkbox-B' + index + '-' + tasksetName
 					})
 			)
 			.append(

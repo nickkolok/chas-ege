@@ -45,25 +45,25 @@
 				</table>
 			</div>
 			<div class="smallerfont">
-				<button class="spoiler-show" data-jstorage-id="sluch-nastr-show">Показать настройки...</button>
-				<button class="spoiler-hide" data-jstorage-id="sluch-nastr-hide">Скрыть настройки</button>
-				<div    class="spoiler-body" data-jstorage-id="sluch-nastr-body" data-jstorage-ne="ih">
+				<button class="spoiler-show" data-chasstorage-id="sluch-nastr-show">Показать настройки...</button>
+				<button class="spoiler-hide" data-chasstorage-id="sluch-nastr-hide">Скрыть настройки</button>
+				<div    class="spoiler-body" data-chasstorage-id="sluch-nastr-body" data-chasstorage-conf="!innerhtml">
 					<div id="galki_kat">
 					</div>
 					<button onclick="vybrv()">Выбрать все задания</button>
 					<button onclick="vybr0()">Снять все задания</button>
 					<button onclick="sbrosUmka(veroyatn)">Сбросить статистику</button>
 					<br/>
-					<input type="radio" name="metod" value="sluch" id="radio-sluch" data-jstorage-id="sluch-radio-sluch"/>
+					<input type="radio" name="metod" value="sluch" id="radio-sluch" data-chasstorage-id="sluch-radio-sluch"/>
 					<label for="radio-sluch">Задания в случайном порядке</label>
-					<input type="radio" name="metod" value="porad" id="radio-porad" data-jstorage-id="sluch-radio-porad"/>
+					<input type="radio" name="metod" value="porad" id="radio-porad" data-chasstorage-id="sluch-radio-porad"/>
 					<label for="radio-porad">Задания по порядку</label>
-					<input type="radio" name="metod" value="umka"  id="radio-umka"  data-jstorage-id="sluch-radio-umka "/>
+					<input type="radio" name="metod" value="umka"  id="radio-umka"  data-chasstorage-id="sluch-radio-umka "/>
 					<label for="radio-umka" >"Умка"</label>
 					<br>
-					<input type="checkbox" id="check-praviln" data-jstorage-id="sluch-check-praviln" checked onclick="obrabPraviln()"/>
+					<input type="checkbox" id="check-praviln" data-chasstorage-id="sluch-check-praviln" checked onclick="obrabPraviln()"/>
 					<label for="check-praviln">Вести учёт правильности ответов</label>
-					<input type="checkbox" id="check-na-vremya" data-jstorage-id="sluch-check-na-vremya" checked onclick="obrabNaVremya()"/>
+					<input type="checkbox" id="check-na-vremya" data-chasstorage-id="sluch-check-na-vremya" checked onclick="obrabNaVremya()"/>
 					<label for="check-na-vremya">Вести учёт времени</label>
 				</div>
 			</div>

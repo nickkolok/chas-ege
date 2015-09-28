@@ -20,7 +20,7 @@ function vse0(){
 }
 
 function zapusk(){
-	$.jStorage.sohrData()
+	chasStorage.domData.save()
 	for(var i=1;i<=nabor.nZad;i++)
 		aZ[i]=1*($('#cB'+i).val());
 	cacheKat();

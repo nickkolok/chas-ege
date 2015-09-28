@@ -26,13 +26,13 @@
 			<hr/>
 			<div>
 				Адрес подключаемого шаблона:
-				<input type="text" id="filepath" data-jstorage-id="otladka-filepath"/>
+				<input type="text" id="filepath" data-chasstorage-id="otladka-filepath"/>
 				<button onclick="createFromFile();">Составить задание</button>
 			</div>
 			<hr/>
 			Ввести программу:
 			<div>
-				<textarea id="textarea-script" data-jstorage-id="otladka-textarea-script" data-jstorage-ne="vi" onkeydown="return catchTab(this,event)"></textarea>
+				<textarea id="textarea-script" data-chasstorage-id="otladka-textarea-script" data-chasstorage-conf="!visible" onkeydown="return catchTab(this,event)"></textarea>
 				<div id="ace-script"></div>
 				<script src="../ext/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 				<script src="../ext/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
@@ -42,16 +42,16 @@
 			<hr/>
 			<div id="vklpodsv">
 				Cтрок:
-				<input id="ace-rows" value="32" data-jstorage-id="ace-rows"/>
+				<input id="ace-rows" value="32" data-chasstorage-id="ace-rows"/>
 				Размер шрифта:
-				<input id="ace-size" value="12" data-jstorage-id="ace-size"/>
+				<input id="ace-size" value="12" data-chasstorage-id="ace-size"/>
 				<button onclick="enableAce();">Включить редактор ACE</button>
 				<br/>
 			</div>
 			<hr/>
 			<div>
 				Количество итераций:
-				<input id="iter" data-jstorage-id="timetest-kolvo-iter" value="20000"/>
+				<input id="iter" data-chasstorage-id="timetest-kolvo-iter" value="20000"/>
 				<button onclick="tt();">Проверить время</button>
 				<br/>
 				Помните, что время приблизительно и зависит от конкретной ЭВМ.

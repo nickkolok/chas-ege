@@ -28,7 +28,7 @@ function vse0(){
 
 function zapusk(){
 	//Сохраняем параметры генерации
-	$.jStorage.sohrData();
+	chasStorage.domData.save();
 
 	//Читаем настройки
 	options.editable=$('#redakt').is(':checked');

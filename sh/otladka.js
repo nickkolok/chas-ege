@@ -104,7 +104,7 @@ function nabrano(){
 function saveAce(){
 	if(flAce)
 		$("#textarea-script").val(editor.getValue());
-	$.jStorage.sohrData();
+	chasStorage.domData.save();
 }
 
 function pastebin(){
@@ -191,7 +191,7 @@ var startShell = function (){
 	zagr("../ext/keyboard/keyboard.js");
 	if ($("#textarea-script").val() == "") {
 		$("#textarea-script").val(templateTemplate);
-		$.jStorage.sohrData();
+		chasStorage.domData.save();
 	}
 }
 

@@ -18,7 +18,7 @@
 	{% block css %}
 	{% endblock %}
 </head>
-<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()" class="newdesign">
+<body onload="startShell();" class="newdesign">
 	<input type="hidden" id="var-version" value="{{version}}"/>
 	<noscript>
 		Для работы тренажёра необходим javascript.
@@ -42,6 +42,12 @@
 
 	<script src="../ext/bootstrap/js/bootstrap.min.js"></script>
 
+	<script>
+		chasStorage.domData.load();
+		window.addEventListener('unload', function() {
+			chasStorage.domData.save();
+		});
+	</script>
 	{% block js%}
 	{% endblock %}
 </body>
