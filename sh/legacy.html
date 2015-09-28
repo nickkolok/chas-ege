@@ -14,7 +14,7 @@
 	{% block css %}
 	{% endblock %}
 </head>
-<body onload="$.jStorage.zagrData(); startShell();" onunload="$.jStorage.sohrData()" class="legacy">
+<body onload="startShell();" class="legacy">
 	{% block preinit %}
 	{% endblock %}
 	<div id="document-write">
@@ -35,6 +35,13 @@
 		{% block textcontent %}
 		{% endblock %}
 	</div>
+
+	<script>
+		chasStorage.domData.load();
+		window.addEventListener('unload', function() {
+			chasStorage.domData.save();
+		});
+	</script>
 	{% block js %}
 	{% endblock %}
 </body>
