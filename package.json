@@ -7,7 +7,7 @@
     "doc": "doc"
   },
   "dependencies": {
-    "chasStorage": "git://github.com/drmgc/chasStorage.git"
+    "chasStorage": "git://github.com/drmgc/chasStorage.git#v0.1.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
