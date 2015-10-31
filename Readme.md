@@ -1,4 +1,4 @@
-# Проект "Час ЕГЭ"
+# Проект "Час ЕГЭ" [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 Целью проекта является помощь в подготовке к ЕГЭ и ОГЭ.
 
