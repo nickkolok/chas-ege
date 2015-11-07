@@ -81,6 +81,7 @@ module.exports = function(grunt) {
 				files: [
 					{ expand: true, src: ['ext/**'], dest: 'dist/' },
 					{ src: 'node_modules/chas-storage/chasStorage.js', dest: 'dist/ext/chasStorage.js' },
+					{ src: 'node_modules/html2canvas/dist/html2canvas.min.js', dest: 'dist/ext/html2canvas.js' },
 				]
 			},
 			other: {
