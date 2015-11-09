@@ -95,3 +95,9 @@ test('chaslib.toArray', function() {
 	expect(chaslib.toArray(1, 3)).to.eql([1, 1, 1]);
 	expect(chaslib.toArray(undefined, 1)).to.eql([undefined]);
 });
+
+test('String.prototype.parseHumanReadableToJSON', function() {
+	expect('Задача: \n\r У Васи было три яблока \n\rОтвет:\n\r3'.parseHumanReadableToJSON()).to.eql({"Задача":"У Васи было три яблока","Ответ":"3"});
+	expect('Задача: \n\r У Васи было \nтри яблока \n\rОтвет:\n\r3'.parseHumanReadableToJSON()).to.eql({"Задача":"У Васи было три яблока","Ответ":"3"});
+	expect('Задача: \n\r У Васи было\r \nтри яблока \n\rОтвет:\n\r3'.parseHumanReadableToJSON()).to.eql({"Задача":"У Васи было три яблока","Ответ":"3"});
+});
