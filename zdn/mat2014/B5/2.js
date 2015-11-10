@@ -13,7 +13,7 @@ var tTr=[
 ];
 
 NAtask.setTask({
-	text: 'В треугольнике $ABC$ $DE$ – средняя линия, $D\\in AC$, $E\\in CB$. Площадь '+tTr[aV[0]]+'равна '+nS1+
+	text: 'В треугольнике $ABC$ $DE$ – средняя линия, $D\\in AC$, $E\\in CB$. Площадь '+tTr[aV[0]]+' равна '+nS1+
 		'. Найдите площадь '+tTr[aV[1]]+'.',
 	answers: nS2,
 });
