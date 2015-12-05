@@ -121,6 +121,6 @@
 		"space-in-parens": [2, "never"],
 		"space-infix-ops": [2, { "int32Hint": true }],
 		"space-return-throw-case": 2,
-		"wrap-regex": 1,
+		"wrap-regex": 1
 	}
 }
