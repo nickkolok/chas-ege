@@ -305,7 +305,7 @@ function prover() {
 	$('#podob').removeClass('disabled');
 	sohrUmka();
 	veroyatn();
-	specCounter('sluch');
+	specCounter('random-task');
 	flProv = 1;
 }
 
