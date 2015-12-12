@@ -64,7 +64,7 @@ module.exports = function(grunt) {
 			},
 			taskSets: {
 				files: [
-					{ expand: true, src: ['zdn/**'], dest: 'dist/' },
+					{ expand: true, src: ['zdn/*/*.js', 'zdn/*/*/*.js'], dest: 'dist/' },
 				]
 			},
 			css: {
