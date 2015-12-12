@@ -19,12 +19,12 @@ module.exports = function(grunt) {
 		for (var i = 0; i < tasks.length; i++) {
 			//Используем синхронное чтение/запись. Ибо вдруг дескрипторов не хватит?
 			fs.writeFileSync('dist/' + tasks[i].path + '/' + tasks[i].name + '.js',
-				'"use strict";\n(function(){chas2.task.setJscppTask("' +
+				'"use strict";\n(function(){chas2.task.setJscppTask(\'' +
 				fs.readFileSync(tasks[i].full, 'utf8')
 					.replace(/\\/g, '\\\\')
 					.replace(/\'/g, '\\\'')
 					.replace(/[\n\r]+/g, '\\n') +
-				'");})();\n'
+				'\');})();\n'
 			);
 		}
 	};
