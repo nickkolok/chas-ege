@@ -3,6 +3,7 @@
 var fs = require('fs');
 var ls = require('ls');
 var regexp = require('node-regexp');
+var mkdirp = require('mkdirp');
 
 var exec = require('child_process').exec;
 
@@ -14,11 +15,12 @@ var pak             = require('./src/util/pak.js');
 module.exports = function(grunt) {
 	var cwd = process.cwd();
 
-	var packCppTasks = function() {
+	var packCppTasks = function(targetDir) {
 		var tasks = ls('zdn/*/*/*.cpp');
 		for (var i = 0; i < tasks.length; i++) {
 			//Используем синхронное чтение/запись. Ибо вдруг дескрипторов не хватит?
-			fs.writeFileSync('dist/' + tasks[i].path + '/' + tasks[i].name + '.js',
+			mkdirp.sync(targetDir + tasks[i].path);
+			fs.writeFileSync(targetDir + tasks[i].path + '/' + tasks[i].name + '.js',
 				'"use strict";\n(function(){chas2.task.setJscppTask(\'' +
 				fs.readFileSync(tasks[i].full, 'utf8')
 					.replace(/\\/g, '\\\\')
@@ -341,9 +343,9 @@ module.exports = function(grunt) {
 		// exec('rm dist/lib/chas-uijs.js.tmp');
 	});
 	grunt.registerTask('packTasks', 'Упаковываем задания в соответствующие upak.js', function() {
-		packCppTasks(cwd);
+		packCppTasks('dist/');
 		// exec('cd dist && ../dev/upak.sh');
-		pak.packZdnSync('zdn', 'build/zdn');
+		pak.packZdnSync('dist/zdn', 'build/zdn');
 	});
 	grunt.registerTask('make-init', ['concat:init', 'uglify:init']);
 	grunt.registerTask('make-head', ['uglify:head']);
@@ -352,7 +354,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('process-html', ['make-head', 'swigtemplates', 'htmlmin' ]);
 	grunt.registerTask('process-pages-js', ['newer:copy:pagesJs']);
-	grunt.registerTask('process-task-sets', ['packTasks', 'newer:copy:taskSets']);
+	grunt.registerTask('process-task-sets', ['newer:copy:taskSets', 'packTasks']);
 	grunt.registerTask('process-lib', ['newer:copy:lib', 'make-chas-lib', 'make-chas-uijs', 'make-init']);
 	grunt.registerTask('process-css', ['cssmin', 'newer:copy:css']);
 	grunt.registerTask('process-unit-test', ['swigtemplates:unitTest', 'copy:unitTest']);
