@@ -1,18 +1,14 @@
 'use strict';
 
 var fs = require('fs');
-
 var ls = require('ls');
+var mkdirp = require('mkdirp');
 
 
 module.exports.packZdnSync = function(src, dest) {
-	try {
-		fs.mkdirSync(dest);
-	} catch (e) {
-		if (e.code != 'EEXIST') {
-			throw e;
-		}
-	}
+
+	mkdirp.sync(dest);
+
 	var sets = ls(src + '/*');
 	var crrSet;
 	for (var i = 0; i < sets.length; i++) {
@@ -48,13 +44,7 @@ module.exports.packZdnSync = function(src, dest) {
 		buf += '};';
 
 		var path = dest + '/' + crrSet.name;
-		try {
-			fs.mkdirSync(path);
-		} catch (e) {
-			if (e.code != 'EEXIST') {
-				throw e;
-			}
-		}
+		mkdirp.sync(path);
 		fs.writeFileSync(path + '/upak.js', buf);
 	}
 };

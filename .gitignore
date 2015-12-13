@@ -9,6 +9,7 @@
 *.BASE.*
 *.REMOTE.*
 *.cache
+*.bak
 
 node_modules
 dist
