@@ -3,8 +3,8 @@
 var KidsCount=sluchch(300,5000);
 var JuniorCount=sluchch(15,70);
 var LearningGer=sluchch(15,90);
-var EduInst=sklonlxkand(['школа','университет','колледж','училище','гимназия'].iz());
-var Pupil=sklonlxkand(['ученик','студент','учащийся'].iz());
+var EduInst=sklonlxkand(['школа','интернат','лицей','гимназия'].iz());
+var Pupil=sklonlxkand(['ученик','учащийся'].iz());
 var Lang=['немецкий','французский','итальянский','английский','испанский'].iz();
 
 window.vopr.txt='В '+EduInst.pe+' '+KidsCount+' '+Pupil.rm+', из них '+JuniorCount+'%  — '+Pupil.im+
