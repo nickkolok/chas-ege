@@ -47,6 +47,11 @@ test('Number.prototype.texfrac', function() {
 	expect((2).texfrac('4', 'x')).to.be.equal('\\frac{2x}{4}');
 });
 
+test('String.prototype.texfrac', function() {
+	expect('2'.texfrac(3)).to.be.equal('\\frac{2}{3}');
+	expect('2'.texfrac('3')).to.be.equal('\\frac{2}{3}');
+});
+
 test('Number.prototype.texfracpi', function() {
 	expect((2).texfracpi(4)).to.be.equal('\\frac{\\pi}{2}');
 });
