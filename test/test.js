@@ -47,6 +47,11 @@ test('Number.prototype.texfrac', function() {
 	expect((2).texfrac('4', 'x')).to.be.equal('\\frac{2x}{4}');
 });
 
+test('String.prototype.texfrac', function() {
+	expect('2'.texfrac(3)).to.be.equal('\\frac{2}{3}');
+	expect('2'.texfrac('3')).to.be.equal('\\frac{2}{3}');
+});
+
 test('Number.prototype.texfracpi', function() {
 	expect((2).texfracpi(4)).to.be.equal('\\frac{\\pi}{2}');
 });
@@ -97,13 +102,13 @@ test('chaslib.toArray', function() {
 });
 
 test('String.prototype.parseHumanReadableToJSON', function() {
-	expect('Задача: \n\r У Васи было три яблока \n\rОтвет:\n\r3'.parseHumanReadableToJSON()).to.eql({"Задача":"У Васи было три яблока","Ответ":"3"});
-	expect('Задача: \n\r У Васи было \nтри яблока \n\rОтвет:\n\r3'.parseHumanReadableToJSON()).to.eql({"Задача":"У Васи было три яблока","Ответ":"3"});
-	expect('Задача: \n\r У Васи было\r \nтри яблока \n\rОтвет:\n\r3'.parseHumanReadableToJSON()).to.eql({"Задача":"У Васи было три яблока","Ответ":"3"});
+	expect('Задача: \n\r У Васи было три яблока \n\rОтвет:\n\r3'    .parseHumanReadableToJSON()).to.eql({ 'Задача':'У Васи было три яблока', 'Ответ':'3' });
+	expect('Задача: \n\r У Васи было \nтри яблока \n\rОтвет:\n\r3'  .parseHumanReadableToJSON()).to.eql({ 'Задача':'У Васи было три яблока', 'Ответ':'3' });
+	expect('Задача: \n\r У Васи было\r \nтри яблока \n\rОтвет:\n\r3'.parseHumanReadableToJSON()).to.eql({ 'Задача':'У Васи было три яблока', 'Ответ':'3' });
 });
 
 test('isCppCode', function() {
-	expect(isCppCode('#include <iostream>\n#include <cstdlib>\n#include <ctime>\nusing namespace std;\nint main()\n{\nsrand(time(0));\nunsigned int grad = rand()% 179 +1;\ncout << "Задание:" <<endl<< "Угол A четырехугольника ABCD, вписанного в окружность, равен " << \ngrad << "°. Найдите угол "<< endl\n<< "C этого четырехугольника. Ответ дайте в градусах."<<endl;\nint answer = 180 - grad;\ncout <<"Ответ: " << endl << answer << endl;\n\nreturn 0;\n}')).to.be.true;
-	expect(isCppCode('#include <iostream>\n#include <cstdlib>\n#include <ctime>\nusing namespace std;\nint main ()\n{\nsrand(time(0));\nunsigned int grad = rand()% 179 +1;\ncout << "Задание:" <<endl<< "Угол A четырехугольника ABCD, вписанного в окружность, равен " << \ngrad << "°. Найдите угол "<< endl\n<< "C этого четырехугольника. Ответ дайте в градусах."<<endl;\nint answer = 180 - grad;\ncout <<"Ответ: " << endl << answer << endl;\n\nreturn 0;\n}')).to.be.true;
-	expect(isCppCode('#include <iostream>\n#include <cstdlib>\n#include <ctime>\nusing namespace std;\n\n{\nsrand(time(0));\nunsigned int grad = rand()% 179 +1;\ncout << "Задание:" <<endl<< "Угол A четырехугольника ABCD, вписанного в окружность, равен " << \ngrad << "°. Найдите угол "<< endl\n<< "C этого четырехугольника. Ответ дайте в градусах."<<endl;\nint answer = 180 - grad;\ncout <<"Ответ: " << endl << answer << endl;\n\nreturn 0;\n}')).to.be.false;
+	expect(isCppCode('#include <iostream>\n#include <cstdlib>\n#include <ctime>\nusing namespace std;\nint main()\n{\nsrand(time(0));\nunsigned int grad = rand()% 179 +1;\ncout << "Задание:" <<endl<< "Угол A четырехугольника ABCD, вписанного в окружность, равен " << \ngrad << "°. Найдите угол "<< endl\n<< "C этого четырехугольника. Ответ дайте в градусах."<<endl;\nint answer = 180 - grad;\ncout <<"Ответ: " << endl << answer << endl;\n\nreturn 0;\n}')).to.eql(true);
+	expect(isCppCode('#include <iostream>\n#include <cstdlib>\n#include <ctime>\nusing namespace std;\nint main ()\n{\nsrand(time(0));\nunsigned int grad = rand()% 179 +1;\ncout << "Задание:" <<endl<< "Угол A четырехугольника ABCD, вписанного в окружность, равен " << \ngrad << "°. Найдите угол "<< endl\n<< "C этого четырехугольника. Ответ дайте в градусах."<<endl;\nint answer = 180 - grad;\ncout <<"Ответ: " << endl << answer << endl;\n\nreturn 0;\n}')).to.eql(true);
+	expect(isCppCode('#include <iostream>\n#include <cstdlib>\n#include <ctime>\nusing namespace std;\n\n{\nsrand(time(0));\nunsigned int grad = rand()% 179 +1;\ncout << "Задание:" <<endl<< "Угол A четырехугольника ABCD, вписанного в окружность, равен " << \ngrad << "°. Найдите угол "<< endl\n<< "C этого четырехугольника. Ответ дайте в градусах."<<endl;\nint answer = 180 - grad;\ncout <<"Ответ: " << endl << answer << endl;\n\nreturn 0;\n}')).to.eql(false);
 });

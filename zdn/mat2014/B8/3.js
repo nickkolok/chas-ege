@@ -8,7 +8,7 @@ var a=sluchch(1,c-1);
 var b=c*c-a*a;
 chas2.task.setTask({
 	text: 'В треугольнике $ABC$ угол $A$ равен $90^\\circ$, $\\'+t1[0]+' B = '+b.koren().texfrac(c)+
-		'$. Найдите $\\'+t1[1-v1]+' '+v1?'C':'B'+'$.',
+		'$. Найдите $\\'+t1[1-v1]+' '+(v1?'C':'B')+'$.',
 	answers: (a/c).ts(),
 	tags:{tri:1}
 });

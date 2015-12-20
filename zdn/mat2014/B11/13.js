@@ -17,7 +17,7 @@
 	g = slKrome(0, -5, 5);
 	h = slKrome(0, -5, 5);
 	u = slKrome(0, -5, 5);
-	x = 1;
+	x = 1;//Так нельзя, надо для любого x, вывести соотношение между коэффициентами
 
 	p = function(x) {
 		return g * x + h;
@@ -25,12 +25,12 @@
 
 	answer = a * (u * p(b * x + c) - d * p(e * x + f));
 
-	expression_text = "$" + a + "(" + u + "p(" + b + "x+" + c + ") " + d + "p(" + e + "x+" + f + "))$";
+	expression_text = "$" + a + "(" + u + "p(" + b + "x+" + c + ") " + '-' + d + "p(" + e + "x+" + f + "))$";
 	p_text = "$p(x) = " + g + "x+" + h + "$";
 
 	chas2.task.setTask({
 		text: "Найдите значение выражения " + expression_text.plusminus() + ", если " + p_text.plusminus(),
-		answers: [ "" + answer ]
+		answers: answer,
 	});
 })();
 //Обзад 26821
