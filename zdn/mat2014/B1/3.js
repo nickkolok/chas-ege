@@ -5,15 +5,12 @@ var c=sluchch(10,100);
 var a=sluchch(100,999);
 var b=sluchch(10,100);
 
-window.vopr.txt=om.korabli.ie[t].toZagl()+' перевозит '+a+' пассажиров и '+b+' членов экипажа. '+
+NAtask.setTask({
+	text : om.korabli.ie[t].toZagl()+' перевозит '+a+' пассажиров и '+b+' членов экипажа. '+
 	'В целях безопасности на '+om.korabli.pe[t]+
 	' размещены спасательные шлюпки, каждая из которых вмещает '+c+' человек. '+
-	'Какое наименьшее количество шлюпок должно быть на '+om.korabli.pe[t]+'?'
-window.vopr.ver=[''+((a+b)/c).ceil()];
-
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+	'Какое наименьшее количество шлюпок должно быть на '+om.korabli.pe[t]+'?',
+	answers : ((a+b)/c).ceil(),
+});
 })();
 //Обзад 26617
