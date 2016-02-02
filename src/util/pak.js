@@ -27,13 +27,17 @@ module.exports.packZdnSync = function(src, dest) {
 				continue;
 			}
 
-			buf += crrCat.name + ' :{';
+			buf += '"' + crrCat.name + '" :{';
 
 			var templates = ls(crrCat.full + '/*.js');
 			var crrTemplate;
 			for (var k = 0; k < templates.length; k++) {
 				crrTemplate = templates[k];
-				buf += crrTemplate.name + ' :function(){';
+				if(/BACKUP|BASE|LOCAL|REMOTE/i.test(crrTemplate.file)){
+					console.log('Пропускаем файл '+crrTemplate.full+' - временный файл мёржа');
+					continue;
+				}
+				buf += '"' + crrTemplate.name + '" :function(){';
 				buf += fs.readFileSync(crrTemplate.full);
 				buf += '},';
 			}
