@@ -33,8 +33,8 @@ module.exports.packZdnSync = function(src, dest) {
 			var crrTemplate;
 			for (var k = 0; k < templates.length; k++) {
 				crrTemplate = templates[k];
-				if(/BACKUP|BASE|LOCAL|REMOTE/i.test(crrTemplate.file)){
-					console.log('Пропускаем файл '+crrTemplate.full+' - временный файл мёржа');
+				if (/BACKUP|BASE|LOCAL|REMOTE/i.test(crrTemplate.file)) {
+					console.log('Пропускаем файл ' + crrTemplate.full + ' - временный файл мёржа');
 					continue;
 				}
 				buf += '"' + crrTemplate.name + '" :function(){';
