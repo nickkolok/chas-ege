@@ -9,7 +9,7 @@ function updateQuestion(){
 	window.vopr.dey();
 	$("#answer").html(window.vopr.ver.join(";;"));
 	$("#wrongAnswer").html(window.vopr.nev.join(";;"));
-	MathJax.Hub.Typeset();
+	MathJax.Hub.Typeset('typesettable-wrap');
 }
 
 function createFromFile(){
@@ -43,7 +43,7 @@ function checkAnswer(){
 		$("#answer").show();
 	}
 	$("#resh").html(vopr.rsh);
-	MathJax.Hub.Typeset();
+	MathJax.Hub.Typeset('typesettable-wrap');
 }
 
 function createFromTextarea(){
