@@ -1,16 +1,19 @@
-(function(){'use strict';
+    (function() {
+            'use strict';
+            chas2.task.setTask({
+                    text: '$\\frac{\\mathrm{tg~}{a}-\\mathrm{tg~}{b}}{1+\\mathrm{tg~}{a} ~\\cdot~ \\mathrm{tg~}{b}} =$<br/>',
+                    answers: [
+                            '$  \\mathrm{tg~}{(a-b)}$',
+                    ],
+                    wrongAnswers: [
+                            '$ \\mathrm{tg ~}{(a+b)} $',
+                            '$ \\mathrm{ctg~}{(a+b)}  $',
+                            '$ \\mathrm{ctg~}{(a-b)}  $',
+                            '$ \\mathrm{tg ~}{2a}  $',
+                    ],
+            });
+            AtoB();
+	
+    })();
+    //Любовь Ерышова
 
-window.vopr.txt='$\\frac{\\mathrm{tg~}{a}-\\mathrm{tg~}{b}}{1+\\mathrm{tg~}{a} ~\\cdot~ \\mathrm{tg~}{b}} =$<br/>';
-window.vopr.ver=[
-  '$  \\mathrm{tg~}{(a-b)}$',
-];
-window.vopr.nev=[
-  '$ \\mathrm{tg ~}{(a+b)} $',
-  '$ \\mathrm{ctg~}{(a+b)}  $',
-  '$ \\mathrm{ctg~}{(a-b)}  $',
-  '$ \\mathrm{tg ~}{2a}  $',
-];
-AtoB();
-
-})();
-//Любовь Ерышова
