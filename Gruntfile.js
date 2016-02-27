@@ -323,7 +323,8 @@ module.exports = function(grunt) {
 					return !suppress;
 				},
 			},
-			all: ['build/test/test.html']
+			all: ['build/test/test.html'],
+			files: ['build/test/test.html'],
 		},
 
 		clean: {
