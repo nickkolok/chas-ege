@@ -295,20 +295,37 @@ module.exports = function(grunt) {
 		},
 
 		eslint: {
-			options: {
-				configFile: 'eslint.json'
-			},
-			target: [
-				'src/*/*.js',
-				'c2/*.js',
-				'test/*.js',
-				'Gruntfile.js'
+			strictLinting: {
+				options: {
+					configFile: 'eslint.json'
+				},
+				src: [
+					'src/*/*.js',
+					'c2/*.js',
+					'test/*.js',
+					'Gruntfile.js',
 
-				// Всё равно никто исправлять их не будет
-				// ,'sh/*.js',
-				// 'lib/*.js',
-				// 'zdn/*/*/*.js'
-			]
+					// Всё равно никто исправлять их не будет
+					// ,'sh/*.js',
+					// 'lib/*.js',
+					// 'zdn/*/*/*.js'
+				],
+			},
+			tasksLinting: {
+				options: {
+					configFile: 'eslint-tasks.json',
+					quiet: true,
+				},
+				src: [
+					'zdn/*/*/*.js',
+					'lib/autointegr.js',
+
+					// Всё равно никто исправлять их не будет
+					// ,'sh/*.js',
+					// 'lib/*.js',
+					// 'zdn/*/*/*.js'
+				],
+			},
 		},
 
 		qunit: {
