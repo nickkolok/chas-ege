@@ -1,6 +1,12 @@
 'use strict';
 module("Basic Tests");
 
+test("truthy", function() {
+  ok(true, "true is truthy");
+  equal(1, true, "1 is truthy");
+  notEqual(0, true, "0 is NOT truthy");
+});
+
 test('sl1', function(assert) {
 	expect([0, 1]).to.contain(sl1());
 });
