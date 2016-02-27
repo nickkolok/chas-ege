@@ -36,7 +36,7 @@
 		"dot-notation": [2, { "allowKeywords": true }],
 		// "dot-location": 1, // Was ist das?
 		// "eqeqeq": [1, "smart"], // Оно нам надо?
-		"no-empty-label": 2,
+		"no-labels": 2,
 		"no-eval": 1,
 		"no-fallthrough": 2,
 		"no-floating-decimal": 2,
@@ -115,12 +115,11 @@
 		"quotes": [1, "single"],
 		"semi-spacing": [2, { "before": false, "after": true }],
 		"semi": 2,
-		"space-after-keywords": 2,
+		"keyword-spacing": 2,
 		"space-before-blocks": 2,
 		"space-before-function-paren": [2, "never"],
 		"space-in-parens": [2, "never"],
 		"space-infix-ops": [2, { "int32Hint": true }],
-		"space-return-throw-case": 2,
 		"wrap-regex": 1
 	}
 }
