@@ -92,7 +92,7 @@
 		//"comma-spacing": [1, {"before": false, "after": true}],
 		"comma-style": [1, "last"],
 		"computed-property-spacing": [1, "never"],
-		"eol-last": 1,
+		"eol-last": 2,
 		//"func-style": [2, "declaration"],
 		// "indent": [2, "tab"],
 		// "key-spacing": [2, { "align": "colon" }], // Не правильно работает =)
@@ -110,15 +110,15 @@
 		"object-curly-spacing": [1, "always"],
 		"one-var": [1, "never"],
 		"operator-assignment": [2, "always"],
-		"operator-linebreak": [2, "after"],
+		"operator-linebreak": [2, "after", { "overrides": { "?": "ignore", ":": "ignore", "||": "ignore", "&&": "ignore"} }],
 		// "quote-props": [2, "consistent-as-needed", { "keywords": true }],
 		//"quotes": [1, "single"],
-		"semi-spacing": [2, { "before": false, "after": true }],
+		"semi-spacing": [1, { "before": false, "after": true }],
 		"semi": 2,
 		"keyword-spacing": 1,
 		"space-before-blocks": 1,
 		"space-before-function-paren": [2, "never"],
-		"space-in-parens": [2, "never"],
+		"space-in-parens": [1, "never"],
 		//"space-infix-ops": [2, { "int32Hint": true }],
 		"wrap-regex": 1
 	}
