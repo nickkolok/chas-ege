@@ -2,7 +2,7 @@
 
 var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
 var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
-var up=sklonlxkand(['пачка','коробка','упаковка'].iz())
+var up=sklonlxkand(['пачка','коробка','упаковка'].iz());
 var dni=sluchch(2,10);
 var pak=sluchch(50,200,10);
 var rash=sluchch(20,100);
