@@ -13,8 +13,8 @@ var min=sluchch(1,40,1);
 var bylo=stalo + min*(tarif+0.5);
 
 NAtask.setTask({
-	text : 'На счету ' + chel1 + ' мобильного телефона было ' + chislitlx(bylo,'рубль') + ', а после разговора с '
-		+ chel2 + ' осталось ' +  chislitlx(stalo,'рубль') + '. Сколько минут длился разговор с ' + chel2 +
+	text : 'На счету ' + chel1 + ' мобильного телефона было ' + chislitlx(bylo,'рубль') + ', а после разговора с '+
+		 chel2 + ' осталось ' +  chislitlx(stalo,'рубль') + '. Сколько минут длился разговор с ' + chel2 +
 		', если одна минута разговора стоит '+ chislitlx(tarif,'рубль') + ' 50 копеек?',
 	answers : min,
 });
