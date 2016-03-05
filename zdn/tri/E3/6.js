@@ -2,12 +2,12 @@
 
 window.vopr.txt='$ \\sin{(\\pi+a)}=$<br/>';
 window.vopr.ver=[
-  	'$ -\\sin{a}  $',
+	'$ -\\sin{a}  $',
 ];
 window.vopr.nev=[
-  	'$ \\cos{a}  $',
-  	'$ -\\cos{a}  $',
-  	'$ \\sin{a}  $',
+	'$ \\cos{a}  $',
+	'$ -\\cos{a}  $',
+	'$ \\sin{a}  $',
 ];
 AtoB();
 
