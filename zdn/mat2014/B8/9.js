@@ -32,7 +32,6 @@ chas2.task.setCountableTask(
 	{
 		tags:{tri:1}
 	}
-	
 );
 chas2.task.modifiers.variativeABC();
 })();

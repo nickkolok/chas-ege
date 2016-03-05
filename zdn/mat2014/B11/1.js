@@ -1,5 +1,5 @@
 (function() {
-	
+
 var a=sluchch(2,99);
 var b=sluchch(1,89);
 var c=sluchch(1,2);

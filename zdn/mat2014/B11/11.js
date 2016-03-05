@@ -11,10 +11,10 @@ var vyr2='\\sin'+(2*a).ts()+'^\\circ';
 
 var y;
 if(sl1()){
-	y='\\frac{'+b.ts()+'~'+vyr1+'}{'+c.ts()+'~'+vyr2+'}';	
+	y='\\frac{'+b.ts()+'~'+vyr1+'}{'+c.ts()+'~'+vyr2+'}';
 	window.vopr.ver=[(b/(2*c)).ts()];
 }else{
-	y='\\frac{'+b.ts()+'~'+vyr2+'}{'+c.ts()+'~'+vyr1+'}';	
+	y='\\frac{'+b.ts()+'~'+vyr2+'}{'+c.ts()+'~'+vyr1+'}';
 	window.vopr.ver=[(b*2/c).ts()];
 }
 
