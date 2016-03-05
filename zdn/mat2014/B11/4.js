@@ -3,7 +3,7 @@
 var a=sluchch(1,37);
 var b=slKrome(isPolnKvadr,2,99);
 do{
-	var c=a.pow(sl(0,2))*2 .pow(sl1())*5 .pow(sl1()).pm()
+	var c=a.pow(sl(0,2))*2 .pow(sl1())*5 .pow(sl1()).pm();
 }while(c==1);
 
 var x=(a*a*b/c).toFixedLess(5);
