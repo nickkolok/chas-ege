@@ -8,10 +8,10 @@ do {
 
 var school = sklonlxkand(['школа', 'лицей', 'гимназия'].iz());
 var vuz = ['военных', 'специальных', 'частных'].iz();
-           
+
 window.vopr.txt = chislitlx(students,'выпускник') +' '+ school.re +' собираются учиться в '+ vuz +' вузах. ' +
 	'Они составляют '+ percent +'% от числа выпускников. Сколько в '+ school.pe +' выпускников?';
-           
+
 window.vopr.ver = [(students / percent * 100).ts()];
 })();
 //Обзад 77341

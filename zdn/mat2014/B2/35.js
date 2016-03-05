@@ -11,10 +11,10 @@ var GlCenaEd=['снижена','понижена'].iz();
 var Cena=sklonlxkand(['цена','стоимость'].iz());
 
 window.vopr.txt=Tovar.toZagl()+' '+Gl+' '+chislitlx(CenaOld,'рубль')+'. '+Vr.toZagl()+' некоторое время '+Cena.ve+' на '+
-	Sin+' '+GlCenaMn+' до '+chislitlx(CenaNew,'рубль')+'.'+' На сколько процентов была '+GlCenaEd+' '+Cena.ie+'?'
+	Sin+' '+GlCenaMn+' до '+chislitlx(CenaNew,'рубль')+'.'+' На сколько процентов была '+GlCenaEd+' '+Cena.ie+'?';
 window.vopr.ver=[(100*(CenaOld-CenaNew)/CenaOld).ts()];
 
-})()
+})();
 //Обзад 77346
 //nadraliev
 
