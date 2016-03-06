@@ -29,11 +29,11 @@
 		// Best Practices
 		"accessor-pairs": 1,
 		// FIXME: "block-scoped-var": 1, Works in for(var i;i<5;i) too
-		"complexity": [2,32],
+		"complexity": 2,
 		// "consistent-return": 1,
 		"curly": 1,
 		"default-case": 1,
-		"dot-notation": [2, { "allowKeywords": true }],
+		"dot-notation": [1, { "allowKeywords": true }],
 		// "dot-location": 1, // Was ist das?
 		// "eqeqeq": [1, "smart"], // Оно нам надо?
 		"no-labels": 2,
@@ -88,8 +88,8 @@
 		// Stylistic Issues
 		// "array-bracket-spacing": [2, "never"], // Плохо работает для массивов в несколько строк
 		"brace-style": [1, "1tbs", { "allowSingleLine": true }],
-		"camelcase": 2,
-		"comma-spacing": [1, {"before": false, "after": true}],
+		"camelcase": 1,
+		//"comma-spacing": [1, {"before": false, "after": true}],
 		"comma-style": [1, "last"],
 		"computed-property-spacing": [1, "never"],
 		"eol-last": 1,
@@ -107,19 +107,19 @@
 		"no-spaced-func": 2,
 		"no-trailing-spaces": 2,
 		"no-unneeded-ternary": 2,
-		"object-curly-spacing": [2, "always"],
-		"one-var": [2, "never"],
+		"object-curly-spacing": [1, "always"],
+		"one-var": [1, "never"],
 		"operator-assignment": [2, "always"],
 		"operator-linebreak": [2, "after"],
 		// "quote-props": [2, "consistent-as-needed", { "keywords": true }],
-		"quotes": [1, "single"],
+		//"quotes": [1, "single"],
 		"semi-spacing": [2, { "before": false, "after": true }],
 		"semi": 2,
-		"keyword-spacing": 2,
-		"space-before-blocks": 2,
+		"keyword-spacing": 1,
+		"space-before-blocks": 1,
 		"space-before-function-paren": [2, "never"],
 		"space-in-parens": [2, "never"],
-		"space-infix-ops": [2, { "int32Hint": true }],
+		//"space-infix-ops": [2, { "int32Hint": true }],
 		"wrap-regex": 1
 	}
 }
