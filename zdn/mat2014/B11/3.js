@@ -31,7 +31,7 @@ switch(v){
 		g=b;
 		break;
 	}
-	
+
 }
 window.vopr.txt='Найдите значение выражения $$\\sqrt{'+f+'^{2}'+d+g+'{^2}}$$';
 window.vopr.ver=[''+h];
