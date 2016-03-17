@@ -1,7 +1,7 @@
 (function() {
 
 var a=sl(1,19).pm();
-var b=[2 .pow(sl(-2,2))*5 .pow(sl(-2,2)),1].iz()
+var b=[2 .pow(sl(-2,2))*5 .pow(sl(-2,2)),1].iz();
 var x=-1/b-a;
 
 var fn=fn_zadan({
