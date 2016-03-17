@@ -1,5 +1,5 @@
 (function(){'use strict';
-	
+
 var a=sluchch(8,12);
 var b=[].N(a);
 b=b.map(function(p1){return om.porchisl[p1].i[2];});

@@ -1,8 +1,12 @@
 (function(){'use strict';
+NAinfo.requireApiVersion(0, 0);
 
 var mtr=generateMatrix(2,2,-19,19);
 
-window.vopr.ver=[mtr.det()];
-window.vopr.txt='Вычислите: $$\\left|'+mtr.matrixToTex()+'\\right|$$';
+NAtask.setTask({
 
+	text: 'Вычислите: $$\\left|'+mtr.matrixToTex()+'\\right|$$',
+	answers: mtr.det(),
+
+});
 })();

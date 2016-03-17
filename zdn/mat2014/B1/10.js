@@ -12,11 +12,12 @@ t2.ve=om.eda.ve.concat(om.meltov.ve);
 t2.rm=om.eda.rm.concat(om.meltov.rm);
 var t3=sluchch(0,t2.ie.length-1);
 
-window.vopr.txt=t2.ie[t3].toZagl()+' стоит '+chislitlx(a,'рубль')+'. '+
+NAtask.setTask({
+	text : t2.ie[t3].toZagl()+' стоит '+chislitlx(a,'рубль')+'. '+
 		om.denned.pg['в'][t1].toZagl()+' '+om.denned.ve[t1]+' в магазине действует специальное предложение: '+
 		'заплатив за '+chislitM(b,t2.ve[t3],t2.re[t3],t2.rm[t3])+', покупатель получает '+(b+c)+' ('+c+' - в подарок). '+
-		'Сколько '+t2.rm[t3]+' можно получить на '+chislitlx(d,'рубль')+ ' '+om.denned.pg['в'][t1]+' '+om.denned.ve[t1]+'?';
-window.vopr.ver=[((d/a).floor()+(d/a/b).floor()*c).ts()];
-
+		'Сколько '+t2.rm[t3]+' можно получить на '+chislitlx(d,'рубль')+ ' '+om.denned.pg['в'][t1]+' '+om.denned.ve[t1]+'?',
+	answers : ((d/a).floor()+(d/a/b).floor()*c).ts(),
+});
 })();
 //Обзад 26626
