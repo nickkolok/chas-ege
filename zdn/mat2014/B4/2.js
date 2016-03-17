@@ -17,11 +17,11 @@ g.zapslch(0,c-1,1200,9000,100);
 var h=[];
 h.zapslch(0,c-1,2,15,0.1);
 var z=[];
-for(var i=0;i<c;i++){
+for(var i=0; i<c; i++){
 	z[i]=[t2[i],g[i].ts(),h[i].ts()].tr();
 	s=Math.min((a/h[i]).ceil()*b*g[i],s);
 }
-				
+
 window.vopr.txt+=(y+z.soed()).vTabl();
 window.vopr.ver=[s.ts()];
 
