@@ -8,6 +8,6 @@
     NAtask.setTask({
         text: "$$"+(a/100).ts(1)+["\\cdot",":"][sign]+(b/100).ts(1).negativeBracketsTeX()+"=$$",
         answers: [(a*b/10000).ts(),new Fraction(a,b).toTeX().ob$()][sign],
-    
+
     });
 })();

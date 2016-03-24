@@ -12,6 +12,6 @@
 				a.toTeX(sl1())+["\\cdot",":"][sign]+(b/100).ts(1).negativeBracketsTeX(),
 				(b/100).ts(1)+["\\cdot",":"][sign]+a.toTeX(sl1()).negativeBracketsTeX(),
 			][order]+"=$$",
-        answers: [a.multiply(b).divide(100),[a.divide(b).multiply(100),new Fraction(b,100).divide(a)][order]][sign].toTeX().ob$(),    
+        answers: [a.multiply(b).divide(100),[a.divide(b).multiply(100),new Fraction(b,100).divide(a)][order]][sign].toTeX().ob$(),
     });
 })();

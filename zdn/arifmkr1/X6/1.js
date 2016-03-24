@@ -8,6 +8,6 @@
 
     NAtask.setTask({
         text: "$$"+a.toTeX(sl1())+["\\cdot",":"][sign]+b.toTeX(sl1()).negativeBracketsTeX()+"=$$",
-        answers: [a.multiply(b),a.divide(b)][sign].toTeX().ob$(),    
+        answers: [a.multiply(b),a.divide(b)][sign].toTeX().ob$(),
     });
 })();

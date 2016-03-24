@@ -1,3 +1,3 @@
 window.nomer=[
 	6,
-].iz()
+].iz();
