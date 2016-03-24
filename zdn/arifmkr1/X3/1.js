@@ -9,6 +9,6 @@
     NAtask.setTask({
         text: "$$"+a.ts(1)+["+","-"][sign]+b.ts(1).negativeBracketsTeX()+"=$$",
         answers: [a+b,a-b][sign],
-    
+
     });
 })();
