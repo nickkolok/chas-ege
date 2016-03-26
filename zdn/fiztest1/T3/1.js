@@ -22,7 +22,7 @@ NAtask.setTask(svVel([
             "$"+chis.frac(ampl)+"$ Гц",
             "$"+ampl+"$ Гц",
             "$"+(1).frac(ampl)+"$ Гц",
-        ]},    
+        ]},
         {vel:"период колебаний",vin:1,zna:"$"+znam.frac(chis)+"$ c",nah:1,rod:0,nev:[
             "$"+znam.frac(chis)+"$ Гц",
             "$"+chis.frac(znam)+"$ c",
@@ -36,8 +36,8 @@ NAtask.setTask(svVel([
             "$"+chis.frac(ampl)+"$ с",
             "$"+ampl+"$ с",
             "$"+(1).frac(ampl)+"$ с",
-            
-        ]},    
+
+        ]},
         {vel:"амплитуда колебаний",vin:"амплитуду колебаний",zna:"$"+ampl+"$ м",nah:1,rod:1,nev:[
             "$"+chis.frac(znam)+"$ м",
             "$"+znam.frac(chis)+"$ м",
@@ -48,7 +48,7 @@ NAtask.setTask(svVel([
             "$"+chis.frac(ampl)+"$ м",
             "$"+ampl+"$ Гц",
             "$"+(1).frac(ampl)+"$ м",
-        ]},    
+        ]},
     ].iz())
 ));
 
