@@ -63,8 +63,9 @@ chas2.task = {
 		normalizeTask : function(o) {
 			o.text = o.text || '';
 			o.analys = o.analys || '';
-			o.answers = chaslib.toStringsArray(o.answers || []);
-			o.wrongAnswers = chaslib.toStringsArray(o.wrongAnswers || []);
+			o.answers = chaslib.toStringsArray('answers' in o ? o.answers : []);
+			o.wrongAnswers = chaslib.toStringsArray('wrongAnswers' in o ? o.wrongAnswers : []);
+			// Просто o.answers || [] нельзя - ноль не будет передаваться
 		},
 
 	},
