@@ -10,8 +10,8 @@ var ed_ans;
 switch (ed_izm) {
 	case 'см':
 		diam/=10;
-		ed_ans = ['миллиметрах','дециметрах'].iz(); 
-	break;   
+		ed_ans = ['миллиметрах','дециметрах'].iz();
+	break;
 	case 'дм':
 		diam/=100;
 		ed_ans = ['миллиметрах','сантиметрах'].iz();
