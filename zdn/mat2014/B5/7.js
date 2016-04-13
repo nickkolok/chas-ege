@@ -15,15 +15,15 @@ window.vopr.dey=function(){
 	var h=480;
 	ct.translate(w/2,h/2);
 	ct.lineWidth=2;
-	var s=20;
-	ct.setka(20,s);
+	var s2=20;
+	ct.setka(20,s2);
 	ct.lineWidth=4;
 	ct.lineJoin='round';
 	ct.fillStyle='777';
 	var f=(d/c).atan();
-	
+
 	ct.beginPath();
-		ct.arc(0, 0, r*s, f, f-Math.PI/2*a, true);
+		ct.arc(0, 0, r*s2, f, f-Math.PI/2*a, true);
 		ct.lineTo(0,0);
 	ct.closePath();
 	ct.globalAlpha=0.5;
@@ -31,7 +31,7 @@ window.vopr.dey=function(){
 	ct.globalAlpha=1;
 	ct.stroke();
 	ct.beginPath();
-		ct.arc(0, 0, r*s, 0, 2*Math.PI, true);
+		ct.arc(0, 0, r*s2, 0, 2*Math.PI, true);
 	ct.closePath();
 	ct.stroke();
 };
