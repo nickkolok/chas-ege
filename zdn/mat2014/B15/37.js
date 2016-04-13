@@ -14,7 +14,7 @@ var f=function(x){
 //	if(x===undefined)
 //		return undefined;
 	return (x+a).pow(2)*(x+b);
-}
+};
 
 var fn=fn_zadan({
 	slag:[('(x+'+a+')^2 (x+'+b+')').plusminus().replace(/\(x\+0\)/g,'x')],
