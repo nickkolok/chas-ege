@@ -1,5 +1,5 @@
 (function(){'use strict';
-	
+
 var c=1*(sluchch(0.1,0.5,0.1).toFixedLess(2));
 var a=sluchch(30,50,c);
 var d=sl1();
@@ -28,9 +28,9 @@ window.vopr.dey=function(){
 	var ris=document.getElementById('ris'+slid);
 	var ct = ris.getContext('2d');
 	var w=600;
-	var h=400;
+	var h2=400;
 	ct.lineWidth=2;
-	ct.translate(0,h);
+	ct.translate(0,h2);
 	ct.drawLine(-5,-5,5,5);
 	ct.translate(40,-40);
 	var s=20;
@@ -38,11 +38,11 @@ window.vopr.dey=function(){
 	ct.lineWidth=3;
 	ct.font = 'bold 12 px sans-serif';
 	ct.fillStyle='#000';
-	for(var i=0;i<28;i++){
-		ct.fillText(""+(i+1),i*s-5,20);
+	for(var i2=0;i2<28;i2++){
+		ct.fillText(""+(i2+1),i2*s-5,20);
 	}
-	for(var i=0;i<19;i++){
-		ct.fillText(""+(a+i*c).toFixedLess(2),-35,-i*s);
+	for(var i2=0;i2<19;i2++){
+		ct.fillText(""+(a+i2*c).toFixedLess(2),-35,-i2*s);
 	}
 	for(var i=1;i<28;i++){
 		ct.drawLine(i*s-s,-(b[i]-a)*s/c,i*s,-(b[i+1]-a)*s/c);
