@@ -44,12 +44,12 @@ window.vopr.dey=function(){
 	for(var i2=0;i2<19;i2++){
 		ct.fillText(""+(a+i2*c).toFixedLess(2),-35,-i2*s);
 	}
-	for(var i=1;i<28;i++){
-		ct.drawLine(i*s-s,-(b[i]-a)*s/c,i*s,-(b[i+1]-a)*s/c);
+	for(var i2=1;i2<28;i2++){
+		ct.drawLine(i2*s-s,-(b[i2]-a)*s/c,i2*s,-(b[i2+1]-a)*s/c);
 	}
 	ct.fillStyle='black';
-	for(var i=1;i<29;i++){
-		ct.fillKrug(i*s-s,-(b[i]-a)*s/c,5);
+	for(var i2=1;i2<29;i2++){
+		ct.fillKrug(i2*s-s,-(b[i2]-a)*s/c,5);
 	}
 	$('#ris').attr('id','');
 };
