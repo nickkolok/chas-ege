@@ -143,18 +143,18 @@ window.vopr.dey = function(){
 	ct.fillKrug(+maxX, +maxY, 7);
 
 	/*Nodes and arrows*/
-	for (var i = 0; i < nodeCount; i++){
-		for (var j = 0; j < nodeCount; j++){
-			if(i!=j && nodePathArray[i][j]=='+'){
-				var startNode2 = new Complex(nodeXarray[i], nodeYarray[i]);
-				var endNode2 = new Complex(nodeXarray[j], nodeYarray[j]);
+	for (var i2 = 0; i2 < nodeCount; i2++){
+		for (var j2 = 0; j2 < nodeCount; j2++){
+			if(i2!=j2 && nodePathArray[i2][j2]=='+'){
+				var startNode2 = new Complex(nodeXarray[i2], nodeYarray[i2]);
+				var endNode2 = new Complex(nodeXarray[j2], nodeYarray[j2]);
 			    var edgeLength = new Complex().sum(startNode2, endNode2.minus()).norma();
 				var lmbd = (edgeLength+baseRadius+arrowShift)/(baseRadius+arrowShift);
 				var midPoint = new Complex().sum(
 					startNode2,
 					endNode2.umn(lmbd)
 					).umn(1/(1+lmbd));
-				ct.drawArrow(nodeXarray[i], nodeYarray[i], midPoint.re, midPoint.im);
+				ct.drawArrow(nodeXarray[i2], nodeYarray[i2], midPoint.re, midPoint.im);
 			}
 		}
 	}
