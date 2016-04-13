@@ -16,8 +16,6 @@ window.vopr.txt='Семья из '+chel+' человек планирует по
 	rasst+' км, а цена '+topl.re+' равна '+chislitlx(cena,'рубль')+' за литр. Сколько рублей придется заплатить '+
 	'за наиболее дешевую поездку на '+chel+' человек?';
 
-
-
 window.vopr.ver=[Math.min(chel*bilet,cena*rasst*rashod/100).ts()];
 
 window.vopr.kat['log']=0;
