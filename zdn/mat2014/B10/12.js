@@ -13,7 +13,7 @@ bCube.lowBx += 50;
 bCube.lowCx += 40;
 bCube.lowBy -= 10;
 var tmp = 0.3-Math.random(1)+0.000001;
-tmp = (tmp/Math.abs(tmp));
+tmp /= Math.abs(tmp);
 bCube.height += ((Math.floor(Math.random(1)*2.8)*20)*tmp/Math.abs(tmp));
 bCube.height -= 10;
 
@@ -65,7 +65,7 @@ window.vopr.dey=function(){
 
 	/* A-B */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy);
 	/* A-C */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowCx, bCube.lowCy);
-	/* C-C' */ct.drawLine(bCube.lowCx, bCube.lowCy, bCube.lowCx, bCube.lowCy+bCube.height)
+	/* C-C' */ct.drawLine(bCube.lowCx, bCube.lowCy, bCube.lowCx, bCube.lowCy+bCube.height);
 	/* D-D' */ct.drawLine(bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height);
 
 	/* A-B */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy);
@@ -82,7 +82,7 @@ window.vopr.dey=function(){
 
 	/* A-A' */ct.drawLine(sCube.lowAx, sCube.lowAy, sCube.lowAx, sCube.lowAy+sCube.height);
 	/* B-B' */ct.drawLine(sCube.lowBx-Math.abs(sCube.lowBy-sCube.lowCy), sCube.lowBy, sCube.lowBx-Math.abs(sCube.lowBy-sCube.lowCy), sCube.lowBy+sCube.height);
-	/* C-C' */ct.drawLine(sCube.lowCx, sCube.lowCy, sCube.lowCx, sCube.lowCy+sCube.height)
+	/* C-C' */ct.drawLine(sCube.lowCx, sCube.lowCy, sCube.lowCx, sCube.lowCy+sCube.height);
 	/* D-D' */ct.drawLine(sCube.lowCx-Math.abs(sCube.lowBy-sCube.lowCy), sCube.lowBy, sCube.lowCx-Math.abs(sCube.lowBy-sCube.lowCy), sCube.lowBy+sCube.height);
 
 	/* A-B */ct.drawLine(sCube.lowAx, sCube.lowAy, sCube.lowBx-Math.abs(sCube.lowBy-sCube.lowCy), sCube.lowBy);
