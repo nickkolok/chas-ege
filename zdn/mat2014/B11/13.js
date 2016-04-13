@@ -19,8 +19,8 @@
 	u = slKrome(0, -5, 5);
 	x = 1;//Так нельзя, надо для любого x, вывести соотношение между коэффициентами
 
-	p = function(x) {
-		return g * x + h;
+	p = function(z) {
+		return g * z + h;
 	};
 
 	answer = a * (u * p(b * x + c) - d * p(e * x + f));
