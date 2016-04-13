@@ -7,39 +7,42 @@
 
     if (task === 0)
         while (!Math.sqrt(cat_a * cat_a + cat_b * cat_b).isZ())
-            cat_a = sluchch(1, 30), cat_b = sluchch(1, 30);
+		{
+            cat_a = sluchch(1, 30);
+            cat_b = sluchch(1, 30);
+		}
 
     switch(task)
     {
     case 0:
         window.vopr.txt=(
-            'Катеты прямоугольного треугольника равны ' + 
+            'Катеты прямоугольного треугольника равны ' +
             cat_a + ' и ' + cat_b + '. ' +
             'Найдите гипотенузу.');
         window.vopr.ver=[Math.sqrt(cat_a * cat_a + cat_b * cat_b)];
         break;
     case 1:
         window.vopr.txt=(
-            'Катеты прямоугольного треугольника равны ' + 
+            'Катеты прямоугольного треугольника равны ' +
             cat_a + ' и ' + cat_b + '. ' +
             'Найдите площадь этого треугольника.');
         window.vopr.ver=[0.5 * cat_a * cat_b];
         break;
     case 2:
         window.vopr.txt=(
-            'В прямоугольном треугольнике один катет равен равен ' + 
-            cat_a + ', а другой ' + 
+            'В прямоугольном треугольнике один катет равен равен ' +
+            cat_a + ', а другой ' +
             (cat_a == cat_b             // is equal
-                ? 'равен ему. ' 
-                : 'на ' + Math.abs(cat_b - cat_a) + 
+                ? 'равен ему. '
+                : 'на ' + Math.abs(cat_b - cat_a) +
                 (cat_a < cat_b          // not equal: cat_a != cat_b
-                    ? ' больше его. ' 
-                    : ' меньше его. ')) + 
+                    ? ' больше его. '
+                    : ' меньше его. ')) +
             'Найдите площадь треугольника.');
         window.vopr.ver=[0.5 * cat_a * cat_b];
-        break;    
+        break;
     }
-    
+
     window.vopr.kat['log'] = 0;
     window.vopr.kat['prz'] = 0;
     window.vopr.kat['drs'] = 0;
