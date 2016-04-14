@@ -160,13 +160,13 @@ window.vopr.dey = function(){
 	}
 
 	/*Set nodes text*/
-	for(var i = 0; i < nodeCount; i++){
+	for(var i2 = 0; i2 < nodeCount; i2++){
 		ct.fillStyle = '#000000';
-		ct.fillKrug(nodeXarray[i], nodeYarray[i], baseRadius);
+		ct.fillKrug(nodeXarray[i2], nodeYarray[i2], baseRadius);
 		ct.fillStyle = '#FFFFFF';
-		ct.fillKrug(nodeXarray[i],nodeYarray[i], baseRadius-2);
+		ct.fillKrug(nodeXarray[i2],nodeYarray[i2], baseRadius-2);
 		ct.fillStyle = '#000000';
-		ct.fillText((nodeCharArray[i]), nodeXarray[i] - fontSize / 2, nodeYarray[i] + fontSize/2);
+		ct.fillText((nodeCharArray[i2]), nodeXarray[i2] - fontSize / 2, nodeYarray[i2] + fontSize/2);
 	};
 	$('#ris').attr('id','');
 };
