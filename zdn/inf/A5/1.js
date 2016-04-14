@@ -6,12 +6,12 @@ window.vopr.nev=[];
 window.vopr.ver=[genWordForAlg(myalg)];
 for (var i=0; i<3; i++) {
 	var t = '';
-	do { 
+	do {
 		t = genWrongWordForAlg(myalg);
 	} while (window.vopr.nev.hasElem(t));
 	window.vopr.nev.push(t);
 }
-	
+
 window.vopr.rsh='';
 
 AtoB();//Техническая функция, её удалять не надо
