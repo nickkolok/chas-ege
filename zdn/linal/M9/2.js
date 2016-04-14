@@ -7,7 +7,7 @@ A=A.T();
 var B=A.splice(0,1);
 A=A.T();
 B=B.T();
-}while(A.hasNullVect() || B.T()[0].isNullVect())
+}while(A.hasNullVect() || B.T()[0].isNullVect());
 
 window.vopr.txt='Решить систему методом Гаусса и записать общее решение в виде суммы частного '+
 	'решения неоднородной и общего решения однородной системы:'+
