@@ -8,5 +8,5 @@
   NAtask.setTask({
     text: 'Дана арифметическая прогрессия ' + firstMember + '; ' + (firstMember + d) + '; ... Найдите ' + targetNumber + '-й член прогрессии.',
     answers: firstMember + d * (targetNumber - 1),
-  })
+  });
 })();
