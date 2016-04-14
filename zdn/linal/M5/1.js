@@ -12,8 +12,8 @@ NAtask.setTask({
 	text:'Найдите обратную матрицу к матрице $A=\\left('+mtr.matrixToTex()+'\\right)$',
 	answers:
 		'$\\left('+	//Костыль!!! Нужна vrn_mtr
-	mtr.inv().matrixToTex().ts()
-	+'\\right)$',
+	mtr.inv().matrixToTex().ts()+
+	'\\right)$',
 
 });
 })();
