@@ -6,11 +6,11 @@
             var k = sluchch(2, 4);
             var shag;
             var number;
-     
-            function fiba(n) {
-                    if (n == 0 || n == 1)
+
+            function fiba(n2) {
+                    if (n2 == 0 || n2 == 1)
                             return 1;
-                    return fiba(n - 1) + fiba(n - 2);
+                    return fiba(n2 - 1) + fiba(n2 - 2);
             }
             switch (a) {
             case 0:
@@ -20,7 +20,7 @@
             case 1:
                     number = 'Cколькими способами кузнечик может добраться в ' + n + '-ю клетку, сделав ' + chislitlx(k, 'шаг') + '?';
                     shag = ((n - 2).fct()) / ((k - 1).fct() * ((n - 2 - k - 1).fct()));
-     
+
                     break;
             case 2:
                     number = 'Cколькими способами кузнечик может добраться в ' + n +
@@ -29,14 +29,11 @@
                     break;
             }
             NAtask.setTask({
-     
+
                     text: 'Есть ' + chislitlx(n, 'клеточка') + ', расположенных последовательно. ' +
                             'Кузнечик должен попасть из крайней левой клеточки в крайнюю правую. ' + number,
-     
+
                     answers: shag,
-     
-     
-     
             });
     })();
 //konan01
