@@ -5,7 +5,7 @@ var A,
 	B;
 do{
 	A=generateMatrix(4,4,-9,9);
-}while(!A.det())
+}while(!A.det());
 
 B=objUmn(A,X);
 
