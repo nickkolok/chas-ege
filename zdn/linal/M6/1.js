@@ -10,8 +10,8 @@ do{
 
 window.vopr.ver=[
 	'$\\left('+	//Костыль!!! Нужна vrn_mtr
-	mtr.inv().matrixToTex().ts()
-	+'\\right)$'
+	mtr.inv().matrixToTex().ts()+
+	'\\right)$'
 ];
 window.vopr.txt='Найдите методом Гаусса обратную матрицу к матрице $A=\\left('+mtr.matrixToTex()+'\\right)$';
 
