@@ -148,7 +148,7 @@ window.vopr.dey = function(){
 			if(i2!=j2 && nodePathArray[i2][j2]=='+'){
 				var startNode2 = new Complex(nodeXarray[i2], nodeYarray[i2]);
 				var endNode2 = new Complex(nodeXarray[j2], nodeYarray[j2]);
-			    var edgeLength = new Complex().sum(startNode2, endNode2.minus()).norma();
+				var edgeLength = new Complex().sum(startNode2, endNode2.minus()).norma();
 				var lmbd = (edgeLength+baseRadius+arrowShift)/(baseRadius+arrowShift);
 				var midPoint = new Complex().sum(
 					startNode2,
