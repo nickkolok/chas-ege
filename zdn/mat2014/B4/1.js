@@ -24,18 +24,15 @@ for(i=0;i<3;i++){
 
 var s;
 switch (b){
-	case 0:{
+	case 0:
 			s=Math.max(n[0],n[1],n[2])/r;
 			break;
-		}
-	case 1:{
+	case 1:
 			s=Math.min(n[0],n[1],n[2])/r;
 			break;
-		}
-	case 2:{
+	case 2:
 			s=(Math.max(n[0],n[1],n[2])-Math.min(n[0],n[1],n[2]))/r;
 			break;
-		}
 }
 var t=sluchiz(window.kachestva.ie,5);
 window.vopr.txt=d+t[0]+' '+f[0]+', '+t[1]+' '+f[1]+', '+t[2]+' '+f[2]+', '+t[3]+' '+f[3]+' и '+t[4]+' '+f[4]+'.';
