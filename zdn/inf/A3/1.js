@@ -7,7 +7,7 @@ for (var j=0; j<4; j++) {
 	while (flag) {
 		var f1 = genLogFunc(k);
 		flag = f.hasElem(f1);
-		if (!flag) 
+		if (!flag)
 			f.push(f1);
 	}
 }
@@ -43,21 +43,21 @@ for (var i=1; i<4; i++) {
 //заполнение таблицы
 var table = '';
 for (var i=0; i<k; i++)
-	table=table+('X'+(i+1)).vTag('b','').vTag('td','');
+	table+=('X'+(i+1)).vTag('b','').vTag('td','');
 table = (table+'F'.vTag('b','').vTag('td','')).vTag('tr','');
 for (var j=0; j<3; j++){
-	table = table+'<tr>';
+	table += '<tr>';
 	for (var i=0; i<k; i++)
-		table=table+String(x[j][i]).vTag('td','');
-	table=table+String(Number(res[j])).vTag('td','');
-	table = table+'</tr>';
+		table+=String(x[j][i]).vTag('td','');
+	table+=String(Number(res[j])).vTag('td','');
+	table += '</tr>';
 }
 table = table.vTag('table','border="1"');
 
-window.vopr.txt='Дан фрагмент таблицы истинности выражения F (см. таблицу). Какое выражение соответствует F?'
-	+'<br/>'+table+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
+window.vopr.txt='Дан фрагмент таблицы истинности выражения F (см. таблицу). Какое выражение соответствует F?'+
+	'<br/>'+table+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
 
-for (var i=0; i<4; i++) 
+for (var i=0; i<4; i++)
 	f[i]=printLogic(f[i]);
 
 window.vopr.ver=f.splice(0,1);

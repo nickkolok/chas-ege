@@ -16,8 +16,8 @@ NAtask.setTask({
 		[a,mtr,mtr].umnObj(),
 		objUmn(b,mtr),
 		generateScalMatrix(c,3),
-	].sumObj().matrixToTex()
-	+'\\right)$',
+	].sumObj().matrixToTex()+
+	'\\right)$',
 
 });
 })();
