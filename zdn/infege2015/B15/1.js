@@ -7,9 +7,9 @@ var countNodeChildren = function(mat, ic){
 		if(mat[ic][j]=='+'){
 			s++;
 		}
-	}	
-	return s
-}
+	}
+	return s;
+};
 
 /*Returns the number of parents*/
 var countNodeParents = function(mat, ic){
@@ -18,9 +18,9 @@ var countNodeParents = function(mat, ic){
 		if(mat[j][ic] == '+'){
 			s++;
 		}
-	}	
+	}
 	return s;
-}
+};
 
 /*Returns indices of all children*/
 var getNodeChildren = function(mat, ic){
@@ -31,7 +31,7 @@ var getNodeChildren = function(mat, ic){
 		}
 	}
 	return ch;
-}
+};
 
 /*Recursive way search*/
 var wayCount = 0;
@@ -48,7 +48,7 @@ var searchNode = function(mat, ic, jfinish){
 			}
 		}
 	}
-}
+};
 
 /* Canvas parameters */
 var elRadius = getRandomInt(140,150);
@@ -72,22 +72,22 @@ var nameCode = 'A'.charCodeAt(0);
 var ky = 0;
 var i = 0;
 var b = 0;
-for (var ix = -elRadius * scaleX + getRandomInt(40, 50); 
+for (var ix = -elRadius * scaleX + getRandomInt(40, 50);
 	(ix<=elRadius*scaleX-getRandomInt(10,30) && (i<maxNodeCount));
 	 ix+=dens){
 	ky = Math.pow(elRadius.sqr() - (ix/scaleX).sqr(), 0.5);
 	nodeXarray.push(Math.round(ix));
 	nodeYarray.push(Math.round(-ky));
 	nodeCharArray.push(String.fromCharCode(nameCode + i));
-	i++;	
+	i++;
 }
 var tmp = i;
 for (var ix = -elRadius * scaleX + getRandomInt(10, 20); (ix <= elRadius * scaleX - getRandomInt(10, 30) && (i < maxNodeCount + tmp)); ix += dens){
 	ky = Math.pow(elRadius.sqr()-(ix/scaleX).sqr(), 0.5);
-	nodeXarray.push(Math.round(ix));	
+	nodeXarray.push(Math.round(ix));
 	nodeYarray.push(Math.round(ky));
 	nodeCharArray.push(String.fromCharCode(nameCode+i));
-	i++;	
+	i++;
 }
 var nodeCount = i;
 
@@ -123,7 +123,7 @@ window.vopr.ver = ['' + wayCount];
 
 /*Drawing on canvas*/
 var slid=sl(1000000000);
-window.vopr.dey = function(){	
+window.vopr.dey = function(){
 	var ris = document.getElementById('ris'+slid);
 	var ct = ris.getContext('2d');
 	var maxX = (ris.width)/2;
@@ -155,7 +155,7 @@ window.vopr.dey = function(){
 					endNode.umn(lmbd)
 					).umn(1/(1+lmbd));
 				ct.drawArrow(nodeXarray[i], nodeYarray[i], midPoint.re, midPoint.im);
-			}			
+			}
 		}
 	}
 

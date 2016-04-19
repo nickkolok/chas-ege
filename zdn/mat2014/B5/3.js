@@ -45,7 +45,6 @@ window.vopr.dey=function(){
 };
 
 
-
 window.vopr.txt='Найдите площадь треугольника, изображенного на клетчатой бумаге с размером клетки 1 см $\\times$ 1 см (см. рис.). Ответ дайте в квадратных сантиметрах.';
 window.vopr.txt+='<canvas style="float:left;margin-right:1em;" width="480" height="480" id="ris'+slid+'" style="text-align:center"></canvas>';
 window.vopr.ver=[p];

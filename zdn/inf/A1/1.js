@@ -11,7 +11,7 @@ var answer = intoAnotherSystem(x,10,n);
 window.vopr.txt='Как представлено число '+y+'<sub>'+m+'</sub> в '+n+'-ной системе счисления?'
 	+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
 window.vopr.ver=[
-  	answer,
+	answer,
 ];
 var wrongAnswers = [];
 for (var i = 0; i < 3; i++) {

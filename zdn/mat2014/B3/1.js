@@ -1,5 +1,5 @@
 (function(){'use strict';
-	
+
 var c=1*(sluchch(0.1,0.5,0.1).toFixedLess(2));
 var a=sluchch(30,50,c);
 var d=sl1();
@@ -53,8 +53,6 @@ window.vopr.dey=function(){
 	}
 	$('#ris').attr('id','');
 };
-
-
 
 window.vopr.txt='<canvas style="float:left;margin-right:1em;" width="600" height="400" id="ris'+slid+'" style="text-align:center" opozn="'+Math.random()+'"></canvas>';
 window.vopr.txt+='На графике жирными точками, для наглядности соединёнными линией, показан курс '+sluchiz(window.valuta.re);

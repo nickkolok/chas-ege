@@ -1,5 +1,5 @@
 (function(){'use strict';
-	
+
 var c=1*(sluchch(0.1,0.5,0.1).toFixedLess(2));
 var a=sluchch(30,50,c);
 var d=sl1();

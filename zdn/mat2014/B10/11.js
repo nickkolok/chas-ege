@@ -66,7 +66,7 @@ window.vopr.dey=function(){
 
 	/* A-A' */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowAx, bCube.lowAy+bCube.height);
 	/* B-B' */ct.drawLine(bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height);
-	/* C-C' */ct.drawLine(bCube.lowCx, bCube.lowCy, bCube.lowCx, bCube.lowCy+bCube.height)
+	/* C-C' */ct.drawLine(bCube.lowCx, bCube.lowCy, bCube.lowCx, bCube.lowCy+bCube.height);
 	/* D-D' */ct.drawLine(bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height);
 
 	/* A-B */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy);
