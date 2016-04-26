@@ -6,7 +6,7 @@ function Downloader(name, file_size, download_time) {
 	this.download_time = download_time;
 	this.get_download_speed = function() {
 		return this.file_size / this.download_time;
-	}
+	};
 }
 
 var PEOPLE_COUNT = 3;
@@ -36,6 +36,6 @@ window.vopr.txt = people[0].name + ' загружает на свой компь
 
 window.vopr.ver = [ required_file_size / speed ];
 
-})()
+})();
 //Обзад 77363
 // Sergey Naumov aka DrMGC <drmgc@yandex.ru>

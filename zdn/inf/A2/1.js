@@ -3,11 +3,11 @@
 Date.prototype.makeTime = function() {
 	var format = this.getHours()+':';
 	if (this.getMinutes()<10)
-		format=format+'0'+this.getMinutes();
-	else 
-		format=format+this.getMinutes();
+		format+='0'+this.getMinutes();
+	else
+		format+=this.getMinutes();
 	return format;
-}
+};
 
 var k = sluchch(4,5);//количество городов
 var names = ['ТУЧЕВОЕ','ИВАНОВО','ОЛЕНЕВО','СЫРКОВО','ЛОМОВОЕ'].shuffle();
@@ -44,12 +44,12 @@ var city = C;
 var findWay = function() {
 	var p = times.length-1;
 	ways.push(city);
-	for (var i=1; i<k;i++) {
-		if (cities[city][i]!=0 && !(ways.hasElem(i))) {
+	for (var i2=1; i2<k;i2++) {
+		if (cities[city][i2]!=0 && !(ways.hasElem(i2))) {
 			times[p+1] = new Date(0);
-			if (cities[city][i][0].getHours()<times[p].getHours() || 
-				cities[city][i][0].getHours()==times[p].getHours() && 
-				cities[city][i][0].getMinutes()==times[p].getMinutes())
+			if (cities[city][i2][0].getHours()<times[p].getHours() ||
+				cities[city][i2][0].getHours()==times[p].getHours() &&
+				cities[city][i2][0].getMinutes()==times[p].getMinutes())
 			{
 				times[p+1].setDate(times[p].getDate()+1);
 			}
@@ -57,28 +57,28 @@ var findWay = function() {
 			{
 				times[p+1].setDate(times[p].getDate());
 			}
-			times[p+1].setHours(cities[city][i][1].getHours());
-			times[p+1].setMinutes(cities[city][i][1].getMinutes());
-			if (i==B)
+			times[p+1].setHours(cities[city][i2][1].getHours());
+			times[p+1].setMinutes(cities[city][i2][1].getMinutes());
+			if (i2==B)
 			{
 				if (times[p+1]<minTime)
 					minTime=times[p+1];
 			}
 			else {
-				city = i;
+				city = i2;
 				findWay();
-				ways.length=ways.length-1;
-				city=ways[ways.length-1]
-				times.length=times.length-1;
+				--ways.length;
+				city=ways[ways.length-1];
+				--times.length;
 			}
 		}
 	}
-}
+};
 findWay();
-window.vopr.txt='Путешественник пришел в '+times[0].makeTime()+' на автостанцию '+names[C]+'  и обнаружил следующее расписание местной сети автобусного сообщения. Определите самое раннее время, когда путешественник может оказаться в пункте '+names[B]+' согласно этому расписанию.'
-	+'<br/>'+table;//Добавляем пустую строку между вопросом и вариантами ответа
+window.vopr.txt='Путешественник пришел в '+times[0].makeTime()+' на автостанцию '+names[C]+'  и обнаружил следующее расписание местной сети автобусного сообщения. Определите самое раннее время, когда путешественник может оказаться в пункте '+names[B]+' согласно этому расписанию.'+
+	'<br/>'+table;//Добавляем пустую строку между вопросом и вариантами ответа
 window.vopr.ver=[
-  	minTime.makeTime()
+	minTime.makeTime()
 ];
 var wrongAnswers = [];
 for (var i = 0; i < wrongtimes.length; i++) {
@@ -86,7 +86,7 @@ for (var i = 0; i < wrongtimes.length; i++) {
 		wrongAnswers.push(wrongtimes[i].makeTime());
 }
 for (var i = wrongtimes.length-1; i < 4; i++) {
-	var d =new Date(sluchch(0,60000000));	
+	var d =new Date(sluchch(0,60000000));
 	wrongAnswers[i]=d.makeTime();
 }
 window.vopr.nev=wrongAnswers;

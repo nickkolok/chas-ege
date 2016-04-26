@@ -12,7 +12,7 @@ var params={
 	prnb:sl1(),
 	prnz:(d-1).frac(d),
 	prkz:(d+1).frac(d),
-}
+};
 if(v1){		// c < 2a
 	params.minx=1;
 	params.miny=a-b;

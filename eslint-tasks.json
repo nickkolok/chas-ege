@@ -1,0 +1,125 @@
+{
+	"rules": {
+		//
+		// Possible Errors
+		"no-cond-assign": 2,
+		"no-constant-condition": 1,
+		"no-dupe-args": 1,
+		"no-dupe-keys": 1,
+		"no-duplicate-case": 1,
+		"no-empty": 1,
+		"no-ex-assign": 2,
+		"no-extra-boolean-cast": 2,
+		// "no-extra-parens": 1,
+		"no-extra-semi": 1,
+		"no-func-assign": 2,
+		"no-invalid-regexp": 2,
+		"no-irregular-whitespace": 2,
+		"no-negated-in-lhs": 2,
+		"no-obj-calls": 1,
+		"no-regex-spaces": 2,
+		"no-sparse-arrays": 2,
+		"no-unreachable": 2,
+		"use-isnan": 2,
+		// TODO: "valid-jsdoc": 1,
+		"valid-typeof": 2,
+		"no-unexpected-multiline": 1,
+
+		//
+		// Best Practices
+		"accessor-pairs": 1,
+		// FIXME: "block-scoped-var": 1, Works in for(var i;i<5;i) too
+		"complexity": 2,
+		// "consistent-return": 1,
+		"curly": 1,
+		"default-case": 1,
+		"dot-notation": [1, { "allowKeywords": true }],
+		// "dot-location": 1, // Was ist das?
+		// "eqeqeq": [1, "smart"], // Оно нам надо?
+		"no-labels": 2,
+		"no-eval": 1,
+		"no-fallthrough": 2,
+		"no-floating-decimal": 2,
+		"no-implied-eval": 2,
+		"no-invalid-this": 2,
+		"no-iterator": 2,
+		"no-lone-blocks": 1,
+		"no-loop-func": 1,
+		"no-multi-str": 1,
+		"no-native-reassign": 2,
+		"no-new-func": 1,			// во славу совместимости
+		"no-new-wrappers": 1,
+		"no-new": 1,
+		"no-octal-escape": 2, // Мы не осьминоги!
+		"no-octal": 2, // Даже в числах!
+		"no-proto": 2, // deprecated же
+		// "no-redeclare": 1, // На redeclare аргументов работает тоже
+		"no-return-assign": 1,
+		"no-script-url": 2,
+		"no-self-compare": 2, // У нас тут не инстаграмм
+		"no-sequences": 2,
+		"no-throw-literal": 2,
+		// "no-unused-expressions": 2,
+		"no-useless-call": 2,
+		"no-void": 2,
+		// "no-warning-comments": [1, { "location" : "anywhere" }],
+		"no-with": 2,
+		"radix": 2,
+		// "vars-on-top": 1, // Слишком много исправлять
+		"wrap-iife": [1, "inside"],
+
+
+		//
+		// Strict Mode
+		"strict": [1, "global"],
+
+
+		//
+		// Variables
+		"no-catch-shadow": 2,
+		"no-delete-var": 2,
+		"no-label-var": 2,
+		"no-shadow-restricted-names": 2,
+		"no-shadow": [2, { "builtinGlobals": false, "hoist": "functions" }],
+		"no-undef-init": 1,
+
+
+		//
+		// Stylistic Issues
+		// "array-bracket-spacing": [2, "never"], // Плохо работает для массивов в несколько строк
+		"brace-style": [1, "1tbs", { "allowSingleLine": true }],
+		"camelcase": 1,
+		//"comma-spacing": [1, {"before": false, "after": true}],
+		"comma-style": [1, "last"],
+		"computed-property-spacing": [1, "never"],
+		"eol-last": 2,
+		//"func-style": [2, "declaration"],
+		// "indent": [2, "tab"],
+		// "key-spacing": [2, { "align": "colon" }], // Не правильно работает =)
+		"linebreak-style": [2, "unix"],
+		"new-cap": [2, { "capIsNew": false }],
+		"new-parens": 2,
+		"no-array-constructor": 2,
+		"no-lonely-if": 1,
+		"no-mixed-spaces-and-tabs": [2, "smart-tabs"],
+		"no-multiple-empty-lines": [2, {"max": 2}],
+		"no-nested-ternary": 2, // Не читаем же
+		"no-spaced-func": 2,
+		"no-trailing-spaces": 2,
+		"no-unneeded-ternary": 2,
+		"object-curly-spacing": [1, "always"],
+		"one-var": [1, "never"],
+		"operator-assignment": [2, "always"],
+		"operator-linebreak": [2, "after", { "overrides": { "?": "ignore", ":": "ignore", "||": "ignore", "&&": "ignore"} }],
+		// "quote-props": [2, "consistent-as-needed", { "keywords": true }],
+		//"quotes": [1, "single"],
+		"semi-spacing": [1, { "before": false, "after": true }],
+		"semi": 2,
+		"keyword-spacing": 1,
+		"space-before-blocks": 1,
+		"space-before-function-paren": [2, "never"],
+		"space-in-parens": [1, "never"],
+		//"space-infix-ops": [2, { "int32Hint": true }],
+		"wrap-regex": 1
+	}
+}

@@ -2,12 +2,12 @@
 
 window.vopr.txt='$ \\cos{(\\frac{\\pi}{2}+a)}=$<br/>';
 window.vopr.ver=[
-  	'$ -\\sin{a}  $',
+	'$ -\\sin{a}  $',
 ];
 window.vopr.nev=[
-  	'$ \\cos{a}  $',
-  	'$ -\\cos{a}  $',
-  	'$ \\sin{a}  $',
+	'$ \\cos{a}  $',
+	'$ -\\cos{a}  $',
+	'$ \\sin{a}  $',
 ];
 AtoB();
 

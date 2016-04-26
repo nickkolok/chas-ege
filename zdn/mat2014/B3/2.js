@@ -1,5 +1,5 @@
 (function(){'use strict';
-	
+
 var d1=sluchch(1,10);
 var d2=sluchch(20,28);
 var n=[].N(d2);
@@ -21,9 +21,9 @@ ny.unshift(0);
 ny.dopFixedLess(3);
 
 var i=0;
-var ur=b1.udFunc(function(p1){return p1==b2[i++]});
+var ur=b1.udFunc(function(p1){return p1==b2[i++];});
 i=0;
-var ub=b1.udFunc(function(p1){return p1>b2[i++]});
+var ub=b1.udFunc(function(p1){return p1>b2[i++];});
 
 var t1=['больше'	,'не меньше'	,'меньше'		,'не больше'	];
 var p1=[ub			,ub+ur			,b1.length-ub-ur,b1.length-ub	];
