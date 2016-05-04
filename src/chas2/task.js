@@ -9,7 +9,7 @@ chas2.task = {
 	 * @private
 	 */
 	_ : {
-		/** @function chas2.task.validateTask
+		/** @function chas2.task._.validateTask
 		 * Проверить корректность объекта-задания
 		 * @param {String} text текст задания
 		 * @param {String} analys текст разбора задания
@@ -50,8 +50,8 @@ chas2.task = {
 		},
 
 
-		/** @function chas2.task.normalizeTask
-		 * Привести объект-задани к нормальному виду
+		/** @function chas2.task._.normalizeTask
+		 * Привести объект-задание к нормальному виду
 		 * @param {String} text текст задания
 		 * @param {String} analys текст разбора задания
 		 * @param {String|Number|String[]|Number[]} answers правильные ответы
