@@ -55,7 +55,7 @@ var chaslib = {
 		case '[object String]':
 			return [arr];
 		default:
-			throw TypeError('Параметр answers должен');//TODO: WTF?!
+			throw TypeError('Невозможно преобразовать в строковый массив параметр: ' + JSON.stringify(arr));
 		}
 	},
 
