@@ -64,7 +64,7 @@ chas2.task = {
 			o.text = o.text || '';
 			o.analys = o.analys || '';
 			o.answers = chaslib.toStringsArray('answers' in o ? o.answers : []);
-			o.wrongAnswers = chaslib.toStringsArray('wrongAnswers' in o ? o.wrongAnswers : []);
+			o.wrongAnswers = chaslib.toStringsArray((('wrongAnswers' in o) && (o.wrongAnswers !== undefined)) ? o.wrongAnswers : []);
 			// Просто o.answers || [] нельзя - ноль не будет передаваться
 		},
 
