@@ -7,6 +7,7 @@ var D={};
 var p=0;
 var d=[];
 var g='';
+// TODO: переделать этот ужас!!!
 for(;!p
 		||(g.ie=='четырёхугольник')&&sluchch(0,2000)
 		||(g.ie=='трапеция')&&sluchch(0,100)
@@ -27,10 +28,8 @@ for(;!p
 }
 p=d.mt_s4ug();
 
-var slid=Math.random();
-window.vopr.dey=function(){
-	var ris=document.getElementById('ris'+slid);
-	var ct = ris.getContext('2d');
+
+var paint = function(ct) {
 	var w=480;
 	var h=480;
 	ct.lineWidth=2;
@@ -51,13 +50,18 @@ window.vopr.dey=function(){
 	ct.stroke();//Ax*s,Ay*s,-(Ax-Bx)*s,-(Ay-By)*s);
 };
 
-window.vopr.txt='Найдите площадь '+g.re+' на клетчатой бумаге с размером клетки 1 см $\\times$ 1 см (см. рис.). Ответ дайте в квадратных сантиметрах.'+
-	'<canvas style="float:left;margin-right:1em;" width="480" height="480" id="ris'+slid+'" style="text-align:center"></canvas>';
-window.vopr.ver=[p.ts()];
+// Создание задания через API тренажёра
+chas2.task.setTask({
+	text: 'Найдите площадь '+g.re+' на клетчатой бумаге с размером клетки 1 см $\\times$ 1 см (см. рис.).'+
+		' Ответ дайте в квадратных сантиметрах.',
+	answers: p, // Правильный ответ
+});
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+// Здесь добавляется рисунок с canvas
+chas2.task.modifiers.addCanvasIllustration({
+	width: 420,
+	height: 420,
+	paint: paint,
+});
+
 })();
-

@@ -22,11 +22,8 @@ var h=sluchch(0,6);
 var m=[b[b.min()],b[b.max()],b[b.max()]-b[b.min()],b.min(1),b.max(1),b.min(),b.max()];
 if(!m[h])
 	m[h]=1;
-var slid=sl(1000000000);
 
-window.vopr.dey=function(){
-	var ris=document.getElementById('ris'+slid);
-	var ct = ris.getContext('2d');
+var paint = function(ct) {
 	var w=600;
 	var h2=400;
 	ct.lineWidth=2;
@@ -51,13 +48,18 @@ window.vopr.dey=function(){
 	for(var i2=1;i2<29;i2++){
 		ct.fillKrug(i2*s-s,-(b[i2]-a)*s/c,5);
 	}
-	$('#ris').attr('id','');
 };
 
-window.vopr.txt='<canvas style="float:left;margin-right:1em;" width="600" height="400" id="ris'+slid+'" style="text-align:center" opozn="'+Math.random()+'"></canvas>'+
-	'На графике жирными точками, для наглядности соединёнными линией, показан курс криптовалюты Bitcoin к американскому доллару'+
-	', установившийся на одной из бирж в период с 1 по 28 '+sluchiz(window.mesiacy.re)+' 2013 года. '+
-	g[h];
-window.vopr.ver=[''+m[h].toFixedLess(2)];
+// Создание задания через API тренажёра
+chas2.task.setTask({
+	text: 'На графике жирными точками, для наглядности соединёнными линией, показан курс криптовалюты Bitcoin к американскому доллару'+
+		', установившийся на одной из бирж в период с 1 по 28 '+sluchiz(window.mesiacy.re)+' 2013 года. '+g[h],
+	answers: m[h].toFixedLess(2), // Правильный ответ
+});
+
+// Здесь добавляется рисунок с canvas
+chas2.task.modifiers.addCanvasIllustration({
+	paint: paint,
+});
 
 })();
