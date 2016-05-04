@@ -23,34 +23,31 @@ var g=[	'Найдите площадь поверхности'+q_end,
 		'Найдите площадь основания'+q_end,
 		'Найдите объём'+q_end];
 
-var slid=sl(1000000000);
-
 var q_id = getRandomInt(0,2);
 var ab = getLen(bCube.lowAx, bCube.lowBx, bCube.lowAy, bCube.lowBy)/10;
 var ac = getLen(bCube.lowAx, bCube.lowCx, bCube.lowAy, bCube.lowCy)/10;
 var hh = Math.abs(bCube.height)/10;
 
-if(!q_id){
-	console.log('Q_ID == 0');
-	var q_val = ((ab*ac)+(ab*hh)+(ac*hh))*2;
+console.log('Q_ID = '+q_id);
+
+switch(q_id){
+	case 0:
+		var q_val = (ab*ac+ab*hh+ac*hh)*2;
+	break;
+	case 1:
+		var q_val = ab*ac;
+	break;
+	case 2:
+		var q_val = ab*ac*hh;
+	break;
 }
 
-if(q_id==1){
-	console.log('Q_ID == 1');
-	var q_val = (ab*ac);
-}
+var actualDraw=function(ct){
+	// В этой функции видны все переменные, объявленные выше.
+	// Это называется "замыкание" и является наиболее покрываемым матюками местом JS
 
-if(q_id==2){
-	console.log('Q_ID == 2');
-	var q_val = (ab*ac*hh);
-}
-
-window.vopr.dey=function(){
-
-	var ris=document.getElementById('ris'+slid);
-	var ct = ris.getContext('2d');
-	var w=600;
-	var h=400;
+	// ct - это, вообще говоря, и есть объект, на котором рисуем
+	// Вся романика тип getContext запрятана в движок
 	ct.lineWidth=1;
 	ct.fillStyle='#000000';
 	ct.lineWidth = 2;
@@ -64,15 +61,15 @@ window.vopr.dey=function(){
 	/* C' */ct.fillKrug(bCube.lowCx, bCube.lowCy+bCube.height, 5);
 	/* D' */ct.fillKrug(bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height, 5);
 
-	/* A-A' */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowAx, bCube.lowAy+bCube.height);
-	/* B-B' */ct.drawLine(bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height);
-	/* C-C' */ct.drawLine(bCube.lowCx, bCube.lowCy, bCube.lowCx, bCube.lowCy+bCube.height);
-	/* D-D' */ct.drawLine(bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height);
+	/*  A-A' */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowAx, bCube.lowAy+bCube.height);
+	/*  B-B' */ct.drawLine(bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height);
+	/*  C-C' */ct.drawLine(bCube.lowCx, bCube.lowCy, bCube.lowCx, bCube.lowCy+bCube.height);
+	/*  D-D' */ct.drawLine(bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height);
 
-	/* A-B */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy);
-	/* A-C */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowCx, bCube.lowCy);
-	/* C-D */ct.drawLine(bCube.lowCx, bCube.lowCy, bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy);
-	/* D-B */ct.drawLine(bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy);
+	/*  A-B  */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy);
+	/*  A-C  */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowCx, bCube.lowCy);
+	/*  C-D  */ct.drawLine(bCube.lowCx, bCube.lowCy, bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy);
+	/*  D-B  */ct.drawLine(bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy);
 
 	/* A'-B' */ct.drawLine(bCube.lowAx, bCube.lowAy+bCube.height, bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height);
 	/* A'-C' */ct.drawLine(bCube.lowAx, bCube.lowAy+bCube.height, bCube.lowCx, bCube.lowCy+bCube.height);
@@ -95,14 +92,20 @@ window.vopr.dey=function(){
 	ct.fillKrug(0,400,10);
 	ct.fillKrug(600,400,10);
 	ct.fillKrug(600,0,10);
-
-	$('#ris').attr('id','');
 };
 
-window.vopr.txt='<canvas style="float:left;margin-right:1em;" width="600" height="400" id="ris'+slid+'" style="text-align:center" opozn="'+Math.random()+'"></canvas>'+
-	''+g[q_id];
-window.vopr.ver=[''+q_val];
+// Создание задания через API тренажёра
+chas2.task.setTask({
+	text: g[q_id],  // Текст задания
+	answers: q_val, // Правильный ответ
+});
+
+// Здесь добавляется рисунок с canvas
+chas2.task.modifiers.addCanvasIllustration({
+	width: 600,
+	height: 400,
+	paint: actualDraw,
+});
 
 })();
-
 //by _zevs
