@@ -68,6 +68,33 @@ chas2.task = {
 			// Просто o.answers || [] нельзя - ноль не будет передаваться
 		},
 
+
+		/** @function chas2.task._.normalizeCanvasOptions
+		 * Привести опции canvas к нормальному виду
+		 * @param {Number} o.width ширина canvas
+		 * @param {Number} o.height высота canvas
+		 * @param {String} o.style стиль canvas
+		 */
+		normalizeCanvasOptions : function(o) {
+			o.importNonExistingFrom({
+				width: 600,
+				height: 400,
+				style: 'float:left; margin-right:1em;',
+			});
+		},
+
+
+		/** @function chas2.task._.generateCanvasTag
+		 * Сгенерировать тэг canvas для иллюстрации
+		 * @param {Number} o.width ширина canvas
+		 * @param {Number} o.height высота canvas
+		 * @param {String} o.style стиль canvas
+		 * @param {Number} randomId случайный идентификатор canvas
+		 */
+		generateCanvasTag : function(o, randomId) {
+			return '<canvas style="' + o.style + '" width="' + o.width + '" height="' + o.height + '" id="canvas' + randomId + '" data-nonce="' + Math.random() + '"></canvas>';
+		},
+
 	},
 
 
@@ -511,6 +538,38 @@ chas2.task = {
 					)
 				);
 			};
-		})()
+		})(),
+
+		/** @function chas2.task.modifiers.addCanvasIllustration
+		 * Привести опции canvas к нормальному виду
+		 * @param {Number} o.width ширина canvas
+		 * @param {Number} o.height высота canvas
+		 * @param {String} o.style стиль canvas
+		 * @param {Function} o.paint функция отрисовки
+		 */
+		addCanvasIllustration : function(o) {
+			chas2.task._.normalizeCanvasOptions(o);
+			var currentTask = chas2.task.getTask();
+			var randomId = getRandomInt(1, 1000000000); // Случайный идентификатор canvas (на случай, если их окажется несколько).
+			// Math.random() использовать нельзя - в id тэга не должно быть точки
+
+			currentTask.text = chas2.task._.generateCanvasTag(o, randomId) + currentTask.text;
+			var savedDrawFunction = currentTask.draw;
+			var paint = o.paint; // На всякий случай сохраняем ссылку прямо на свойство объекта
+
+			currentTask.draw = function() {
+				if (savedDrawFunction instanceof Function) {
+					savedDrawFunction();
+				}
+				var currentCanvas = document.getElementById('canvas' + randomId);
+				var ct = currentCanvas.getContext('2d');
+				paint(ct);
+
+				$(currentCanvas).attr('id', '');
+			};
+			chas2.task.setTask(currentTask);
+
+		},
+
 	},
 };
