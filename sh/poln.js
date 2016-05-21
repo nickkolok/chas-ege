@@ -131,4 +131,8 @@ var startShell = function (){
 	galkiKat('#galki_kat','pech');
 	$('#prov_knopki').hide();
 	assertCheckability();
+	if(parsedJSON && parsedJSON.shellOptions && parsedJSON.shellOptions.autorun){
+		vse1();
+		zapusk();
+	}
 }
