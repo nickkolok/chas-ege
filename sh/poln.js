@@ -95,7 +95,7 @@ function obnov(){
 			'</div>';
 		//Копируем вопрос в массив
 		voprosy.push(vopr.clone());
-		
+
 		var w=sdel/kZ;
 		$('.tx').text((100*w).toFixedLess(1).dopdo(' ',4)+'%');
 		$('#pr1').width($('#pr0').width()*w);
@@ -116,7 +116,7 @@ function prov(){
 			$('#otv_ver'+i).show();
 		}else{
 			nNev++;
-			$('#otv_nev'+i).show();		
+			$('#otv_nev'+i).show();
 		}
 	}
 	$('#but_prov').hide();
