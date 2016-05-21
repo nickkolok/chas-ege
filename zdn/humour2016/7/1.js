@@ -27,4 +27,3 @@ NAtask.setTask({
 //	https://bitbucket.org/chas-ege-team/chas-ege/issues/55/
 //	hripunov
 //
-
