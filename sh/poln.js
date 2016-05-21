@@ -45,7 +45,9 @@ function testGotov(){
 		}catch(e){};
 	allCanvasToBackgroundImage();
 	$('#panel').remove();
-	alert('Тест составлен.\nМожно приступать к решению!');
+	if(!(parsedJSON && parsedJSON.shellOptions && parsedJSON.shellOptions.noalert)) {
+		alert('Тест составлен.\nМожно приступать к решению!');
+	}
 }
 
 function konecSozd(){
