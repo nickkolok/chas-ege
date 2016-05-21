@@ -7,17 +7,19 @@
 (function(){'use strict';
 NAinfo.requireApiVersion(0, 0);
 
-var PI = 3.14;
-var angle1 = sl(3,15);
-var angle2 = sl(220,300);
-var angle1rad = angle1 * (PI / 180);
-var angle2rad = angle2 * (PI / 180);
+var sinorcos=["\\sin","\\cos"].shuffle();
+
+var angle1 = sl(1,89);
+var angle2 = 180 * sl(1,5) - angle1;
+angle1 = 180 * sl(0,3) + angle1;
+var sum = sl(100000, 1000000);
 
 NAtask.setTask({
 	text: 'Потомственный коррупционер Федя Взяткин планирует откосить от армии под ' +
-	'углами ' + angle1 + ' и ' + angle2 + '. Помогите Феде рассчитать сумму, которую нужно попросить у ' +
-	'отца, если она выражается формулой $|161293 (cos ' + angle1 + '°)/(-sin ' + angle2 + '°)|$',
-	answers: Math.abs((161293 * Math.cos(angle1rad)) / (-1) * (Math.sin(angle2rad))).okrugldo(0.01),
+		'углами $' + angle1 + '^\\circ$ и $' + angle2 + '^\\circ$. Помогите Феде рассчитать сумму, которую нужно попросить у ' +
+		'отца, если она выражается формулой $$\\left|\\frac{' + (''.esli(sl1())) + sum + sinorcos[0] + angle1 + '°}{' +
+		(''.esli(sl1())) + sinorcos[1] + angle2 + '°}\\right|$$',
+	answers: sum,
 });
 
 })();
@@ -26,5 +28,4 @@ NAtask.setTask({
 //	Юмористически набор, №10
 //	https://bitbucket.org/chas-ege-team/chas-ege/issues/55/
 //	hripunov
-//
-
+//  patched  by NickKolok
