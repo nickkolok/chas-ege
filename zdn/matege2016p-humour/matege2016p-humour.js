@@ -1,9 +1,9 @@
 if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
-	nZad:14,
-	adres:'../zdn/humour2016/',
-	name:'humour2016',
+	nZad:12,
+	adres:'../zdn/matege2016p-humour/',
+	name:'matege2016p-humour',
 	prefix:'',
 });
 
