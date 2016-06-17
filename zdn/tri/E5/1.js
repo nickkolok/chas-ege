@@ -8,9 +8,12 @@ var opred=[
 ].shuffle(1);
 
 var v=opred.splice(0,1)[0];
-window.vopr.txt=v.splice(0,1)[0].toZagl()+' - это:<br/>';
-window.vopr.ver=v;
-window.vopr.nev=opred.matrToVect();
+
+chas2.task.setTask({
+	text: v.splice(0,1)[0].toZagl()+' - это:<br/>',
+	answers:  v,
+	wrongAnswers: opred.matrToVect(),
+});
 AtoB();
 
 })();
