@@ -7,6 +7,7 @@
  */
 Number.prototype.round = function(decPlaces) {
 	var decPlaces = decPlaces || 1;
+	// ЩИТО?!!
 	return Math.round(this / decPlaces) * decPlaces;
 };
 
