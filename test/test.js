@@ -58,6 +58,12 @@ test('Number.prototype.texfracpi', function() {
 	expect((2).texfracpi(4)).to.be.equal('\\frac{\\pi}{2}');
 });
 
+test('Number.prototype.texsqrtfrac', function() {
+	expect((16 * 15).texsqrtfrac(64)).to.be.equal('\\frac{\\sqrt{15}}{2}');
+	expect((60).texsqrtfrac(8)).to.be.equal('\\frac{\\sqrt{30}}{2}');
+	expect((0).texsqrtfrac(8)).to.be.equal('0');
+});
+
 test('String.prototype.isNumeric', function() {
 	expect('12'.isNumeric()).to.be.equal(true);
 	expect('1.2'.isNumeric()).to.be.equal(true);
