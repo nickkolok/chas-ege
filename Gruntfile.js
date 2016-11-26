@@ -93,7 +93,7 @@ module.exports = function(grunt) {
 			},
 			unitTest: {
 				files: [
-					{ expand: true, src: ['test/*.js'], dest: 'build/' },
+					{ expand: true, src: ['test/*.js', 'test/*/*.js'], dest: 'build/' },
 				]
 			},
 		},
