@@ -8,6 +8,10 @@
 *.BACKUP.*
 *.BASE.*
 *.REMOTE.*
+*_LOCAL_*
+*_BACKUP_*
+*_BASE_*
+*_REMOTE_*
 *.cache
 *.bak
 
