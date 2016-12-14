@@ -2,19 +2,7 @@
 
 Object.prototype.clone = function() {
 /**Рекурсивно клонирует объект.*/
-	var temp = {};
-	for (var prop in this) {
-		if (this[prop] === undefined) {
-			temp[prop] = undefined;
-		} else if (this[prop] instanceof Array) {
-			temp[prop] = this[prop].slice();
-		} else if (this[prop] instanceof Object) {
-			temp[prop] = this[prop].clone();
-		} else {
-			temp[prop] = this[prop];
-		}
-	}
-	return temp;
+	return clone(this);
 };
 
 Object.prototype.makeAllPropertiesNotEnumerable = function() {
