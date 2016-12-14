@@ -54,6 +54,7 @@ String.prototype.texfrac = function(denominator) {
 	return '\\frac{' + this + '}{' + denominator + '}';
 };
 
+String.prototype.ts =
 String.prototype.toStandart = function(wrapComma) {
 /**Приводит строку к записи "по стандарту": заменяет точку на запятую.
 Если wrapComma, то берёт запятую в фигурные скобки, чтобы убрать отступы в TeX.
