@@ -60,4 +60,13 @@ Object.prototype.importNonExistingFrom = function(p1) {
 	}
 };
 
+Object.prototype.safeinc = function(prop) {
+/**Если свойства prop нет, устанавливает его в 1, иначе увеличивает на 1*/
+	if (prop in this) {
+		this[prop]++;
+	} else {
+		this[prop] = 1;
+	}
+}
+
 Object.prototype.addToGlobal('docsObject', 1);
