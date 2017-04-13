@@ -24,8 +24,7 @@ var name = String.fromCharCode(sl('a'.charCodeAt(0),'z'.charCodeAt(0)));
 var taken = {name: true};
 
 var rows = [];
-//	theType[0] + ' ' + name + (' = ' + theType[2]()).esli(sl1()) + ';',
-//];
+
 
 for (var i = 0; i < sl(3,5); i++){
 	var anotherName1 = i ? String.fromCharCode(sl('a'.charCodeAt(0),'z'.charCodeAt(0))) : name;
@@ -34,7 +33,7 @@ for (var i = 0; i < sl(3,5); i++){
 		taken[anotherName1] = true;
 		var t =  i ? types.iz() : theType;
 		rows.push(
-			t[0] + ' ' + anotherName1 + (' = ' + t[2]()).esli(sl1()) + 
+			t[0] + ' ' + anotherName1 + (' = ' + t[2]()).esli(sl1()) +
 				(', '+anotherName2 + (' = ' + t[2]()).esli(sl1())).esli(sl1() && !taken[anotherName2]) +
 				';'
 		);
@@ -46,7 +45,7 @@ rows.shuffle();
 
 
 chas2.task.setTask({
-	text: 'Какой тип имеет переменная ' + name + '?' + 
+	text: 'Какой тип имеет переменная <b>' + name + '</b> ?' +
 		'<pre>' + rows.join('\n') + '</pre><br/>',
 	answers:  [
 	    theType[1],
