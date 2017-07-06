@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Тренажёр
+Icon=gnome-mixer
+Exec=bash /home/math/git/chas-ege/dev/start-fullscreen-draft.sh
+Terminal=false
