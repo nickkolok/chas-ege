@@ -25,7 +25,7 @@ chas2.task.setTask({
 		'cin(a, b);',
 		'cin{a, b};',
 		'cin[a, b];',
-		'cin<a, b>;',
+		'cin&lt;a, b&gt;;',
 		'cin << a && b;',
 		'cin << a & b;',
 		'cin << a << b << endl;',

@@ -1,1 +1,1 @@
-window.nomer=sluchch(1,1);
+window.nomer=1;
