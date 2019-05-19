@@ -9,9 +9,9 @@ var num1;
 var num2;
 var ono;
 var doin = ['заполняет','опустошает'].iz();
-if (tank == 'ёмкость') 
+if (tank == 'ёмкость')
 	tank_cont = ['объёмом','вместимостью'].iz();//чтобы без "ёмкость ёмкостью"
-else 
+else
 	tank_cont = ['объёмом','ёмкостью','вместимостью'].iz();
 vol_dif = sluchch(2,10);
 time_dif = sluchch(2,15);
@@ -25,9 +25,9 @@ if (i == 1)
 }
 else if (i == 2)
 {
-	if (doin != 'опустошает') 
+	if (doin != 'опустошает')
 		mechanic = ['насос','шланг'].iz();//чтобы шлангами не опустошать - странно это
-	else 
+	else
 		mechanic = ['насос'].iz();
 	num1 = 'первый';
 	num2 = 'второй';
@@ -44,5 +44,7 @@ text:   num1.toZagl()+' '+mechanic+' пропускает на '+chislitlx(vol_d
 answers: ((Math.sqrt(Math.pow(vol_dif*time_dif,2)+4*vol_dif*time_dif*vol_of_tank))/(2*time_dif)+vol_dif/2),
 });
 })();
+//TODO: спрашивать про первую трубу и, вероятно, перевести на движок расчётных задач
+
 //Обзад 26599
 //Aisse-258
