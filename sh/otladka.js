@@ -88,6 +88,7 @@ function enableAce(){
 	$("#ace-script").html($("#textarea-script").val().replace(/</g,"&lt;").replace(/>/g,"&gt;"));
 	$("#textarea-script").hide();
 	editor = ace.edit("ace-script");
+	editor.getSession().setUseSoftTabs(false);
 	editor.getSession().setMode("ace/mode/javascript");
 	editor.setFontSize(aceSize);
 	$("#vklpodsv").hide();
