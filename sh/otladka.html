@@ -62,17 +62,7 @@
 			</div>
 			<hr/>
 			<div>
-				<form method="post" action="http://pastebin.ru/" target="_blank" onsubmit="pastebin();">
-					<input id="std-x" name="std-x" type="hidden" value="600">
-					<input id="std-y" name="std-y" type="hidden" value="800">
-					<label for="your_name">Ваше имя</label>
-					<input id="your_name" type="text" name="poster" value="" maxlength="32">
-					<label for="names">Название</label>
-					<input id="names" type="text" name="code_name" value="" maxlength="256">
-					<input type="hidden" name="mode" value="92">
-					<textarea hidden id="textarea-paste" name="code"></textarea>
-					<input type="submit" name="paste" value="Отправить на pastebin.ru">
-				</form>
+				<button onclick="beautifyCode();">Сделать красиво</button>
 			</div>
 		</div>
 	</div>
