@@ -108,11 +108,11 @@ function saveAce(){
 	chasStorage.domData.save();
 }
 
-function pastebin(){
+function beautifyCode(){
 	saveAce();
 	var code=$("#textarea-script").val();
     if(isCppCode(code)){
-		$("#textarea-paste").val(code);
+		$("#textarea-script").val(code);
 	} else {
 		var beautifiedCode=js_beautify(code, {
 		  'indent_size': 1,
@@ -124,9 +124,14 @@ function pastebin(){
 		});
 		if(code!=beautifiedCode){
 			alert("Обратите внимание: код шаблона не соответствует соглашениям, принятым в проекте."+
-				"На pastebin отправлена скорректированная версия.");
+				"В редактор помещена скорректированная версия.");
 		}
-		$("#textarea-paste").val(beautifiedCode);
+		if(flAce) {
+			editor.setValue(beautifiedCode,1);
+		}
+		else {
+			$("#textarea-script").val(beautifiedCode);
+		}
 	}
 }
 
