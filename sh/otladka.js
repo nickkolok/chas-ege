@@ -111,16 +111,16 @@ function saveAce(){
 function beautifyCode(){
 	saveAce();
 	var code=$("#textarea-script").val();
-    if(isCppCode(code)){
+	if(isCppCode(code)){
 		$("#textarea-script").val(code);
 	} else {
 		var beautifiedCode=js_beautify(code, {
-		  'indent_size': 1,
-		  'indent_char': '\t',
-		  'end_with_newline':true,
-		  'wrap_line_length':120,
-		  'jslint_happy':true,
-		  'opt.space_after_anon_function':false,
+			'indent_size': 1,
+			'indent_char': '\t',
+			'end_with_newline':true,
+			'wrap_line_length':120,
+			'jslint_happy':true,
+			'opt.space_after_anon_function':false,
 		});
 		if(code!=beautifiedCode){
 			alert("Обратите внимание: код шаблона не соответствует соглашениям, принятым в проекте."+
