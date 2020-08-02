@@ -7,10 +7,10 @@
 	var y = 1;
 	do {
 		a = sluchch(2*c, 100, c);
-		y = sluchch(1, 10);
+		y = [1,2,4,5].iz();
 		b = Math.pow(a / c, y);
 	}
-	while (b > 100 || y % 3 === 0);
+	while (b > 100);
 	NAtask.setTask({
 		text: 'Найдите значение выражения $$\\log_{' + b + '}{' + a + '} - \\log_{' + b + '}{' + c + '} $$',
 		answers: 1 / y,
