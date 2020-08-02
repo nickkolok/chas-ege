@@ -10,11 +10,10 @@
 		d = sluchch(2, 10);
 		e = sluchch(2, 1000);
 		c = Math.pow(b, d) * e;
-	}
-	while (c > 1000 || e === b);
+	} while (c > 1000 || e === b);
 	NAtask.setTask({
-		text: 'Найдите значение выражения $$\\frac{{' + a + '}^{\\log_{' + b + '}{' + c + '}}}{{' + a + '}^{\\log_{' + b +
-			'}{' + e + '}}} $$',
+		text: 'Найдите значение выражения' +
+			'$$\\frac{{' + a + '}^{\\log_{' + b + '}{' + c + '}}}{{' + a + '}^{\\log_{' + b + '}{' + e + '}}} $$',
 		answers: Math.pow(a, d),
 	}, {
 		tags: {
