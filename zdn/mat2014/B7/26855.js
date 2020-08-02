@@ -29,4 +29,3 @@
 //https://math-ege.sdamgia.ru/problem?id=26855
 //Автор: Арахов Никита
 //Reviewed and commited by Aisse-258
-
