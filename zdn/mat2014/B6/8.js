@@ -1,25 +1,24 @@
 (function() {
-
-
-var a=sluchiz([20,25,40,80,100,125])[0];
-var b=sluchch(1,7);
-var c=sluchch(2,a/2);
-a=a*b+1;
-c=c*b+1;
-var t1=om.imenaj.ie.iz();
-var t2=om.sportparn.pe.iz();
-var v1=sluchch(1);
-var x=(c-1)/(a-1);
-x=v1?x:1-x;
-window.vopr.txt='Перед началом первого тура чемпионата по '+t2+' участниц разбивают на игровые пары случайным образом '+
-				'с помощью жребия. Всего в чемпионате участвует '+chislitM(a,'спортсменка','спортсменки','спортсменок')+
-				', среди которых '+chislitM(c,'участница','участницы','участниц')+' из России, '+
-				'в том числе '+t1+'. Найдите вероятность того, что в первом туре '+t1+
-				' будет играть с какой-либо спортсменкой '+(v1?'':'не ')+'из России.';
-window.vopr.ver=[''+x.ts()];
-
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+	var all_sports, rus_sports, answ, is_rus;
+	do {
+		all_sports = sluchch(100, 900, 2);
+		rus_sports = sluchch(10, all_sports - 50);
+		is_rus = ['', 'не '].iz();
+		answ = is_rus === '' ? (rus_sports - 1) / all_sports : (all_sports - rus_sports) / all_sports;
+	} while (answ.ts().length > 4)
+	var name = om.imenaj.ie.iz();
+	var game = om.sportparn.pe.iz();
+	var country = om.strany.re.iz();
+	window.vopr.txt = 'Перед началом первого тура чемпионата по ' + game +
+		' участниц разбивают на игровые пары случайным образом ' +
+		'с помощью жребия. Всего в чемпионате участвует ' + chislitM(all_sports, 'спортсменка', 'спортсменки', 'спортсменок') +
+		', среди которых ' + chislitM(rus_sports, 'участница', 'участницы', 'участниц') + ' из ' + country + ', ' +
+		'в том числе ' + name + '. Найдите вероятность того, что в первом туре ' + name +
+		' будет играть с какой-либо спортсменкой ' + is_rus + 'из ' + country + '.';
+	window.vopr.ver = [answ];
+	window.vopr.kat['log'] = 0;
+	window.vopr.kat['prz'] = 0;
+	window.vopr.kat['drs'] = 0;
+	window.vopr.kat['tri'] = 0;
 })();
+//fixed by Aisse-258
