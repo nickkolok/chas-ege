@@ -10,7 +10,7 @@
 		d = sluchch(1, 10, 0.01);
 	}
 	var b = (a * d) / c;
-	var x = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'p', 'u', 'y', 't', 'r', 'e', 'w', 'q', 's', 'h', 'j', 'k', 'l', 'm', 'n', 'v', 'x', 'z'].iz();
+	var x = latbukv.iz().toLowerCase();
 	var v1 = '\\frac{' + a.ts() + '}{' + x + '}=\\frac{' + c.ts() + '}{' + d.ts() + '}';
 	var v2 = '\\frac{' + x + '}{' + a.ts() + '}=\\frac{' + d.ts() + '}{' + c.ts() + '}';
 	var v3 = '\\frac{' + c.ts() + '}{' + d.ts() + '}=\\frac{' + a.ts() + '}{' + x + '}';
