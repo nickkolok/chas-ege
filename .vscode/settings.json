@@ -1,0 +1,18 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/node_modules": true,
+        "build": true,
+        "dist": true,
+        ".grunt": true,
+        "_SpecRunner.html": true,
+        "**/*~": true,
+        "**/.DS_Store": true
+    }
+    ,
+    "files.insertFinalNewline": true
+}
