@@ -1,27 +1,36 @@
 (function() {
 	NAinfo.requireApiVersion(0, 0);
-	var c = [8, 12].iz();
-	var e;
+	var c = [8, 12].iz(); // знаменатель дроби под синусом (косинусом)
+	var e, // числитель дроби под синусом (косинусом)
+		koef, // внешний коэффициент
+		mn = sluchch(2, 100), answer; // случайный множитель (составляющая внешнего коэффициента)
 	switch (c) {
-	case 8:
-		e = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23].iz();
+	case 8: // углы, кратные п/4
+		e = sluchch(1, 23, 2);
+		koef = [mn + '\\sqrt{2}', '\\frac{' + mn + '}{\\sqrt{2}}'].iz(); // умножить или поделить на sqrt{2}
+		if (koef.slice(-3) == '2}}') { // ответ зависит от расположения sqrt{2}
+			answer = mn / 2;
+		}
+		else {
+			answer = mn;
+		}
 		break;
-	case 12:
-		e = [1, 5, 7, 11, 13, 17, 19].iz();
+	case 12: // углы, кратные п/6
+		e = [1, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 26, 28].iz();
+		koef = e % 2 === 0 ? ['\\frac{' + mn + '}{\\sqrt{3}}', mn + '\\sqrt{3}'].iz() : mn.ts(); // если е чётно, умножаем или делим на sqrt{3}
+		if (koef.slice(-3) == '{3}') { // ответ зависит от расположения sqrt{3}
+			answer = mn / 2 * 3;
+		}
+		else {
+			answer = mn / 2;
+		}
 		break;
 	}
-	var g = Math.sin((e * Math.PI) / c) * Math.cos((e * Math.PI) / c);
-	var v = '\\sin' + (e).texfracpi(c);
-	var x = '\\cos' + (e).texfracpi(c);
-	var var1 = [v, x].shuffle();
-	var b = Math.round((g * g * 144));
-	if (b === 0) {
-		b = 1;
-	}
+	var sincos = ['\\sin' + (e).texfracpi(c), '\\cos' + (e).texfracpi(c)].shuffle();
 	NAtask.setTask({
-		text: 'Найдите значение выражения $$ ' + (b * sluchch(1, 20)).koren(true, true) + ' ' + var1[0] + '' + var1[1] +
+		text: 'Найдите значение выражения $$ ' + koef + ' ' + sincos[0] + '' + sincos[1] +
 			'$$',
-		answers: Math.sqrt(b) * g,
+		answers: answer,
 	}, {
 		tags: {
 			tri: 1,
