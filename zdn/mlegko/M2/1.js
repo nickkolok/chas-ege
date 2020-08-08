@@ -4,11 +4,11 @@
 	var c;
 	var d;
 	var t = [10, 100].iz();
-	while ((t * (a * d) / c) % 1 !== 0) {
+	do {
 		a = sluchch(1, 40, 0.01);
 		c = sluchch(1, 40, 0.01);
 		d = sluchch(1, 10, 0.01);
-	}
+	} while ((t * a * d / c) % 1 !== 0)
 	var b = (a * d) / c;
 	var x = latbukv.iz().toLowerCase();
 	var v1 = '\\frac{' + a.ts() + '}{' + x + '}=\\frac{' + c.ts() + '}{' + d.ts() + '}';
