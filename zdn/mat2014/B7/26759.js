@@ -49,10 +49,10 @@
 			b = b == 3 ? 1 : b * 3;
 		}
 		break;
-    }
-    answer = a * Math.sqrt(b) * Math[func1](e * Math.PI / c) * Math[func2](f * Math.PI / d);
-	var v = '\\' + func1 + '{\\frac{' + e + '\\pi}{' + c + '}}';
-	var x = '\\' + func2 + '{\\frac{' + f + '\\pi}{' + d + '}}';
+	}
+	answer = a * Math.sqrt(b) * Math[func1](e * Math.PI / c) * Math[func2](f * Math.PI / d);
+	var v = '\\' + func1 + e.texfracpi(c);
+	var x = '\\' + func2 + f.texfracpi(d);
 	koef = b === 1 ? a : a + '\\sqrt{' + b + '}';
 	NAtask.setTask({
 		text: ('Найдите значение выражения $$' + koef + v + '' + x + '$$').plusminus(),
