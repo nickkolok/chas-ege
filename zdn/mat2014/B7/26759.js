@@ -6,7 +6,8 @@
 	var d = [2, 3, 4, 6].iz(); //знаменатель второй функции
 	var e; //числитель первой функции
 	var f; //числитель второй функции
-	var func1 = ['sin', 'cos'].iz(), func2 = ['sin', 'cos'].iz();
+	var func1 = ['sin', 'cos'].iz();
+	var func2 = ['sin', 'cos'].iz();
 	var answer;
 	switch (c) {
 	case 2:
