@@ -24,7 +24,9 @@ function generateKatalog(){
 		for(var zdn in nabor.upak[kat])
 			if(zdn!='main'){
 				vopr.podg();
-				rez+=((nabor.adres+kat+'/'+zdn+'.js').vTag('h2'));
+				var currentTask = nabor.adres+kat+'/'+zdn+'.js';
+				rez+=currentTask.vTag('h2');
+				console.log(currentTask);
 				try{
 					nabor.upak[kat][zdn]();
 					rez+=(br+vopr.txt.vTag('div')+br);
