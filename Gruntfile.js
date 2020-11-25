@@ -349,9 +349,15 @@ module.exports = function(grunt) {
 		},
 
 		concurrent: {
-			'build-except-ext': ['concurrent:process-lib', 'process-html', 'process-pages-js', 'concurrent:process-task-sets', 'process-css'],
+			'build-except-ext': [
+				'concurrent:process-lib',
+				'process-html',
+				'process-pages-js',
+				'concurrent:process-task-sets',
+				'process-css',
+			],
 			'process-lib': ['newer:copy:lib', 'make-chas-lib', ['make-chas-uijs', 'make-init']],
-			'process-task-sets': ['newer:copy:taskSets', ['packTasks', 'uglify:tasksPacks']],
+			'process-task-sets': [['newer:copy:taskSets', 'packTasks', 'uglify:tasksPacks']],
 		},
 	});
 
