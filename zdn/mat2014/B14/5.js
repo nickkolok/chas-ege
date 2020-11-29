@@ -1,6 +1,6 @@
 (function() {
 
-for(var x=0.5;!(x.isZ()&&x>0);){
+for(var x=0.5;!(x.isZ()&&x>0&&x<90);){
 	var a=sluchch(5,40);
 	var t=sluchch(5,40);
 	var b=sluchch(2,t-2);
