@@ -234,6 +234,7 @@ chas2.task = {
 	 * Составить задание типа 'уравнение'
 	 * @param {Array} o.parts части уравнения (левая и правая)
 	 * @param {String} o.handleMultipleRoots способ обработки случая, когда корней два или более
+	 * @param {String} o.customPreamble фраза на замену "Найдите корень уравнения"
 	 * @param {Number|String|Number[]|String[]} o.roots корни уравнения
 	 * @param {Boolean} o.enablePartsExchange можно ли менять части уравнения местами?
 	 * @param {Boolean} o.filterWholeRoots отобрать ли только целые корни?
@@ -374,7 +375,10 @@ chas2.task = {
 			break;
 		}
 
-		taskOptions.text = 'Найдите корень уравнения $$' + o.parts[0].plusminus() + '=' + o.parts[1].plusminus() + '$$' +
+		var preamble = o.customPreamble || 'Найдите корень уравнения';
+
+
+		taskOptions.text = preamble + ' $$' + o.parts[0].plusminus() + '=' + o.parts[1].plusminus() + '$$' +
 			' В ответе укажите только целый корень. '.esli(o.filterWholeRoots) +
 			//При желании форсированно вызвать обработку нескольких корней - просто указать два одинаковых корня
 			(' Если ' + 'таких '.esli(o.filterWholeRoots) + 'корней несколько, в ответе укажите ' + multipleRootsPhrase + '.').
