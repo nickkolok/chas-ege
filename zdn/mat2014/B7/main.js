@@ -9,5 +9,6 @@ window.nomer = [
 	8,
 	9,
 	10,
+	11,
 ].iz();
 window.comment='Элементарные уравнения.';
