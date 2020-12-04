@@ -19,16 +19,16 @@ NAinfo.requireApiVersion(0, 0);
 	var mtr = e[0].inMeters;
 	var mtr1 = e[1].inMeters;
 
-	var x = mtr / mtr1;
+	var x = (mtr / mtr1).okrugldo(0.01);
 
 NAtask.setTask({
 	text: 'Спидометр ' + car.re + ' показывает скорость в ' + ediz1.pm + ' в час.' +
 	' Какую скорость (в ' + ediz1.pm + ' в час) показывает спидометр, если ' + car.ie + ' движется со скоростью ' +
 	chislitlx(speed, ediz2) + ' в час?' +
-	' (Считайте, что  ' + chislitlx(1, ediz1) + ' это ' + chislitlx(x.okrugldo(0.01), ediz2) +
+	' (Считайте, что  ' + chislitlx(1, ediz1) + ' - это ' + chislitlx(x, ediz2) +
 	', округлите до целой части.)',
 
-	answers: (speed / x).ceil(),
+	answers: (speed / x).round(),
 });
 })();
 //Коновалов Игорь
