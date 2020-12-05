@@ -8,7 +8,15 @@
 	}
 	var isTargetNegative = sl1();
 
-	var trigfunc = ['sin','cos'].iz();
+
+	var trigfunc = ['sin','cos','tg','ctg'].iz();
+	var _math = {
+		sin: Math.sin,
+		cos: Math.cos,
+		tg : Math.tan,
+		ctg: function(phi){return 1/Math.tan(phi)},
+	}
+
 
 	var k = [1,2,4,5,8,10,20].iz().pm();
 	var b = sl(-20,20);
@@ -122,5 +130,6 @@
 	});
 
 })();
-//Обзад 26669 и аналоги, 77377 и аналоги
+//Обзад 26669 и аналоги, 77376 и аналоги, 77377 и аналоги,
+//а также много вариаций на тему
 //Николай Авдеев
