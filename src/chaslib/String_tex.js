@@ -40,7 +40,7 @@ String.prototype.beautifyAlgebraicNotation = function() {
 };
 
 String.prototype.negativeBracketsTeX = function() {
-/**Отрицательное число (начинающееся со символа "-") берётся в скобки*/
+/**Отрицательное число (начинающееся с символа "-") берётся в скобки*/
 	return this[0] ==  '-' ? '\\left(' + this + '\\right)' : '' + this;
 };
 
