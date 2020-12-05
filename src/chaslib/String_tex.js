@@ -15,6 +15,7 @@ String.prototype.beautifyAlgebraicNotation = function() {
 		a = a.replace(/\(\+/g, '(');
 		a = a.replace(/\+\)/g, ')');
 	}
+	a = a.replace(/[=]\s*[-]\s*0\$/g, '=0$');
 	a = a.replace(/[=]\s*[+]/g, '=');
 	a = a.replace(/[+]1(?=[A-Za-zА-Яа-яЁё\\(])/g, '+');
 	a = a.replace(/[-]1(?=[A-Za-zА-Яа-яЁё\\(])/g, '-');
