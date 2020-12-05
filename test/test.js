@@ -47,6 +47,15 @@ test('Number.prototype.texfrac', function() {
 	expect((2).texfrac('4', 'x')).to.be.equal('\\frac{2x}{4}');
 });
 
+test('String.prototype.beautifyAlgebraicNotation', function() {
+	expect(
+		'Найдите наименьший неотрицательный корень уравнения $$\\ctg\\frac{\\pi(-2x +8)}{4}=-0$$'.
+			beautifyAlgebraicNotation()).to.be.equal(
+		'Найдите наименьший неотрицательный корень уравнения $$\\ctg\\frac{\\pi(-2x +8)}{4}=0$$'
+	);
+});
+
+
 test('String.prototype.texfrac', function() {
 	expect('2'.texfrac(3)).to.be.equal('\\frac{2}{3}');
 	expect('2'.texfrac('3')).to.be.equal('\\frac{2}{3}');
