@@ -126,6 +126,7 @@
 		parts: [leftpart, targetValue[1]],
 		roots: x,
 		enablePartsSubtraction: 1,
+		enablePartsDivision: 1,
 		enablePartsExchange: 0,
 	});
 
