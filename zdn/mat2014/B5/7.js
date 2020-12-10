@@ -2,7 +2,12 @@
 
 var a=sluchch(1,3);
 var b=sluchch(0,3);
-var r=sluchch(1,11);
+
+do{
+	var r=sluchch(1,11);
+	r *= Math.sqrt([1,2,5,10].iz())
+}while(r>=12);
+
 var c=sluchch(0,(r/2).ceil());
 var d=sluchch(c?0:1,(r/2).ceil());
 var s=r*r*a/4;
@@ -14,7 +19,7 @@ var paint = function(ct) {
 	ct.lineWidth=2;
 	var s2=20;
 	ct.setka(20,s2);
-	ct.lineWidth=4;
+	ct.lineWidth=2.5;
 	ct.lineJoin='round';
 	ct.fillStyle='777'; // No idea what does it change
 	var f=(d/c).atan();
