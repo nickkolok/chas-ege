@@ -1,7 +1,7 @@
 if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
-	nZad:6,
+	nZad:7,
 	adres:'../zdn/tri/',
 	name:'tri',
 	prefix:'E',
