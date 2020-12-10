@@ -26,7 +26,7 @@ chas2.task.setCountableTask(
 		{vel: 'площадь'    + '<replace1/>', zna:area,  rod:1,vin:1,nah:1},
 		{vel: 'периметр'   + '<replace1/>', zna:perim, rod:0,vin:1,nah:1},
 		{vel: 'диагональ'  + '<replace1/>', zna:diag, rod:1,vin:1,nah:1},
-	]).sluchiz(3),
+	]).sluchiz(3)
 );
 
 window.vopr.txt = window.vopr.txt.replace('<replace1/>',' прямоугольника');
