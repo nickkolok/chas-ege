@@ -17,6 +17,9 @@ var voprosy=[];
 
 var options={};
 
+
+var largeFontStyle='div.z{font-size:128%}\n .MathJax_SVG_Display {font-size: 128%;}'.vTag('style');
+
 function vse1(){
 	$('.kolvo').val(1);
 }
@@ -32,6 +35,7 @@ function zapusk(){
 
 	//Читаем настройки
 	options.editable=$('#redakt').is(':checked');
+	options.largeFont=$('#largeFont').is(':checked');
 	options.customNumber=$('#customNumber').is(':checked');
 	options.nopagebreak=$('#nopagebreak').is(':checked');
 	options.nobackground=$('#nobackground').is(':checked');
@@ -81,6 +85,11 @@ function udalPanel(){
 
 function konecSozd(){
 	strOtv='<h2>Ответы</h2>'+strOtv;
+
+	if(options.largeFont){
+		strOtv = largeFontStyle + strOtv;
+	}
+
 	if(strResh){
 		strOtv+='<h2>Решения</h2>'+strResh;
 	}
