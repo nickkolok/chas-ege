@@ -39,6 +39,7 @@ function zapusk(){
 	options.customNumber=$('#customNumber').is(':checked');
 	options.nopagebreak=$('#nopagebreak').is(':checked');
 	options.nobackground=$('#nobackground').is(':checked');
+	options.firstTaskNumber=1*$('#first-task-number').val();
 
 	if(customNumber){
 		variantNumber=$('#start-number').val()-1;
@@ -155,7 +156,9 @@ function zadan(){
 	}
 }
 function obnov(){
-		var nazvzad=dvig.getzadname(nZ)+(aZ[nZ]==1?'':'-'+(aZ[nZ]-iZ[nZ]))
+		var nazvzad =
+			dvig.getzadname(nZ)+
+			(aZ[nZ]==1? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1) );
 		strVopr+='<div class="d"><div class="b">'+nazvzad+'</div><div class="z">'+window.vopr.txt+'</div></div>';
 		strOtv+='<tr><td>'+variantNumber+'</td><td>'+nazvzad+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
 		if(vopr.rsh)
