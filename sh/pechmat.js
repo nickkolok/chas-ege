@@ -98,7 +98,7 @@ function konecSozd(){
 	$("hr:first").remove();
 	$("hr:first").remove();
 	document.body.style.backgroundColor="white";
-	$('body').append('<script>udalPanel()</script>');			
+	$('body').append('<script>udalPanel()</script>');
 }
 
 function vNachaloVarianta(){
@@ -120,7 +120,7 @@ function zadan(){
 			return;
 		}else{
 			iZ=aZ.slice();
-			
+
 			if(options.customNumber){
 				variantNumber++;
 			}else{
@@ -152,7 +152,7 @@ function obnov(){
 		if(vopr.rsh)
 			strResh+='<br/><h3>Вариант №'+variantNumber+', задача '+nazvzad+'</h3><br/>'+vopr.rsh+
 				'<br/><br/>';
-			
+
 		voprosy.push(vopr.clone());
 
 		var sdel=aZ.sum()*(aV-nV+1)-iZ.sum();
