@@ -6,7 +6,10 @@ input,body,button{
 	font-family:'liberation_serif',serif;
 }
 .b{
-	width:3em;
+	min-width:3em;
+	overflow:hidden;
+	padding-left: 0.1em;
+	padding-right: 0.1em;
 	font-weight:700;
 	margin-bottom:3px;
 	margin-left:3px;
