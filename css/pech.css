@@ -28,7 +28,8 @@ input,body,button{
 	margin-bottom:1em;
 }
 .z{
-	padding-left:4em;
+	padding-left:0.4em;
+	overflow: hidden;
 }
 .z>*{
 	float:none !important;
