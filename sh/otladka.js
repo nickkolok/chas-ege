@@ -204,6 +204,10 @@ var startShell = function (){
 
 
 function startExport(){
+	vopr.template = $("#filepath").val().replace(/^(\.\.\/)+/,'');
+	vopr.taskNumber = vopr.template.split("/").reverse()[1];
 	var fillerCode = createFiller(vopr);
+
+
 	copyToClipboard(fillerCode)
 }

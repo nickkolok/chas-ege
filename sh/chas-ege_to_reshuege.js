@@ -4,7 +4,7 @@ var fillerTemplate = function(){
 
 	setTimeout(function(){
 
-		$('select[name=editor_task]').val(3);
+		$('select[name=editor_task]').val('{{vopr.taskNumber}}');
 
 
 
@@ -27,8 +27,8 @@ var fillerTemplate = function(){
 		if(sourceField){
 			console.log(sourceField);
 			console.log(sourceField.getElementsByTagName('input')[1]);
-			$(sourceField.getElementsByTagName('input')[1]).val('ЧАС ЕГЭ');
-			$(sourceField.getElementsByTagName('input')[1]).click();
+			$(sourceField.getElementsByTagName('input')[1]).val('ЧАС ЕГЭ, {{vopr.template}}');
+			$(sourceField.getElementsByTagName('input')[0]).click();
 		} else {
 			alert('Не найдено поле "Источник!"');
 		}
@@ -42,6 +42,8 @@ function createFiller(vopr){
 	var fillerCode = (''+fillerTemplate).replace(/^function\(\)/, "");
 	fillerCode = fillerCode.replace('{{vopr.txt}}', rearrangeFormulas(escapeText(vopr.txt)));
 	fillerCode = fillerCode.replace('{{vopr.ver}}', escapeText(''+vopr.ver));
+	fillerCode = fillerCode.replace('{{vopr.template}}', escapeText(''+vopr.template));
+	fillerCode = fillerCode.replace('{{vopr.taskNumber}}', escapeText(''+vopr.taskNumber));
 	fillerCode = fillerCode.replace('{{vopr.rsh}}', rearrangeFormulas(escapeText(vopr.rsh)));
 	return fillerCode;
 }
