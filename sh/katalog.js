@@ -25,12 +25,30 @@ function generateKatalog(){
 			if(zdn!='main'){
 				vopr.podg();
 				var currentTask = nabor.adres+kat+'/'+zdn+'.js';
+				rez+='<div class="task-wrapper">';
 				rez+=currentTask.vTag('h2');
 				console.log(currentTask);
 				try{
 					nabor.upak[kat][zdn]();
+					vopr.template = currentTask.replace(/^(\.\.\/)+/,'');
+					vopr.taskNumber = kat;
 					rez+=(br+vopr.txt.vTag('div')+br);
-					rez+=(('Ответ: '+vopr.ver.join('или')).vTag('div')+'<br/>');
+					rez+=(
+						(
+							'<button class="copybutton" style="display:block; float:right;" title="Экспорт в РешуЕГЭ"'+
+							'data-task="' + encodeURIComponent(JSON.stringify(vopr)) + '"' +
+							'>' +
+								'<span style="display:none;">' +
+									JSON.stringify(vopr).replace(/[\\]/g,'\\\\') +
+								'</span>' +
+								'&#x2398;' +
+							'</button>'
+
+							+
+							'Ответ: '+vopr.ver.join('или')
+						).vTag('div') +
+						'<br/>'
+					);
 					masdey.push(vopr.dey);
 					if(vopr.rsh){
 						rez+=(
@@ -44,6 +62,7 @@ function generateKatalog(){
 
 					}
 				}catch(e){}
+				rez += '</div>';
 			}
 			rez+=('</div>');
 	}
@@ -57,4 +76,18 @@ function generateKatalog(){
 	}
 	spoiler();
 	$('.spoiler-show').click();
+	$('button.copybutton').click(copyTask);
+}
+
+function copyTask(){
+	console.log(this);
+	//var theTask = this.getElementsByTagName('span')[0].innerHTML;
+	var theTask = decodeURIComponent(this.getAttribute('data-task'));
+	console.log(theTask);
+	theTask = JSON.parse(theTask);
+	console.log(theTask);
+	replaceCanvasWithImgInTaskAndHTML($(this).parents('div.task-wrapper')[0], theTask, function(){
+		var fillerCode = createFiller(theTask);
+		copyToClipboard(fillerCode)
+	});
 }
