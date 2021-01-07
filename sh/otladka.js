@@ -201,3 +201,9 @@ var startShell = function (){
 	}
 }
 
+
+
+function startExport(){
+	var fillerCode = createFiller(vopr);
+	alert(fillerCode);
+}

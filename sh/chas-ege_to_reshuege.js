@@ -39,7 +39,7 @@ function createFiller(vopr){
 	fillerCode = fillerCode.replace('{{vopr.txt}}', rearrangeFormulas(escapeText(vopr.txt)));
 	fillerCode = fillerCode.replace('{{vopr.ver}}', escapeText(''+vopr.ver));
 	fillerCode = fillerCode.replace('{{vopr.rsh}}', rearrangeFormulas(escapeText(vopr.rsh)));
-	alert(fillerCode);
+	return fillerCode;
 }
 
 function escapeText(text){
