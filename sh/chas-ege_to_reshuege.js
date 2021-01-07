@@ -91,3 +91,23 @@ function copyToClipboard(text) {
         document.getSelection().addRange(selected);
     }
 };
+
+
+
+
+function replaceCanvasWithImgInTaskAndHTML(element, vopr, callback){
+	if(!(/<canvas/i.test(vopr.txt))){
+		// Nothing to do
+		callback();
+		return;
+	}
+	var canvases = element.getElementsByTagName('canvas');
+	console.log(canvases);
+	var firstCanvas = canvases[0];
+	replaceWithImg(firstCanvas, function(img){
+		vopr.txt = vopr.txt.replace(/<canvas.*?<\/canvas>/, img.outerHTML);
+		replaceCanvasWithImgInTaskAndHTML(element, vopr, callback);
+	});
+
+
+}
