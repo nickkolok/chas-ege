@@ -12,6 +12,10 @@ var fillerTemplate = function(){
 		$('input[name=editor_answer]').val('{{vopr.ver}}');
 		$('#editor_solution').val('{{vopr.rsh}}');
 
+		// Create previews
+		$('#editor_body')[0].onkeyup();
+		$('#editor_solution')[0].onkeyup();
+
 		var labels = $('label');
 		var sourceField = null;
 		for(var i = 0; i < labels.length; i++){
