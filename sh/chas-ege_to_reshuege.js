@@ -103,11 +103,9 @@ function replaceCanvasWithImgInTaskAndHTML(element, vopr, callback){
 	}
 	var canvases = element.getElementsByTagName('canvas');
 	console.log(canvases);
-	var firstCanvas = canvases[0];
-	replaceWithImg(firstCanvas, function(img){
+	for(var i = 0; i < canvases.length; i++){
+		var img = createImgFromCanvas(canvases[i]);
 		vopr.txt = vopr.txt.replace(/<canvas.*?<\/canvas>/, img.outerHTML);
-		replaceCanvasWithImgInTaskAndHTML(element, vopr, callback);
-	});
-
-
+	}
+	callback();
 }
