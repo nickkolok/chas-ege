@@ -38,7 +38,9 @@ function generateKatalog(){
 							'<button class="copybutton" style="display:block; float:right;" title="Экспорт в РешуЕГЭ"'+
 							'data-task="' + encodeURIComponent(JSON.stringify(vopr)) + '"' +
 							'>' +
+								'&#x2398;' +
 							'</button>'
+
 							+
 							'Ответ: '+vopr.ver.join('или')
 						).vTag('div') +
