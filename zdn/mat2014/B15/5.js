@@ -1,32 +1,39 @@
 (function(){'use strict';
 
-//TODO: оно глючит!
+do{
+	var trigfunc = ['cos','sin'].iz();
+	var denominator = 6;
 
-var v1=sluchch(1);//синус или косинус
-var v2=sluchch(1);//Наибольшее или наименьшее
-var v3=sluchch(1);//возрастающая или убывающая
+	var trigCoeff = sl(1,40).pm();
+	var linearCoeff = sl((trigCoeff.abs()*Math.PI).ceil(), 160);
 
-var t1=['\\cos x','\\sin x'];
-var c1=[3		 ,6		   ];
-var t2=['наименьшее','наибольшее'];
-var t3=['-',''];
+	var i1=sluchch(-20,20);
+	var i2=sluchch(i1+1,i1+40);
 
-var a=sluchch(2,9).pm();//cos(x)
-var b=sluchch((a*Math.PI).ceil().polozh(),39)*3;//x
-var c=sluchch(-99,99);//св. член
+	var cnst = sl(99).pm(); //TODO: avoid '0 + ...'
+	var y = function(x){
+		return trigCoeff*Math[trigfunc](x) + linearCoeff/Math.PI * x + cnst;
+	}
 
-var i1=sluchch(-2,2);
-var i2=sluchch(i1+1,4);
-i1=i1*c1[v1]+(1).pm();
-i2=i2*c1[v1]+(1).pm();
-var p=[i1,i2];
-var h=[a+t1[v1],t3[v3]+'\\frac{'+b+'}{\\pi}x',c].shuffle().join('+');
+	var yLeft  = y(i1*Math.PI/denominator);
+	var yRight = y(i2*Math.PI/denominator);
 
-var t4=(i1).pina(c1[v1])+';'+(i2).pina(c1[v1]);
-window.vopr.txt=('Найдите '+t2[v2]+' значение функции $y = '+h+'$ на отрезке $['+t4+']$').plusminus();
-var u=p[1*(v1!=v3)]*Math.PI/c1[v1];
+	var fn=fn_zadan({
+		slag: [
+			trigCoeff + '\\' + trigfunc + ' x',
+			'\\frac{'+linearCoeff+'}{\\pi}x',
+			cnst,
+		],
+		prnz: i1.pina(denominator),
+		prkz: i2.pina(denominator),
+		maxy: Math.max(yLeft, yRight).ts(),
+		miny: Math.min(yLeft, yRight).ts(),
+	});
+}while(fn.ver.ts().length>8);
 
-window.vopr.ver=[(a*(v1?u.sin():u.cos())+(v3?1:-1)*b*u/Math.PI+c).ts()];
+window.vopr.txt=fn.txt;
+window.vopr.ver=[fn.ver];
+
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=1;
