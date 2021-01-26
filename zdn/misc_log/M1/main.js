@@ -32,5 +32,5 @@
 ../../matege2016p/5/9.js
 ].iz();*/
 
-window.nomer=sl(1,32);
+window.nomer=sl(1,31);
 window.comment='log';
