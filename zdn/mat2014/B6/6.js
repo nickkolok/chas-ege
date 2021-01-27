@@ -1,4 +1,4 @@
-//(function(){'use strict';
+(function(){'use strict';
 
 var m=['первые','последние'];
 var v1=sl1();
@@ -14,8 +14,8 @@ do{//Это неоптимально. Очень неоптимально((( Я 
 	var c=sluchch(3,6)*g*(b-a);
 	var d=sluchch(3,7)*g*a;
 	var f=a*c+(b-a)*d;
-	h=''+([c,d][v1-v2]/f);
-}while(h.length>=6);
+	h=''+([c,d][(v1-v2).abs()]/f);
+}while(h.length>=6 || h == 'NaN');
 
 var n=[[sluchch(1,a)+'-й','первый','второй'],[b+1-sluchch(1,a)+'-й','последний','предпоследний']];
 
@@ -29,4 +29,4 @@ window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;
 window.vopr.kat['drs']=0;
 window.vopr.kat['tri']=0;
-//})();
+})();
