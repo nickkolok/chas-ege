@@ -33,6 +33,10 @@ var fillerTemplate = function(){
 			alert('Не найдено поле "Источник!"');
 		}
 
+		$('#body_preview')[0].scrollIntoView({
+			behavior: "smooth",
+			block: "start",
+		});
 
 	},3000);
 }
