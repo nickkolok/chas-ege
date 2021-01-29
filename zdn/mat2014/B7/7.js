@@ -3,7 +3,7 @@
 var g=sluchch(1,49);
 var x=sluchch(1,9);
 var b=sluchch(1,9).pm();
-var d=sluchch(1,9).pm();
+var d=slKrome(b,1,9).pm();
 var c=g-b*x;
 var f=g-d*x;
 
