@@ -53,6 +53,11 @@ test('String.prototype.beautifyAlgebraicNotation', function() {
 			beautifyAlgebraicNotation()).to.be.equal(
 		'Найдите наименьший неотрицательный корень уравнения $$\\ctg\\frac{\\pi(-2x +8)}{4}=0$$'
 	);
+	expect(
+		'Найдите корень уравнения $$\\log_{69}{(0+7x)}=\\log_{69}{(27-2x)}$$'.
+			beautifyAlgebraicNotation()).to.be.equal(
+		'Найдите корень уравнения $$\\log_{69}{(7x)}=\\log_{69}{(27-2x)}$$'
+	);
 });
 
 
