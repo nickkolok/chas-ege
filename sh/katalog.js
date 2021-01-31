@@ -5,7 +5,7 @@ function generateHtmlForTask(kat,zdn,masdey){
 	var rez='';
 	vopr.podg();
 	var currentTask = nabor.adres+kat+'/'+zdn+'.js';
-	rez+='<div class="task-wrapper">';
+	rez+='<div class="task-wrapper" data-category="'+kat+'" data-tasknumber="'+zdn+'">';
 	rez+=currentTask.vTag('h2');
 	console.log(currentTask);
 	try{
@@ -19,9 +19,13 @@ function generateHtmlForTask(kat,zdn,masdey){
 				'data-task="' + encodeURIComponent(JSON.stringify(vopr)) + '"' +
 				'>' +
 					'&#x2398;' +
-				'</button>'
+				'</button>'+
 
-				+
+				'<button class="renewbutton" style="display:block; float:right; margin-right:1.46em;" title="Заменить задание на похожее"'+
+				'>' +
+					'&#x27F3;' +
+				'</button>'+
+
 				'Ответ: '+vopr.ver.join('или')
 			).vTag('div') +
 			'<br/>'
@@ -91,6 +95,7 @@ function afterTasksGenerated(){
 	spoiler();
 	MathJax.Hub.Typeset();
 	$('button.copybutton').click(copyTask);
+	$('button.renewbutton').click(renewTask);
 }
 
 
@@ -105,4 +110,14 @@ function copyTask(){
 		var fillerCode = createFiller(theTask);
 		copyToClipboard(fillerCode)
 	});
+}
+
+function renewTask(){
+	console.log(this);
+	var wrapper = $(this).parents('div.task-wrapper')[0];
+	var actions = [];
+	var taskHtml = generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions);
+	$(wrapper).replaceWith(taskHtml);
+	actions[0]();
+	afterTasksGenerated();
 }
