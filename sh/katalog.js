@@ -26,6 +26,11 @@ function generateHtmlForTask(kat,zdn,masdey){
 					'&#x27F3;' +
 				'</button>'+
 
+				'<button class="addbutton" style="display:block; float:right; margin-right:1.46em;" title="Добавить похожее задание"'+
+				'>' +
+					'+' +
+				'</button>'+
+
 				'Ответ: '+vopr.ver.join('или')
 			).vTag('div') +
 			'<br/>'
@@ -87,15 +92,16 @@ function generateKatalog(){
 			console.log(e);
 		}
 	}
+	MathJax.Hub.Typeset();
 	afterTasksGenerated();
 	$('.spoiler-show').click();
 }
 
 function afterTasksGenerated(){
 	spoiler();
-	MathJax.Hub.Typeset();
-	$('button.copybutton').click(copyTask);
-	$('button.renewbutton').click(renewTask);
+	$( 'button.copybutton[data-already-inited!=true]').click( copyTask).attr('data-already-inited', true);
+	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
+	$(  'button.addbutton[data-already-inited!=true]').click(  addTask).attr('data-already-inited', true);
 }
 
 
@@ -116,8 +122,20 @@ function renewTask(){
 	console.log(this);
 	var wrapper = $(this).parents('div.task-wrapper')[0];
 	var actions = [];
-	var taskHtml = generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions);
+	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
 	$(wrapper).replaceWith(taskHtml);
 	actions[0]();
+	MathJax.Hub.Typeset(taskHtml[0]);
+	afterTasksGenerated();
+}
+
+function addTask(){
+	console.log(this);
+	var wrapper = $(this).parents('div.task-wrapper')[0];
+	var actions = [];
+	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
+	taskHtml.insertAfter(wrapper);
+	actions[0]();
+	MathJax.Hub.Typeset(taskHtml[0]);
 	afterTasksGenerated();
 }
