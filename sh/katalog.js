@@ -75,17 +75,24 @@ function generateKatalog(){
 			rez += '</div>';
 	}
 	$('#divrez').html(toc+br+rez);
-	MathJax.Hub.Typeset();
 	var len=masdey.length;
 	for(var i=0;i<len;i++){
 		try{
 			masdey[i]();
-		}catch(e){}
+		}catch(e){
+			console.log(e);
+		}
 	}
-	spoiler();
+	afterTasksGenerated();
 	$('.spoiler-show').click();
+}
+
+function afterTasksGenerated(){
+	spoiler();
+	MathJax.Hub.Typeset();
 	$('button.copybutton').click(copyTask);
 }
+
 
 function copyTask(){
 	console.log(this);
