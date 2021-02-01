@@ -55,6 +55,9 @@ body.legacy * h2{
 @media print{
 	.noprint{
 		visibility:hidden;
+		display:none;
+		position:absolute;
+		left: -99999px;
 	}
 }
 .normtabl{
