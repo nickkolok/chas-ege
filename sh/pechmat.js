@@ -109,6 +109,8 @@ function konecSozd(){
 	$("hr:first").remove();
 	document.body.style.backgroundColor="white";
 	$('body').append('<script>udalPanel()</script>');
+
+	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
 }
 
 function vNachaloVarianta(){
@@ -255,4 +257,28 @@ var startShell = function (){
 	$('#zadaniya').html(sozdKolvoHtml('pech'));
 	$('#gotov').hide();
 	galkiKat('#galki_kat','pech');
+}
+
+
+function renewTask(){
+	console.log(this);
+	var wrapper = $(this).parents('div.d');
+	var nazvzad = wrapper.children('div.b')[0].innerHTML;
+	console.log(wrapper);
+	var taskId = wrapper.attr('data-task-id');
+	var taskNumber = wrapper.attr('data-task-number');
+	var answerRow = $('tr.answer-container[data-task-id='+taskId+']');
+	var solution  = $('div.solution-container[data-task-id='+taskId+']');
+
+	nZ = taskNumber;
+	dvig.zadan(function(){
+		console.log(wrapper);
+		var taskHtml = createHtmlForTask(nazvzad);
+		wrapper  .replaceWith(taskHtml.txt);
+		answerRow.replaceWith(taskHtml.ver);
+		solution .replaceWith(taskHtml.rsh);
+		window.vopr.dey();
+		MathJax.Hub.Typeset(taskHtml[0]);
+		$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
+	}, taskNumber);
 }
