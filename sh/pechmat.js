@@ -155,15 +155,41 @@ function zadan(){
 		return;
 	}
 }
+
+function createHtmlForTask(nazvzad){
+	return {
+		txt:
+			'<div class="d" data-task-id="'+variantNumber+'-'+nazvzad+'" data-task-number="'+nZ+'">'+
+				'<div class="b">'+nazvzad+'</div>'+
+				'<div class="z">'+
+					window.vopr.txt+
+					'<button class="noprint renewbutton" title="Заменить задание на похожее"'+
+					'>' +
+						'&#x27F3;' +
+					'</button>'+
+				'</div>'+
+			'</div>',
+		ver:
+			'<tr class="answer-container" data-task-id="'+variantNumber+'-'+nazvzad+'"><td>'+variantNumber+'</td><td>'+nazvzad+'</td>'+
+			'<td>'+window.vopr.ver.join('; ')+'</td></tr>',
+		rsh:
+			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
+				(
+					'<h3>Вариант №'+variantNumber+', задача '+nazvzad+'</h3><br/>'+
+					vopr.rsh
+				).esli(vopr.rsh)+
+			'</div>',
+	};
+}
+
 function obnov(){
 		var nazvzad =
 			dvig.getzadname(nZ)+
 			(aZ[nZ]==1? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1) );
-		strVopr+='<div class="d"><div class="b">'+nazvzad+'</div><div class="z">'+window.vopr.txt+'</div></div>';
-		strOtv+='<tr><td>'+variantNumber+'</td><td>'+nazvzad+'</td><td>'+window.vopr.ver.join('; ')+'</td></tr>';
-		if(vopr.rsh)
-			strResh+='<br/><h3>Вариант №'+variantNumber+', задача '+nazvzad+'</h3><br/>'+vopr.rsh+
-				'<br/><br/>';
+		var html = createHtmlForTask(nazvzad);
+		strVopr += html.txt;
+		strOtv  += html.ver;
+		strResh += html.rsh;
 
 		voprosy.push(vopr.clone());
 
