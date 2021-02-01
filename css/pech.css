@@ -169,3 +169,8 @@ h2{
 	float:none;
 	clear:both;
 }
+
+button.renewbutton{
+	display:block;
+	right:0;
+}
