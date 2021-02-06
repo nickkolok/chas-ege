@@ -11,6 +11,7 @@ var quantity1 = initialQuantity + commonDifference * (knownDay1 - 1);
 var quantity2 = initialQuantity + commonDifference * (knownDay2 - 1);
 
 var totalQuantity = initialQuantity + commonDifference * (totalDays - 1);
+totalQuantity = (initialQuantity + totalQuantity)*totalDays/2;
 
 
 /*
