@@ -1,6 +1,6 @@
 (function(){'use strict';
 
-var c=[0.1,0.2,0.25,0.5].iz().pm();
+var c=[0.1,0.2,0.25,0.5].iz();
 var x=sl(-10,10,0.1);
 var b=c-x;
 var a=(1/c).ts();
