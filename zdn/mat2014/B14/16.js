@@ -24,11 +24,11 @@ totalQuantity = (initialQuantity + totalQuantity)*totalDays/2;
 var name = sklonlxkand(om.imenaj.ie.iz());
 
 var needs = [
-	'надо',
-	'нужно',
-	'необходимо',
-	'требуется',
-	'поручено',
+	'надо было',
+	'нужно было',
+	'необходимо было',
+	'требовалось',
+	'было поручено',
 ].iz();
 
 chas2.task.setCountableTask(
