@@ -31,26 +31,39 @@ var needs = [
 	'было поручено',
 ].iz();
 
+var product = sklonlxkand([
+	'открытка',
+	'приглашение',
+	'письмо',
+].iz());
+
+var action = [
+	['подписать', 'подписывала', 'подписала', 'подписано',],
+	['разослать',   'рассылала', 'разослала', 'разослано',],
+	[ 'оформить',   'оформляла',  'оформила', 'оформлено',],
+].iz();
+
+
 chas2.task.setCountableTask(
 	[
 		{
-			utv: name.de + ' ' + needs + ' подписать ' + chislitM(totalQuantity,'открытку','открытки','открыток'),
+			utv: name.de + ' ' + needs + ' ' + action[0] + ' ' + chislitM(totalQuantity, product.ve, product.vm, product.rm),
 			nah: 1,
 			zna: totalQuantity,
-			vpr: 'сколько всего открыток ' + needs + ' подписать ' + name.de,
+			vpr: 'сколько всего ' + product.rm + ' ' + needs + ' ' + action[0] + ' ' + name.de,
 		},
-		{utv: 'ежедневно <replace1/> подписывает на одно и то же количество открыток больше по сравнению с предыдущим днём'},
+		{utv: 'ежедневно <replace1/> ' + action[1] + ' на одно и то же количество ' + product.rm + ' больше по сравнению с предыдущим днём'},
 		{
-			utv: 'за ' + knownDay1 + '-й день <replace1/> подписала ' + chislitM(quantity1,'открытку','открытки','открыток'),
+			utv: 'за ' + knownDay1 + '-й день <replace1/> ' + action[2] + ' ' + chislitM(quantity1, product.ve, product.vm, product.rm),
 			nah: 1,
 			zna: quantity1,
-			vpr: 'сколько открыток было подписано за ' + knownDay1 + '-й день',
+			vpr: 'сколько ' + product.rm + ' было ' + action[3] + ' за ' + knownDay1 + '-й день',
 		},
 		{
-			utv: 'за ' + knownDay2 + '-й день <replace1/> подписала ' + chislitM(quantity2,'открытку','открытки','открыток'),
+			utv: 'за ' + knownDay2 + '-й день <replace1/> ' + action[2] + ' ' + chislitM(quantity2, product.ve, product.vm, product.rm),
 			nah: 1,
 			zna: quantity2,
-			vpr: 'сколько открыток было подписано за ' + knownDay2 + '-й день',
+			vpr: 'сколько ' + product.rm + ' было ' + action[3] + ' за ' + knownDay2 + '-й день',
 		},
 		{
 			utv: 'вся работа была выполнена за ' + chislitlx(totalDays,'день'),
