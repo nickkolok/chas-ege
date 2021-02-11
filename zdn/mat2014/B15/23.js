@@ -5,7 +5,7 @@ var a=sl(1,49).pm();
 var fn=fn_zadan({
 	slag:['('+['x',a].shuffle().slag().plusminus()+')e^{'+
 		['-x',a].shuffle().slag().plusminus()+'}'],
-	maxx:a+1,
+	maxx:-a+1,
 });
 
 window.vopr.txt=fn.txt;
