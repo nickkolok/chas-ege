@@ -10,7 +10,7 @@ var fn=fn_zadan({
 });
 
 window.vopr.txt=fn.txt;
-window.vopr.ver=[fn.ver];
+window.vopr.ver=[fn.ver.ts()];
 
 window.vopr.kat['prz']=1;
 window.vopr.kat['log']=1;
