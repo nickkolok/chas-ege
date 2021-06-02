@@ -14,8 +14,7 @@ function getPfg(limit) {
 	} while (arr[2] < limit);
 	return arr;
 }
-"use strict";
-(function() {
+(function() {"use strict";
 	NAinfo.requireApiVersion(0, 0);
 	let random = sluchch(5, 90, 5);
 	let arr = getPfg(random);
