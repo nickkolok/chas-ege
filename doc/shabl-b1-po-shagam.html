@@ -51,7 +51,7 @@
 		В поле "Ввести программу" уже должна быть вот такая заготовка:
 <pre>
 (function(){
-NAinfo.requireApiVersion(0, 0);
+	NAinfo.requireApiVersion(0, 0);
 
 })();
 </pre>
@@ -63,8 +63,8 @@ NAinfo.requireApiVersion(0, 0);
 		введите, например:
 <pre>
 (function(){
-NAinfo.requireApiVersion(0, 0);
-alert('Привет!');
+	NAinfo.requireApiVersion(0, 0);
+	alert('Привет!');
 })();
 </pre>
 		и нажмите кнопку "Составить задание по программе" под полем ввода.
@@ -84,16 +84,17 @@ alert('Привет!');
 		Сначала вернёмся к заготовке:
 <pre>
 (function(){
-NAinfo.requireApiVersion(0, 0);
+	NAinfo.requireApiVersion(0, 0);
 
 })();
 </pre>
 		Это заголовок замыкания и проверка версии NApi, они нам в рамках этой инструкции неинтересны.
 		Набирать текст нашего шаблона мы будем между второй и четвёртой строчками:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
-/*Вот здесь!*/
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
+	/*Вот здесь!*/
 })();
 </pre>
 	</li>
@@ -112,12 +113,13 @@ NAinfo.requireApiVersion(0, 0);
 		<br/>
 		Итак, вставим в нашу заготовку текст вопроса:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков чая. Конференция длится 4 дня. В пачке чая 100 пакетиков. Какого наименьшего количества пачек чая хватит на все дни конференции?',
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков чая. Конференция длится 4 дня. В пачке чая 100 пакетиков. Какого наименьшего количества пачек чая хватит на все дни конференции?',
+	});
 })();
 </pre>
 	Выполняем.
@@ -126,13 +128,14 @@ text: 'В среднем за день во время конференции р
 	<li>
 		Теперь добавим ответ:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков чая. Конференция длится 4 дня. В пачке чая 100 пакетиков. Какого наименьшего количества пачек чая хватит на все дни конференции?',
-answers: 3,
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков чая. Конференция длится 4 дня. В пачке чая 100 пакетиков. Какого наименьшего количества пачек чая хватит на все дни конференции?',
+		answers: 3,
+	});
 })();
 </pre>
 		Уже лучше: после того, как задание составлено, в поле "Ответ" можно ввести ответ (Кэп!),
@@ -144,15 +147,16 @@ answers: 3,
 		Давайте разобьём её на несколько строк.
 		На следующих шагах это нам прибавит удобства.
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков чая. '+
-	'Конференция длится 4 дня. В пачке чая 100 пакетиков. '+
-	'Какого наименьшего количества пачек чая хватит на все дни конференции?',
-answers: 3,
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков чая. '+
+			'Конференция длится 4 дня. В пачке чая 100 пакетиков. '+
+			'Какого наименьшего количества пачек чая хватит на все дни конференции?',
+		answers: 3,
+	});
 })();
 </pre>
 		Обратите внимание: знак + должен находиться на верхней строке (подобно переносу в словах),
@@ -165,15 +169,16 @@ answers: 3,
 		одно из ключевых преимуществ "Час ЕГЭ".
 		Но сначала нам нужно описать, как мы получили ответ:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков чая. '+
-	'Конференция длится 4 дня. В пачке чая 100 пакетиков. '+
-	'Какого наименьшего количества пачек чая хватит на все дни конференции?',
-answers: (70*4/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков чая. '+
+			'Конференция длится 4 дня. В пачке чая 100 пакетиков. '+
+			'Какого наименьшего количества пачек чая хватит на все дни конференции?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>
@@ -186,15 +191,16 @@ answers: (70*4/100).ceil(),
 		Начнём с простого: сделаем так, чтобы иногда упоминался чай, а иногда - кофе.
 		Сначала "выкусим" кавчками все упоминания чая:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков '+'чая'+'. '+
-	'Конференция длится 4 дня. В пачке '+'чая'+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+'чая'+' хватит на все дни конференции?',
-answers: (70*4/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков '+'чая'+'. '+
+			'Конференция длится 4 дня. В пачке '+'чая'+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+'чая'+' хватит на все дни конференции?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>
@@ -204,16 +210,17 @@ answers: (70*4/100).ceil(),
 		В Javascript все переменные объявляются с помощью слова var,
 		а типов у переменных нет:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka='чая';
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков '+'чая'+'. '+
-	'Конференция длится 4 дня. В пачке '+'чая'+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+'чая'+' хватит на все дни конференции?',
-answers: (70*4/100).ceil(),
-});
+	var napitka='чая';
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков '+'чая'+'. '+
+			'Конференция длится 4 дня. В пачке '+'чая'+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+'чая'+' хватит на все дни конференции?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>
@@ -221,16 +228,17 @@ answers: (70*4/100).ceil(),
 	<li>
 		Заменим теперь "выкушенные" строки 'чая' на переменную napitka:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka='чая';
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков '+napitka+'. '+
-	'Конференция длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни конференции?',
-answers: (70*4/100).ceil(),
-});
+	var napitka='чая';
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков '+napitka+'. '+
+			'Конференция длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни конференции?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>
@@ -241,19 +249,20 @@ answers: (70*4/100).ceil(),
 		(Отныне комментарии пишем прямо в коде - так принято):
 <pre>
 
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
-//Кстати, если в строке стоит двойная дробь // - то всё, что идёт после этой дроби и до конца строки,
-//превращается в комментарий
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
+	//Кстати, если в строке стоит двойная дробь // - то всё, что идёт после этой дроби и до конца строки,
+	//превращается в комментарий
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
 
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков '+napitka+'. '+
-	'Конференция длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни конференции?',
-answers: (70*4/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков '+napitka+'. '+
+			'Конференция длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни конференции?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>
@@ -273,18 +282,19 @@ answers: (70*4/100).ceil(),
 		Теперь на примере конференции научимся работать с падежами.
 		"Выкусывание" и введение переменной нам уже знакомы, так что смело пишем:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=['конференция','мероприятие','слёт'].iz();
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=['конференция','мероприятие','слёт'].iz();
 
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков '+napitka+'. '+
-	'Конференция длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни конференции?',
-answers: (70*4/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков '+napitka+'. '+
+			'Конференция длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни конференции?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>
@@ -296,19 +306,20 @@ answers: (70*4/100).ceil(),
 		Как правило, там, где этот модуль вызывается, упоминается буквосочетание lx.
 		Превратим переменную meropr в существительное, падежи которого составит лексический модуль:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=['конференция','мероприятие','слёт'].iz();
-meropr=sklonlxkand(meropr);
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=['конференция','мероприятие','слёт'].iz();
+	meropr=sklonlxkand(meropr);
 
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков '+napitka+'. '+
-	'Конференция длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни конференции?',
-answers: (70*4/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков '+napitka+'. '+
+			'Конференция длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни конференции?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>
@@ -316,18 +327,19 @@ answers: (70*4/100).ceil(),
 	<li>
 		Обычно пишут короче:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
 
-NAtask.setTask({
-text: 'В среднем за день во время конференции расходуется 70 пакетиков '+napitka+'. '+
-	'Конференция длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни конференции?',
-answers: (70*4/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время конференции расходуется 70 пакетиков '+napitka+'. '+
+			'Конференция длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни конференции?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>	
@@ -335,18 +347,19 @@ answers: (70*4/100).ceil(),
 	<li>
 		Теперь включаем переменную meropr в вопрос:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
 
-NAtask.setTask({
-text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
-	meropr.ie+' длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
-answers: (70*4/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
+			meropr.ie+' длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>	
@@ -359,18 +372,19 @@ answers: (70*4/100).ceil(),
 		Это не дело!
 		Исправим с помощью функции toZagl()
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
 
-NAtask.setTask({
-text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
-	meropr.ie.toZagl()+' длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
-answers: (70*4/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
+			meropr.ie.toZagl()+' длится 4 дня. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>	
@@ -397,18 +411,19 @@ answers: (70*4/100).ceil(),
 		Итак, будем варьировать количество дней.
 		Сначала просто "выкусываем":	
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
 
-NAtask.setTask({
-text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
-	meropr.ie.toZagl()+' длится '+'4 дня'+'. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
-answers: (70*4/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
+			meropr.ie.toZagl()+' длится '+'4 дня'+'. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>		
@@ -416,18 +431,19 @@ answers: (70*4/100).ceil(),
 	<li>
 		Теперь запишем с помощью функции chislitlx(число, существительное):
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
 
-NAtask.setTask({
-text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
-	meropr.ie.toZagl()+' длится '+chislitlx(4,'день')+'. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
-answers: (70*4/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
+			meropr.ie.toZagl()+' длится '+chislitlx(4,'день')+'. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
+		answers: (70*4/100).ceil(),
+	});
 })();
 
 </pre>		
@@ -438,19 +454,20 @@ answers: (70*4/100).ceil(),
 		Назовём её dni, присвоим ей значение 4 и везде число 4 заменим на эту переменную
 		(в вопросе и в ответе!)
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
-var dni=4;
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var dni=4;
 
-NAtask.setTask({
-text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
-	meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
-answers: (70*dni/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
+			meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
+		answers: (70*dni/100).ceil(),
+	});
 })();
 
 </pre>		
@@ -458,19 +475,20 @@ answers: (70*dni/100).ceil(),
 	<li>
 		И, наконец, сгенерируем случайное количество дней от 2 до 10 с помощью функции sluchch(от, до):
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
-var dni=sluchch(2,10);
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var dni=sluchch(2,10);
 
-NAtask.setTask({
-text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
-	meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В пачке '+napitka+' 100 пакетиков. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
-answers: (70*dni/100).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
+			meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В пачке '+napitka+' 100 пакетиков. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
+		answers: (70*dni/100).ceil(),
+	});
 })();
 
 </pre>		
@@ -480,20 +498,21 @@ answers: (70*dni/100).ceil(),
 	<li>
 		Проделаем теперь то же самое с пакетиками:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
-var dni=sluchch(2,10);
-var pak=sluchch(50,200);
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var dni=sluchch(2,10);
+	var pak=sluchch(50,200);
 
-NAtask.setTask({
-text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
-	meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В пачке '+napitka+' '+chislitlx(pak,'пакетик')+'. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
-answers: (70*dni/pak).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
+			meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В пачке '+napitka+' '+chislitlx(pak,'пакетик')+'. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
+		answers: (70*dni/pak).ceil(),
+	});
 })();
 
 </pre>		
@@ -503,20 +522,21 @@ answers: (70*dni/pak).ceil(),
 		Укажем функции sluchch шаг случайного числа
 		(пользуясь случаем, говорю Алине Широковой спасибо за обнаруженный баг):
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
-var dni=sluchch(2,10);
-var pak=sluchch(50,200,10);
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var dni=sluchch(2,10);
+	var pak=sluchch(50,200,10);
 
-NAtask.setTask({
-text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
-	meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В пачке '+napitka+' '+chislitlx(pak,'пакетик')+'. '+
-	'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
-answers: (70*dni/pak).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время '+meropr.re+' расходуется 70 пакетиков '+napitka+'. '+
+			meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В пачке '+napitka+' '+chislitlx(pak,'пакетик')+'. '+
+			'Какого наименьшего количества пачек '+napitka+' хватит на все дни '+meropr.re+'?',
+		answers: (70*dni/pak).ceil(),
+	});
 })();
 </pre>		
 	</li>
@@ -526,22 +546,23 @@ answers: (70*dni/pak).ceil(),
 	<li>
 		С учётом предыдущего задания для самостоятельного решения должно получиться нечто вроде этого:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
-var up=sklonlxkand(['пачка','коробка','упаковка'].iz())
-var dni=sluchch(2,10);
-var pak=sluchch(50,200,10);
-var rash=sluchch(20,100);
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var up=sklonlxkand(['пачка','коробка','упаковка'].iz())
+	var dni=sluchch(2,10);
+	var pak=sluchch(50,200,10);
+	var rash=sluchch(20,100);
 
-NAtask.setTask({
-text: 'В среднем за день во время '+meropr.re+' расходуется '+chislitlx(rash,'пакетик')+' '+napitka+'. '+
-	meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В '+up.pe+' '+napitka+' '+chislitlx(pak,'пакетик')+'. '+
-	'Какого наименьшего количества '+up.rm+' '+napitka+' хватит на все дни '+meropr.re+'?',
-answers: (rash*dni/pak).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время '+meropr.re+' расходуется '+chislitlx(rash,'пакетик')+' '+napitka+'. '+
+			meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В '+up.pe+' '+napitka+' '+chislitlx(pak,'пакетик')+'. '+
+			'Какого наименьшего количества '+up.rm+' '+napitka+' хватит на все дни '+meropr.re+'?',
+		answers: (rash*dni/pak).ceil(),
+	});
 })();
 
 </pre>		
@@ -549,22 +570,23 @@ answers: (rash*dni/pak).ceil(),
 	<li>
 		Теперь указываем источник шаблона и автора:
 <pre>
-(function(){'use strict';
-NAinfo.requireApiVersion(0, 0);
+(function(){
+	'use strict';
+	NAinfo.requireApiVersion(0, 0);
 
-var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
-var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
-var up=sklonlxkand(['пачка','коробка','упаковка'].iz())
-var dni=sluchch(2,10);
-var pak=sluchch(50,200,10);
-var rash=sluchch(20,100);
+	var napitka=['чая','кофе'].iz();//Вернёт случайным образом 'чая' или 'кофе'
+	var meropr=sklonlxkand(['конференция','мероприятие','слёт'].iz());
+	var up=sklonlxkand(['пачка','коробка','упаковка'].iz())
+	var dni=sluchch(2,10);
+	var pak=sluchch(50,200,10);
+	var rash=sluchch(20,100);
 
-NAtask.setTask({
-text: 'В среднем за день во время '+meropr.re+' расходуется '+chislitlx(rash,'пакетик')+' '+napitka+'. '+
-	meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В '+up.pe+' '+napitka+' '+chislitlx(pak,'пакетик')+'. '+
-	'Какого наименьшего количества '+up.rm+' '+napitka+' хватит на все дни '+meropr.re+'?',
-answers: (rash*dni/pak).ceil(),
-});
+	NAtask.setTask({
+		text: 'В среднем за день во время '+meropr.re+' расходуется '+chislitlx(rash,'пакетик')+' '+napitka+'. '+
+			meropr.ie.toZagl()+' длится '+chislitlx(dni,'день')+'. В '+up.pe+' '+napitka+' '+chislitlx(pak,'пакетик')+'. '+
+			'Какого наименьшего количества '+up.rm+' '+napitka+' хватит на все дни '+meropr.re+'?',
+		answers: (rash*dni/pak).ceil(),
+	});
 })();
 //Обзад 77339
 //NickKolok
