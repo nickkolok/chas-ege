@@ -81,8 +81,10 @@
 			IskVelichZnacheniye = V1[2] + V2[2]
 		else
 			IskVelichZnacheniye = V1[2] - V2[2]
-			
+
 	}
+
+	V3 += V3 == 'суммы' ? ' этих векторов' : ' первого и второго векторов';
 
 	NAinfo.requireApiVersion(0, 0);
 
@@ -91,7 +93,7 @@
 		text:
 
 			'Даны 2 вектора в трёхмерном пространстве с координатами (' + V1[0] + ', ' + V1[1] + ', ' + V1[2] + ') и (' + V2[0] + ', ' + V2[1] + ', ' + V2[2] + ').' +
-			' Найдите ' + IskVelichStroka + ' ' + V3 + ' этих векторов.',
+			' Найдите ' + IskVelichStroka + ' ' + V3 + '.',
 
 		answers: IskVelichZnacheniye
 
