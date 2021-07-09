@@ -88,7 +88,7 @@ function enableAce(){
 	$("#ace-script").html($("#textarea-script").val().replace(/</g,"&lt;").replace(/>/g,"&gt;"));
 	$("#textarea-script").hide();
 	editor = ace.edit("ace-script");
-	editor.session.on('changeMode', function(e, session){
+	editor.session.on("changeMode", function(e, session){
 		if ("ace/mode/javascript" === session.getMode().$id) {
 			if (!!session.$worker) {
 				session.$worker.send("setOptions", [{
