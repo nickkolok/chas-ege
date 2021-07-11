@@ -544,6 +544,34 @@ chas2.task = {
 			};
 		})(),
 
+		/** @function chas2.task.modifiers.roundUpTo
+		 * Добавить округление: "фраза округлить до ..." и округлить сам ответ
+		 * @param {Number} n количество знаков после запятой
+		 */
+		 roundUpTo : function(n) {
+			var rnd = [
+				'целого',
+				'десятых',
+				'сотых',
+				'тысячных',
+				'десятитысячных'
+			];
+			var o = chas2.task.getTask();
+			var ans = Number(o.answers[0].replace(',', '.')); //...
+			if(0 < n && n < 5){
+				o.text += ' Ответ округлите до ' + rnd[n] + '.';
+				if(n == 0)
+					o.answers = Math.round(ans);
+				else
+					o.answers = Math.round(ans * Math.pow(10, n)) / Math.pow(10, n);
+			}
+			else {
+				o.text += ' Ответ округлите до целых.'
+				o.answers = Math.round(ans);
+			}
+			chas2.task.setTask(o);
+		},
+
 		/** @function chas2.task.modifiers.addCanvasIllustration
 		 * Привести опции canvas к нормальному виду
 		 * @param {Number} o.width ширина canvas
