@@ -544,6 +544,56 @@ chas2.task = {
 			};
 		})(),
 
+		/** @function chas2.task.modifiers.roundUpTo
+		 * Добавить фразу "Округлить до ..." и округлить сам ответ.
+		 * @param {Number} n степень 10 (округлить до 10^n)
+		 */
+		roundUpTo : function(n) {
+			var rndInt = [
+				'десятков',
+				'сотен',
+				'тысяч',
+				'десятков тысяч',
+				'сотен тысяч',
+				'миллионов',
+				'десятков миллионов',
+				'сотен миллионов',
+				'миллиардов',
+			];
+			var rndFrac = [
+				'десятых',
+				'сотых',
+				'тысячных',
+				'десятитысячных',
+				'стотысячных',
+				'миллионных',
+				'десятимилионных',
+				'стомиллионных',
+				'миллиардных',
+			];
+			var o = chas2.task.getTask();
+			var ans = Number(o.answers[0].replace(',', '.')); //меняем запятую на точку для корректной работы Number
+			var cntFrac = String(ans).includes('.') ? String(ans).split('.')[1].length : 0;
+			var cntInt = String(ans).includes('.') ? String(ans).split('.')[0].length : String(ans).length;
+			if(n < 0){
+				var nAuto = (cntFrac < -n) || ((-n - 1) > 8) ? cntFrac : -n;
+				nAuto = Math.min(nAuto, rndFrac.length);
+				o.text += ' Ответ округлите до ' + (nAuto ? rndFrac[nAuto - 1] : 'целого') + '.';
+				o.answers = Math.round(ans * Math.pow(10, nAuto)) / Math.pow(10, nAuto);
+			}
+			else if(n > 0) {
+				var nAuto = (cntInt < n) || ((n - 1) > 8) ? cntInt : n;
+				nAuto = Math.min(nAuto, rndInt.length);
+				o.text += ' Ответ округлите до ' + (nAuto ? rndInt[nAuto - 1] : 'целого') + '.';
+				o.answers = Math.round(ans / Math.pow(10, nAuto)) * Math.pow(10, nAuto);
+			}
+			else { //если параметр n не задан или равен 0
+				o.text += ' Ответ округлите до целого.';
+				o.answers = Math.round(ans);
+			}
+			chas2.task.setTask(o);
+		},
+
 		/** @function chas2.task.modifiers.addCanvasIllustration
 		 * Привести опции canvas к нормальному виду
 		 * @param {Number} o.width ширина canvas
