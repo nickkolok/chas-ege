@@ -548,25 +548,47 @@ chas2.task = {
 		 * Добавить округление: "фраза округлить до ..." и округлить сам ответ
 		 * @param {Number} n количество знаков после запятой
 		 */
-		 roundUpTo : function(n) {
-			var rnd = [
-				'целого',
+		roundUpTo : function(n) {
+			var rndInt = [
+				'десятков',
+				'сотен',
+				'тысяч',
+				'десятков тысяч',
+				'сотен тысяч',
+				'миллионов',
+				'десятков миллионов',
+				'сотен миллионов',
+				'миллиардов',
+			];
+			var rndFrac = [
 				'десятых',
 				'сотых',
 				'тысячных',
-				'десятитысячных'
+				'десятитысячных',
+				'стотысячных',
+				'миллионных',
+				'десятимилионных',
+				'стомиллионных',
+				'миллиардных',
 			];
 			var o = chas2.task.getTask();
 			var ans = Number(o.answers[0].replace(',', '.')); //...
-			if(0 < n && n < 5){
-				o.text += ' Ответ округлите до ' + rnd[n] + '.';
-				if(n == 0)
-					o.answers = Math.round(ans);
-				else
-					o.answers = Math.round(ans * Math.pow(10, n)) / Math.pow(10, n);
+			var cntFrac = String(ans).includes('.') ? String(ans).split('.')[1].length : 0;
+			var cntInt = String(ans).includes('.') ? String(ans).split('.')[0].length : String(ans).length;
+			if(n < 0){
+				var nAuto = (cntFrac < -n) || ((-n - 1) > 8) ? cntFrac : -n;
+				nAuto = nAuto < 10 ? nAuto : 9;
+				o.text += ' Ответ округлите до ' + rndFrac[nAuto - 1] + '.';
+				o.answers = Math.round(ans * Math.pow(10, nAuto)) / Math.pow(10, nAuto);	
+			}
+			else if(n > 0) {
+				var nAuto = (cntInt < n) || ((n - 1) > 8) ? cntInt : n;
+				nAuto = nAuto < 10 ? nAuto : 9;
+				o.text += ' Ответ округлите до ' + rndInt[nAuto - 1] + '.';
+				o.answers = Math.round(ans / Math.pow(10, nAuto));
 			}
 			else {
-				o.text += ' Ответ округлите до целых.'
+				o.text += ' Ответ округлите до целого.';
 				o.answers = Math.round(ans);
 			}
 			chas2.task.setTask(o);
