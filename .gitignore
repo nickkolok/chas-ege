@@ -20,6 +20,8 @@ dist
 build
 temp
 
+package-lock.json
+
 #Упакованные наборы заданий
 zdn/*/upak.js
 
