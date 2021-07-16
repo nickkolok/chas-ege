@@ -41,7 +41,7 @@ Number.prototype.getDivisors = function() {
 		return [1];
 	}
 	var divisors = [];
-	for (var d = 1; d <= num; d++) {
+	for (var d = 1; d <= this; d++) {
 		if (this.isDividedBy(d)) {
 			divisors.push(d);
 		}
