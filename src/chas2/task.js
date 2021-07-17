@@ -572,20 +572,20 @@ chas2.task = {
 				'миллиардных',
 			];
 			var o = chas2.task.getTask();
-			var ans = Number(o.answers[0].replace(',', '.')); //...
+			var ans = Number(o.answers[0].replace(',', '.')); //меняем запятую на точку для корректной работы Number
 			var cntFrac = String(ans).includes('.') ? String(ans).split('.')[1].length : 0;
 			var cntInt = String(ans).includes('.') ? String(ans).split('.')[0].length : String(ans).length;
 			if(n < 0){
 				var nAuto = (cntFrac < -n) || ((-n - 1) > 8) ? cntFrac : -n;
-				nAuto = nAuto < 10 ? nAuto : 9;
+				nAuto = Math.min(nAuto, rndFrac.length);
 				o.text += ' Ответ округлите до ' + rndFrac[nAuto - 1] + '.';
-				o.answers = Math.round(ans * Math.pow(10, nAuto)) / Math.pow(10, nAuto);	
+				o.answers = Math.round(ans * Math.pow(10, nAuto)) / Math.pow(10, nAuto);
 			}
 			else if(n > 0) {
 				var nAuto = (cntInt < n) || ((n - 1) > 8) ? cntInt : n;
-				nAuto = nAuto < 10 ? nAuto : 9;
+				nAuto = Math.min(nAuto, rndInt.length);
 				o.text += ' Ответ округлите до ' + rndInt[nAuto - 1] + '.';
-				o.answers = Math.round(ans / Math.pow(10, nAuto));
+				o.answers = Math.round(ans / Math.pow(10, nAuto)) * Math.pow(10, nAuto);
 			}
 			else {
 				o.text += ' Ответ округлите до целого.';
