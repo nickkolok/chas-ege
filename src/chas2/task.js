@@ -578,16 +578,16 @@ chas2.task = {
 			if(n < 0){
 				var nAuto = (cntFrac < -n) || ((-n - 1) > 8) ? cntFrac : -n;
 				nAuto = Math.min(nAuto, rndFrac.length);
-				o.text += ' Ответ округлите до ' + rndFrac[nAuto - 1] + '.';
+				o.text += ' Ответ округлите до ' + (nAuto ? rndFrac[nAuto - 1] : 'целого') + '.';
 				o.answers = Math.round(ans * Math.pow(10, nAuto)) / Math.pow(10, nAuto);
 			}
 			else if(n > 0) {
 				var nAuto = (cntInt < n) || ((n - 1) > 8) ? cntInt : n;
 				nAuto = Math.min(nAuto, rndInt.length);
-				o.text += ' Ответ округлите до ' + rndInt[nAuto - 1] + '.';
+				o.text += ' Ответ округлите до ' + (nAuto ? rndInt[nAuto - 1] : 'целого') + '.';
 				o.answers = Math.round(ans / Math.pow(10, nAuto)) * Math.pow(10, nAuto);
 			}
-			else {
+			else { //если параметр n не задан или равен 0
 				o.text += ' Ответ округлите до целого.';
 				o.answers = Math.round(ans);
 			}
