@@ -20,11 +20,9 @@ var vremya = [
 	[['ежедневно','каждый день'].iz(),['в понедельник', 'в среду', 'во вторник', 'в четверг', 'в пятницу', 'в субботу', 'в воскресенье'].iz()]
 ].iz();
 var transport = sklonlxkand(['автобус','электричка','маршрутка'].iz());
-var max; // = sluchch(17,24);
-var min; // = max -  sluchch(3,12));
 do {
-	max = sluchch(15, 30);
-	min = max - sluchch(3, 12);
+	var max = sluchch(15, 30);
+	var min = max - sluchch(3, 12);
 } while (min < 0);
 var ver1 = (sluchch(80, 98)) / 100;
 var ver2 = (sluchch(45, 70)) / 100;
