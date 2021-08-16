@@ -29,19 +29,13 @@ if (mesto == 'фабрике керамической посуды'){
 	predmet=sklonlxkand(['батарейка','лампочка',].iz());
 }
 var nayti=['без дефектов','не имеет дефектов', 'с дефектами'].iz();
-var def1;
-var ver;
+var def1 = sluchch(10,30);
+var ver = sluchch(50,90);
 var answers;
-var answers1;
-var answ1;
-var answ2;
-
-def1 = sluchch(10,30);
-ver = sluchch(50,90);
-answers1 = ((1 - def1/100)/((1-def1/100)+(1-ver/100)*def1/100)).toFixed(3);//до тысячных
+var answers1 = ((1 - def1/100)/((1-def1/100)+(1-ver/100)*def1/100)).toFixed(3);//до тысячных
 
 if (nayti =='с дефектами'){
-	answers=1-answers1;
+	answers = 1-answers1;
 } else {
 	answers = answers1;
 }

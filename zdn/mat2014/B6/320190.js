@@ -6,16 +6,12 @@
 (function(){'use strict';
 NAinfo.requireApiVersion(0, 0);
 var pass = om.rusbukv.iz();
-var zapasn;
-var peregorodk;
-var vsego;
-var answers;
 
 do{
-	zapasn = sluchch(10,28);
-	peregorodk = sluchch(11,28);
-	vsego = sluchch(100,450);
-	answers = (zapasn+peregorodk)/vsego;
+	var zapasn = sluchch(10,28);
+	var peregorodk = sluchch(11,28);
+	var vsego = sluchch(100,450);
+	var answers = (zapasn+peregorodk)/vsego;
 } while ((answers*10000)%100 !== 0);
 
 NAtask.setTask({

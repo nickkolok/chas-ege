@@ -6,17 +6,13 @@
 (function(){'use strict';
 NAinfo.requireApiVersion(0, 0);
 var predm = sklonlxkand(['DVD-проигрыватель','ноутбук','телевизор','монитор','холодильник','пылесос','блендер','принтер','сканер','шуруповерт','насос'].iz());
-var ver;// = sluchch(0.010,0.090);
-var kolvo;// = sluchch(40,200);
-var prodano;
-var answers;
 var period = sklonlxkand(['год','месяц'].iz());
 
 do{
-	ver = sluchch(0.013,0.089, 0.001);
-	kolvo = sluchch(40,500);
-	prodano = sluchch(900,2000);
-	answers = kolvo/prodano-ver;
+	var ver = sluchch(0.013,0.089, 0.001);
+	var kolvo = sluchch(40,500);
+	var prodano = sluchch(900,2000);
+	var answers = kolvo/prodano-ver;
 } while ((answers*1000)%1 !== 0);
 
 NAtask.setTask({

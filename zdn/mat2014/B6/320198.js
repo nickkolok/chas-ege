@@ -8,13 +8,10 @@
 NAinfo.requireApiVersion(0, 0);
 var max = sluchch(6,12);
 var min = max-1;
-var ver1;
-var ver2;
-var answers;
 do{
-	ver1 = (sluchch(54,79))/100;
-	ver2 = (sluchch(64,89))/100;
-	answers = ver2-ver1;
+	var ver1 = (sluchch(54,79))/100;
+	var ver2 = (sluchch(64,89))/100;
+	var answers = ver2-ver1;
 } while (answers < 0);
 
 var name = om.rusbukv.iz();
