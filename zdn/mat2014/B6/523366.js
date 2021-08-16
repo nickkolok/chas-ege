@@ -9,7 +9,7 @@ var max = sluchch(6,12);
 var ver = (sluchch(58,84))/100;
 var answers = 1-ver;
 	
-var name = ['Д','К','Л','М','С','Т','Н','В','А','Ж','Б','О','П','Г'].iz();
+var name = om.rusbukv.iz();
 var men = ['школьник','ученик','учащийся','студент','абитуриент'].iz();
 var exam;
 if (men == 'школьник' || men == 'ученик' || men == 'учащийся'){

@@ -5,7 +5,7 @@
 
 (function(){'use strict';
 NAinfo.requireApiVersion(0, 0);
-var pass = ['В','А','Г','Д','Н','М','К','Л','Р','Т','С','П','Ф'].iz();
+var pass = om.rusbukv.iz();
 var zapasn;
 var peregorodk;
 var vsego;
