@@ -15,6 +15,7 @@ do{
 	var answers = reis/vsego;
 } while ((answers*10000)%100 !== 0);
 
+var poryadok = om.porchisl[sluchch(1,Math.ceil(vsego/reis))].t[0];
 NAtask.setTask({
 	text: 'В группе туристов '+vsego+' человек. Их вертолётом в несколько приёмов забрасывают '+
 		'в труднодоступный район по '+chislitM(reis,'человек','человека','человек')+' за рейс. '+
