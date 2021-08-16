@@ -8,15 +8,11 @@
 (function(){'use strict';
 NAinfo.requireApiVersion(0, 0);
 var tourists = om.rusbukv.iz();
-var poryadok = ['первым','последним','предпоследним','вторым'].iz();
-var vsego;
-var reis;
-var answers;
 
 do{
-	vsego = sluchch(15,35);
-	reis = sluchch(3,6);
-	answers = reis/vsego;
+	var vsego = sluchch(15,35);
+	var reis = sluchch(3,6);
+	var answers = reis/vsego;
 } while ((answers*10000)%100 !== 0);
 
 NAtask.setTask({
