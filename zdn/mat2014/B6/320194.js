@@ -7,7 +7,7 @@
 
 (function(){'use strict';
 NAinfo.requireApiVersion(0, 0);
-var tourists = ['В','А','Г','Д','Н','М','К','Л','Р','Т','С','П','Ф'].iz();
+var tourists = om.rusbukv.iz();
 var poryadok = ['первым','последним','предпоследним','вторым'].iz();
 var vsego;
 var reis;
