@@ -13,14 +13,11 @@ if (mesto == 'всероссийском диктанте'){
 } else {
 	predm = ['русскому языку','географии','математике','физике','химии','биологии','английскому языку','истории'].iz();
 }
-var vsego;// = sluchch(200,450);
-var perv;// = sluchch(80,150);
-var answers;
 
 do{
-	vsego = sluchch(200,450);
-	perv = sluchch(80,150);
-	answers = (vsego-perv*2)/vsego;
+	var vsego = sluchch(200,450);
+	var perv = sluchch(80,150);
+	var answers = (vsego-perv*2)/vsego;
 } while ((answers*10000)%100 !== 0);
 
 NAtask.setTask({

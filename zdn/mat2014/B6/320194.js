@@ -9,20 +9,17 @@
 NAinfo.requireApiVersion(0, 0);
 var tourists = om.rusbukv.iz();
 var poryadok = ['первым','последним','предпоследним','вторым'].iz();
-var vsego;
-var reis;
-var answers;
 
 do{
-	vsego = sluchch(15,35);
-	reis = sluchch(3,6);
-	answers = reis/vsego;
+	var vsego = sluchch(15,35);
+	var reis = sluchch(3,6);
+	var answers = reis/vsego;
 } while ((answers*10000)%100 !== 0);
 
 NAtask.setTask({
 	text: 'В группе туристов '+vsego+' человек. Их вертолётом в несколько приёмов забрасывают '+
 		'в труднодоступный район по '+chislitM(reis,'человек','человека','человек')+' за рейс. '+
-		'Порядок, в котором вертолёт перевозит туристов, случаен.'+
+		'Порядок, в котором вертолёт перевозит туристов, случаен. '+
 		'Найдите вероятность того, что турист '+tourists+'. полетит '+poryadok+' рейсом вертолёта.',
 	answers,
 });

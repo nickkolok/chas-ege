@@ -7,7 +7,7 @@
 NAinfo.requireApiVersion(0, 0);
 
 var mesto = ['магазине','супермаркете','кафе','кофейне'].iz();
-var pers ;
+var pers;
 if (mesto == 'магазине' || mesto == 'супермаркете'){
 	pers = ['продавца','кассира','консультанта'].iz();
 } else {
