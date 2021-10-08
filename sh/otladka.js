@@ -5,7 +5,7 @@ var flFullscreen=0;
 
 function updateQuestion(){
 	$("#question").html(window.vopr.txt);
-	$("#resh").html("");
+	$("#resh").html(vopr.rsh);
 	window.vopr.dey();
 	$("#answer").html(window.vopr.ver.join(";;"));
 	$("#wrongAnswer").html(window.vopr.nev.join(";;"));
@@ -42,7 +42,6 @@ function checkAnswer(){
 		alert("Неправильно!\nПравильный ответ: " + window.vopr.ver.join(" или "));
 		$("#answer").show();
 	}
-	$("#resh").html(vopr.rsh);
 	MathJax.Hub.Typeset('typesettable-wrap');
 }
 
