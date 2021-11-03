@@ -1,18 +1,23 @@
-(function(){'use strict';
+(function(){
+	'use strict';
 
-do {
-	var num1=sluchch(2,15);
-	var num2=sluchch(15,40);
-	var num3=sluchch(2,6);
-	var degree=sluchch(2,4);
-	var num=num1.pow(1/degree)*num2.pow(1/degree)/num3.pow(1/degree);
-} while (!num.isZ());
-if (degree == 2)
-	degree='';
+	var num1, num2, num3, degree, num;
+	do {
+		num1 = sluchch(2, 15);
+		num2 = sluchch(15, 40);
+		num3 = sluchch(2, 6);
+		degree = sluchch(2, 4);
+		num = num1.pow(1 / degree) * num2.pow(1 / degree) / num3.pow(1 / degree);
+	} while (!num.isZ());
+	if (degree == 2)
+		degree = '';
 
-window.vopr.txt='Найдите значение выражения $$\\frac{\\sqrt ['+degree+']{'+num1+'}\\cdot \\sqrt ['+degree+']{'+num2+
-	'}}{\\sqrt ['+degree+']{'+num3+'}}$$';
-window.vopr.ver=[num];
+	chas2.task.setTask({
+		text: 'Найдите значение выражения $$\\frac{\\sqrt ['+degree+']{'+num1+'}\\cdot \\sqrt ['+degree+']{'+num2+
+	'}}{\\sqrt ['+degree+']{'+num3+'}}$$',
+		answers: [num,
+		],
+	});
 
 })();
 //Обзад 26746
