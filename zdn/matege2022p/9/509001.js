@@ -41,7 +41,7 @@
 		if (k < 6 && k >= -6)
 			ct.drawLine(-130, -k * 20, 130, -k * 20);
 		//точки
-		graph9AmarkCircles(ct, [X,Y].T());
+		graph9AmarkCircles(ct, [X,Y].T(), 3);
 	};
 	NAtask.setTask({
 		text: `На рисунке изображён график функции $f(x)=\\frac{kx+a}{x+b}$. Найдите ${find}.`,
