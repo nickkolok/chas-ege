@@ -56,9 +56,9 @@ retryWhileUndefined(function() {
 		graph9AmarkCircles(ct, [X, Y].T(), 3);
 	};
 	NAtask.setTask({
-		text: `На рисунке изображён график функции $f(x)=\\frac{kx+a}{x+b}$. Найдите ${find}.`,
+		text: `На рисунке изображён график функции $f(x)=\\frac{kx${['+','-'].iz()}a}{x${['+','-'].iz()}b}$. Найдите ${find}.`,
 		answers: answ,
-		analys: `$f(x)=\\frac {` + (k + `x+` + a).replace('+0', '').plusminus() + `}{` + (`x+` + b).replace('+0', '').plusminus() + `}$`,
+		analys: `$f(x)=\\frac {` + (k + `x+` + a).replace('+0', '').plusminus() + `}{` + (`x+` + b).replace('+0', '').plusminus() +`}$`,
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
