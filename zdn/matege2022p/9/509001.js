@@ -1,22 +1,34 @@
-(function() {
+retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
-	let find, answ, chisl, k, b, a;
-	let X, Y;
-	do {
-		X = [];
-		Y = [];
-		do {
-			a = sluchch(0, 4);
-			b = sluchch(0, 3).pm();
-			k = sluchch(0, 10).pm();
-			chisl = sluchch(5, 30).pm();
-		} while (!(1000 * (k * chisl + a) / (chisl + b)).isZ() || Math.abs((k * chisl + a) / (chisl + b)) < 7);
-		for (let i = -6; i < 7; i++)
-			if (((k * i + a) / (i + b)).isZ() && Math.abs((k * i + a) / (i + b)) < 6) {
-				X.push(20 * (i + b) - 20 * b);
-				Y.push(-20 * (k * i + a) / (i + b));
-			}
-	} while (X.length < 2);
+	let b = sluchch(0, 3).pm();
+	let k = sluchch(1, 10).pm();
+	let a = slKrome([k * b], 0, 4);
+	let chisl = sluchch(5, 30, 0.5).pm();
+
+	if (!(1000 * (k * chisl + a) / (chisl + b)).isZ()) {
+		// Ответ очень нецелый!
+		return;
+	}
+
+	if (((k * chisl + a) / (chisl + b)).abs() < 7 && chisl.abs() < 7) {
+		// Обсуждаемая точка лежит в пределах видимости и, возможно, даже целая
+		return;
+	}
+
+
+	let X = [], Y = [];
+	for (let i = -6; i < 7; i++)
+		if (((k * i + a) / (i + b)).isZ() && Math.abs((k * i + a) / (i + b)) < 6) {
+			X.push(20 * (i + b) - 20 * b);
+			Y.push(-20 * (k * i + a) / (i + b));
+		}
+	if (X.length < 2) {
+		// Недостаточно опорных точек
+		return;
+	}
+
+	let find, answ;
+
 	if (sl1()) {
 		find = `$f(${chisl.ts(1)})$`;
 		answ = (k * chisl + a) / (chisl + b);
@@ -53,5 +65,10 @@
 		height: 300,
 		paint: paint1,
 	});
-})();
+
+	// Внимание! Тут надо что-нибудь вернуть.
+	// Иначе функция retryWhileUndefined не уразумеет, что у нас получилось составить задание.
+	// Из природного оптимизма вернём true
+	return true;
+}, 1000000);
 //509001 508983
