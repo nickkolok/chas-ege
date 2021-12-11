@@ -6,9 +6,9 @@
 	let find, answ;
 	if (sl1()) {
 		find = `$f(${chisl.ts()})$`;
-		answ = chisl * k + b;
+		answ = (chisl * k + b).ts();
 	} else {
-		answ = chisl;
+		answ = chisl.ts();
 		find = `значение $x$, при котором $f(x)=${(chisl * k+ b).ts() }$`;
 	}
 

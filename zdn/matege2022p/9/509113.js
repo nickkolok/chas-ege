@@ -6,11 +6,11 @@
 
 	let find, answ;
 	if (sl1()) {
-		find = `$f(${chisl.ts()})$`;
+		find = `$f(${chisl.ts(1)})$`;
 		answ = (k * Math.sqrt(chisl)).ts();
 	} else {
 		answ = chisl.ts();
-		find = `значение $x$, при котором $f(x)=${(k*Math.sqrt(chisl)).ts()}$`;
+		find = `значение $x$, при котором $f(x)=${(k*Math.sqrt(chisl)).ts(1)}$`;
 	}
 	let X = [],
 		Y = [];
