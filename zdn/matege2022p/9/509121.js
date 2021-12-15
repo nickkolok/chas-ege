@@ -33,7 +33,7 @@
 		answ = k.raz * chisl.raz * k.ir;
 	} else {
 		answ = Math.pow(chisl.raz, 2);
-		find = `значение $x$, при котором $f(x)=${(k.raz*chisl.raz).ts(1)}\\sqrt{${chisl.ir}}$`;
+		find = `значение $x$, при котором $f(x)=${(k.raz*chisl.raz).ts(1)}\\sqrt{${chisl.ir}}$`.plusminus();
 	}
 	let paint1 = function(ct) {
 		h = 300;
