@@ -40,6 +40,8 @@ function zapusk(){
 	options.nopagebreak=$('#nopagebreak').is(':checked');
 	options.nobackground=$('#nobackground').is(':checked');
 	options.firstTaskNumber=1*$('#first-task-number').val();
+	options.transitTaskNumbers=$('#transitTaskNumbers').is(':checked');
+	options.startTransitNumber=1*$('#start-transit-number').val();
 
 	if(customNumber){
 		variantNumber=$('#start-number').val()-1;
@@ -185,9 +187,15 @@ function createHtmlForTask(nazvzad){
 }
 
 function obnov(){
-		var nazvzad =
-			dvig.getzadname(nZ)+
-			(aZ[nZ]==1? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1) );
+		var nazvzad;
+
+		if (options.transitTaskNumbers){
+			nazvzad = options.startTransitNumber + aZ.sum() - iZ.sum() - 1;
+		}else{
+			nazvzad =
+				dvig.getzadname(nZ)+
+				(aZ[nZ]==1? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1) );
+		}
 		var html = createHtmlForTask(nazvzad);
 		strVopr += html.txt;
 		strOtv  += html.ver;
