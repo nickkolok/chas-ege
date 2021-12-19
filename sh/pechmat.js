@@ -38,6 +38,7 @@ function zapusk(){
 	options.largeFont=$('#largeFont').is(':checked');
 	options.customNumber=$('#customNumber').is(':checked');
 	options.nopagebreak=$('#nopagebreak').is(':checked');
+	options.compactAnswers=$('#compact-answers').is(':checked');
 	options.nobackground=$('#nobackground').is(':checked');
 	options.firstTaskNumber=1*$('#first-task-number').val();
 	options.transitTaskNumbers=$('#transitTaskNumbers').is(':checked');
@@ -142,8 +143,13 @@ function zadan(){
 			}
 			strVopr+='<h2 class="d">Вариант №'+variantNumber+'</h2>';
 
-			strOtv+='<table class="normtabl tablpech"><tr><th colspan="3">'+
-				'Ответы к варианту<br/>№'+variantNumber+'</th></tr>';
+			strOtv+='<table class="normtabl tablpech"><tr><th colspan="3">';
+			if (options.compactAnswers) {
+				strOtv+='Вар. '+variantNumber;
+			} else {
+				strOtv+='Ответы к варианту<br/>№'+variantNumber;
+			}
+			strOtv+='</th></tr>';
 			nZ=1;
 			zadan();
 			return;
