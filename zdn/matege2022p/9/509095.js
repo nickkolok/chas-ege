@@ -1,8 +1,3 @@
-function graph9AdrawFunction(ct, f, o){
-	for (let i = o.minX; i < o.maxX; i += o.step)
-		if (f(i - o.step) < o.maxY&&f(i - o.step) > o.minY)
-				ct.drawLine(i - o.step, f(i - o.step), i, f(i));
-}
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 	function axb(a, x, b) {
