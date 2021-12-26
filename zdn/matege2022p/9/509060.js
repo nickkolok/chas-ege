@@ -37,7 +37,7 @@ retryWhileUndefined(function() {
 		graph9AmarkCircles(ct, points, 2, 0.15);
 	};
 	NAtask.setTask({
-		text: `На рисунке изображён график функции $f(x)=\\log{_a}{(x+b)}$. Найдите ${find}. `,
+		text: `На рисунке изображён график функции $f(x)=${`-`.esli(zn<0)}\\log{_a}{(x+b)}$. Найдите ${find}. `,
 		answers: answ,
 		analys: `$f(x)=${`-`.esli(zn<0)}\\log{_{${a}}} {(`+(`x+`+b).replace(`+0`,``).plusminus()+`)}$`,
 	});
