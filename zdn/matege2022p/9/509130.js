@@ -70,7 +70,7 @@ retryWhileUndefined(function() {
 			gor: 2,
 			ver: 1
 		}, {
-			x1: `π\\2`,	y1: `1`,sh1: 13, sh2: 12,}, 20);
+			x1: `π/2`,	y1: `1`,sh1: 13, sh2: 12,}, 20);
 		//График
 		ct.scale(40, -40);
 		ct.lineWidth = 0.05;
@@ -81,7 +81,7 @@ retryWhileUndefined(function() {
 	NAtask.setTask({
 		text: `На рисунке изображён график функции $f(x)=a\cosx+b$. Найдите $${find}$.`,
 		answers: answ,
-		analys: `$f(x)=` + (a + `cos{x}+` + b).replace(`+0`, ``).plusminus() + `$ `,
+		analys: `$f(x)=` + (a + `\cos x+` + b).replace(`+0`, ``).plusminus() + `$ `,
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
