@@ -34,14 +34,25 @@ CanvasRenderingContext2D.prototype.setkaVer2 = function (h, w, hor, ver, mash) {
 retryWhileUndefined(function () {
 	NAinfo.requireApiVersion(0, 2);
 
-	function cos(a, b, x) {
-		return a * Math.cos(x * Math.PI / 2) + b;
+	function variant(a, b, x) {
+		switch (trigfuncs) {
+			case 'sin':
+				return a * Math.sin(x * Math.PI / 2) + b;
+			case 'cos':
+				return a * Math.cos(x * Math.PI / 2) + b;
+			case 'tg':
+				return a * Math.tan(x * Math.PI / 2) + b;
+			case 'ctg':
+				return a * (1 / Math.tan(x * Math.PI / 2)) + b;
+		}
 	}
+
 	function f(x) {
-		return 0.5 * cos(a, b, x);
+		return 0.5 * variant(a, b, x);
 	}
-	let a = sluchch(1, 10).pm();
-	let b = sluchch(0, 8).pm();
+	let trigfuncs = ['sin', 'cos', 'tg', 'ctg'].iz();
+	let a = sluchch(1, 6).pm();
+	let b = sluchch(0, a).pm();
 	let find, answ;
 	if (sl1()) {
 		find = 'a';
@@ -50,8 +61,6 @@ retryWhileUndefined(function () {
 		find = 'b';
 		answ = b;
 	}
-	if (a + b > 5 || a + b < -6)
-		return;
 	let X = [],
 		Y = [];
 	for (let i = -2; i < 4; i++)
@@ -69,19 +78,27 @@ retryWhileUndefined(function () {
 			hor: 2,
 			ver: 1
 		}, {
-			x1: 'π/2', y1: '1', sh1: 13, sh2: 12,
+			x1: 'π/2',
+			y1: '1',
+			sh1: 13,
 		}, 20);
 		//График
 		ct.scale(40, -40);
 		ct.lineWidth = 0.05;
-		graph9AdrawFunction(ct, f, { minX: -2.6, maxX: 4, minY: -4, maxY: 3, step: 0.05, });
+		graph9AdrawFunction(ct, f, {
+			minX: -2.6,
+			maxX: 4,
+			minY: -4,
+			maxY: 3,
+			step: 0.05,
+		});
 		//точки
 		graph9AmarkCircles(ct, [X, Y].T(), 2, 0.1);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображён график функции $f(x)=a\cosx+b$. Найдите $' + find + '$.',
+		text: 'На рисунке изображён график функции $f(x)=a\ ' + trigfuncs + 'x+b$. Найдите $' + find + '$.',
 		answers: answ,
-		analys: '$f(x)=' + (a + '\cos x+' + b).replace('+0', '').plusminus() + '$',
+		analys: '$f(x)=' + (a + '\ ' + trigfuncs + 'x+' + b).replace('+0', '').plusminus() + '$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
@@ -90,4 +107,4 @@ retryWhileUndefined(function () {
 	});
 	return true;
 }, 100000);
-//509123 509130
+//509123 509130 509137 509143 509287 509295
