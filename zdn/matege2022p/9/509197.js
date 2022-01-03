@@ -45,8 +45,8 @@ retryWhileUndefined(function () {
     function f2(x) {
         return kxb(k2, b2, x);
     }
-    let k1 = sluchch(0.1, 20, 0.2);
-    let k2 = slKrome(k1, k1 + 0.2, 10, 0.2);
+    let k1 = sluchch(0.1, 20, 0.1);
+    let k2 = slKrome(k1, k1 + 0.4, 10, 0.1);
     let b1 = sluchch(0, 10).pm();
     let b2 = sluchch(0, 10).pm();
     let px = (b2 - b1) / (k1 - k2);
@@ -111,7 +111,8 @@ retryWhileUndefined(function () {
     NAtask.setTask({
         text: 'На рисунке изображёны графики двух линейных функций. Найдите ' + find + ' точки пересечения графиков.',
         answers: answ,
-        //	analys: '$f(x)=' + (a + '\ ' + trigfuncs + 'x+' + b).replace('+0', '').plusminus() + '$',
+        analys: '$f_1(x)=' + (k1.ts() + 'x+' + b1).replace('+0', '').plusminus() + '$<br>' +
+            '$f_2(x)=' + (k2.ts() + 'x+' + b2).replace('+0', '').plusminus() + '$',
     });
     chas2.task.modifiers.addCanvasIllustration({
         width: 300,
