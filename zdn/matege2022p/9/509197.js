@@ -14,6 +14,8 @@ retryWhileUndefined(function () {
     }
     let k1 = sluchch(0.1, 20, 0.1);
     let k2 = slKrome(k1, k1 + 0.4, 10, 0.1);
+    k1 = k1.pm();
+    k2 = k2.pm();
     let b1 = sluchch(0, 10).pm();
     let b2 = sluchch(0, 10).pm();
     let px = (b2 - b1) / (k1 - k2);
