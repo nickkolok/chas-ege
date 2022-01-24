@@ -39,6 +39,7 @@ function zapusk(){
 	options.customNumber=$('#customNumber').is(':checked');
 	options.nopagebreak=$('#nopagebreak').is(':checked');
 	options.compactAnswers=$('#compact-answers').is(':checked');
+	options.solutionsIntoAnswers=$('#solutions-into-answers').is(':checked');
 	options.nobackground=$('#nobackground').is(':checked');
 	options.firstTaskNumber=1*$('#first-task-number').val();
 	options.transitTaskNumbers=$('#transitTaskNumbers').is(':checked');
@@ -143,7 +144,7 @@ function zadan(){
 			}
 			strVopr+='<h2 class="d">Вариант №'+variantNumber+'</h2>';
 
-			strOtv+='<table class="normtabl tablpech"><tr><th colspan="3">';
+			strOtv+='<table class="normtabl tablpech"><tr><th colspan="10">';
 			if (options.compactAnswers) {
 				strOtv+='Вар. '+variantNumber;
 			} else {
@@ -181,7 +182,9 @@ function createHtmlForTask(nazvzad){
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="'+variantNumber+'-'+nazvzad+'"><td>'+variantNumber+'</td><td>'+nazvzad+'</td>'+
-			'<td>'+window.vopr.ver.join('; ')+'</td></tr>',
+			'<td>'+window.vopr.ver.join('; ')+'</td>'+
+			('<td>'+window.vopr.rsh+'</td>').esli(options.solutionsIntoAnswers)+
+			'</tr>',
 		rsh:
 			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
 				(
