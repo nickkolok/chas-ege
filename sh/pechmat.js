@@ -44,6 +44,7 @@ function zapusk(){
 	options.nobackground=$('#nobackground').is(':checked');
 	options.firstTaskNumber=1*$('#first-task-number').val();
 	options.transitTaskNumbers=$('#transitTaskNumbers').is(':checked');
+	options.uniqueAnswersAndSolutions=$('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber=1*$('#start-transit-number').val();
 
 	if(customNumber){
@@ -201,8 +202,12 @@ function createHtmlForTask(nazvzad){
 					vopr.rsh
 				).esli(vopr.rsh)+
 			'</div>',
+		unq:
+			[vopr.ver.join('; '), vopr.rsh, vopr.unq].join(' [:////:] '), // Да, это служебная комбинация символов "баян"
 	};
 }
+
+var unqDict = {};
 
 function obnov(){
 		var nazvzad;
@@ -215,6 +220,15 @@ function obnov(){
 				(aZ[nZ]==1? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1) );
 		}
 		var html = createHtmlForTask(nazvzad);
+
+		if(options.uniqueAnswersAndSolutions && (html.unq in unqDict)){
+			console.log('Deduplicating ' + nazvzad + '...');
+			dvig.zadan(obnov,nZ);
+			return;
+		}
+
+		unqDict[html.unq] = true;
+
 		strVopr += html.txt;
 		strOtv  += html.ver;
 		strResh += html.rsh;
