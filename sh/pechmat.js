@@ -37,6 +37,7 @@ function zapusk(){
 	options.editable=$('#redakt').is(':checked');
 	options.largeFont=$('#largeFont').is(':checked');
 	options.customNumber=$('#customNumber').is(':checked');
+	options.vanishVariants=$('#vanishVariants').is(':checked');
 	options.nopagebreak=$('#nopagebreak').is(':checked');
 	options.compactAnswers=$('#compact-answers').is(':checked');
 	options.solutionsIntoAnswers=$('#solutions-into-answers').is(':checked');
@@ -142,15 +143,20 @@ function zadan(){
 			}else{
 				variantNumber=new Date().getTime();
 			}
-			strVopr+='<h2 class="d">Вариант №'+variantNumber+'</h2>';
 
-			strOtv+='<table class="normtabl tablpech"><tr><th colspan="10">';
-			if (options.compactAnswers) {
-				strOtv+='Вар. '+variantNumber;
+			if(options.vanishVariants){
+				strOtv+='<table class="normtabl tablpech">';
 			} else {
-				strOtv+='Ответы к варианту<br/>№'+variantNumber;
+				strVopr+='<h2 class="d">Вариант №'+variantNumber+'</h2>';
+
+				strOtv+='<table class="normtabl tablpech"><tr><th colspan="10">';
+				if (options.compactAnswers) {
+					strOtv+='Вар. '+variantNumber;
+				} else {
+					strOtv+='Ответы к варианту<br/>№'+variantNumber;
+				}
+				strOtv+='</th></tr>';
 			}
-			strOtv+='</th></tr>';
 			nZ=1;
 			zadan();
 			return;
@@ -181,14 +187,17 @@ function createHtmlForTask(nazvzad){
 				'</div>'+
 			'</div>',
 		ver:
-			'<tr class="answer-container" data-task-id="'+variantNumber+'-'+nazvzad+'"><td>'+variantNumber+'</td><td>'+nazvzad+'</td>'+
+			'<tr class="answer-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
+			('<td>'+variantNumber+'</td>').esli(!options.vanishVariants) +
+			'<td>'+nazvzad+'</td>'+
 			'<td>'+window.vopr.ver.join('; ')+'</td>'+
 			('<td>'+window.vopr.rsh+'</td>').esli(options.solutionsIntoAnswers)+
 			'</tr>',
 		rsh:
 			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
 				(
-					'<h3>Вариант №'+variantNumber+', задача '+nazvzad+'</h3><br/>'+
+					'<h3>'+('Вариант №'+variantNumber+', ').esli(!options.vanishVariants) +
+					'задача '+nazvzad+'</h3><br/>'+
 					vopr.rsh
 				).esli(vopr.rsh)+
 			'</div>',
