@@ -77,7 +77,7 @@ function testGotov(){
 		allCanvasToBackgroundImage();
 	}
 	if(options.editable){
-		$('#rez, #otv').attr('contenteditable','true');
+		$('#rez, #otv, #rsh').attr('contenteditable','true');
 	}
 	$('#dopoln').show();
 	alert('Тесты составлены.\nТеперь Вы можете распечатать их с помощью Вашего браузера.');
@@ -95,11 +95,11 @@ function konecSozd(){
 		strOtv = largeFontStyle + strOtv;
 	}
 
-	if(strResh){
-		strOtv+='<h2>Решения</h2>'+strResh;
-	}
 	$('#otv').html(strOtv);
 	$('#rez').html(strVopr);
+	if(strResh){
+		$('#rsh').html('<h2>Решения</h2>'+strResh);
+	}
 
 	for(var i=voprosy.length;i;i--)
 		try{
