@@ -54,7 +54,7 @@ retryWhileUndefined(function () {
 	let a = sluchch(1, 6).pm();
 	let b = sluchch(0, a).pm();
 	let find, answ;
-	if (sl1()) {
+	if (sl1() && trigfuncs != 'tg' && trigfuncs != 'ctg') {
 		find = 'a';
 		answ = a;
 	} else {
