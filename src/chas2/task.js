@@ -336,7 +336,7 @@ chas2.task = {
 			throw new Error('Множество корней уравнения не должно быть пусто');
 		}
 
-		var multiRoots = (o.roots.length > 1);
+		var multiRoots = (o.roots.length > 1) || o.forceMultiRoots;
 		o.roots = o.roots.sortDelDubl();
 
 		var notListVariants = ['sum', 'production', 'min', 'max'];
