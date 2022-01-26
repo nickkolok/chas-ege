@@ -12,18 +12,18 @@
 	let X, Y;
 	do {
 		a = sluchch(2, 10);
-		if ((10 / a).isZ())
-			a = 1 / a;
-		b = sluchch(0, 5).pm();
+		if ((100 / a).isZ() && sl1())
+			a = sl(1,5) / a;
+		b = sluchch(0, 6).pm();
 		chisl = Math.pow(a, sluchch(2, 4));
 		X = [];
 		Y = [];
-		for (let i = 0; i < 6; i++)
+		for (let i = 0; i <= 6; i++)
 			if (f(i).isZ() && f(i) < 6) {
 				X.push(i);
 				Y.push(f(i));
 			}
-	} while (X.length < 2 || f(chisl) == 0 || Math.abs(f(chisl)) < 6);
+	} while (X.length < 2 || (Math.abs(f(chisl)) <= 6 && Math.abs(chisl) <= 6 ));
 	let find, answ;
 	if (sl1()) {
 		find = `$f(${chisl.ts()})$`;
