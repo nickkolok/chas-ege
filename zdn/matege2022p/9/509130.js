@@ -73,7 +73,7 @@ retryWhileUndefined(function () {
 	let paint1 = function (ct) {
 		let h = 300;
 		let w = 300;
-		//Оси координат 
+		//Оси координат
 		ct.drawСoordPlane(w, h, {
 			hor: 2,
 			ver: 1
