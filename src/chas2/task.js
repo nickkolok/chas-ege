@@ -234,6 +234,7 @@ chas2.task = {
 	 * Составить задание типа 'уравнение'
 	 * @param {Array} o.parts части уравнения (левая и правая)
 	 * @param {String} o.handleMultipleRoots способ обработки случая, когда корней два или более
+	 * @param {Boolean} o.forceMultipleRoots выводить вопрос вида "..., если корней несколько", даже если корень один
 	 * @param {String} o.customPreamble фраза на замену "Найдите корень уравнения"
 	 * @param {Number|String|Number[]|String[]} o.roots корни уравнения
 	 * @param {Boolean} o.enablePartsExchange можно ли менять части уравнения местами?
@@ -336,7 +337,7 @@ chas2.task = {
 			throw new Error('Множество корней уравнения не должно быть пусто');
 		}
 
-		var multiRoots = (o.roots.length > 1) || o.forceMultiRoots;
+		var multipleRoots = (o.roots.length > 1) || o.forceMultipleRoots;
 		o.roots = o.roots.sortDelDubl();
 
 		var notListVariants = ['sum', 'production', 'min', 'max'];
@@ -382,7 +383,7 @@ chas2.task = {
 			' В ответе укажите только целый корень. '.esli(o.filterWholeRoots) +
 			//При желании форсированно вызвать обработку нескольких корней - просто указать два одинаковых корня
 			(' Если ' + 'таких '.esli(o.filterWholeRoots) + 'корней несколько, в ответе укажите ' + multipleRootsPhrase + '.').
-				esli(multiRoots);
+				esli(multipleRoots);
 
 		//Наконец, устанавливаем задание
 		chas2.task.setTask(taskOptions);
