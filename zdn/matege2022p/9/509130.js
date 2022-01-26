@@ -96,9 +96,9 @@ retryWhileUndefined(function () {
 		graph9AmarkCircles(ct, [X, Y].T(), 2, 0.1);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображён график функции $f(x)=a\ ' + trigfuncs + 'x+b$. Найдите $' + find + '$.',
+		text: 'На рисунке изображён график функции $f(x)=a\\' + trigfuncs + ' x+b$. Найдите $' + find + '$.',
 		answers: answ,
-		analys: '$f(x)=' + (a + '\ ' + trigfuncs + 'x+' + b).replace('+0', '').plusminus() + '$',
+		analys: '$f(x)=' + (a + '\\' + trigfuncs + ' x+' + b).replace('+0', '').plusminus() + '$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
