@@ -10,8 +10,8 @@ retryWhileUndefined(function() {
 		let a = slKrome(1,0.25,20,0.25);
 		let b = sluchch(0,20).pm();
 		let chisl = sluchch(0,20)/[1,2,4].iz().pm();
-	if ((f(chisl).abs() < 6 && f(chisl).isZ())||(!(1000 * f(chisl)).isZ()))
-		return;
+		if ((chisl.abs() <= 6 && f(chisl).abs() < 6 && f(chisl).isZ()) || (!(1000 * f(chisl)).isZ()))
+			return;
 	let find, answ;
 	if (sl1()) {
 		find = `$f(${chisl.ts()})$`;
@@ -49,3 +49,4 @@ retryWhileUndefined(function() {
 return true;
 }, 100000);
 //509060
+//TODO: больше оснований, богу оснований
