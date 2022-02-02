@@ -63,7 +63,7 @@ retryWhileUndefined(function() {
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
-		//Оси координат 
+		//Оси координат
 		graph9AdrawAxes_20_300(ct);
 		ct.translate(-10, -10);
 		ct.lineWidth = 0.1;
@@ -98,10 +98,7 @@ retryWhileUndefined(function() {
 	if (!d && sl1())
 		pryamay = 'kx+d';
 	else
-	if (sl1())
-		pryamay = (k + 'x+' + 'd').plusminus();
-	else
-		pryamay = ('kx+' + d).replace('+0', '').plusminus();
+		pryamay = (['k',k].iz()+'x +' + ['d',d].iz()).replace('+0', '').plusminus();
 
 	NAtask.setTask({
 		text: 'На рисунке изображены графики функций $f(x)=' + pryamay +
