@@ -65,7 +65,7 @@ retryWhileUndefined(function() {
 		let w = 300;
 		//Оси координат
 		graph9AdrawAxes_20_300(ct);
-		ct.translate(10, -10);
+		ct.translate(-10, -10);
 		ct.lineWidth = 0.1;
 		ct.translate(h / 2, h / 2);
 		ct.scale(20, -20);
