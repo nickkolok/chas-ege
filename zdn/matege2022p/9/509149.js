@@ -65,7 +65,7 @@ retryWhileUndefined(function() {
 		let w = 300;
 		//Оси координат 
 		graph9AdrawAxes_20_300(ct);
-		ct.translate(10, -10);
+		ct.translate(-10, -10);
 		ct.lineWidth = 0.1;
 		ct.translate(h / 2, h / 2);
 		ct.scale(20, -20);
@@ -87,9 +87,7 @@ retryWhileUndefined(function() {
 		//точки
 		graph9AmarkCircles(ct, pointsK, 2, 0.15);
 		graph9AmarkCircles(ct, pointsP, 3, 0.15);
-		graph9AmarkCircles(ct, [
-			[x1, y1]
-		], 1, 0.15); //на всякий случай точку пересечения
+		graph9AmarkCircles(ct, [x1, y1], 1, 0.15); //на всякий случай точку пересечения
 		//буква
 		ct.fillStyle = "blue";
 		ct.font = "18px liberation_sans";
