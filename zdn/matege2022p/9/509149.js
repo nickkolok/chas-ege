@@ -30,7 +30,6 @@ retryWhileUndefined(function() {
 	let a = sluchch(1, 3).pm();
 	let b = k - a * (x1 + x2);
 	let c = d + x1 * x2 * a;
-
 	let D = b * b - 4 * a * c;
 	let x0 = -b / (2 * a);
 	let y0 = parabl(a, b, c, x0);
@@ -102,14 +101,13 @@ retryWhileUndefined(function() {
 		pryamay = (k + 'x+' + 'd').plusminus();
 	else
 		pryamay = ('kx+' + d).replace('+0', '').plusminus();
-
 	NAtask.setTask({
 		text: 'На рисунке изображены графики функций $f(x)=' + pryamay +
 			'$ и $g(x)=ax^2+bx+c$,' +
 			' которые пересекаются в точках $A$ и $B$. Найдите ' + find + ' точки $B$.',
 		answers: answ,
 		analys: '$f(x)=' + (k + 'x+' + d).replace('+0', '').plusminus() + `;$<br>` +
-			'$g(x)=' + (a + 'x^2+' + b + 'x+' + c).replace('0x+', '').replace('+0', '').plusminus() + '.$<br>' +
+			'$g(x)=' + (a + 'x^2+' + b + 'x+' + c).replace(' 0x+', '').replace('+0', '').plusminus() + '.$<br>' +
 			'$B(' + x2 + ';' + y2 + ')$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
