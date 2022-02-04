@@ -186,7 +186,7 @@ function createHtmlForTask(nazvzad){
 						'&#x27F3;' +
 					'</button>'+
 				'</div>'+
-				('<div class="grid-for-writing"></div>').esli(true)+
+				'<div class="grid-for-writing"></div>'+
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+

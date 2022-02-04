@@ -119,17 +119,17 @@
 	<div id="grid-style-placeholder" style="display:none;">
 	</div>
 	<div id="grid-svg-container" style="display:none;">
-		<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" style="min-height: 400px;">
+		<svg xmlns="http://www.w3.org/2000/svg" id="grid-svg-template" width="100%" height="100%" style="min-height: 400px;">
 			<style type="text/css">
-				line { stroke: #ccc; }
+				line { stroke: #aaa; }
 			</style>
 			<defs>
-				<pattern id="gridpattern" patternUnits="userSpaceOnUse" width="30" height="30" patternTransform="rotate(0)">
-					<line x1="15" y1="0" x2="15" y2="30"></line>
-					<line x1="0" y1="15" x2="30" y2="15"></line>
+				<pattern id="grid-pattern" patternUnits="userSpaceOnUse" width="30" height="30">
+					<line x1="15" y1="0" x2="15" y2="30" id="grid-pattern-line-1"></line>
+					<line x1="0" y1="15" x2="30" y2="15" id="grid-pattern-line-2"></line>
 				</pattern>
 			</defs>
-			<rect width="100%" height="100%" fill="url(#gridpattern)"></rect>
+			<rect width="100%" height="100%" fill="url(#grid-pattern)"></rect>
 		</svg>
 	</div>
 {% endblock %}
