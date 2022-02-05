@@ -186,6 +186,7 @@ function createHtmlForTask(nazvzad){
 						'&#x27F3;' +
 					'</button>'+
 				'</div>'+
+				('<div class="grid-for-writing"></div>').esli(true)+
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
@@ -321,4 +322,27 @@ function renewTask(){
 		MathJax.Hub.Typeset(taskHtml[0]);
 		$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
 	}, taskNumber);
+}
+
+
+function insertGridFields(){
+	var svg = $('#grid-svg-container').html();
+	var svgCode = window.btoa(svg);
+
+	$('#grid-style-placeholder').html(
+		'<style>'+
+			'.grid-for-writing { '+
+				'display: block;'+
+				'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');'+
+			'}'+
+		'</style>'
+	);
+
+	$('#button-removeGridFields').show();
+}
+
+function removeGridFields(){
+	$('#grid-style-placeholder').html('');
+
+	$('#button-removeGridFields').hide();
 }
