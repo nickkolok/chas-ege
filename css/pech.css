@@ -181,3 +181,18 @@ button.renewbutton{
 	display:block;
 	right:0;
 }
+
+.grid-for-writing {
+	/*
+	background:
+		repeating-linear-gradient( 0deg, transparent 0 0.5cm, gray 0.5cm 0.52cm),
+		repeating-linear-gradient(90deg, transparent 0 0.5cm, gray 0.5cm 0.52cm);
+	*/
+	width: 100%;
+	min-height: 400px;
+	border: 2px solid gray;
+	border-radius:14.68px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	display: none;
+}
