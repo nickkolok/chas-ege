@@ -326,8 +326,22 @@ function renewTask(){
 
 
 function insertGridFields(){
+	var cellSize = $('#grid-cell-size').val();
+	$('#grid-pattern')[0].setAttribute('width' ,cellSize);
+	$('#grid-pattern')[0].setAttribute('height',cellSize);
+
+	$('#grid-pattern-line-1')[0].setAttribute('x1',cellSize/2);
+	$('#grid-pattern-line-1')[0].setAttribute('x2',cellSize/2);
+	$('#grid-pattern-line-1')[0].setAttribute('y2',cellSize  );
+
+	$('#grid-pattern-line-2')[0].setAttribute('y1',cellSize/2);
+	$('#grid-pattern-line-2')[0].setAttribute('y2',cellSize/2);
+	$('#grid-pattern-line-2')[0].setAttribute('x2',cellSize  );
+
+
 	var svg = $('#grid-svg-container').html();
 	var svgCode = window.btoa(svg);
+
 
 	$('#grid-style-placeholder').html(
 		'<style>'+
