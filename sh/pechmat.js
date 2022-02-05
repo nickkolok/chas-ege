@@ -326,6 +326,9 @@ function renewTask(){
 
 
 function insertGridFields(){
+	var fieldHeight = $('#grid-field-height').val();
+	$('#grid-svg-template')[0].style.minHeight = fieldHeight+'cm';
+
 	var cellSize = $('#grid-cell-size').val();
 	$('#grid-pattern')[0].setAttribute('width' ,cellSize);
 	$('#grid-pattern')[0].setAttribute('height',cellSize);
@@ -345,9 +348,10 @@ function insertGridFields(){
 
 	$('#grid-style-placeholder').html(
 		'<style>'+
-			'.grid-for-writing { '+
-				'display: block;'+
-				'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');'+
+			'.grid-for-writing { ' +
+				'display: block;' +
+				'min-height: ' + fieldHeight + 'cm;' +
+				'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
 			'}'+
 		'</style>'
 	);
