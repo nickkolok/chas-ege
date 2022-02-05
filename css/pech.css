@@ -189,7 +189,7 @@ button.renewbutton{
 		repeating-linear-gradient(90deg, transparent 0 0.5cm, gray 0.5cm 0.52cm);
 	*/
 	width: 100%;
-	min-height: 400px;
+	min-height: 10cm;
 	border: 2px solid gray;
 	border-radius:14.68px;
 	margin-top: 15px;
