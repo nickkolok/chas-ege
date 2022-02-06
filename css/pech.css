@@ -196,3 +196,10 @@ button.renewbutton{
 	margin-bottom: 15px;
 	display: none;
 }
+
+@media print{
+	.otstup{
+		/* Otherwise there is extra space on the first page */
+		padding-top:0;
+	}
+}
