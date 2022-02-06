@@ -1,21 +1,37 @@
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
+	function intPoints(f, o) {
+		o.minX = o.minX.ceil();
+		o.maxX = o.maxX.floor();
+		let XY = [];
+		for (let i = o.minX; i < o.maxX; i += o.step) {
+			if (f(i).isZ() && f(i) <= o.maxY && f(i) >= o.minY) {
+				XY.push([i, f(i)]);
+			}
+		}
+		return XY;
+	}
+
 	function variant(a, b, x) {
 		switch (trigfuncs) {
 		case 'sin':
-			return a * Math.sin(x * Math.PI / 4) + b;
+			return a * Math.sin(x * Math.PI / 6) + b;
 		case 'cos':
-			return a * Math.cos(x * Math.PI / 4) + b;
+			return a * Math.cos(x * Math.PI / 6) + b;
 		case 'tg':
-			return a * Math.tan(x * Math.PI / 4) + b;
+			return a * Math.tan(x * Math.PI / 6) + b;
 		case 'ctg':
-			return a * (1 / Math.tan(x * Math.PI / 4)) + b;
+			return a * (1 / Math.tan(x * Math.PI / 6)) + b;
 		}
 	}
 
 	function f(x) {
-		return 0.5*variant(a, b, x);
+		return 2 * variant(a, b, x);
+	}
+
+	function fp(x) {
+		return variant(a, b, x);
 	}
 	let trigfuncs = ['sin', 'cos', 'tg', 'ctg'].iz();
 	let a = sluchch(1, 6).pm();
@@ -28,39 +44,49 @@ retryWhileUndefined(function() {
 		find = 'b';
 		answ = b;
 	}
-	let X = [],
-		Y = [];
-	for (let i = -2; i < 4; i++)
-		if (4 * f(i) < 5 && 4 * f(i) > -6 && (8*f(i)).isZ()) {
-			X.push(i);
-			Y.push(f(i));
-		}
-	if (X.length < 2)
+	let points;
+	if (trigfuncs == 'sin' || trigfuncs == 'cos')
+		points = intPoints(f, {
+			minX: -6,
+			maxX: 5.5,
+			minY: -7.5,
+			maxY: 4.5,
+			step: 1,
+		});
+	else
+		points = intPoints(f, {
+			minX: -6,
+			maxX: 5.5,
+			minY: -7.5,
+			maxY: 4.5,
+			step: 0.5,
+		});
+	if (points.length < 2)
 		return;
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
 		//Оси координат 
 		ct.drawCoordPlane(w, h, {
-			hor: 2,
-			ver: 1
+			hor: 3,
+			ver: 4
 		}, {
 			x1: 'π/4',
 			y1: '1',
 			sh1: 13,
-		}, 20);
+		}, 10);
 		//График
-		ct.scale(40, -40);
-		ct.lineWidth = 0.05;
+		ct.scale(20, -20);
+		ct.lineWidth = 0.1;
 		graph9AdrawFunction(ct, f, {
-			minX: -2.6,
-			maxX: 4,
-			minY: -4,
-			maxY: 3,
+			minX: -6.5,
+			maxX: 5,
+			minY: -8,
+			maxY: 5,
 			step: 0.05,
 		});
 		//точки
-		graph9AmarkCircles(ct, [X, Y].T(), 2, 0.1);
+		graph9AmarkCircles(ct, points, 2, 0.18);
 	};
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции $f(x)=a\\' + trigfuncs + ' x+b$. Найдите $' + find + '$.',
