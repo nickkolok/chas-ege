@@ -1,16 +1,19 @@
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 	function f(x) {
-		return logAB(zn,a, x, b);
+		return logAB(zn,a, x, b,c);
 	}
-	function logAB(zn,a, x, b) {
-		return zn*Math.log(x+b) / Math.log(a);
+	function logAB(zn,a, x, b,c) {
+		return zn*Math.log(x+b) / Math.log(a)+c;
 	}
+		let c=sluchch(-10,10);
 		let zn=(1).pm();
 		let a = slKrome(1,0.25,20,0.25);
-		let b = sluchch(0,20).pm();
-		let chisl = sluchch(0,20)/[1,2,4].iz().pm();
-		if ((chisl.abs() <= 6 && f(chisl).abs() < 6 && f(chisl).isZ()) || (!(1000 * f(chisl)).isZ()))
+		let b = sluchch(-10,10);
+		let chisl = a.pow(sluchch(1,10)/[1,2,3].iz().pm())-b;
+		if(chisl>10000)
+		return;
+		if ((chisl.abs() <= 6 && f(chisl).abs() < 6 && f(chisl).isZ())||!(chisl*1000).isZ() || (!(1000 * f(chisl)).isZ()))
 			return;
 	let find, answ;
 	if (sl1()) {
@@ -20,7 +23,7 @@ retryWhileUndefined(function() {
 		answ = chisl;
 		find = `значение $x$, при котором $f(x)=${(f(chisl)).ts()}$`;
 	}
-	let points=intPoints(f,{minX:-5,maxX:6,minY:-7,maxY:6});
+	let points=intPoints(f,{minX:-5,maxX:6,minY:-6,maxY:5});
 	if (points.length<2)
 		return;
 	let paint1 = function(ct) {
@@ -37,9 +40,9 @@ retryWhileUndefined(function() {
 		graph9AmarkCircles(ct, points, 2, 0.15);
 	};
 	NAtask.setTask({
-		text: `На рисунке изображён график функции $f(x)=${`-`.esli(zn<0)}\\log{_a}{(x+b)}$. Найдите ${find}. `,
+		text: `На рисунке изображён график функции $f(x)=${`-`.esli(zn<0)}\\log{_a}{(x+b)}${[`+`,`-`].iz()}${c}$. Найдите ${find}. `.replace(`-0`,``).replace(`+0`,``).plusminus(),
 		answers: answ,
-		analys: `$f(x)=${`-`.esli(zn<0)}\\log{_{${a}}} {(`+(`x+`+b).replace(`+0`,``).plusminus()+`)}$`,
+		analys: ('$f(x)='+`-`.esli(zn<0)+'\\log_{'+a+'}('+'x+'+b+')+'+c+'$').plusminus(),
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
@@ -49,4 +52,4 @@ retryWhileUndefined(function() {
 return true;
 }, 100000);
 //509060
-//TODO: больше оснований, богу оснований
+
