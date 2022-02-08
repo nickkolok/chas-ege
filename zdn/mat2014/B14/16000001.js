@@ -14,7 +14,8 @@ var S = (a1+an)*n/2;
 * Определите, за сколько дней Робинзон сделал весь частокол.
 */
 
-var daynumber = slKrome(2, n/2);
+var daynumber = sl(2, n/2);
+var altdaynumber = slKrome([daynumber,n+1-daynumber],1,n);
 
 var daynames = [
 	'первый и последний',
@@ -25,19 +26,13 @@ var daynames = [
 chas2.task.setCountableTask(
 	[
 		{
-			utv: 'ежедневно <replace1/> мастерил на одно и то же количество кольев больше, чем в предыдущий'
+			utv: 'ежедневно <replace1/> мастерил на одно и то же количество кольев больше, чем в предыдущий день'
 		},
 		{
-			utv: 'частокол состоит из ' + chislitlx(S,'кол','v'),
+			utv: 'частокол состоит из ' + chislitlx(S,'кол','r'),
 			nah: 1,
 			zna: S,
 			vpr: 'сколько всего кольев в заборе',
-		},
-		{
-			utv: 'за '+daynames+' день в сумме <replace1/> соорудил ' + chislitlx(a1+an,'кол','v'),
-			nah: 1,
-			zna: a1+an,
-			vpr: 'сколько кольев соорудил <replace1/> за '+daynames+' день в сумме',
 		},
 		{
 			utv: '<replace1/> сделал весь частокол за ' + chislitlx(n,'день','v'),
@@ -45,7 +40,42 @@ chas2.task.setCountableTask(
 			zna: n,
 			vpr: 'за сколько дней <replace1/> сделал весь частокол',
 		},
-	]
+	].concat([
+		[
+			{
+				utv: 'за '+daynames+' день в сумме <replace1/> соорудил ' + chislitlx(a1+an,'кол','v'),
+				nah: 1,
+				zna: a1+an,
+				vpr: 'сколько кольев соорудил <replace1/> за '+daynames+' день в сумме',
+			},
+		],
+		[
+			{
+				utv: 'за '+ordinalNumber(daynumber,'i',0)+' день <replace1/> соорудил ' + chislitlx(a1+d*(-1+daynumber),'кол','v'),
+				nah: 1,
+				zna: a1+d*(-1+daynumber),
+				vpr: 'сколько кольев соорудил <replace1/> за '+ordinalNumber(daynumber,'i',0)+' день',
+			},
+			{
+				utv: 'за '+ordinalNumber(n+1-daynumber,'i',0)+' день <replace1/> соорудил ' + chislitlx(a1+d*(n-daynumber),'кол','v'),
+				nah: 1,
+				zna: a1+d*(n-daynumber),
+				vpr: 'сколько кольев соорудил <replace1/> за '+ordinalNumber(n+1-daynumber,'i',0)+' день',
+			},
+			{
+				utv: 'за '+ordinalNumber(altdaynumber,'i',0)+' день <replace1/> соорудил ' + chislitlx(a1+d*(altdaynumber-1),'кол','v'),
+				nah: 1,
+				zna: a1+d*(altdaynumber-1),
+				vpr: 'сколько кольев соорудил <replace1/> за '+ordinalNumber(altdaynumber,'i',0)+' день',
+			},
+			{
+				utv: 'за '+ordinalNumber(altdaynumber,'i',0)+' день <replace1/> соорудил на ' + chislitlx(d*(altdaynumber-daynumber),'кол','v') + ' ' + ['больше','меньше'][+(altdaynumber<daynumber)]+', чем за '+ordinalNumber(daynumber,'i',0),
+				nah: 1,
+				zna: a1+d*(altdaynumber-1),
+				vpr: 'на сколько '+['больше','меньше'][+(altdaynumber<daynumber)]+' <replace1/> соорудил за '+ordinalNumber(altdaynumber,'i',0)+' день, чем за '+ordinalNumber(daynumber,'i',0),
+			},
+		].iz(2),
+	].iz()),
 );
 
 //TODO: открыток/поздравлений/приглашений/конвертов
