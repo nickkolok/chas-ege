@@ -176,6 +176,7 @@ chas2.task = {
 	 * @param {String|Number} mainList[].vin: величина в винительном падеже. Если равна 1, то именительный и винительный падежи совпадают. Если не определена, то конструкции, где нужен в. п., избегаются.
 	 * @param {Object} options: дополнительные опции
 	 * @param {String} options.preambula то, что пишется в вопросе перед задачей
+	 * @param {String} options.conclusion то, что пишется в вопросе после задачи
 	 * @param {Object} taskOptions: дополнительные опции, передаваемые setTask
 	 */
 	setCountableTask : function(mainList, options, taskOptions) {
@@ -183,6 +184,9 @@ chas2.task = {
 		if (options) {
 			if (options.preambula) {
 				tmpObject.text = options.preambula + tmpObject.text;
+			}
+			if (options.conclusion) {
+				tmpObject.text += options.conclusion;
 			}
 		}
 		tmpObject.importFrom(taskOptions);
