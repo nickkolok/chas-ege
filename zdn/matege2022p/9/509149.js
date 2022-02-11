@@ -65,7 +65,7 @@ retryWhileUndefined(function() {
 		let w = 300;
 		//Оси координат 
 		graph9AdrawAxes_20_300(ct);
-		ct.translate(10, -10);
+		ct.translate(-10, -10);
 		ct.lineWidth = 0.1;
 		ct.translate(h / 2, h / 2);
 		ct.scale(20, -20);
@@ -87,32 +87,30 @@ retryWhileUndefined(function() {
 		//точки
 		graph9AmarkCircles(ct, pointsK, 2, 0.15);
 		graph9AmarkCircles(ct, pointsP, 3, 0.15);
-		graph9AmarkCircles(ct, [[x1,y1]], 1, 0.15);//на всякий случай точку пересечения
+		graph9AmarkCircles(ct, [x1, y1], 1, 0.15); //на всякий случай точку пересечения
 		//буква
 		ct.fillStyle = "blue";
 		ct.font = "18px liberation_sans";
-		ct.scale(1/20, -1/20);
+		ct.scale(1 / 20, -1 / 20);
 		ct.fillText('A', 20 * x1 - 10, -20 * y1 - 10);
 	};
 	let pryamay;
-	switch(sluchch(1,3)){
-		case 1:
-		pryamay=(k + 'x+' + d).replace('+0', '').plusminus();
-		break;
-		case 2:
-		pryamay=('kx+' + d).replace('+0', '').plusminus();
-		break;
-		case 3:
-		pryamay=(k + 'x+' + 'd').plusminus();
-	}
+	if (!d && sl1())
+		pryamay = 'kx+d';
+	else
+	if (sl1())
+		pryamay = (k + 'x+' + 'd').plusminus();
+	else
+		pryamay = ('kx+' + d).replace('+0', '').plusminus();
+
 	NAtask.setTask({
-		text: 'На рисунке изображены графики функций $f(x)='+pryamay+
+		text: 'На рисунке изображены графики функций $f(x)=' + pryamay +
 			'$ и $g(x)=ax^2+bx+c$,' +
 			' которые пересекаются в точках $A$ и $B$. Найдите ' + find + ' точки $B$.',
 		answers: answ,
 		analys: '$f(x)=' + (k + 'x+' + d).replace('+0', '').plusminus() + `;$<br>` +
-			'$g(x)=' + (a + 'x^2+' + b + 'x+' + c).replace('0x+', '').replace('+0', '').plusminus() + '.$<br>'+
-			'$B('+x2+';'+y2+')$',
+			'$g(x)=' + (a + 'x^2+' + b + 'x+' + c).replace('+0', '').plusminus() + '.$<br>' +
+			'$B(' + x2 + ';' + y2 + ')$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
