@@ -116,10 +116,9 @@ retryWhileUndefined(function() {
 		answers: answ,
 		analys: '$f(x)=' + (a2 + `x ^ 2 +` + b2 + `x +` + c2).replace('+0x', '').replace('+0', '').plusminus() + '$'.plusminus() +
 			',<br>' +
-			`$g(x)=${(a1+ `
-		x ^ 2 + ` + b1+ `
-		x + ` + c1).replace('+0x', '').replace('+0', '').plusminus()}$`.plusminus() + '.<br>' +
-		'$A(' + x1 + ';' + f1(x1) + ')$<br>' + '$B(' + x2 + ';' + f2(x2) + ')$',
+			'$g(x)=' + (a1 + `x ^ 2 +` + b1 + `x +` + c1).replace('+0x', '').replace('+0', '').plusminus() + '$'.plusminus() +
+			'.<br>' +
+			'$A(' + x1 + ';' + f1(x1) + ')$<br>' + '$B(' + x2 + ';' + f2(x2) + ')$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
