@@ -110,15 +110,15 @@ retryWhileUndefined(function() {
 		ct.fillText('A', 20 * x1 - 10, -20 * f1(x1));
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображены графики функций $f(x)=' + (a2 + `x ^ 2 +` + b2 + `x +` + c2).replace('+0x', '').replace(
-				'+0', '').plusminus() +
+		text: 'На рисунке изображены графики функций $f(x)=' + [c2, b2, a2].mn_txt('x') +
 			'$ и $g(x)=ax^{2} +bx+c$, которые пересекаются в точках $A$ и $B$. Найдите ' + find + ' точки $B$.',
 		answers: answ,
-		analys: '$f(x)=' + (a2 + `x ^ 2 +` + b2 + `x +` + c2).replace('+0x', '').replace('+0', '').plusminus() + '$'.plusminus() +
+		analys: '$f(x)=' + [c2, b2, a2].mn_txt('x') + '$' +
 			',<br>' +
-			'$g(x)=' + (a1 + `x ^ 2 +` + b1 + `x +` + c1).replace('+0x', '').replace('+0', '').plusminus() + '$'.plusminus() +
+			'$g(x)=' + [c1, b1, a1].mn_txt('x') + '$' +
 			'.<br>' +
-			'$A(' + x1 + ';' + f1(x1) + ')$<br>' + '$B(' + x2 + ';' + f2(x2) + ')$',
+			'$A(' + x1 + ';' + f1(x1) + ')$<br>' +
+			'$B(' + x2 + ';' + f2(x2) + ')$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
