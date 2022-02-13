@@ -93,6 +93,11 @@ retryWhileUndefined(function() {
 		graph9AmarkCircles(ct, [
 			[x1, y1]
 		], 2, 0.15);
+		//буква
+		ct.fillStyle = "blue";
+		ct.font = "18px liberation_sans";
+		ct.scale(1 / 20, -1 / 20);
+		ct.fillText('A', 20 * x1 - 10, -20 * y1 - 10);
 	};
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции $f(x)=k_1 x+b_1$ и $g(x)=\\frac{k_2}{x}+b_2$' +
