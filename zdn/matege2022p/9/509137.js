@@ -43,6 +43,14 @@ retryWhileUndefined(function() {
 	});
 	if (points.length < 2)
 		return;
+	for (let i = 0; i < points.length; i++)
+		for (let j = i + 1; j < points.length; j++)
+			if (points[i][1] == points[j][1]) {
+				points.splice(j, 1);
+				j--;
+			}
+	if (points.length < 2)
+		return;
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
@@ -54,13 +62,13 @@ retryWhileUndefined(function() {
 			x1: 'π/4',
 			y1: '1',
 			sh1: 13,
-		}, 30);
+		}, 25);
 		//График
-		ct.scale(30, -30);
+		ct.scale(25, -25);
 		ct.lineWidth = 0.08;
 		graph9AdrawFunction(ct, f, {
-			minX: -1.2 * Math.PI,
-			maxX: 1.4 * Math.PI,
+			minX: -1.5 * Math.PI,
+			maxX: 1.5 * Math.PI,
 			minY: -4.8,
 			maxY: 5,
 			step: 0.05,
