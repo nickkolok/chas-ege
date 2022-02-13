@@ -16,7 +16,7 @@ retryWhileUndefined(function() {
 	function parabl(a, b, c, x) {
 		return a * x * x + b * x + c;
 	}
-	let x1 = sluchch(-6, 5);
+	let x1 = sluchch(-5, 5);
 	let x2 = slKrome(x1, -20, 20);
 	let y1 = sluchch(-7, 5);
 	let y2 = sluchch(7, 20).pm();
@@ -110,6 +110,7 @@ retryWhileUndefined(function() {
 		answers: answ,
 		analys: '$f(x)=' + (k + 'x+' + d).replace('+0', '').plusminus() + `;$<br>` +
 			'$g(x)=' + (a + 'x^2+' + b + 'x+' + c).replace('+0', '').plusminus() + '.$<br>' +
+			'$A(' + x1 + ';' + y1 + ')$<br>' +
 			'$B(' + x2 + ';' + y2 + ')$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
