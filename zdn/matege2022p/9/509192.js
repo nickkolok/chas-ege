@@ -104,7 +104,9 @@ retryWhileUndefined(function() {
 			', которые пересекаются в точках $A$ и $B$. Найдите ' + find + ' точки $B$.',
 		answers: answ,
 		analys: '$f(x)=' + (k1 + 'x+' + b1).plusminus() + '$<br>' +
-			'$g(x)=' + ('\\frac{' + k2 + '}{x}+' + b2 + '$').plusminus(),
+			'$g(x)=' + ('\\frac{' + k2 + '}{x}+' + b2 + '$').plusminus()+'<br>'+
+			'$A(' + x1 + ';' + y1 + ')$<br>' +
+			'$B(' + x2 + ';' + y2 + ')$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
