@@ -1,21 +1,6 @@
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
-	function intPoints(f, o) {
-		if (o.step === undefined) {
-			o.minX = o.minX.ceil();
-			o.maxX = o.maxX.floor();
-			o.step = 1;
-		}
-		let XY = [];
-		for (let i = o.minX; i < o.maxX; i += o.step) {
-			if (f(i).isZ() && f(i) <= o.maxY && f(i) >= o.minY) {
-				XY.push([i, f(i)]);
-			}
-		}
-		return XY;
-	}
-
 	function variant(a, b, x) {
 		return a * (x)[trigfuncs]() + b;
 	}
