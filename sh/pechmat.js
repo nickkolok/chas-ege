@@ -119,6 +119,15 @@ function konecSozd(){
 	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
 }
 
+
+function bumpVariantNumber(){
+	if(options.customNumber){
+		variantNumber++;
+	}else{
+		variantNumber=new Date().getTime();
+	}
+}
+
 function vNachaloVarianta(){
 	nV--;
 	nZ=0;
@@ -139,11 +148,7 @@ function zadan(){
 		}else{
 			iZ=aZ.slice();
 
-			if(options.customNumber){
-				variantNumber++;
-			}else{
-				variantNumber=new Date().getTime();
-			}
+			bumpVariantNumber();
 
 			if(options.vanishVariants){
 				strOtv+='<table class="normtabl tablpech">';
