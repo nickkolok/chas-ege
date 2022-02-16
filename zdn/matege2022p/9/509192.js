@@ -100,7 +100,7 @@ retryWhileUndefined(function() {
 		ct.fillText('A', 20 * x1 - 10, -20 * y1 - 10);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображён график функции $f(x)=k_1 x+b_1$ и $g(x)=\\frac{k_2}{x}+b_2$' +
+		text: 'На рисунке изображены графики функций $f(x)=k_1 x+b_1$ и $g(x)=\\frac{k_2}{x}+b_2$' +
 			', которые пересекаются в точках $A$ и $B$. Найдите ' + find + ' точки $B$.',
 		answers: answ,
 		analys: '$f(x)=' + (k1 + 'x+' + b1).plusminus() + '$<br>' +
