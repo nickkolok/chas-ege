@@ -132,6 +132,7 @@ em{
 .tablpech{
 	float:left;
 	margin:1em;
+	page-break-inside:avoid;
 }
 
 #prov_knopki{
