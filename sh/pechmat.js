@@ -156,7 +156,7 @@ function appendVariantAnswersEnding(){
 	strOtv+='</table>';
 }
 
-function vNachaloVarianta(){
+function endCurrentVariant(){
 	nV--;
 	nZ=0;
 	appendVariantTasksEnding();
@@ -166,7 +166,7 @@ function vNachaloVarianta(){
 
 function zadan(){
 	if(nZ==1+1*nabor.nZad){
-		vNachaloVarianta();
+		endCurrentVariant();
 		return;
 	}else if (nZ==0){
 		if(!nV){
