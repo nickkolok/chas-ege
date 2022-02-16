@@ -168,7 +168,9 @@ function zadan(){
 	if(nZ==1+1*nabor.nZad){
 		endCurrentVariant();
 		return;
-	}else if (nZ==0){
+	}
+
+	if(nZ==0){
 		if(!nV){
 			konecSozd();
 			return;
