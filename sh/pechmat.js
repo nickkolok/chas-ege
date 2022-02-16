@@ -44,6 +44,8 @@ function zapusk(){
 	options.nobackground=$('#nobackground').is(':checked');
 	options.firstTaskNumber=1*$('#first-task-number').val();
 	options.transitTaskNumbers=$('#transitTaskNumbers').is(':checked');
+	options.splitAnswersNumber=1*$('#split-answers-number').val();
+	options.splitAnswerTables=$('#splitAnswerTables').is(':checked');
 	options.uniqueAnswersAndSolutions=$('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber=1*$('#start-transit-number').val();
 
@@ -190,8 +192,16 @@ function zadan(){
 			nZ++;
 			zadan();
 		}else{
+			if(options.splitAnswerTables){
+				var tasksReadyInCurrentVariant = aZ.sum()-iZ.sum();
+				if (tasksReadyInCurrentVariant && (tasksReadyInCurrentVariant % options.splitAnswersNumber === 0)){
+					appendVariantAnswersEnding();
+					appendVariantAnswersCaption();
+				}
+			}
 			iZ[nZ]--;
 			dvig.zadan(obnov,nZ);
+
 		}
 		return;
 	}
