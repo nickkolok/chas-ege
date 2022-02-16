@@ -128,12 +128,39 @@ function bumpVariantNumber(){
 	}
 }
 
+function appendVariantTasksCaption(){
+	if(!options.vanishVariants){
+		strVopr+='<h2 class="d">Вариант №'+variantNumber+'</h2>';
+	}
+}
+
+function appendVariantTasksEnding(){
+	if(!options.nopagebreak)
+		strVopr+='<p style="page-break-before: always"></p>';
+}
+
+function appendVariantAnswersCaption(){
+	strOtv+='<table class="normtabl tablpech">';
+	if(!options.vanishVariants){
+		strOtv+='<tr><th colspan="10">';
+		if (options.compactAnswers) {
+			strOtv+='Вар. '+variantNumber;
+		} else {
+			strOtv+='Ответы к варианту<br/>№'+variantNumber;
+		}
+		strOtv+='</th></tr>';
+	}
+}
+
+function appendVariantAnswersEnding(){
+	strOtv+='</table>';
+}
+
 function vNachaloVarianta(){
 	nV--;
 	nZ=0;
-	strOtv+='</table>';
-	if(!options.nopagebreak)
-		strVopr+='<p style="page-break-before: always"></p>';
+	appendVariantTasksEnding();
+	appendVariantAnswersEnding();
 	zadan();
 }
 
@@ -149,20 +176,9 @@ function zadan(){
 			iZ=aZ.slice();
 
 			bumpVariantNumber();
+			appendVariantTasksCaption();
+			appendVariantAnswersCaption();
 
-			if(options.vanishVariants){
-				strOtv+='<table class="normtabl tablpech">';
-			} else {
-				strVopr+='<h2 class="d">Вариант №'+variantNumber+'</h2>';
-
-				strOtv+='<table class="normtabl tablpech"><tr><th colspan="10">';
-				if (options.compactAnswers) {
-					strOtv+='Вар. '+variantNumber;
-				} else {
-					strOtv+='Ответы к варианту<br/>№'+variantNumber;
-				}
-				strOtv+='</th></tr>';
-			}
 			nZ=1;
 			zadan();
 			return;
