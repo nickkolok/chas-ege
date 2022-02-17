@@ -1,29 +1,30 @@
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
-	function pryam(k, b, x) {
+	function fp(x) {
 		return k * x + b;
 	}
 
-	function fp(x) {
-		return pryam(k, b, x);
-	}
-
-	function sq(a, c, x) {
-		return a * Math.sqrt(x) + c;
-	}
-
 	function fs(x) {
-		return sq(a, c, x);
+		if(a.sqt-1)
+		return a.poln * Math.sqrt(x) + c;
+		else
+		return a.poln*a.sq* Math.sqrt(x)+c;
 	}
-
-	let x1 = Math.pow(sluchch(0, 10), 2); //36
+	let x1 = sluchch(1, 20);
 	let y1 = sluchch(8, 20).pm();
-	let k = sluchch(1, 20,0.5).pm();
-	let a = sluchch(1, 20).pm();
-	let c = y1 - a * Math.sqrt(x1);
-	let b = y1 - k * x1;
-	if (a * a - 4 * k * (b - c) != 0)
+	let k = sluchch(1, 20).pm();
+	let a = {
+		sqt: 1,
+		poln: 2*k
+	};
+	if (x1.isPolnKvadr())
+		a.poln *= Math.sqrt(x1);
+	else
+		a.sqt = x1;
+	let c = y1 - 2 * x1*k;
+	let b = x1*k+c;
+	if (c == b)
 		return;
 	let pointss = intPoints(fs, {
 		minX: -5,
@@ -88,7 +89,7 @@ retryWhileUndefined(function() {
 		text: 'На рисунке изображены графики функций $f(x)=a\\sqrt{x}+c$ и $g(x)=kx+b$,' +
 			' которые пересекаются в точке $A$. Найдите ' + find + ' точки $А$.',
 		answers: answ,
-		analys: '$f(x)=' + (a + '\\sqrt{x}+' + c + '$').plusminus() + '<br>' +
+		analys: '$f(x)=' + (a.poln + '\\sqrt{'+a.sqt+'}\\cdot'+'\\sqrt{x}+' + c + '$').plusminus() + '<br>' +
 			'$g(x)=' + (k + 'x+' + b).plusminus() + '$<br>' +
 			'$A(' + x1 + ';' + y1 + ')$<br>',
 	});
