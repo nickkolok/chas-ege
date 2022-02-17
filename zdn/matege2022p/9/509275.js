@@ -6,24 +6,24 @@ retryWhileUndefined(function() {
 	}
 
 	function fs(x) {
-		if(a.sqt-1)
-		return a.poln * Math.sqrt(x) + c;
+		if (x1.isPolnKvadr(x1))
+			return a.poln * Math.sqrt(x) + c;
 		else
-		return a.poln*a.sq* Math.sqrt(x)+c;
+			return a.poln * Math.sqrt(a.sqt*x) + c;
 	}
 	let x1 = sluchch(1, 20);
 	let y1 = sluchch(8, 20).pm();
 	let k = sluchch(1, 20).pm();
 	let a = {
 		sqt: 1,
-		poln: 2*k
+		poln: 2 * k
 	};
-	if (x1.isPolnKvadr())
+	if (x1.isPolnKvadr(x1))
 		a.poln *= Math.sqrt(x1);
 	else
 		a.sqt = x1;
-	let c = y1 - 2 * x1*k;
-	let b = x1*k+c;
+	let c = y1 - 2 * x1 * k;
+	let b = x1 * k + c;
 	if (c == b)
 		return;
 	let pointss = intPoints(fs, {
@@ -89,7 +89,7 @@ retryWhileUndefined(function() {
 		text: 'На рисунке изображены графики функций $f(x)=a\\sqrt{x}+c$ и $g(x)=kx+b$,' +
 			' которые пересекаются в точке $A$. Найдите ' + find + ' точки $А$.',
 		answers: answ,
-		analys: '$f(x)=' + (a.poln + '\\sqrt{'+a.sqt+'}\\cdot'+'\\sqrt{x}+' + c + '$').plusminus() + '<br>' +
+		analys: '$f(x)=' + (a.poln + ('\\sqrt{' + a.sqt + '}').esli(a.sqt!=1)+'\\cdot' + '\\sqrt{x}+' + c + '$').plusminus() + '<br>' +
 			'$g(x)=' + (k + 'x+' + b).plusminus() + '$<br>' +
 			'$A(' + x1 + ';' + y1 + ')$<br>',
 	});
