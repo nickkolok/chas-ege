@@ -18,10 +18,10 @@ retryWhileUndefined(function() {
 	}
 
 	let x1 = Math.pow(sluchch(0, 10), 2); //36
-	let y1 = sluchch(8, 20).pm();
-	let k = sluchch(1, 20,0.5).pm();
+	let c = sluchch(-10,10);
 	let a = sluchch(1, 20).pm();
-	let c = y1 - a * Math.sqrt(x1);
+	let y1 = a * x1.sqrt() + c;
+	let k = sluchch(0.25, 20,0.25).pm();
 	let b = y1 - k * x1;
 	if (a * a - 4 * k * (b - c) != 0)
 		return;
