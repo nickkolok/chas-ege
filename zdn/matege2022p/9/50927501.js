@@ -17,7 +17,7 @@ retryWhileUndefined(function() {
 		return sq(a, c, x);
 	}
 
-	let x1 = Math.pow(sluchch(0, 10), 2); //36
+	let x1 = Math.pow(sluchch(0, 10, 0.5), 2);
 	let c = sluchch(-10,10);
 	let a = sluchch(1, 20).pm();
 	let y1 = a * x1.sqrt() + c;
@@ -25,7 +25,7 @@ retryWhileUndefined(function() {
 	let b = y1 - k * x1;
 	if (a * a - 4 * k * (b - c) != 0)
 		return;
-	if (x1.abs() < 7 && y1.abs() < 7)
+	if (x1.abs() < 7 && y1.abs() < 7 && x1.isZ() && y1.isZ())
 		return; // Точку видно
 	let pointss = intPoints(fs, {
 		minX: -5,
