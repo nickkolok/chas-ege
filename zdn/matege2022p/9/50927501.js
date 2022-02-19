@@ -25,6 +25,8 @@ retryWhileUndefined(function() {
 	let b = y1 - k * x1;
 	if (a * a - 4 * k * (b - c) != 0)
 		return;
+	if (x1.abs() < 7 && y1.abs() < 7)
+		return; // Точку видно
 	let pointss = intPoints(fs, {
 		minX: -5,
 		maxX: 5,
