@@ -87,7 +87,7 @@ retryWhileUndefined(function() {
 	};
 	NAtask.setTask({
 		text: 'На рисунке изображены графики функций $f(x)=a\\sqrt{x}+c$ и $g(x)=kx+b$,' +
-			' которые пересекаются в точке $A$. Найдите ' + find + ' точки $А$.',
+			' которые пересекаются в точке $A$. Найдите ' + find + ' точки $A$.',
 		answers: answ,
 		analys: '$f(x)=' + (a.poln + ('\\sqrt{' + a.sqt + '}').esli(a.sqt!=1)+'\\cdot' + '\\sqrt{x}+' + c + '$').plusminus() + '<br>' +
 			'$g(x)=' + (k + 'x+' + b).plusminus() + '$<br>' +
