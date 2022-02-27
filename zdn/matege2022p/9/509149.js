@@ -107,6 +107,7 @@ retryWhileUndefined(function() {
 		answers: answ,
 		analys: '$f(x)=' + (k + 'x+' + d).replace('+0', '').plusminus() + `;$<br>` +
 			'$g(x)=' + (a + 'x^2+' + b + 'x+' + c).replace('+0', '').plusminus() + '.$<br>' +
+			'$A(' + x1 + ';' + y1 + ')$<br>'+
 			'$B(' + x2 + ';' + y2 + ')$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
