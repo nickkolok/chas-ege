@@ -46,7 +46,7 @@ retryWhileUndefined(function() {
 	let find, answ;
 	if (sl1()) {
 		find = 'a';
-		answ = a;
+		answ = a.abs();
 	} else {
 		answ = b;
 		find = 'b';
