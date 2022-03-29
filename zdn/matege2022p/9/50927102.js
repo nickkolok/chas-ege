@@ -10,7 +10,7 @@ retryWhileUndefined(function() {
 	}
 
 	let x1 = sluchch(1, 6).pm();
-	let x2 = sluchch(7, 20, 0.5);
+	let x2 = sluchch(8, 20, 0.5);
 	let y1 = sl(-6, 6);
 	let y2 = sl(1, 20, 0.5).pm();
 	let a = ((y1.sqr() - y2.sqr()) / (x1 - x2)).sqrt();
@@ -96,7 +96,8 @@ retryWhileUndefined(function() {
 		ct.fillText('A', 20 * x1 - 10, -20 * y1 - 10);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображены графики функций $f(x)=a\\sqrt{x+c}$ и $g(x)=kx+b$,' +
+		text: 'На рисунке изображены графики функций $f(x)=a\\sqrt{x' + ['+', '-'].iz() + 'c}$ и $g(x)=kx' + ['+', '-'].iz() +
+			'b$,' +
 			' которые пересекаются в точках $A$ и $B$. Найдите ' + find + ' точки $B$.',
 		answers: answ,
 		analys: '$f(x)=' + (a + '\\sqrt{x+' + c + '}' + '$').plusminus() + '<br>' +
