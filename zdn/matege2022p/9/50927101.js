@@ -94,7 +94,7 @@ retryWhileUndefined(function() {
 		ct.fillText('A', 20 * x1 - 10, -20 * y1 - 10);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображены графики функций $f(x)=\\sqrt{x+c}+d$ и $g(x)=kx+b$,' +
+		text: 'На рисунке изображены графики функций $f(x)=\\sqrt{x'+['+','-'].iz()+'c}'+['+','-'].iz()+'d$ и $g(x)=kx'+['+','-'].iz()+'b$,' +
 			' которые пересекаются в точках $A$ и $B$. Найдите ' + find + ' точки $B$.',
 		answers: answ,
 		analys: '$f(x)=' + ('\\sqrt{x+' + c + '}+' + d + '$').plusminus() + '<br>' +
