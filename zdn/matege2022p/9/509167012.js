@@ -91,7 +91,7 @@ retryWhileUndefined(function() {
 		ct.fillText('A', 20 * x1 - 10, -20 * y1 - 10);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображены графики функций $f(x)=\\frac{a_1 x+d_1}{x+c_1}$ и $g(x)=\\frac{a_2 x+d_2}{x+c_2 }$,' +
+		text: 'На рисунке изображены графики функций $f(x)=\\frac{a_1 x'+['+','-'].iz()+'d_1}{x'+['+','-'].iz()+'c_1}$ и $g(x)=\\frac{a_2 x'+['+','-'].iz()+'d_2}{x'+['+','-'].iz()+'c_2 }$,' +
 			' которые пересекаются в точках $A$ и $B$. Найдите ' + find1 + ' точки $B$.',
 		answers: answ,
 		analys: '$f(x)=\\frac{' + (a1 + 'x+' + d1).plusminus() + '}{' + ('x+' + c1).plusminus() + '}' + '$<br>' +
