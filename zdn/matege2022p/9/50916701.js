@@ -15,9 +15,11 @@ retryWhileUndefined(function() {
 	let y2 = sl(1, 20).pm();
 	let c = sl(-5, 5);
 	let a = (y1 * x1 - y2 * x2 + c * (y1 - y2)) / (x1 - x2);
-	if (a == 1 || !a)
+	if (!a)
 		return;
 	let d = y1 * (x1 + c) - a * x1;
+	if (a == d / c)
+		return;
 	let k = (y1 - y2) / (x1 - x2);
 	if (!(k * 1000).isZ() || !k)
 		return;
