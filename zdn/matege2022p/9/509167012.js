@@ -83,9 +83,7 @@ retryWhileUndefined(function() {
 		//точки
 		graph9AmarkCircles(ct, points1, 3, 0.15);
 		graph9AmarkCircles(ct, points2, 3, 0.15);
-		graph9AmarkCircles(ct, [
-			[x1, y1]
-		], 2, 0.15);
+		graph9AmarkCircles(ct, [[x1, y1]], 2, 0.15);
 		//буква
 		ct.fillStyle = "blue";
 		ct.font = "18px liberation_sans";
