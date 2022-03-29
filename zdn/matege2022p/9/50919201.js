@@ -47,7 +47,7 @@ retryWhileUndefined(function() {
 	let maxY = [y1, y2].maxE();
 	let minX = [x1, x2].minE();
 	let minY = [y1, y2].minE();
-	switch (sl(1, 3)) {
+	switch (3) {
 	case 1:
 		let str = [
 			['большую', [maxX, maxY]],
@@ -65,8 +65,16 @@ retryWhileUndefined(function() {
 		answ = x1 + x2 + y1 + y2;
 		break;
 	case 3:
-		find = 'сумму большей абсциссы и большей ординаты';
-		answ = maxX + maxY;
+		let str1 = [
+			['большей', maxX],
+			['меньшей', minX]
+		].iz();
+		let str2 = [
+			['большей', maxY],
+			['меньшей', minY]
+		].iz();
+		find = 'сумму ' + str1[0] + ' абсциссы и ' + str2[0] + ' ординаты';
+		answ = str1[1] + str2[1];
 		break;
 	}
 	let paint1 = function(ct) {
