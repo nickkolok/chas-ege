@@ -73,14 +73,7 @@ retryWhileUndefined(function() {
 		//График
 		ct.scale(20, -20);
 		ct.lineWidth = 0.1;
-		graph9AdrawFunction(ct, f1, {
-			minX: -6.5,
-			maxX: 7,
-			minY: -7,
-			maxY: 6,
-			step: 0.05,
-		});
-		graph9AdrawFunction(ct, f2, {
+		graph9AdrawFunction(ct, [f1, f2], {
 			minX: -6.5,
 			maxX: 7,
 			minY: -7,
