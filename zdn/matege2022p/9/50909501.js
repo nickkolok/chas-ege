@@ -83,8 +83,8 @@ retryWhileUndefined(function() {
 			'a^x+b$ и $g(x)=kx+c$, пересекающиеся в точках $A(' + x1 + ';' + y1 + ')$ и $B(' + x2 + ';' + y2 +
 			')$. Найдите $' + find + '$.',
 		answers: answ,
-		analys: '$f(x)=' + (a + '^{x}+' + (b)).replace('+0', '').plusminus() + ',$<br>' +
-			'$g(x)=' + (k + 'x+' + (c)).replace('+0', '').plusminus()+'$<br>'+
+		analys: '$f(x)=' + (a + '^{x}+' + b).replace('+0', '').plusminus() + ',$<br>' +
+			'$g(x)=' + (k + 'x+' + c).replace('+0', '').plusminus()+'$<br>'+
 			'$A(' + x1 + ';' + y1 + ')$<br>' +
 			'$B(' + x2 + ';' + y2 + ')$',
 	});
