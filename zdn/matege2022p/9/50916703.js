@@ -95,7 +95,7 @@ retryWhileUndefined(function() {
 			' которые пересекаются в точках $A$ и $B$. Найдите ' + find + ' точки $B$.',
 		answers: answ,
 		analys: '$f(x)=\\frac{' + a + '}{' + ('x+' + c).plusminus() + '}' + '$<br>' +
-			'$g(x)=' + (k + 'x+' + b).plusminus() + '$<br>' +
+			'$g(x)=' + (k + 'x+' + b.ts()).plusminus() + '$<br>' +
 			'$A(' + x1 + ';' + y1 + ')$<br>' +
 			'$B(' + x2 + ';' + y2 + ')$',
 	});
