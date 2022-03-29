@@ -626,5 +626,33 @@ chas2.task = {
 
 		},
 
+		/** @function chas2.task.modifiers.askAboutPoint
+		 * Спросить про точку
+		 * @param {String} название точки
+		 * @param {Array} координаты точки
+		 */
+		askAboutPoint : function(name, coordinates) {
+			var currentTask = chas2.task.getTask();
+			var what;
+			var coord = sl(coordinates.length - 1);
+			switch(coord){
+				case 0:
+					what = 'абсциссу';
+				break;
+				case 1:
+					what = 'ординату';
+				break;
+				case 2:
+					what = 'аппликату';
+				break;
+
+			}
+			var answ = coordinates[coord];
+
+			currentTask.text += ' Найдите ' + what + ' точки ' + name + '. ';
+			currentTask.answers = [answ];
+			chas2.task.setTask(currentTask);
+		},
+
 	},
 };
