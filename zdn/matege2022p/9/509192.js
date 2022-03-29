@@ -50,14 +50,7 @@ retryWhileUndefined(function() {
 	});
 	if (pointsp.length < 2)
 		return;
-	let find, answ;
-	if (sl1()) {
-		answ = x2;
-		find = 'абсциссу';
-	} else {
-		answ = y2;
-		find = 'ординату';
-	}
+
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
@@ -101,13 +94,13 @@ retryWhileUndefined(function() {
 	};
 	NAtask.setTask({
 		text: 'На рисунке изображены графики функций $f(x)=k_1 x+b_1$ и $g(x)=\\frac{k_2}{x}+b_2$' +
-			', которые пересекаются в точках $A$ и $B$. Найдите ' + find + ' точки $B$.',
-		answers: answ,
+			', которые пересекаются в точках $A$ и $B$. ',
 		analys: '$f(x)=' + (k1 + 'x+' + b1).plusminus() + '$<br>' +
 			'$g(x)=' + ('\\frac{' + k2 + '}{x}+' + b2 + '$').plusminus()+'<br>'+
 			'$A(' + x1 + ';' + y1 + ')$<br>' +
 			'$B(' + x2 + ';' + y2 + ')$',
 	});
+	chas2.task.modifiers.askAboutPoint('$B$', [x2, y2]);
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
 		height: 300,
