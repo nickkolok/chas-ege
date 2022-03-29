@@ -14,7 +14,7 @@ retryWhileUndefined(function() {
 	let y2 = slKrome(y1, 10, 20).pm();
 
 	let k1 = (y1 - y2) / (x1 - x2);
-	if (!k1.isZ() && k1 != 0)
+	if (!k1.isZ())
 		return;
 	let b1 = y1 - k1 * x1;
 
