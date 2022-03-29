@@ -596,7 +596,7 @@ chas2.task = {
 		},
 
 		/** @function chas2.task.modifiers.addCanvasIllustration
-		 * Привести опции canvas к нормальному виду
+		 * Добавить иллюстрацию на основе canvas
 		 * @param {Number} o.width ширина canvas
 		 * @param {Number} o.height высота canvas
 		 * @param {String} o.style стиль canvas
