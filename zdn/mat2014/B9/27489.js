@@ -20,46 +20,60 @@ retryWhileUndefined(function() {
 		case 1:
 			return (a * x).cos() + (b * x).sin();
 		case 2:
-			return -a * (a * x).sin() + b * (b * x).cos();
+			return (a * x).sin() / a - (b * x).cos() / b;
 		}
 
 	}
-	let cs = sl(1,2);
-	let a = sl(1, 5, 0.1).pm();
-	let b = slKrome([a.abs(), (a / 2).abs()], 0.1, 5, 0.1).pm();
+
+	function itIsRoot(root) {
+		if ((f(root) && (cs == 2)) || cs == 1) {
+			if (f(root).abs() > 3.5 * mash)
+				return;
+			if (root < limit2 * mash && root > limit1 * mash) {
+				return true;
+			}
+		}
+		return false;
+	}
+	let cs = sl(1, 2);
+	let a = sl(1, 2, 0.5).pm();
+	let b = slKrome(a.abs(), 1, 2, 0.5).pm();
 	let pi = Math.PI;
 	let mash = 2 / 3;
 	let points = [];
 	let answ = 0;
-	let gran = mash * 4;
+	let limit1 = -sl(1, 8);
+	let limit2 = sl(1, 8);
 	for (let n = -10; n < 10; n++) {
 		let root1 = 0.5 * (pi - 4 * pi * n) / (a - b);
-		if (f(root1).abs() > 3.5 * mash)
-			return;
-		if (root1 < gran && root1 > -gran) {
+		if (itIsRoot(root1)) {
+			answ++;
 			points.push([root1, f(root1)]);
-			answ++;
 		}
+
 		let root2 = -0.5 * (pi - 4 * pi * n) / (a + b);
-		if (f(root2).abs() > 3.5 * mash)
-			return;
-		if (root2 < gran && root2 > -gran) {
-			points.push([root2, f(root2)]);
+		if (itIsRoot(root2)) {
 			answ++;
+			points.push([root2, f(root2)]);
 		}
+
 	}
+	if (points.length < 1)
+		return;
 	let text;
-	switch(cs){
-		case 1:
-			text='$y=f\'(x)$ - производная функции $f(x)$, определённой на интервале [-4;4]. Найдите количество точек экстремума функции';
-			break;
-		case 2:
-			text='$y=f(x)$, определённой на интервале [-4;4]. Найдите количество точек, где производная этой функции равна нулю';
-			break;
+	switch (cs) {
+	case 1:
+		text =
+			'$y=f\'(x)$ - производная функции $f(x)$, определённой на интервале [-9;9]. Найдите количество точек экстремума функции'; //['+limit2+';'+limit1+']
+		break;
+	case 2:
+		text =
+			'$y=f(x)$, определённой на интервале [-9;9]. Найдите количество точек, где производная этой функции равна нулю';
+		break;
 	}
 	let paint1 = function(ct) {
 		let h = 350;
-		let w = 400;
+		let w = 800;
 		//Оси координат
 		ct.drawCoordPlane(w, h, {
 			hor: 2,
@@ -73,40 +87,40 @@ retryWhileUndefined(function() {
 		ct.scale(60, -60);
 		ct.lineWidth = 0.05;
 		graph9AdrawFunction(ct, f, {
-			minX: -mash * 4,
-			maxX: mash * 4,
+			minX: -mash * 9,
+			maxX: mash * 9,
 			minY: -5 * mash,
 			maxY: 4 * mash,
 			step: 0.01,
 		});
 		//точки
-	 /*ct.fillStyle = "red";
-	 graph9AmarkCircles(ct, points, 30, 0.04);*/
+		ct.fillStyle = "red";
+		graph9AmarkCircles(ct, points, 30, 0.04);
 
 		ct.fillStyle = "black";
 		graph9AmarkCircles(ct, [
-			[-mash * 4, f(-mash * 4)]
+			[-mash * 9, f(-mash * 9)]
 		], 1, 0.04);
 		graph9AmarkCircles(ct, [
-			[mash * 4, f(mash * 4)]
+			[mash * 9, f(mash * 9)]
 		], 1, 0.04);
 		ct.fillStyle = "white";
 		graph9AmarkCircles(ct, [
-			[-mash * 4, f(-mash * 4)]
+			[-mash * 9, f(-mash * 9)]
 		], 1, 0.03);
 		graph9AmarkCircles(ct, [
-			[mash * 4, f(mash * 4)]
+			[mash * 9, f(mash * 9)]
 		], 1, 0.03);
 	};
 	NAtask.setTask({
-		text: 'на рисунке изображён график функции '+text+'.',
+		text: 'на рисунке изображён график функции ' + text + ' на интервале [' + limit2 + ';' + limit1 + '].',
 		answers: answ,
-		/*analys: ('$cos(' + a.ts() + 'x)+sin(' + b.ts() + 'x)$').plusminus() + '<br>' +
-			('$' + (-a).ts() + 'sin(' + a.ts() + 'x)+' + b.ts() + 'cos(' + b.ts() + 'x)$').plusminus(),*/
+		analys: ('$cos(' + a.ts() + 'x)+sin(' + b.ts() + 'x)$').plusminus() + '<br>' +
+			('$' + (-a).ts() + 'sin(' + a.ts() + 'x)+' + (-b).ts() + 'cos(' + b.ts() + 'x)$').plusminus(),
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		height: 350,
-		width: 400,
+		width: 800,
 		paint: paint1,
 	});
 	return true;
