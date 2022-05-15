@@ -11,18 +11,16 @@ CanvasRenderingContext2D.prototype.setkaVer2 = function(h, w, hor, ver, mash) {
 	for (let i = 0; i < w; i += ver)
 		this.drawLine(0, i, h, i);
 };
-
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
 	function f(x) {
 		switch (cs) {
-		case 1:
+		case 1: //производная
 			return (a * x).cos() + (b * x).sin();
-		case 2:
+		case 2: //функция 
 			return (a * x).sin() / a - (b * x).cos() / b;
 		}
-
 	}
 
 	function itIsRoot(root) {
@@ -35,40 +33,60 @@ retryWhileUndefined(function() {
 		}
 		return false;
 	}
+
+	function emptyPoints(ct) {
+		let gran = [Xmax, Xmin];
+		for (let i = 0; i < 2; i++) {
+			let p = (-1).pow(i) * mash * gran[i];
+			ct.fillStyle = "black";
+			graph9AmarkCircles(ct, [
+				[p, f(p)]
+			], 1, 0.06);
+		}
+		for (let i = 0; i < 2; i++) {
+			let p = (-1).pow(i) * mash * gran[i];
+			ct.fillStyle = "white";
+			graph9AmarkCircles(ct, [
+				[p, f(p)]
+			], 1, 0.04);
+		}
+	}
 	let cs = sl(1, 2);
 	let a = sl(1, 2, 0.5).pm();
 	let b = slKrome(a.abs(), 1, 2, 0.5).pm();
 	let pi = Math.PI;
 	let mash = 2 / 3;
-	let points = [];
-	let answ = 0;
-	let limit1 = -sl(1, 8);
-	let limit2 = sl(1, 8);
+	let points = new Map();
+	let Xmin = sl(6, 8);
+	let Xmax = sl(6, 8);
+	let limit1 = sl(1, Xmin).pm();
+	let limit2 = sl(limit1.abs(), Xmax);
 	for (let n = -10; n < 10; n++) {
 		let root1 = 0.5 * (pi - 4 * pi * n) / (a - b);
-		if (itIsRoot(root1)) {
-			answ++;
-			points.push([root1, f(root1)]);
-		}
+		if (itIsRoot(root1))
+			points.set(root1, f(root1));
 
 		let root2 = -0.5 * (pi - 4 * pi * n) / (a + b);
-		if (itIsRoot(root2)) {
-			answ++;
-			points.push([root2, f(root2)]);
-		}
-
+		if (itIsRoot(root2))
+			points.set(root2, f(root2));
 	}
-	if (points.length < 1)
+	if (points.size < 2)
 		return;
-	let text;
+	let text, answ;
 	switch (cs) {
 	case 1:
 		text =
-			'$y=f\'(x)$ - производная функции $f(x)$, определённой на интервале [-9;9]. Найдите количество точек экстремума функции'; //['+limit2+';'+limit1+']
+			'$y=f\'(x)$ - производная функции $f(x)$, определённой на интервале $[' + -Xmin + ';' + Xmax +
+			']$. Найдите количество точек экстремума функции';
+		answ = points.size;
 		break;
 	case 2:
 		text =
-			'$y=f(x)$, определённой на интервале [-9;9]. Найдите количество точек, где производная этой функции равна нулю';
+			'$y=f(x)$, определённой на интервале $[' + -Xmin + ';' + Xmax +
+			']$. Найдите количество точек, где ' + ['производная этой функции равна нулю',
+				'касательная к $f(x)$ параллельна $y=' + sl(-20, 20) + '$'
+			].iz();
+		answ = points.size;
 		break;
 	}
 	let paint1 = function(ct) {
@@ -87,36 +105,23 @@ retryWhileUndefined(function() {
 		ct.scale(60, -60);
 		ct.lineWidth = 0.05;
 		graph9AdrawFunction(ct, f, {
-			minX: -mash * 9,
-			maxX: mash * 9,
+			minX: -mash * Xmin,
+			maxX: mash * Xmax,
 			minY: -5 * mash,
 			maxY: 4 * mash,
 			step: 0.01,
 		});
-		//точки
+		/*//точки
 		ct.fillStyle = "red";
-		graph9AmarkCircles(ct, points, 30, 0.04);
+		graph9AmarkCircles(ct, [...points], points.size, 0.04);*/
+		emptyPoints(ct);
 
-		ct.fillStyle = "black";
-		graph9AmarkCircles(ct, [
-			[-mash * 9, f(-mash * 9)]
-		], 1, 0.04);
-		graph9AmarkCircles(ct, [
-			[mash * 9, f(mash * 9)]
-		], 1, 0.04);
-		ct.fillStyle = "white";
-		graph9AmarkCircles(ct, [
-			[-mash * 9, f(-mash * 9)]
-		], 1, 0.03);
-		graph9AmarkCircles(ct, [
-			[mash * 9, f(mash * 9)]
-		], 1, 0.03);
 	};
 	NAtask.setTask({
-		text: 'на рисунке изображён график функции ' + text + ' на интервале [' + limit2 + ';' + limit1 + '].',
+		text: 'На рисунке изображён график функции ' + text + ' на интервале $[' + limit1 + ';' + limit2 + ']$.',
 		answers: answ,
-		analys: ('$cos(' + a.ts() + 'x)+sin(' + b.ts() + 'x)$').plusminus() + '<br>' +
-			('$' + (-a).ts() + 'sin(' + a.ts() + 'x)+' + (-b).ts() + 'cos(' + b.ts() + 'x)$').plusminus(),
+		/*analys: ('$cos(' + a.ts() + 'x)+sin(' + b.ts() + 'x)$').plusminus() + '<br>' +
+			('$\\frac{sin(' + a.ts() + 'x)}{' + (-a).ts() + '}+\\frac{cos(' + b.ts() + 'x)}{' + (-b).ts() + '}$').plusminus(),*/
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		height: 350,
