@@ -5,18 +5,16 @@
 (function () {
 	'use strict';
 	NAinfo.requireApiVersion(0, 0);
-
-
 	var answers;
-
 	var times = ['дважды', 'трижды'].iz();
 
 	if (times == 'дважды'){
 		var kolvo = sluchch(2, 12);
-		if (kolvo <= 7)
+		if (kolvo <= 7){
 			answers = kolvo - 1;
-		else
+		} else {
 			answers = 13 - kolvo;
+		}
 	}
 
 	if (times == 'трижды'){
@@ -25,20 +23,16 @@
 			var a = 1            
 			var b = 1
 			var c = 1
-			
 			answers = kolvo - 1;
-
-		}
-		else{
-			if (kolvo <= 13)
+		} else {
+			if (kolvo <= 13){
 				answers = 13 - kolvo;
-			else{
-				if (kolvo <= 19)
+			} else {
+				if (kolvo <= 19){
 					answers = 19 - kolvo;
+				}
 			}
 		}
-
-
 	}
 
 	NAtask.setTask({
