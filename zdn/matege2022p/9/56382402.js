@@ -4,23 +4,26 @@ retryWhileUndefined(function() {
 	function f(x) {
 		return a * x.pow(2) + b * x.abs() + c;
 	}
-	let a = sl(0.1, 2, 0.1).pm();
-	let b = sl(1, 5, 0.5).pm();
-	let c = sl(-5, 5, 0.5);
+	let c = sl(1, 3).pm();
+	let b = sl(1, 5).pm();
+	let a = b.pow(2) / (4 * c);
+	if (!(a * 1000).isZ())
+		return;
 	let p = intPoints(f, {
 		minX: -6,
 		maxX: 7,
 		minY: -7,
-		maxY: 6,
+		maxY: 7,
 	});
 	if (p.length < 1)
 		return;
 	let formula = ('ax^2+b|x|+c');
-	if (p.length != 3) {
+	if (p.length < 3) {
 		let variant = [
-			['a', a.ts()],
-			['b', b.ts()],
-			['c', c.ts()],
+			[
+				['a', a.ts()],
+				['b', b.ts()]
+			].iz(), ['c', c.ts()],
 		].iz(3 - p.length);
 		formula = formula.replace(variant[0][0], variant[0][1]).replace(variant[1][0], variant[1][1]).plusminus();
 	}
@@ -63,7 +66,7 @@ retryWhileUndefined(function() {
 			step: 0.05,
 		});
 		//точки
-		graph9AmarkCircles(ct, p, p.length, 0.15);
+		graph9AmarkCircles(ct, p, 3, 0.15);
 	};
 
 	NAtask.setTask({
