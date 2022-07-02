@@ -4,28 +4,27 @@ retryWhileUndefined(function() {
 	function f(x) {
 		return a * x.pow(2) + b * x.abs() + c;
 	}
-	let c = sl(1, 3).pm();
-	let b = sl(1, 5).pm();
+	let c = sl(1, 10).pm();
+	let b = sl(1, 10).pm();
 	let a = b.pow(2) / (4 * c);
 	if (!(a * 1000).isZ())
 		return;
 	let p = intPoints(f, {
 		minX: -6,
 		maxX: 7,
-		minY: -7,
-		maxY: 7,
+		minY: -6,
+		maxY: 6,
 	});
-	if (p.length < 1)
+	if (p.length < 2)
 		return;
 	let formula = ('ax^2+b|x|+c');
-	if (p.length < 3) {
+	if (p.length == 2) {
 		let variant = [
-			[
-				['a', a.ts()],
-				['b', b.ts()]
-			].iz(), ['c', c.ts()],
-		].iz(3 - p.length);
-		formula = formula.replace(variant[0][0], variant[0][1]).replace(variant[1][0], variant[1][1]).plusminus();
+			['a', a.ts()],
+			['b', b.ts()],
+			['c', c.ts()],
+		].iz();
+		formula = formula.replace(variant[0], variant[1]).plusminus();
 	}
 
 	let question, answ;
