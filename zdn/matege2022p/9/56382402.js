@@ -28,19 +28,26 @@ retryWhileUndefined(function() {
 	}
 
 	let question, answ;
-	switch (sl(1, 2)) {
+	switch (sl(1, 3)) {
 	case 1:
+		let num1 = sl(-10, 10);
+		question = 'значение дискриминанта уравнения $f(x)=' + num1 + '$';
+		answ = b.pow(2) - 4 * (c - num1) / a;
+		if ((answ * 1000).isZ())
+		break;
+	case 2:
 		let x = sl(6, 10).pm();
 		question = '$f(' + x + ')$';
 		answ = f(x);
 		break;
-	case 2:
+	case 3:
 		let st = [
 			['произведение', a * b * c],
 			['сумму', a + b + c]
 		].iz();
 		answ = st[1];
 		question = st[0] + ' всех коэффициентов';
+		break;
 	}
 	let paint1 = function(ct) {
 		let h = 300;
