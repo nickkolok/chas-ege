@@ -70,7 +70,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции вида $f(x)=' + formula +
-			'$. где числа $a,b,c$ и $d$ — целые. Найдите ' + question + '.',
+			'$. где числа $a,b$ и $с$ — целые. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=' + (a.ts() + 'x^2+' + b.ts() + '|x|+' + c.ts()).plusminus() + '$',
 	});
