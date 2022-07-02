@@ -4,7 +4,7 @@ retryWhileUndefined(function() {
 	function f(x) {
 		return (k * x + b).abs() + c;
 	}
-	let k = sl(1, 10, 0.5).pm();
+	let k = sl(1, 10, 0.5);
 	let b = sl(-8, 8, 0.5);
 	let c = sl(-8, 8, 0.5);
 	if ((-b / k).abs() > 5.5 || f(-b / k).abs() > 5)
@@ -66,7 +66,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции вида $f(x)=' + formula +
-			'$. где числа $a,b,c$ и $d$ — целые. Найдите ' + question + '.',
+			'$. где числа $b,c$ и $k$ — целые, $k>0$. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=|' + (k + 'x+' + b + '|+' + c).plusminus() + '$',
 	});
