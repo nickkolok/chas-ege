@@ -89,7 +89,7 @@ retryWhileUndefined(function() {
 	};
 
 	NAtask.setTask({
-		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, $a,b,c$ и $d$ - целые' + (', а $a' +
+		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, где $a,b,c$ и $d$ - целые' + (', а $a' +
 				sign +
 				'0$').esli(trigfuncs == 'sin' && !formula.indexOf('a')) + '. Найдите ' + question +
 			'.',
