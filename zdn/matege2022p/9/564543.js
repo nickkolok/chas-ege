@@ -91,7 +91,7 @@ retryWhileUndefined(function() {
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, где $a,b,c$ и $d$ - целые' + (', а $a' +
 				sign +
-				'0$').esli(trigfuncs == 'sin' && !formula.indexOf('a')) + '. Найдите ' + question +
+				'0$').esli(trigfuncs == 'sin' && formula.includes('a')) + '. Найдите ' + question +
 			'.',
 		answers: answ,
 		analys: ('$f(x)=' + a + '\\' + trigfuncs + '(\\frac{\\pi}{' + b + '}x+' + (factor).texfracpi(1) + '\\cdot' + '('.esli(
