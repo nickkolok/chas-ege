@@ -1,3 +1,20 @@
+function intPointsWithoutRepeat(f, o) {
+	if (o.step === undefined) {
+		o.minX = o.minX.ceil();
+		o.maxX = o.maxX.floor();
+		o.step = 1;
+	}
+	let XY = [];
+	let Y = [];
+	for (let i = o.minX; i < o.maxX; i += o.step) {
+		if (f(i) <= o.maxY && f(i) >= o.minY)
+			if (!Y.includes(f(i)) && f(i).isZ()) {
+				Y.push(f(i));
+				XY.push([i, f(i)]);
+			}
+	}
+	return XY;
+}
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
@@ -9,11 +26,11 @@ retryWhileUndefined(function() {
 	let a = b.pow(2) / (4 * c);
 	if (!(a * 1000).isZ())
 		return;
-	let p = intPoints(f, {
+	let p = intPointsWithoutRepeat(f, {
 		minX: -6,
 		maxX: 7,
 		minY: -6,
-		maxY: 6,
+		maxY: 5.5,
 	});
 	if (p.length < 2)
 		return;
@@ -32,7 +49,7 @@ retryWhileUndefined(function() {
 	case 1:
 		let num1 = sl(-10, 10);
 		question = 'значение дискриминанта уравнения $f(x)=' + num1 + '$';
-		answ = b.pow(2) - 4 * (c - num1)*a;
+		answ = b.pow(2) - 4 * (c - num1) * a;
 		if ((answ * 1000).isZ())
 			break;
 	case 2:
