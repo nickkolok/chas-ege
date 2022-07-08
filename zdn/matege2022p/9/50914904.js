@@ -16,7 +16,7 @@ retryWhileUndefined(function() {
 	});
 	if (p.length < 2)
 		return;
-	let formula = ('ax^3+bx^2+cx+d');
+	let formula = 'ax^3+bx^2+cx+d';
 	if (p.length != 4) {
 		let variant = [
 			['a', a.ts()],
@@ -37,7 +37,7 @@ retryWhileUndefined(function() {
 	case 2:
 		let st=[['произведение',a*b*c*d], ['сумму',a+b+c+d]].iz();
 		answ= st[1];
-		question=st[0]+' всех коэффициентов';
+		question=st[0]+' всех коэффициентов многочлена';
 	}
 	let paint1 = function(ct) {
 		let h = 300;
@@ -67,7 +67,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции вида $f(x)=' + formula +
-			'$. где числа $a,b,c$ и $d$ — целые. Найдите ' + question + '.',
+			'$, где числа $a,b,c$ и $d$ — рациональные. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=' + (a.ts() + 'x^3+' + b.ts() + 'x^2+' + c.ts() + 'x+' + d.ts()).plusminus() + '$',
 	});
