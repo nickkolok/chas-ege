@@ -12,22 +12,32 @@ retryWhileUndefined(function() {
 	function f2(x) {
 		return k * x + b + c;
 	}
-	let k = sl(1, 10);
+	let k = sl(1, 10).pm();
 	let b = sl(-8, 8);
 	let c = sl(-8, 8);
 	if ((-b / k).abs() > 5.5 || f(-b / k).abs() > 5)
 		return;
+	let limits = [
+		[-6, -b / k],
+		[-b / k, 6]
+	];
+	if (k < 0)
+		limits = [
+			[-b / k, 6],
+			[-6, -b / k]
+		];
+
 	let p1 = intPoints(f1, {
-		minX: -6,
-		maxX: -b / k,
+		minX: limits[0][0],
+		maxX: limits[0][1],
 		minY: -6,
 		maxY: 5,
 	});
 	if (p1.length < 2)
 		return;
 	let p2 = intPoints(f2, {
-		minX: -b / k,
-		maxX: 6,
+		minX: limits[1][0],
+		maxX: limits[1][1],
 		minY: -6,
 		maxY: 5,
 	});
@@ -36,7 +46,7 @@ retryWhileUndefined(function() {
 	let formula = ('|kx+b|+c');
 
 	let question, answ;
-	switch (sl(1, 3)) {
+	switch (sl(1, 2)) {
 	case 1:
 		let x = sl(6, 10).pm();
 		question = '$f(' + x + ')$';
@@ -50,10 +60,14 @@ retryWhileUndefined(function() {
 		answ = st[1];
 		question = st[0] + ' всех коэффициентов';
 		break;
-	case 3:
-		answ = sl(6, 20);
-		question = 'точку, где $f(x)=' + f(answ) + '$';
 	}
+	let sign = [
+		['>', ' \\geq '].iz(), ['>', '\\geq'].iz()
+	];
+	if (k < 0)
+		sign[0] = ['<', ' \\leq '].iz();
+	if (b < 0)
+		sign[1] = ['<', ' \\leq '].iz();
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
@@ -83,7 +97,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции вида $f(x)=' + formula +
-			'$. где числа $b,c$ и $k$ — целые, $k>0$. Найдите ' + question + '.',
+			'$. где числа $b$, $c$ и $k$ — целые, $k' + sign[0] + '0$, $b' + sign[1] + '0$. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=|' + (k + 'x+' + b + '|+' + c).plusminus() + '$',
 	});
