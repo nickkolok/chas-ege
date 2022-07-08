@@ -26,7 +26,12 @@ retryWhileUndefined(function() {
 			return;
 	} else {
 		answ = chisl;
-		find = 'значения $x$, при котором $f(x)=' + f(chisl).ts() + '$';
+		let variant;
+		if (chisl > a)
+			variant = 'наибольшее';
+		else
+			variant = 'наименьшее';
+		find = variant + ' значения $x$, при котором $f(x)=' + f(chisl).ts() + '$';
 		if (!(f(chisl) * 1000).isZ())
 			return;
 	}
