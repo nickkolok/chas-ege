@@ -4,18 +4,34 @@ retryWhileUndefined(function() {
 	function f(x) {
 		return (k * x + b).abs() + c;
 	}
-	let k = sl(1, 10, 0.5);
-	let b = sl(-8, 8, 0.5);
-	let c = sl(-8, 8, 0.5);
+
+	function f1(x) {
+		return -k * x - b + c;
+	}
+
+	function f2(x) {
+		return k * x + b + c;
+	}
+	let k = sl(1, 10);
+	let b = sl(-8, 8);
+	let c = sl(-8, 8);
 	if ((-b / k).abs() > 5.5 || f(-b / k).abs() > 5)
 		return;
-	let p = intPoints(f, {
+	let p1 = intPoints(f1, {
 		minX: -6,
-		maxX: 7,
+		maxX: -b / k,
 		minY: -6,
 		maxY: 5,
 	});
-	if (p.length < 4)
+	if (p1.length < 2)
+		return;
+	let p2 = intPoints(f2, {
+		minX: -b / k,
+		maxX: 6,
+		minY: -6,
+		maxY: 5,
+	});
+	if (p2.length < 2)
 		return;
 	let formula = ('|kx+b|+c');
 
@@ -54,14 +70,15 @@ retryWhileUndefined(function() {
 		ct.scale(20, -20);
 		ct.lineWidth = 0.1;
 		graph9AdrawFunction(ct, f, {
-			minX: -6,
+			minX: -6.3,
 			maxX: 7,
 			minY: -7,
 			maxY: 6,
 			step: 0.05,
 		});
 		//точки
-		graph9AmarkCircles(ct, p, 3, 0.15);
+		graph9AmarkCircles(ct, p1, 2, 0.15);
+		graph9AmarkCircles(ct, p2, 2, 0.15);
 	};
 
 	NAtask.setTask({
