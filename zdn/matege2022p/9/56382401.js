@@ -4,21 +4,44 @@ retryWhileUndefined(function() {
 	function f(x) {
 		return (k * x.abs() + b).abs();
 	}
-	let k = sl(0.1, 3, 0.1);
-	let b = sl(0, 3, 0.5);
-	if (b / k > 6)
+
+	function f1(x) {
+		return (-k * x + b).abs();
+	}
+
+	function f2(x) {
+		return (k * x + b).abs();
+	}
+	let k = sl(0.1, 3, 0.1).pm();
+	let b = sl(-3, 3, 0.5);
+	if ((-b / k).abs() > 6 && f(-b / k).abs() > 6)
 		return;
-	let points = intPoints(f, {
+	let sign = [
+		['>', ' \\geq '].iz(), ['>', '\\geq'].iz()
+	];
+	if (k < 0)
+		sign[0] = ['<', ' \\leq '].iz();
+	if (b < 0)
+		sign[1] = ['<', ' \\leq '].iz();
+	let p1 = intPoints(f1, {
 		minX: -5,
+		maxX: -1,
+		minY: -5.5,
+		maxY: 5.5
+	});
+	if (p1.length < 2)
+		return;
+	let p2 = intPoints(f2, {
+		minX: 1,
 		maxX: 6,
 		minY: -5.5,
 		maxY: 5.5
 	});
-	if (points.length < 2)
+	if (p2.length < 2)
 		return;
 	let find = 0,
 		answ = 0;
-	switch (sl(1, 4)) {
+	switch (sl(1, 3)) {
 	case 1:
 		find = 'произведение коэффициентов';
 		answ = k * b;
@@ -32,15 +55,7 @@ retryWhileUndefined(function() {
 		find = '$f(' + num1 + ')$';
 		answ = f(num1).ts();
 		break;
-	case 4:
-		let num2 = sl(6, 10, 05);
-		answ = num2;
-		find = 'точку, где $f(x)=' + f(num2).ts() + '$';
-		break;
 	}
-
-
-
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
@@ -60,13 +75,15 @@ retryWhileUndefined(function() {
 		});
 
 		//точки
-		graph9AmarkCircles(ct, points, 2, 0.15);
+		graph9AmarkCircles(ct, p1, 2, 0.15);
+		graph9AmarkCircles(ct, p2, 2, 0.15);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображен график функций $f(x)=|k|x|+b|$, где $k,b>0$. Найдите ' + find +
+		text: 'На рисунке изображен график функций $f(x)=\\Bigl|k|x|+b\\Bigr|$, где $k' + sign[0] + '0$, $b' + sign[1] +
+			'0$. Найдите ' + find +
 			'.',
 		answers: answ,
-		analys: ('$f(x)=|' + k.ts() + '|x|+' + b.ts() + '|').plusminus() + '$'
+		analys: ('$f(x)=\\Bigl|' + k.ts() + '|x|+' + b.ts() + '\\Bigr|').replace('+-', '-') + '$'
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
