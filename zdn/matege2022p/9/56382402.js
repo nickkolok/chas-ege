@@ -17,7 +17,7 @@ retryWhileUndefined(function() {
 	});
 	if (p.length < 2)
 		return;
-	let formula = ('ax^2+b|x|+c');
+	let formula = 'ax^2+b|x|+c';
 	if (p.length == 2) {
 		let variant = [
 			['a', a.ts()],
@@ -32,9 +32,9 @@ retryWhileUndefined(function() {
 	case 1:
 		let num1 = sl(-10, 10);
 		question = 'значение дискриминанта уравнения $f(x)=' + num1 + '$';
-		answ = b.pow(2) - 4 * (c - num1) / a;
+		answ = b.pow(2) - 4 * (c - num1)*a;
 		if ((answ * 1000).isZ())
-		break;
+			break;
 	case 2:
 		let x = sl(6, 10).pm();
 		question = '$f(' + x + ')$';
@@ -77,7 +77,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции вида $f(x)=' + formula +
-			'$. где числа $a,b$ и $с$ — целые. Найдите ' + question + '.',
+			'$. где числа $a,b$ и $c$ — целые. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=' + (a.ts() + 'x^2+' + b.ts() + '|x|+' + c.ts()).plusminus() + '$',
 	});
