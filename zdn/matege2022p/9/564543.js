@@ -12,8 +12,8 @@ retryWhileUndefined(function() {
 	}
 	let trigfuncs = ['sin', 'cos'].iz();
 	let a = sluchch(1, 6).pm();
-	let b = sluchch(2, 4).pm();
-	let c = sl(0.5, 2, 0.5).pm();
+	let b = sluchch(2, 5).pm();
+	let c = sl1().pm();
 	let d = sl(-5, 5);
 	if (a.abs() + d.abs() > 6)
 		return;
@@ -62,7 +62,11 @@ retryWhileUndefined(function() {
 		question = st[0] + ' всех коэффициентов';
 		break;
 	}
-
+	let limits;
+	if (c > 0)
+		limits = '[0, 2\\pi)';
+	else
+		limits = '(-2\\pi, 0]';
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
@@ -79,7 +83,7 @@ retryWhileUndefined(function() {
 		ct.scale(20, -20);
 		ct.lineWidth = 0.1;
 		graph9AdrawFunction(ct, f, {
-			minX: -6,
+			minX: -6.3,
 			maxX: 7,
 			minY: -7,
 			maxY: 6,
@@ -89,9 +93,9 @@ retryWhileUndefined(function() {
 	};
 
 	NAtask.setTask({
-		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, где $a,b,c$ и $d$ - целые' + (', а $a' +
-				sign +
-				'0$').esli(trigfuncs == 'sin' && formula.includes('a')) + '. Найдите ' + question +
+		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, где  $a$, $b$, $c$ и $d$ - целые' +
+			(', а $a' + sign + '0$').esli(trigfuncs == 'sin' && formula.includes('a')) + ', $c \\in ' + limits + '$' +
+			'. Найдите ' + question +
 			'.',
 		answers: answ,
 		analys: ('$f(x)=' + a + '\\' + trigfuncs + '(\\frac{\\pi}{' + b + '}x+' + (factor).texfracpi(1) + '\\cdot' + '('.esli(
