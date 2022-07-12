@@ -31,7 +31,7 @@ retryWhileUndefined(function() {
 			variant = 'наибольшее';
 		else
 			variant = 'наименьшее';
-		find = variant + ' значения $x$, при котором $f(x)=' + f(chisl).ts() + '$';
+		find = variant + ' значение $x$, при котором $f(x)=' + f(chisl).ts() + '$';
 		if (!(f(chisl) * 1000).isZ())
 			return;
 	}
@@ -58,7 +58,7 @@ retryWhileUndefined(function() {
 		graph9AmarkCircles(ct, points, 3, 0.15);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображен график функций $f(x)=\\frac{k}{(x' + ['+', '-'].iz() + 'a)^2}$. Найдите ' + find +
+		text: 'На рисунке изображен график функции $f(x)=\\frac{k}{(x' + ['+', '-'].iz() + 'a)^2}$. Найдите ' + find +
 			'.',
 		answers: answ,
 		analys: ('$f(x)=\\frac{' + k + '}{(x+' + a + ')^2}').plusminus() + '$'
