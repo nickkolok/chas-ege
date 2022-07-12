@@ -33,7 +33,7 @@ retryWhileUndefined(function() {
 
 	case 3:
 		let num3 = sl(1, 10).pm();
-		let num4 = slKrome(num3.abs, 1, 10).pm();
+		let num4 = slKrome(num3.abs(), 1, 10).pm();
 		let signs = [
 			['+', f(num3) + f(num4)],
 			['-', f(num3) - f(num4)],
@@ -78,7 +78,7 @@ retryWhileUndefined(function() {
 		graph9AmarkCircles(ct, points, 3, 0.15);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображен график функции $f(x)=\\frac{x^2}{a}+bx+c$, где $a, b$ и $c$ - целые. Найдите ' +
+		text: 'На рисунке изображен график функции $f(x)=\\frac{x^2}{a}+bx+c$, где $a$, $b$ и $c$ - целые. Найдите ' +
 			question + '.',
 		answers: answ,
 		analys: ('$f(x)=\\frac{' + 'x^2}{' + a + '}+' + b + 'x+' + c).plusminus() + '$'
