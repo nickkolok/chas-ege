@@ -17,13 +17,15 @@ retryWhileUndefined(function() {
 	let find = 0,
 		answ = 0;
 	if (sl1()) {
-		find = '$f(\\sqrt{' + chisl + '})$';
+		find = '$f(' + chisl + ')$';
 		answ = (f(chisl)).ts();
 	} else {
 		answ = chisl.ts();
 		find = 'значение $x$, при котором $f(x)=' + f(chisl).ts(1) + '$';
 	}
 	if (!(answ * 1000).isZ() || !(f(chisl)).isZ())
+		return;
+	if (f(chisl).abs() < 6 && chisl < 6)
 		return;
 	let p = intPoints(f, {
 		minX: 0,
