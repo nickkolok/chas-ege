@@ -1,13 +1,13 @@
-(function() {
+retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
 	function f(x) {
 		return k.num * Math.sqrt(x * k.sq) / k.det;
 	}
 	let k = {
-		sq: sl(1, 7),
-		num: sl(1, 5).pm(),
-		det: sl(1, 5),
+		sq: sl(1, 10),
+		num: sl(1, 10).pm(),
+		det: sl(1, 10),
 	};
 	if (k.sq.isPolnKvadr()) {
 		k.num *= k.sq.sqrt();
@@ -61,7 +61,7 @@
 		graph9AmarkCircles(ct, p, 2, 0.15);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображён график функции $f(x)=k\\sqrt{x}$, где $k$ - иррациональное число. Найдите ' + find +
+		text: 'На рисунке изображён график функции $f(x)=k\\sqrt{x}$. Найдите ' + find +
 			'. ',
 		answers: answ,
 		analys: ('$f(x)=' + k.num.texfrac(k.det) + '\\sqrt{' + k.sq + '}' + '\\sqrt{x}$').plusminus().replace('\\sqrt{1}',
@@ -72,5 +72,6 @@
 		height: 300,
 		paint: paint1,
 	});
-})();
+	return true;
+}, 100000);
 //509116
