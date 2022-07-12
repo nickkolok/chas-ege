@@ -54,11 +54,11 @@ retryWhileUndefined(function() {
 		break;
 	case 2:
 		let st = [
-			['произведение', k * b * c],
-			['сумму', k + b + c]
+			['произведение $k \\cdot b \\cdot c$', k * b * c],
+			['сумму $k+b+c$', k + b + c]
 		].iz();
 		answ = st[1];
-		question = st[0] + ' всех коэффициентов';
+		question = st[0];
 		break;
 	}
 	let sign = [
@@ -97,7 +97,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции вида $f(x)=' + formula +
-			'$. где числа $b$, $c$ и $k$ — целые, $k' + sign[0] + '0$, $b' + sign[1] + '0$. Найдите ' + question + '.',
+			'$, где числа $b$, $c$ и $k$ — целые, $k' + sign[0] + '0$, $b' + sign[1] + '0$. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=|' + (k + 'x+' + b + '|+' + c).plusminus() + '$',
 	});
