@@ -67,7 +67,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции вида $f(x)=' + formula +
-			'$, где числа $a,b,c$ и $d$ — рациональные. Найдите ' + question + '.',
+			'$. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=' + (a.ts() + 'x^3+' + b.ts() + 'x^2+' + c.ts() + 'x+' + d.ts()).plusminus() + '$',
 	});
