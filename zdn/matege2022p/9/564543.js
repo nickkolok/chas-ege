@@ -64,9 +64,9 @@ retryWhileUndefined(function() {
 	}
 	let limits;
 	if (c > 0)
-		limits = '[0, 2\\pi)';
+		limits = '[0, 2)';
 	else
-		limits = '(-2\\pi, 0]';
+		limits = '(-2, 0]';
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
@@ -94,7 +94,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, где  $a$, $b$, $c$ и $d$ - целые' +
-			(', а $a' + sign + '0$').esli(trigfuncs == 'sin' && formula.includes('a')) + ', $c \\in ' + limits + '$' +
+			(', $a' + sign + '0$').esli(formula.includes('a\\sin')) + ', $c \\in ' + limits + '$' +
 			'. Найдите ' + question +
 			'.',
 		answers: answ,
