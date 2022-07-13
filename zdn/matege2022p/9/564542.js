@@ -55,12 +55,29 @@ retryWhileUndefined(function() {
 		if ((answ * 1000).isZ())
 			break;
 	case 3:
-		let st = [
-			['произведение', a * b * c * d],
-			['сумму', a + b + c + d]
-		].iz();
-		answ = st[1];
-		question = st[0] + ' всех коэффициентов';
+		question = '';
+		let mng = [c, d];
+		let st = ['c', 'd'];
+		if (formula.includes('a\\')) {
+			st.push('a');
+			mng.push(a);
+		}
+		if (formula.includes('b')) {
+			st.push('b');
+			mng.push(b);
+		}
+		if (sl1()) {
+			question = 'сумму $' + st.slag() + '$';
+			answ = mng.sum();
+		} else {
+			for (let i = 0; i < st.length; i++) {
+				question += st[i];
+				if (i != st.length - 1)
+					question += '\\cdot ';
+			}
+			question = 'произведение $' + question + '$';
+			answ = mng.production();
+		}
 		if (c > 0)
 			limits = ', $0 \\leq c' + ['<2', '\\leq 1 '].iz() + '$';
 		else
