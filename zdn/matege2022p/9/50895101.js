@@ -17,6 +17,7 @@ retryWhileUndefined(function() {
 		return;
 	let find, answ;
 	let chisl = slKrome(a.abs(), 6, 10).pm();
+	let d = chisl - a;
 	if (!(chisl - a))
 		return;
 	if (sl1()) {
@@ -28,7 +29,13 @@ retryWhileUndefined(function() {
 		answ = chisl;
 		let variant;
 		if (chisl > a)
-			variant = 'наибольшее';
+			if (chisl > 0 && chisl + 2 * d < 0)
+				variant = 'положительное';
+			else
+				variant = 'наибольшее';
+		else
+		if (chisl < 0 && chisl - 2 * d > 0)
+			variant = 'отрицательное';
 		else
 			variant = 'наименьшее';
 		find = variant + ' значение $x$, при котором $f(x)=' + f(chisl).ts() + '$';
