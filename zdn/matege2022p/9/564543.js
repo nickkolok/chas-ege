@@ -40,6 +40,7 @@ retryWhileUndefined(function() {
 	if (p.length < 1)
 		return;
 	let question, answ;
+	let limits = '';
 	switch (sl(1, 3)) {
 	case 1:
 		let x1 = sl(5, 10).pm();
@@ -60,13 +61,12 @@ retryWhileUndefined(function() {
 		].iz();
 		answ = st[1];
 		question = st[0] + ' всех коэффициентов';
+		if (c > 0)
+			limits = ', $0 \\leq c' + ['<2', '\\leq 1 '].iz() + '$';
+		else
+			limits = ', $' + ['-1 \\leq ', '-2 < '].iz() + 'c \\leq 0 $';
 		break;
 	}
-	let limits;
-	if (c > 0)
-		limits = '[0, 2)';
-	else
-		limits = '(-2, 0]';
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
@@ -93,8 +93,9 @@ retryWhileUndefined(function() {
 	};
 
 	NAtask.setTask({
-		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, где  $a$, $b$, $c$ и $d$ - целые' +
-			(', $a' + sign + '0$').esli(formula.includes('a\\sin')) + ', $c \\in ' + limits + '$' +
+		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, где ' + ('$a$,').esli(formula.includes(
+				'a\\')) + ' ' + ('$b$,').esli(formula.includes('b')) + ' $c$ и $d$ - целые' +
+			(', $a' + sign + '0$').esli(formula.includes('a\\sin')) + limits +
 			'. Найдите ' + question +
 			'.',
 		answers: answ,
