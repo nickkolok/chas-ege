@@ -1,6 +1,6 @@
 (function(){'use strict';
 
-var a=sluchch(-9,9);
+var a=sluchch(1,9).pm();
 var b=sluchch(1,9).pm();
 
 chas2.task.setEquationTask({
