@@ -14,18 +14,17 @@ retryWhileUndefined(function() {
 		k.sq = 1;
 	}
 	let chisl = k.sq * sl(1, 10).pow(2);
-	let find = 0,
-		answ = 0;
+	let find, answ;
 	if (sl1()) {
 		find = '$f(' + chisl + ')$';
-		answ = (f(chisl)).ts();
+		answ = f(chisl).ts();
 	} else {
 		answ = chisl.ts();
 		find = 'значение $x$, при котором $f(x)=' + f(chisl).ts(1) + '$';
 	}
 	if (!(answ * 1000).isZ() || !(f(chisl)).isZ())
 		return;
-	if (f(chisl).abs() < 6 && chisl < 6)
+	if (f(chisl).abs() < 8 && chisl < 12)
 		return;
 	let p = intPoints(f, {
 		minX: 0,
