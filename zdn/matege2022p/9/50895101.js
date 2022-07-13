@@ -16,9 +16,9 @@ retryWhileUndefined(function() {
 	if (points.length < 2)
 		return;
 	let find, answ;
-	let chisl = slKrome(a.abs(), 6, 10).pm();
-	let d = chisl - a;
-	if (!(chisl - a))
+	let chisl = slKrome(a.abs(), 0, 10).pm();
+	let d = (chisl.abs() - a.abs()).abs();
+	if (!(d) || (f(chisl).isZ() && chisl.abs() < 6))
 		return;
 	if (sl1()) {
 		find = '$f(' + chisl.ts() + ')$';
@@ -28,21 +28,20 @@ retryWhileUndefined(function() {
 	} else {
 		answ = chisl;
 		let variant;
-		if (chisl > a)
-			if (chisl > 0 && chisl + 2 * d < 0)
-				variant = 'положительное';
+		if (chisl > -a)
+			if (chisl > 0 && chisl - 2 * d < 0)
+				variant = ['положительное', 'наибольшее'].iz();
 			else
 				variant = 'наибольшее';
 		else
-		if (chisl < 0 && chisl - 2 * d > 0)
-			variant = 'отрицательное';
+		if (chisl < 0 && chisl + 2 * d > 0)
+			variant = ['отрицательное', 'наименьшее'].iz();
 		else
 			variant = 'наименьшее';
 		find = variant + ' значение $x$, при котором $f(x)=' + f(chisl).ts() + '$';
 		if (!(f(chisl) * 1000).isZ())
 			return;
 	}
-
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
