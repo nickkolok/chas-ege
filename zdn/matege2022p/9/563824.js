@@ -2,8 +2,8 @@ retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
 	function f(x) {
-			return a * x + plusminus * (b * x + c).abs() + d;
-		}
+		return a * x + plusminus * (b * x + c).abs() + d;
+	}
 		//Почему бы и не отрицание модуля?)
 	let plusminus = (1).pm();
 	let znack;
