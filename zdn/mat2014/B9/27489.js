@@ -1,16 +1,3 @@
-CanvasRenderingContext2D.prototype.setkaVer2 = function(h, w, hor, ver, mash) {
-	if (mash === undefined)
-		mash = 1;
-	else {
-		hor *= mash;
-		ver *= mash;
-	}
-	for (let i = 0; i < h; i += hor)
-		this.drawLine(i, 0, i, w);
-
-	for (let i = 0; i < w; i += ver)
-		this.drawLine(0, i, h, i);
-};
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
@@ -76,14 +63,14 @@ retryWhileUndefined(function() {
 	switch (cs) {
 	case 1:
 		text =
-			'$y=f\'(x)$ - производная функции $f(x)$, определённой на интервале $[' + -Xmin + ';' + Xmax +
-			']$. Найдите количество точек экстремума функции';
+			'$y=f\'(x)$ - производная функции $f(x)$, определённой на интервале $(' + -Xmin + ';' + Xmax +
+			')$. Найдите количество точек экстремума функции';
 		answ = points.size;
 		break;
 	case 2:
 		text =
-			'$y=f(x)$, определённой на интервале $[' + -Xmin + ';' + Xmax +
-			']$. Найдите количество точек, где ' + ['производная этой функции равна нулю',
+			'$y=f(x)$, определённой на интервале $(' + -Xmin + ';' + Xmax +
+			')$. Найдите количество точек, где ' + ['производная этой функции равна нулю',
 				'касательная к $f(x)$ параллельна $y=' + sl(-20, 20) + '$'
 			].iz();
 		answ = points.size;
@@ -100,6 +87,7 @@ retryWhileUndefined(function() {
 			x1: '1',
 			y1: '1',
 			sh1: 17,
+			sh2: 17,
 		}, 20);
 		//График
 		ct.scale(60, -60);
@@ -118,7 +106,7 @@ retryWhileUndefined(function() {
 
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображён график функции ' + text + ' на интервале $[' + limit1 + ';' + limit2 + ']$.',
+		text: 'На рисунке изображён график функции ' + text + ' на отрезке $[' + limit1 + ';' + limit2 + ']$.',
 		answers: answ,
 		/*analys: ('$cos(' + a.ts() + 'x)+sin(' + b.ts() + 'x)$').plusminus() + '<br>' +
 			('$\\frac{sin(' + a.ts() + 'x)}{' + (-a).ts() + '}+\\frac{cos(' + b.ts() + 'x)}{' + (-b).ts() + '}$').plusminus(),*/
