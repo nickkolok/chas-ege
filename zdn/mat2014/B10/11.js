@@ -51,15 +51,15 @@ var actualDraw=function(ct){
 	ct.lineWidth=1;
 	ct.fillStyle='#000000';
 	ct.lineWidth = 2;
-	/* A */ ct.fillKrug(bCube.lowAx, bCube.lowAy, 5);
-	/* B */ ct.fillKrug(bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, 5);
-	/* C */ ct.fillKrug(bCube.lowCx, bCube.lowCy, 5);
-	/* D */ ct.fillKrug(bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, 5);
+	/* A */ ct.drawFilledCircle(bCube.lowAx, bCube.lowAy, 5);
+	/* B */ ct.drawFilledCircle(bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, 5);
+	/* C */ ct.drawFilledCircle(bCube.lowCx, bCube.lowCy, 5);
+	/* D */ ct.drawFilledCircle(bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, 5);
 
-	/* A' */ct.fillKrug(bCube.lowAx, bCube.lowAy+bCube.height, 5);
-	/* B' */ct.fillKrug(bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height, 5);
-	/* C' */ct.fillKrug(bCube.lowCx, bCube.lowCy+bCube.height, 5);
-	/* D' */ct.fillKrug(bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height, 5);
+	/* A' */ct.drawFilledCircle(bCube.lowAx, bCube.lowAy+bCube.height, 5);
+	/* B' */ct.drawFilledCircle(bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height, 5);
+	/* C' */ct.drawFilledCircle(bCube.lowCx, bCube.lowCy+bCube.height, 5);
+	/* D' */ct.drawFilledCircle(bCube.lowCx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height, 5);
 
 	/*  A-A' */ct.drawLineSpec(bCube.lowAx, bCube.lowAy, bCube.lowAx, bCube.lowAy+bCube.height);
 	/*  B-B' */ct.drawLine(bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy, bCube.lowBx-Math.abs(bCube.lowBy-bCube.lowCy), bCube.lowBy+bCube.height);
@@ -88,10 +88,10 @@ var actualDraw=function(ct){
 	ct.drawLine(600,400,0,400);
 	ct.drawLine(0,400,0,0);
 
-	ct.fillKrug(0,0,10);
-	ct.fillKrug(0,400,10);
-	ct.fillKrug(600,400,10);
-	ct.fillKrug(600,0,10);
+	ct.drawFilledCircle(0,0,10);
+	ct.drawFilledCircle(0,400,10);
+	ct.drawFilledCircle(600,400,10);
+	ct.drawFilledCircle(600,0,10);
 };
 
 // Создание задания через API тренажёра

@@ -46,7 +46,7 @@ var paint = function(ct) {
 	}
 	ct.fillStyle='black';
 	for(var i2=1;i2<29;i2++){
-		ct.fillKrug(i2*s-s,-(b[i2]-a)*s/c,5);
+		ct.drawFilledCircle(i2*s-s,-(b[i2]-a)*s/c,5);
 	}
 };
 
