@@ -36,11 +36,11 @@ retryWhileUndefined(function() {
 		c1 = 0,
 		d1 = 0;
 	let question, answ, q;
-	switch (1) {
+	switch (sl(1, 3)) {
 	case 1:
 		if (f(-c / b).abs() > 7 && (-100 * c / b).isZ()) {
 			question = [
-				['ординуту', f(-c / b)],
+				['ординату', f(-c / b)],
 				['абсциссу', -c / b]
 			].iz();
 			answ = question.pop();
@@ -79,6 +79,20 @@ retryWhileUndefined(function() {
 		question += ' всех коэффициентов';
 		break;
 	}
+	let sign = '';
+	if (question.includes('всех') || question.includes('корень')) {
+		if (b > 0)
+			sign = '$b' + ['>', '\\geq'].iz() + '0$, ';
+		else
+			sign = '$b' + ['<', '\\leq'].iz() + '0$, ';
+		if (c >= 0) {
+			if (!c)
+				sign += '$c \\geq 0$';
+			else
+				sign += '$c' + ['>', '\\geq'].iz() + '0$';
+		} else
+			sign += '$c' + ['<', '\\leq'].iz() + '0$';
+	}
 	let paint1 = function(ct) {
 		h = 300;
 		//Оси координат
@@ -102,7 +116,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции вида $f(x)=ax+d' + znack +
-			'|bx+c|$, где числа $a,b,c$ и $d$ — целые. Найдите ' +
+			'|bx+c|$, где числа $a$, $b$, $c$ и $d$ — целые ' + sign + '. Найдите ' +
 			question + '.',
 		answers: answ,
 		analys: '$f(x)=' + (a + 'x+' + (d) + '' + znack + '|' + b + 'x+' + c).plusminus() + '|$',
