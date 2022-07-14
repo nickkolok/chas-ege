@@ -1,20 +1,3 @@
-function intPointsWithoutRepeat(f, o) {
-	if (o.step === undefined) {
-		o.minX = o.minX.ceil();
-		o.maxX = o.maxX.floor();
-		o.step = 1;
-	}
-	let XY = [];
-	let Y = [];
-	for (let i = o.minX; i < o.maxX; i += o.step) {
-		if (f(i) <= o.maxY && f(i) >= o.minY)
-			if (!Y.includes(f(i)) && f(i).isZ()) {
-				Y.push(f(i));
-				XY.push([i, f(i)]);
-			}
-	}
-	return XY;
-}
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
@@ -26,14 +9,16 @@ retryWhileUndefined(function() {
 	let a = b.pow(2) / (4 * c);
 	if (!(a * 1000).isZ())
 		return;
-	let p = intPointsWithoutRepeat(f, {
+	let p = intPoints(f, {
 		minX: -6,
-		maxX: 7,
+		maxX: 0,
 		minY: -6,
 		maxY: 5.5,
 	});
 	if (p.length < 2)
 		return;
+	for (let i = 0; i < p.length; i++)
+		p[i][0] = p[i][0].pm();
 	let formula = 'ax^2+b|x|+c';
 	if (p.length == 2) {
 		let variant = [
@@ -82,7 +67,7 @@ retryWhileUndefined(function() {
 		ct.scale(20, -20);
 		ct.lineWidth = 0.1;
 		graph9AdrawFunction(ct, f, {
-			minX: -6,
+			minX: -6.3,
 			maxX: 7,
 			minY: -7,
 			maxY: 6,
