@@ -13,7 +13,7 @@ var paint = function(ct) {
 	ct.translate(w/2,h/2);
 	ct.lineWidth=2;
 	var s=20;
-	ct.setka(20,s);
+	ct.regularGrid(20,s);
 	ct.lineWidth=5;
 	ct.drawLine(0,0,Math.abs(b)*s,0);
 	ct.drawLine(0,0,b*s,a*s);
