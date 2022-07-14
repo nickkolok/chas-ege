@@ -22,7 +22,6 @@ retryWhileUndefined(function() {
 			['a', a.ts()],
 			['b', b.ts()],
 			['c', c.ts()],
-			['d', d.ts()]
 		].iz(p.length);
 		formula = formula.replace(variant[0][0], variant[0][1]).replace(variant[1][0], variant[1][1]).plusminus();
 	}
@@ -35,9 +34,32 @@ retryWhileUndefined(function() {
 		answ = f(x);
 		break;
 	case 2:
-		let st=[['произведение',a*b*c*d], ['сумму',a+b+c+d]].iz();
-		answ= st[1];
-		question=st[0]+' всех коэффициентов многочлена';
+		let mng = [d];
+		let st = ['d'];
+		if (formula.includes('a')) {
+			st.push('a');
+			mng.push(a);
+		}
+		if (formula.includes('b')) {
+			st.push('b');
+			mng.push(b);
+		}
+		if (formula.includes('c')) {
+			st.push('c');
+			mng.push(c);
+		}
+		if (sl1()) {
+			question = 'сумму $' + st.slag() + '$';
+			answ = mng.sum();
+		} else {
+			for (let i = 0; i < st.length; i++) {
+				question += st[i];
+				if (i != st.length - 1)
+					question += '\\cdot ';
+			}
+			question = 'произведение $' + question + '$';
+			answ = mng.production();
+		}
 	}
 	let paint1 = function(ct) {
 		let h = 300;
@@ -78,4 +100,4 @@ retryWhileUndefined(function() {
 	});
 	return true;
 }, 100000);
-//50914904
+//50914901
