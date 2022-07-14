@@ -137,10 +137,10 @@ window.vopr.dey = function(){
 	ct.fillStyle = '#000000';
 
 	/*Corners*/
-	ct.fillKrug(-maxX, +maxY, 7);
-	ct.fillKrug(+maxX, -maxY, 7);
-	ct.fillKrug(-maxX, -maxY, 7);
-	ct.fillKrug(+maxX, +maxY, 7);
+	ct.drawFilledCircle(-maxX, +maxY, 7);
+	ct.drawFilledCircle(+maxX, -maxY, 7);
+	ct.drawFilledCircle(-maxX, -maxY, 7);
+	ct.drawFilledCircle(+maxX, +maxY, 7);
 
 	/*Nodes and arrows*/
 	for (var i2 = 0; i2 < nodeCount; i2++){
@@ -162,9 +162,9 @@ window.vopr.dey = function(){
 	/*Set nodes text*/
 	for(var i2 = 0; i2 < nodeCount; i2++){
 		ct.fillStyle = '#000000';
-		ct.fillKrug(nodeXarray[i2], nodeYarray[i2], baseRadius);
+		ct.drawFilledCircle(nodeXarray[i2], nodeYarray[i2], baseRadius);
 		ct.fillStyle = '#FFFFFF';
-		ct.fillKrug(nodeXarray[i2],nodeYarray[i2], baseRadius-2);
+		ct.drawFilledCircle(nodeXarray[i2],nodeYarray[i2], baseRadius-2);
 		ct.fillStyle = '#000000';
 		ct.fillText((nodeCharArray[i2]), nodeXarray[i2] - fontSize / 2, nodeYarray[i2] + fontSize/2);
 	};

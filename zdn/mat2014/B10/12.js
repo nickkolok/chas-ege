@@ -124,10 +124,10 @@ var actualDraw = function(ct){
 	ct.drawLine(600,400,0,400);
 	ct.drawLine(0,400,0,0);
 
-	ct.fillKrug(0,0,10);
-	ct.fillKrug(0,400,10);
-	ct.fillKrug(600,400,10);
-	ct.fillKrug(600,0,10);
+	ct.drawFilledCircle(0,0,10);
+	ct.drawFilledCircle(0,400,10);
+	ct.drawFilledCircle(600,400,10);
+	ct.drawFilledCircle(600,0,10);
 
 	ct.fillStyle='black';
 };
