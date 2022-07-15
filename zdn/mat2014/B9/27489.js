@@ -4,9 +4,9 @@ retryWhileUndefined(function() {
 	function f(x) {
 		switch (cs) {
 		case 1: //производная
-			return (a * x).cos() + (b * x).sin();
+			return ((a * x).cos() + (b * x).sin());
 		case 2: //функция 
-			return (a * x).sin() / a - (b * x).cos() / b;
+			return ((a * x).sin() / a - (b * x).cos() / b);
 		}
 	}
 
@@ -41,23 +41,32 @@ retryWhileUndefined(function() {
 	let cs = sl(1, 2);
 	let a = sl(1, 2, 0.5).pm();
 	let b = slKrome(a.abs(), 1, 2, 0.5).pm();
+	let bag = [
+		[1, 1.5],
+		[2, 1.5],
+		[2, 1]
+	];
+	if (cs == 1)
+		for (let i = 0; i < 3; i++)
+			if (a.abs() == bag[i][0] && b.abs() == bag[i][1])
+				return;
 	let pi = Math.PI;
 	let mash = 2 / 3;
-	let points = new Map();
+	let points = [];
 	let Xmin = sl(6, 8);
 	let Xmax = sl(6, 8);
-	let limit1 = sl(1, Xmin).pm();
-	let limit2 = sl(limit1.abs(), Xmax);
+	let limit1 = sl(1, Xmin-1).pm();
+	let limit2 = sl(limit1.abs(), Xmax-1);
 	for (let n = -10; n < 10; n++) {
 		let root1 = 0.5 * (pi - 4 * pi * n) / (a - b);
 		if (itIsRoot(root1))
-			points.set(root1, f(root1));
+			points.push([root1, f(root1)]);
 
 		let root2 = -0.5 * (pi - 4 * pi * n) / (a + b);
 		if (itIsRoot(root2))
-			points.set(root2, f(root2));
+			points.push([root2, f(root2)]);
 	}
-	if (points.size < 2)
+	if (points.length < 2)
 		return;
 	let text, answ;
 	switch (cs) {
@@ -65,7 +74,7 @@ retryWhileUndefined(function() {
 		text =
 			'$y=f\'(x)$ - производная функции $f(x)$, определённой на интервале $(' + -Xmin + ';' + Xmax +
 			')$. Найдите количество точек экстремума функции';
-		answ = points.size;
+		answ = points.length;
 		break;
 	case 2:
 		text =
@@ -73,7 +82,7 @@ retryWhileUndefined(function() {
 			')$. Найдите количество точек, где ' + ['производная этой функции равна нулю',
 				'касательная к $f(x)$ параллельна $y=' + sl(-20, 20) + '$'
 			].iz();
-		answ = points.size;
+		answ = points.length;
 		break;
 	}
 	let paint1 = function(ct) {
@@ -99,9 +108,9 @@ retryWhileUndefined(function() {
 			maxY: 4 * mash,
 			step: 0.01,
 		});
-		/*//точки
-		ct.fillStyle = "red";
-		graph9AmarkCircles(ct, [...points], points.size, 0.04);*/
+		//точки
+		/*ct.fillStyle = "red";
+		graph9AmarkCircles(ct, points, points.length, 0.04);*/
 		emptyPoints(ct);
 
 	};
