@@ -36,7 +36,7 @@ retryWhileUndefined(function() {
 		c1 = 0,
 		d1 = 0;
 	let question, answ, q;
-	switch (sl(1, 3)) {
+	switch (sl(1, 4)) {
 	case 1:
 		if (f(-c / b).abs() > 7 && (-100 * c / b).isZ()) {
 			question = [
@@ -49,24 +49,20 @@ retryWhileUndefined(function() {
 		}
 	case 2:
 		q = sl(-10, 10, 0.5);
-		question = 'корень уравнения $';
-		if (sl1()) {
+		let variant = ['ax', 'bx'].iz(sl(1, 2));
+		if (sl1())
+			variant.push('c');
+		if (sl1())
+			variant.push('d');
+		question = 'найдите корень уравнения $' + variant.slag() + '=' + q + '$';
+		if (question.includes('ax'))
 			a1 = a;
-			question += 'ax+';
-		}
-		if (sl1() || !a1) {
+		if (question.includes('bx'))
 			b1 = b;
-			question += 'bx+';
-		}
-		if (sl1() || !d1) {
+		if (question.includes('c'))
 			c1 = c;
-			question += 'c+';
-		}
-		if (sl1()) {
+		if (question.includes('d'))
 			d1 = d;
-			question += 'd+';
-		}
-		question = question.slice(0, -1) + '=' + q + '$';
 		answ = (-c1 - d1 + q) / (a1 + b1);
 		if ((answ * 100).isZ())
 			break;
@@ -78,13 +74,23 @@ retryWhileUndefined(function() {
 		answ = question.pop();
 		question += ' всех коэффициентов';
 		break;
+	case 4:
+		q = [
+			[a, '$a$'],
+			[b, '$b$'],
+			[c, '$c$'],
+			[d, '$d$']
+		].iz();
+		question = q.pop();
+		answ = q;
+		break;
 	}
 	let sign = '';
-	if (question.includes('всех') || question.includes('корень')) {
+	if (question.includes('всех') || question.includes('корень') || question.includes('b') || question.includes('c')) {
 		if (b > 0)
-			sign = '$b' + ['>', '\\geq'].iz() + '0$, ';
+			sign = ', $b' + ['>', '\\geq'].iz() + '0$, ';
 		else
-			sign = '$b' + ['<', '\\leq'].iz() + '0$, ';
+			sign = ', $b' + ['<', '\\leq'].iz() + '0$, ';
 		if (c >= 0) {
 			if (!c)
 				sign += '$c \\geq 0$';
@@ -116,7 +122,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции вида $f(x)=ax+d' + znack +
-			'|bx+c|$, где числа $a$, $b$, $c$ и $d$ — целые ' + sign + '. Найдите ' +
+			'|bx+c|$' + sign + '. Найдите ' +
 			question + '.',
 		answers: answ,
 		analys: '$f(x)=' + (a + 'x+' + (d) + '' + znack + '|' + b + 'x+' + c).plusminus() + '|$',
