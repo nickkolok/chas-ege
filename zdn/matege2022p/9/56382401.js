@@ -4,16 +4,8 @@ retryWhileUndefined(function() {
 	function f(x) {
 		return (k * x.abs() + b).abs();
 	}
-
-	function f1(x) {
-		return (-k * x + b).abs();
-	}
-
-	function f2(x) {
-		return (k * x + b).abs();
-	}
-	let k = sl(0.1, 3, 0.1).pm();
-	let b = sl(-3, 3, 0.5);
+	let k = sl(1, 3).pm();
+	let b = sl(-3, 3);
 	if ((-b / k).abs() > 6 && f(-b / k).abs() > 6)
 		return;
 	let sign = [
@@ -23,22 +15,16 @@ retryWhileUndefined(function() {
 		sign[0] = ['<', ' \\leq '].iz();
 	if (b < 0)
 		sign[1] = ['<', ' \\leq '].iz();
-	let p1 = intPoints(f1, {
-		minX: -5,
-		maxX: -1,
-		minY: -5.5,
-		maxY: 5.5
-	});
-	if (p1.length < 2)
-		return;
-	let p2 = intPoints(f2, {
-		minX: 1,
+	let p = intPoints(f, {
+		minX: 0,
 		maxX: 6,
 		minY: -5.5,
 		maxY: 5.5
 	});
-	if (p2.length < 2)
+	if (p.length < 4)
 		return;
+	for (let i = 0; i < p.length; i++)
+		p[i][0] = p[i][0].pm();
 	let find = 0,
 		answ = 0;
 	switch (sl(1, 3)) {
@@ -75,8 +61,7 @@ retryWhileUndefined(function() {
 		});
 
 		//точки
-		graph9AmarkCircles(ct, p1, 2, 0.15);
-		graph9AmarkCircles(ct, p2, 2, 0.15);
+		graph9AmarkCircles(ct, p, 4, 0.15);
 	};
 	NAtask.setTask({
 		text: 'На рисунке изображен график функций $f(x)=\\Bigl|k|x|+b\\Bigr|$, где $k' + sign[0] + '0$, $b' + sign[1] +
