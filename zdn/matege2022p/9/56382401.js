@@ -29,15 +29,15 @@ retryWhileUndefined(function() {
 		answ = 0;
 	switch (sl(1, 3)) {
 	case 1:
-		find = 'произведение коэффициентов';
+		find = 'произведение коэффициентов $k \\cdot b$';
 		answ = k * b;
 		break;
 	case 2:
-		find = 'сумму коэффициентов';
+		find = 'сумму коэффициентов $k+b$';
 		answ = k + b;
 		break;
 	case 3:
-		let num1 = sl(6, 10, 05);
+		let num1 = sl(8, 20, 0.5);
 		find = '$f(' + num1 + ')$';
 		answ = f(num1).ts();
 		break;
