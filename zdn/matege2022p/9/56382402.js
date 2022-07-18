@@ -4,8 +4,8 @@ retryWhileUndefined(function() {
 	function f(x) {
 		return a * x.pow(2) + b * x.abs() + c;
 	}
-	let c = sl(1, 10).pm();
-	let b = sl(1, 10).pm();
+	let c = sl(1, 10, 0.5).pm();
+	let b = sl(1, 10, 0.5).pm();
 	let a = b.pow(2) / (4 * c);
 	if (!(a * 1000).isZ())
 		return;
@@ -79,7 +79,7 @@ retryWhileUndefined(function() {
 
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции вида $f(x)=' + formula +
-			'$, где числа $a,b$ и $c$ — целые. Найдите ' + question + '.',
+			'$. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=' + (a.ts() + 'x^2+' + b.ts() + '|x|+' + c.ts()).plusminus() + '$',
 	});
