@@ -14,9 +14,9 @@ var numerator = sl(1,9);
 var multiplier = sl(1,9);
 
 var parts = [
-	[ '\\sqrt'+textpower+'{'+[a,b+'x'].slag()+'}', c],
-	[ '\\sqrt'+textpower+'{\\frac{' + numerator.pow(power)*multiplier + '}{'+[a*multiplier,b*multiplier+'x'].slag()+'}}', numerator.texfrac(c)],
-	[ '\\sqrt'+textpower+'{\\frac{'+[a*multiplier,b*multiplier+'x'].slag()+'}{' + numerator.pow(power)*multiplier + '}}', c.texfrac(numerator)],
+	[ '\\sqrt'+textpower+'{'+[(''+a).esli(a),b+'x'].slag()+'}', c],
+	[ '\\sqrt'+textpower+'{\\frac{' + numerator.pow(power)*multiplier + '}{'+[(''+a*multiplier).esli(a*multiplier),b*multiplier+'x'].slag()+'}}', numerator.texrndfrac(c)],
+	[ '\\sqrt'+textpower+'{\\frac{'+[(''+a*multiplier).esli(a*multiplier),b*multiplier+'x'].slag()+'}{' + numerator.pow(power)*multiplier + '}}', c.texrndfrac(numerator)],
 ].iz();
 
 
