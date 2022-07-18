@@ -7,7 +7,7 @@ var d=sluchch(1,9);
 
 chas2.task.setEquationTask({
 	parts: [(b-c)+'x+'+d, (-c)+'x+'+(a*b+d)],
-	wrapper: ['\\frac{'+sluchch(2,99)+'}{', '}'],
+	wrapper: ['\\frac{'+sluchch(1,99)+'}{', '}'],
 	roots: a,
 	enablePartsSubtraction: 1,
 });
