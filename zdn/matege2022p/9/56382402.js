@@ -48,7 +48,7 @@ retryWhileUndefined(function() {
 			['сумму', a + b + c]
 		].iz();
 		answ = st[1];
-		question = st[0] + ' всех коэффициентов';
+		question = st[0] + ' всех коэффициентов многочлена';
 		break;
 	}
 	let paint1 = function(ct) {
