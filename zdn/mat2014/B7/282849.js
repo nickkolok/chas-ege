@@ -2,9 +2,9 @@
 
 var a=sluchch(1,9).pm();
 var b=slKrome(a.abs(),1,9).pm();
-var q=[2,3,5,7].iz();
+var q=sluchch(2,7);
 
-var n = q==2? sluchch(3,13,2) : sluchch(3,5,2);
+var n = q==2? sluchch(3,13,2) : [3,5].iz();
 
 var sgn=[-1,1].iz();
 var part;
