@@ -7,7 +7,7 @@ if (power%2){
 	c *= [1,-1].iz();
 }
 var x=sluchch(1,9);
-var a = Math.pow(c,power)-b*x;
+var a = c.pow(power)-b*x;
 var textpower = ('['+power+']').esli(power!=2);
 
 var numerator = sl(1,9);
