@@ -22,7 +22,12 @@ retryWhileUndefined(function() {
 			['a', a.ts()],
 			['b', b.ts()],
 			['c', c.ts()],
-		].iz(p.length);
+			['d', d.ts()]
+		];
+		for (let i = 0; i < p.length; i++)
+			if (p[i][0] == 0 && p[i][1] == d)
+				variant.pop();
+		variant = variant.iz(p.length);
 		formula = formula.replace(variant[0][0], variant[0][1]).replace(variant[1][0], variant[1][1]).plusminus();
 	}
 
@@ -34,8 +39,9 @@ retryWhileUndefined(function() {
 		answ = f(x);
 		break;
 	case 2:
-		let mng = [d];
-		let st = ['d'];
+		question = '';
+		let mng = [];
+		let st = [];
 		if (formula.includes('a')) {
 			st.push('a');
 			mng.push(a);
@@ -47,6 +53,10 @@ retryWhileUndefined(function() {
 		if (formula.includes('c')) {
 			st.push('c');
 			mng.push(c);
+		}
+		if (formula.includes('d')) {
+			st.push('d');
+			mng.push(d);
 		}
 		if (sl1()) {
 			question = 'сумму $' + st.slag() + '$';
@@ -88,7 +98,7 @@ retryWhileUndefined(function() {
 	};
 
 	NAtask.setTask({
-		text: 'На рисунке изображён график функции вида $f(x)=' + formula +
+		text: 'На рисунке изображён график функции вида $f(x)=' + formula.plusminus() +
 			'$. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=' + (a.ts() + 'x^3+' + b.ts() + 'x^2+' + c.ts() + 'x+' + d.ts()).plusminus() + '$',
