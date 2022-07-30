@@ -101,6 +101,7 @@ retryWhileUndefined(function() {
 		ct.setLineDash([]);
 		//диагональные
 		ct.drawLine(10, 20, 15, 15);
+
 		ct.drawLine(0, 10, 5, 5);
 		ct.drawLine(10, 10, 15, 5);
 		ct.setLineDash([1, 0.5]);
@@ -111,7 +112,8 @@ retryWhileUndefined(function() {
 		text: inform[0].ie.toZagl() + ' куба ' + 'равна'.esli(inform[0].ie != 'объём') +
 			'равен'.esli(inform[0].ie == 'объём') + ' $' + (variableH.int + ('\\sqrt{' + variableH.sq + '}').esli(variableH.sq !=
 				1)).plusminus() + '$' + '.' +
-			' Найдите его ' + inform[1].ve + '. Если ответ содержит неизвлекаемый корень, запишите его ' + answ[0] + '.',
+			' Найдите его ' + (inform[1].ve).replace('основанию', 'основания') +
+			'. Если ответ содержит неизвлекаемый корень, запишите его ' + answ[0] + '.',
 		answers: answ[1],
 		//analys: '$ a= '+a.int+'\\sqrt{'+a.sq+'}$<br>'+,
 	});
