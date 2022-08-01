@@ -1,11 +1,13 @@
-retryWhileUndefined(function() {
+(function() {
+	'use strict';
+	NAinfo.requireApiVersion(0, 2);
+
 	function toStandatForSqrt(a) {
 		do {
 			a.int *= a.sq.polnKvadrMnozh();
 			a.sq /= (a.sq).polnKvadrMnozh().pow(2);
 		} while (!a.sq.polnKvadrMnozh == 1);
-	};
-	NAinfo.requireApiVersion(0, 2);
+	}
 	let a = {
 		sq: sl(1, 50),
 		int: sl(1, 100)
@@ -134,6 +136,5 @@ retryWhileUndefined(function() {
 		height: 300,
 		paint: paint1,
 	});
-	return true;
-}, 100000);
+})();
 // 27067 5065
