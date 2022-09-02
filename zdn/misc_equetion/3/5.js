@@ -1,0 +1,1 @@
+/home/assia/Документы/GitHub/chas-ege/zdn/mat2016p/5/9.js
