@@ -7,7 +7,7 @@ var b=slKrome([(a*(x1+x2)+b).abs(), x2*a],1,9).pm();
 var k=[sluchch(2,9), 1].iz();
 
 chas2.task.setEquationTask({
-	parts: [k+'x', '\\frac{'+b*k+'x+'+(-x1*x2*a)*k+'}{'+a+'x+'+(-a*(x1+x2)+b)+'}'],
+	parts: [k+'x', '\\frac{'+b*k+'x+'+(-x1*x2*a)*k+'}{'+[a+'x',(-a*(x1+x2)+b)].slag0()+'}'],
 	roots: [x1,x2],
 	enablePartsSubtraction: 1,
     handleMultipleRoots: 'randomExceptList',
