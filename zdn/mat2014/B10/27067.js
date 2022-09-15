@@ -120,16 +120,23 @@
 		ct.setLineDash([1, 0.5]);
 		ct.drawLine(10, 10, 13, 12);
 	};
-
+	
 	NAtask.setTask({
-		text: ' Прямоугольный параллелепипед описан около сферы с ' + informAboutCircle +
-			' $' + variableH.int.ts() + ('\\sqrt{' + variableH.sq + '}').esli(variableH.sq != 1) +
-			('\\pi').esli(informAboutCircle == 'объёмом' || informAboutCircle == 'площадью поверхности') + '$.' +
-			' Найдите его ' + (informAboutCube.ve).replace('основанию', 'основания') +
-			'. Если ответ содержит неизвлекаемый корень, запишите его ' + answ[0] + '.',
+		text: ' Прямоугольный параллелепипед описан около сферы с ' + 
+		informAboutCircle +
+			' $' + variableH.int.ts() + 
+			('\\sqrt{' + variableH.sq + '}').esli(variableH.sq != 1) +
+			('\\pi').esli(informAboutCircle == 'объёмом' || 
+			informAboutCircle == 'площадью поверхности') +
+			 '$.' +
+			' Найдите его ' + (informAboutCube.ve).replace('основанию', 
+			'основания') +
+			'. Если ответ содержит неизвлекаемый корень, запишите его ' 
+			+ answ[0] + '.',
 		answers: answ[1],
 		analys: '$ a= ' + a.int + '\\sqrt{' + a.sq + '} $ <br>' +
-			'$ answ= ' + variableF.int + '\\sqrt{' + variableF.sq + '} $ <br>',
+			'$ answ= ' + variableF.int + '\\sqrt{' + variableF.sq + 
+			'} $ <br>',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
