@@ -1,2 +1,2 @@
-window.nomer=sl(1,2);
+window.nomer=[1,1,1,1,1,1,2].iz();
 window.comment='Иррациональные уравнения';
