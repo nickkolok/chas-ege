@@ -1,2 +1,2 @@
-window.nomer=sl(1,22);
+window.nomer=sl(1,20);
 window.comment='Начала теории вероятностей';
