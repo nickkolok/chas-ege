@@ -424,8 +424,6 @@ chas2.task = {
 	setAdditiveEquationTask : function(o, taskOptions) {
 		//Сами всё, что нужно, вычтем!
 		o.enablePartsSubtraction = 0;
-		//И местами поменяем!
-		o.enablePartsExchange = 0;
 
 		o.parts = o.parts.shuffle();
 		var leftCount = sl(1, o.parts.length);
@@ -435,6 +433,10 @@ chas2.task = {
 		for (var i = 0; i < left.length; i++) {
 			left[i] = '-' + left[i];
 		}
+		// Если справа хоть что-то осталось, то левую и правую часть можно менять местами
+		// (если это было изначально разрешено).
+		// Иначе слева от знака равенства получится одинокий нуль, что нехорошо.
+		o.enablePartsExchange = o.enablePartsExchange && o.parts.length;
 		o.parts = [left.slag(), right.slag()];
 		chas2.task.setEquationTask(o, taskOptions);
 	},
