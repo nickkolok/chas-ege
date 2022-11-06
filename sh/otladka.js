@@ -200,7 +200,7 @@ document.onkeydown = function(e) {
     }
 }
 
-var templateTemplate = "(function() {\n\tNAinfo.requireApiVersion(" + NAinfo.API_VERSION.major + ", " + NAinfo.API_VERSION.minor + ");\n\n})();\n";
+var templateTemplate = "(function() {\n \tretryWhileError(function() {\n\t\tNAinfo.requireApiVersion(" + NAinfo.API_VERSION.major + ", " + NAinfo.API_VERSION.minor + "); \n\t\tNAtask.setTask({\n\t\t\ttext: '',\n\t\t\tanswers: 0,\n\t\t\tanalys: '',\n\t\t});\n\t});\n})();";
 
 var startShell = function (){
 	zagr("../ext/keyboard/keyboard.js");
