@@ -1,17 +1,20 @@
 (function() {
 
+	var b = sl(2, 3);
+	var a = 0;
+	for (let i = 0; i < b; i++)
+		a += sl(1, 6);
 
-var a=sluchch(1,20);
-var b=sluchch(2,3);
+	window.vopr.txt = 'В случайном эксперименте бросают ' + b + ' игральные кости. ' +
+		'Найдите вероятность того, что в сумме выпадет ' + a + ' ' + chislit(a, 'очко', 'очка', 'очков') + '.';
+	window.vopr.ver = ['' + (om.igrkosti[b][a] / (6).pow(b))];
 
-window.vopr.txt='В случайном эксперименте бросают '+b+' игральные кости. '+
-				'Найдите вероятность того, что в сумме выпадет '+a+' '+chislit(a,'очко','очка','очков')+'.';
-window.vopr.ver=[''+(om.igrkosti[b][a]/(6).pow(b))];
+	NAtask.modifiers.roundUpTo(-2); //модификатор округления ответа
 
-NAtask.modifiers.roundUpTo(-2); //модификатор округления ответа
-
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+	window.vopr.kat['log'] = 0;
+	window.vopr.kat['prz'] = 0;
+	window.vopr.kat['drs'] = 0;
+	window.vopr.kat['tri'] = 0;
 })();
+//fixed by SugarHedgehog
+//508769 508770 508771 508772 508773 508774 508775 508776 508777 508778 508779 
