@@ -6,8 +6,9 @@ do
 filename=$(basename -- "$file");
 extension="${filename##*.}";
 filename="${filename%.*}";
-printf "%s,\n" $filename >> main.js;
-
+if(($filename!="main")); then
+printf "%s,\n" $filename >> main.js
+fi
 ((i++));
 done
 printf "].iz()\nwindow.comment='';" >> main.js;
