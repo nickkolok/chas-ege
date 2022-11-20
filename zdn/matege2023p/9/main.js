@@ -17,5 +17,5 @@ window.nomer=[
 16,
 17,
 113443,
-].iz()
+].iz();
 window.comment='Текстовые задачи';
