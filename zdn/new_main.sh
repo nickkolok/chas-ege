@@ -1,13 +1,13 @@
 i=1;
 touch main.js;
-printf "window.nomer=[\n\t" >> main.js;
+printf "window.nomer=[\n" >> main.js;
 for file in $(ls $1/* -v)
 do
 filename=$(basename -- "$file");
 extension="${filename##*.}";
 filename="${filename%.*}";
 if(($filename!="main")); then
-printf "%s,\n\t" $filename >> main.js
+printf "\t%s,\n" $filename >> main.js
 fi
 ((i++));
 done
