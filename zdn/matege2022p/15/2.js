@@ -1,8 +1,6 @@
 retryWhileError(function() {
     NAinfo.requireApiVersion(0, 2);
 
-    om.months = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
-
     var r = sl(1,sl(10,50));
     genAssert(!(r==25 && sl(10)));
     var n = sl(sl(sl(2,3),4),10);
