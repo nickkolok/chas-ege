@@ -7,13 +7,18 @@
     "doc": "doc"
   },
   "dependencies": {
+    "@amcharts/amcharts5": "^5.2.47",
+    "@amcharts/amcharts5-fonts": "^5.0.1",
+    "@amcharts/amcharts5-geodata": "^5.1.0",
     "ace-builds": "^1.4.12",
     "chas-storage": "^0.1.1",
+    "cubic-spline": "^3.0.3",
     "html2canvas": "^1.0.0-rc.7"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-check-pages": "^0.9.0",
+    "grunt-concurrent": "^2.2.1",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-copy": "^0.8.0",
@@ -23,7 +28,6 @@
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-eslint": "^18.0.0",
-    "grunt-concurrent": "^2.2.1",
     "grunt-newer": "^1.1.0",
     "grunt-swigtemplates": "^0.1.2",
     "load-grunt-tasks": "^3.2.0",
