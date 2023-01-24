@@ -78,10 +78,6 @@
 				[X[0], X[X.length - 1]],
 				[Y[0], Y[Y.length - 1]]
 			].T(), 2, 0.1);
-			ct.fillStyle = "red";
-			graph9AmarkCircles(ct, maximum, 20, 0.13);
-			ct.fillStyle = "blue";
-			graph9AmarkCircles(ct, minimum, 20, 0.13);
 		};
 		NAtask.setTask({
 			text: 'На рисунке изображен график функции $y = f(x)$, определенной на интервале $(' + minX + '; ' + maxX +
