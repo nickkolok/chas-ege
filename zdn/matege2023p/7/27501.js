@@ -22,7 +22,7 @@
 		let maximum = [];
 		let minimum = [];
 		let extremum = [];
-		let number=sl(-7,7);
+		let number = sl(-7, 7);
 
 		for (let i = minX; i < maxX; i += 0.1) {
 			genAssert(f(i).abs() < 8, 'Слишком большой горбик');
@@ -35,8 +35,8 @@
 				extremum.push(f(i));
 			}
 			if (extremum.length)
-			genAssert((number - extremum[extremum.length - 1]).abs() > 1, 'Слишком близко к линии');
-			
+				genAssert((number - extremum[extremum.length - 1]).abs() > 1, 'Слишком близко к линии');
+
 			if (extremum.length >= 2)
 				genAssert((extremum[extremum.length - 2] - extremum[extremum.length - 1]).abs() > 1, 'Горбики слишком близко');
 		}
@@ -59,17 +59,17 @@
 				y1: '1',
 				sh1: 13,
 			}, 20);
-			
+
 			ct.font = "12px liberation_sans";
 			ct.drawLine(20 * maxX, 5, 20 * maxX, -5);
 			ct.drawLine(20 * minX, 5, 20 * minX, -5);
-			
-			if (maxX || maxX == 1)
+
+			if (maxX != 0 || maxX != 1)
 				ct.fillText(maxX, 20 * maxX, 15);
-				
-			if (minX || minX == 1)
+
+			if (minX != 0 || minX != 1)
 				ct.fillText(minX, 20 * minX - 13, 15);
-				
+
 			ct.scale(20, -20);
 			ct.lineWidth = 0.15;
 
@@ -84,21 +84,23 @@
 				[X[0], X[X.length - 1]],
 				[Y[0], Y[Y.length - 1]]
 			].T(), 2, 0.2);
-			
+
 			ct.fillStyle = "white";
 			graph9AmarkCircles(ct, [
 				[X[0], X[X.length - 1]],
 				[Y[0], Y[Y.length - 1]]
 			].T(), 2, 0.1);
-			};
+		};
 		NAtask.setTask({
-			text: 'На рисунке изображен график производной функции $f(x)$, определенной на интервале $(' + minX + '; ' + maxX +
+			text: 'На рисунке изображен график производной функции $f(x)$, определенной на интервале $(' + minX + '; ' +
+				maxX +
 				')$. ' +
 				'Найдите количество точек, ' +
-				'в которых касательная к графику функции $f(x)$ параллельна прямой $y=' + (number +'x+'+sl(0, 20, 0.1).ts(1)).plusminus().replace('0x+','')+
+				'в которых касательная к графику функции $f(x)$ параллельна прямой $y=' + (number + 'x+' + sl(0, 20, 0.1).ts(1))
+				.plusminus().replace('0x+', '') +
 				'$ или совпадает с ней.',
 			answers: root.length,
-			analys: 'Пересечений с прямой $y='+number+': '+root.length+'$',
+			analys: 'Ответом является количество пересечений с прямой $y=' + number + '$.',
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
