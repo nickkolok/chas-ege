@@ -22,46 +22,38 @@
 			Y[i] = Y[i - 1] + sl(2, 10).pm();
 		}
 		let spline = new Spline(X, Y);
-		let maximum = [];
-		let minimum = [];
 		let extremum = [];
 		for (let i = minX; i < maxX; i += 0.1) {
 			genAssert(f(i).abs() < 8, 'Слишком большой горбик');
-			if (f(i) < f(i - 0.1) && f(i) < f(i + 0.1)) {
-				minimum.push([i, f(i)]);
-				extremum.push([i, f(i)]);
-			}
-			if (f(i) > f(i - 0.1) && f(i) > f(i + 0.1)) {
-				maximum.push([i, f(i)]);
-				extremum.push([i, f(i)]);
+			if (f(i) < f(i - 0.1) && f(i) < f(i + 0.1) || (f(i) > f(i - 0.1) && f(i) > f(i + 0.1))) {
+				extremum.push(i);
 			}
 		}
-		let extX = extremum.T()[0];
-		let masK = [];
-		let masB = [];
-		for (let i = 0; i < extX.length; i++) {
+		let variantsOfK = [];
+		let variantsOfB = [];
+		for (let i = 0; i < extremum.length; i++) {
 			let step = sl(minX + 1, maxX - 1).pm();
 			let stepY = (0.5, 2, 0.5).pm();
-			masK.push((stepY / step).okrugldo(0.01));
-			masB.push((f(extX[i]) - masK[i] * extX[i]).okrugldo(0.01));
+			variantsOfK.push((stepY / step).okrugldo(0.01));
+			variantsOfB.push((f(extremum[i]) - variantsOfK[i] * extremum[i]).okrugldo(0.01));
 		}
-		genAssertNonempty(masK, 'Пусто');
+		genAssertNonempty(variantsOfK, 'Пусто');
 		let points1, points2;
 		let xk, yk;
 		let k;
 		let b;
-		for (let i = 0; i < masK.length; i++) {
-			if (masK[i].abs() != Infinity) {
-				k = masK[i];
-				b = masB[i];
+		for (let i = 0; i < variantsOfK.length; i++) {
+			if (variantsOfK[i].abs() != Infinity) {
+				k = variantsOfK[i];
+				b = variantsOfB[i];
 				points1 = intPoints(f1, {
 					minX: -9.5,
-					maxX: extX[i] - 0.5,
+					maxX: extremum[i] - 0.5,
 					minY: -6.5,
 					maxY: 6.5
 				});
 				points2 = intPoints(f1, {
-					minX: extX[i] + 0.5,
+					minX: extremum[i] + 0.5,
 					maxX: maxX,
 					minY: -6.5,
 					maxY: 6.5
@@ -69,17 +61,20 @@
 				if (points1.length < 1 || points2.length < 1) {
 					k = undefined;
 				} else {
-					xk = extX[i];
-					yk = f(extX[i]);
+					xk = extremum[i];
+					yk = f(extremum[i]);
 					break;
 				}
 			}
 		}
 		genAssert(k != undefined || k.abs() != 1, 'Не нашлось коэффициентов');
 		genAssert(yk.abs() > 1, 'Слишком близко к оси Ох');
-		if (xk.isZ())
-			xk += (sl(0.2, 0.7, 0.1)).pm();
-		let letter=slLetter();
+		if (xk == 0)
+			xk += (sl(0.4, 0.7, 0.1)).pm();
+		let letter;
+		do {
+			letter = slLetter();
+		} while (['x', 'y'].includes(letter));
 		let paint1 = function(ct) {
 			let h = 380;
 			let w = 500;
@@ -135,11 +130,12 @@
 				ct.fillText(letter, 20 * xk + 10, -10);
 		};
 		NAtask.setTask({
-			text: 'На рисунке изображены график функции $y = f(x)$ и касательная к нему в точке с абсциссой $'+letter+'$. ' +
-				'Найдите значение производной функции $f(x)$ в точке $'+letter+'$.',
+			text: 'На рисунке изображены график функции $y = f(x)$ и касательная к нему в точке с абсциссой $' + letter +
+				'$. ' +
+				'Найдите значение производной функции $f(x)$ в точке $' + letter + '$.',
 			answers: k.ts(),
-			analys: 'Значение производной в точке касания равно угловому коэффициенту касательной <br>'+
-			'$y='+(k+'x+'+b).plusminus()+'$',
+			analys: 'Значение производной в точке касания равно угловому коэффициенту касательной <br>' +
+				'$y=' + (k.ts(1) + ' x+' + b.ts(1)).plusminus() + '$',
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
