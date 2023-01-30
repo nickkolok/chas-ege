@@ -19,28 +19,19 @@
 			} while (Y[i].abs() > 5 || Y[i] == 0);
 		}
 		let spline = new Spline(X, Y);
-		let maximum = [];
-		let minimum = [];
 		let extremum = [];
 		for (let i = minX; i < maxX; i += 0.1) {
 			genAssert(f(i).abs() < 8, 'Слишком большой горбик');
-			if (f(i).abs() > 8)
-				return [];
-			if (f(i) < f(i - 0.1) && f(i) < f(i + 0.1)) {
-				minimum.push([i, f(i)]);
-				extremum.push(f(i));
-			}
-			if (f(i) > f(i - 0.1) && f(i) > f(i + 0.1)) {
-				maximum.push([i, f(i)]);
-				extremum.push(f(i));
+			if (f(i) < f(i - 0.1) && f(i) < f(i + 0.1) || (f(i) > f(i - 0.1) && f(i) > f(i + 0.1))) {
+				extremum.push([i, f(i)]);
 			}
 			if (extremum.length >= 2)
-				genAssert((extremum[extremum.length - 2] - extremum[extremum.length - 1]).abs() > 1, 'Горбики слишком близко');
+				genAssert((extremum[extremum.length - 2][1] - extremum[extremum.length - 1][1]).abs() > 1,
+					'Горбики слишком близко');
 		}
-		genAssert((extremum[extremum.length - 1] - f(maxX)).abs() > 2, 'Слишком близко к правому концу');
-		genAssert((extremum[0] - f(minX)).abs() > 2, 'Слишком близко к левому концу');
-		genAssert(minimum.length > 1, 'Минимумов недостаточно');
-		genAssert(maximum.length > 1, 'Максимумов недостаточно');
+		genAssert((extremum[extremum.length - 1][1] - f(maxX)).abs() > 2, 'Слишком близко к правому концу');
+		genAssert((extremum[0][1] - f(minX)).abs() > 2, 'Слишком близко к левому концу');
+		genAssert(extremum.length > 2, 'Максимумов недостаточно');
 		let paint1 = function(ct) {
 			let h = 380;
 			let w = 500;
@@ -55,9 +46,9 @@
 			ct.font = "12px liberation_sans";
 			ct.drawLine(20 * maxX, 5, 20 * maxX, -5);
 			ct.drawLine(20 * minX, 5, 20 * minX, -5);
-			if (maxX || maxX == 1)
+			if (maxX != 0 && maxX != 1)
 				ct.fillText(maxX, 20 * maxX, 15);
-			if (minX || minX == 1)
+			if (minX != 0 && minX != 1)
 				ct.fillText(minX, 20 * minX - 13, 15);
 			ct.scale(20, -20);
 			ct.lineWidth = 0.15;
@@ -85,9 +76,8 @@
 				'Найдите количество точек, ' +
 				'в которых касательная к графику функции параллельна прямой $y=' + sl(0, 20, 0.1).ts(1) +
 				'$ или совпадает с ней.',
-			answers: maximum.length + minimum.length,
-			analys: 'Максимумов: ' + maximum.length + '<br>' + 'Минимумов: ' +
-				minimum.length,
+			answers: extremum.length,
+			analys: 'Точек экстремума: ' + extremum.length,
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
