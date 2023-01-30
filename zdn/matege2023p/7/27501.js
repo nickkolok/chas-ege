@@ -19,19 +19,12 @@
 			} while (Y[i].abs() > 5 || Y[i] == 0);
 		}
 		let spline = new Spline(X, Y);
-		let maximum = [];
-		let minimum = [];
 		let extremum = [];
 		let number = sl(-7, 7);
 
 		for (let i = minX; i < maxX; i += 0.1) {
 			genAssert(f(i).abs() < 8, 'Слишком большой горбик');
-			if (f(i) < f(i - 0.1) && f(i) < f(i + 0.1)) {
-				minimum.push([i, f(i)]);
-				extremum.push(f(i));
-			}
-			if (f(i) > f(i - 0.1) && f(i) > f(i + 0.1)) {
-				maximum.push([i, f(i)]);
+			if (f(i) < f(i - 0.1) && f(i) < f(i + 0.1) || (f(i) > f(i - 0.1) && f(i) > f(i + 0.1))) {
 				extremum.push(f(i));
 			}
 			if (extremum.length)
@@ -46,8 +39,7 @@
 			if ((f(i) >= number && f(i + step) <= number) || (f(i) <= number && f(i + step) >= number))
 				root.push([i, f(i)]);
 
-		genAssert(minimum.length > 1, 'Минимумов недостаточно');
-		genAssert(maximum.length > 1, 'Максимумов недостаточно');
+		genAssert(extremum.length > 2, 'Минимумов недостаточно');
 		let paint1 = function(ct) {
 			let h = 380;
 			let w = 500;
