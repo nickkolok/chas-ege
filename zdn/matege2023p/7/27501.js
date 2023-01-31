@@ -56,10 +56,10 @@
 			ct.drawLine(20 * maxX, 5, 20 * maxX, -5);
 			ct.drawLine(20 * minX, 5, 20 * minX, -5);
 
-			if (maxX != 0 || maxX != 1)
+			if (maxX != 0 && maxX != 1)
 				ct.fillText(maxX, 20 * maxX, 15);
 
-			if (minX != 0 || minX != 1)
+			if (minX != 0 && minX != 1)
 				ct.fillText(minX, 20 * minX - 13, 15);
 
 			ct.scale(20, -20);
