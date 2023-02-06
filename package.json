@@ -10,7 +10,8 @@
     "ace-builds": "^1.4.12",
     "chas-storage": "^0.1.1",
     "cubic-spline": "^3.0.3",
-    "html2canvas": "^1.0.0-rc.7"
+    "html2canvas": "^1.0.0-rc.7",
+    "prompt-sync": "^4.2.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
