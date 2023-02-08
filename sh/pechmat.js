@@ -112,10 +112,10 @@ function konecSozd(){
 	}
 	convertCanvasToImagesIfNeeded();
 	if(options.prepareLaTeX){
-		for(var i = 0; i < voprosy.length; i++){
-			tasksInLaTeX[voprosy[i].taskId] = replaceCanvasWithImgInTask(
-				getTaskTextContainerByTaskId(voprosy[i].taskId),
-				voprosy[i].txt
+		for(var id in generatedTasks){
+			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
+				getTaskTextContainerByTaskId(id),
+				generatedTasks[id].txt
 			);
 		}
 	}
