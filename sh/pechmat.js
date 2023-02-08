@@ -13,8 +13,8 @@ var kZ;
 var strVopr='';
 var strOtv='';
 var strResh='';
-var voprosy=[];
 
+var generatedTasks = {};
 var tasksInLaTeX = {};
 
 var options={};
@@ -105,17 +105,17 @@ function konecSozd(){
 		$('#rsh').html('<h2>Решения</h2>'+strResh);
 	}
 
-	for(var i=voprosy.length;i;i--){
+	for(var id in generatedTasks){
 		try{
-			voprosy[i-1].dey();
+			generatedTasks[id].dey();
 		}catch(e){};
 	}
 	convertCanvasToImagesIfNeeded();
 	if(options.prepareLaTeX){
-		for(var i = 0; i < voprosy.length; i++){
-			tasksInLaTeX[voprosy[i].taskId] = replaceCanvasWithImgInTask(
-				getTaskTextContainerByTaskId(voprosy[i].taskId),
-				voprosy[i].txt
+		for(var id in generatedTasks){
+			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
+				getTaskTextContainerByTaskId(id),
+				generatedTasks[id].txt
 			);
 		}
 	}
@@ -288,7 +288,7 @@ function obnov(){
 		strOtv  += html.ver;
 		strResh += html.rsh;
 
-		voprosy.push(vopr.clone());
+		generatedTasks[vopr.taskId] = vopr.clone();
 
 		var sdel=aZ.sum()*(aV-nV+1)-iZ.sum();
 		var w=sdel/kZ;
