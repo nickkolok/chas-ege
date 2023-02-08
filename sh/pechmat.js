@@ -102,11 +102,11 @@ function konecSozd(){
 		$('#rsh').html('<h2>Решения</h2>'+strResh);
 	}
 
-	for(var i=voprosy.length;i;i--)
+	for(var i=voprosy.length;i;i--){
 		try{
 			voprosy[i-1].dey();
 		}catch(e){};
-
+	}
 	convertCanvasToImagesIfNeeded();
 	MathJax.Hub.Typeset(testGotov);
 	udalPanel();
