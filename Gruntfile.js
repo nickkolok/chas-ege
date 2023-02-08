@@ -86,6 +86,7 @@ module.exports = function(grunt) {
 					{ src: 'node_modules/mathjs/lib/browser/math.js', dest: 'ext/math.js' },
 					{ src: 'node_modules/chas-storage/chasStorage.js', dest: 'dist/ext/chasStorage.js' },
 					{ src: 'node_modules/html2canvas/dist/html2canvas.min.js', dest: 'dist/ext/html2canvas.js' },
+					{ src: 'node_modules/jszip/dist/jszip.min.js', dest: 'dist/ext/jszip.min.js' },
 				]
 			},
 			otherHtml: {
