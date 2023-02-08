@@ -15,6 +15,8 @@ var strOtv='';
 var strResh='';
 var voprosy=[];
 
+var tasksInLaTeX = {};
+
 var options={};
 
 
@@ -48,6 +50,7 @@ function zapusk(){
 	options.splitAnswerTables=$('#splitAnswerTables').is(':checked');
 	options.uniqueAnswersAndSolutions=$('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber=1*$('#start-transit-number').val();
+	options.prepareLaTeX=$('#prepareLaTeX').is(':checked');
 
 	if(customNumber){
 		variantNumber=$('#start-number').val()-1;
@@ -108,6 +111,12 @@ function konecSozd(){
 		}catch(e){};
 
 	convertCanvasToImagesIfNeeded();
+	if(options.prepareLaTeX){
+		for(var i=voprosy.length;i;i--){
+
+		}
+	}
+
 	MathJax.Hub.Typeset(testGotov);
 	udalPanel();
 	spoiler();
