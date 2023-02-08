@@ -77,9 +77,6 @@ function zapusk(){
 
 function testGotov(){
 	$('#gotov').hide();
-	if(!options.nobackground){
-		allCanvasToBackgroundImage();
-	}
 	if(options.editable){
 		$('#rez, #otv, #rsh').attr('contenteditable','true');
 	}
@@ -109,6 +106,8 @@ function konecSozd(){
 		try{
 			voprosy[i-1].dey();
 		}catch(e){};
+
+	convertCanvasToImagesIfNeeded();
 	MathJax.Hub.Typeset(testGotov);
 	udalPanel();
 	spoiler();
@@ -121,6 +120,11 @@ function konecSozd(){
 	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
 }
 
+function convertCanvasToImagesIfNeeded(){
+	if(!options.nobackground){
+		allCanvasToBackgroundImage();
+	}
+}
 
 function bumpVariantNumber(){
 	if(options.customNumber){
