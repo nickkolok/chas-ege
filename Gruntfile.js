@@ -85,6 +85,7 @@ module.exports = function(grunt) {
 					{ expand: true, cwd: 'node_modules/ace-builds/src-min/', src: '**/*.js', dest: 'dist/ext/ace/' },
 					{ src: 'node_modules/chas-storage/chasStorage.js', dest: 'dist/ext/chasStorage.js' },
 					{ src: 'node_modules/html2canvas/dist/html2canvas.min.js', dest: 'dist/ext/html2canvas.js' },
+					{ src: 'node_modules/jszip/dist/jszip.min.js', dest: 'dist/ext/jszip.min.js' },
 				]
 			},
 			otherHtml: {
