@@ -445,7 +445,7 @@ function getAnswersTableLaTeX(){
 	}
 	return (
 		'\\begin{table}' +
-			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).map(x=>'{l}') + '}' +
+			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('l').join('') + '}' +
 				answersParsedToTeX.join('\\\\') +
 			'\\end{tabular}' +
 		'\\end{table}'
