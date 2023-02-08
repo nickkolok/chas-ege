@@ -112,8 +112,11 @@ function konecSozd(){
 	}
 	convertCanvasToImagesIfNeeded();
 	if(options.prepareLaTeX){
-		for(var i=voprosy.length;i;i--){
-
+		for(var i = 0; i < voprosy.length; i++){
+			tasksInLaTeX[voprosy[i].taskId] = replaceCanvasWithImgInTask(
+				getTaskTextContainerByTaskId(voprosy[i].taskId),
+				voprosy[i].txt
+			);
 		}
 	}
 
@@ -352,6 +355,10 @@ var startShell = function (){
 }
 
 
+function getTaskTextContainerByTaskId(taskId){
+	return $('div.d[data-task-id="'+taskId+'"]')[0];
+}
+
 function renewTask(){
 	console.log(this);
 	var wrapper = $(this).parents('div.d');
@@ -372,7 +379,7 @@ function renewTask(){
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
 		if(options.prepareLaTeX){
-			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask($('div.d[data-task-id='+taskId)[0]), text);
+			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
 		}
 		MathJax.Hub.Typeset(taskHtml[0]);
 		$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
@@ -440,8 +447,6 @@ function getAnswersTableTeX(){
 		'\\end{table}';
 }
 
-
-
 function replaceCanvasWithImgInTask(element, text){
 	if(!(/<canvas/i.test(text))){
 		// Nothing to do
@@ -454,5 +459,12 @@ function replaceCanvasWithImgInTask(element, text){
 		text = text.replace(/<canvas.*?<\/canvas>/, img.outerHTML);
 	}
 	return text;
+}
+
+function createLaTeXbunch(){
+	var bunchText = '';
+	for(var taskId in tasksInLaTeX){
+
+	}
 }
 
