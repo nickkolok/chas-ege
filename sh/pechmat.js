@@ -221,9 +221,14 @@ function zadan(){
 }
 
 function createHtmlForTask(nazvzad){
+	var taskId = variantNumber+'-'+nazvzad;
+	vopr.taskId = taskId;
+	vopr.taskNumber = nZ;
+	vopr.taskCategory = nazvzad;
+
 	return {
 		txt:
-			'<div class="d" data-task-id="'+variantNumber+'-'+nazvzad+'" data-task-number="'+nZ+'">'+
+			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'">'+
 				'<div class="b">'+nazvzad+'</div>'+
 				'<div class="z">'+
 					window.vopr.txt+
