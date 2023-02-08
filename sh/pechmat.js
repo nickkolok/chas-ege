@@ -356,6 +356,7 @@ function renewTask(){
 		answerRow.replaceWith(taskHtml.ver);
 		solution .replaceWith(taskHtml.rsh);
 		window.vopr.dey();
+		convertCanvasToImagesIfNeeded();
 		MathJax.Hub.Typeset(taskHtml[0]);
 		$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
 	}, taskNumber);
