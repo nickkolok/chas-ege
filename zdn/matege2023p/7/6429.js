@@ -41,14 +41,14 @@
 				funcDescendingPoints.push(i);
 			}
 		}
-		let usl = [
+		let condition = [
 			['возрастания', funcAscendingPoints],
 			['убывания', funcDescendingPoints]
 		].iz();
 		let answ = [
-			['сумму', usl[1].sum()],
-			['произведение', usl[1].production()],
-			['количество', usl[1].length]
+			['сумму', condition[1].sum()],
+			['произведение', condition[1].production()],
+			['количество', condition[1].length]
 		].iz();
 		let paint1 = function(ct) {
 			let h = 380;
@@ -91,7 +91,7 @@
 		NAtask.setTask({
 			text: 'На рисунке изображен график производной функции $f(x)$, определенной на интервале$(' + minX + '; ' +
 				maxX + ')$. ' +
-				'Найдите промежутки ' + usl[0] +
+				'Найдите промежутки ' + condition[0] +
 				' функции $f(x)$. В ответе укажите ' + answ[0] + ' целых точек, входящих в эти промежутки.',
 			answers: answ[1],
 		});
