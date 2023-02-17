@@ -33,11 +33,11 @@
 		let funcDescendingPoints = [];
 		for (let i = minX + 1; i < maxX; i++) {
 			if (f(i) > 0) {
-				genAssert(f(i).abs() > 1.5, 'Экстремум слишком близко к 0');
+				genAssert(f(i).abs() > 1.5, 'Точка слишком близко к 0');
 				funcAscendingPoints.push(i);
 			}
 			if (f(i) < 0) {
-				genAssert(f(i).abs() > 1.5, 'Экстремум слишком близко к 0');
+				genAssert(f(i).abs() > 1.5, 'Точка слишком близко к 0');
 				funcDescendingPoints.push(i);
 			}
 		}
