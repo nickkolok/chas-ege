@@ -62,38 +62,10 @@
 				hor: 1,
 				ver: 1
 			}, {
-				x1: '1',
-				y1: '1',
+				x1: '',
+				y1: '',
 				sh1: 13,
-			}, 20);
-			ct.font = "12px liberation_sans";
-			ct.drawLine(20 * maxX, 5, 20 * maxX, -5);
-			ct.drawLine(20 * minX, 5, 20 * minX, -5);
-			if (maxX != 0 && maxX != 1)
-				ct.fillText(maxX, 20 * maxX, 15);
-			if (minX != 0 && minX != 1)
-				ct.fillText(minX, 20 * minX - 13, 15);
-			ct.fillStyle = "#007acc";
-			for (let i = 0; i < points.length; i++) {
-				ct.font = "15px liberation_sans";
-
-				if (f(points[i][0]) < 0) {
-					ct.fillText('x', points[i][0] * 20, -3);
-					ct.font = "12px liberation_sans";
-					ct.fillText((i + 1).toString(), (points[i][0] + 0.3) * 20, 0);
-				} else {
-					ct.fillText('x', (points[i][0] - 0.5) * 20, 12);
-					ct.font = "12px liberation_sans";
-					ct.fillText((i + 1).toString(), (points[i][0] - 0.2) * 20, 15);
-				}
-
-				ct.setLineDash([4, 2]);
-				ct.drawLine(points[i][0] * 20, 0, points[i][0] * 20, -points[i][1] * 20);
-				graph9AmarkCircles(ct, [
-					[points[i][0] * 20, 0]
-				], 1, 2);
-
-			}
+			}, 40);
 
 			ct.fillStyle = "black";
 			ct.scale(20, -20);
@@ -115,8 +87,34 @@
 				[X[0], X[X.length - 1]],
 				[Y[0], Y[Y.length - 1]]
 			].T(), 2, 0.1);
+
 			ct.fillStyle = "#0099ff";
 			graph9AmarkCircles(ct, points, points.length, 0.1);
+
+
+			ct.scale(1 / 20, -1 / 20);
+			ct.lineWidth = 2;
+			ct.fillStyle = "#007acc";
+			for (let i = 0; i < points.length; i++) {
+				ct.font = "17px liberation_sans";
+
+				if (f(points[i][0]) < 0) {
+					ct.fillText('x', points[i][0] * 20, -3);
+					ct.font = "14px liberation_sans";
+					ct.fillText((i + 1).toString(), (points[i][0] + 0.4) * 20, 0);
+				} else {
+					ct.fillText('x', (points[i][0] - 0.5) * 20, 12);
+					ct.font = "14px liberation_sans";
+					ct.fillText((i + 1).toString(), (points[i][0] - 0.1) * 20, 15);
+				}
+
+				ct.setLineDash([4, 2]);
+				ct.drawLine(points[i][0] * 20, 0, points[i][0] * 20, -points[i][1] * 20);
+				graph9AmarkCircles(ct, [
+					[points[i][0] * 20, 0]
+				], 1, 2);
+
+			}
 
 		};
 		NAtask.setTask({
