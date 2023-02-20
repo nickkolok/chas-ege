@@ -12,7 +12,7 @@
 		let subMinX = minX + sl(1, 4);
 		let X = [];
 		let Y = [];
-		for (let i = minX; i <= maxX; i += slKrome([subMaxX, subMinX], 1.3, 4, 0.9))
+		for (let i = minX; i <= maxX; i += sl(1.3, 4, 0.9))
 			X.push(i);
 		Y.push(sl(1, 6).pm());
 		for (let i = 1; i < X.length; i++) {
