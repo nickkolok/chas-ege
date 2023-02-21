@@ -505,7 +505,13 @@ function refreshLaTeXarchive(){
 	var zip = new JSZip();
 	var bunch = "";
 	for(var variantN of variantsGenerated){
-		bunch += createLaTeXbunch(variantN);
+		bunch +=
+			'\n\n\n\n' +
+			'\\cleardoublepage' +
+			'\\def\examvart{Вариант ' + variantN + '}' +
+			'\\normalsize\n\\input{instruction.tex}\\large' +
+			'\n\n\n\n' +
+			createLaTeXbunch(variantN);
 	}
 	zip.file("tasks.tex", bunch);
 	var img = zip.folder("images");
