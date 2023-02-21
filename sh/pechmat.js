@@ -14,6 +14,7 @@ var strVopr='';
 var strOtv='';
 var strResh='';
 
+var variantsGenerated = [];
 var generatedTasks = {};
 var tasksInLaTeX = {};
 var preparedImages = {};
@@ -149,6 +150,7 @@ function bumpVariantNumber(){
 	}else{
 		variantNumber=new Date().getTime();
 	}
+	variantsGenerated.push(variantNumber);
 }
 
 function appendVariantTasksCaption(){
@@ -163,7 +165,12 @@ function appendVariantTasksEnding(){
 }
 
 function appendVariantAnswersCaption(){
-	strOtv+='<table class="normtabl tablpech">';
+	strOtv +=
+		'<table '+
+			'class="normtabl tablpech pech-answers-table" ' +
+			'id="pech-answers-table-variant-' + variantNumber +
+		'">';
+
 	if(!options.vanishVariants){
 		strOtv+='<tr><th colspan="10">';
 		if (options.compactAnswers) {
@@ -233,6 +240,7 @@ function createHtmlForTask(nazvzad){
 	vopr.taskId = taskId;
 	vopr.taskNumber = nZ;
 	vopr.taskCategory = nazvzad;
+	vopr.variantNumber = variantNumber;
 
 	return {
 		txt:
