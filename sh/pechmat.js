@@ -443,6 +443,17 @@ function removeGridFields(){
 }
 
 
+function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX){
+	return (
+		'\\begin{table}' +
+			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('l').join('') + '}' +
+				answersParsedToTeX.join('\\\\') +
+			'\\end{tabular}' +
+		'\\end{table}' +
+		'\n\n\n'
+	);
+}
+
 function getAnswersTableLaTeX(){
 
 	var answerRows = $('#otv table tr');
@@ -454,13 +465,7 @@ function getAnswersTableLaTeX(){
 		//TODO: reverse-decode LaTeX from MathJax
 		answersParsedToTeX.push(Array.from(row.getElementsByTagName('td')).map(x => x.innerHTML).join(' & '))
 	}
-	return (
-		'\\begin{table}' +
-			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('l').join('') + '}' +
-				answersParsedToTeX.join('\\\\') +
-			'\\end{tabular}' +
-		'\\end{table}'
-	);
+	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
 }
 
 function replaceCanvasWithImgInTask(element, text){
