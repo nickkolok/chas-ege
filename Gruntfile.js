@@ -85,6 +85,7 @@ module.exports = function(grunt) {
 					{ expand: true, cwd: 'node_modules/ace-builds/src-min/', src: '**/*.js', dest: 'dist/ext/ace/' },
 					{ src: 'node_modules/mathjs/lib/browser/math.js', dest: 'ext/math.js' },
 					{ src: 'node_modules/chas-storage/chasStorage.js', dest: 'dist/ext/chasStorage.js' },
+					{ src: 'node_modules/cubic-spline-browserified/cubic-spline-for-browser.js', dest: 'dist/ext/cubic-spline-for-browser.js' },
 					{ src: 'node_modules/html2canvas/dist/html2canvas.min.js', dest: 'dist/ext/html2canvas.js' },
 				]
 			},
