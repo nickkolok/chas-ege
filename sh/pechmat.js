@@ -509,7 +509,7 @@ function refreshLaTeXarchive(){
 			'\n\n\n\n' +
 			'\\cleardoublepage\n' +
 			'\\def\\examvart{Вариант ' + variantN + '}\n' +
-			'\\normalsize\n\\input{instruction.tex}\n\\large' +
+			'\\normalsize\n\\input{instruction.tex}\n\\startpartone\n\\large' +
 			'\n\n\n\n' +
 			createLaTeXbunch(variantN);
 	}
