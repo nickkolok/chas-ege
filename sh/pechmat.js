@@ -454,9 +454,9 @@ function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX){
 	);
 }
 
-function getAnswersTableLaTeX(){
+function getAnswersTableLaTeX(variantN){
 
-	var answerRows = $('#otv table tr');
+	var answerRows = $('table#pech-answers-table-variant-' + variantN + ' tr');
 
 	var answersParsedToTeX = [];
 	// The first row may be the caption, so...
@@ -483,17 +483,19 @@ function replaceCanvasWithImgInTask(element, text){
 	return text;
 }
 
-function createLaTeXbunch(){
+function createLaTeXbunch(variantN){
 	var bunchText = '';
 	for(var taskId in tasksInLaTeX){
-		bunchText +=
-			'\n' +
-			'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
-				tasksInLaTeX[taskId] + '\n' +
-			'\\end{taskBN}' + '\n';
+		if(generatedTasks[taskId].variantNumber == variantN){
+			bunchText +=
+				'\n' +
+				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
+					tasksInLaTeX[taskId] + '\n' +
+				'\\end{taskBN}' + '\n';
+		}
 
 	}
-	return bunchText + '\\newpage Ответы\n\n' + getAnswersTableLaTeX();
+	return bunchText + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
 }
 
 function refreshLaTeXarchive(){
@@ -501,7 +503,11 @@ function refreshLaTeXarchive(){
 		return;
 	}
 	var zip = new JSZip();
-	zip.file("tasks.tex", createLaTeXbunch());
+	var bunch = "";
+	for(var variantN of variantsGenerated){
+		bunch += createLaTeXbunch(variantN);
+	}
+	zip.file("tasks.tex", bunch);
 	var img = zip.folder("images");
 	for(var i in preparedImages){
 		img.file(i + ".png", preparedImages[i], {base64: true});
