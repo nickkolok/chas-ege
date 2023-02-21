@@ -15,6 +15,8 @@ var strOtv='';
 var strResh='';
 var voprosy=[];
 
+var tasksInLaTeX = {};
+
 var options={};
 
 
@@ -109,6 +111,12 @@ function konecSozd(){
 		}catch(e){};
 	}
 	convertCanvasToImagesIfNeeded();
+	if(options.prepareLaTeX){
+		for(var i=voprosy.length;i;i--){
+
+		}
+	}
+
 	MathJax.Hub.Typeset(testGotov);
 	udalPanel();
 	spoiler();
