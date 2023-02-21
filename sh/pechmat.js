@@ -112,8 +112,11 @@ function konecSozd(){
 	}
 	convertCanvasToImagesIfNeeded();
 	if(options.prepareLaTeX){
-		for(var i=voprosy.length;i;i--){
-
+		for(var i = 0; i < voprosy.length; i++){
+			tasksInLaTeX[voprosy[i].taskId] = replaceCanvasWithImgInTask(
+				getTaskTextContainerByTaskId(voprosy[i].taskId),
+				voprosy[i].txt
+			);
 		}
 	}
 
@@ -375,6 +378,9 @@ function renewTask(){
 		solution .replaceWith(taskHtml.rsh);
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
+		if(options.prepareLaTeX){
+			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
+		}
 		MathJax.Hub.Typeset(taskHtml[0]);
 		$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
 	}, taskNumber);
@@ -420,3 +426,20 @@ function removeGridFields(){
 
 	$('#button-removeGridFields').hide();
 }
+
+
+
+function replaceCanvasWithImgInTask(element, text){
+	if(!(/<canvas/i.test(text))){
+		// Nothing to do
+		return text;
+	}
+	var canvases = Array.from(element.getElementsByTagName('canvas'));
+	console.log(canvases);
+	for(var i = 0; i < canvases.length; i++){
+		var img = createImgFromCanvas(canvases[i]);
+		text = text.replace(/<canvas.*?<\/canvas>/, img.outerHTML);
+	}
+	return text;
+}
+
