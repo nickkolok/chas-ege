@@ -58,21 +58,21 @@
 				maxY: 5.5,
 				step: 0.01
 			});
-			/*graph9AmarkCircles(ct, extremum, 2, 0.2);*/
+
 			graph9AmarkCircles(ct, [
-				[X[0], X[X.length - 1]],
-				[Y[0], Y[Y.length - 1]]
-			].T(), 2, 0.2);
+				[maxX, f(maxX)],
+				[minX, f(minX)]
+			], 2, 0.2);
 			ct.fillStyle = "white";
 			graph9AmarkCircles(ct, [
-				[X[0], X[X.length - 1]],
-				[Y[0], Y[Y.length - 1]]
-			].T(), 2, 0.1);
+				[maxX, f(maxX)],
+				[minX, f(minX)]
+			], 2, 0.1);
 		};
 		NAtask.setTask({
 			text: 'На рисунке изображен график функции $y = f(x)$, определенной на интервале $(' + minX + '; ' + maxX +
 				')$. ' +
-				'Найдите корень уравнения $f\'(x)=0$',
+				'Найдите корень уравнения $f\'(x)=0$.',
 			answers: extremum[0][0],
 		});
 		chas2.task.modifiers.addCanvasIllustration({
