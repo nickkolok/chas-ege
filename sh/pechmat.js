@@ -117,7 +117,10 @@ function konecSozd(){
 			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
-			);
+			).
+			 // Escape LaTeX comments,
+			 // but don't ruin if they've been already escaped!
+			replace(/\\?%/g,'\\%');
 		}
 	}
 
