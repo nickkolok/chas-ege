@@ -507,9 +507,9 @@ function refreshLaTeXarchive(){
 	for(var variantN of variantsGenerated){
 		bunch +=
 			'\n\n\n\n' +
-			'\\cleardoublepage' +
-			'\\def\examvart{Вариант ' + variantN + '}' +
-			'\\normalsize\n\\input{instruction.tex}\\large' +
+			'\\cleardoublepage\n' +
+			'\\def\\examvart{Вариант ' + variantN + '}\n' +
+			'\\normalsize\n\\input{instruction.tex}\n\\large' +
 			'\n\n\n\n' +
 			createLaTeXbunch(variantN);
 	}
