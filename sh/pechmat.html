@@ -94,6 +94,9 @@
 			<br/>
 			Начинать нумерацию однотипных заданий с
 			<input value="1" id="first-task-number" data-chasstorage-id="pech-first-task-number"/>
+			<br/>
+			<input type="checkbox" id="prepareLaTeX" data-chasstorage-id="pech-prepareLaTeX"/><label for="prepareLaTeX">
+				Возможность выгрузки в $\LaTeX$ (замедляет генерацию)
 		</div>
 	</div>
 	<div class="otstup pagewidth">
@@ -125,6 +128,8 @@
 			cm
 			&nbsp;&nbsp;&nbsp;
 			<button onclick="removeGridFields()" style="display:none;" id="button-removeGridFields">Убрать сетки-поля</button>
+			<br/>
+			<a id="latex-archive-placeholder" style="display:none;">Скачать $\LaTeX$-файл и иллюстрации в архиве</a>
 		</div>
 	</div>
 	<script src='pechmat.js'></script>
