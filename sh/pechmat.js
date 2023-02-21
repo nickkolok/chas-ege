@@ -343,6 +343,10 @@ var startShell = function (){
 }
 
 
+function getTaskTextContainerByTaskId(taskId){
+	return $('div.d[data-task-id="'+taskId+'"]')[0];
+}
+
 function renewTask(){
 	console.log(this);
 	var wrapper = $(this).parents('div.d');
