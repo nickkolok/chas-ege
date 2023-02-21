@@ -16,6 +16,7 @@ var strResh='';
 
 var generatedTasks = {};
 var tasksInLaTeX = {};
+var preparedImages = {};
 
 var options={};
 
@@ -120,6 +121,7 @@ function konecSozd(){
 		}
 	}
 
+	refreshLaTeXarchive();
 	MathJax.Hub.Typeset(testGotov);
 	udalPanel();
 	spoiler();
@@ -378,8 +380,10 @@ function renewTask(){
 		solution .replaceWith(taskHtml.rsh);
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
+		generatedTasks[vopr.taskId] = vopr.clone();
 		if(options.prepareLaTeX){
 			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
+			refreshLaTeXarchive();
 		}
 		MathJax.Hub.Typeset(taskHtml[0]);
 		$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
@@ -428,6 +432,25 @@ function removeGridFields(){
 }
 
 
+function getAnswersTableLaTeX(){
+
+	var answerRows = $('#otv table tr');
+
+	var answersParsedToTeX = [];
+	// The first row may be the caption, so...
+	var cellsInFirstRow = (answerRows[2] || answerRows[1] || answerRows[0]).getElementsByTagName('td').length;
+	for(var row of Array.from(answerRows)){
+		//TODO: reverse-decode LaTeX from MathJax
+		answersParsedToTeX.push(Array.from(row.getElementsByTagName('td')).map(x => x.innerHTML).join(' & '))
+	}
+	return (
+		'\\begin{table}' +
+			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('l').join('') + '}' +
+				answersParsedToTeX.join('\\\\') +
+			'\\end{tabular}' +
+		'\\end{table}'
+	);
+}
 
 function replaceCanvasWithImgInTask(element, text){
 	if(!(/<canvas/i.test(text))){
@@ -437,9 +460,38 @@ function replaceCanvasWithImgInTask(element, text){
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
 	console.log(canvases);
 	for(var i = 0; i < canvases.length; i++){
-		var img = createImgFromCanvas(canvases[i]);
-		text = text.replace(/<canvas.*?<\/canvas>/, img.outerHTML);
+		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
+		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
+		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictocenter[]{images/'+imageName+'}');
 	}
 	return text;
 }
 
+function createLaTeXbunch(){
+	var bunchText = '';
+	for(var taskId in tasksInLaTeX){
+		bunchText +=
+			'\n' +
+			'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
+				tasksInLaTeX[taskId] + '\n' +
+			'\\end{taskBN}' + '\n';
+
+	}
+	return bunchText + '\\newpage Ответы\n\n' + getAnswersTableLaTeX();
+}
+
+function refreshLaTeXarchive(){
+	if(!options.prepareLaTeX){
+		return;
+	}
+	var zip = new JSZip();
+	zip.file("tasks.tex", createLaTeXbunch());
+	var img = zip.folder("images");
+	for(var i in preparedImages){
+		img.file(i + ".png", preparedImages[i], {base64: true});
+	}
+	zip.generateAsync({type:"base64"}).then(function (base64) {
+		$('#latex-archive-placeholder').show();
+		$('#latex-archive-placeholder')[0].href="data:application/zip;base64," + base64;
+	});
+}
