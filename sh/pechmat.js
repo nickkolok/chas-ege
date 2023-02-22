@@ -444,10 +444,13 @@ function removeGridFields(){
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX){
+	var hline = '\n\\\\\n\\hline\n';
 	return (
 		'\\begin{table}[h]' +
-			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l|').join('') + '}' +
-				answersParsedToTeX.join('\n\\\\\n\\hline\n') +
+			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
+				'\n\\hline\n' +
+				answersParsedToTeX.join(hline) +
+				hline +
 			'\\end{tabular}' +
 		'\\end{table}' +
 		'\n\n\n'
