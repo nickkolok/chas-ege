@@ -8,12 +8,9 @@
 		NAinfo.requireApiVersion(0, 2);
 		let maxX = sl(8, 10);
 		let minX = maxX - sl(13, 18);
-		let subMaxX = maxX - sl(1, 4);
-		let subMinX = minX + sl(1, 4);
 		let X = [];
 		let Y = [];
 		for (let i = minX; i <= maxX; i += sl(1, 2))
-			if (![subMaxX, subMinX].includes(i))
 				X.push(i);
 		Y.push(sl(1, 6).pm());
 		for (let i = 1; i < X.length; i++) {
@@ -113,9 +110,6 @@
 				maxX + ')$. ' +
 				'Найдите промежутки '+condition[0]+' функции $f(x)$. В ответе укажите длину '+condition[1][0]+' из них.',
 			answers: condition[1][1],
-			/*analys: interval.join(', ') + '<br>' +
-				maxLengthOfIncreasing + '<br>' +
-				maxLengthOfDecreasing,*/
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
