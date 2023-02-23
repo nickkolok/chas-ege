@@ -72,16 +72,16 @@
 				maxY: 9,
 				step: 0.01
 			});
+			
 			graph9AmarkCircles(ct, [
-				[X[0], X[X.length - 1]],
-				[Y[0], Y[Y.length - 1]]
-			].T(), 2, 0.2);
-
+				[maxX, f(maxX)],
+				[minX, f(minX)]
+			], 2, 0.2);
 			ct.fillStyle = "white";
 			graph9AmarkCircles(ct, [
-				[X[0], X[X.length - 1]],
-				[Y[0], Y[Y.length - 1]]
-			].T(), 2, 0.1);
+				[maxX, f(maxX)],
+				[minX, f(minX)]
+			], 2, 0.1);
 		};
 		NAtask.setTask({
 			text: 'На рисунке изображен график производной функции $f(x)$, определенной на интервале $(' + minX + '; ' +
