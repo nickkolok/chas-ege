@@ -14,9 +14,7 @@
 			X.push(i);
 		Y.push(sl(1, 6).pm());
 		for (let i = 1; i < X.length; i++) {
-			do {
-				Y[i] = Y[i - 1] + sl(2, 10).pm();
-			} while (Y[i].abs() > 5 || Y[i] == 0);
+			Y[i] = Y[i - 1] + sl(2, 10).pm();
 		}
 		let spline = new Spline(X, Y);
 		let extremum = [];
@@ -34,17 +32,19 @@
 
 		for (let i = minX + 1; i < maxX; i += sl(2, 6, 0.1)) {
 			let step = 0.1;
-			if (f(i) > f(i - step) && f(i) < f(i + step)) {
-				if ((f(i) > f(i - step) && f(i) < f(i + step)))
-					genAssert(f(i).abs() > 1.5, 'Точка слишком близко к 0');
-				funcAscendingPoints.push([i, f(i)]);
-			}
-			if (f(i) < f(i - step) && f(i) > f(i + step))
-				if ((f(i) < f(i - step) && f(i) > f(i + step))) {
-					genAssert(f(i).abs() > 1.5, 'Точка слишком близко к 0');
-					funcDescendingPoints.push([i, f(i)]);
+			if (f(i).abs() > 1.5) {
+				if (f(i) > f(i - step) && f(i) < f(i + step)) {
+					if ((f(i) > f(i - step) && f(i) < f(i + step)))
+						funcAscendingPoints.push([i, f(i)]);
 				}
+				if (f(i) < f(i - step) && f(i) > f(i + step))
+					if ((f(i) < f(i - step) && f(i) > f(i + step))) {
+						funcDescendingPoints.push([i, f(i)]);
+					}
+			}
 		}
+		genAssert(funcDescendingPoints.length > 2 && funcAscendingPoints.length > 2, 'Мало точек');
+
 		funcAscendingPoints = funcAscendingPoints.iz(2);
 		funcDescendingPoints = funcDescendingPoints.iz(2);
 
@@ -54,25 +54,17 @@
 		let derivativeAsc = funcAscendingPoints.T()[0].map((x) => [x, (f(x) - f(x - 0.01)) * 100]);
 		let derivativeDesc = funcDescendingPoints.T()[0].map((x) => [x, (f(x) - f(x - 0.01)) * 100]);
 
-		let condition;
-		//TODO: придумать что-нибудь получше
-		if ((derivativeAsc[0][1].abs() - derivativeAsc[1][1].abs()).abs() >= 1.5) {
-			condition = ['наибольшая'];
-			if (derivativeAsc[0][1] < derivativeAsc[1][1])
-				condition.push(derivativeAsc[1][0]);
-			else
-				condition.push(derivativeAsc[0][0]);
-		}
-		if ((derivativeDesc[0][1].abs() - derivativeDesc[1][1].abs()).abs() >= 1.5) {
-			condition = ['наименьшее'];
-			if (derivativeDesc[0][1] > derivativeDesc[1][1])
-				condition.push(derivativeDesc[1][0]);
-			else
-				condition.push(derivativeDesc[0][0]);
-		}
-		genAssert(condition.length != 1);
+		let condition = [
+			[(derivativeAsc[0][1].abs() - derivativeAsc[1][1].abs()).abs(), (derivativeDesc[0][1].abs() - derivativeDesc[1][
+				1
+			].abs()).abs()],
+			['наибольшая', [derivativeAsc[1][0], derivativeAsc[0][0]].maxE()],
+			['наименьшее', [derivativeDesc[1][0], derivativeDesc[0][0]].maxE()]
+		];
+		genAssert(condition[0].maxE() < 1.5, 'Разница слишком маленькая');
+		condition = condition[condition[0].max() + 1];
 
-		let pointsView = points.T()[0].map((num) => num.ts());
+		let pointsView = points.T()[0].map((num) => num.ts(1));
 
 		let paint1 = function(ct) {
 			let h = 380;
@@ -101,7 +93,6 @@
 			ct.fillStyle = "#0099ff";
 			graph9AmarkCircles(ct, points, points.length, 0.1);
 
-
 			ct.scale(1 / 20, -1 / 20);
 			ct.lineWidth = 2;
 			ct.fillStyle = "#007acc";
@@ -109,9 +100,9 @@
 				ct.font = "17px liberation_sans";
 
 				if (f(points[i][0]) < 0) {
-					ct.fillText(pointsView[i], points[i][0] * 20, -3);
+					ct.fillText(pointsView[i].replace('{,}', ','), points[i][0] * 20, -3);
 				} else {
-					ct.fillText(pointsView[i], points[i][0] * 20, 15);
+					ct.fillText(pointsView[i].replace('{,}', ','), points[i][0] * 20, 15);
 				}
 
 				ct.setLineDash([4, 2]);
