@@ -121,7 +121,7 @@ function konecSozd(){
 			).
 			 // Escape LaTeX comments,
 			 // but don't ruin if they've been already escaped!
-			replace(/\\?%/g,'\\%');
+			replace(/\\?%/g,'\\%').replace(/\\?<br>/g,'\n\n').replace(/\\?<br\/>/g,'');
 		}
 	}
 
