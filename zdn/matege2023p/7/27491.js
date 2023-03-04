@@ -7,7 +7,7 @@
 		}
 		NAinfo.requireApiVersion(0, 2);
 		let maxX = sl(0, 10);
-		let minX = maxX - sl(8, 10);
+		let minX =maxX - sl(8, 10);
 		let X = [];
 		let Y = [];
 		for (let i = minX; i <= maxX; i += sl(0.5, 4, 0.1))
@@ -72,7 +72,7 @@
 				ct.fillText(maxX, 20 * maxX, 15);
 
 			if (minX != 0 && minX != 1)
-				ct.fillText(minX, 20 * minX - 13, 15);
+				ct.fillText(minX, 20 * minX,15);
 
 			ct.scale(20, -20);
 			ct.lineWidth = 0.15;
