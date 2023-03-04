@@ -503,17 +503,16 @@ function refreshLaTeXarchive(){
 		return;
 	}
 	var zip = new JSZip();
-	var bunch = "";
 	for(var variantN of variantsGenerated){
-		bunch +=
-			'\n\n\n\n' +
-			'\\cleardoublepage' +
+	var bunch =
+			'\\begin{document}'
 			'\\def\examvart{Вариант ' + variantN + '}' +
 			'\\normalsize\n\\input{instruction.tex}\\large' +
 			'\n\n\n\n' +
-			createLaTeXbunch(variantN);
+			createLaTeXbunch(variantN)+
+			'\\end{document}';
+			zip.file("variant_"+variantN+".tex", bunch);
 	}
-	zip.file("tasks.tex", bunch);
 	var img = zip.folder("images");
 	for(var i in preparedImages){
 		img.file(i + ".png", preparedImages[i], {base64: true});
