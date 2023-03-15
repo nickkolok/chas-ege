@@ -16,24 +16,33 @@
 		];
 
 		let answ = number[name.indexOf(question[0])][name.indexOf(question[1])];
-		genAssert((answ * 100).isZ()&&answ, 'плохой ответ');
+		genAssert((answ * 100).isZ() && answ, 'плохой ответ');
 
 		let paint1 = function(ct) {
 			ct.translate(50, 10);
 			ct.scale(15, 15);
 			ct.lineWidth = 2 / 15;
 			let cubeEdge = 12;
+			ct.strokeStyle = "#8080ff";
 			if (question.includes('площадь поверхности') || question.includes('объём')) {
 				ct.setLineDash([1, 0.5]);
-				ct.strokeStyle = "#8080ff";
 				ct.translate(44 / 15, 71 / 15);
-				ct.parallelepiped(cubeEdge / 1.5, cubeEdge / 1.5, cubeEdge / (2.5 * 1.5), 40, true);
+				ct.drawParallelepiped({
+					width: cubeEdge / 1.5,
+					height: cubeEdge / 1.5,
+					depth: cubeEdge / (2.5 * 1.5),
+					angle: 40
+				}, [0, 2, 3, 4, 6], true, [0.5, 0.2]);
 				ct.translate(-44 / 15, -71 / 15);
 				ct.strokeStyle = "black";
 			}
 
-			ct.parallelepiped(cubeEdge, cubeEdge, cubeEdge / 2.5, 40, true, question.includes('квадрат диагонали') ||
-				question.includes('диагональ'));
+			ct.drawParallelepiped({
+				width: cubeEdge,
+				height: cubeEdge,
+				depth: cubeEdge / (2.5),
+				angle: 40
+			}, [0, 3, 4], true, [0.5, 0.2]);
 
 		};
 
