@@ -62,11 +62,10 @@
                     angle: -60.2
                 }, [1], [0.5, 0.2], true, true);
             };
-
 		NAtask.setTask({
-			text: 'В ' + ['тетраэдре', 'правильной треугольной пирамиде'][edgeOfBase % 2] + ' ' +
+			text: 'В тетраэдре ' +
 				question[0].ie + ' ' + verb[0] + ' $' + numbers[0] + '$. Найдите ' +
-				question[1].ve + ' ' + ['тетраэдра', 'пирамиды'][edgeOfBase % 2] + '. Ответ умножьте на ' + '$' + ps + '$',
+				question[1].ve + ' тетраэдра. Ответ умножьте на ' + '$' + ps + '$',
 			answers: '$' + numbersView[1].ts(1) + '$.',
 		});
 		chas2.task.modifiers.addCanvasIllustration({
