@@ -4,17 +4,16 @@
 		let edgeOfBase = sl(1, 20);
 		let height = sl(1, 20);
 		let numberOfEdge = [3, 3, 4, 6].iz();
-		let apophem = [(height.pow(2) + edgeOfBase.pow(2) / 12).sqrt(), (height.pow(2) + 0.25 * edgeOfBase.pow(2)).sqrt(),
+		let apothem  = [(height.pow(2) + edgeOfBase.pow(2) / 12).sqrt(), (height.pow(2) + 0.25 * edgeOfBase.pow(2)).sqrt(),
 			0, (height.pow(2) + 0.75 * (edgeOfBase).pow(2)).sqrt()
 		][numberOfEdge - 3];
 
 		let question = [
 			['площадь основания', 0.25 * numberOfEdge * edgeOfBase.pow(2) * (Math.PI / numberOfEdge).ctg()],
-			['площадь боковой поверхности', 0.5 * numberOfEdge * edgeOfBase * apophem],
-			['апофема', apophem],
+			['площадь боковой поверхности', 0.5 * numberOfEdge * edgeOfBase * apothem ],
+			['апофема', apothem ],
 			['высота', height],
 			['сторона основания', edgeOfBase],
-			['объём', numberOfEdge * edgeOfBase * height * (Math.PI / numberOfEdge).ctg() / 12]
 		].iz(3);
 
 		let name = question.T()[0];
@@ -55,7 +54,9 @@
 
 		NAtask.setTask({
 			text: 'В правильной ' + ['тре', 'четырёх', '', 'шести'][numberOfEdge - 3] +
-				'угольной пирамиде ' + name[0] + ' - ' + number[0] + '; ' + name[1] + ' - ' + number[1] +
+				'угольной пирамиде ' + name[0] + [' составляет ', ' равна '].iz() + number[0] + '; ' + name[1] + [
+					' составляет ', ' равна '
+				].iz() + number[1] +
 				'. Чему равна ' + name[2] + ' пирамиды?',
 			answers: number[2],
 		});
