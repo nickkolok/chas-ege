@@ -46,14 +46,7 @@ retryWhileUndefined(function() {
 	});
 	if (pointsp.length < 2)
 		return;
-	let find, answ;
-	if (sl1()) {
-		answ = x2;
-		find = 'абсциссу';
-	} else {
-		answ = y2;
-		find = 'ординату';
-	}
+
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
@@ -97,13 +90,13 @@ retryWhileUndefined(function() {
 	};
 	NAtask.setTask({
 		text: 'На рисунке изображены графики функций $f(x)=\\sqrt{x'+['+','-'].iz()+'c}'+['+','-'].iz()+'d$ и $g(x)=kx'+['+','-'].iz()+'b$,' +
-			' которые пересекаются в точках $A$ и $B$. Найдите ' + find + ' точки $B$.',
-		answers: answ,
+			' которые пересекаются в точках $A$ и $B$.',
 		analys: '$f(x)=' + ('\\sqrt{x+' + c + '}+' + d + '$').plusminus() + '<br>' +
 			'$g(x)=' + (k + 'x+' + b.ts()).plusminus() + '$<br>' +
 			'$A(' + x1 + ';' + y1 + ')$<br>' +
 			'$B(' + x2 + ';' + y2 + ')$',
 	});
+	chas2.task.modifiers.askAboutPoint('$B$',[x2,y2]);
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
 		height: 300,
