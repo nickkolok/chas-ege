@@ -63,7 +63,7 @@
 		};
 		NAtask.setTask({
 			text: 'В тетраэдре ' + question[0] + ' ' + verb[0] + ' $' + numbersView[0] + '$. Чему ' + verb[1] + ' ' +
-				question[1] + ' тетраэдра. Ответ умножьте на $' + ps + '$.',
+				question[1] + ' тетраэдра? Ответ умножьте на $' + ps + '$.',
 
 			answers: numbersView[1],
 		});
