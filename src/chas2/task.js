@@ -456,7 +456,21 @@ chas2.task = {
 		o.measurements[0].name = sklonlxkand(o.measurements[0].name);
 		o.measurements[1].name = sklonlxkand(o.measurements[1].name);
 
+		let first  = ['первого', 'первой', 'первого', 'первых'][figureName.rod];
+		let second = ['второго', 'второй', 'второго', 'вторых'][figureName.rod];
+		let bigger = ['больше','меньше'].iz(); // TODO: 'превосходит' ?
+
+		//TODO: разнонаправленное больше-меньше
+		let phrase1 =
+			'во сколько раз ' + o.measurements[0].name.ie + ' ' + first + ' ' + figureName.re + ' ' + bigger + ' ' +
+			o.measurements[0].name.re + ' ' + second + ' ' + figureName.re;
+		let phrase2 =
+			o.measurements[1].name.ie + ' ' + first + ' ' + figureName.re + ' в ' + chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v') + ' ' +
+			bigger + ', чем ' + o.measurements[1].name.ie + ' ' + second + ' ' + figureName.re;
+
 		let textOptions = [
+			phrase1.toZagl() + ', если ' + phrase2 + '?',
+			phrase2.toZagl() + '. ' + phrase1.toZagl() + '?',
 		];
 
 		if (o.measurements[1].primary) {
