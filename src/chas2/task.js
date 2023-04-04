@@ -446,6 +446,51 @@ chas2.task = {
 	},
 
 
+	/** @function NApi.task.setDilationTask
+	 * Составить задание о растяжении геометрической фигуры
+	 */
+	setDilationTask : function(o) {
+		let dilationCoefficient = o.dilationCoefficient || sl(2,10);
+		let figureName = sklonlxkand(o.figureName);
+		let action = ['увелич','уменьш'].iz();
+		o.measurements[0].name = sklonlxkand(o.measurements[0].name);
+		o.measurements[1].name = sklonlxkand(o.measurements[1].name);
+
+		let textOptions = [
+		];
+
+		if (o.measurements[1].primary) {
+			textOptions.push(
+				'Во сколько раз ' + action + 'ится ' + o.measurements[0].name.ie + ' ' +
+				figureName.re + ', если ' +
+				['его','её','его','их'][figureName.rod] + ' ' + o.measurements[1].name.ve + ' ' + action + 'ить в '+
+				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v')+'?'
+			);
+		}
+		else {
+			textOptions.push(
+				'Во сколько раз ' + action + 'или ' + o.measurements[0].name.ie + ' ' +
+				figureName.re + ', если ' +
+				['его','её','его','их'][figureName.rod] + ' ' + o.measurements[1].name.ie + ' ' +
+				action + ['ился','илась','илось','ились'][o.measurements[1].name.rod] + ' в '+
+				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v')+'?'
+			);
+		}
+
+		let task = o.clone();
+		task.text = textOptions.iz();
+
+		if (!o.forbidDirectReplacements) {
+			task.text = task.text.
+				replace(' его площадь поверхности ',' площадь его поверхности ').
+				replace( ' её площадь поверхности ',' площадь её поверхности ');
+		}
+
+		task.answers = [dilationCoefficient.pow(o.measurements[0].power)];
+		NAtask.setTask(task);
+	},
+
+
 	/** @function NApi.task.setTwoStatementTask
 	 * Составить задание о двух утверждениях
 	 * @param {String|Object[]} stA первое утверждение (или массив утверждений)
