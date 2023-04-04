@@ -66,6 +66,7 @@ chas2.task = {
 			o.answers = chaslib.toStringsArray('answers' in o ? o.answers : []);
 			o.wrongAnswers = chaslib.toStringsArray((('wrongAnswers' in o) && (o.wrongAnswers !== undefined)) ? o.wrongAnswers : []);
 			// Просто o.answers || [] нельзя - ноль не будет передаваться
+			o.authors = chaslib.toStringsArray(o.authors || o.author || []);
 		},
 
 
@@ -119,6 +120,7 @@ chas2.task = {
 	 * @param {String} analys текст разбора задания
 	 * @param {String|Number|String[]|Number[]} answers правильные ответы
 	 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
+	 * @param {String|String[]} authors авторы шаблона
 	 * @param {String[]} tags теги
 	 * @param {Function} checkAnswer функция проверки ответа
 	 * @param {Function} draw функция отрисовки
@@ -132,6 +134,7 @@ chas2.task = {
 		window.vopr.rsh = o.analys;
 		window.vopr.ver = o.answers;
 		window.vopr.nev = o.wrongAnswers;
+		window.vopr.authors = o.authors;
 		if (o.checkAnswer) {
 			window.vopr.vrn = o.checkAnswer;
 		}
@@ -159,6 +162,7 @@ chas2.task = {
 			checkAnswer : window.vopr.vrn,
 			draw : window.vopr.dey,
 			tags : {},
+			authors : window.vopr.authors,
 		};
 		chas2.task._.normalizeTask(o);
 		chas2.task._.validateTask(o);
