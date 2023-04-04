@@ -47,6 +47,16 @@ function generateHtmlForTask(kat,zdn,masdey){
 			'');
 
 		}
+		if(vopr.authors && vopr.authors.length){
+			rez+=(
+				'<br/>' +
+				'<div class="katalog-authors">' +
+						'Автор' + ('ы').esli(vopr.authors.length > 1) + ': &nbsp;' +
+						vopr.authors.join(', ') +
+				'<div/>'+
+				'<br/>'+
+			'');
+		}
 	}catch(e){
 		console.log(e);
 	}
