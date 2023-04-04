@@ -102,6 +102,7 @@ retryWhileUndefined(function() {
 			'$. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=' + (a.ts() + 'x^3+' + b.ts() + 'x^2+' + c.ts() + 'x+' + d.ts()).plusminus() + '$',
+		authors: ['Александра Суматохина', 'Николай Авдеев'],
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,

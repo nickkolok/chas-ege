@@ -39,6 +39,7 @@
 		text: `На рисунке изображён график функции $f(x)=k\\sqrt{x}$. Найдите ${find}. `,
 		answers: answ,
 		analys: `$f(x)=${k}\\sqrt{x}$`.plusminus(),
+		author: 'Александра Суматохина',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,

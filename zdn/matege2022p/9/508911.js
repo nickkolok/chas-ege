@@ -87,6 +87,7 @@
 		text: `На рисунке изображён график функции $f(x)=${text.plusminus()}$${`,где числа $a,$ $b$ и $c $ - целые `.esli(text == `ax ^ 2 + bx + c `)}. Найдите $f(${chisl})$.`,
 		answers: answ,
 		analys: `$f(x)=${(a + `x ^ 2 +` + b + `x +` + c).replace('+0x', '').replace('+0', '').plusminus()}$`.plusminus(),
+		authors: ['Александра Суматохина', 'Николай Авдеев'],
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
