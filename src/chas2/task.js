@@ -570,7 +570,7 @@ chas2.task = {
 			};
 		})(),
 
-		/** @function chas2.task.modifiers.roundUpTo
+		/** @function chas2.task.modifiers.multiplyAnswerBySqrt
 		 * Добавить фразу "Ответ умножьте на $\sqrt{..}$." и домножить сам ответ.
 		 * @param {Number} n Максимальное число, до которого можно домножать на корень
 		 * @param {Boolean} opts.useMultiples Можно ли умножать/делить на конструкции вида 2\sqrt{3}
