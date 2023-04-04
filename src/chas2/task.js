@@ -569,14 +569,18 @@ chas2.task = {
 		/** @function chas2.task.modifiers.roundUpTo
 		 * Добавить фразу "Ответ умножьте на $\sqrt{..}$." и домножить сам ответ.
 		 * @param {Number} n Максимальное число, до которого можно домножать на корень
+		 * @param {Boolean} opts.useMultiples Можно ли умножать/делить на конструкции вида 2\sqrt{3}
 		 */
-		multiplyAnswerBySqrt : function(n) {
+		multiplyAnswerBySqrt : function(n, opts) {
 			var o = chas2.task.getTask();
 			if (o.answers.length != 1){
 				throw new TypeError('Fixme: cannot apply multiplyAnswerBySqrt() to multiple answers')
 			}
 			//Меняем запятую на точку для корректной работы Number
 			var ans = Number(o.answers[0].replace(',', '.'));
+
+			opts = opts || {};
+			opts.useMultiples = opts.useMultiples || false;
 
 			if ((ans*1000).isAlmostInteger()){
 				//Ответ и так хорош!
@@ -593,12 +597,12 @@ chas2.task = {
 			console.log(possibleMultipliers);
 			for (var i of possibleMultipliers){
 				if(sl1() && (ans/i.sqrt()*1000).isAlmostInteger()){
-					o.text += ' Ответ разделите на $' + i.texsqrt() + '$.';
+					o.text += ' Ответ разделите на $' + i.texsqrt(opts.useMultiples) + '$.';
 					o.answers = [(ans / i.sqrt()).okrugldo((10).pow(-6)).ts()]
 					chas2.task.setTask(o);
 					return;
 				} else if((ans*i.sqrt()*1000).isAlmostInteger()){
-					o.text += ' Ответ умножьте на $' + i.texsqrt() + '$.';
+					o.text += ' Ответ умножьте на $' + i.texsqrt(opts.useMultiples) + '$.';
 					o.answers = [(ans * i.sqrt()).okrugldo((10).pow(-6)).ts()]
 					chas2.task.setTask(o);
 					return;
