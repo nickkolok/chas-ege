@@ -2,7 +2,7 @@ retryWhileError(function() {
     NAinfo.requireApiVersion(0, 2);
 
     function f(x) {
-        return a / (x+c) + b;
+        return a / (x + c) + b;
     }
 
     let ai = [];
@@ -11,11 +11,11 @@ retryWhileError(function() {
     let func = [];
     let funcShuffle = [];
     for (let i = 0; i < 4; i++) {
-        ai.push(slKrome(ai, 1, 5, 0.5));
-        bi.push(sl(1, 10).pm());
+        ai.push(slKrome(ai, 1, 5, 0.5).pm());
+        bi.push(sl(1, 5).pm());
         ci.push(sl(1, 6).pm());
 
-        func.push(('\\frac{' + ai[i] + '}{x'+ci[i]+'}+' + bi[i]).plusminus());
+        func.push(('\\frac{' + ai[i] + '}{x+' + ci[i] + '}+' + bi[i]).plusminus());
         funcShuffle[i] =
             func[i].replace('+0x', '').replace('+0', '');
         funcShuffle[i] = func[i];
@@ -39,14 +39,13 @@ retryWhileError(function() {
             maxY: 5.5
         });
 
-        genAssert(points[i].length > 2, 'мало точек');
+        genAssert(points[i].length > 1, 'мало точек');
 
     }
     for (let i = 0; i < 4; i++)
         funcShuffle[i] = (i + 1) + ') $' + funcShuffle[i] + '$';
     answers.pop();
-    console.log(func);
-    console.log(funcShuffle);
+
     let paint1 = function(ct) {
         let h = 300;
         let w = 300;
@@ -70,6 +69,21 @@ retryWhileError(function() {
             a = ai[i];
             b = bi[i];
             c = ci[i];
+
+            ct.lineWidth = 0.06;
+            if (b) {
+                ct.setLineDash([0.5, 0.4]);
+                ct.drawLine(-6.5, b, 6.5, b);
+                ct.setLineDash([]);
+            }
+
+            if (c) {
+                ct.setLineDash([0.5, 0.4]);
+                ct.drawLine(-c, -7, -c, 6.5);
+                ct.setLineDash([]);
+            }
+
+            ct.lineWidth = 0.1;
 
             graph9AdrawFunction(ct, f, {
                 minX: -6.5,
