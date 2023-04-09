@@ -121,7 +121,7 @@ function konecSozd(){
 			).
 			 // Escape LaTeX comments,
 			 // but don't ruin if they've been already escaped!
-			replace(/\\?%/g,'\\%');
+			replace(/\\?%/g,'\\%').replace(/<br>/g,'\\').replace(/<br\/>/g,'\\');
 		}
 	}
 
@@ -521,11 +521,11 @@ function refreshLaTeXarchive(){
 			createLaTeXbunch(variantN);
 	}
 
-	zip.file("variant_"+variantsGenerated[0]+"_no_answers.tex", preambula+'\n\n\\begin{document}'+bunch+'\\end{document}');
+	zip.file("task.tex", preambula+'\n\n\\begin{document}'+bunch+'\\includepdf[pages=-]{}\n\\end{document}');
 
-	zip.file("variant_"+variantsGenerated[0]+".tex", preambula+hyperref+'\n\n\\begin{document}'+bunch+ '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n'+'\\end{document}');
+	//zip.file("variant_"+variantsGenerated[0]+".tex", preambula+hyperref+'\n\n\\begin{document}'+bunch+ '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n'+'\\end{document}');
 
-	zip.file("variant_"+variantsGenerated[0]+"_watermark.tex", preambula+watermark+hyperref+'\n\n\\begin{document}'+bunch+'\\end{document}');
+	zip.file("task_watermark.tex", preambula+watermark+hyperref+'\n\n\\begin{document}'+bunch+'\\end{document}');
 	
 	var img = zip.folder("images");
 	for(var i in preparedImages){
@@ -537,8 +537,8 @@ function refreshLaTeXarchive(){
 	});
 }
 
-var preambula = ['\\documentclass[twocolumn]{article}\n\\usepackage{dashbox}\n\\setlength{\\columnsep}{40pt}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{pictures/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{egetask}\n\\usepackage{egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
+var preambula = ['\\documentclass[4apaper]{article}\n\\usepackage{pdfpages}\n\\usepackage{dashbox}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{pictures/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{egetask}\n\\usepackage{egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
 
-var hyperref = '\\def\\rfoottext{Разрешается свободное копирование в некоммерческих целях с указанием источника }\n\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
+var hyperref = '\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
 
 var watermark='\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n';
