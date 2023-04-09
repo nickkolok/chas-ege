@@ -12,7 +12,7 @@ retryWhileError(function() {
     let func = [];
     let funcShuffle = [];
     for (let i = 0; i < 4; i++) {
-        ai.push(slKrome(ai, 1, 5, 0.5));
+        ai.push(slKrome(ai, 1, 5, 0.5).pm());
         bi.push(sl(1, 10).pm());
         ci.push(sl(1, 10).pm());
 

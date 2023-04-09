@@ -2,18 +2,20 @@ retryWhileError(function() {
     NAinfo.requireApiVersion(0, 2);
 
     function f(x) {
-        return a / (x) + b;
+        return a / (x+c) + b;
     }
 
     let ai = [];
     let bi = [];
+    let ci = [];
     let func = [];
     let funcShuffle = [];
     for (let i = 0; i < 4; i++) {
         ai.push(slKrome(ai, 1, 5, 0.5));
         bi.push(sl(1, 10).pm());
+        ci.push(sl(1, 6).pm());
 
-        func.push(('\\frac{' + ai[i] + '}{x}+' + bi[i]).plusminus());
+        func.push(('\\frac{' + ai[i] + '}{x'+ci[i]+'}+' + bi[i]).plusminus());
         funcShuffle[i] =
             func[i].replace('+0x', '').replace('+0', '');
         funcShuffle[i] = func[i];
@@ -22,14 +24,13 @@ retryWhileError(function() {
     funcShuffle.shuffle();
 
     let points = [];
-    let x0 = [];
-    let y0 = [];
-    let a, b, c, v;
+    let a, b, c;
     let answers = [];
     for (let i = 0; i < 4; i++) {
         answers.push(1 + funcShuffle.indexOf(func[i]));
         a = ai[i];
         b = bi[i];
+        c = ci[i];
 
         points[i] = intPoints(f, {
             minX: -5,
@@ -68,6 +69,7 @@ retryWhileError(function() {
 
             a = ai[i];
             b = bi[i];
+            c = ci[i];
 
             graph9AdrawFunction(ct, f, {
                 minX: -6.5,
