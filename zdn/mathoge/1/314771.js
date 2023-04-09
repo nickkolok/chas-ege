@@ -35,7 +35,7 @@ retryWhileError(function() {
             func.push(('\\frac{' + ai[i] + '}{x}+' + bi[i]).plusminus());
             break;
         case 2:
-            func.push((ai[i] + '\\sqrt{x}+' + bi[i]).plusminus());
+            func.push((ai[i] + '\\sqrt{x'+ci[i]+'}+' + bi[i]).plusminus());
             break;
         case 3:
             func.push((ai[i] + 'x+' + bi[i]).plusminus());
