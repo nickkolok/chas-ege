@@ -512,13 +512,7 @@ function refreshLaTeXarchive(){
 	var zip = new JSZip();
 	var bunch = "";
 	for(var variantN of variantsGenerated){
-		bunch +=
-			'\n\n\n\n' +
-			'\\cleardoublepage\n' +
-			'\\def\\examvart{Вариант ' + variantsGenerated[0] + '.'+(variantN+1)%variantsGenerated[0]+'}\n' +
-			'\\normalsize\n\\input{instruction.tex}\n\\startpartone\n\\large' +
-			'\n\n\n\n' +
-			createLaTeXbunch(variantN);
+		bunch += createLaTeXbunch(variantN);
 	}
 
 	zip.file("task.tex", preambula+'\n\n\\begin{document}'+bunch+'\\includepdf[pages=-]{}\n\\end{document}');
