@@ -1,7 +1,7 @@
 if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
-	nZad:1,
+	nZad:5,
 	adres:'../zdn/mathoge/',
 	name:'mathoge',
 	prefix:'',
