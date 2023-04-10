@@ -517,7 +517,6 @@ function createLaTeXbunchTasks(variantN) {
 	return bunchText;
 }
 
-
 function refreshLaTeXarchive() {
 	if (!options.prepareLaTeX) {
 		return;
