@@ -121,7 +121,7 @@ function konecSozd(){
 			).
 			 // Escape LaTeX comments,
 			 // but don't ruin if they've been already escaped!
-			replace(/\\?%/g,'\\%').replace(/<br>/g,'\\').replace(/<br\/>/g,'\\\\');
+			replace(/\\?%/g,'\\%').replace(/<br>/g,'\\\\').replace(/<br\/>/g,'\\\\');
 		}
 	}
 
@@ -446,13 +446,13 @@ function removeGridFields(){
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX){
 	var hline = '\n\\\\\n\\hline\n';
 	return (
-		'\\begin{table}[h]' +
-			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
-				'\n\\hline\n' +
+		'\n\\begin{tabular}{llll}' +//TODO: надо как-то узнать количество всех заданий и сколько оно делится на 50(тк 50 ответов обычно влазит на страницу(вообще в идеале 47)) и только l поставить
+			'\n\\begin{tabular}[t]{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
+			'\n\\hline\n' +
 				answersParsedToTeX.join(hline) +
 				hline +
 			'\\end{tabular}' +
-		'\\end{table}' +
+		'\\end{tabular}' +
 		'\n\n\n'
 	);
 }
@@ -464,12 +464,16 @@ function getAnswersTableLaTeX(variantN){
 	var answersParsedToTeX = [];
 	// The first row may be the caption, so...
 	var cellsInFirstRow = (answerRows[2] || answerRows[1] || answerRows[0]).getElementsByTagName('td').length;
+	let count=0;
 	for(var row of Array.from(answerRows)){
+		count++;
 		var tdCells = row.getElementsByTagName('td');
 		if(tdCells.length){
 			//TODO: reverse-decode LaTeX from MathJax
 			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & '));
-		}
+			if(count%50==0)
+			answersParsedToTeX.push('\\end{tabular}&\\begin{tabular}{|l|l|}')
+				}
 	}
 	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
 }
@@ -515,9 +519,10 @@ function refreshLaTeXarchive(){
 		bunch += createLaTeXbunch(variantN);
 	}
 
-	zip.file("task.tex", preambula+'\n\n\\begin{document}'+bunch+'\\includepdf[pages=-]{}\n\\end{document}');
+	//zip.file("task.tex", preambula+'\n\n\\begin{document}'+bunch+'\n\\end{document}');
 
-	//zip.file("variant_"+variantsGenerated[0]+".tex", preambula+hyperref+'\n\n\\begin{document}'+bunch+ '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n'+'\\end{document}');
+	zip.file("task"+variantsGenerated[0]+".tex", preambula+'\n\n\\begin{document}'+ getAnswersTableLaTeX(variantN)+bunch+ '\n\\newpage\n Ответы\n\n' + '\n'+'\\end{document}');
+	
 
 	zip.file("task_watermark.tex", preambula+watermark+hyperref+'\n\n\\begin{document}'+bunch+'\\end{document}');
 	
@@ -531,7 +536,7 @@ function refreshLaTeXarchive(){
 	});
 }
 
-var preambula = ['\\documentclass[4apaper]{article}\n\\usepackage{pdfpages}\n\\usepackage{dashbox}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{pictures/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{egetask}\n\\usepackage{egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
+var preambula = ['\\documentclass[4apaper]{article}\n\\usepackage{pdfpages}\n\\usepackage{dashbox}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{pictures/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../../egetask_ver}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
 
 var hyperref = '\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
 
