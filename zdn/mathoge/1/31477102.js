@@ -1,4 +1,4 @@
-retryWhileError(function() {
+retryWhileError(function () {
     NAinfo.requireApiVersion(0, 2);
 
     function f(x) {
@@ -46,7 +46,7 @@ retryWhileError(function() {
         funcShuffle[i] = (i + 1) + ') $' + funcShuffle[i] + '$';
     answers.pop();
 
-    let paint1 = function(ct) {
+    let paint1 = function (ct) {
         let h = 300;
         let w = 300;
         //Оси координат
@@ -92,7 +92,10 @@ retryWhileError(function() {
                 maxY: 5.7,
                 step: 0.01,
             });
-            graph9AmarkCircles(ct, points[i], 3, 0.15);
+            if (f(0).abs() < 6.5)
+                graph9AmarkCircles(ct, [
+                    [0, f(0)]
+                ], 3, 0.15);
             ct.scale(1 / 20, -1 / 20);
             ct.font = "19px liberation_sans";
             ct.fillText(['A', 'B', 'C'][i] + ')', 130, 130);
@@ -111,5 +114,5 @@ retryWhileError(function() {
         paint: paint1,
     });
 },
-100000);
+    100000);
 //314771 но только про гиперболы

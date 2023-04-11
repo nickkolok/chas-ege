@@ -1,4 +1,4 @@
-retryWhileError(function() {
+retryWhileError(function () {
     NAinfo.requireApiVersion(0, 2);
 
     function f(x) {
@@ -44,7 +44,7 @@ retryWhileError(function() {
 
 
 
-    let paint1 = function(ct) {
+    let paint1 = function (ct) {
         let h = 300;
         let w = 300;
         //Оси координат
@@ -74,9 +74,9 @@ retryWhileError(function() {
                 maxY: 5.7,
                 step: 0.05,
             });
-            graph9AmarkCircles(ct, points[i], 3, 0.15);
+            graph9AmarkCircles(ct, [[0, f(0)], [x0[i], y0[i]]], 3, 0.15);
             ct.scale(1 / 20, -1 / 20);
-            ct.font = "19px liberation_sans";
+            ct.font = "19px liberation_sans"; a
             ct.fillText(i + 1 + ')', 130, 130);
         }
 
@@ -93,5 +93,5 @@ retryWhileError(function() {
         paint: paint1,
     });
 },
-100000);
+    100000);
 //193093 200515 201145 193094 193095 193096 199705 199735 199765 199795 199825 199855 199885 199915 199945 199975 200005 200035 200065 200095 200125 200155 200185 200215 200245 200275 200305 200335 200365 200395 200425 200455 200485 200545 200575 200605 200635 200665 200695 200725 200755 200785 200815 200845 200875 200905 200935 200965 200995 201025 201055 201085 201115 201175 201205

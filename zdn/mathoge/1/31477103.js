@@ -1,4 +1,4 @@
-retryWhileError(function() {
+retryWhileError(function () {
     NAinfo.requireApiVersion(0, 2);
 
     function f(x) {
@@ -7,12 +7,12 @@ retryWhileError(function() {
 
     let ai = [];
     let bi = [];
-    
+
     let func = [];
     let funcShuffle = [];
     for (let i = 0; i < 4; i++) {
         ai.push(slKrome(ai, 1, 5, 0.5).pm());
-        bi.push(sl(1, 10).pm());
+        bi.push(sl(1, 6).pm());
 
         func.push((ai[i] + '\\sqrt{x}+' + bi[i]).plusminus());
         funcShuffle[i] =
@@ -23,9 +23,7 @@ retryWhileError(function() {
     funcShuffle.shuffle();
 
     let points = [];
-    let x0 = [];
-    let y0 = [];
-    let a, b, c, v;
+    let a, b;
     let answers = [];
     for (let i = 0; i < 4; i++) {
         answers.push(1 + funcShuffle.indexOf(func[i]));
@@ -45,9 +43,8 @@ retryWhileError(function() {
     for (let i = 0; i < 4; i++)
         funcShuffle[i] = (i + 1) + ') $' + funcShuffle[i] + '$';
     answers.pop();
-    console.log(func);
-    console.log(funcShuffle);
-    let paint1 = function(ct) {
+
+    let paint1 = function (ct) {
         let h = 300;
         let w = 300;
         //Оси координат
@@ -76,8 +73,10 @@ retryWhileError(function() {
                 maxY: 5.7,
                 step: 0.01,
             });
-            graph9AmarkCircles(ct, points[i], 3, 0.15);
-            ct.scale(1 / 20, -1 / 20);
+            if (f(0).abs() < 6.5)
+                graph9AmarkCircles(ct, [
+                    [0, f(0)]
+                ], 3, 0.15); ct.scale(1 / 20, -1 / 20);
             ct.font = "19px liberation_sans";
             ct.fillText(['A', 'B', 'C'][i] + ')', 130, 130);
         }
@@ -95,5 +94,5 @@ retryWhileError(function() {
         paint: paint1,
     });
 },
-100000);
+    100000);
 //314771 но только про корни

@@ -1,4 +1,4 @@
-retryWhileError(function() {
+retryWhileError(function () {
     NAinfo.requireApiVersion(0, 2);
 
     function interval(f, x0) {
@@ -59,14 +59,10 @@ retryWhileError(function() {
 
     let answers = question.T()[1];
     question = question.T()[0];
-    
-    console.log(answers);
-    console.log(question);
-
 
     let rightOrWrong = sl1();//1 много неправильных, один правильный, 0 наоборот
     let answ = question[0];
-    
+
     if (rightOrWrong) {
         answ += ' $' + answers[0] + '$';
     } else {
@@ -96,7 +92,7 @@ retryWhileError(function() {
         }
     }
 
-    let paint1 = function(ct) {
+    let paint1 = function (ct) {
         let h = 300;
         let w = 300;
         //Оси координат
@@ -113,6 +109,8 @@ retryWhileError(function() {
             maxY: 5.7,
             step: 0.05,
         });
+        graph9AmarkCircles(ct, [[0, f(0)], [x0, y0]], 3, 0.15);
+
 
     };
     NAtask.setTask({
@@ -127,6 +125,6 @@ retryWhileError(function() {
         paint: paint1,
     });
 },
-100000);
+    100000);
 AtoB(4);
 //314676 314703 314704 314670 314681 314684 314706 314707 314709 314711 314712 314718 314746 314747 314748 314750 314751 314753
