@@ -26,7 +26,7 @@
 			[
 				['объём', volume1, volume2, volume2 / volume1],
 				['площадь боковой поверхности', area1, area2, area2 / area1]
-			].iz(), ['ребро', edge1, edge2, ratio1],
+			].iz(), ['сторона основания', edge1, edge2, ratio1],
 			['высота', height1, height2, ratio2]
 		].shuffle();
 
@@ -46,7 +46,7 @@
 			ct.translate(10, 80);
 			ct.scale(10, -10);
 			ct.lineWidth = 2 / 15;
-			let edgeOfBase = 10;
+			
 			ct.rightPyramid4({
 				edge: 12,
 				angle: Math.PI / 5,
@@ -65,7 +65,7 @@
 				knownValue + '. ' +
 				'У второй пирамиды ' + name[1] + ' в ' + chislitlx(ratio[1], 'раз') + ' больше, а ' + name[2] + ' в ' +
 				chislitlx(ratio[2], 'раз') + ' больше, чем у первой. ' +
-				'Найдите ' + sklonlxkand(name[0]).ve + ' второй пирамиды.',
+				'Найдите ' + sklonlxkand(name[0]).ve.replace('сторона','сторону').replace('основанию','основания') + ' второй пирамиды.',
 
 			answers: answer,
 		});
