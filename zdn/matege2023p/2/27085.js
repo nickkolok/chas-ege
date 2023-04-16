@@ -3,10 +3,10 @@
 		NAinfo.requireApiVersion(0, 2);
 		let ratio = sl(2, 27);
 
-		let name = ['рёбро', 'высота', ['площадь боковой поверхность', 'площадь основание',
-			'полная площадь поверхность'
-		].iz(), 'объём'].iz(2);
-
+		let name = ['ребро', 'высота', ['площадь боковой поверхности', 'площадь грани',
+			'полная площадь поверхности'
+		].iz(), 'объём'];
+		let name1=name.iz(2);
 		let nameView = sklonlxkand(name);
 		let number = [
 			[0, ratio, ratio.pow(2), ratio.pow(3)],
@@ -15,7 +15,7 @@
 			[Math.cbrt(ratio), Math.cbrt(ratio), ratio, 0]
 		];
 
-		let answ = number[name.indexOf(name[0])][name.indexOf(name[1])];
+		let answ = number[name.indexOf(name1[0])][name.indexOf(name1[1])];
 		genAssert((answ * 100).isZ() && answ, 'плохой ответ');
 
 		let paint1 = function(ct) {
@@ -31,7 +31,7 @@
 		};
 		NAtask.setTask({
 			text: 'Во сколько раз увеличится ' + nameView[1].ie + ' правильного тетраэдра, ' +
-				'если все его ' + nameView[0].ve + ' увеличить в ' + chislitlx(ratio, 'раз') + '?',
+				'если его ' + nameView[0].ve.replace('сторона','сторону').replace('основанию','основания') + ' увеличить '.esli(!nameView[0].ie.search('площадь'))+' увеличится '.esli(nameView[0].ie.search('площадь'))+' в ' + chislitlx(ratio, 'раз') + '?',
 
 			answers: answ,
 		});
