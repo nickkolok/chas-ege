@@ -7,7 +7,8 @@
 			'полная площадь поверхности'
 		].iz(), 'объём'];
 		let name1=name.iz(2);
-		let nameView = sklonlxkand(name);
+		genAssert(!name1.includes('ребро')&&!name1.includes('высота'), 'плохой вопрос');
+		let nameView = sklonlxkand(name1);
 		let number = [
 			[0, ratio, ratio.pow(2), ratio.pow(3)],
 			[ratio, 0, ratio.pow(2), ratio.pow(3)],
@@ -22,7 +23,6 @@
 			ct.translate(10, 20);
 			ct.scale(10, -10);
 			ct.lineWidth = 2 / 15;
-			let edgeOfBase = 10;
 			ct.rightPyramid3({
 				edge: 17,
 				angle: Math.PI / 8,
