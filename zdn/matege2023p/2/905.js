@@ -11,7 +11,7 @@
 			['высота', 6 * (edgeOfBase / 3).pow(2), 'равна'],
 		].iz(2);
 
-		let question = (name).T()[0].shuffle();
+		let question = (name).T()[0];
 		let numbers = (name).T()[1];
 		let verb = (name).T()[2];
 
@@ -36,7 +36,7 @@
 
 			answers: numbers[1].sqrt(),
 		});
-		NAtask.modifiers.multiplyAnswerBySqrt(100);
+		NAtask.modifiers.multiplyAnswerBySqrt(6);
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 240,
 			height: 240,
