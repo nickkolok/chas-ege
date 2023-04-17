@@ -41,21 +41,15 @@ retryWhileUndefined(function() {
 		return;
 	let find = 0,
 		answ = 0;
-	switch (sl(1, 3)) {
-	case 1:
-		find = 'произведение коэффициентов';
-		answ = k * b;
-		break;
-	case 2:
-		find = 'сумму коэффициентов';
-		answ = k + b;
-		break;
-	case 3:
-		let num1 = sl(6, 10, 05);
-		find = '$f(' + num1 + ')$';
-		answ = f(num1).ts();
-		break;
-	}
+	let num1 = sl(6, 10, 05);
+	let variant = [
+		['произведение коэффициентов $k$ и $b$', k * b, sl1()],
+		['сумму коэффициентов $k$ и $b$', k + b, true],
+		['$f(' + num1 + ')$', f(num1).ts(), sl1()],
+		['коэффициент $k$', k, true],
+		['коэффициент $b$', b, true]
+	].iz();
+
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
@@ -79,10 +73,11 @@ retryWhileUndefined(function() {
 		graph9AmarkCircles(ct, p2, 2, 0.15);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображен график функций $f(x)=\\Bigl|k|x|+b\\Bigr|$, где $k' + sign[0] + '0$, $b' + sign[1] +
-			'0$. Найдите ' + find +
+		text: 'На рисунке изображен график функций $f(x)=\\Bigl|k|x|+b\\Bigr|$' + ', где $k' + sign[0] + '0$, $b' + sign[
+				1] +
+			'0$'.esli(variant[2]) + '. Найдите ' + variant[0] +
 			'.',
-		answers: answ,
+		answers: variant[1],
 		analys: ('$f(x)=\\Bigl|' + k.ts() + '|x|+' + b.ts() + '\\Bigr|').replace('+-', '-') + '$'
 	});
 	chas2.task.modifiers.addCanvasIllustration({
