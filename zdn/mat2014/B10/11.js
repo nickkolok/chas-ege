@@ -10,9 +10,7 @@
 			['площадь полной поверхности', (2 * (width * height + width * depth + height * depth)).pow(2)],
 			['объём', (width * height * depth).pow(2)],
 			['диагональ', diagonal]
-		];
-		
-		question = question[3];
+		].iz();
 
 		let paint1 = function(ct) {
 			ct.translate(110, 30);
