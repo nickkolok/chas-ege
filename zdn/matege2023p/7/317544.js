@@ -17,28 +17,29 @@
 			Y[i] = Y[i - 1] + sl(2, 10).pm();
 		}
 		let spline = new Spline(X, Y);
-		let extremum = findExtremumsOfFunction(f, minX, maxX, 0.01,true,true);
-		
-		let minimum=extremum.minP.T()[1];
-		let maximum=extremum.maxP.T()[1];
-		
-		genAssert(minimum.minE().abs()<8, 'минмум ниже -8');
-		genAssert(maximum.maxE().abs()<8, 'минмум ниже -8');
+		let extremum = findExtremumsOfFunction(f, minX, maxX, 0.01, true, true);
 
+		let minimum = extremum.minP.T()[1];
+		let maximum = extremum.maxP.T()[1];
+
+		genAssert(minimum.minE().abs() < 8, 'минимум ниже -8');
+		genAssert(maximum.maxE().abs() < 8, 'максимум выше 8');
 
 		let funcAscendingPoints = [];
 		let funcDescendingPoints = [];
 
 		for (let i = minX + 1; i < maxX; i += sl(2, 6, 0.1)) {
-			let step = 0.1;
-			if (f(i).abs() > 1.5) {
-				if (f(i) > f(i - step) && f(i) < f(i + step)) {
-					if ((f(i) > f(i - step) && f(i) < f(i + step)))
-						funcAscendingPoints.push([i, f(i)]);
+			let funcI = f(i);
+			let funcNext = f(i + 0.1);
+			let funcPrevious = f(i - 0.1);
+			if (funcI.abs() > 1.5) {
+				if (funcI > funcPrevious && funcI < funcNext) {
+					if ((funcI > funcPrevious && funcI < funcNext))
+						funcAscendingPoints.push([i, funcI]);
 				}
-				if (f(i) < f(i - step) && f(i) > f(i + step))
-					if ((f(i) < f(i - step) && f(i) > f(i + step))) {
-						funcDescendingPoints.push([i, f(i)]);
+				if (funcI < funcPrevious && funcI > funcNext)
+					if ((funcI < funcPrevious && funcI > funcNext)) {
+						funcDescendingPoints.push([i, funcI]);
 					}
 			}
 		}
@@ -123,7 +124,7 @@
 			height: 400,
 			paint: paint1,
 		});
-	},10000);
+	}, 100000);
 })();
 //SugarHedgehog
 //317544 318045 318055 318139 318047 318049 318051 318053 318057 318059 
