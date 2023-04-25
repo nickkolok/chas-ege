@@ -17,15 +17,14 @@
 			Y[i] = Y[i - 1] + sl(2, 10).pm();
 		}
 		let spline = new Spline(X, Y);
-		let extremum = [];
+		let extremum = findExtremumsOfFunction(f, minX, maxX, 0.01,true,true);
+		
+		let minimum=extremum.minP.T()[1];
+		let maximum=extremum.maxP.T()[1];
+		
+		genAssert(minimum.minE().abs()<8, 'минмум ниже -8');
+		genAssert(maximum.maxE().abs()<8, 'минмум ниже -8');
 
-		for (let i = minX; i < maxX; i += 0.1) {
-			genAssert(f(i).abs() < 8, 'Слишком большой горбик');
-			if (f(i) < f(i - 0.1) && f(i) < f(i + 0.1) || (f(i) > f(i - 0.1) && f(i) > f(i + 0.1))) {
-				extremum.push(f(i));
-			}
-		}
-		genAssert(extremum.length > 2, 'Максимумов недостаточно');
 
 		let funcAscendingPoints = [];
 		let funcDescendingPoints = [];
@@ -124,7 +123,7 @@
 			height: 400,
 			paint: paint1,
 		});
-	});
+	},10000);
 })();
 //SugarHedgehog
 //317544 318045 318055 318139 318047 318049 318051 318053 318057 318059 
