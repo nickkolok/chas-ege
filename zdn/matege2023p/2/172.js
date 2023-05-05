@@ -163,7 +163,7 @@
 				],
 				verb: 'равны',
 			},
-			authors: ['Суматохина Ася'],
+			authors: ['Суматохина Александра'],
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
