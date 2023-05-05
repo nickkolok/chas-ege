@@ -10,6 +10,7 @@
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 	lx_declareClarifiedPhrase('длина', 'окружности основания');
 	lx_declareClarifiedPhrase('площадь', 'окружности основания');
+	lx_declareClarifiedPhrase('площадь', 'осевого сечения');
 	retryWhileError(function() {
 
 		let radius = sl(1, 50);
@@ -20,17 +21,19 @@
 
 			['высота', height],
 			[
+				['диаметр основания', 2 * radius],
 				['радиус основания', radius],
 				['длина окружности основания', 2 * radius + '\\pi'],
 				['площадь окружности основания', radius.pow(2) + '\\pi']
-			].iz(), ['образующая', generatrixСone.texsqrt(sl1())]
+			].iz(), ['образующая', generatrixСone.texsqrt(sl1())],
+			[
+				['площадь осевого сечения', radius * height],
+				['площадь боковой поверхности', (radius.pow(2) * generatrixСone).texsqrt(sl1()) + '\\pi']
+			].iz()
 		];
 
 		if ((height * radius.pow(2) / 3).isZ())
 			variable.push(['объём', height * radius.pow(2) / 3 + '\\pi']);
-
-		if ((radius.pow(2) * generatrixСone).sqrt().isZ())
-			variable.push(['площадь боковой поверхности', (radius.pow(2) * generatrixСone).texsqrt(sl1()) + '\\pi']);
 
 		variable = variable.iz(3);
 
@@ -47,22 +50,25 @@
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
 			//образующие
-			ctx.drawLine(60,180,150,10);
-			ctx.drawLine(240,180,150,10);
+			ctx.drawLine(60, 180, 150, 10);
+			ctx.drawLine(240, 180, 150, 10);
 			//эллипс
 			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 			ctx.stroke();
-			
+
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
 			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 			//радиус
-			if(variable.T()[0].includes('радиус основания'))
-			ctx.drawLine(150,180,240,180);
+			if (variable.T()[0].includes('радиус основания'))
+				ctx.drawLine(150, 180, 240, 180);
 			//высота
-			if(variable.T()[0].includes('высота'))
-			ctx.drawLine(150,180,150,10);
+			if (variable.T()[0].includes('высота') || variable.T()[0].includes('площадь осевого сечения'))
+				ctx.drawLine(150, 180, 150, 10);
+			if (variable.T()[0].includes('площадь осевого сечения') || variable.T()[0].includes('диаметр')) {
+				ctx.drawLine(60, 180, 240, 180);
+			}
 		};
 
 		NAinfo.requireApiVersion(0, 2);
@@ -81,4 +87,4 @@
 		});
 	}, 1000);
 })();
-//27135 75647 75691 75649 75651 75653 75655 75657 75659 75661 75663 75665 75667 75669 75671 75673 75675 75677 75679 75681 75683 75685 75687 75689 75693 75695
+//27135 75647 75691 75649 75651 75653 75655 75657 75659 75661 75663 75665 75667 75669 75671 75673 75675 75677 75679 75681 75683 75685 75687 75689 75693 75695 324456 325565 325567 325569 325571 325573 325575 325577 325579 325581 325583 325585 325587 325589 325591 325593 325595 325597 325599 325601
