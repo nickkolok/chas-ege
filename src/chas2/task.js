@@ -483,7 +483,7 @@ chas2.task = {
 		}
 		else {
 			textOptions.push(
-				'Во сколько раз ' + action + 'или ' + o.measurements[0].name.ie + ' ' +
+				'Во сколько раз ' + action + 'или ' + o.measurements[0].name.ve + ' ' +
 				figureName.re + ', если ' +
 				['его','её','его','их'][figureName.rod] + ' ' + o.measurements[1].name.ie + ' ' +
 				action + ['ился','илась','илось','ились'][o.measurements[1].name.rod] + ' в '+
