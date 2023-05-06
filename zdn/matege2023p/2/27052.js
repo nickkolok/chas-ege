@@ -36,13 +36,10 @@
 				['длина окружности основания', 2 * radiusBig + '\\pi', 2 * radiusSmall + '\\pi'],
 				['площадь окружности основания', radiusBig.pow(2) + '\\pi', radiusSmall.pow(2) + '\\pi']
 			].iz(), ['образующая', generatrixСoneBig.texsqrt(sl1()), generatrixСoneSmall.texsqrt(sl1())],
-			['площадь осевого сечения', radiusBig * heightBig,radiusSmall * heightSmall],
+			['площадь осевого сечения', radiusBig * heightBig, radiusSmall * heightSmall],
+			['площадь боковой поверхности', (radiusBig.pow(2) * generatrixСoneBig).texsqrt(sl1()) + '\\pi', (
+				radiusSmall.pow(2) * generatrixСoneSmall).texsqrt(sl1()) + '\\pi'],
 		];
-
-		if (((radiusBig.pow(2) * generatrixСoneBig).sqrt()).isZ() && ((radiusSmall.pow(
-				2) * generatrixСoneSmall).sqrt()).isZ())
-			variable.push(['площадь боковой поверхности', (radiusBig.pow(2) * generatrixСoneBig).texsqrt(sl1()) + '\\pi', (
-				radiusSmall.pow(2) * generatrixСoneSmall).texsqrt(sl1()) + '\\pi']);
 
 		if ((heightBig * radiusBig.pow(2) / 3).isZ() && (heightSmall * radiusSmall.pow(2) / 3).isZ())
 			variable.push(['объём', heightBig * radiusBig.pow(2) / 3 + '\\pi', heightSmall * radiusSmall.pow(2) / 3 + '\\pi']);
@@ -53,6 +50,29 @@
 		let numberBig = variable.T()[1];
 		let numberSmall = variable.T()[2];
 
+		let secondWorld = name[1].im.replace('площадь', 'площади').replace('боковой', 'боковых').replace('основания',
+			'оснований').replace(
+			'поверхности', 'поверхностей').replace('осевого', 'осевых').replace('сечения', 'сечений').replace('окружности',
+			'окружностей');
+
+		let ratio = [numberSmall[1], numberBig[1]];
+		if (ratio[0].isString)
+			ratio = ratio.map((elem) => Number(elem.replace('\\pi', '')));
+
+		let variant = sl1();
+		if (['высота', 'образующая'].includes(name[1].ie) && variant) {
+			console.log('!');
+			ratio[1] -= ratio[0];
+		} else variant = 0;
+		let NOD = ratio[1].nod(ratio[0]);
+		ratio = ratio.map((elem) => elem / NOD);
+
+		let verb = ['делит его так, что ' + secondWorld + ' конусов ' + ['равны $' + numberSmall[1] + '$ и $' + numberBig[
+				1] + '$',
+			'относятся, как $' + ratio.join(':') + '$'
+		].iz(), 'делящее ' + name[1].ve + ' в отношении ' + [ratio.join(':') + ', считая от вершины', ratio.reverse().join(
+			':') + ', считая от основания'].iz() + ' конуса'][variant];
+
 		let answer = numberSmall[2];
 
 		let ps = '';
@@ -61,7 +81,6 @@
 				answer = answer.replace('\\pi', '');
 				ps = 'Ответ сократите на $\\pi$.';
 			}
-
 
 		let paint1 = function(ctx) {
 			//конус побольше
@@ -80,7 +99,6 @@
 			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
-
 
 			let frac = heightSmall / heightBig;
 			let add = -3;
@@ -118,18 +136,14 @@
 			ctx.ellipse(150, 180 * (1 - frac), 10, 90 * (1 - frac) + add, Math.PI / 2, -Math.PI / 2, -1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
-
-
 		};
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
 			text: name[0].ie.toZagl() + ' конуса ' + ['равен', 'равна'][name[0].rod] + ' $' + numberBig[0] +
 				'$. Плоскость,' +
-				' параллельная плоскости основания конуса, делит его так, что ' +
-				name[1].im.replace('площадь', 'площади').replace('боковой', 'боковых').replace('основания', 'оснований').replace(
-					'поверхности', 'поверхностей').replace('осевого', 'осевых').replace('сечения', 'сечений') + ' равны $' +
-				numberSmall[1] + '$ и $' + numberBig[1] + '$' + '. ' +
+				' параллельная плоскости основания конуса, ' + ' ' +
+				verb + '. ' +
 				'Найдите ' + name[2].ve + ' ' + ['конуса, отсекаемого от данного конуса проведённой плоскостью',
 					'меньшего конуса'
 				].iz() + '. ' + ps,
@@ -144,4 +158,4 @@
 		});
 	}, 10000);
 })();
-//27052 5021 72353 548506 548525 5023 5025 5027 5029 5031 5033 5035 27119 72305 72307 72309 72311 72313 72315 72317 72319 72321 72323 72325 72327 72329 72331 72333 72335 72337 72339 72341 72343 72345 72347 72349 72351
+//27052 5021 72353 548506 548525 5023 5025 5027 5029 5031 5033 5035 27119 72305 72307 72309 72311 72313 72315 72317 72319 72321 72323 72325 72327 72329 72331 72333 72335 72337 72339 72341 72343 72345 72347 72349 72351 27161 76299 76343 76301 76303 76305 76307 76309 76311 76313 76315 76317 76319 76321 76323 76325 76327 76329 76331 76333 76335 76337 76339 76341 76345 76347
