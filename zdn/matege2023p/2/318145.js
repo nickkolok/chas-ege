@@ -7,22 +7,57 @@
 		let volumeUp = volumeDown * denominator.pow(3) / numerator.pow(3);
 		genAssert(volumeDown.isZ(), 'кривое значение');
 
+		let question=[['нужно долить, чтобы наполнить сосуд доверху',volumeUp-volumeDown], ['поместится в весь сосуд',volumeUp]].iz();
+		
 		let paint1 = function(ctx) {
 			ctx.translate(0, 20);
 			ctx.lineWidth = 2;
 			//образующие
-			ctx.drawLine(60, 20, 150, 150);
-			ctx.drawLine(240, 20, 150, 150);
+			ctx.drawLine(61, 23, 150, 150);
+			ctx.drawLine(239, 23, 150, 150);
 			//эллипс
 			ctx.beginPath();
 			ctx.ellipse(150, 20, 20, 90, Math.PI / 2, 0, 2 * Math.PI);
 			ctx.stroke();
-			//
+			ctx.closePath();
+			
+			let frac = numerator / denominator;
+			let add = 6;
+			if (frac < 0.5) {
+				frac = 2 / 3;
+				add = 3;
+			} else
+			if (frac > 0.5) {
+				frac = 1 / 3;
+				add = 9;
+			}
+
+			ctx.fillStyle = "#61DC9A";
 			ctx.beginPath();
-			ctx.ellipse(150, 150 * (denominator - numerator) / denominator, 20 * numerator / denominator, 90 * numerator /
-				denominator, Math
+			ctx.moveTo(150 - (90 * (1 - frac) + add), 150 * frac);
+			ctx.lineTo(150 + 90 * (1 - frac) + add, 150 * frac);
+			ctx.lineTo(150, 150);
+			ctx.lineTo(150 - (90 * (1 - frac) + add), 150 * frac);
+			ctx.fill();
+			ctx.closePath();
+			ctx.beginPath();
+			ctx.ellipse(150, 150 * frac, 10, 90 * (1 - frac) + add, Math
 				.PI / 2, 0, 2 * Math.PI);
+			ctx.fill();
+			ctx.closePath();
+
+			ctx.fillStyle = "black";
+			ctx.beginPath();
+			ctx.ellipse(150, 150 * frac, 10, 90 * (1 - frac) + add, Math
+				.PI / 2, -0.5 * Math.PI, -1.5 * Math.PI);
 			ctx.stroke();
+			ctx.closePath();
+			ctx.beginPath();
+			ctx.setLineDash([5, 5]);
+			ctx.ellipse(150, 150 * frac, 10, 90 * (1 - frac) + add, Math
+				.PI / 2, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.stroke();
+			ctx.closePath();
 
 		};
 
@@ -30,8 +65,8 @@
 		NAtask.setTask({
 			text: 'В сосуде, имеющем форму конуса, уровень жидкости достигает дробь: ' +
 				'$' + numerator.texfrac(denominator) + '$ высоты. Объём жидкости равен ' + volumeDown + 'мл. ' +
-				'Сколько миллилитров жидкости нужно долить, чтобы наполнить сосуд доверху?',
-			answers: volumeUp,
+				'Сколько миллилитров жидкости '+question[0]+'?',
+			answers: question[1],
 			authors: ['Суматохина Александра'],
 			analys: '',
 		});
