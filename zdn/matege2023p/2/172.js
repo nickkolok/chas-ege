@@ -1,4 +1,12 @@
 (function() {
+	lx['образующая'] = {
+		ie: 'образующая',
+		re: 'образующей',
+		ve: 'образующую',
+		im: 'образующие',
+		rod: 1,
+		odu: 0,
+	};
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 	lx_declareClarifiedPhrase('радиус', 'основания');
 	lx_declareClarifiedPhrase('площадь', 'основания');
@@ -34,12 +42,12 @@
 			],
 			[
 				[{
-					name: 'радиусы оснований',
+					name: 'площади оснований',
 					wordToClarify: true,
 				}, {
-					name: 'площадь основания',
-					power: 1,
-				}, {
+					name: 'радиусы оснований',
+					wordToClarify: true,
+				}].iz(), [{
 					name: 'высота',
 					power: 1,
 				}, {
@@ -49,7 +57,7 @@
 					name: 'объём',
 					power: 1,
 				}
-			],
+			]
 			[
 				[{
 					name: 'радиус основания',
