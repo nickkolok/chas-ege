@@ -454,9 +454,6 @@ chas2.task = {
 		let figureName = sklonlxkand(o.figureName);
 		let action = ['увелич', 'уменьш'].iz();
 
-		//выберем вариант задачи
-		let choosePhrase = o.choosePhrase || sl1();
-
 		//перемешаем ещё разок! А то вдруг положили не перемешанный
 		o.measurements = o.measurements.shuffle();
 
@@ -510,6 +507,9 @@ chas2.task = {
 				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v') + '?'
 			);
 		}
+
+		//выберем вариант задачи
+		let choosePhrase = o.choosePhrase || sl(0,textOptions.length-1);
 
 		let task = o.clone();
 		task.text = textOptions[choosePhrase];
