@@ -37,8 +37,6 @@
 				['площадь окружности основания', radiusBig.pow(2) + '\\pi', radiusSmall.pow(2) + '\\pi']
 			].iz(), ['образующая', generatrixСoneBig.texsqrt(sl1()), generatrixСoneSmall.texsqrt(sl1())],
 			['площадь осевого сечения', radiusBig * heightBig, radiusSmall * heightSmall],
-			['площадь боковой поверхности', (radiusBig.pow(2) * generatrixСoneBig).texsqrt(sl1()) + '\\pi', (
-				radiusSmall.pow(2) * generatrixСoneSmall).texsqrt(sl1()) + '\\pi'],
 		];
 
 		if ((heightBig * radiusBig.pow(2) / 3).isZ() && (heightSmall * radiusSmall.pow(2) / 3).isZ())
