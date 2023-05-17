@@ -1,6 +1,6 @@
 (function() {
-	lx_declareClarifiedPhrase('площадь', 'поверхности');
-	lx_declareClarifiedPhrase('площадь', 'большого круга');
+	lx_declareClarifiedPhraseWithDeclensionInPlural('площадь', 'поверхности');
+	lx_declareClarifiedPhraseWithDeclensionInPlural('площадь', 'большого круга');
 
 	lx['поверхности'] = {
 		rm: 'поверхностей',
