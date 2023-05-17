@@ -455,7 +455,8 @@ chas2.task = {
 		let action = ['увелич', 'уменьш'].iz();
 
 		//перемешаем ещё разок! А то вдруг положили не перемешанный
-		o.measurements = o.measurements.shuffle();
+		if (!o.measurements[1].primary)
+			o.measurements = o.measurements.shuffle();
 
 		//подготовка к 3м переменным
 		o.measurements.forEach(element => element.name = sklonlxkand(element.name));
@@ -509,12 +510,13 @@ chas2.task = {
 		}
 
 		//выберем вариант задачи
-		let choosePhrase = o.choosePhrase || sl(0,textOptions.length-1);
+
+		let choosePhrase = (o.choosePhrase == undefined) ? sl(0, textOptions.length - 1) : o.choosePhrase;
 
 		let task = o.clone();
 		task.text = textOptions[choosePhrase];
 
-		if (figureInPS != undefined) {
+		if (figureInPS !== undefined) {
 
 			if (PS.verb.isArray)
 				PS.verb = PS.verb[figureInPS.name.rod];
