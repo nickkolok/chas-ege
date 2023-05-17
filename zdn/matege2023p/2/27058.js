@@ -2,6 +2,7 @@
 
 	lx_declareClarifiedPhrase('площадь', 'поверхности');
 	lx_declareClarifiedPhrase('радиус', 'основания');
+	lx_declareClarifiedPhrase('диаметр', 'основания');
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 	lx_declareClarifiedPhrase('длина', 'окружности основания');
 	lx_declareClarifiedPhrase('площадь', 'окружности основания');
@@ -19,7 +20,7 @@
 				['радиус основания', radius],
 				['длина окружности основания', 2 * radius + '\\pi'],
 				['площадь окружности основания', radius.pow(2) + '\\pi'],
-				['диаметр', 2 * radius]
+				['диаметр основания', 2 * radius]
 
 			].iz(), ['объём', height * radius.pow(2) + '\\pi'],
 			['площадь боковой поверхности', 2 * height * radius + '\\pi'],
