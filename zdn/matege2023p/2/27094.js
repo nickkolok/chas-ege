@@ -36,16 +36,32 @@
 				power: 1,
 			}, {
 				name: 'высота',
-				power: 1,
+				wordToClarify: true,
 			}, {
-				name: 'образующая',
-				power: 1,
-			}, ].iz(), {
 				name: 'объём',
 				power: 1,
-			}
-		],
-		[
+			}],
+			[{
+				name: 'высота',
+				power: 1,
+			}, {
+				name: 'радиус основания',
+				wordToClarify: true,
+			}, {
+				name: 'объём',
+				power: 1,
+			}],
+			[{
+				name: 'образующая',
+				power: 1,
+			}, {
+				name: 'высота',
+				wordToClarify: true,
+			}, {
+				name: 'объём',
+				power: 1,
+			}]
+		].iz(), [
 			[{
 				name: 'радиус основания',
 				power: 1,
