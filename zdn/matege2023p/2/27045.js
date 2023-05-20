@@ -1,11 +1,5 @@
 (function() {
 
-	lx_declareClarifiedPhrase('площадь', 'поверхности');
-	lx_declareClarifiedPhrase('радиус', 'основания');
-	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
-	lx_declareClarifiedPhrase('длина', 'окружности основания');
-	lx_declareClarifiedPhrase('площадь', 'окружности основания');
-	lx_declareClarifiedPhrase('площадь', 'полной поверхности');
 
 	retryWhileError(function() {
 
@@ -24,7 +18,7 @@
 			ctx.translate(0, 30);
 			ctx.lineWidth = 2;
 			let height = 180;
-			ctx.fillStyle = ["#61DC9A", "#6BD8DB", "#DB76BB", "#DB824B", "#66DB56"].iz();
+			ctx.fillStyle = "#61DC9A";
 
 			let k = sl(1.3, 4, 0.1);
 
