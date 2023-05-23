@@ -1,6 +1,6 @@
 (function() {
 	lx_declareClarifiedPhrase('площадь', 'поверхности');
-	lx_declareClarifiedPhrase('площадь', 'поверхности большого круга');
+	lx_declareClarifiedPhrase('площадь', 'большого круга');
 	let measurements = [{
 		name: 'радиус',
 		power: 1,
@@ -11,7 +11,7 @@
 		name: 'площадь поверхности',
 		power: 2,
 	}, {
-		name: 'площадь поверхности большого круга',
+		name: 'площадь большого круга',
 		power: 2,
 	}, ].iz(2);
 	let paint1 = function(ctx) {
