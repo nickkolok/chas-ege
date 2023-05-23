@@ -16,7 +16,7 @@
 	}, ].iz(2);
 	console.log(measurements);
 	let paint1 = function(ctx) {
-		ctx.translate(-10, 0);
+		ctx.translate(-10, -40);
 		ctx.lineWidth = 2;
 
 		ctx.beginPath();
@@ -89,7 +89,7 @@
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 400,
-		height: 300,
+		height: 250,
 		paint: paint1,
 	});
 })();
