@@ -14,9 +14,22 @@
 		name: 'площадь большого круга',
 		power: 2,
 	}, ].iz(2);
+	console.log(measurements);
 	let paint1 = function(ctx) {
 		ctx.translate(-10, 0);
 		ctx.lineWidth = 2;
+
+		ctx.beginPath();
+		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь поверхности'))
+			ctx.arc(100, 150, 80, 0, Math.PI * 2, true);
+		else
+		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь большого круга'))
+			ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 0, 2 * Math.PI);
+
+		ctx.fillStyle = "#61DC9A";
+		ctx.fill();
+		ctx.closePath();
+
 		//шар 1
 		ctx.beginPath();
 		ctx.arc(100, 150, 80, 0, Math.PI * 2, true); // Внешняя окружность
@@ -37,6 +50,18 @@
 
 		//шар 2
 		ctx.translate(200, 0);
+
+		ctx.beginPath();
+		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь поверхности'))
+			ctx.arc(100, 150, 100, 0, Math.PI * 2, true);
+		else
+		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь большого круга'))
+			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 0, 2 * Math.PI);
+
+		ctx.fillStyle = "#61DC9A";
+		ctx.fill();
+		ctx.closePath();
+
 		ctx.beginPath();
 		ctx.setLineDash([0, 0]);
 		ctx.arc(100, 150, 100, 0, Math.PI * 2, true); // Внешняя окружность
