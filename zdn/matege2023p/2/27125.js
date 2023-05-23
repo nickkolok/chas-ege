@@ -32,7 +32,7 @@ Number.prototype.texcube = function(p1, p2) {
 		let radiusNew = cube;
 		let radiuses = [];
 
-		while (cube > 1) {
+		while (cube > 0) {
 			radiuses.push(slKrome(radiuses, 2, cube));
 			cube -= radiuses[radiuses.length - 1];
 		}
