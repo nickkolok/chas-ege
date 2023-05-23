@@ -42,7 +42,7 @@ Number.prototype.texcube = function(p1, p2) {
 		let radiusView = radiuses.map((elem) => elem.texcube(1));
 
 		let paint1 = function(ctx) {
-			ctx.translate(50, -40);
+			ctx.translate(30, -40);
 			ctx.lineWidth = 2;
 			//шар 1
 			ctx.beginPath();
@@ -72,7 +72,7 @@ Number.prototype.texcube = function(p1, p2) {
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 300,
-			height: 300,
+			height: 250,
 			paint: paint1,
 		});
 	}, 1000);
