@@ -3,7 +3,7 @@
 			NAinfo.requireApiVersion(0, 2);
 			let radius = sl(3, 12, 3);
 			let height = sl(3, 12, 3);
-			let rand1 = 1; //sl1();
+			let rand1 = sl1();
 			let rand2 = sl1();
 			let nameFigura = [ //цилиндр,конус
 				['объём', (radius.pow(2) * height).pow(2), ((radius.pow(2) * height) / 3).pow(2), ', делённый на $\\pi$'],
