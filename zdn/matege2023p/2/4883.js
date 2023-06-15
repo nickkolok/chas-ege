@@ -10,7 +10,7 @@
 			['площадь поверхности', 6 * cubeEdge.pow(2)],
 			['объём', cubeEdge.pow(3)],
 			['квадрат диагонали', cubeEdge.pow(2) * 3],
-			['диагональ', cubeEdge + '\\sqrt{3}']
+			['диагональ', cubeEdge, 'Ответ поделите на $\\sqrt{3}$.']
 		].iz();
 		let nameSphere = [
 			['радиус', cubeEdge / 2],
@@ -32,7 +32,7 @@
 				height: cubeEdge / 1.5,
 				depth: cubeEdge / (2.5 * 1.5),
 				angle: 40
-			}, [0, 3, 4], true, [4, 5]);
+			}, [0, 3, 4], false, [4, 5]);
 
 			ct.translate(0, 80);
 			ct.beginPath();
@@ -46,7 +46,7 @@
 				nameSphere[0]).ve + ' этого шара' + (nameSphere[2] || '') + '.', nameSphere[1]],
 			['Прямоугольный параллелепипед описан около сферы c ' + sklonlxkand(nameSphere[0]).te + ' $' + nameSphere[1] +
 				'$' + (nameSphere[3] || '') + '. Найдите его ' +
-				sklonlxkand(nameCube[0]).ve + '.', nameCube[1]
+				sklonlxkand(nameCube[0]).ve + '. ' + (nameCube[2] || ''), nameCube[1]
 			]
 		].iz();
 
@@ -59,7 +59,7 @@
 			height: 400,
 			paint: paint1,
 		});
-	},1000);
+	}, 1000);
 
 })();
 //4883,27043
