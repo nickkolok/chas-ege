@@ -1,5 +1,5 @@
 (function() {
-	lx_declareClarifiedPhrase('площадь', 'поверхности');
+	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 	lx_declareClarifiedPhrase('диаметр', 'основания');
 	lx_declareClarifiedPhrase('полная', ' площадь поверхности');
 	lx['полная площадь поверхности'] = {
@@ -13,7 +13,7 @@
 
 		let nameCylinder = [
 			['радиус основания', radius],
-			['площадь поверхности', 2 * radius.pow(2), ', делённую на $\\pi$', '\\pi'],
+			['площадь боковой поверхности', 4 * radius.pow(2), ', делённую на $\\pi$', '\\pi'],
 			['объём', 2 * radius.pow(3), ', делённый на $\\pi$', '\\pi'],
 			[
 				['диаметр основания', 'высота'].iz(), 2 * radius

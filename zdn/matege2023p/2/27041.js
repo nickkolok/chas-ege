@@ -22,33 +22,43 @@
 			NAinfo.requireApiVersion(0, 2);
 			let radius = sl(2, 10);
 			let height = sl(2, 10);
-			let figura = [sklonlxkand('цилиндр'), sklonlxkand('паралелепипед')];
-
-			let rand = sl1();
+			let edge = 2 * radius;
+			let rand = 1; //sl1();
 
 			let nameCylinder = [ //rand==0
 				[
-					['радиус основания', radius.pow(2), '', ''],
-					['площадь основания', radius.pow(2).pow(2), ', делённую на $\\pi$', '\\pi']
-				].iz(), [
 					['высота', height.pow(2), '', ''],
 					[
 						['площадь боковой поверхности', (2 * radius * height).pow(2), ', делённую на $\\pi$', '\\pi'],
 						['объём', (radius.pow(2) * height).pow(2), ', делённый на $\\pi$', '\\pi']
 					].iz(),
 				].iz()
-			].iz(2 - rand);
+			];
+
+			if (!rand)
+				nameCylinder.push([
+					['радиус основания', radius.pow(2), '', ''],
+					['площадь основания', radius.pow(2).pow(2), ', делённую на $\\pi$', '\\pi']
+				].iz());
+
+			nameCylinder = nameCylinder.iz(2 - rand);
+
 			let nameParal = [
-				['сторона основания', (2 * radius).pow(2), '', ''],
-				['высота', height.pow(2), '', ''],
 				[
-					['площадь полной поверхности', (2 * (2 * radius * height + radius.pow(2))).pow(2), '', ''],
-					['объём', (radius.pow(2) * height).pow(2), '', ''],
-					['диагональ', radius.pow(2) + 2 * height.pow(2), '', ''],
-					['диагональ основания', 2 * radius.pow(2), '', ''],
-					['диагональ одной из боковых сторон', radius.pow(2) + height.pow(2), '', ''],
+					['площадь полной поверхности', (2 * (2*edge * height + edge.pow(2))).pow(2), '', ''],
+					['объём', (edge.pow(2) * height).pow(2), '', ''],
+					['диагональ', 2*edge.pow(2) +  height.pow(2), '', ''],
+					['диагональ одной из боковых сторон', edge.pow(2) + height.pow(2), '', ''],
 				].iz(),
-			].iz(3 - nameCylinder.length);
+			];
+
+			if (rand)
+				nameParal.push([
+					['сторона основания', edge.pow(2), '', ''],
+					['диагональ основания', 2*edge.pow(2), '', '']
+				].iz());
+			nameParal = nameParal.iz(3 - nameCylinder.length);
+
 
 			console.log(nameParal);
 			console.log(nameCylinder);

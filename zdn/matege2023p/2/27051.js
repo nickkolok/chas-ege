@@ -5,12 +5,7 @@
 			let height = sl(3, 12, 3);
 			let rand1 = sl1();
 			let rand2 = sl1();
-			let nameFigura = [ //цилиндр,конус
-				['объём', (radius.pow(2) * height).pow(2), ((radius.pow(2) * height) / 3).pow(2), ', делённый на $\\pi$'],
-				['площадь боковой поверхности', (2 * radius * height).pow(2), radius.pow(2) * (radius.pow(2) + height.pow(2)),
-					', делённую на $\\pi$'
-				]
-			][rand2];
+			let nameFigura = ['объём', (radius.pow(2) * height).pow(2), ((radius.pow(2) * height) / 3).pow(2), ', делённый на $\\pi$'];
 
 			let paint1 = function(ct) {
 				ct.scale = (60, 60);
@@ -50,8 +45,8 @@
 
 			};
 			NAtask.setTask({
-				text: 'Цилиндр и конус имеют общие основание и высоту. Высота цилиндра равна радиусу основания. ' +
-					nameFigura[0].toZagl() + ' ' + ['цилиндра', 'конуса'][rand1] + ' ' + ['равен', 'равна'][rand2] +
+				text: 'Цилиндр и конус имеют общие основание и высоту. ' +
+					nameFigura[0].toZagl() + ' ' + ['цилиндра', 'конуса'][rand1] + ' ' + 'равен' +
 					' $' + nameFigura[1 + rand1].texsqrt(1) + '$. Найдите ' + nameFigura[0] + ' ' + ['цилиндра', 'конуса'][1 -
 						rand1
 					] + '.',

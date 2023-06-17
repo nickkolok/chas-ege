@@ -4,12 +4,12 @@
 			let cathet1 = sl(2, 12);
 			let cathet2 = sl(2, 12);
 			let height = sl(3, 12, 3);
-			let radius = cathet1.pow(2) + cathet2.pow(2);
+			let diametr = cathet1.pow(2) + cathet2.pow(2);
 
 			let rand = sl1();
-			let nameFigura = [ //цилиндр,конус
-				['объём', radius.pow(2) * height.pow(2), 'делённый на $\\pi$'],
-				['площадь боковой поверхности', radius * (2 * height).pow(2), 'делённую на $\\pi$']
+			let nameFigura = [ //цилиндр
+				['объём', diametr.pow(2) * height.pow(2)/16, 'делённый на $\\pi$'],
+				['площадь боковой поверхности', diametr*(height).pow(2), 'делённую на $\\pi$']
 			].iz();
 
 			let paint1 = function(ct) {
