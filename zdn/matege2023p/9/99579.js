@@ -34,3 +34,4 @@ NAtask.setTask({
 
 	answers: n,
 });
+//Сергей Алендарь
