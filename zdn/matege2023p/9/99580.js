@@ -35,3 +35,4 @@ NAtask.setTask({
 
 	answers: progression.member(n),
 });
+//Сергей Алендарь
