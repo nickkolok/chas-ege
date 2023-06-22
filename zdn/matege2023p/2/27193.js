@@ -70,7 +70,6 @@
 					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
 				answers: s,
 			});
-			NAtask.modifiers.multiplyAnswerBySqrt(3);
 			chas2.task.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
