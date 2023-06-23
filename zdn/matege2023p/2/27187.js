@@ -7,7 +7,7 @@
 			let d = sl(10, 16);
 			let k = slKrome(d, 5, 16);
 			let f = a + c;
-			console.log([a, b, c, d, k]);
+			
 			let rand = sl1();
 			let s = [2 * (f * k + (d + b) * f + (d + b) * k) - 2 * ((f - c) * b), k * (f * d + c * b)][rand];
 

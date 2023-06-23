@@ -9,7 +9,7 @@
 			let paint1 = function(ctx) {
 				ctx.translate(150, 210);
 				let cubeEdge = 150;
-
+				ctx.lineWidth = 2;
 				ctx.drawParallelepiped({
 					width: cubeEdge / 1.5,
 					height: cubeEdge / 1.5,

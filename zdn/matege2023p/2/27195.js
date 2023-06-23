@@ -14,6 +14,7 @@
 
             let paint1 = function(ctx) {
                 ctx.translate(70, 50);
+                ctx.lineWidth = 2;
                 let koefA = (a > 15 || c > 15) ? 10 : 20;
                 a *= koefA;
                 f *= koefA;
