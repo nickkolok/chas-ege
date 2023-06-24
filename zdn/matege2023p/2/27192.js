@@ -39,7 +39,7 @@
 					height: c,
 					depth: depth,
 					angle: angle
-				}, [0, 1, 3, 4, 5], false, [4, 5]);
+				}, [ 1, 3, 4, 5], false, [4, 5]);
 
 
 				ctx.strokeStyle = "white";
