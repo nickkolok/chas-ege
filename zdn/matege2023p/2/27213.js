@@ -95,7 +95,7 @@
 				answers: answ,
 			});
 			NAtask.modifiers.multiplyAnswerBySqrt(3);
-			chas2.task.modifiers.addCanvasIllustration({
+			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
 				paint: paint1,
