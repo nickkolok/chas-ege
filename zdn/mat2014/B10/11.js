@@ -15,6 +15,7 @@
 		let paint1 = function(ct) {
 			ct.translate(110, 30);
 			let scale = 15;
+			ct.font = "20px serif";
 			if (width * height * depth > 450) {
 				ct.scale(15, 15);
 				ct.lineWidth = 2 / 15;
@@ -24,7 +25,7 @@
 				ct.lineWidth = 0.1;
 			}
 
-			ct.drawParallelepiped1({
+			ct.drawParallelepiped({
 				width: width,
 				height: height,
 				depth: depth / 1.5,
@@ -38,7 +39,7 @@
 		NAtask.setTask({
 			text: 'Найдите ' + question[0] + ' параллелепипеда, изображённого на рисунке.',
 			answers: question[1].sqrt(),
-			authors: 'Александра Суматохина',
+			authors: ['Александра Суматохина','_zevs'],
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(21,sl1());
 		chas2.task.modifiers.addCanvasIllustration({
@@ -49,3 +50,5 @@
 	});
 
 })();
+//by _zevs
+//refactoring by SugarHedgehog 
