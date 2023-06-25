@@ -44,9 +44,9 @@
 				}, [0, 3, 4], false, [4, 5]);
 
 				ctx.translate((f), 0);
-				ctx.strokeStyle = "white";
 				ctx.lineWidth = 3;
 				ctx.drawParallelepiped({
+					strokeStyle: "white",
 					width: (a - f),
 					height: d,
 					depth: depth,
@@ -86,4 +86,4 @@
 })();
 //27190 25611 25615 25619 25613 25617
 //by _zevs
-//refactoring by SugarHedgehog 
+//refactoring by SugarHedgehog
