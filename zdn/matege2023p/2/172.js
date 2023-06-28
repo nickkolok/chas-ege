@@ -2,8 +2,16 @@
 	lx['образующая'] = {
 		ie: 'образующая',
 		re: 'образующей',
+		de: 'образующей',
 		ve: 'образующую',
+		te: 'образующей',
+		pe: 'образующей',
 		im: 'образующие',
+		rm: 'образующих',
+		dm: 'образующим',
+		vm: 'образующие',
+		tm: 'образующими',
+		pm: 'образующих',
 		rod: 1,
 		odu: 0,
 	};
@@ -95,8 +103,9 @@
 				}
 			]
 		].iz();
-		console.log(measurements);
-		let copy = measurements.map((num) => num);
+
+		let copy = measurements.slice();
+
 		let paint1 = function(ctx) {
 			ctx.translate(-50, 0);
 			ctx.lineWidth = 2;
@@ -114,7 +123,6 @@
 			ctx.stroke();
 
 			for (let i = 0; i < copy.length; i++) {
-				console.log(copy[i].name.ie);
 				//радиус
 				if (copy[i].name.ie == 'радиус основания')
 					ctx.drawLine(150, 180, 240, 180);
@@ -139,7 +147,6 @@
 			ctx.stroke();
 
 			for (let i = 0; i < copy.length; i++) {
-				console.log(copy[i].name.ie);
 				//радиус
 				if (copy[i].name.ie == 'радиус основания')
 					ctx.drawLine(150, 180, 240, 180);
