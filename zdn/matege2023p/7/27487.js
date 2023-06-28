@@ -27,11 +27,12 @@
 		let step = 0.001;
 		for (let i = minX; i < maxX; i += step) {
 			genAssert(f(i).abs() < 8, 'Слишком большой горбик');
-			if (f(i) < f(i - step) && f(i) < f(i + step) || (f(i) > f(i - step) && f(i) > f(i + step))) {
+			let funcNext = f(i + step);
+			let funcPrevious = f(i - step);
+			if (f(i) < funcPrevious && f(i) < funcNext || (f(i) > funcPrevious && f(i) > funcNext)) {
 				genAssert((i.abs() - i.round().abs()).abs() > 0.3, 'Экстремум целый');
 				extremum.push([i, f(i)]);
 			}
-
 
 			if (extremum.length > 0) {
 				genAssert(extremum[extremum.length - 1][1].abs().round() != 0, 'Слишком непонятный экстремум');
@@ -46,22 +47,23 @@
 		let pointsOfDecreasing = [];
 
 		for (let i = 0; i < points.length; i++) {
-			if (f(points[i]))
+			if (f(points[i])) {
 				if (f(points[i]) > f(points[i] - 0.1) && f(points[i]) < f(points[i] + 0.1))
 					pointsOfIncreasing.push(points[i]);
 				else
 					pointsOfDecreasing.push(points[i]);
+			}
 		}
 
 
 		let condition = [
 			['положительна', [
 				['сумму', pointsOfIncreasing.sum()],
-				['количество', pointsOfIncreasing.length]
+				['количество', pointsOfIncreasing.length],
 			].iz()],
 			['отрицательна', [
 				['сумму', pointsOfDecreasing.sum()],
-				['количество', pointsOfDecreasing.length]
+				['количество', pointsOfDecreasing.length],
 			].iz()]
 		].iz();
 
@@ -106,12 +108,12 @@
 			ct.fillStyle = "blue";
 		};
 		NAtask.setTask({
-			text: 'На рисунке изображен график функции y = f(x), определенной на интервале $(' + minX + '; ' + maxX +
+			text: 'На рисунке изображен график функции $y = f(x)$, определенной на интервале $(' + minX + '; ' + maxX +
 				')$. ' +
 				'Определите ' + condition[1][0] + ' целых точек, в которых производная функции ' + condition[0] + '.',
 			answers: condition[1][1],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 500,
 			height: 400,
 			paint: paint1,
