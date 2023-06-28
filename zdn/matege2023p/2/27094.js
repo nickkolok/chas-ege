@@ -1,6 +1,7 @@
 (function() {
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 	lx_declareClarifiedPhrase('радиус', 'основания');
+	lx_declareClarifiedPhrase('площадь', 'основания');
 	lx_declareClarifiedPhrase('длина', 'окружности основания');
 	let measurements = [
 		[
@@ -98,7 +99,7 @@
 			}
 		]
 	].iz();
-	let copy = measurements.map((num) => num);
+	let copy = measurements.slice();
 	let paint1 = function(ctx) {
 		ctx.lineWidth = 2;
 		//образующие
@@ -112,9 +113,8 @@
 		ctx.setLineDash([5, 5]);
 		ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 		ctx.stroke();
-		console.log(measurements);
+
 		for (let i = 0; i < copy.length; i++) {
-			console.log(copy[i].name.ie);
 			//радиус
 			if (copy[i].name.ie == 'радиус основания')
 				ctx.drawLine(150, 180, 240, 180);
