@@ -7,7 +7,6 @@
 			let d = sl(2, 10);
 			let f = sl(a, 17);
 			let k = sl(2, 6);
-			console.log([a, b, c, d, f, k]);
 
 			let rand = sl1();
 			let question = ['объём', 'площадь поверхности'][rand];
