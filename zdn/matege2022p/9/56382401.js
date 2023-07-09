@@ -26,7 +26,7 @@ retryWhileUndefined(function() {
 	for (let i = 0; i < p.length; i++)
 		p[i][0] = p[i][0].pm();
 
-	let num1 = sl(6, 10, 05);
+	let num1 = sl(6, 10, 0.5);
 	let variant = [
 		['произведение коэффициентов $k$ и $b$', k * b, sl1()],
 		['сумму коэффициентов $k$ и $b$', k + b, true],
@@ -63,7 +63,7 @@ retryWhileUndefined(function() {
 		answers: variant[1],
 		analys: ('$f(x)=\\Bigl|' + k.ts() + '|x|+' + b.ts() + '\\Bigr|').replace('+-', '-') + '$'
 	});
-	chas2.task.modifiers.addCanvasIllustration({
+	NAtask.modifiers.addCanvasIllustration({
 		width: 300,
 		height: 300,
 		paint: paint1,
