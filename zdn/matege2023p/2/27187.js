@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 			NAinfo.requireApiVersion(0, 2);
 			let a = sl(10, 17);
-			let b = sl(5, 10);
+			let b = sl(5, 9);
 			let c = sl(5, 10);
 			let d = sl(10, 16);
 			let k = slKrome(d, 5, 16);
