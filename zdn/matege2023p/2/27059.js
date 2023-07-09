@@ -58,7 +58,7 @@
 		NAtask.setTask({
 			text: name[0].ie.toZagl() + ' шара ' + ['равен', 'равна'][name[0].rod] + ' $' + number[0] + '$. ' +
 				'Найдите ' + name[1].ve + ' шара. ' + ps,
-			answers: '$' + answer + '$',
+			answers: answer,
 			authors: ['Суматохина Александра'],
 			analys: name[1].ie.toZagl() + ': $' + number[1] + '$',
 		});
