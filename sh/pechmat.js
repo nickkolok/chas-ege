@@ -484,7 +484,8 @@ function replaceCanvasWithImgInTask(element, text){
 	for(var i = 0; i < canvases.length; i++){
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
-		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictocenter[]{images/'+imageName+'}');
+		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.4\\linewidth]{images/'+imageName+'}');
+		text+='\\vspace{2.5cm}'
 	}
 	return text;
 }
@@ -501,7 +502,7 @@ function createLaTeXbunch(variantN){
 		}
 
 	}
-	return bunchText + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
+	return bunchText;
 }
 
 function refreshLaTeXarchive(){
@@ -514,12 +515,18 @@ function refreshLaTeXarchive(){
 		bunch +=
 			'\n\n\n\n' +
 			'\\cleardoublepage\n' +
-			'\\def\\examvart{Вариант ' + variantN + '}\n' +
+			'\\def\\examvart{Вариант ' + variantsGenerated[0] + '.'+(variantN+1)%variantsGenerated[0]+'}\n' +
 			'\\normalsize\n\\input{instruction.tex}\n\\startpartone\n\\large' +
 			'\n\n\n\n' +
 			createLaTeXbunch(variantN);
 	}
-	zip.file("tasks.tex", bunch);
+
+	zip.file("variant_"+variantsGenerated[0]+"_no_answers.tex", preambula+'\n\n\\begin{document}'+bunch+'\\end{document}');
+
+	zip.file("variant_"+variantsGenerated[0]+".tex", preambula+hyperref+'\n\n\\begin{document}'+bunch+ '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n'+'\\end{document}');
+
+	zip.file("variant_"+variantsGenerated[0]+"_watermark.tex", preambula+watermark+hyperref+'\n\n\\begin{document}'+bunch+'\\end{document}');
+	
 	var img = zip.folder("images");
 	for(var i in preparedImages){
 		img.file(i + ".png", preparedImages[i], {base64: true});
@@ -529,3 +536,9 @@ function refreshLaTeXarchive(){
 		$('#latex-archive-placeholder')[0].href="data:application/zip;base64," + base64;
 	});
 }
+
+var preambula = ['\\documentclass[twocolumn]{article}\n\\usepackage{dashbox}\n\\setlength{\\columnsep}{40pt}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{pictures/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{egetask}\n\\usepackage{egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
+
+var hyperref = '\\def\\rfoottext{Разрешается свободное копирование в некоммерческих целях с указанием источника }\n\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
+
+var watermark='\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n';
