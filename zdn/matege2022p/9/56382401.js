@@ -25,7 +25,7 @@ retryWhileUndefined(function() {
 		return;
 	for (let i = 0; i < p.length; i++)
 		p[i][0] = p[i][0].pm();
-		
+
 	let num1 = sl(6, 10, 05);
 	let variant = [
 		['произведение коэффициентов $k$ и $b$', k * b, sl1()],
@@ -57,9 +57,8 @@ retryWhileUndefined(function() {
 		graph9AmarkCircles(ct, p, 4, 0.15);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображен график функций $f(x)=\\Bigl|k|x|+b\\Bigr|$' + ', где $k' + sign[0] + '0$, $b' + sign[
-				1] +
-			'0$'.esli(variant[2]) + '. Найдите ' + variant[0] +
+		text: 'На рисунке изображен график функций $f(x)=\\Bigl|k|x|+b\\Bigr|$' + ', где $k' + sign[0] + '0$, $b' + 
+		sign[1] + ('0').esli(variant[2]) + '$' + '. Найдите ' + variant[0] +
 			'.',
 		answers: variant[1],
 		analys: ('$f(x)=\\Bigl|' + k.ts() + '|x|+' + b.ts() + '\\Bigr|').replace('+-', '-') + '$'
