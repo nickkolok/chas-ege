@@ -4,7 +4,7 @@
 			let a = sl(10, 17);
 			let b = sl(5, 9);
 			let c = sl(5, 10);
-			let d = sl(10, 16);
+			let d = sl(3, 10);
 			let k = slKrome(d, 5, 16);
 			let f = a + c;
 
@@ -16,7 +16,7 @@
 				a *= 10;
 				b *= 16;
 				c *= 10;
-				d *= 10;
+				d *= 16;
 
 				let depth = 10;
 				ctx.translate(200, 200);
@@ -57,7 +57,7 @@
 				ctx.font = "20px serif";
 				ctx.fillText((b / 16).toString(), c + 30 + 3, -b / 2, 18); //b
 				ctx.fillText((c / 10).toString(), 30, -b - b * 0.2 - 5, 18); //c
-				ctx.fillText((d / 10).toString(), a + 30 + 5, d / 2, 18); //d
+				ctx.fillText((d / 16).toString(), a + 30 + 5, d / 2, 18); //d
 				ctx.fillText(k.toString(), a + 10, d * 1.05, 18); //k
 				ctx.fillText(f.toString(), 0, d + 30 + 10, 18); //f
 
