@@ -449,16 +449,34 @@ chas2.task = {
 	/** @function NApi.task.setDilationTask
 	 * Составить задание о растяжении геометрической фигуры
 	 */
-	setDilationTask : function(o) {
-		let dilationCoefficient = o.dilationCoefficient || sl(2,10);
+	setDilationTask: function (o) {
+		let dilationCoefficient = o.dilationCoefficient || sl(2, 10);
 		let figureName = sklonlxkand(o.figureName);
-		let action = ['увелич','уменьш'].iz();
-		o.measurements[0].name = sklonlxkand(o.measurements[0].name);
-		o.measurements[1].name = sklonlxkand(o.measurements[1].name);
+		let action = ['увелич', 'уменьш'].iz();
 
-		let first  = ['первого', 'первой', 'первого', 'первых'][figureName.rod];
+		//перемешаем ещё разок! А то вдруг положили не перемешанный
+		if (!o.measurements[1].primary)
+			o.measurements = o.measurements.shuffle();
+
+		//подготовка к 3м переменным
+		o.measurements.forEach(element => element.name = sklonlxkand(element.name));
+
+		//Будет ли дополнение?
+		let PS = o.PS || undefined;
+		let figureInPS;
+
+		if (PS != undefined)
+			for (let i = 0; i < o.measurements.length; i++) {
+				if (o.measurements[i].wordToClarify) {
+					figureInPS = o.measurements[i];
+					o.measurements.splice(i, 1);
+					break;
+				}
+			}
+
+		let first = ['первого', 'первой', 'первого', 'первых'][figureName.rod];
 		let second = ['второго', 'второй', 'второго', 'вторых'][figureName.rod];
-		let bigger = ['больше','меньше'].iz(); // TODO: 'превосходит' ?
+		let bigger = ['больше', 'меньше'].iz(); // TODO: 'превосходит' ?
 
 		//TODO: разнонаправленное больше-меньше
 		let phrase1 =
@@ -477,27 +495,41 @@ chas2.task = {
 			textOptions.push(
 				'Во сколько раз ' + action + 'ится ' + o.measurements[0].name.ie + ' ' +
 				figureName.re + ', если ' +
-				['его','её','его','их'][figureName.rod] + ' ' + o.measurements[1].name.ve + ' ' + action + 'ить в '+
-				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v')+'?'
+				['его', 'её', 'его', 'их'][figureName.rod] + ' ' + o.measurements[1].name.ve + ' ' + action + 'ить в ' +
+				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v') + '?'
 			);
 		}
 		else {
 			textOptions.push(
-				'Во сколько раз ' + action + 'или ' + o.measurements[0].name.ie + ' ' +
+				'Во сколько раз ' + action + 'или ' + o.measurements[0].name.ve + ' ' +
 				figureName.re + ', если ' +
-				['его','её','его','их'][figureName.rod] + ' ' + o.measurements[1].name.ie + ' ' +
-				action + ['ился','илась','илось','ились'][o.measurements[1].name.rod] + ' в '+
-				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v')+'?'
+				['его', 'её', 'его', 'их'][figureName.rod] + ' ' + o.measurements[1].name.ie + ' ' +
+				action + ['ился', 'илась', 'илось', 'ились'][o.measurements[1].name.rod] + ' в ' +
+				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v') + '?'
 			);
 		}
 
+		//выберем вариант задачи
+
+		let choosePhrase = (o.choosePhrase == undefined) ? sl(0, textOptions.length - 1) : o.choosePhrase;
+
 		let task = o.clone();
-		task.text = textOptions.iz();
+		task.text = textOptions[choosePhrase];
+
+		if (figureInPS !== undefined) {
+
+			if (PS.verb.isArray)
+				PS.verb = PS.verb[figureInPS.name.rod];
+
+			let mass = [figureInPS.name.ie + ' ' + PS.verb,''];
+			for (let i = 0; i < PS.proposal.length; i++)
+				task.text += PS.proposal[i] + mass[i];
+		}
 
 		if (!o.forbidDirectReplacements) {
 			task.text = task.text.
-				replace(' его площадь поверхности ',' площадь его поверхности ').
-				replace( ' её площадь поверхности ',' площадь её поверхности ');
+				replace(' его площадь поверхности ', ' площадь его поверхности ').
+				replace(' её площадь поверхности ', ' площадь её поверхности ');
 		}
 
 		task.answers = [dilationCoefficient.pow(o.measurements[0].power)];
