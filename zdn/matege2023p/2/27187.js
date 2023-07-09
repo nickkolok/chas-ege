@@ -7,7 +7,7 @@
 			let d = sl(10, 16);
 			let k = slKrome(d, 5, 16);
 			let f = a + c;
-			console.log([a, b, c, d, k]);
+			
 			let rand = sl1();
 			let s = [2 * (f * k + (d + b) * f + (d + b) * k) - 2 * ((f - c) * b), k * (f * d + c * b)][rand];
 
@@ -22,16 +22,18 @@
 
 				ctx.lineWidth = 2;
 				for (let i = 0; i < 2; i++) {
-					if (i)
+					if (i){
 						ctx.translate(30, -b*0.2);
+					}
 					ctx.moveTo(-c, -b);
 					ctx.lineTo(c, -b);
 					ctx.lineTo(c, 0);
 					ctx.lineTo(a, 0);
 					ctx.lineTo(a, d);
 					ctx.stroke();
-					if (i)
+					if (i){
 						ctx.setLineDash([4, 3]);
+					}
 					ctx.lineTo(-c, d);
 					ctx.lineTo(-c, -b);
 					ctx.stroke();
