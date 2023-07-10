@@ -791,6 +791,47 @@ chas2.task = {
 		},
 
 		/** @function chas2.task.modifiers.roundUpTo
+		 * Добавить фразу "Ответ умножьте на $\sqrt{..}$." и домножить сам ответ.
+		 * @param {Number} n Максимальное число, до которого можно домножать на корень
+		 */
+		multiplyAnswerBySqrt : function(n) {
+			var o = chas2.task.getTask();
+			if (o.answers.length != 1){
+				throw new TypeError('Fixme: cannot apply multiplyAnswerBySqrt() to multiple answers')
+			}
+			//Меняем запятую на точку для корректной работы Number
+			var ans = Number(o.answers[0].replace(',', '.'));
+
+			if ((ans*1000).isAlmostInteger()){
+				//Ответ и так хорош!
+				return;
+			}
+
+			var possibleMultipliers = [2,3];
+			for (var i = 5; i <= n; i++){
+				if(!i.isPolnKvadr()){
+					possibleMultipliers.push(i);
+				}
+			}
+			possibleMultipliers.shuffle();
+			console.log(possibleMultipliers);
+			for (var i of possibleMultipliers){
+				if(sl1() && (ans/i.sqrt()*1000).isAlmostInteger()){
+					o.text += ' Ответ разделите на $' + i.texsqrt() + '$.';
+					o.answers = [(ans / i.sqrt()).okrugldo((10).pow(-6)).ts()]
+					chas2.task.setTask(o);
+					return;
+				} else if((ans*i.sqrt()*1000).isAlmostInteger()){
+					o.text += ' Ответ умножьте на $' + i.texsqrt() + '$.';
+					o.answers = [(ans * i.sqrt()).okrugldo((10).pow(-6)).ts()]
+					chas2.task.setTask(o);
+					return;
+				}
+			}
+			throw new RangeError('multiplyAnswerBySqrt(): can find no appropriate square root');
+		},
+
+		/** @function chas2.task.modifiers.roundUpTo
 		 * Добавить фразу "Округлить до ..." и округлить сам ответ.
 		 * @param {Number} n степень 10 (округлить до 10^n)
 		 */

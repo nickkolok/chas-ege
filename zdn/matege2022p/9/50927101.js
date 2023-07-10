@@ -46,7 +46,14 @@ retryWhileUndefined(function() {
 	});
 	if (pointsp.length < 2)
 		return;
-
+	let find, answ;
+	if (sl1()) {
+		answ = x2;
+		find = 'абсциссу';
+	} else {
+		answ = y2;
+		find = 'ординату';
+	}
 	let paint1 = function(ct) {
 		let h = 300;
 		let w = 300;
