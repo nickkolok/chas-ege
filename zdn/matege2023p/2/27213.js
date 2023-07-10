@@ -39,7 +39,7 @@
 				}, [0, 1, 2, 3, 4, 5, 6], false, [4, 5]);
 
 
-				ctx.translate(depth * (angle).cos(), -depth * (angle).cos());
+				ctx.translate(depth * angle.cos(), -depth * angle.cos());
 				ctx.drawParallelepiped({
 					width: a,
 					height: c,
@@ -48,7 +48,7 @@
 				}, [0, 1, 2, 3, 4, 8, 9, 10, 11], false, [0, 0]);
 
 				ctx.strokeStyle = "black";
-				ctx.translate(a - depth * (angle).cos(), depth * (angle).cos());
+				ctx.translate(a - depth * angle.cos(), depth * angle.cos());
 				ctx.drawParallelepiped({
 					width: f,
 					height: c,
@@ -58,32 +58,31 @@
 
 				//возрат к начальной точке
 				ctx.translate(0, -c);
-				ctx.translate(-depth * (angle).cos(), depth * (angle).cos());
-				ctx.translate(-a + depth * (angle).cos(), -depth * (angle).cos());
+				ctx.translate(-depth * angle.cos(), depth * angle.cos());
+				ctx.translate(-a + depth * angle.cos(), -depth * angle.cos());
 
 				//цифорки
 				ctx.beginPath();
 				ctx.font = "20px serif";
-				ctx.fillText((a / koefA).toString(), a / 2, -5, 15); //a
+				ctx.fillText(a / koefA, a / 2, -5, 15); //a
 				ctx.stroke();
 				ctx.moveTo(0, 0);
-				ctx.fillText((b).toString(), depth * (angle).cos() / 2 - 18, -depth * (angle).cos() / 2, 15); //b
-				ctx.fillText((c / koefA).toString(), depth * (angle).cos() - 18, c / 2 - depth * (angle).cos(), 15); //c
-				//ctx.lineTo(depth * (angle).cos(), c - depth * (angle).cos()); //c
+				ctx.fillText(b, depth * angle.cos() / 2 - 18, -depth * angle.cos() / 2, 15); //b
+				ctx.fillText(c / koefA, depth * angle.cos() - 18, c / 2 - depth * angle.cos(), 15); //c
 
 				ctx.stroke();
 
 				ctx.beginPath();
-				ctx.translate(depth * (angle).cos(), c - depth * (angle).cos());
+				ctx.translate(depth * angle.cos(), c - depth * angle.cos());
 				ctx.moveTo(0, 0);
-				ctx.fillText((d).toString(), depth * (angle).cos() / 2 - 15, -depth * (angle).cos() / 2, 15); //d
+				ctx.fillText(d, depth * angle.cos() / 2 - 15, -depth * angle.cos() / 2, 15); //d
 				ctx.stroke();
 
 				ctx.beginPath();
-				ctx.translate(depth * (angle).cos(), -depth * (angle).cos());
+				ctx.translate(depth * angle.cos(), -depth * angle.cos());
 				ctx.moveTo(0, 0);
-				ctx.fillText((k).toString(), -18, c / 2, 15); //k
-				ctx.fillText((f / koefA).toString(), a - depth * (angle).cos() + f / 2, c / 4 - c * (angle).cos(), 15); //k
+				ctx.fillText(k, -18, c / 2, 15); //k
+				ctx.fillText(f / koefA, a - depth * angle.cos() + f / 2, c / 4 - c * angle.cos(), 15); //k
 				ctx.stroke();
 
 
@@ -94,7 +93,7 @@
 					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
 				answers: answ,
 			});
-			NAtask.modifiers.multiplyAnswerBySqrt(3);
+			
 			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
