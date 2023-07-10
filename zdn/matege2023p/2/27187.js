@@ -34,12 +34,14 @@
 					ctx.lineTo(a, d);
 					ctx.stroke();
 					if (i) {
-						ctx.setLineDash([4, 3]);
+						ctx.setLineDash([4, 5]);
+						ctx.lineWidth = 0.8;
 					}
 					ctx.lineTo(-c, d);
 					ctx.lineTo(-c, -b);
 					ctx.stroke();
 				}
+				ctx.lineWidth = 2;
 				ctx.setLineDash([0, 0]);
 
 				ctx.translate(-30, b * 0.2);
@@ -50,6 +52,7 @@
 				ctx.drawLine(a, 0, a + 30, -b * 0.2);
 				ctx.drawLine(a, d, a + 30, d - b * 0.2);
 
+				ctx.lineWidth = 1;
 				ctx.setLineDash([4, 3]);
 				ctx.drawLine(-c, d, -c + 30, d - b * 0.2);
 
