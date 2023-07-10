@@ -40,35 +40,32 @@
 				//возрат к начальной точке
 				ctx.translate(0, -c);
 				ctx.drawLine(a, c, f, c);
-				ctx.drawLine(depth * (angle).cos(), c - depth * (angle).cos(), 2 * depth * (angle).cos(), c - 2 * depth * (angle)
-					.cos());
+				ctx.drawLine(depth * angle.cos(), c - depth * angle.cos(), 2 * depth * angle.cos(), c - 2 * depth * angle.cos());
 
 				//цифорки
 				ctx.beginPath();
 				ctx.font = "20px serif";
-				ctx.fillText((a / koefA), a / 2, -5, 15); //a
+				ctx.fillText(a / koefA, a / 2, -5, 15); //a
 				ctx.stroke();
 				ctx.moveTo(0, 0);
-				ctx.fillText((b), depth * (angle).cos() / 2 - 18, -depth * (angle).cos() / 2, 15); //b
-				ctx.fillText((c / koefA), depth * (angle).cos() - 18, c / 2 - depth * (angle).cos(), 15); //c
+				ctx.fillText(b, depth * angle.cos() / 2 - 18, -depth * angle.cos() / 2, 15); //b
+				ctx.fillText(c / koefA, depth * angle.cos() - 18, c / 2 - depth * angle.cos(), 15); //c
 
 				ctx.stroke();
 
 				ctx.beginPath();
-				ctx.translate(depth * (angle).cos(), c - depth * (angle).cos());
+				ctx.translate(depth * angle.cos(), c - depth * angle.cos());
 				ctx.moveTo(0, 0);
-				ctx.fillText((d), depth * (angle).cos() / 2 - 15, -depth * (angle).cos() / 2, 15); //d
+				ctx.fillText(d, depth * angle.cos() / 2 - 15, -depth * angle.cos() / 2, 15); //d
 				ctx.stroke();
 
 				ctx.beginPath();
-				ctx.translate(depth * (angle).cos(), -depth * (angle).cos());
+				ctx.translate(depth * angle.cos(), -depth * angle.cos());
 				ctx.moveTo(0, 0);
-				ctx.fillText((k), -18, c / 2, 15); //k
+				ctx.fillText(k, -18, c / 2, 15); //k
 				if (a != f)
-					ctx.fillText((f / koefA), f / 2 - depth * (angle).cos(), k + c + 15, 15); //k
+					ctx.fillText(f / koefA, f / 2 - depth * angle.cos(), k + c + 15, 15); //k
 				ctx.stroke();
-
-
 
 			};
 			NAtask.setTask({
