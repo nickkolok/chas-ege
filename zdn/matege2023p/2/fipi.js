@@ -13,5 +13,6 @@ window.nomer = [
     12,
     13,
     27049,
+    27059,
 ].iz();
 window.comment = 'Стереометрия';
