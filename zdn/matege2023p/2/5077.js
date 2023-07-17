@@ -1,7 +1,7 @@
 (function() {
 	lx_declareClarifiedPhrase('площадь', 'поверхности');
 	lx_declareClarifiedPhrase('диаметр', 'основания');
-	lx_declareClarifiedPhrase('полная', ' площадь поверхности');
+	lx_declareClarifiedPhrase('полная', 'площадь поверхности');
 	lx['полная площадь поверхности'] = {
 		ve: 'полную площадь поверхности',
 		rod: 1,
@@ -23,7 +23,7 @@
 		let nameSphere = [
 			['радиус', radius],
 			['площадь поверхности', 4 * radius.pow(2), ', делённую на $\\pi$', '\\pi'],
-			['объём', 4 * (radius).pow(3) / 3, ', делённый на $\\pi$', '\\pi'],
+			['объём', 4 * radius.pow(3) / 3, ', делённый на $\\pi$', '\\pi'],
 			['диаметр', 2 * radius]
 		].iz();
 
@@ -35,7 +35,6 @@
 			ct.translate(100, 40);
 			ct.scale = (100, 100);
 			ct.fillStyle = "black";
-			let radius = 400;
 
 			//верхний эллипс
 			ct.beginPath();
