@@ -497,11 +497,17 @@ function createLaTeXbunch(variantN) {
 	var bunchText = '';
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
+			let count = sl(2,4);
+			let imageTyan = '';
+			if (generatedTasks[taskId].taskCategory % count == 0){
+				imageTyan = '\\\\\\begin{wrapfigure}{' + ['l', 'r'].iz() + '}{0.3\\textwidth}\n' +
+					'\\includegraphics[width=0.3\\textwidth]{' + sl(1, 48) + '}\n' +
+			'\\end{wrapfigure}';}
 			bunchText +=
 				'\n' +
 				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
 				tasksInLaTeX[taskId] + '\n' +
-				'\\end{taskBN}' + '\n';
+				'\\end{taskBN}' + '\n' + imageTyan;
 		}
 
 	}
