@@ -501,7 +501,7 @@ function createLaTeXbunch(variantN) {
 			let imageTyan = '';
 			if (generatedTasks[taskId].taskCategory % count == 0){
 				imageTyan = '\\\\\\begin{wrapfigure}{' + ['l', 'r'].iz() + '}{0.3\\textwidth}\n' +
-					'\\includegraphics[width=0.3\\textwidth]{' + sl(1, 48) + '}\n' +
+					'\\includegraphics[width=0.3\\textwidth]{' + sl(1, 38) + '}\n' +
 			'\\end{wrapfigure}';}
 			bunchText +=
 				'\n' +
@@ -541,7 +541,7 @@ function refreshLaTeXarchive() {
 	});
 }
 
-var preambula = ['\\documentclass[4apaper]{article}\n\\usepackage{dashbox}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../egetask_ver}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
+var preambula = ['\\documentclass[paper]{article}\n\\usepackage{dashbox}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\\graphicspath{{../../chas-ege-tyan}}\n\n\\linespread{1.15}\n\n\\usepackage{../egetask_alternative}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}\n\n']
 
 var hyperref = '\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
 
