@@ -506,8 +506,8 @@ function createLaTeXbunch(variantN) {
 			bunchText +=
 				'\n' +
 				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
-				tasksInLaTeX[taskId] + '\n' +
-				'\\end{taskBN}' + '\n' + imageTyan;
+				tasksInLaTeX[taskId] + imageTyan + '\n' +
+				'\\end{taskBN}' + '\n' 
 		}
 
 	}
