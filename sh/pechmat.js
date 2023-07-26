@@ -155,7 +155,7 @@ function bumpVariantNumber(){
 
 function appendVariantTasksCaption(){
 	if(!options.vanishVariants){
-		strVopr+='<h2 class="d">Вариант №'+variantNumber+'</h2>';
+		strVopr+='<h2 class="d">Рабочая тетрадь №'+variantNumber+'</h2>';
 	}
 }
 
@@ -265,7 +265,7 @@ function createHtmlForTask(nazvzad){
 		rsh:
 			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
 				(
-					'<h3>'+('Вариант №'+variantNumber+', ').esli(!options.vanishVariants) +
+					'<h3>'+('Рабочая тетрадь №'+variantNumber+', ').esli(!options.vanishVariants) +
 					'задача '+nazvzad+'</h3><br/>'+
 					vopr.rsh
 				).esli(vopr.rsh)+
@@ -468,7 +468,9 @@ function getAnswersTableLaTeX(variantN){
 		var tdCells = row.getElementsByTagName('td');
 		if(tdCells.length){
 			//TODO: reverse-decode LaTeX from MathJax
-			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & '));
+			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & ') + '\\\\');
+			if (count % 50 == 0 && count < kZ)
+				answersParsedToTeX.push('\\end{tabular}&\\begin{tabular}[t]{' + (new Array(cellsInFirstRow)).fill('|l').join('') + '|' + '}')
 		}
 	}
 	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
@@ -491,17 +493,19 @@ function replaceCanvasWithImgInTask(element, text){
 
 function createLaTeXbunch(variantN){
 	var bunchText = '';
-	for(var taskId in tasksInLaTeX){
-		if(generatedTasks[taskId].variantNumber == variantN){
+	var count=0;
+	for (var taskId in tasksInLaTeX) {
+		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
 				'\n' +
 				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
 					tasksInLaTeX[taskId] + '\n' +
 				'\\end{taskBN}' + '\n';
+				count++;
 		}
 
 	}
-	return bunchText + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
+	return bunchText;
 }
 
 function refreshLaTeXarchive(){
@@ -510,16 +514,20 @@ function refreshLaTeXarchive(){
 	}
 	var zip = new JSZip();
 	var bunch = "";
-	for(var variantN of variantsGenerated){
-		bunch +=
-			'\n\n\n\n' +
-			'\\cleardoublepage\n' +
-			'\\def\\examvart{Вариант ' + variantN + '}\n' +
-			'\\normalsize\n\\input{instruction.tex}\n\\startpartone\n\\large' +
-			'\n\n\n\n' +
-			createLaTeXbunch(variantN);
+	var answ = "";
+	for (var variantN of variantsGenerated) {
+		bunch += '\n\n\\section{Рабочая тетрадь}\n'+createLaTeXbunch(variantN);
+		answ += '\n\n\\section{Рабочая тетрадь}\n'+getAnswersTableLaTeX(variantN);
 	}
-	zip.file("tasks.tex", bunch);
+
+	//zip.file("task.tex", preambula+'\n\n\\begin{document}'+bunch+'\n\\end{document}');
+
+	zip.file("noteProbability" + ".tex", preambula + '\n\n\\begin{document}' + bunch + '\n\\newpage\n ' + '\n' + '\\end{document}');
+
+	zip.file("answers" + ".tex", preambula + '\n\n\\begin{document}'+  + '\n' + answ + '\\end{document}');
+
+	zip.file("noteProbability_watermark.tex", preambula + watermark + hyperref + '\n\n\\begin{document}' + bunch + '\\end{document}');
+
 	var img = zip.folder("images");
 	for(var i in preparedImages){
 		img.file(i + ".png", preparedImages[i], {base64: true});
@@ -529,3 +537,9 @@ function refreshLaTeXarchive(){
 		$('#latex-archive-placeholder')[0].href="data:application/zip;base64," + base64;
 	});
 }
+
+var preambula = ['\\documentclass[a4paper]{article}\n\\usepackage{dashbox}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\\graphicspath{{../../animal/}}\n\n\\linespread{1.15}\n\n\\usepackage{egetask_alternative}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}\n\n\\usepackage{tikz}\n\\usepackage{transparent}']
+
+var hyperref = '\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
+
+var watermark = '\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n';
