@@ -20,6 +20,10 @@
 			ctx.drawLine(10, 300, 190, 100);
 			ctx.drawLine(190, 100, 390, 300);
 
+			//штрихи
+			ctx.drawLine(150 - 15, 300 / 2, 150, 300 / 2 + 10);
+			ctx.drawLine(400 - 150, 300 / 2, 400 - 150 - 15, 300 / 2 + 10);
+
 			ctx.font = "23px liberation_sans";
 			ctx.fillText(vertices[0], 5, 330);
 			ctx.fillText(vertices[1], 390 - 15, 330);
