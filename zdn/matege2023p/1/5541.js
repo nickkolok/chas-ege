@@ -3,6 +3,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let angle = sl(2, 35);
+		let condition= [['больший', 45 + angle],['меньший', 45 - angle]].iz();
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
@@ -31,8 +32,8 @@
 		NAtask.setTask({
 			text: 'В прямоугольном треугольнике угол между высотой и биссектрисой, ' +
 				'проведёнными из вершины прямого угла, равен $' + angle + '^{\\circ}$. ' +
-				'Найдите меньший угол прямоугольного треугольника. Ответ дайте в градусах.',
-			answers: 45 - angle,
+				'Найдите '+condition[0]+' угол прямоугольного треугольника. Ответ дайте в градусах.',
+			answers: condition[1],
 			analys: '',
 		});
 		NAtask.modifiers.addCanvasIllustration({
