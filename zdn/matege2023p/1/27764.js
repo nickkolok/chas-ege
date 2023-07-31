@@ -69,7 +69,7 @@
 					'') +
 				'$ пересекаются в точке $' + vertices[5] + '$. Найдите угол $' + vertices[2] + vertices[5] + vertices[1] +
 				'$. Ответ дайте в градусах.',
-			answers: 90 - 0.5 * angle,
+			answers: 90 + 0.5 * angle,
 			analys: '',
 		});
 		NAtask.modifiers.addCanvasIllustration({
