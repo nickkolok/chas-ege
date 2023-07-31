@@ -12,8 +12,6 @@
 		}
 		while (vertices.length < 6);
 
-		console.log(vertices);
-
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
 
