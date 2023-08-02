@@ -464,8 +464,10 @@ function getAnswersTableLaTeX(variantN){
 	var answersParsedToTeX = [];
 	// The first row may be the caption, so...
 	var cellsInFirstRow = (answerRows[2] || answerRows[1] || answerRows[0]).getElementsByTagName('td').length;
+	let count = 0;
 	for(var row of Array.from(answerRows)){
 		var tdCells = row.getElementsByTagName('td');
+		count++;
 		if(tdCells.length){
 			//TODO: reverse-decode LaTeX from MathJax
 			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & ') + '\\\\');
