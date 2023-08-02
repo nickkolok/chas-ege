@@ -1,4 +1,4 @@
 window.nomer=[
-    14
+    14,
 ].iz();
 window.comment='14';
