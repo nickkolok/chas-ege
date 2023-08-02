@@ -10,9 +10,9 @@
 
 			let rand = sl1();
 			let question = ['объём', 'площадь поверхности'][rand];
-			let answ = [k * d * a + f * b * k + a * b * c, 2 * (a * b + a * c + a * d + a * k + b * c + b * f + b * k + d * k +
+			let answ = [a * b * c + a * d * k + (a + f) * k * b, 2 * (a * b + a * c + a * d + a * k + b * c + b * f + b * k +
+				d * k +
 				f * k)][rand];
-
 
 			let paint1 = function(ctx) {
 				ctx.translate(115, 50);
@@ -93,7 +93,7 @@
 					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
 				answers: answ,
 			});
-			
+
 			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
