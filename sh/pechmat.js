@@ -51,6 +51,7 @@ function zapusk(){
 	options.splitAnswersNumber=1*$('#split-answers-number').val();
 	options.splitAnswerTables=$('#splitAnswerTables').is(':checked');
 	options.uniqueAnswersAndSolutions=$('#uniqueAnswersAndSolutions').is(':checked');
+	options.uniqueAnswersOnlyInOneVariant=$('#uniqueAnswersOnlyInOneVariant').is(':checked');
 	options.startTransitNumber=1*$('#start-transit-number').val();
 	options.prepareLaTeX=$('#prepareLaTeX').is(':checked');
 
@@ -191,6 +192,9 @@ function endCurrentVariant(){
 	nZ=0;
 	appendVariantTasksEnding();
 	appendVariantAnswersEnding();
+	if(options.uniqueAnswersOnlyInOneVariant){
+		unqDict={};
+	}
 	zadan();
 }
 
@@ -228,6 +232,7 @@ function zadan(){
 				}
 			}
 			iZ[nZ]--;
+			//window.vopr.txt=null;
 			dvig.zadan(obnov,nZ);
 
 		}
