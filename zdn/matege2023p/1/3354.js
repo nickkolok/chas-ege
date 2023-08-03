@@ -24,8 +24,8 @@
 			letters = letters.reverse();
 		}
 
-		let subangle = [vertices[1],
-			[vertices[0], vertices[2]].iz(), vertices[3]
+		let subangle = [vertices[0],
+			[vertices[1], vertices[3]].iz(), vertices[2]
 		];
 
 		if (sl1()) {
@@ -51,7 +51,7 @@
 
 		NAtask.setTask({
 			text: 'В ромбе $' + vertices.join('') + '$ угол $' + subangle.join('') +
-				'$ равен $' + angle + '^\\circ$. Найдите' +
+				'$ равен $' + angle + '^\\circ$. Найдите ' +
 				'угол $' + letters.join('') + '$. Ответ дайте в градусах',
 			answers: 0.5 * (180 - angle),
 		});
