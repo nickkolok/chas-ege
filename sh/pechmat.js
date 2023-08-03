@@ -119,9 +119,9 @@ function konecSozd() {
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
 			).
-				// Escape LaTeX comments,
-				// but don't ruin if they've been already escaped!
-				replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\');
+			 // Escape LaTeX comments,
+			 // but don't ruin if they've been already escaped!
+			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
 		}
 	}
 
