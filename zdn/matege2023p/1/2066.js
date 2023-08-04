@@ -36,7 +36,7 @@
 		};
 
 		NAtask.setTask({
-			text: 'В треугольнике $' + vertices.slice(0, 3).join('') + '$ $' + vertices[2] + vertices[3] +
+			text: 'В треугольнике $' + vertices.slice(0, 3).shuffle().join('') + '$ $' + vertices[2] + vertices[3] +
 				'$ – медиана, угол $' +
 				vertices[2] + '$ равен ' +
 				'$90^{\\circ}$, угол $' + question[0] + '$ равен $' + angle + '^{\\circ}$. Найдите угол $' + question[1] +
