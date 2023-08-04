@@ -48,7 +48,7 @@
 		};
 
 		NAtask.setTask({
-			text: 'В треугольнике $' + vertices.slice(0, 3).join('') + '$ угол $' + vertices[0] + '$ равен $' + angle +
+			text: 'В треугольнике $' + vertices.slice(0, 3).shuffle().join('') + '$ угол $' + vertices[0] + '$ равен $' + angle +
 				'^{\\circ}$, углы $' + vertices[1] + '$ и $' + vertices[2] + '$ – острые, ' +
 				'высоты $' + [vertices[1], vertices[3]].shuffle().join('') + '$ и $' + [vertices[2], vertices[4]].shuffle().join(
 					'') +
