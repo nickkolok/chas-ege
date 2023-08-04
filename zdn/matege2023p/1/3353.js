@@ -11,6 +11,12 @@
 				vertices.push(a);
 		}
 		while (vertices.length < 4);
+
+		let copyVertices = vertices.slice(0, 4);
+		if (sl1()) {
+			copyVertices = copyVertices.reverse();
+		}
+
 		let numbers = [
 			[0, 1, 3],
 			[3, 1, 2],
@@ -19,7 +25,6 @@
 		].iz();
 		//не придумала ничего умнее, чем просто перечислить спрашиваемые вершины
 		let letters = numbers.map((elem) => vertices[elem]);
-
 		if (sl1()) {
 			letters = letters.reverse();
 		}
@@ -27,7 +32,6 @@
 		let subangle = [vertices[1],
 			[vertices[0], vertices[2]].iz(), vertices[3]
 		];
-
 		if (sl1()) {
 			subangle = subangle.reverse();
 		}
@@ -50,8 +54,8 @@
 		};
 
 		NAtask.setTask({
-			text: 'В ромбе $' + vertices.join('') + '$ угол $' + subangle.join('') +
-				'$ равен $' + angle + '^\\circ$. Найдите' +
+			text: 'В ромбе $' + copyVertices.permuteCyclic(sl(1, 3)).join('') + '$ угол $' + subangle.join('') +
+				'$ равен $' + angle + '^\\circ$. Найдите ' +
 				'угол $' + letters.join('') + '$. Ответ дайте в градусах',
 			answers: 0.5 * (180 - angle),
 		});
