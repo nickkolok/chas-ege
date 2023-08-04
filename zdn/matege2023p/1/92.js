@@ -1,14 +1,4 @@
 (function() {
-	Array.prototype.linalRand = function(repeat) {
-		if (repeat > this.length) {
-			repeat %= this.length;
-		}
-		for (let i = 0; i < repeat; i++) {
-			let last = this.pop();
-			this.unshift(last);
-		}
-		return this;
-	};
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
