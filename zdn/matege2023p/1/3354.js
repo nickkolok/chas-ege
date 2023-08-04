@@ -11,6 +11,12 @@
 				vertices.push(a);
 		}
 		while (vertices.length < 4);
+
+		let copyVertices = vertices.slice(0, 4);
+		if (sl1()) {
+			copyVertices = copyVertices.reverse();
+		}
+
 		let numbers = [
 			[0, 2, 3],
 			[1, 0, 2],
@@ -50,7 +56,7 @@
 		};
 
 		NAtask.setTask({
-			text: 'В ромбе $' + vertices.join('') + '$ угол $' + subangle.join('') +
+			text: 'В ромбе $' + copyVertices.permuteCyclic(sl(1, 3)).join('') + '$ угол $' + subangle.join('') +
 				'$ равен $' + angle + '^\\circ$. Найдите ' +
 				'угол $' + letters.join('') + '$. Ответ дайте в градусах',
 			answers: 0.5 * (180 - angle),
