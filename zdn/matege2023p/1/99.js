@@ -13,7 +13,7 @@
 		}
 		while (vertices.length < 4);
 
-		genAssertZ1000(a / (1 - b.pow(2).sqrt()), 'Кривой ответ');
+		genAssertZ1000(a / (1 - b.pow(2)).sqrt(), 'Кривой ответ');
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
@@ -50,7 +50,7 @@
 				' $. Найдите $' + [vertices.slice(0, 2),
 					vertices.slice(1, 3)
 				].iz().shuffle().join('') + '$.',
-			answers: a / (1 - b.pow(2).sqrt()),
+			answers: a / (1 - b.pow(2)).sqrt(),
 			analys: '',
 		});
 		NAtask.modifiers.addCanvasIllustration({
