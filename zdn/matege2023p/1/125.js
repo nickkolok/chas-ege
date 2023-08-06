@@ -13,8 +13,8 @@
 
 	let subangle1 = [vertices[4], vertices[0], vertices[3]];
 	let subangle2 = [
-		[vertices[0], vertices[2]],
-		[vertices[1], vertices[3]]
+		[vertices[1], vertices[2]],
+		[vertices[0], vertices[3]]
 	].iz();
 	subangle2.splice(1, 0, vertices[4]);
 
