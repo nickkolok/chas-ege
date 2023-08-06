@@ -13,8 +13,8 @@
 
 	let subangle1 = [vertices[4], vertices[0], vertices[3]];
 	let subangle2 = [
-		[vertices[0], vertices[2]],
-		[vertices[1], vertices[3]]
+		[vertices[1], vertices[2]],
+		[vertices[0], vertices[3]]
 	].iz();
 	subangle2.splice(1, 0, vertices[4]);
 
@@ -27,8 +27,8 @@
 		ctx.arc(200, 200, 180, 0, 2 * Math.PI);
 		ctx.stroke();
 
-		let deltaX = (angle > 90 ? 140 : 70);
-		let deltaY = (angle > 90 ? 111 : 165);
+		let deltaX = (angle > 90 ? 70 : 140);
+		let deltaY = (angle > 90 ? 165 : 111);
 
 		//центральный
 		ctx.drawFilledCircle(200, 200, 3);
