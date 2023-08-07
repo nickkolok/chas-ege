@@ -28,7 +28,7 @@
 			ctx.drawFilledCircle(200, 200, 2);
 
 			ctx.font = "23px liberation_sans";
-			ctx.fillText(vertices[0], 200 - 180 - 22, 200 + 10);
+			ctx.fillText(vertices[0], 200 - 180 - 20, 200 + 10);
 			ctx.fillText(vertices[1], 200 + 180 + 5, 200 + 10);
 			ctx.fillText(vertices[2], 200 - 90, 200 - 170);
 
@@ -41,7 +41,7 @@
 				'Дуга окружности $' + vertices.slice(1, 4).shuffle().join('') + '$, не содержащая точку $' + vertices[0] +
 				'$, составляет $' + b +
 				'^\\circ$. ' +
-				'Найдите вписанный угол $' + vertices.permuteCyclic(1).join('') + '$. Ответ дайте в градусах.',
+				'Найдите вписанный угол $' + [vertices[0], vertices[2], vertices[1]].join('') + '$. Ответ дайте в градусах.',
 			answers: (360 - a - b) / 2,
 		});
 		NAtask.modifiers.addCanvasIllustration({
