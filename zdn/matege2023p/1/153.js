@@ -39,7 +39,7 @@
 		NAtask.setTask({
 			text: 'В четырёхугольник $' + vertices.slice().permuteCyclic(sl(1, 3)).join('') + '$ вписана окружность, ' +
 				'$' + vertices.slice(0, 2).shuffle().join('') + '=' + a + '$, $' + vertices.slice(1, 3).shuffle().join('') +
-				'=' + b + '$ и $' + vertices.slice(2, 4).shuffle().join('') + '=' + c + '$. ' +
+				'=' + b + '$ и $' + vertices.slice(0, 4).permuteCyclic(1).slice(0, 2).shuffle().join('') + '=' + c + '$. ' +
 				'Найдите четвёртую сторону четырёхугольника.',
 			answers: b + c - a,
 		});
