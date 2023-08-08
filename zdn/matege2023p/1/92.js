@@ -40,10 +40,10 @@
 		};
 
 		NAtask.setTask({
-			text: 'Площадь параллелограмма $' + vertices.slice(0, 4).linalRand(sl(1, 3)).join('') + '$ равна $' + a + '$. ' +
+			text: 'Площадь параллелограмма $' + vertices.slice(0, 4).permuteCyclic(sl(1, 3)).join('') + '$ равна $' + a + '$. ' +
 				'Точка $' + vertices[4] + '$ – середина стороны $' + vertices.slice(1, 3).shuffle().join('') +
 				'$. Найдите площадь ' +
-				'трапеции $' + trapezh.linalRand(sl(0, 3)).join('') + '$.',
+				'трапеции $' + trapezh.permuteCyclic(sl(0, 3)).join('') + '$.',
 			answers: a * 0.75,
 		});
 		NAtask.modifiers.addCanvasIllustration({
