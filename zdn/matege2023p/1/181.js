@@ -10,14 +10,6 @@
 			['больший', [180 - a, 180 - b].maxE()]
 		].iz();
 
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 4);
-
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
 			ctx.beginPath();
