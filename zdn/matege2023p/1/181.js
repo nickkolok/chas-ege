@@ -3,11 +3,11 @@
 		NAinfo.requireApiVersion(0, 2);
 		'use strict'
 		let a = sl(10, 89);
-		let b = sl(10, 89);
+		let b = slKrome(a, 10, 89);
 
 		let question = [
-			['меньший', [180 - a, 180 - b].maxE()],
-			['больший', [180 - a, 180 - b].minE()]
+			['меньший', [180 - a, 180 - b].minE()],
+			['больший', [180 - a, 180 - b].maxE()]
 		].iz();
 
 		let vertices = [];
