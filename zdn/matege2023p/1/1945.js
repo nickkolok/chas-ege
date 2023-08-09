@@ -31,7 +31,7 @@
 		};
 
 		NAtask.setTask({
-			text: 'В треугольнике $' + vertices.shuffle().join('') + '$ угол $' + question[0] + '$ равен $' + angle +
+			text: 'В треугольнике $' + vertices.slice().shuffle().join('') + '$ угол $' + question[0] + '$ равен $' + angle +
 				'^{\\circ}$, стороны $' +
 				vertices[2] + vertices[0] + '$ и $' +
 				vertices[2] + vertices[1] + '$ равны. Найдите угол $' + question[1] + '$. Ответ дайте в градусах.',
