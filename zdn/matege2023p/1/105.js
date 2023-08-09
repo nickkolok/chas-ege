@@ -15,7 +15,7 @@
 
 		let angle = sl1() ? vertices.slice(0, 3).permuteCyclic(1) : vertices.slice(0, 3).permuteCyclic(2);
 
-		genAssertZ1000(a / b, 'Кривой ответ');
+		genAssertZ1000(b / a, 'Кривой ответ');
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
@@ -50,9 +50,10 @@
 		NAtask.setTask({
 			text: 'В треугольнике  $' + vertices.slice(0, 3).shuffle().join('') + '$ $' +
 				vertices.slice(0, 2).shuffle().join('') +
-				'=' + vertices.slice(1, 3).shuffle().join('') + '$, высота $' + [vertices[0], vertices[3]].shuffle().join('') +
-				'$ равна $' + a + '$. Найдите $\\sin \\angle' + angle.join('') + '$.',
-			answers: a / b,
+				'=' + vertices.slice(1, 3).shuffle().join('') + '$, $' + vertices[0] + vertices[2] + '=' + a + '$, высота $' + 
+				[vertices[0], vertices[3]].shuffle().join('') +
+				'$ равна $' + b + '$. Найдите $\\sin \\angle ' + angle.join('') + '$.',
+			answers: b / a,
 			analys: '',
 		});
 		NAtask.modifiers.addCanvasIllustration({
