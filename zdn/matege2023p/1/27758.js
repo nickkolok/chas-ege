@@ -17,17 +17,15 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
 
 			ctx.drawLine(10, 370, 390, 370);
 			ctx.drawLine(10, 370, 150, 70);
 			ctx.drawLine(150, 70, 390, 370);
 
 			ctx.drawLine(10, 370, 270 - 2, 220 - 5);
-			//ctx.drawLine(79 + 4, 220 - 10, 390, 370);
 
-			ctx.beginPath();
-			//ctx.arc(183, 270, 30, 0.10 * Math.PI, -1.13 * Math.PI);
-			ctx.stroke();
+			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 
 			ctx.beginPath();
 			ctx.arc(10, 370, 30, 0, -0.17 * Math.PI, true);
@@ -35,21 +33,6 @@
 			ctx.beginPath();
 			ctx.arc(10, 370, 25, -0.17 * Math.PI, -0.34 * Math.PI, true);
 			ctx.stroke();
-
-			ctx.beginPath();
-			//ctx.arc(390, 370, 30, -Math.PI, -0.85 * Math.PI);
-			ctx.stroke();
-			ctx.beginPath();
-			//ctx.arc(390, 370, 35, -Math.PI, -0.85 * Math.PI);
-			ctx.stroke();
-
-			ctx.beginPath();
-			//ctx.arc(390, 370, 40, -0.85 * Math.PI, -0.72 * Math.PI);
-			ctx.stroke();
-			ctx.beginPath();
-			//ctx.arc(390, 370, 45, -0.85 * Math.PI, -0.72 * Math.PI);
-			ctx.stroke();
-
 
 			ctx.font = "23px liberation_sans";
 			ctx.fillText(vertices[0], 150, 70 - 10);

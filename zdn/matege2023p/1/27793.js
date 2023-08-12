@@ -16,10 +16,13 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
 
 			ctx.drawLine(10, 350, 390, 350);
 			ctx.drawLine(10, 350, 180, 50);
 			ctx.drawLine(180, 50, 390, 350);
+			
+			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 
 			ctx.drawLine(180, 50, 180, 350);
 
