@@ -35,6 +35,7 @@
 			ct.translate(100, 40);
 			ct.scale = (100, 100);
 			ct.fillStyle = "black";
+			ct.strokeStyle = "#809DF2";
 			let radius = 400;
 
 			//верхний эллипс
@@ -60,6 +61,7 @@
 			ct.translate(0, 80);
 			ct.beginPath();
 			ct.setLineDash([4, 5]);
+			ct.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 			ct.arc(100, 80, 150, 0, 2 * Math.PI);
 			ct.ellipse(100, 80, 150, 30, 0, 0, 2 * Math.PI);
 			ct.stroke();
@@ -81,7 +83,7 @@
 			text: question[0],
 			answers: question[1],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,

@@ -12,6 +12,7 @@
 				radius = 180;
 				height = 300;
 				ct.translate(200, 200);
+				ct.strokeStyle = "#809DF2";
 
 				ct.lineWidth = 2;
 				//цилиндр
@@ -33,6 +34,7 @@
 				ct.drawLine(radius, height / 2, radius, -height / 2);
 
 				//конус
+				ct.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 				ct.setLineDash([4, 5]);
 				ct.drawLine(-radius, height / 2, 0, -height / 2);
 				ct.drawLine(radius, height / 2, 0, -height / 2);
@@ -53,7 +55,7 @@
 				answers: nameFigura[2 - rand1].sqrt(),
 			});
 			NAtask.modifiers.multiplyAnswerBySqrt(3);
-			chas2.task.modifiers.addCanvasIllustration({
+			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
 				paint: paint1,

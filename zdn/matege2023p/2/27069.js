@@ -4,14 +4,14 @@
 		let edgeOfBase = sl(1, 20);
 		let height = sl(1, 20);
 		let numberOfEdge = [3, 3, 4, 6].iz();
-		let apothem  = [(height.pow(2) + edgeOfBase.pow(2) / 12).sqrt(), (height.pow(2) + 0.25 * edgeOfBase.pow(2)).sqrt(),
+		let apothem = [(height.pow(2) + edgeOfBase.pow(2) / 12).sqrt(), (height.pow(2) + 0.25 * edgeOfBase.pow(2)).sqrt(),
 			0, (height.pow(2) + 0.75 * (edgeOfBase).pow(2)).sqrt()
 		][numberOfEdge - 3];
 
 		let question = [
 			['площадь основания', 0.25 * numberOfEdge * edgeOfBase.pow(2) * (Math.PI / numberOfEdge).ctg()],
-			['площадь боковой поверхности', 0.5 * numberOfEdge * edgeOfBase * apothem ],
-			['апофема', apothem ],
+			['площадь боковой поверхности', 0.5 * numberOfEdge * edgeOfBase * apothem],
+			['апофема', apothem],
 			['высота', height],
 			['сторона основания', edgeOfBase],
 		].iz(3);
@@ -23,9 +23,10 @@
 			genAssert((element * 1000).isZ(), 'Значение не целое');
 		});
 		let paint1 = function(ct) {
-			ct.translate(10, 20);
-			ct.scale(10, -10);
-			ct.lineWidth = 2 / 15;
+			ct.translate(30, 60);
+			ct.scale(15, -15);
+			ct.lineWidth = 2 / 20;
+			ct.strokeStyle = "#809DF2";
 			switch (numberOfEdge) {
 			case 3:
 				ct.rightPyramid3({
@@ -36,7 +37,7 @@
 				break;
 			case 4:
 				ct.rightPyramid4({
-					edge: 12,
+					edge: 13,
 					angle: Math.PI / 4,
 					height: 14,
 				}, [1, 3], [0.5, 0.2], name.includes('высота'), name.includes('апофема'));
@@ -60,9 +61,9 @@
 				'. Чему равна ' + name[2] + ' пирамиды?',
 			answers: number[2],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 250,
-			height: 200,
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
 	}, 10000);

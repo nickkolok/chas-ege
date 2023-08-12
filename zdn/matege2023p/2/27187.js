@@ -7,12 +7,12 @@
 			let d = sl(10, 16);
 			let k = slKrome(d, 5, 16);
 			let f = a + c;
-			
+
 			let rand = sl1();
 			let s = [2 * (f * k + (d + b) * f + (d + b) * k) - 2 * ((f - c) * b), k * (f * d + c * b)][rand];
 
 			let paint1 = function(ctx) {
-
+				ctx.strokeStyle = "#809DF2";
 				a *= 13;
 				b *= 10;
 				c *= 10;
@@ -23,7 +23,7 @@
 				ctx.lineWidth = 2;
 				for (let i = 0; i < 2; i++) {
 					if (i)
-						ctx.translate(30, -b*0.2);
+						ctx.translate(30, -b * 0.2);
 					ctx.moveTo(-c, -b);
 					ctx.lineTo(c, -b);
 					ctx.lineTo(c, 0);
@@ -38,24 +38,24 @@
 				}
 				ctx.setLineDash([0, 0]);
 
-				ctx.translate(-30, b*0.2);
+				ctx.translate(-30, b * 0.2);
 
-				ctx.drawLine(-c, -b, -c + 30, -b - b*0.2);
-				ctx.drawLine(c, -b, c + 30, -b - b*0.2);
-				ctx.drawLine(c, 0, c + 30, -b*0.2);
-				ctx.drawLine(a, 0, a + 30, -b*0.2);
-				ctx.drawLine(a, d, a + 30, d - b*0.2);
+				ctx.drawLine(-c, -b, -c + 30, -b - b * 0.2);
+				ctx.drawLine(c, -b, c + 30, -b - b * 0.2);
+				ctx.drawLine(c, 0, c + 30, -b * 0.2);
+				ctx.drawLine(a, 0, a + 30, -b * 0.2);
+				ctx.drawLine(a, d, a + 30, d - b * 0.2);
 
 				ctx.setLineDash([4, 3]);
-				ctx.drawLine(-c, d, -c + 30, d - b*0.2);
+				ctx.drawLine(-c, d, -c + 30, d - b * 0.2);
 
 				//цифорки
 				ctx.font = "20px serif";
 				ctx.fillText((b / 10).toString(), c + 30 + 3, -b / 2, 18); //b
-				ctx.fillText((c / 10).toString(), 30, -b - b*0.2 - 5, 18); //c
+				ctx.fillText((c / 10).toString(), 30, -b - b * 0.2 - 5, 18); //c
 				ctx.fillText((d / 10).toString(), a + 30 + 5, d / 2, 18); //d
 				ctx.fillText(k.toString(), a + 10, d * 1.05, 18); //k
-				ctx.fillText(f.toString(), 0, d + 30+10, 18); //f
+				ctx.fillText(f.toString(), 0, d + 30 + 10, 18); //f
 
 
 			};
@@ -64,7 +64,7 @@
 					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
 				answers: s,
 			});
-			chas2.task.modifiers.addCanvasIllustration({
+			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
 				paint: paint1,

@@ -40,7 +40,8 @@
 					width: a,
 					height: b,
 					depth: depth,
-					angle: angle
+					angle: angle,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4], false, [4, 5]);
 
 				ctx.translate((f), 0);
@@ -50,7 +51,7 @@
 					width: (a - f),
 					height: d,
 					depth: depth,
-					angle: angle
+					angle: angle,
 				}, [], false, [4, 5]);
 				ctx.lineWidth = 2;
 
@@ -59,7 +60,8 @@
 					width: (a - f),
 					height: d,
 					depth: depth / 3,
-					angle: angle
+					angle: angle,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4, 5, 6], false, [0, 5]);
 
 				ctx.translate((depth / 3) * (angle).cos(), -(depth / 3) * (angle).cos());
@@ -67,7 +69,8 @@
 					width: (a - f),
 					height: d,
 					depth: depth + 2 * (depth / 3) * (angle).cos(),
-					angle: angle
+					angle: angle,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 7, 9, 10], false, [0, 5]);
 			};
 			NAtask.setTask({
@@ -75,7 +78,7 @@
 					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
 				answers: s,
 			});
-			chas2.task.modifiers.addCanvasIllustration({
+			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
 				paint: paint1,

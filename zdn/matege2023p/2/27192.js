@@ -30,7 +30,8 @@
 					width: a,
 					height: b,
 					depth: depth,
-					angle: angle
+					angle: angle,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4], false, [4, 5]);
 
 				ctx.translate((a - d) / 2, 0);
@@ -38,8 +39,9 @@
 					width: d,
 					height: c,
 					depth: depth,
-					angle: angle
-				}, [ 1, 3, 4, 5], false, [4, 5]);
+					angle: angle,
+					strokeStyle: "#809DF2",
+				}, [1, 3, 4, 5], false, [4, 5]);
 
 
 				ctx.strokeStyle = "white";
@@ -67,7 +69,7 @@
 					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
 				answers: s,
 			});
-			chas2.task.modifiers.addCanvasIllustration({
+			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
 				paint: paint1,

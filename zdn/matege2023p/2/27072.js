@@ -14,10 +14,11 @@
 		name: 'площадь большого круга',
 		power: 2,
 	}, ].iz(2);
-	console.log(measurements);
+	
 	let paint1 = function(ctx) {
-		ctx.translate(-10, -40);
+		ctx.translate(-10, 50);
 		ctx.lineWidth = 2;
+		ctx.strokeStyle = "#809DF2";
 
 		ctx.beginPath();
 		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь поверхности'))
@@ -26,7 +27,7 @@
 		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь большого круга'))
 			ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 0, 2 * Math.PI);
 
-		ctx.fillStyle = "#61DC9A";
+		ctx.fillStyle = ["#D777F2", "#F2A2D6"].iz();
 		ctx.fill();
 		ctx.closePath();
 
@@ -58,7 +59,7 @@
 		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь большого круга'))
 			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 0, 2 * Math.PI);
 
-		ctx.fillStyle = "#61DC9A";
+
 		ctx.fill();
 		ctx.closePath();
 
@@ -87,9 +88,9 @@
 		dilationCoefficient: sl(2, 10),
 		authors: ['Суматохина Ася'],
 	});
-	chas2.task.modifiers.addCanvasIllustration({
+	NAtask.modifiers.addCanvasIllustration({
 		width: 400,
-		height: 250,
+		height: 400,
 		paint: paint1,
 	});
 })();

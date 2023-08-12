@@ -18,8 +18,12 @@
 		let paint1 = function(ctx) {
 			ctx.translate(20, 40);
 			ctx.lineWidth = 2;
-			let height = 180;
-			ctx.fillStyle = "#61DC9A";
+			let height = 250;
+			ctx.strokeStyle = "#809DF2";
+			ctx.fillStyle = ["#D777F2", "#F2A2D6"].iz();
+
+			if (1 - variant)
+				ctx.translate(-30, 0);
 
 			let a = [70, 100][variant];
 			let b = 20;
@@ -129,9 +133,9 @@
 			answers: moreLess[1],
 			authors: ['Суматохина Александра'],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 500,
-			height: 300,
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
 	}, 1000);

@@ -14,7 +14,8 @@
 					width: cubeEdge / 1.5,
 					height: cubeEdge / 1.5,
 					depth: cubeEdge / (2.5 * 1.5),
-					angle: 40
+					angle: 40,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4, 2, 6, 7, 10, ], false, [0, 0.1]);
 
 				ctx.translate(0, cubeEdge * (40).cos());
@@ -25,7 +26,8 @@
 					width: cubeEdge / 1.5,
 					height: cubeEdge / 1.5,
 					depth: cubeEdge / (2.5 * 1.5),
-					angle: 40
+					angle: 40,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4], false, [0, 0.1]);
 
 
@@ -34,7 +36,8 @@
 					width: cubeEdge / 1.5,
 					height: cubeEdge / 1.5,
 					depth: cubeEdge / (2.5 * 1.5),
-					angle: 40
+					angle: 40,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4, 9, 1, 7, 5], false, [0, 0.1]);
 
 
@@ -43,7 +46,8 @@
 					width: cubeEdge / 1.5,
 					height: cubeEdge / 1.5,
 					depth: cubeEdge / (2.5 * 1.5),
-					angle: 40
+					angle: 40,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4], false, [0, 0.1]);
 
 				ctx.translate(-26 + cubeEdge * (40).cos(), 20);
@@ -51,7 +55,8 @@
 					width: cubeEdge / 1.5,
 					height: cubeEdge / 1.5,
 					depth: cubeEdge / (2.5 * 1.5),
-					angle: 40
+					angle: 40,
+					strokeStyle: "#809DF2",
 				}, [0, 2, 1, 3, 4], false, [0, 0.1]);
 
 				ctx.translate(26 - cubeEdge * (40).cos(), -20 - 16);
@@ -59,7 +64,8 @@
 					width: cubeEdge / 7,
 					height: cubeEdge / 9,
 					depth: cubeEdge / (5),
-					angle: 40
+					angle: 40,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4, 5, 6, 8, 9, 10, 11], false, [0, 0.1]);
 
 				//заплаточки
@@ -77,7 +83,7 @@
 				answers: answ,
 			});
 			NAtask.modifiers.multiplyAnswerBySqrt(3);
-			chas2.task.modifiers.addCanvasIllustration({
+			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
 				paint: paint1,

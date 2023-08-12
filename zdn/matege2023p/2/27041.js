@@ -45,9 +45,9 @@
 
 			let nameParal = [
 				[
-					['площадь полной поверхности', (2 * (2*edge * height + edge.pow(2))).pow(2), '', ''],
+					['площадь полной поверхности', (2 * (2 * edge * height + edge.pow(2))).pow(2), '', ''],
 					['объём', (edge.pow(2) * height).pow(2), '', ''],
-					['диагональ', 2*edge.pow(2) +  height.pow(2), '', ''],
+					['диагональ', 2 * edge.pow(2) + height.pow(2), '', ''],
 					['диагональ одной из боковых сторон', edge.pow(2) + height.pow(2), '', ''],
 				].iz(),
 			];
@@ -55,7 +55,7 @@
 			if (rand)
 				nameParal.push([
 					['сторона основания', edge.pow(2), '', ''],
-					['диагональ основания', 2*edge.pow(2), '', '']
+					['диагональ основания', 2 * edge.pow(2), '', '']
 				].iz());
 			nameParal = nameParal.iz(3 - nameCylinder.length);
 
@@ -88,6 +88,7 @@
 
 			let paint1 = function(ct) {
 				ct.scale = (60, 60);
+				ct.strokeStyle = ["#D777F2", "#F2A2D6"].iz();
 				radius = 140;
 				height = 200;
 				ct.translate(200, 200);
@@ -114,7 +115,8 @@
 					width: radius * 2,
 					height: height,
 					depth: radius + 15,
-					angle: Math.PI / 1.5
+					angle: Math.PI / 1.5,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4], false, [4, 5]);
 			};
 			NAtask.setTask({
@@ -122,7 +124,7 @@
 				answers: question[1].sqrt(),
 			});
 			NAtask.modifiers.multiplyAnswerBySqrt(3);
-			chas2.task.modifiers.addCanvasIllustration({
+			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
 				paint: paint1,
