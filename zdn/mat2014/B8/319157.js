@@ -24,7 +24,7 @@
 
 		ctx.drawLine(10, 320, 310, 200);
 
-		ctx.lineWidth = 1;
+		ctx.lineWidth = 1.2;
 		ctx.drawLine(300 + 15, 150, 320 + 10, 160);
 		ctx.drawLine(270 + 15, 250, 290 + 10, 260);
 

@@ -16,7 +16,7 @@
 
 			//прямой угол
 			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
-			ctx.lineWidth = 1;
+			ctx.lineWidth = 1.2;
 			ctx.drawLine(150 - 20, 300, 150 - 20, 300 - 20);
 			ctx.drawLine(150, 300 - 20, 150 - 20, 300 - 20);
 
