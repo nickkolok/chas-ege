@@ -15,7 +15,7 @@
 			ctx.drawLine(180, 50, 390, 370);
 
 			//штрихи
-			ctx.lineWidth = 1;
+			ctx.lineWidth = 1.2;
 			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 			ctx.drawLine(275, 210, 300, 200);
 			ctx.drawLine(80, 200, 105, 210);

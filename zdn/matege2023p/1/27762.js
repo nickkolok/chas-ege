@@ -24,7 +24,7 @@
 			ctx.drawLine(79, 220, 390, 370);
 
 			//прямой угол
-			ctx.lineWidth = 1;
+			ctx.lineWidth = 1.2;
 			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 			
 			ctx.drawLine(79 + 20, 220 + 10, 90 + 20, 200 + 10);
