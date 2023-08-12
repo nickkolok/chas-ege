@@ -11,6 +11,8 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
+
 			ctx.drawLine(50, 80, 350, 80);
 			ctx.drawLine(10, 320, 310, 320);
 			ctx.drawLine(50, 80, 10, 320);

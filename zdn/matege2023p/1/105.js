@@ -19,6 +19,7 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2"
 
 			ctx.drawLine(10, 370, 390, 370);
 			ctx.drawLine(10, 370, 180, 200);
@@ -30,7 +31,7 @@
 			ctx.drawLine(180 - 40, 200 - 33, 10, 370);
 
 			//прямой угол
-
+			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 			ctx.drawLine(180 - 52, 200 - 13, 180 - 35, 200 - 1);
 			ctx.drawLine(180 - 35, 200 - 1, 180 - 23, 200 - 17);
 

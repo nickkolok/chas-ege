@@ -18,11 +18,14 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
 
 			ctx.drawLine(10, 300, 390, 300);
 			ctx.drawLine(10, 300, 150, 100);
 			ctx.drawLine(150, 100, 390, 300);
 			ctx.drawLine(150, 100, 390 / 2, 300);
+
+			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 
 			//штрихи
 			ctx.drawLine(390 / 4, 300 - 10, 390 / 4, 300 + 10);

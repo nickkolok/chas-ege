@@ -10,6 +10,8 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
+
 			ctx.beginPath();
 			ctx.arc(200, 200, 180, 0, 2 * Math.PI);
 			ctx.stroke();
@@ -17,6 +19,7 @@
 			//вписанный
 			let deltaX = (a / b < 0.25 ? 120 : 180);
 			let deltaY = (a / b < 0.25 ? 135 : 10);
+			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 
 			ctx.drawLine(200 + deltaX, 200 + deltaY, 200, 200 - 180);
 			ctx.drawLine(200 - deltaX, 200 + deltaY, 200, 200 - 180);

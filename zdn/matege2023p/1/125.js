@@ -23,6 +23,7 @@
 
 	let paint1 = function(ctx) {
 		ctx.lineWidth = 2;
+		ctx.strokeStyle = "#809DF2";
 		ctx.beginPath();
 		ctx.arc(200, 200, 180, 0, 2 * Math.PI);
 		ctx.stroke();
@@ -31,6 +32,7 @@
 		let deltaY = (angle > 90 ? 111 : 165);
 
 		//центральный
+		ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 		ctx.drawFilledCircle(200, 200, 3);
 		ctx.drawLine(200 - deltaX, 200 - deltaY, 200 + deltaX, 200 + deltaY);
 		ctx.drawLine(200 - deltaX, 200 + deltaY, 200 + deltaX, 200 - deltaY);
