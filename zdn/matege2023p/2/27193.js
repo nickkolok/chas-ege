@@ -21,6 +21,7 @@
 				ctx.translate(-20, 20);
 
 				ctx.lineWidth = 2;
+				ctx.strokeStyle = "#809DF2";
 				for (let i = 0; i < 2; i++) {
 					if (i)
 						ctx.translate(20, -b * 0.3);
@@ -70,7 +71,7 @@
 					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
 				answers: s,
 			});
-			chas2.task.modifiers.addCanvasIllustration({
+			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
 				paint: paint1,

@@ -28,6 +28,7 @@
 			ct.fillStyle = "black";
 			let cubeEdge = 400;
 			ct.drawParallelepiped({
+				strokeStyle: "#809DF2",
 				width: cubeEdge / 1.5,
 				height: cubeEdge / 1.5,
 				depth: cubeEdge / (2.5 * 1.5),
@@ -37,6 +38,7 @@
 			ct.translate(0, 80);
 			ct.beginPath();
 			ct.setLineDash([4, 5]);
+			ct.strokeStyle = ["#D777F2", "#F2A2D6"].iz();
 			ct.arc(100, 80, 150, 0, 2 * Math.PI);
 			ct.ellipse(100, 80, 150, 30, 0, 0, 2 * Math.PI);
 			ct.stroke();
@@ -54,7 +56,7 @@
 			text: question[0],
 			answers: question[1],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,

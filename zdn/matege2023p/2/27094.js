@@ -101,26 +101,28 @@
 	let copy = measurements.map((num) => num);
 	let paint1 = function(ctx) {
 		ctx.lineWidth = 2;
+		ctx.translate(30, 0);
+		ctx.strokeStyle = "#809DF2";
 		//образующие
-		ctx.drawLine(60, 180, 150, 10);
-		ctx.drawLine(240, 180, 150, 10);
+		ctx.drawLine(0, 300, 150, 10);
+		ctx.drawLine(300, 300, 150, 10);
 		//эллипс
-		ctx.ellipse(150, 180, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+		ctx.ellipse(150, 300, 20, 150, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 		ctx.stroke();
 
 		ctx.beginPath();
 		ctx.setLineDash([5, 5]);
-		ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+		ctx.ellipse(150, 300, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 		ctx.stroke();
-		console.log(measurements);
+
+		ctx.strokeStyle = ["#D777F2", "#F2A2D6"].iz();
 		for (let i = 0; i < copy.length; i++) {
-			console.log(copy[i].name.ie);
 			//радиус
 			if (copy[i].name.ie == 'радиус основания')
-				ctx.drawLine(150, 180, 240, 180);
+				ctx.drawLine(150, 300, 300, 300);
 			//высота
 			if (copy[i].name.ie == 'высота')
-				ctx.drawLine(150, 180, 150, 10);
+				ctx.drawLine(150, 300, 150, 10);
 		}
 	};
 
@@ -138,9 +140,9 @@
 		},
 		authors: ['Суматохина Ася'],
 	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
+	NAtask.modifiers.addCanvasIllustration({
+		width: 400,
+		height: 400,
 		paint: paint1,
 	});
 })();

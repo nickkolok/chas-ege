@@ -19,7 +19,9 @@
 				width: cubeEdge,
 				height: cubeEdge,
 				depth: cubeEdge / (2.5),
-				angle: 40
+				angle: 40,
+				strokeStyle: "#809DF2",
+				diagonalStrokeStyle: ["#D777F2", "#F2A2D6"].iz(),
 			}, [0, 3, 4], [m[v1], m[v2]].includes('квадрат диагонали'), [0.5, 0.2]);
 		};
 		NAtask.setTask({

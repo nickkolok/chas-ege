@@ -17,29 +17,33 @@
 
 		var q = ['увеличит', 'уменьшит'][v0];
 		let paint1 = function(ct) {
-			ct.translate(50, 10);
-			ct.scale(15, 15);
-			ct.lineWidth = 2 / 15;
+			ct.translate(130, 80);
+			ct.scale(20, 20);
+			ct.lineWidth = 2 / 20;
 			let cubeEdge = 12;
 
 			ct.strokeStyle = "#8080ff";
 
-			ct.translate(44 / 15, 71 / 15);
+			ct.translate(44 / 20, 71 / 20);
 			ct.drawParallelepiped({
 				width: cubeEdge / 1.5,
 				height: cubeEdge / 1.5,
 				depth: cubeEdge / (2.5 * 1.5),
-				angle: 40
-			}, [0, 2, 3, 4, 6], false, [0.5,0.2]);
-			ct.translate(-44 / 15, -71 / 15);
+				angle: 40,
+				strokeStyle: "#809DF2",
+				diagonalStrokeStyle: ["#D777F2", "#F2A2D6"].iz(),
+			}, [0, 2, 3, 4, 6], false, [0.5, 0.2]);
+			ct.translate(-59 / 20, -96 / 20);
 
 			ct.strokeStyle = "black";
 			ct.drawParallelepiped({
 				width: cubeEdge,
 				height: cubeEdge,
 				depth: cubeEdge / (2.5),
-				angle: 40
-			}, [0, 3, 4], [m[0], m[1], m[v2]].includes('квадрат диагонали'),[0.5,0.2]);
+				angle: 40,
+				strokeStyle: "#809DF2",
+				diagonalStrokeStyle: ["#D777F2", "#F2A2D6"].iz(),
+			}, [0, 3, 4], [m[0], m[1], m[v2]].includes('квадрат диагонали'), [0.5, 0.2]);
 
 		};
 		NAtask.setTask({
@@ -47,9 +51,9 @@
 				'Найдите ' + m[v2] + ' исходного куба.',
 			answers: p[v2],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 240,
-			height: 240,
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
 	});

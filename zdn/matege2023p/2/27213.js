@@ -27,7 +27,8 @@
 					width: a,
 					height: c,
 					depth: depth,
-					angle: angle
+					angle: angle,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4], false, [4, 5]);
 
 
@@ -36,7 +37,8 @@
 					width: a,
 					height: c,
 					depth: depth * 2,
-					angle: angle
+					angle: angle,
+					strokeStyle: "#809DF2",
 				}, [0, 1, 2, 3, 4, 5, 6], false, [4, 5]);
 
 
@@ -45,16 +47,17 @@
 					width: a,
 					height: c,
 					depth: depth,
-					angle: angle
+					angle: angle,
+					strokeStyle: "#809DF2",
 				}, [0, 1, 2, 3, 4, 8, 9, 10, 11], false, [0, 0]);
 
-				ctx.strokeStyle = "black";
 				ctx.translate(a - depth * (angle).cos(), depth * (angle).cos());
 				ctx.drawParallelepiped({
 					width: f,
 					height: c,
 					depth: depth,
-					angle: angle
+					angle: angle,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4, 6], false, [4, 5]);
 
 				//возрат к начальной точке
@@ -96,7 +99,7 @@
 				answers: answ,
 			});
 			NAtask.modifiers.multiplyAnswerBySqrt(3);
-			chas2.task.modifiers.addCanvasIllustration({
+			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
 				paint: paint1,
