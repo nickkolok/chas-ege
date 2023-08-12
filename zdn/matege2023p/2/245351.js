@@ -46,9 +46,9 @@
 		let paint1 = function(ct) {
 
 			ct.lineWidth = 2;
+			ct.strokeStyle = "#809DF2";
 			ct.translate(100, 40);
 			ct.scale = (100, 100);
-			ct.fillStyle = "black";
 
 			ct.translate(0, 80);
 			ct.beginPath();
@@ -57,6 +57,7 @@
 
 			ct.beginPath();
 			ct.setLineDash([4, 5]);
+			ct.strokeStyle =["#D777F2","#F2A2D6"].iz();
 			ct.ellipse(100, 80, 180, 30, 0, Math.PI, 2 * Math.PI);
 			ct.stroke();
 
@@ -82,7 +83,7 @@
 			answers: question[1].sqrt(),
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(3);
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,

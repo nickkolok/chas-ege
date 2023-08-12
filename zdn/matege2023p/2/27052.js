@@ -83,18 +83,19 @@
 		let paint1 = function(ctx) {
 			//конус побольше
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
 			//образующие
-			ctx.drawLine(60, 180, 150, 10);
-			ctx.drawLine(240, 180, 150, 10);
+			ctx.drawLine(50, 300, 200, 10);
+			ctx.drawLine(350, 300, 200, 10);
 			//эллипс
 			ctx.beginPath();
-			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.ellipse(200, 300, 20, 150, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(200, 300, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
@@ -111,27 +112,27 @@
 
 			//радиус
 			if (variable.T()[0].includes('радиус основания')) {
-				ctx.drawLine(150, 180, 240, 180);
-				ctx.drawLine(150, 180 * (1 - frac), 150 + (90 * (1 - frac) + add), 180 * (1 - frac));
+				ctx.drawLine(200, 300, 350, 300);
+				ctx.drawLine(200, 300 * (1 - frac), 200 + (150 * (1 - frac) + add), 300 * (1 - frac));
 			}
 			//высота
-			ctx.drawLine(150, 180, 150, 10);
+			ctx.drawLine(200, 300, 200, 10);
 			//диаметр
 			if (variable.T()[0].includes('площадь осевого сечения') || variable.T()[0].includes('диаметр')) {
-				ctx.drawLine(60, 180, 240, 180);
-				ctx.drawLine(150 - (90 * (1 - frac) + add), 180 * (1 - frac), 150 + (90 * (1 - frac) + add), 180 * (1 - frac));
+				ctx.drawLine(60, 300, 350, 300);
+				ctx.drawLine(200 - (150 * (1 - frac) + add), 300 * (1 - frac), 200 + (150 * (1 - frac) + add), 300 * (1 - frac));
 			}
 
 			//конус поменьше
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, 180 * (1 - frac), 10, 90 * (1 - frac) + add, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(200, 300 * (1 - frac), 10, 150 * (1 - frac) + add, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([0, 0]);
-			ctx.ellipse(150, 180 * (1 - frac), 10, 90 * (1 - frac) + add, Math.PI / 2, -Math.PI / 2, -1.5 * Math.PI);
+			ctx.ellipse(200, 300 * (1 - frac), 10, 150 * (1 - frac) + add, Math.PI / 2, -Math.PI / 2, -1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 		};
@@ -149,9 +150,9 @@
 			authors: ['Суматохина Александра'],
 			analys: name[2].ie.toZagl() + ': $' + numberSmall[2] + '$',
 		});
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 300,
-			height: 300,
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
 	}, 10000);

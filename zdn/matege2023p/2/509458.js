@@ -45,7 +45,8 @@
 
 
 		let paint1 = function(ct) {
-			ct.translate(10, 80);
+			ct.translate(10, 150);
+			ct.strokeStyle = "#809DF2";
 			ct.scale(10, -10);
 			ct.lineWidth = 2 / 15;
 			let edgeOfBase = 10;
@@ -72,9 +73,9 @@
 
 			answers: answer,
 		});
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 500,
-			height: 210,
+			height: 400,
 			paint: paint1,
 		});
 	}, 10000);

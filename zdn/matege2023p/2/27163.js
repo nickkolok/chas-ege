@@ -23,15 +23,15 @@
 		let paint1 = function(ctx) {
 			ctx.translate(-10, -40);
 			ctx.lineWidth = 2;
-
+			ctx.strokeStyle = "#809DF2";
+			ctx.fillStyle = ["#D777F2", "#F2A2D6"].iz();
 
 			ctx.beginPath();
 			if (radiusNew[1] == 'площадь большого круга') {
 				ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 0, 2 * Math.PI);
 			} else
 				ctx.arc(100, 150, 80, 0, Math.PI * 2, true);
-				
-			ctx.fillStyle = "#61DC9A";
+
 			ctx.fill();
 			ctx.closePath();
 
@@ -56,13 +56,11 @@
 
 			//шар 2
 			ctx.translate(200, 0);
-				ctx.beginPath();
+			ctx.beginPath();
 			if (radiusNew[1] == 'площадь большого круга') {
 				ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 0, 2 * Math.PI);
 			} else
 				ctx.arc(100, 150, 100, 0, Math.PI * 2, true);
-				
-			ctx.fillStyle = "#61DC9A";
 			ctx.fill();
 			ctx.closePath();
 
@@ -93,9 +91,9 @@
 			authors: ['Суматохина Александра'],
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(7);
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
-			height: 250,
+			height: 400,
 			paint: paint1,
 		});
 	}, 1000);

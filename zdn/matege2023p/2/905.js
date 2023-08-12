@@ -21,8 +21,9 @@
 
 		let paint1 = function(ct) {
 			ct.translate(10, 20);
-			ct.scale(10, -10);
+			ct.scale(18, -18);
 			ct.lineWidth = 2 / 15;
+			ct.strokeStyle = "#809DF2";
 			ct.rightPyramid3({
 				edge: 17,
 				angle: Math.PI / 8,
@@ -37,9 +38,9 @@
 			answers: numbers[1].sqrt(),
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(6);
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 240,
-			height: 240,
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
 	}, 10000);

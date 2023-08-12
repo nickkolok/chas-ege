@@ -13,8 +13,8 @@
 		].iz();
 
 		let paint1 = function(ct) {
-			ct.translate(110, 30);
-			let scale = 15;
+			ct.translate(110, 80);
+			let scale = 18;
 			ct.font = "20px serif";
 			if (width * height * depth > 450) {
 				ct.scale(15, 15);
@@ -30,6 +30,8 @@
 				height: height,
 				depth: depth,
 				angle: 40,
+				strokeStyle: "#809DF2",
+				diagonalStrokeStyle: ["#D777F2", "#F2A2D6"].iz(),
 				lengthOfEdge: true,
 				scale: scale,
 			}, [0, 3, 4], question.includes('диагональ'), [0.5, 0.2]);
@@ -39,12 +41,12 @@
 		NAtask.setTask({
 			text: 'Найдите ' + question[0] + ' параллелепипеда, изображённого на рисунке.',
 			answers: question[1].sqrt(),
-			authors: ['Александра Суматохина','_zevs'],
+			authors: ['Александра Суматохина', '_zevs'],
 		});
-		NAtask.modifiers.multiplyAnswerBySqrt(21,sl1());
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.multiplyAnswerBySqrt(21, sl1());
+		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
-			height: 300,
+			height: 400,
 			paint: paint1,
 		});
 	});
