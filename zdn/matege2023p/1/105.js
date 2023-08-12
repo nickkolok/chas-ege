@@ -26,7 +26,7 @@
 			ctx.drawLine(180, 200, 390, 370);
 
 			//высота
-			ctx.lineWidth = 1;
+			ctx.lineWidth = 1.2;
 			ctx.drawLine(180 - 40, 200 - 33, 390, 370);
 			ctx.drawLine(180 - 40, 200 - 33, 10, 370);
 

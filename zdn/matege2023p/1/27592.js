@@ -70,7 +70,7 @@
 			ctx.drawLine(65, 200, 255, 200);
 
 			//штрихи
-			ctx.lineWidth = 1;
+			ctx.lineWidth = 1.2;
 			ctx.drawLine(80, 130, 80 + 20, 130 + 10);
 			ctx.drawLine(30, 260, 30 + 20, 260 + 10);
 
