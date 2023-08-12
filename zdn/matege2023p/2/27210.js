@@ -25,7 +25,8 @@
 					width: a,
 					height: c,
 					depth: depth,
-					angle: angle
+					angle: angle,
+					strokeStyle: "#809DF2",
 				}, [0, 3, 4], false, [4, 5]);
 
 
@@ -34,7 +35,8 @@
 					width: f,
 					height: c,
 					depth: depth * 2,
-					angle: angle
+					angle: angle,
+					strokeStyle: "#809DF2",
 				}, [0, 2, 3, 4, 6], false, [4, 5]);
 
 				//возрат к начальной точке

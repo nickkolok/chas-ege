@@ -10,16 +10,18 @@
 		var n = [a, 6 * a * a, 3 * a * a, a * a * a];
 
 		let paint1 = function(ct) {
-			ct.translate(50, 10);
-			ct.scale(15, 15);
-			ct.lineWidth = 2 / 15;
+			ct.translate(120, 60);
+			ct.scale(20, 20);
+			ct.lineWidth = 2 / 20;
 			let cubeEdge = 12;
 
 			ct.drawParallelepiped({
 				width: cubeEdge,
 				height: cubeEdge,
 				depth: cubeEdge / (2.5),
-				angle: 40
+				angle: 40,
+				strokeStyle: "#809DF2",
+				diagonalStrokeStyle: ["#D777F2", "#F2A2D6"].iz(),
 			}, [0, 3, 4], [m[v1], m[v2]].includes('квадрат диагонали'), [0.5, 0.2]);
 		};
 		NAtask.setTask({
@@ -27,9 +29,9 @@
 				'Найдите ' + m[v2] + ' куба.',
 			answers: n[v2],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 240,
-			height: 240,
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
 	});
