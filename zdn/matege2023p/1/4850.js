@@ -12,6 +12,8 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
+
 			ctx.drawLine(50, 80, 350, 80);
 			ctx.drawLine(10, 320, 310, 320);
 			ctx.drawLine(50, 80, 10, 320);
@@ -23,6 +25,7 @@
 
 			//прямые углы
 			ctx.lineWidth = 1;
+			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 			ctx.drawLine(50, 320 - 20, 50 + 20, 320 - 20);
 			ctx.drawLine(50 + 20, 320, 50 + 20, 320 - 20);
 

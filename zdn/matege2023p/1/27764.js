@@ -14,6 +14,7 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
 
 			ctx.drawLine(10, 370, 390, 370);
 			ctx.drawLine(10, 370, 150, 70);
@@ -21,6 +22,8 @@
 
 			ctx.drawLine(10, 370, 270 - 2, 220 - 5);
 			ctx.drawLine(79 + 4, 220 - 10, 390, 370);
+
+			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 
 			ctx.beginPath();
 			ctx.arc(183, 270, 30, 0.10 * Math.PI, -1.13 * Math.PI);

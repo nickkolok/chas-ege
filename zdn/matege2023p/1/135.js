@@ -21,16 +21,18 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
+
 			ctx.beginPath();
 			ctx.arc(130, 200, 120, 0, 2 * Math.PI);
 			ctx.stroke();
 
+			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
 			ctx.drawLine(130, 200, 380, 200);
 			ctx.drawLine(130, 200, 130 + 50, 200 - 110);
 			ctx.drawLine(380, 200, 130, 200 - 137); //50:110
 
 			//вписанный
-
 			ctx.drawFilledCircle(130, 200, 2);
 
 			ctx.font = "23px liberation_sans";
