@@ -7,9 +7,6 @@
 			let d = sl(3, b * 0.6);
 			let f = sl(4, 8);
 
-			console.log(['a=' + a, 'b=' + b, 'c=' + c, 'd=' + d]);
-
-
 			let rand = sl1();
 			let s = [a * b * f - d * c * f, 2 * (a * b + a * f + b * f - c * d + c * f)][rand];
 
