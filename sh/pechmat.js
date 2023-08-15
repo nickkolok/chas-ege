@@ -121,7 +121,7 @@ function konecSozd() {
 			).
 			 // Escape LaTeX comments,
 			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
+			 replace(/%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
 		}
 	}
 
@@ -480,11 +480,11 @@ function replaceCanvasWithImgInTask(element, text) {
 		return text;
 	}
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
-	console.log(canvases);
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
-		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictocenter[]{images/'+imageName+'}');
+		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.4\\linewidth]{'+imageName+'}');
+		text+='\\vspace{2.5cm}';
 	}
 	return text;
 }
@@ -501,7 +501,8 @@ function createLaTeXbunch(variantN) {
 		}
 
 	}
-	return bunchText + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
+	return bunchText;
+	return bunchText;
 }
 
 function refreshLaTeXarchive(){
@@ -509,17 +510,28 @@ function refreshLaTeXarchive(){
 		return;
 	}
 	var zip = new JSZip();
-	var bunch = "";
+	var bunch = '\\begin{document}\n\n\\';
+	var bunchAnsw = '\\begin{document}\n\n';
 	for(var variantN of variantsGenerated){
-		bunch +=
+		bunch+=
+			'\n\\def\\examvart{Вариант ' + variantsGenerated[0] +'.'+variantN + '}' +
+			'\\normalsize\n\\input{../instruction.tex}\n\\large' +
 			'\n\n\n\n' +
-			'\\cleardoublepage\n' +
-			'\\def\\examvart{Вариант ' + variantN + '}\n' +
-			'\\normalsize\n\\input{instruction.tex}\n\\startpartone\n\\large' +
+			createLaTeXbunch(variantN)+'\\clearpage';
+		bunchAnsw+=
+			'\n\\def\\examvart{Вариант ' + variantsGenerated[0] +'.' + variantN + '}' +
+			'\n\\normalsize\n\\input{../instruction.tex}\n\\large' +
 			'\n\n\n\n' +
-			createLaTeXbunch(variantN);
+			createLaTeXbunch(variantN)+'\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN)+'\\clearpage';
 	}
-	zip.file("tasks.tex", bunch);
+	bunch+='\\end{document}';
+	bunchAnsw+='\\end{document}';
+
+	zip.file("variant_"+variantsGenerated[0]+"_no_answers.tex", preambula+bunch);
+
+	zip.file("variant_"+variantsGenerated[0]+".tex", preambula+hyperref+bunchAnsw);
+
+	zip.file("variant_"+variantsGenerated[0]+"_watermark.tex", preambula+watermark+hyperref+bunch);
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
 		img.file(i + ".png", preparedImages[i], { base64: true });
@@ -529,3 +541,9 @@ function refreshLaTeXarchive(){
 		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
 	});
 }
+
+var preambula = ['\\documentclass[twocolumn]{article}\n\\usepackage{dashbox}\n\\setlength{\\columnsep}{40pt}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{images/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../../egetask}\n\\usepackage{../../egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
+
+var hyperref = '\\def\\rfoottext{Разрешается свободное копирование в некоммерческих целях с указанием источника }\n\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
+
+var watermark='\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n';
