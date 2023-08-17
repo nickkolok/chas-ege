@@ -119,10 +119,7 @@ function konecSozd() {
 			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
-			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
+			).replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
 		}
 	}
 
@@ -167,9 +164,9 @@ function appendVariantTasksEnding() {
 
 function appendVariantAnswersCaption() {
 	strOtv +=
-		'<table '+
-			'class="normtabl tablpech pech-answers-table" ' +
-			'id="pech-answers-table-variant-' + variantNumber +
+		'<table ' +
+		'class="normtabl tablpech pech-answers-table" ' +
+		'id="pech-answers-table-variant-' + variantNumber +
 		'">';
 
 	if (!options.vanishVariants) {
@@ -247,16 +244,16 @@ function createHtmlForTask(nazvzad) {
 
 	return {
 		txt:
-			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
-				'<div class="b">'+nazvzad+'</div>'+
-				'<div class="z">'+
-					window.vopr.txt+
-					'<button class="noprint renewbutton" title="Заменить задание на похожее"'+
-					'>' +
-						'&#x27F3;' +
-					'</button>'+
-				'</div>'+
-				'<div class="grid-for-writing"></div>'+
+			'<div class="d" data-task-id="' + taskId + '" data-task-number="' + nZ + '">' +
+			'<div class="b">' + nazvzad + '</div>' +
+			'<div class="z">' +
+			window.vopr.txt +
+			'<button class="noprint renewbutton" title="Заменить задание на похожее"' +
+			'>' +
+			'&#x27F3;' +
+			'</button>' +
+			'</div>' +
+			'<div class="grid-for-writing"></div>' +
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
@@ -303,7 +300,7 @@ function obnov() {
 	unqDict[html.unq] = true;
 
 	strVopr += html.txt;
-	strOtv  += html.ver;
+	strOtv += html.ver;
 	strResh += html.rsh;
 
 	generatedTasks[vopr.taskId] = vopr.clone();
@@ -392,9 +389,9 @@ function renewTask() {
 	dvig.zadan(function () {
 		console.log(wrapper);
 		var taskHtml = createHtmlForTask(nazvzad);
-		wrapper  .replaceWith(taskHtml.txt);
+		wrapper.replaceWith(taskHtml.txt);
 		answerRow.replaceWith(taskHtml.ver);
-		solution .replaceWith(taskHtml.rsh);
+		solution.replaceWith(taskHtml.rsh);
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
 		generatedTasks[vopr.taskId] = vopr.clone();
@@ -413,16 +410,16 @@ function insertGridFields() {
 	$('#grid-svg-template')[0].style.minHeight = fieldHeight + 'cm';
 
 	var cellSize = $('#grid-cell-size').val();
-	$('#grid-pattern')[0].setAttribute('width' ,cellSize);
-	$('#grid-pattern')[0].setAttribute('height',cellSize);
+	$('#grid-pattern')[0].setAttribute('width', cellSize);
+	$('#grid-pattern')[0].setAttribute('height', cellSize);
 
-	$('#grid-pattern-line-1')[0].setAttribute('x1',cellSize/2);
-	$('#grid-pattern-line-1')[0].setAttribute('x2',cellSize/2);
-	$('#grid-pattern-line-1')[0].setAttribute('y2',cellSize  );
+	$('#grid-pattern-line-1')[0].setAttribute('x1', cellSize / 2);
+	$('#grid-pattern-line-1')[0].setAttribute('x2', cellSize / 2);
+	$('#grid-pattern-line-1')[0].setAttribute('y2', cellSize);
 
-	$('#grid-pattern-line-2')[0].setAttribute('y1',cellSize/2);
-	$('#grid-pattern-line-2')[0].setAttribute('y2',cellSize/2);
-	$('#grid-pattern-line-2')[0].setAttribute('x2',cellSize  );
+	$('#grid-pattern-line-2')[0].setAttribute('y1', cellSize / 2);
+	$('#grid-pattern-line-2')[0].setAttribute('y2', cellSize / 2);
+	$('#grid-pattern-line-2')[0].setAttribute('x2', cellSize);
 
 
 	var svg = $('#grid-svg-container').html();
@@ -430,12 +427,12 @@ function insertGridFields() {
 
 
 	$('#grid-style-placeholder').html(
-		'<style>'+
-			'.grid-for-writing { ' +
-				'display: block;' +
-				'min-height: ' + fieldHeight + 'cm;' +
-				'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
-			'}'+
+		'<style>' +
+		'.grid-for-writing { ' +
+		'display: block;' +
+		'min-height: ' + fieldHeight + 'cm;' +
+		'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
+		'}' +
 		'</style>'
 	);
 
@@ -506,10 +503,10 @@ function createLaTeXbunchTasks(variantN) {
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
-				'\n' +
-				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
-					tasksInLaTeX[taskId] + '\n' +
-				'\\end{taskBN}' + '\n';
+				"\n" +
+				"\\begin{taskBN}{" + generatedTasks[taskId].taskCategory + "}" + "\n" +
+				tasksInLaTeX[taskId] + "\n" +
+				"\\end{taskBN}\n\n";
 		}
 
 	}
@@ -553,8 +550,10 @@ function refreshLaTeXarchive() {
 	});
 }
 
-var preambula = ['\\documentclass[twocolumn]{article}\n\\usepackage{dashbox}\n\\setlength{\\columnsep}{40pt}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{images/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../../egetask}\n\\usepackage{../../egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
+var preambula = "\\documentclass[twocolumn]{article}\n\\usepackage{dashbox}\n\\setlength{\\columnsep}{40pt}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{images/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../../egetask}\n\\usepackage{../../egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}";
 
-var hyperref = '\\def\\rfoottext{Разрешается свободное копирование в некоммерческих целях с указанием источника }\n\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
+var hyperref = "\\def\\rfoottext{Разрешается свободное копирование в некоммерческих целях с указанием источника }\n\\def\\0.4lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}";
 
-var watermark='\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n';
+var watermark = "\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n";
+
+var preambulaForTab = "\\documentclass[a4paper,landscape,9pt]{extarticle}" + "\\usepackage{dashbox}\n" + "\\setlength{\\columnsep}{40pt}\n" + "\\usepackage[T2A]{fontenc}\n" + "\\usepackage[utf8]{inputenc}\n" + "\\usepackage[english,russian]{babel}\n" + "\\usepackage{graphicx}\n" + "\\usepackage{multirow}\n\n" + "\\graphicspath{{images/}}\n\n" + "\\usepackage{egetask_alternative}\n\n" + "\\linespread{1.15}\n\n";
