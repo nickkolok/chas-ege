@@ -118,10 +118,7 @@ function konecSozd() {
 			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
-			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
+			).replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
 		}
 	}
 
@@ -166,9 +163,9 @@ function appendVariantTasksEnding() {
 
 function appendVariantAnswersCaption() {
 	strOtv +=
-		'<table '+
-			'class="normtabl tablpech pech-answers-table" ' +
-			'id="pech-answers-table-variant-' + variantNumber +
+		'<table ' +
+		'class="normtabl tablpech pech-answers-table" ' +
+		'id="pech-answers-table-variant-' + variantNumber +
 		'">';
 
 	if (!options.vanishVariants) {
@@ -244,16 +241,16 @@ function createHtmlForTask(nazvzad) {
 
 	return {
 		txt:
-			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'">'+
-				'<div class="b">'+nazvzad+'</div>'+
-				'<div class="z">'+
-					window.vopr.txt+
-					'<button class="noprint renewbutton" title="Заменить задание на похожее"'+
-					'>' +
-						'&#x27F3;' +
-					'</button>'+
-				'</div>'+
-				'<div class="grid-for-writing"></div>'+
+			'<div class="d" data-task-id="' + taskId + '" data-task-number="' + nZ + '">' +
+			'<div class="b">' + nazvzad + '</div>' +
+			'<div class="z">' +
+			window.vopr.txt +
+			'<button class="noprint renewbutton" title="Заменить задание на похожее"' +
+			'>' +
+			'&#x27F3;' +
+			'</button>' +
+			'</div>' +
+			'<div class="grid-for-writing"></div>' +
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
@@ -263,12 +260,12 @@ function createHtmlForTask(nazvzad) {
 			('<td>' + window.vopr.rsh + '</td>').esli(options.solutionsIntoAnswers) +
 			'</tr>',
 		rsh:
-			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
-				(
-					'<h3>'+('Вариант №'+variantNumber+', ').esli(!options.vanishVariants) +
-					'задача '+nazvzad+'</h3><br/>'+
-					vopr.rsh
-				).esli(vopr.rsh)+
+			'<div class="solution-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
+			(
+				'<h3>' + ('Вариант №' + variantNumber + ', ').esli(!options.vanishVariants) +
+				'задача ' + nazvzad + '</h3><br/>' +
+				vopr.rsh
+			).esli(vopr.rsh) +
 			'</div>',
 		unq:
 			[vopr.ver.join('; '), vopr.rsh, vopr.unq].join(' [:////:] '), // Да, это служебная комбинация символов "баян"
@@ -280,36 +277,36 @@ var unqDict = {};
 function obnov() {
 	var nazvzad;
 
-		if (options.transitTaskNumbers){
-			nazvzad = options.startTransitNumber + aZ.sum() - iZ.sum() - 1;
-		}else{
-			nazvzad =
-				dvig.getzadname(nZ)+
-				(aZ[nZ]==1? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1) );
-		}
-		var html = createHtmlForTask(nazvzad);
+	if (options.transitTaskNumbers) {
+		nazvzad = options.startTransitNumber + aZ.sum() - iZ.sum() - 1;
+	} else {
+		nazvzad =
+			dvig.getzadname(nZ) +
+			(aZ[nZ] == 1 ? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1));
+	}
+	var html = createHtmlForTask(nazvzad);
 
-		if(options.uniqueAnswersAndSolutions && (html.unq in unqDict)){
-			console.log('Deduplicating ' + nazvzad + '...');
-			dvig.zadan(obnov,nZ);
-			return;
-		}
+	if (options.uniqueAnswersAndSolutions && (html.unq in unqDict)) {
+		console.log('Deduplicating ' + nazvzad + '...');
+		dvig.zadan(obnov, nZ);
+		return;
+	}
 
-		unqDict[html.unq] = true;
+	unqDict[html.unq] = true;
 
-		strVopr += html.txt;
-		strOtv  += html.ver;
-		strResh += html.rsh;
+	strVopr += html.txt;
+	strOtv += html.ver;
+	strResh += html.rsh;
 
-		generatedTasks[vopr.taskId] = vopr.clone();
+	generatedTasks[vopr.taskId] = vopr.clone();
 
-		var sdel=aZ.sum()*(aV-nV+1)-iZ.sum();
-		var w=sdel/kZ;
-		$('.tx').text((100*w).toFixedLess(1).dopdo(' ',4)+'%');
-		$('#pr1').width($('#pr0').width()*w);
-		var v=(vr1+vr2)*(kZ-sdel)/1000;
-		$('#vrem').text(sdel+' из '+kZ+' '+v.toDvoet());
-		zadan();
+	var sdel = aZ.sum() * (aV - nV + 1) - iZ.sum();
+	var w = sdel / kZ;
+	$('.tx').text((100 * w).toFixedLess(1).dopdo(' ', 4) + '%');
+	$('#pr1').width($('#pr0').width() * w);
+	var v = (vr1 + vr2) * (kZ - sdel) / 1000;
+	$('#vrem').text(sdel + ' из ' + kZ + ' ' + v.toDvoet());
+	zadan();
 }
 
 function shirprim() {
@@ -386,9 +383,9 @@ function renewTask() {
 	dvig.zadan(function () {
 		console.log(wrapper);
 		var taskHtml = createHtmlForTask(nazvzad);
-		wrapper  .replaceWith(taskHtml.txt);
+		wrapper.replaceWith(taskHtml.txt);
 		answerRow.replaceWith(taskHtml.ver);
-		solution .replaceWith(taskHtml.rsh);
+		solution.replaceWith(taskHtml.rsh);
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
 		generatedTasks[vopr.taskId] = vopr.clone();
@@ -407,16 +404,16 @@ function insertGridFields() {
 	$('#grid-svg-template')[0].style.minHeight = fieldHeight + 'cm';
 
 	var cellSize = $('#grid-cell-size').val();
-	$('#grid-pattern')[0].setAttribute('width' ,cellSize);
-	$('#grid-pattern')[0].setAttribute('height',cellSize);
+	$('#grid-pattern')[0].setAttribute('width', cellSize);
+	$('#grid-pattern')[0].setAttribute('height', cellSize);
 
-	$('#grid-pattern-line-1')[0].setAttribute('x1',cellSize/2);
-	$('#grid-pattern-line-1')[0].setAttribute('x2',cellSize/2);
-	$('#grid-pattern-line-1')[0].setAttribute('y2',cellSize  );
+	$('#grid-pattern-line-1')[0].setAttribute('x1', cellSize / 2);
+	$('#grid-pattern-line-1')[0].setAttribute('x2', cellSize / 2);
+	$('#grid-pattern-line-1')[0].setAttribute('y2', cellSize);
 
-	$('#grid-pattern-line-2')[0].setAttribute('y1',cellSize/2);
-	$('#grid-pattern-line-2')[0].setAttribute('y2',cellSize/2);
-	$('#grid-pattern-line-2')[0].setAttribute('x2',cellSize  );
+	$('#grid-pattern-line-2')[0].setAttribute('y1', cellSize / 2);
+	$('#grid-pattern-line-2')[0].setAttribute('y2', cellSize / 2);
+	$('#grid-pattern-line-2')[0].setAttribute('x2', cellSize);
 
 
 	var svg = $('#grid-svg-container').html();
@@ -424,12 +421,12 @@ function insertGridFields() {
 
 
 	$('#grid-style-placeholder').html(
-		'<style>'+
-			'.grid-for-writing { ' +
-				'display: block;' +
-				'min-height: ' + fieldHeight + 'cm;' +
-				'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
-			'}'+
+		'<style>' +
+		'.grid-for-writing { ' +
+		'display: block;' +
+		'min-height: ' + fieldHeight + 'cm;' +
+		'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
+		'}' +
 		'</style>'
 	);
 
@@ -446,14 +443,14 @@ function removeGridFields() {
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
 	var hline = "\n\\\\\n\\hline\n";
 	return (
-		'\\begin{table}[h]' +
-			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
-				'\n\\hline\n' +
-				answersParsedToTeX.join(hline) +
-				hline +
-			'\\end{tabular}' +
-		'\\end{table}' +
-		'\n\n\n'
+		"\\begin{table}[h]" +
+		"\\begin{tabular}{" + (new Array(cellsInFirstRow)).fill("|l").join("") + "|" + "}" +
+		"\n\\hline\n" +
+		answersParsedToTeX.join(hline) +
+		hline +
+		"\\end{tabular}" +
+		"\\end{table}" +
+		"\n\n\n"
 	);
 }
 
@@ -494,44 +491,75 @@ function createLaTeXbunch(variantN) {
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
-				'\n' +
-				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
-					tasksInLaTeX[taskId] + '\n' +
-				'\\end{taskBN}' + '\n';
+				"\n" +
+				"\\begin{taskBN}{" + generatedTasks[taskId].taskCategory + "}" + "\n" +
+				tasksInLaTeX[taskId] + "\n" +
+				"\\end{taskBN}\n\n";
 		}
 
 	}
 	return bunchText;
-	return bunchText;
+
+}
+//replace "sometext" with tasks
+function createLaTeXbunchTab(variantN) {
+	var bunchTextTab = "\\begin{tabular}{*{4}{|p{0.23\\textwidth}}|}\n" + "\\hline\n" + "sometext &\n" + "sometext &\n" + "sometext &\n" + "sometext \\\\\n" + "\\answersTable\n" + "sometext &\n" + "sometext &\n" + "sometext &\n" + "sometext\\\\\n" + "\\answersTable\n" + "sometext &\n" + "sometext &\n" + "sometext &\n" + "picture" + "\\answersTableScore\n" + "\\end{tabular}\n\n\n";
+	for (var taskId in tasksInLaTeX) {
+		if (generatedTasks[taskId].variantNumber == variantN) {
+			bunchTextTab = bunchTextTab.replace("sometext", "\\textbf{" + generatedTasks[taskId].taskCategory + ") }" + tasksInLaTeX[taskId]);
+		}
+
+	}
+	return bunchTextTab;
 }
 
-function refreshLaTeXarchive(){
-	if(!options.prepareLaTeX){
+
+function refreshLaTeXarchive() {
+	if (!options.prepareLaTeX) {
 		return;
 	}
 	var zip = new JSZip();
-	var bunch = '\\begin{document}\n\n\\';
-	var bunchAnsw = '\\begin{document}\n\n';
-	for(var variantN of variantsGenerated){
-		bunch+=
-			'\n\\def\\examvart{Вариант ' + variantsGenerated[0] +'.'+variantN + '}' +
-			'\\normalsize\n\\input{../instruction.tex}\n\\large' +
-			'\n\n\n\n' +
-			createLaTeXbunch(variantN)+'\\clearpage';
-		bunchAnsw+=
-			'\n\\def\\examvart{Вариант ' + variantsGenerated[0] +'.' + variantN + '}' +
-			'\n\\normalsize\n\\input{../instruction.tex}\n\\large' +
-			'\n\n\n\n' +
-			createLaTeXbunch(variantN)+'\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN)+'\\clearpage';
+	var bunch = "\\begin{document}\n\n\\";
+	var bunchAnsw = "\\begin{document}\n\n";
+	var bunchTab = "\\begin{document}\n\n";
+	var bunchTabAnsw = "\\begin{document}\n\n";
+	var answersForTab = "\\begin{document}\n\n\\begin{tabular}{*{"+variantsGenerated.length+"}{l}\n\\\\hline}";
+	let answers=[];
+	for (var variantN of variantsGenerated) {
+		bunch +=
+			"\n\\def\\examvart{Вариант " + variantsGenerated[0] + "." + variantN + "}" +
+			"\\normalsize\n\\input{../instruction.tex}\n\\large" +
+			"\n\n\n\n" +
+			createLaTeXbunch(variantN) + "\\clearpage\n\n";
+		bunchAnsw +=
+			"\n\\def\\examvart{Вариант " + variantsGenerated[0] + "." + variantN + "}" +
+			"\n\\normalsize\n\\input{../instruction.tex}\n\\large" +
+			"\n\n\n\n" +
+			createLaTeXbunch(variantN) + "\n\\newpage\n Ответы\n\n" + getAnswersTableLaTeX(variantN) + "\\clearpage\n\n";
+		bunchTab +=
+			createLaTeXbunchTab(variantN).replaceAll("\\vspace{2.5cm}", "").replaceAll("[0.4\\linewidth]", "");
+		bunchTabAnsw +=
+			createLaTeXbunchTab(variantN).replaceAll("\\vspace{2.5cm}", "").replaceAll("[0.4\\linewidth]", "") + "\\clearpage\n\n";
+		answers.push(getAnswersTableLaTeX(variantN));
 	}
-	bunch+='\\end{document}';
-	bunchAnsw+='\\end{document}';
+	bunch += "\\end{document}";
+	bunchAnsw += "\\end{document}";
+	bunchTab += "\\end{document}";
+	bunchTabAnsw += "\\end{document}";
+	answersForTab += answers.join(" & ")+"\\\\\n\\end{tabular}\n\n\\end{document}";
 
-	zip.file("variant_"+variantsGenerated[0]+"_no_answers.tex", preambula+bunch);
+	zip.file("variant_" + variantsGenerated[0] + "_no_answers.tex", preambula + bunch);
 
-	zip.file("variant_"+variantsGenerated[0]+".tex", preambula+hyperref+bunchAnsw);
+	zip.file("variant_" + variantsGenerated[0] + ".tex", preambula + hyperref + bunchAnsw);
 
-	zip.file("variant_"+variantsGenerated[0]+"_watermark.tex", preambula+watermark+hyperref+bunch);
+	zip.file("variant_" + variantsGenerated[0] + "_watermark.tex", preambula + watermark + hyperref + bunch);
+
+	zip.file("ecoKIM_" + variantsGenerated[0] + "_watermark.tex", preambulaForTab + bunchTab.replaceAll("picture","\\addpictocenter[scale=0.3]{../logo.png}\\\\\n"));
+
+	zip.file("ecoKIM_" + variantsGenerated[0] + ".tex", preambulaForTab + bunchTabAnsw.replaceAll("picture","\\form\\\\\n"));
+
+	zip.file("answers.tex", preambula + answersForTab);
+
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
 		img.file(i + ".png", preparedImages[i], { base64: true });
@@ -542,8 +570,10 @@ function refreshLaTeXarchive(){
 	});
 }
 
-var preambula = ['\\documentclass[twocolumn]{article}\n\\usepackage{dashbox}\n\\setlength{\\columnsep}{40pt}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{images/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../../egetask}\n\\usepackage{../../egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
+var preambula = "\\documentclass[twocolumn]{article}\n\\usepackage{dashbox}\n\\setlength{\\columnsep}{40pt}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{images/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../../egetask}\n\\usepackage{../../egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}";
 
-var hyperref = '\\def\\rfoottext{Разрешается свободное копирование в некоммерческих целях с указанием источника }\n\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
+var hyperref = "\\def\\rfoottext{Разрешается свободное копирование в некоммерческих целях с указанием источника }\n\\def\\0.4lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}";
 
-var watermark='\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n';
+var watermark = "\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n";
+
+var preambulaForTab = "\\documentclass[a4paper,landscape,9pt]{extarticle}" + "\\usepackage{dashbox}\n" + "\\setlength{\\columnsep}{40pt}\n" + "\\usepackage[T2A]{fontenc}\n" + "\\usepackage[utf8]{inputenc}\n" + "\\usepackage[english,russian]{babel}\n" + "\\usepackage{graphicx}\n" + "\\usepackage{multirow}\n\n" + "\\graphicspath{{images/}}\n\n" + "\\usepackage{egetask_alternative}\n\n" + "\\linespread{1.15}\n\n";
