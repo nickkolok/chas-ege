@@ -444,7 +444,7 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = '\n\\\\\n\\hline\n';
+	var hline = "\n\\\\\n\\hline\n";
 	return (
 		'\\begin{table}[h]' +
 			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
@@ -490,7 +490,7 @@ function replaceCanvasWithImgInTask(element, text) {
 }
 
 function createLaTeXbunch(variantN) {
-	var bunchText = '';
+	var bunchText = "";
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
