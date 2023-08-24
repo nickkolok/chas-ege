@@ -480,7 +480,6 @@ function replaceCanvasWithImgInTask(element, text) {
 		return text;
 	}
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
-	console.log(canvases);
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
@@ -504,8 +503,9 @@ function createLaTeXbunch(variantN) {
 	return bunchText + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
 }
 
-function refreshLaTeXarchive(){
-	if(!options.prepareLaTeX){
+
+function refreshLaTeXarchive() {
+	if (!options.prepareLaTeX) {
 		return;
 	}
 	var zip = new JSZip();
