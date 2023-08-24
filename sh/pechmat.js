@@ -303,7 +303,7 @@ function obnov() {
 	unqDict[html.unq] = true;
 
 	strVopr += html.txt;
-	strOtv += html.ver;
+	strOtv  += html.ver;
 	strResh += html.rsh;
 
 	generatedTasks[vopr.taskId] = vopr.clone();
