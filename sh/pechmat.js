@@ -312,78 +312,78 @@ function obnov() {
 		zadan();
 }
 
-function shirprim(){
-	$('.z').css("width",$('#shir').val()+'cm');
+function shirprim() {
+	$('.z').css("width", $('#shir').val() + 'cm');
 }
 
 var ds;
-var selector1='.jqplot-target, .MathJax>nobr>span>span>span';
-var selector2='canvas';
+var selector1 = '.jqplot-target, .MathJax>nobr>span>span>span';
+var selector2 = 'canvas';
 
-function optimcopy(){
+function optimcopy() {
 	//{{Лютый, бешеный костыль, который нужен, чтобы html2canvas не обрезал знаменатели у MathJax-овских дробей
-	var MJspans=$(".MathJax nobr * span");
-	for(var i=0; i<MJspans.length; i++){
-		if(MJspans[i].style.clip){
+	var MJspans = $(".MathJax nobr * span");
+	for (var i = 0; i < MJspans.length; i++) {
+		if (MJspans[i].style.clip) {
 			//И невозбранно возмножаем высоту на константу Чурова
-			MJspans[i].style.height=''+1.468*MJspans[i].offsetHeight+'px';
+			MJspans[i].style.height = '' + 1.468 * MJspans[i].offsetHeight + 'px';
 		}
 	}
 
 	//}}
-	ds=$('.d');
+	ds = $('.d');
 	$('#otv').hide();
 	optimcopyd(1);
 }
 
-function optimcopyd(n){
-	if(n>=ds.length){
+function optimcopyd(n) {
+	if (n >= ds.length) {
 		$('.d').show();
 		$('#otv').show();
 		return;
 	}
-	var d=$(ds[n]);
+	var d = $(ds[n]);
 	ds.hide();
-	var sel1=d.find(selector1);
-	var sel2=d.find(selector2);
-	if(!(sel1.length+sel2.length)){
-		setTimeout("optimcopyd("+n+"+1);",100);
+	var sel1 = d.find(selector1);
+	var sel2 = d.find(selector2);
+	if (!(sel1.length + sel2.length)) {
+		setTimeout("optimcopyd(" + n + "+1);", 100);
 		return;
 	}
 	d.show();
-	sel1.each(function(){
+	sel1.each(function () {
 		innerHTMLtoImg(this);
 	});
-	sel2.each(function(){
+	sel2.each(function () {
 		replaceWithImg(this);
 	});
-	setTimeout("optimcopyd("+n+"+1);",100);
+	setTimeout("optimcopyd(" + n + "+1);", 100);
 }
 
-var startShell = function (){
-	window.vopr.txt='';
+var startShell = function () {
+	window.vopr.txt = '';
 	$('#zadaniya').html(sozdKolvoHtml('pech'));
 	$('#gotov').hide();
-	galkiKat('#galki_kat','pech');
+	galkiKat('#galki_kat', 'pech');
 }
 
 
-function getTaskTextContainerByTaskId(taskId){
-	return $('div.d[data-task-id="'+taskId+'"]')[0];
+function getTaskTextContainerByTaskId(taskId) {
+	return $('div.d[data-task-id="' + taskId + '"]')[0];
 }
 
-function renewTask(){
+function renewTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.d');
 	var nazvzad = wrapper.children('div.b')[0].innerHTML;
 	console.log(wrapper);
 	var taskId = wrapper.attr('data-task-id');
 	var taskNumber = wrapper.attr('data-task-number');
-	var answerRow = $('tr.answer-container[data-task-id='+taskId+']');
-	var solution  = $('div.solution-container[data-task-id='+taskId+']');
+	var answerRow = $('tr.answer-container[data-task-id=' + taskId + ']');
+	var solution = $('div.solution-container[data-task-id=' + taskId + ']');
 
 	nZ = taskNumber;
-	dvig.zadan(function(){
+	dvig.zadan(function () {
 		console.log(wrapper);
 		var taskHtml = createHtmlForTask(nazvzad);
 		wrapper  .replaceWith(taskHtml.txt);
@@ -392,7 +392,7 @@ function renewTask(){
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
 		generatedTasks[vopr.taskId] = vopr.clone();
-		if(options.prepareLaTeX){
+		if (options.prepareLaTeX) {
 			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
 			refreshLaTeXarchive();
 		}
@@ -402,9 +402,9 @@ function renewTask(){
 }
 
 
-function insertGridFields(){
+function insertGridFields() {
 	var fieldHeight = $('#grid-field-height').val();
-	$('#grid-svg-template')[0].style.minHeight = fieldHeight+'cm';
+	$('#grid-svg-template')[0].style.minHeight = fieldHeight + 'cm';
 
 	var cellSize = $('#grid-cell-size').val();
 	$('#grid-pattern')[0].setAttribute('width' ,cellSize);
@@ -436,14 +436,14 @@ function insertGridFields(){
 	$('#button-removeGridFields').show();
 }
 
-function removeGridFields(){
+function removeGridFields() {
 	$('#grid-style-placeholder').html('');
 
 	$('#button-removeGridFields').hide();
 }
 
 
-function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX){
+function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
 	var hline = '\n\\\\\n\\hline\n';
 	return (
 		'\\begin{table}[h]' +
@@ -457,16 +457,16 @@ function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX){
 	);
 }
 
-function getAnswersTableLaTeX(variantN){
+function getAnswersTableLaTeX(variantN) {
 
 	var answerRows = $('table#pech-answers-table-variant-' + variantN + ' tr');
 
 	var answersParsedToTeX = [];
 	// The first row may be the caption, so...
 	var cellsInFirstRow = (answerRows[2] || answerRows[1] || answerRows[0]).getElementsByTagName('td').length;
-	for(var row of Array.from(answerRows)){
+	for (var row of Array.from(answerRows)) {
 		var tdCells = row.getElementsByTagName('td');
-		if(tdCells.length){
+		if (tdCells.length) {
 			//TODO: reverse-decode LaTeX from MathJax
 			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & '));
 		}
@@ -474,14 +474,14 @@ function getAnswersTableLaTeX(variantN){
 	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
 }
 
-function replaceCanvasWithImgInTask(element, text){
-	if(!(/<canvas/i.test(text))){
+function replaceCanvasWithImgInTask(element, text) {
+	if (!(/<canvas/i.test(text))) {
 		// Nothing to do
 		return text;
 	}
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
 	console.log(canvases);
-	for(var i = 0; i < canvases.length; i++){
+	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
 		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictocenter[]{images/'+imageName+'}');
@@ -489,10 +489,10 @@ function replaceCanvasWithImgInTask(element, text){
 	return text;
 }
 
-function createLaTeXbunch(variantN){
+function createLaTeXbunch(variantN) {
 	var bunchText = '';
-	for(var taskId in tasksInLaTeX){
-		if(generatedTasks[taskId].variantNumber == variantN){
+	for (var taskId in tasksInLaTeX) {
+		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
 				'\n' +
 				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
@@ -521,11 +521,11 @@ function refreshLaTeXarchive(){
 	}
 	zip.file("tasks.tex", bunch);
 	var img = zip.folder("images");
-	for(var i in preparedImages){
-		img.file(i + ".png", preparedImages[i], {base64: true});
+	for (var i in preparedImages) {
+		img.file(i + ".png", preparedImages[i], { base64: true });
 	}
-	zip.generateAsync({type:"base64"}).then(function (base64) {
+	zip.generateAsync({ type: "base64" }).then(function (base64) {
 		$('#latex-archive-placeholder').show();
-		$('#latex-archive-placeholder')[0].href="data:application/zip;base64," + base64;
+		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
 	});
 }
