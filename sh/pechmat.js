@@ -485,7 +485,6 @@ function replaceCanvasWithImgInTask(element, text) {
 	}
 	console.log(element);
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
-	console.log(canvases);
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
@@ -517,8 +516,9 @@ function createLaTeXbunchTasks(variantN) {
 	return bunchText;
 }
 
-function refreshLaTeXarchive(){
-	if(!options.prepareLaTeX){
+
+function refreshLaTeXarchive() {
+	if (!options.prepareLaTeX) {
 		return;
 	}
 	var zip = new JSZip();
