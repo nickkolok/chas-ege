@@ -444,7 +444,7 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = '\n\\\\\n\\hline\n';
+	var hline = "\n\\\\\n\\hline\n";
 	return (
 		'\n\\begin{tabular}{*{' + (kZ / 50).ceil() + '}l}' +//TODO: надо как-то узнать количество всех заданий и сколько оно делится на 50(тк 50 ответов обычно влазит на страницу(вообще в идеале 47)) и только l поставить
 		'\n\\begin{tabular}[t]{' + (new Array(cellsInFirstRow)).fill('|l').join('') + '|' + '}' +
@@ -492,7 +492,7 @@ function replaceCanvasWithImgInTask(element, text) {
 }
 
 function createLaTeXbunch(variantN) {
-	var bunchText = '';
+	var bunchText = "";
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
