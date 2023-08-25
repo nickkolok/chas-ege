@@ -1,6 +1,7 @@
 (function() {
 
 	retryWhileError(function() {
+		NAinfo.requireApiVersion(0, 2);
 
 		let ratioHight = sl(2, 10, 0.5);
 		let ratioRadius = slKrome(ratioHight, 2, 10, 0.5);
@@ -24,7 +25,7 @@
 		}
 
 		answ = answ[0];
-		genAssert((answ * 1000).isZ());
+		genAssertZ1000(answ, 'Ответ слишком нецелый');
 
 		let paint1 = function(ctx) {
 			ctx.translate(10,40);
@@ -33,7 +34,6 @@
 			variant = 1 - variant;
 			
 			let height = [heightConst, heightConst / 2][variant];
-			ctx.fillStyle = "#61DC9A";
 			
 			let a = [60, 80][variant];
 			let b = 20;
@@ -65,8 +65,8 @@
 			//ручка
 			ctx.beginPath();
 			ctx.setLineDash([0, 0]);
-			ctx.ellipse(100 + a, height / 2, (height - a) * 0.5, b, Math.PI / 2, Math.PI, 2 * Math.PI);
-			ctx.ellipse(100 + a, height / 2, (height - a) * 0.5 + 10, b + 10, Math.PI / 2, Math.PI, 2 * Math.PI);
+			ctx.ellipse(100 + a, height / 2, (height - a) / 2, b, Math.PI / 2, Math.PI, 2 * Math.PI);
+			ctx.ellipse(100 + a, height / 2, (height - a) / 2 + 10, b + 10, Math.PI / 2, Math.PI, 2 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
@@ -103,14 +103,13 @@
 			//ручка
 			ctx.beginPath();
 			ctx.setLineDash([0, 0]);
-			ctx.ellipse(100 + a, height / 2, (height - 2 * b) * 0.5, b, Math.PI / 2, Math.PI, 2 * Math.PI);
-			ctx.ellipse(100 + a, height / 2, (height - 2 * b) * 0.5 + 10, b + 10, Math.PI / 2, Math.PI, 2 * Math.PI);
+			ctx.ellipse(100 + a, height / 2, (height - 2 * b) / 2, b, Math.PI / 2, Math.PI, 2 * Math.PI);
+			ctx.ellipse(100 + a, height / 2, (height - 2 * b) / 2 + 10, b + 10, Math.PI / 2, Math.PI, 2 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 		};
 
-		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
 			text: ' Первая цилиндрическая кружка в ' + chislitlx(widerHigher[0][0], 'раз') +
 				' ' + widerHigher[0][1] + ' второй, а вторая в ' + chislitlx(widerHigher[1][0], 'раз') +
@@ -119,7 +118,7 @@
 			answers: answ,
 			authors: ['Суматохина Александра'],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 500,
 			height: 250,
 			paint: paint1,
