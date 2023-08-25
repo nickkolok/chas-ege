@@ -5,7 +5,7 @@
 		let height = sl(1, 100);
 		let ratio = height.polnKvadrMnozh();
 
-		genAssert(ratio != 1);
+		genAssert(ratio != 1, 'Соотношение равно единице');
 
 		let name = sklonlxkand(['диаметр', 'радиус'].iz());
 
@@ -18,8 +18,12 @@
 		let paint1 = function(ctx) {
 			ctx.translate(20, 40);
 			ctx.lineWidth = 2;
-			let height = 180;
-			ctx.fillStyle = "#61DC9A";
+			let height = 250;
+			ctx.strokeStyle = "#809DF2";
+			ctx.fillStyle = ["#D777F2", "#F2A2D6"].iz();
+
+			if (1 - variant)
+				ctx.translate(-30, 0);
 
 			let a = [70, 100][variant];
 			let b = 20;
@@ -29,9 +33,9 @@
 			//цилиндр поуже
 			//жидкость
 			ctx.beginPath();
-			ctx.ellipse(100, height / k, b, a, Math.PI / 2, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.ellipse(100, height / k, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
 			ctx.lineTo(100 + a, height);
-			ctx.ellipse(100, height, b, a, Math.PI / 2, -0.5 * Math.PI, -1.5 * Math.PI);
+			ctx.ellipse(100, height, b, a, 0.5 * Math.PI, -0.5 * Math.PI, -1.5 * Math.PI);
 			ctx.fill();
 			ctx.closePath();
 
@@ -41,31 +45,31 @@
 
 			//эллипс верхний
 			ctx.beginPath();
-			ctx.ellipse(100, 10, b, a, Math.PI / 2, 0, 2 * Math.PI);
+			ctx.ellipse(100, 10, b, a, 0.5 * Math.PI, 0, 2 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			//эллипс нижний
 			ctx.beginPath();
-			ctx.ellipse(100, height, b, a, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.ellipse(100, height, b, a, 0.5 * Math.PI, 1.5 * Math.PI, 0.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, height, b, a, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(100, height, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			//эллипс средний
 			ctx.beginPath();
-			ctx.ellipse(100, height / k, b, a, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.ellipse(100, height / k, b, a, 0.5 * Math.PI, 1.5 * Math.PI, 0.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, height / k, b, a, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(100, height / k, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
@@ -77,9 +81,9 @@
 			//жидкость
 			ctx.beginPath();
 			ctx.setLineDash([0, 0]);
-			ctx.ellipse(100, height / k, b, a, Math.PI / 2, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.ellipse(100, height / k, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
 			ctx.lineTo(100 + a, height);
-			ctx.ellipse(100, height, b, a, Math.PI / 2, -0.5 * Math.PI, -1.5 * Math.PI);
+			ctx.ellipse(100, height, b, a, 0.5 * Math.PI, -0.5 * Math.PI, -1.5 * Math.PI);
 			ctx.fill();
 			ctx.closePath();
 
@@ -89,31 +93,31 @@
 
 			//эллипс верхний
 			ctx.beginPath();
-			ctx.ellipse(100, 10, b, a, Math.PI / 2, 0, 2 * Math.PI);
+			ctx.ellipse(100, 10, b, a, 0.5 * Math.PI, 0, 2 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			//эллипс нижний
 			ctx.beginPath();
-			ctx.ellipse(100, height, b, a, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.ellipse(100, height, b, a, 0.5 * Math.PI, 1.5 * Math.PI, 0.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, height, b, a, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(100, height, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			//эллипс средний
 			ctx.beginPath();
-			ctx.ellipse(100, height / k, b, a, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.ellipse(100, height / k, b, a, 0.5 * Math.PI, 1.5 * Math.PI, 0.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, height / k, b, a, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(100, height / k, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
@@ -129,9 +133,9 @@
 			answers: moreLess[1],
 			authors: ['Суматохина Александра'],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 500,
-			height: 300,
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
 	}, 1000);
