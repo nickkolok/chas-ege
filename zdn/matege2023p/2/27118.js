@@ -3,15 +3,15 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let ratioHight = sl(2, 10, 0.5);
-		let ratioRadius = slKrome(ratioHight, 2, 10, 0.5);
+		let ratioHeight = sl(2, 10, 0.5);
+		let ratioRadius = slKrome(ratioHeight, 2, 10, 0.5);
 
 		let widerHigher = [
 			[ratioRadius, 'шире'],
-			[ratioHight, 'выше']
+			[ratioHeight, 'выше']
 		];
 		let firstSecond = ['второй', 'первой'];
-		let answ = [ratioHight / ratioRadius.pow(2), ratioRadius.pow(2) / ratioHight];
+		let answ = [ratioHeight / ratioRadius.pow(2), ratioRadius.pow(2) / ratioHeight];
 
 		let variant = sl1();
 		if (variant) {
