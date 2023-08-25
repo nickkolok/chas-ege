@@ -66,6 +66,7 @@ chas2.task = {
 			o.answers = chaslib.toStringsArray('answers' in o ? o.answers : []);
 			o.wrongAnswers = chaslib.toStringsArray((('wrongAnswers' in o) && (o.wrongAnswers !== undefined)) ? o.wrongAnswers : []);
 			// Просто o.answers || [] нельзя - ноль не будет передаваться
+			o.authors = chaslib.toStringsArray(o.authors || o.author || []);
 		},
 
 
@@ -119,6 +120,7 @@ chas2.task = {
 	 * @param {String} analys текст разбора задания
 	 * @param {String|Number|String[]|Number[]} answers правильные ответы
 	 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
+	 * @param {String|String[]} authors авторы шаблона
 	 * @param {String[]} tags теги
 	 * @param {Function} checkAnswer функция проверки ответа
 	 * @param {Function} draw функция отрисовки
@@ -132,6 +134,7 @@ chas2.task = {
 		window.vopr.rsh = o.analys;
 		window.vopr.ver = o.answers;
 		window.vopr.nev = o.wrongAnswers;
+		window.vopr.authors = o.authors;
 		if (o.checkAnswer) {
 			window.vopr.vrn = o.checkAnswer;
 		}
@@ -159,6 +162,7 @@ chas2.task = {
 			checkAnswer : window.vopr.vrn,
 			draw : window.vopr.dey,
 			tags : {},
+			authors : window.vopr.authors,
 		};
 		chas2.task._.normalizeTask(o);
 		chas2.task._.validateTask(o);
@@ -442,6 +446,97 @@ chas2.task = {
 	},
 
 
+	/** @function NApi.task.setDilationTask
+	 * Составить задание о растяжении геометрической фигуры
+	 */
+	setDilationTask: function (o) {
+		let dilationCoefficient = o.dilationCoefficient || sl(2, 10);
+		let figureName = sklonlxkand(o.figureName);
+		let action = ['увелич', 'уменьш'].iz();
+
+		//перемешаем ещё разок! А то вдруг положили не перемешанный
+		if (!o.measurements[1].primary)
+			o.measurements = o.measurements.shuffle();
+
+		//подготовка к 3м переменным
+		o.measurements.forEach(element => element.name = sklonlxkand(element.name));
+
+		//Будет ли дополнение?
+		let PS = o.PS || undefined;
+		let figureInPS;
+
+		if (PS != undefined)
+			for (let i = 0; i < o.measurements.length; i++) {
+				if (o.measurements[i].wordToClarify) {
+					figureInPS = o.measurements[i];
+					o.measurements.splice(i, 1);
+					break;
+				}
+			}
+
+		let first = ['первого', 'первой', 'первого', 'первых'][figureName.rod];
+		let second = ['второго', 'второй', 'второго', 'вторых'][figureName.rod];
+		let bigger = ['больше', 'меньше'].iz(); // TODO: 'превосходит' ?
+
+		//TODO: разнонаправленное больше-меньше
+		let phrase1 =
+			'во сколько раз ' + o.measurements[0].name.ie + ' ' + first + ' ' + figureName.re + ' ' + bigger + ' ' +
+			o.measurements[0].name.re + ' ' + second + ' ' + figureName.re;
+		let phrase2 =
+			o.measurements[1].name.ie + ' ' + first + ' ' + figureName.re + ' в ' + chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v') + ' ' +
+			bigger + ', чем ' + o.measurements[1].name.ie + ' ' + second + ' ' + figureName.re;
+
+		let textOptions = [
+			phrase1.toZagl() + ', если ' + phrase2 + '?',
+			phrase2.toZagl() + '. ' + phrase1.toZagl() + '?',
+		];
+
+		if (o.measurements[1].primary) {
+			textOptions.push(
+				'Во сколько раз ' + action + 'ится ' + o.measurements[0].name.ie + ' ' +
+				figureName.re + ', если ' +
+				['его', 'её', 'его', 'их'][figureName.rod] + ' ' + o.measurements[1].name.ve + ' ' + action + 'ить в ' +
+				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v') + '?'
+			);
+		}
+		else {
+			textOptions.push(
+				'Во сколько раз ' + action + 'или ' + o.measurements[0].name.ve + ' ' +
+				figureName.re + ', если ' +
+				['его', 'её', 'его', 'их'][figureName.rod] + ' ' + o.measurements[1].name.ie + ' ' +
+				action + ['ился', 'илась', 'илось', 'ились'][o.measurements[1].name.rod] + ' в ' +
+				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v') + '?'
+			);
+		}
+
+		//выберем вариант задачи
+
+		let choosePhrase = (o.choosePhrase == undefined) ? sl(0, textOptions.length - 1) : o.choosePhrase;
+
+		let task = o.clone();
+		task.text = textOptions[choosePhrase];
+
+		if (figureInPS !== undefined) {
+
+			if (PS.verb.isArray)
+				PS.verb = PS.verb[figureInPS.name.rod];
+
+			let mass = [figureInPS.name.ie + ' ' + PS.verb,''];
+			for (let i = 0; i < PS.proposal.length; i++)
+				task.text += PS.proposal[i] + mass[i];
+		}
+
+		if (!o.forbidDirectReplacements) {
+			task.text = task.text.
+				replace(' его площадь поверхности ', ' площадь его поверхности ').
+				replace(' её площадь поверхности ', ' площадь её поверхности ');
+		}
+
+		task.answers = [dilationCoefficient.pow(o.measurements[0].power)];
+		NAtask.setTask(task);
+	},
+
+
 	/** @function NApi.task.setTwoStatementTask
 	 * Составить задание о двух утверждениях
 	 * @param {String|Object[]} stA первое утверждение (или массив утверждений)
@@ -565,6 +660,51 @@ chas2.task = {
 				);
 			};
 		})(),
+
+		/** @function chas2.task.modifiers.multiplyAnswerBySqrt
+		 * Добавить фразу "Ответ умножьте на $\sqrt{..}$." и домножить сам ответ.
+		 * @param {Number} n Максимальное число, до которого можно домножать на корень
+		 * @param {Boolean} opts.useMultiples Можно ли умножать/делить на конструкции вида 2\sqrt{3}
+		 */
+		multiplyAnswerBySqrt : function(n, opts) {
+			var o = chas2.task.getTask();
+			if (o.answers.length != 1){
+				throw new TypeError('Fixme: cannot apply multiplyAnswerBySqrt() to multiple answers')
+			}
+			//Меняем запятую на точку для корректной работы Number
+			var ans = Number(o.answers[0].replace(',', '.'));
+
+			opts = opts || {};
+			opts.useMultiples = opts.useMultiples || false;
+
+			if ((ans*1000).isAlmostInteger()){
+				//Ответ и так хорош!
+				return;
+			}
+
+			var possibleMultipliers = [2,3];
+			for (var i = 5; i <= n; i++){
+				if(!i.isPolnKvadr()){
+					possibleMultipliers.push(i);
+				}
+			}
+			possibleMultipliers.shuffle();
+			console.log(possibleMultipliers);
+			for (var i of possibleMultipliers){
+				if(sl1() && (ans/i.sqrt()*1000).isAlmostInteger()){
+					o.text += ' Ответ разделите на $' + i.texsqrt(opts.useMultiples) + '$.';
+					o.answers = [(ans / i.sqrt()).okrugldo((10).pow(-6)).ts()]
+					chas2.task.setTask(o);
+					return;
+				} else if((ans*i.sqrt()*1000).isAlmostInteger()){
+					o.text += ' Ответ умножьте на $' + i.texsqrt(opts.useMultiples) + '$.';
+					o.answers = [(ans * i.sqrt()).okrugldo((10).pow(-6)).ts()]
+					chas2.task.setTask(o);
+					return;
+				}
+			}
+			throw new RangeError('multiplyAnswerBySqrt(): can find no appropriate square root');
+		},
 
 		/** @function chas2.task.modifiers.roundUpTo
 		 * Добавить фразу "Округлить до ..." и округлить сам ответ.
