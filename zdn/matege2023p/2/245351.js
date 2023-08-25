@@ -2,7 +2,7 @@
 	lx_declareClarifiedPhrase('площадь', 'поверхности');
 	lx_declareClarifiedPhrase('диаметр', 'основания');
 	lx_declareClarifiedPhrase('радиус', 'основания');
-	lx_declareClarifiedPhrase('площадь', ' боковой поверхности');
+	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 
 	lx['радиус основания'] = {
 		rod: 0,
@@ -82,7 +82,7 @@
 			answers: question[1].sqrt(),
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(3);
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
