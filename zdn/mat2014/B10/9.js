@@ -6,10 +6,10 @@
 		var v0 = sl1();
 
 		let paint1 = function(ct) {
-			ct.translate(50, 10);
-			ct.scale(15, 15);
-			ct.lineWidth = 2 / 15;
-			let cubeEdge = 12;
+			ct.translate(100, 30);
+			ct.scale(20, 20);
+			ct.lineWidth = 2 / 20;
+			let cubeEdge = 13;
 
 			ct.drawParallelepiped({
 				width: cubeEdge,
@@ -23,9 +23,9 @@
 				'\\sqrt{3}$. Найдите ' + (v0 ? 'объём' : 'диагональ') + ' куба.',
 			answers: (a * (v0 ? a * a : 3)).ts(),
 		});
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 240,
-			height: 240,
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
 	});
