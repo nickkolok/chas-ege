@@ -21,8 +21,8 @@
 				['длина окружности основания', 2 * radius + '\\pi'],
 				['площадь основания', radius.pow(2) + '\\pi'],
 				['диаметр основания', 2 * radius]
-
-			].iz(), ['объём', height * radius.pow(2) + '\\pi'],
+			].iz(), 
+			['объём', height * radius.pow(2) + '\\pi'],
 			['площадь боковой поверхности', 2 * height * radius + '\\pi'],
 			['площадь полной поверхности', 2 * radius * (radius + height) + '\\pi']
 		].iz(3);
@@ -35,33 +35,36 @@
 		let ps = '';
 		if (answer.includes('pi')) {
 			answer = answer.replace('\\pi', '');
-			ps = 'Ответ сократите на $\\pi$.';
+			ps = 'Ответ разделите на $\\pi$.';
 		}
 
 		let paint1 = function(ctx) {
-			ctx.translate(0, 30);
+			ctx.translate(30, 30);
 			ctx.lineWidth = 2;
-			let height = 180;
+			let height = 300;
 			//высота
-			ctx.drawLine(60, height, 60, 10);
-			ctx.drawLine(240, height, 240, 10);
+			ctx.strokeStyle = "#809DF2";
+			ctx.drawLine(0, height, 0, 10);
+			ctx.drawLine(300, height, 300, 10);
 
 			//эллипс верхний
 			ctx.beginPath();
-			ctx.ellipse(150, 10, 20, 90, Math.PI / 2, 0, 2 * Math.PI);
+			ctx.ellipse(150, 10, 20, 150, Math.PI / 2, 0, 2 * Math.PI);
 			ctx.stroke();
 			//эллипс нижний
 			ctx.beginPath();
-			ctx.ellipse(150, height, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.ellipse(150, height, 20, 150, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 			ctx.stroke();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, height, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(150, height, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 			//радиус
+			ctx.strokeStyle = ["#D777F2", "#F2A2D6"].iz();
+
 			if (variable.T()[0].includes('радиус основания'))
-				ctx.drawLine(150, height, 240, height);
+				ctx.drawLine(150, height, 300, height);
 			//высота
 			if (variable.T()[0].includes('высота'))
 				ctx.drawLine(150, height, 150, 10);
@@ -76,9 +79,9 @@
 			authors: ['Суматохина Александра'],
 			analys: name[2].ie.toZagl() + ': $' + number[2] + '$',
 		});
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 300,
-			height: 300,
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
 	}, 1000);
