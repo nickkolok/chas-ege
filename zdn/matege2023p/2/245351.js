@@ -4,14 +4,10 @@
 	lx_declareClarifiedPhrase('радиус', 'основания');
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 
-	lx['радиус основания'] = {
-		rod: 0,
-	};
+	lx['радиус основания'].rod = 0;
 
-	lx['площадь боковой поверхности'] = {
-		ve: 'площадь боковой поверхности',
-		rod: 1,
-	};
+	lx['площадь боковой поверхности'].ve = 'площадь боковой поверхности';
+	lx['площадь боковой поверхности'].rod = 1;
 
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
@@ -35,10 +31,10 @@
 		console.log(nameSphere);
 		let question = [
 			[nameCone[0].toZagl() + ' конуса ' + ['равен', 'равна'][sklonlxkand(nameCone[0]).rod] + ' $' +
-				nameCone[1].texsqrt(1) + nameCone[3] + '$. Найдите ' + sklonlxkand(nameSphere[0]).ve + ' шара' + nameSphere[2] +
+				nameCone[1].texsqrt(1) + nameCone[3] + '$. Найдите ' + sklonlxkand(nameSphere[0]).ve + ' сферы' + nameSphere[2] +
 				'.', nameSphere[1]
 			],
-			[nameSphere[0].toZagl() + ' шара ' + ['равен', 'равна'][sklonlxkand(nameSphere[0]).rod] + ' $' +
+			[nameSphere[0].toZagl() + ' сферы ' + ['равен', 'равна'][sklonlxkand(nameSphere[0]).rod] + ' $' +
 				nameSphere[1].texsqrt(1) + nameSphere[3] + '$. Найдите ' + sklonlxkand(nameCone[0]).ve + ' конуса' + nameCone[2] +
 				'.', nameCone[1]
 			]
@@ -75,9 +71,9 @@
 		};
 		NAtask.setTask({
 			text: ['Около конуса описана сфера (сфера содержит окружность основания конуса и его вершину)',
-				'Конус вписан в шар (см. рисунок)'
+				'Конус вписан в сферу (см. рисунок)'
 			].iz() + '. ' + ['Центр сферы совпадает с центром основания конуса',
-				' Радиус основания конуса равен радиусу шара'
+				' ' + ['Радиус', 'Диаметр'].iz() + ' основания конуса равен радиусу сферы'
 			].iz() + '. ' + question[0],
 			answers: question[1].sqrt(),
 		});
