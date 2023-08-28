@@ -549,6 +549,12 @@ chas2.task = {
 		let answer = expr.evaluate();
 
 		genAssertZ1000(answer, 'Ответ существенно нецелый');
+
+		//TODO: o.maxAnswer, o.minAnswer, o.maxAnswerLength, o.minAnswerLength
+		genAssert(answer <  1000000, 'Ответ слишком большой'  );
+		genAssert(answer > -1000000, 'Ответ слишком маленький');
+		genAssert(answer.ts().length < 7, 'Ответ слишком длинный');
+
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
 
