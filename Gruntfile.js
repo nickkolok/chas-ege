@@ -278,6 +278,13 @@ module.exports = function(grunt) {
 				],
 				tasks: ['process-lib']
 			},
+			libNoUglify: {
+				files: [
+					'lib/*', '!lib/head*',
+					'src/**',
+				],
+				tasks: ['process-lib-nouglify']
+			},
 			taskSets: {
 				files: [
 					'zdn/**',
