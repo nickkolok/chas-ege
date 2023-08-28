@@ -537,6 +537,30 @@ chas2.task = {
 	},
 
 
+	/** @function NApi.task.setEvaluationTask
+	 * Составить задание о нахождении значения выражения
+	 * @param {String} o.expr выражение, значение которого нужно найти
+	 * @param {Array}  o.forbiddenAnswers (необязательно) массив значений, которые не должны получаться (например, 0)
+	 */
+	setEvaluationTask: function (o) {
+		let task = o.clone();
+
+		let expr = math.parse(o.expr);
+		let answer = expr.evaluate();
+
+		genAssertZ1000(answer, 'Ответ существенно нецелый');
+		o.forbiddenAnswers = o.forbiddenAnswers || [];
+		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
+
+		task.text =
+			"Найдите значение выражения:" +
+			"$$" + expr.toTex() + "$$";
+		task.answers = answer;
+
+		NAtask.setTask(task);
+	},
+
+
 	/** @function NApi.task.setTwoStatementTask
 	 * Составить задание о двух утверждениях
 	 * @param {String|Object[]} stA первое утверждение (или массив утверждений)
