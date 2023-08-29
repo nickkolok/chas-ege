@@ -503,7 +503,7 @@ function createLaTeXbunch(variantN) {
 }
 //replace "sometext" with tasks
 function createLaTeXbunchTab(variantN) {
-	var bunchTextTab = "\\begin{tabular}{*{4}{|p{0.23\\textwidth}}|}\n" + "\\hline\n" + "sometext &\n" + "sometext &\n" + "sometext &\n" + "sometext \\\\\n" + "\\answersTable\n" + "sometext &\n" + "sometext &\n" + "sometext &\n" + "sometext\\\\\n" + "\\answersTable\n" + "sometext &\n" + "sometext &\n" + "sometext &\n" + "picture" + "\\answersTableScore\n" + "\\end{tabular}\n\n\n";
+	var bunchTextTab = "\\begin{tabular}{*{4}{|p{0.23\\textwidth}}|}\n" + "\\hline\n" + "sometext &\n" + "sometext &\n" + "sometext &\n" + "sometext \\\\\n" + "\\answersTable\n" + "sometext &\n" + "sometext &\n" + "sometext &\n" + "sometext\\\\\n" + "\\answersTable\n" + "sometext &\n" + "sometext &\n" + "sometext &\n" + "sometext" + "\\answersTable\n" + "\\end{tabular}\n\n\n";
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchTextTab = bunchTextTab.replace("sometext", "\\textbf{" + generatedTasks[taskId].taskCategory + ") }" + tasksInLaTeX[taskId]);
@@ -554,11 +554,11 @@ function refreshLaTeXarchive() {
 
 	zip.file("variant_" + variantsGenerated[0] + "_watermark.tex", preambula + watermark + hyperref + bunch);
 
-	zip.file("ecoKIM_" + variantsGenerated[0] + "_watermark.tex", preambulaForTab + bunchTab.replaceAll("picture","\\addpictocenter[scale=0.3]{../logo.png}\\\\\n"));
+	zip.file("ecoKIM_" + variantsGenerated[0] + "_watermark.tex", preambulaForTab + watermark + bunchTab);
 
-	zip.file("ecoKIM_" + variantsGenerated[0] + ".tex", preambulaForTab + bunchTabAnsw.replaceAll("picture","\\form\\\\\n"));
+	zip.file("ecoKIM_" + variantsGenerated[0] + ".tex", preambulaForTab + bunchTabAnsw);
 
-	zip.file("answers.tex", preambula + answersForTab);
+	zip.file("answers.tex", "\\documentclass[a5paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\n" + answersForTab);
 
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
