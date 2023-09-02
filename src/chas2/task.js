@@ -553,6 +553,7 @@ chas2.task = {
 		//TODO: o.maxAnswer, o.minAnswer, o.maxAnswerLength, o.minAnswerLength
 		genAssert(answer <  1000000, 'Ответ слишком большой'  );
 		genAssert(answer > -1000000, 'Ответ слишком маленький');
+		genAssert(answer.abs() > 2/1024/1024 || answer === 0, 'Ответ слишком маленький (по модулю)');
 		genAssert(answer.ts().length < 7, 'Ответ слишком длинный');
 
 		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
