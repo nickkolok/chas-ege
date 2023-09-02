@@ -13,7 +13,7 @@
 		genAssert(func1 !== func2 || angle1 !== angle2, 'Множители должны различаться');
 
 		chas2.task.setEvaluationTask({
-			expr: '' + sl(3,50) + '' + func1 + '(' + angle1 + ')  ' + func2 + '(' + angle2 + ')',
+			expr: '' + sl(3,50).pm() + '' + func1 + '(' + angle1 + ')  ' + func2 + '(' + angle2 + ')',
 			//forbiddenAnswers: [0],
 			authors: ['Николай Авдеев'],
 		});
