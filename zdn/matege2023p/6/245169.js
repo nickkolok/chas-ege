@@ -9,7 +9,7 @@
 		chas2.task.setEvaluationTask({
 			expr: '' +
 				('' + sl(2,100).pm()).esli(sl(3)) +
-				'sqrt(' + /*[2,3].iz()*/ 2 + ') ' +
+				'sqrt(' + [2,3].iz() + ') ' +
 				[
 					'sin(' + a.pm() + 'pi/' + b + ')',
 					'cos(' + a.pm() + 'pi/' + b + ')',
