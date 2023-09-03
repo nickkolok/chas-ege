@@ -559,6 +559,7 @@ chas2.task = {
 		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
 		expr = math.simplify(expr, mathjsRules.omit1pi);
 		expr = math.simplify(expr, mathjsRules.omit1sqrt);
+		expr = math.simplify(expr, mathjsRules.trig2trigPow);
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
