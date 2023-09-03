@@ -557,6 +557,7 @@ chas2.task = {
 		genAssert(answer.ts().length < 7, 'Ответ слишком длинный');
 
 		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
+		expr = math.simplify(expr, mathjsRules.omit1pi);
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
