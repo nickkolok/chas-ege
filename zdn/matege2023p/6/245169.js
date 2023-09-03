@@ -4,7 +4,7 @@
 
 		let a = sl(3,29,2).pm();
 		let b = [6,8,12].iz();
-		genAssert(a.nod(b) == 1, 'Дробь должна быть несократима');
+		genAssertIrreducible(a, b);
 
 		chas2.task.setEvaluationTask({
 			expr: '' +
