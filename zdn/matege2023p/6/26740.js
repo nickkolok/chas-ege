@@ -9,10 +9,10 @@
 		genAssert(a < 200 && b < 200, 'Числа не должны быть слишком большими');
 		let c1 = sl(2,9);
 		let c2 = sl(c1+1,10);
+		genAssertIrreducible(c1, c2);
 		let c3 = sl(2,9);
 		let c4 = sl(c3+1,10);
-		genAssert(c1.nod(c2)==1, 'Дробь c1/c2 должна быть несократима');
-		genAssert(c3.nod(c4)==1, 'Дробь c3/c4 должна быть несократима');
+		genAssertIrreducible(c3, c4);
 
 		chas2.task.setEvaluationTask({
 			expr: '' + a + '^(' + c1 + '/' + c2 + ') * ' + b + '^(' + c3 + '/' + c4 + ')',
