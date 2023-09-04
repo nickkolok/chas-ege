@@ -1,6 +1,7 @@
 (function() {
 
 	lx_declareClarifiedPhrase('площадь', 'поверхности');
+	lx_declareClarifiedPhrase('площадь', 'основания');
 	lx_declareClarifiedPhrase('радиус', 'основания');
 	lx_declareClarifiedPhrase('диаметр', 'основания');
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
@@ -20,11 +21,11 @@
 				['радиус основания', radius],
 				['длина окружности основания', 2 * radius + '\\pi'],
 				['площадь основания', radius.pow(2) + '\\pi'],
-				['диаметр основания', 2 * radius]
+				['диаметр основания', 2 * radius],
 			].iz(), 
 			['объём', height * radius.pow(2) + '\\pi'],
 			['площадь боковой поверхности', 2 * height * radius + '\\pi'],
-			['площадь полной поверхности', 2 * radius * (radius + height) + '\\pi']
+			['площадь полной поверхности', 2 * radius * (radius + height) + '\\pi'],
 		].iz(3);
 
 
@@ -43,7 +44,7 @@
 			ctx.lineWidth = 2;
 			let height = 300;
 			//высота
-			ctx.strokeStyle = "#809DF2";
+			ctx.strokeStyle = om.secondaryBrandColors;
 			ctx.drawLine(0, height, 0, 10);
 			ctx.drawLine(300, height, 300, 10);
 
@@ -61,7 +62,7 @@
 			ctx.ellipse(150, height, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 			//радиус
-			ctx.strokeStyle = ["#D777F2", "#F2A2D6"].iz();
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 
 			if (variable.T()[0].includes('радиус основания'))
 				ctx.drawLine(150, height, 300, height);
@@ -75,7 +76,7 @@
 			text: name[0].ie.toZagl() + ' цилиндра ' + ['равен', 'равна'][name[0].rod] + ' $' + number[0] + '$, ' +
 				name[1].ie + ' ' + ['равен', 'равна'][name[1].rod] + ' $' + number[1] + '$. ' +
 				'Найдите ' + name[2].ve + ' цилиндра. ' + ps,
-			answers: '$' + answer + '$',
+			answers: answer,
 			authors: ['Суматохина Александра'],
 			analys: name[2].ie.toZagl() + ': $' + number[2] + '$',
 		});
