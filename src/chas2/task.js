@@ -568,9 +568,11 @@ chas2.task = {
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
 
+		let tex = expr.toTex().allDecimalsToStandard(true);
+
 		task.text =
 			"Найдите значение выражения:" +
-			"$$" + expr.toTex() + "$$";
+			"$$" + tex + "$$";
 		task.answers = answer;
 
 		NAtask.setTask(task);
