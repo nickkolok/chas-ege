@@ -155,7 +155,7 @@ function bumpVariantNumber() {
 
 function appendVariantTasksCaption(){
 	if(!options.vanishVariants){
-		strVopr+='<h2 class="d">Рабочая тетрадь №'+variantNumber+'</h2>';
+		strVopr+='<h2 class="d">Контрольная работа №'+variantNumber+'</h2>';
 	}
 }
 
@@ -444,7 +444,7 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = "\n\\\\\n\\hline\n";
+	var hline = "\n\n\\hline\n";
 	return (
 		'\n\\begin{tabular}{*{' + (kZ / 50).ceil() + '}l}' +//TODO: надо как-то узнать количество всех заданий и сколько оно делится на 50(тк 50 ответов обычно влазит на страницу(вообще в идеале 47)) и только l поставить
 		'\n\\begin{tabular}[t]{' + (new Array(cellsInFirstRow)).fill('|l').join('') + '|' + '}' +
@@ -518,17 +518,17 @@ function refreshLaTeXarchive() {
 	var bunch = "";
 	var answ = "";
 	for (var variantN of variantsGenerated) {
-		bunch += '\n\n\\section{Рабочая тетрадь}\n'+createLaTeXbunch(variantN);
+		bunch += '\n\n\\section{Рабочая тетрадь}\n'+createLaTeXbunch(variantN)+'\n\n\\newpage';
 		answ += '\n\n\\section{Рабочая тетрадь}\n'+getAnswersTableLaTeX(variantN);
 	}
 
 	//zip.file("task.tex", preambula+'\n\n\\begin{document}'+bunch+'\n\\end{document}');
 
-	zip.file("noteProbability" + ".tex", preambula + '\n\n\\begin{document}' + bunch + '\n\\newpage\n ' + '\n' + '\\end{document}');
+	zip.file("vector" + ".tex", preambula + '\n\n\\begin{document}' + bunch + '\n\\newpage\n ' + '\n' + '\\end{document}');
 
 	zip.file("answers" + ".tex", preambula + '\n\n\\begin{document}' + answ + '\\end{document}');
 
-	zip.file("noteProbability_watermark.tex", preambula + watermark + hyperref + '\n\n\\begin{document}' + bunch + '\\end{document}');
+	zip.file("vector_watermark.tex", preambula + watermark + hyperref + '\n\n\\begin{document}' + bunch + '\\end{document}');
 
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
@@ -540,7 +540,7 @@ function refreshLaTeXarchive() {
 	});
 }
 
-var preambula = ['\\documentclass[a4paper]{article}\n\\usepackage{dashbox}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\\graphicspath{{../../animal/}}\n\n\\linespread{1.15}\n\n\\usepackage{egetask_alternative}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}\n\n\\usepackage{tikz}\n\\usepackage{transparent}']
+var preambula = ['\\documentclass[a4paper]{article}\n\\usepackage{dashbox}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{egetask_alternative}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}\n\n\\usepackage{tikz}']
 
 var hyperref = '\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
 
