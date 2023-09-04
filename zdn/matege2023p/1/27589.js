@@ -4,8 +4,6 @@
 
 		let a = sl(2, 89);
 
-		genAssertZ1000(a.pow(2) * 0.25, 'Кривой ответ');
-
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
 
@@ -15,9 +13,8 @@
 
 			//штрихи
 			ctx.lineWidth = 1;
-			ctx.drawLine(275, 210, 300, 200);
-			ctx.drawLine(80, 200, 105, 210);
-
+			ctx.strokeInMiddleOfSegment(10, 370, 180, 50, 10);
+			ctx.strokeInMiddleOfSegment(390, 370, 180, 50, 10);
 		};
 
 		NAtask.setTask({
