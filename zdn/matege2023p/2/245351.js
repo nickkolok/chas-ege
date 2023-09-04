@@ -4,10 +4,7 @@
 	lx_declareClarifiedPhrase('радиус', 'основания');
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 
-	lx['радиус основания'].rod = 0;
-
 	lx['площадь боковой поверхности'].ve = 'площадь боковой поверхности';
-	lx['площадь боковой поверхности'].rod = 1;
 
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
@@ -28,7 +25,6 @@
 		genAssert((nameSphere[1] * 100).isZ(), 'кривой ответ');
 		genAssert((nameCone[1] * 100).isZ(), 'кривой ответ');
 
-		console.log(nameSphere);
 		let question = [
 			[nameCone[0].toZagl() + ' конуса ' + ['равен', 'равна'][sklonlxkand(nameCone[0]).rod] + ' $' +
 				nameCone[1].texsqrt(1) + nameCone[3] + '$. Найдите ' + sklonlxkand(nameSphere[0]).ve + ' сферы' + nameSphere[2] +
@@ -39,12 +35,14 @@
 				'.', nameCone[1]
 			]
 		][0];
+
+		let variant = sl1();
+
 		let paint1 = function(ct) {
 
 			ct.lineWidth = 2;
 			ct.translate(100, 40);
 			ct.scale = (100, 100);
-			ct.fillStyle = "black";
 
 			ct.translate(0, 80);
 			ct.beginPath();
@@ -73,7 +71,7 @@
 			text: ['Около конуса описана сфера (сфера содержит окружность основания конуса и его вершину)',
 				'Конус вписан в сферу (см. рисунок)'
 			].iz() + '. ' + ['Центр сферы совпадает с центром основания конуса',
-				' ' + ['Радиус', 'Диаметр'].iz() + ' основания конуса равен радиусу сферы'
+				' ' + ['Радиус', 'Диаметр'][variant] + ' основания конуса равен '+['радиусу', 'диаметру'][variant]+' сферы'
 			].iz() + '. ' + question[0],
 			answers: question[1].sqrt(),
 		});
