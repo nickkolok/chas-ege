@@ -556,6 +556,10 @@ chas2.task = {
 		genAssert(answer.abs() > 2/1024/1024 || answer === 0, 'Ответ слишком маленький (по модулю)');
 		genAssert(answer.ts().length < 7, 'Ответ слишком длинный');
 
+		if (o.simplifyConstant){
+			expr = math.simplifyConstant(expr);
+		}
+
 		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
 		expr = math.simplify(expr, mathjsRules.omit1pi);
 		expr = math.simplify(expr, mathjsRules.omit1sqrt);
