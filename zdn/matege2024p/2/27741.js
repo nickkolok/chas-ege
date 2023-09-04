@@ -50,9 +50,6 @@
 
 		let question = answ.pop();
 
-		let middleA = coordinatesMiddleOfSegment(vectorA[0], vectorA[1], vectorA[2], vectorA[3]);
-		let middleB = coordinatesMiddleOfSegment(vectorA[0], vectorA[1], vectorA[2], vectorA[3]);
-
 		let paint1 = function(ctx) {
 			ctx.translate(-320, 0);
 
