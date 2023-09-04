@@ -3,7 +3,7 @@
 		'use strict';
 
 		let a = sl(3,29,2).pm();
-		let b = [6,8,12].iz();
+		let b = [3,6,8,12].iz();
 		genAssertIrreducible(a, b);
 
 		chas2.task.setEvaluationTask({
