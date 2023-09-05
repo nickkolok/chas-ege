@@ -32,7 +32,7 @@
 				vectB.join(';') +
 				')$ и $\\vec{' + vectorsName[2] + '} = ( ' + vectC.join(';') + ' )$. ' +
 				'Найдите длину вектора $' + condition.shuffle().slag().plusminus() + '$.',
-			answers: answ.sqrt(),
+			answers: answ,
 			analys: '$' + condition.shuffle().slag().plusminus() + '=(' + finalyVector.join('; ') + ')$',
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
