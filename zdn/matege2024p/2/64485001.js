@@ -29,15 +29,16 @@
 		].iz();
 
 		let answ = question.pop();
+		let resultExpr = condition.shuffle().slag().plusminus();
 
 		NAtask.setTask({
 			text: 'Даны векторы $\\vec{' + vectorsName[0] + '} = ( ' + vectA.join(';') + ' )$, $\\vec{' + vectorsName[1] +
 				'} = ( ' +
 				vectB.join(';') +
 				')$ и $\\vec{' + vectorsName[2] + '} = ( ' + vectC.join(';') + ' )$. ' +
-				'Найдите ' + question + ' вектора $' + condition.shuffle().slag().plusminus() + '$.',
+				'Найдите ' + question + ' вектора $' + resultExpr + '$.',
 			answers: answ,
-			analys: '$' + condition.shuffle().slag().plusminus() + '=(' + finalyVector.join('; ') + ')$',
+			analys: '$' + resultExpr + '=(' + finalyVector.join('; ') + ')$',
 		});
 	}, 1000);
 })();
