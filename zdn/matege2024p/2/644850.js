@@ -29,9 +29,9 @@
 				'} = ( ' +
 				vectB.join(';') +
 				')$ и $\\vec{' + vectorsName[2] + '} = ( ' + vectC.join(';') + ' )$. ' +
-				'Найдите длину вектора $' + resultExpr + '$.',
+				'Найдите длину вектора $' + condition.shuffle().slag().plusminus() + '$.',
 			answers: answ,
-			analys: '$' +resultExpr + '=(' + finalyVector.join('; ') + ')$',
+			analys: '$' + condition.shuffle().slag().plusminus() + '=(' + finalyVector.join('; ') + ')$',
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
 	}, 1000);
