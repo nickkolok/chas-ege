@@ -10,17 +10,15 @@
 
 		let vectors = [vectA, vectB, vectC];
 
-		let por = [(1).pm(), (2).pm(), (3).pm()].shuffle();
+		let coeffs = [sl(1,3).pm(), sl(1,3).pm(), sl(1,3).pm()];
 		let finalyVector = [0, 0];
 		let condition = [];
 
 		for (let i = 0; i < 3; i++) {
-			condition.push('-'.esli(por[i] < 0) + '\\vec{' + vectorsName[por[i].abs() - 1] + '}');
-			if (por[i] > 0)
-				finalyVector = objSum(vectors[por[i].abs() - 1], finalyVector);
-			else
-				finalyVector = objSubtraction(vectors[por[i].abs() - 1], finalyVector);
+			condition.push('' + coeffs[i] + '\\vec{' + vectorsName[i] + '}');
+			finalyVector = objSum(finalyVector, objUmn(vectors[i], coeffs[i]));
 		}
+
 
 		let question = [
 			['первую координату', finalyVector[0]],
