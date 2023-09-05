@@ -25,15 +25,16 @@
 		genAssert(finalyVector.production(), 'Слишком простой вектор');
 		let answ = finalyVector.map((elem) => elem.pow(2)).sum().sqrt();
 
+		let resultExpr = condition.shuffle().slag().plusminus();
 
 		NAtask.setTask({
 			text: 'Даны векторы $\\vec{' + vectorsName[0] + '} = ( ' + vectA.join(';') + ' )$, $\\vec{' + vectorsName[1] +
 				'} = ( ' +
 				vectB.join(';') +
 				')$ и $\\vec{' + vectorsName[2] + '} = ( ' + vectC.join(';') + ' )$. ' +
-				'Найдите длину вектора $' + condition.shuffle().slag().plusminus() + '$.',
+				'Найдите длину вектора $' + resultExpr + '$.',
 			answers: answ,
-			analys: '$' + condition.shuffle().slag().plusminus() + '=(' + finalyVector.join('; ') + ')$',
+			analys: '$' +resultExpr + '=(' + finalyVector.join('; ') + ')$',
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
 	}, 1000);
