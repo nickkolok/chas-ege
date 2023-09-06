@@ -44,13 +44,19 @@
 	});
 
 	let paint1 = function(ct) {
-		h = 300;
-		//Оси координат (сразу со стрелками)
-		graph9AdrawAxes_20_300(ct);
-		ct.translate(-10, -10);
-
+		let h = 400;
+		let w = 400;
+		//Оси координат
+		ct.drawCoordinatePlane (w, h, {
+			hor: 1,
+			ver: 1
+		}, {
+			x1: '1',
+			y1: '1',
+			sh1: 13,
+		}, 20);
 		//график
-		ct.translate(h / 2, h / 2);
+
 		for (let i = -130; i < 130; i++){
 			let y = -0.05 * parabl(a, b * 20, c * 400, i - 1);
 			if ( y.abs() <= 130 && (y > -110 || i.abs() >= 15))
@@ -88,9 +94,9 @@
 		answers: answ,
 		analys: `$f(x)=${(a + `x ^ 2 +` + b + `x +` + c).replace('+0x', '').replace('+0', '').plusminus()}$`.plusminus(),
 	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
+	NAtask.modifiers.addCanvasIllustration({
+		width: 400,
+		height: 400,
 		paint: paint1,
 	});
 })();

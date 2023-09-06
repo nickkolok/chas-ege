@@ -11,18 +11,19 @@
 			ir: irrazh,
 		};
 	}
-	function f(x){
+
+	function f(x) {
 		return gr(k.raz, k.ir, x);
 	}
 	let k, chisl, X, Y;
 	do {
-		k = make(sluchch(1, 10) / [1, 2, ].iz().pm(), [2, 3, 5, 6, 7, ].iz());
-		chisl = make(sluchch(1, 10) / [1, 2, ].iz(), k.ir);
+		k = make(sl(1, 10) / [1, 2, ].iz().pm(), [2, 3, 5, 6, 7, ].iz());
+		chisl = make(sl(5, 10) / [1, 2, ].iz(), k.ir);
 		X = [];
 		Y = [];
-		for (let i = 0; i < 7; i++)
-			if (f(i).isZ() && f(i) < 6)
-				if (f(i) > -7) {
+		for (let i = 0; i < 14; i++)
+			if (f(i).isZ() && f(i) < 9)
+				if (f(i) > -9) {
 					X.push(i);
 					Y.push(f(i));
 				}
@@ -36,21 +37,30 @@
 		find = `значение $x$, при котором $f(x)=${(k.raz*chisl.raz).ts(1)}\\sqrt{${chisl.ir}}$`.plusminus();
 	}
 	let paint1 = function(ct) {
-		h = 300;
+		let h = 400;
+		let w = 600;
 		//Оси координат
-		graph9AdrawAxes_20_300(ct);
-		ct.translate(-10, -10);
+		ct.translate(-200, 0);
+		ct.drawCoordPlane(w, h, {
+			hor: 1,
+			ver: 1
+		}, {
+			x1: '1',
+			y1: '1',
+			sh1: 13,
+		}, 20);
+
 		//график
-		ct.translate(h / 2, h / 2);
+
 		ct.scale(20, -20);
 		ct.lineWidth = 0.1;
 		let i = 0.1;
 		do {
-			if (gr(k.raz, k.ir, i - 0.1) < 5.7)
-				if (gr(k.raz, k.ir, i - 0.1) > -6.8)
+			if (gr(k.raz, k.ir, i - 0.1) < 9)
+				if (gr(k.raz, k.ir, i - 0.1) > -9)
 					ct.drawLine(i - 0.1, gr(k.raz, k.ir, i - 0.1), i, gr(k.raz, k.ir, i));
 			i += 0.1;
-		} while (i < 6.5);
+		} while (i < 14.3);
 		//точки
 		graph9AmarkCircles(ct, [X, Y].T(), 2, 0.15);
 	};
@@ -59,9 +69,9 @@
 		answers: answ,
 		analys: `$f(x)=${k.raz.ts(1)}\\sqrt{${k.ir}}\\cdot\\sqrt{x}$`.plusminus(),
 	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
+	NAtask.modifiers.addCanvasIllustration({
+		width: 400,
+		height: 400,
 		paint: paint1,
 	});
 })();

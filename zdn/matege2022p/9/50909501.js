@@ -26,19 +26,19 @@ retryWhileUndefined(function() {
 		return;
 	let c = y1 - k * x1;
 	let pointsp = intPoints(fp, {
-		minX: -5,
-		maxX: 5,
-		minY: -5.5,
-		maxY: 5.5,
+		minX: -8,
+		maxX: 8,
+		minY: -9,
+		maxY: 7,
 		step: 1,
 	});
 	if (pointsp.length < 2)
 		return;
 	let points = intPoints(fa, {
-		minX: -5,
-		maxX: 5,
-		minY: -7,
-		maxY: 5,
+		minX: -8,
+		maxX: 8,
+		minY: -9,
+		maxY: 7,
 		step: 1,
 	});
 	if (!points.length)
@@ -52,31 +52,33 @@ retryWhileUndefined(function() {
 		find = 'b';
 	}
 	let paint1 = function(ct) {
-		h = 300;
+		h = 400;
+		w = 400;
 		//Оси координат
-		graph9AdrawAxes_20_300(ct);
-		ct.translate(-10, -10);
-		ct.translate(h / 2, h / 2);
+		ct.drawCoordPlane(w, h, {hor: 1,ver: 1}, {x1: '1',y1: '1',sh1: 13,}, 20);
+		
+		
 		ct.scale(20, -20);
 		ct.lineWidth = 0.1;
 		//график
 		graph9AdrawFunction(ct, fa, {
-			minX: -5.5,
-			maxX: 6.5,
-			minY: -6.8,
-			maxY: 5.5,
+			minX: -8.5,
+			maxX: 8.5,
+			minY: -9.5,
+			maxY: 7.7,
 			step: 0.05
 		});
 		graph9AdrawFunction(ct, fp, {
-			minX: -5.5,
-			maxX: 6.5,
-			minY: -6.8,
-			maxY: 5.5,
+			minX: -8.5,
+			maxX: 8.5,
+			minY: -9.5,
+			maxY: 7.7,
 			step: 0.05
 		});
 		//точки
 
 		graph9AmarkCircles(ct, pointsp, 2, 0.15);
+		graph9AmarkCircles(ct, points, 1, 0.15);
 	};
 	NAtask.setTask({
 		text: 'На рисунке изображены графики функций $f(x)=' + '-'.esli(a < 0) +
@@ -88,9 +90,9 @@ retryWhileUndefined(function() {
 			'$A(' + x1 + ';' + y1 + ')$<br>' +
 			'$B(' + x2 + ';' + y2 + ')$',
 	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
+	NAtask.modifiers.addCanvasIllustration({
+		width: 400,
+		height: 400,
 		paint: paint1,
 	});
 	return true;

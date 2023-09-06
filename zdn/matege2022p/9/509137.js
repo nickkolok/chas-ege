@@ -37,8 +37,8 @@ retryWhileUndefined(function() {
 	if (points.length < 2)
 		return;
 	let paint1 = function(ct) {
-		let h = 300;
-		let w = 300;
+		let h = 400;
+		let w = 400;
 		//Оси координат
 		ct.drawCoordinatePlane (w, h, {
 			hor: Math.PI / 4,
@@ -52,10 +52,10 @@ retryWhileUndefined(function() {
 		ct.scale(25, -25);
 		ct.lineWidth = 0.08;
 		graph9AdrawFunction(ct, f, {
-			minX: -1.5 * Math.PI,
-			maxX: 1.5 * Math.PI,
-			minY: -4.8,
-			maxY: 5,
+			minX: -1.8 * Math.PI,
+			maxX: 2 * Math.PI,
+			minY: -6.8,
+			maxY: 6,
 			step: 0.05,
 		});
 		//точки
@@ -66,9 +66,9 @@ retryWhileUndefined(function() {
 		answers: answ,
 		analys: '$f(x)=' + (a + '\\' + trigfuncs + ' x+' + b).replace('+0', '').plusminus() + '$',
 	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
+	NAtask.modifiers.addCanvasIllustration({
+		width: 400,
+		height: 400,
 		paint: paint1,
 	});
 	return true;

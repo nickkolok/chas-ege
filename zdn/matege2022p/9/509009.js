@@ -33,21 +33,27 @@
 		find = `значение $x$, при котором $f(x)=${(f(chisl)).ts()}$`;
 	}
 	let paint1 = function(ct) {
-		h = 300;
+		let h = 400;
+		let w = 400;
 		//Оси координат
-		graph9AdrawAxes_20_300(ct);
-		ct.translate(-10, -10);
+		ct.drawCoordinatePlane (w, h, {
+			hor: 1,
+			ver: 1
+		}, {
+			x1: '1',
+			y1: '1',
+			sh1: 13,
+		}, 20);
 		//график
-		ct.translate(h / 2, h / 2);
 		ct.scale(20, -20);
 		ct.lineWidth = 0.1;
 		let i = 0.1;
 		do {
-			if (f(i - 0.1) < 5.5)
-				if (f(i - 0.1) > -6.8)
+			if (f(i - 0.1) < 8)
+				if (f(i - 0.1) > -7)
 					ct.drawLine(i - 0.1, f(i - 0.1), i, f(i));
 			i += 0.1;
-		} while (i < 6.5);
+		} while (i < 8);
 		//точки
 	graph9AmarkCircles(ct, [X, Y].T(), 2, 0.15);
 	};
@@ -56,9 +62,9 @@
 		answers: answ,
 		analys: `$f(x)=${b}+\\log{_{${a}}} {x}$`,
 	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
+	NAtask.modifiers.addCanvasIllustration({
+		width: 400,
+		height: 400,
 		paint: paint1,
 	});
 })();

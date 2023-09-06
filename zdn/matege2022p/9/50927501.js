@@ -28,19 +28,19 @@ retryWhileUndefined(function() {
 	if (x1.abs() < 7 && y1.abs() < 7 && x1.isZ() && y1.isZ())
 		return; // Точку видно
 	let pointss = intPoints(fs, {
-		minX: -5,
-		maxX: 5,
-		minY: -5.5,
-		maxY: 5.5,
+		minX: -8,
+		maxX: 8,
+		minY: -9,
+		maxY: 7,
 		step: 1,
 	});
 	if (pointss.length < 2)
 		return;
 	let pointsp = intPoints(fp, {
-		minX: -5,
-		maxX: 5,
-		minY: -5.5,
-		maxY: 5.5,
+		minX: -8,
+		maxX: 8,
+		minY: -9,
+		maxY: 7,
 		step: 1,
 	});
 	if (pointsp.length < 2)
@@ -54,8 +54,8 @@ retryWhileUndefined(function() {
 		find = 'ординату';
 	}
 	let paint1 = function(ct) {
-		let h = 300;
-		let w = 300;
+		let h = 400;
+		let w = 400;
 		//Оси координат
 		ct.drawCoordinatePlane (w, h, {
 			hor: 1,
@@ -69,17 +69,17 @@ retryWhileUndefined(function() {
 		ct.scale(20, -20);
 		ct.lineWidth = 0.1;
 		graph9AdrawFunction(ct, fs, {
-			minX: -6.5,
-			maxX: 7,
-			minY: -7,
-			maxY: 6,
+			minX: -8.5,
+			maxX: 8.5,
+			minY: -9.5,
+			maxY: 7.7,
 			step: 0.01,
 		});
 		graph9AdrawFunction(ct, fp, {
-			minX: -6.5,
-			maxX: 7,
-			minY: -7,
-			maxY: 6,
+			minX: -8.5,
+			maxX: 8.5,
+			minY: -9.5,
+			maxY: 7.7,
 			step: 0.05,
 		});
 		//точки
@@ -94,9 +94,9 @@ retryWhileUndefined(function() {
 			'$g(x)=' + (k + 'x+' + b).plusminus() + '$<br>' +
 			'$A(' + x1 + ';' + y1 + ')$<br>',
 	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
+	NAtask.modifiers.addCanvasIllustration({
+		width: 400,
+		height: 400,
 		paint: paint1,
 	});
 	return true;
