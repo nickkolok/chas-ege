@@ -6,7 +6,7 @@
 		let b = [3,6,8,12].iz();
 		genAssertIrreducible(a, b);
 
-		chas2.task.setEvaluationTask({
+		NAtask.setEvaluationTask({
 			expr: '' +
 				('' + sl(2,100).pm()).esli(sl(3)) +
 				'sqrt(' + [2,3].iz() + ') ' +
