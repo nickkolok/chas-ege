@@ -46,7 +46,7 @@
 
 		genAssert((cos * 1000).isZ() || angle.isZ(), 'Оба значения не подходят для ответа');
 
-		let answ = angle.isZ() ? [angle, 'угол'] : [cos, 'косинус угла'];
+		let answ = angle.isZ() ? [angle, 'угол (в градусах)'] : [cos, 'косинус угла'];
 
 		let question = answ.pop();
 
@@ -92,10 +92,11 @@
 			text: 'На координатной плоскости изображены векторы $\\overrightarrow{' + letter[0] + '}$ и $\\overrightarrow{' +
 				letter[1] + '}$. Найдите ' + question + ' между векторами $\\overrightarrow{' + letter[0] +
 				'}$ и $\\overrightarrow{' +
-				letter[1] + '}$',
+				letter[1] + '}$.',
 			answers: answ,
 			analys: '$\\overrightarrow{' + letter[0] + '}=\\{' + coordA.join(' ;') + '\\}$' + '<br>' +
 				'$\\overrightarrow{' + letter[1] + '}=\\{' + coordB.join(' ;') + '\\}$',
+			author: 'Суматохина Александра',
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
