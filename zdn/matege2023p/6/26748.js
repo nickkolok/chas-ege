@@ -13,7 +13,7 @@
 
 		let c5 = sl(3,30);
 
-		chas2.task.setEvaluationTask({
+		NAtask.setEvaluationTask({
 			expr: '(' + a + '^(' + c1 + '/' + c2 + ') * ' + b + '^(' + c3 + '/' + c4 + '))^('+ (c2 * c4) + ') / (' + (a*b) + '^' + c5 +')',
 			authors: ['Николай Авдеев'],
 		});
