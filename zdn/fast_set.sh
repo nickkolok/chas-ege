@@ -1,4 +1,4 @@
-array=()
+array=(1 3 4 5 6 7 8 9 10 11 12 320190 320191 320194 320195)
 
 if [[ ${#array[@]} -eq 0 ]]; then
      echo "change array in file"
@@ -7,7 +7,7 @@ fi
 result=${PWD##*/}
 result=${result:-/} 
 touch $result.js
-printf "if (!window.nabor)\n\twindow.nabor = {};\nwindow.nabor.importFrom({\n\tnZad: "${#array[@]}",\n \tadres: '../zdn/"$result"',\n" >> $result.js
+printf "if (!window.nabor)\n\twindow.nabor = {};\nwindow.nabor.importFrom({\n\tnZad: "${#array[@]}",\n \tadres: '../zdn/"$result"/',\n" >> $result.js
 printf "\tname: '"$result"',\n});\n" >> $result.js
 
 cd "./"
