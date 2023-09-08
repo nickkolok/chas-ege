@@ -191,6 +191,9 @@ function endCurrentVariant() {
 	nZ = 0;
 	appendVariantTasksEnding();
 	appendVariantAnswersEnding();
+	if(options.uniqueAnswersOnlyInOneVariant){
+		unqDict={};
+	}
 	zadan();
 }
 
@@ -229,7 +232,6 @@ function zadan() {
 			}
 			iZ[nZ]--;
 			dvig.zadan(obnov, nZ);
-
 		}
 		return;
 	}
