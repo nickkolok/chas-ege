@@ -7,7 +7,7 @@
 		let c = slKrome([4,9,16,25,36,49,64,81],2,99);
 		//TODO: оптимизировать. Множители там общие выделить хотя бы!
 
-		chas2.task.setEvaluationTask({
+		NAtask.setEvaluationTask({
 			expr: '(sqrt(' + a + ')-sqrt(' + b + '))*sqrt(' + c + ')',
 			forbiddenAnswers: [0],
 			authors: ['Николай Авдеев'],
