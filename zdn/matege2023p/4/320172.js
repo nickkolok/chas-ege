@@ -1,8 +1,8 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let product = sklonlxkand(['пончик', 'напиток', 'сладость', 'батончик', 'линза'].iz());
-		let machine = sklonlxkand(['автомат', 'прилавок'].iz());
+		let product = sklonlxkand(['пончик', 'напиток', 'сладость', 'батончик', 'линза', 'шоколадка', 'батончик'].iz());
+		let machine = sklonlxkand(['автомат', 'киоск'].iz());
 		let firstProbability = sl(0.05, 0.49, 0.01);
 		let secondProbability;
 		let probability;
@@ -15,11 +15,11 @@
 		}
 		let thirdProbability = sl(0.05, [firstProbability, secondProbability].minE() - 0.01, 0.01);
 		NAtask.setTask({
-			text: 'В торговом центре два одинаковых ' + machine.re + ' с ' + product.tm + '. ' +
+			text: 'В торговом центре два ' + machine.re + ' с ' + product.tm + '. ' +
 				'Вероятность того, что к концу дня в первом ' + machine.pe + ' закончатся ' + product.im + ', ' +
 				'равна $' + firstProbability.ts() + '$. Вероятность того, что ' + product.im +
-				' закончатся во втором автомате, ' +
-				'' + probability + '. Вероятность того, что ' + product.im + ' закончатся в двух автоматах, равна $' +
+				' закончатся во втором ' + machine.pe + ', ' +
+				'' + probability + '. Вероятность того, что ' + product.im + ' закончатся в двух ' + machine.pm + ', равна $' +
 				thirdProbability.ts() + '$. ' +
 				'Найдите вероятность того, что к концу дня ' + product.im + ' останутся в двух ' + machine.pm + '.',
 			answers: 1 - (firstProbability + secondProbability - thirdProbability),
