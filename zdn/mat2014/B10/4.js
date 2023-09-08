@@ -28,8 +28,8 @@
 				height: cubeEdge / 1.5,
 				depth: cubeEdge / (2.5 * 1.5),
 				angle: 40,
-				strokeStyle: "#809DF2",
-				diagonalStrokeStyle: ["#D777F2", "#F2A2D6"].iz(),
+				strokeStyle: om.secondaryBrandColors,
+				diagonalStrokeStyle: om.primaryBrandColors.iz(),
 			}, [0, 2, 3, 4, 6], false, [0.5, 0.2]);
 			ct.translate(-59 / 20, -96 / 20);
 
@@ -38,8 +38,8 @@
 				height: cubeEdge,
 				depth: cubeEdge / (2.5),
 				angle: 40,
-				strokeStyle: "#809DF2",
-				diagonalStrokeStyle: ["#D777F2", "#F2A2D6"].iz(),
+				strokeStyle: om.secondaryBrandColors,
+				diagonalStrokeStyle: om.primaryBrandColors.iz(),
 			}, [0, 3, 4], [m[0], m[1], m[v2]].includes('квадрат диагонали'), [0.5, 0.2]);
 
 		};
