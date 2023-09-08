@@ -31,5 +31,3 @@ printf "\t%s,\n" ${array[$index]} >> main.js
 printf "].iz()\nwindow.comment='"${array[$index]}"';\n" >> main.js;
 cd ..;
 done
-
-
