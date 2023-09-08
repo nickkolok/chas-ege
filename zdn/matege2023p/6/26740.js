@@ -12,7 +12,7 @@
 		let c3 = sl(2,9);
 		let c4 = sl(c3+1,10);
 
-		chas2.task.setEvaluationTask({
+		NAtask.setEvaluationTask({
 			expr: '' + a + '^(' + c1 + '/' + c2 + ') * ' + b + '^(' + c3 + '/' + c4 + ')',
 			//forbiddenAnswers: [0],
 			authors: ['Николай Авдеев'],
