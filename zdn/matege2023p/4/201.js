@@ -21,11 +21,9 @@
 		genAssert(firstProbability + secondProbability > 1, 'Слишком маленькие вероятности');
 		NAtask.setTask({
 			text: 'При выпечке ' + bun.re + ' производится контрольное взвешивание свежего изделия. ' +
-				'Известно, что вероятность того, что масса окажется меньше $' + topWeight + '$ г, равна $' + firstProbability.ts() +
-				'$. ' +
-				'Вероятность того, что масса окажется больше $' + bottomWeight + '$ г, равна $' + secondProbability.ts() +
-				'$. ' +
-				'Найдите вероятность того, что масса изделия больше $' + bottomWeight + '$ г, но меньше $' + topWeight +
+				'Известно, что вероятность того, что масса окажется ' + ['меньше $' + topWeight + '$ г, равна $' + firstProbability.ts(),
+				'больше $' + bottomWeight + '$ г, равна $' + secondProbability.ts()	].shuffleJoin('$. Вероятность того, что масса окажется ') +
+				'$. Найдите вероятность того, что масса изделия больше $' + bottomWeight + '$ г, но меньше $' + topWeight +
 				'$ г.',
 			answers: firstProbability - (1 - secondProbability),
 			analys: '',
