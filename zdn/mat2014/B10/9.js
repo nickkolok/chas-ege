@@ -15,7 +15,9 @@
 				width: cubeEdge,
 				height: cubeEdge,
 				depth: cubeEdge / (2.5),
-				angle: 40
+				angle: 40,
+				strokeStyle: om.secondaryBrandColors,
+				diagonalStrokeStyle: om.primaryBrandColors.iz(),
 			}, [0, 3, 4], true, [0.5, 0.2]);
 		};
 		NAtask.setTask({
