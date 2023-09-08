@@ -20,14 +20,14 @@ cd "./"
 i=1;
 for index in ${!array[*]}
 do
-mkdir $i;
-cd $i;
-ln -s $1/${array[$index]}.js ${array[$index]}.js;
-((i++));
-
-touch main.js
-printf "window.nomer=[\n" >> main.js;
-printf "\t%s,\n" ${array[$index]} >> main.js
-printf "].iz()\nwindow.comment='"${array[$index]}"';\n" >> main.js;
-cd ..;
+     mkdir $i;
+     cd $i;
+     ln -s $1/${array[$index]}.js ${array[$index]}.js;
+     ((i++));
+     
+     touch main.js
+     printf "window.nomer=[\n" >> main.js;
+     printf "\t%s,\n" ${array[$index]} >> main.js
+     printf "].iz()\nwindow.comment='"${array[$index]}"';\n" >> main.js;
+     cd ..;
 done
