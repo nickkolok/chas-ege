@@ -10,7 +10,7 @@
 		let b2 = [3,4,6].iz();
 		genAssertIrreducible(a2, b2);
 
-		chas2.task.setEvaluationTask({
+		NAtask.setEvaluationTask({
 			expr: '' +
 				('' + sl(2,100).pm()).esli(sl(3)) +
 				'sqrt(' + [2,3].iz() + ') ' +
