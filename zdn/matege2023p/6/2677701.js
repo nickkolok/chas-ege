@@ -8,8 +8,8 @@
 		value = math.simplify(value, mathjsRules.omit1sqrt);
 
 		let rand = sl1();
-		let givenFn = ['sin', 'cos', ][rand];
-		let askedFn = ['sin', 'cos', ][1 - rand];
+		let givenFn = ['tg', 'ctg'][rand];
+		let askedFn = ['tg', 'ctg'][1 - rand];
 
 		let quarter = sl(0, 3);
 
@@ -23,10 +23,10 @@
 		let askedSgn = math.evaluate(askedFn + '(' + middle + ')') >= 0 ? 1 : -1;
 
 		let answExpr = math.parse(askedFn + '(arc' + givenFn + '(' + expr + '))');
-		answExpr = math.simplify(answExpr, mathjsRules.trigRevTrig)
+		answExpr = math.simplify(answExpr, mathjsRules.trigRevTrig);
 		let coeff = [sl(1, 20), 1].iz(); // Чтобы почаще выпадала единица
 		let answ = askedSgn * answExpr.evaluate().abs() * coeff;
-		genAssertZ1000(answ, 'Ответ должен быть в меру нецелым!')
+		genAssertZ1000(answ, 'Ответ должен быть в меру нецелым!');
 
 		NAtask.setTask({
 			text: 'Найдите $' + ('' + coeff).esli(coeff != 1) + '\\' + askedFn + ' ' + angle + '$, если ' +
@@ -35,4 +35,3 @@
 		});
 	}, 10000);
 })();
-//26777 284233 505402 510443 64347 64349 64351 64353 64355 64357 64359 64361 64363 64365 64367 64369 64371 64373 64375 64377 64379 64381 284227 284229 284231 26778 64383 64417 514753 64385 64387 64389 64391 64393 64395 64397 64399 64401 64403 64405 64407 64409 64411 64413 64415
