@@ -83,7 +83,7 @@
 				'$ – средняя линия, параллельная стороне $' +
 				vertices.slice(1, 3).shuffle().join('') + '$. ' +
 				'Найдите площадь ' + ['треугольника', 'трапеции'][question.find.length - 3] + ' $' + question.find.permuteCyclic(
-					sl(1, 3)).join('') + '' + '$.',
+					sl(1, 3)).join('') + '$.',
 			answers: question.answ,
 			analys: '',
 		});
