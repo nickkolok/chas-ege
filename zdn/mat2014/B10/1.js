@@ -31,13 +31,13 @@ retryWhileError(function() {
 			[
 				[0, 2, 6, 4],
 				[1, 3, 7, 5]
-			].iz(), edges[1].pow(2) * (edges[0].pow(2) + edges[2].pow(2))
+			].iz(), edges[2].pow(2) * (edges[0].pow(2) + edges[1].pow(2))
 		],
 		[
 			[
 				[0, 3, 6, 5],
 				[1, 4, 7, 2]
-			].iz(), edges[2].pow(2) * (edges[0].pow(2) + edges[1].pow(2))
+			].iz(), edges[1].pow(2) * (edges[0].pow(2) + edges[2].pow(2))
 		]
 	].iz();
 
@@ -73,7 +73,7 @@ retryWhileError(function() {
 			' известно, что ' + edgeNames.shuffle().joinWithConjunction() +
 			'. Найдите площадь сечения, проходящего через вершины ' + nameVertexForCross.iz(3).joinWithConjunction() + '.',
 		answers: answ.sqrt(),
-		author: ['Авддеев Николай', 'Суматохина Александра']
+		author: ['Авдеев Николай', 'Суматохина Александра']
 	});
 
 	NAtask.modifiers.multiplyAnswerBySqrt(13);
