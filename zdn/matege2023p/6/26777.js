@@ -7,9 +7,10 @@
 		let value = math.parse(expr);
 		value = math.simplify(value, mathjsRules.omit1sqrt);
 
-		let rand = sl1();
-		let givenFn = ['sin', 'cos', ][rand];
-		let askedFn = ['sin', 'cos', ][1 - rand];
+		let givenFn = ['sin', 'cos', ].shuffle();
+		let askedFn = ['sin', 'cos', ].pop();
+
+		genAssert(math.evaluate(expr).abs() < 1 , 'Синус и косинус не могут превышать 1 по модулю');
 
 		let quarter = sl(0, 3);
 

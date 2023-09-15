@@ -7,11 +7,10 @@
 		let value = math.parse(expr);
 		value = math.simplify(value, mathjsRules.omit1sqrt);
 
-		let rand = sl1();
 		let givenFn = ['sin', 'cos'].iz();
 		let askedFn = ['tg', 'ctg'].iz();
 
-		genAssert(math.evaluate(expr).abs() < 1 || givenFn === 'tg' || givenFn === 'ctg', 'Синус и косинус не могут превышать 1 по модулю');
+		genAssert(math.evaluate(expr).abs() < 1 , 'Синус и косинус не могут превышать 1 по модулю');
 
 		let quarter = sl(0, 3);
 

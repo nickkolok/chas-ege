@@ -7,9 +7,8 @@
 		let value = math.parse(expr);
 		value = math.simplify(value, mathjsRules.omit1sqrt);
 
-		let rand = sl1();
-		let givenFn = ['tg', 'ctg'][rand];
-		let askedFn = ['tg', 'ctg'][1 - rand];
+		let givenFn = ['tg', 'ctg'].shuffle();
+		let askedFn = ['tg', 'ctg'].pop();
 
 		let quarter = sl(0, 3);
 
