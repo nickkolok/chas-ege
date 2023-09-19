@@ -39,8 +39,6 @@
 			return '$\\overrightarrow{' + letter[index] + '}(' + elem.join(' ;') + ')$';
 		});
 
-		console.log(vectorsView);
-
 		vectors = vectors.map((elem, index) => objUmn(elem, coeffs[index][0] / coeffs[index][1]));
 
 		let scal = objSum(vectors[1], vectors[2]);
