@@ -61,7 +61,7 @@
 
 		NAtask.setTask({
 			text: 'Даны векторы ' + vectorsView.joinWithConjunction() + '. Найдите $' + letterForQuestion +
-				'$, если $' + condition + '$.',
+				'$, если $' + condition.plusminus() + '$.',
 			answers: answ,
 			analys: '$(' + coeffs[1][0].texrndfrac(coeffs[1][1]) + '\\vec{' + letter[1] + '}' + '+'.esli(coeffs[2][0] > 0) +
 				coeffs[2][0].texrndfrac(coeffs[2][1]) + '\\vec{' + letter[2] + '})=\\{' + sk.join(' ;') + '\\}$' + '<br>' +
