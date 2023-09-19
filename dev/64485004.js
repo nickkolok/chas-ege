@@ -54,10 +54,12 @@
 		genAssertZ1000(scal, 'Нецелое скалярное произведение');
 
 
+		let vec = (l) => '\\vec{' + l + '}';
 
-		let condition = (coeffs[0][0].texrndfrac(coeffs[0][1]) + '\\vec{' + letter[0] + '}\\cdot(');
-		condition += (coeffs[1][0].texrndfrac(coeffs[1][1]) + '\\vec{' + letter[1] + '}' + '+'.esli(coeffs[2][0] > 0) +
-			coeffs[2][0].texrndfrac(coeffs[2][1]) + '\\vec{' + letter[2] + '})=' + scal.ts());
+		let condition =
+			coeffs[0][0].texrndfrac(coeffs[0][1]) + vec(letter[0]) + '\\cdot(' +
+			coeffs[1][0].texrndfrac(coeffs[1][1]) + vec(letter[1]) + '+'.esli(coeffs[2][0] > 0) +
+			coeffs[2][0].texrndfrac(coeffs[2][1]) + vec(letter[2]) + ')=' + scal.ts();
 
 		NAtask.setTask({
 			text: 'Даны векторы ' + vectorsView.joinWithConjunction() + '. Найдите $' + letterForQuestion +
