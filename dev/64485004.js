@@ -22,10 +22,6 @@
 		genAssert(!coordA.equalAr(coordB), 'Вектора A и B совпадают');
 		genAssert(!coordA.equalAr(coordC), 'Вектора A и C совпадают');
 
-		let lengthA = coordA.map((elem) => elem.pow(2)).sum();
-		let lengthB = coordB.map((elem) => elem.pow(2)).sum();
-		let lengthC = coordC.map((elem) => elem.pow(2)).sum();
-
 		let coeffs = [
 			[sl(1, 10).pm(), sl(2, 20)],
 			[sl(1, 10).pm(), sl(2, 20)],
