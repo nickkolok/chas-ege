@@ -69,8 +69,6 @@
 		let lengthB = coordB.map((elem) => elem.pow(2)).sum();
 		let lengthC = coordC.map((elem) => elem.pow(2)).sum();
 
-		let scal = coordA[0] * coordB[0] + coordA[1] * coordB[1];
-
 		genAssert(lengthA.sqrt() > 3, 'Вектор A слишком маленький');
 		genAssert(lengthB.sqrt() > 3, 'Вектор B слишком маленький');
 		genAssert(lengthC.sqrt() > 3, 'Вектор C слишком маленький');
