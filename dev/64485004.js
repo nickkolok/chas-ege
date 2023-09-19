@@ -30,7 +30,7 @@
 		let vectors = [coordA.slice(), coordB.slice(), coordC.slice()];
 		let rand = sl(0, 2);
 		let answ;
-		let vectorsView = vectors.slice().map((elem, index) => {
+		let vectorsView = vectors.copyAr().map((elem, index) => {
 			if (index == rand) {
 				let r = sl1();
 				answ = elem[r];
