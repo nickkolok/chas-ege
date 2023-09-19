@@ -25,7 +25,7 @@
 		let coeffs = [
 			[sl(1, 10).pm(), sl(2, 20)],
 			[sl(1, 10).pm(), sl(2, 20)],
-			[sl(1, 10).pm(), sl(2, 20)]
+			[sl(1, 10).pm(), sl(2, 20)],
 		];
 		let vectors = [coordA.slice(), coordB.slice(), coordC.slice()];
 		let rand = sl(0, 2);
