@@ -8,6 +8,7 @@ array=()
 
 if [[ ${#array[@]} -eq 0 ]]; then
      echo "change array in file"
+     exit
 fi
 
 result=${PWD##*/}
