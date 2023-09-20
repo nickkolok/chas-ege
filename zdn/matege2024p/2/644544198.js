@@ -32,16 +32,8 @@
 
 		let finalyVectorView = finalyVector.slice().map((elem) => elem.ts());
 
-		let question = [
-			['длину вектора', finalyVector.map((elem) => elem.pow(2)).sum().sqrt()],
-			['сумму координат', finalyVector.sum()],
-			['произведение координат', finalyVector.production()],
-			[
-				['первую координату', finalyVector[0]],
-				['вторую координату', finalyVector[1]]
-			].iz(),
-		].iz();
-
+		let question = ['длину вектора', finalyVector.map((elem) => elem.pow(2)).sum().sqrt()];
+		
 		let answ = question.pop();
 
 		let resultExpr = condition.shuffle().slag().plusminus();
