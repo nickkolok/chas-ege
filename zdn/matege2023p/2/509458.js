@@ -49,7 +49,6 @@
 			ct.strokeStyle = "#809DF2";
 			ct.scale(10, -10);
 			ct.lineWidth = 2 / 15;
-			let edgeOfBase = 10;
 			ct.rightPyramid4({
 				edge: 12,
 				angle: Math.PI / 5,

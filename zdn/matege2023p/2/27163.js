@@ -31,7 +31,6 @@
 				ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 0, 2 * Math.PI);
 			} else
 				ctx.arc(100, 150, 80, 0, Math.PI * 2, true);
-
 			ctx.fill();
 			ctx.closePath();
 
