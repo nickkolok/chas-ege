@@ -19,9 +19,6 @@
 		genAssert((coordA[0].pow(2) + coordA[1].pow(2)).sqrt() > 3, 'Вектор A слишком маленький');
 		genAssert((coordB[0].pow(2) + coordB[1].pow(2)).sqrt() > 3, 'Вектор B слишком маленький');
 
-		let middleA = coordinatesMiddleOfSegment(vectorA[0], vectorA[1], vectorA[2], vectorA[3]);
-		let middleB = coordinatesMiddleOfSegment(vectorA[0], vectorA[1], vectorA[2], vectorA[3]);
-
 		let paint1 = function(ctx) {
 			ctx.translate(-320, 0);
 
