@@ -11,73 +11,91 @@
 	lx_declareClarifiedPhrase('площадь', 'окружности основания');
 	retryWhileError(function() {
 
-		let radius = sl(1, 50);
-		let height = sl(1, 50);
-		let generatrixСone = radius.pow(2) + height.pow(2);
-		genAssert(generatrixСone.sqrt().isZ(), 'Образующая нормальная');
-		let variable = [
+		let radiuses = [sl(1, 20)];
+		radiuses.push(slKrome(radiuses[0], 1, 20));
 
-			['высота', height],
-			[
-				['радиус основания', radius],
-				['длина окружности основания', 2 * radius + '\\pi'],
-				['площадь окружности основания', radius.pow(2) + '\\pi']
-			].iz(), ['образующая', generatrixСone.texsqrt(sl1())]
+		let radiusNew = [radiuses.reduce((a, b) => a.pow(2) + b.pow(2)), ['площадь поверхности', 'площадь большого круга']
+			.iz()
 		];
 
-		if ((height * radius.pow(2) / 3).isZ())
-			variable.push(['объём', height * radius.pow(2) / 3 + '\\pi']);
-
-		if ((radius.pow(2) * generatrixСone).sqrt().isZ())
-			variable.push(['площадь боковой поверхности', (radius.pow(2) * generatrixСone).texsqrt(sl1()) + '\\pi']);
-
-		variable = variable.iz(3);
-
-		let name = sklonlxkand(variable.T()[0]);
-		let number = variable.T()[1];
-		let answer = number[2];
-
-		let ps = '';
-		if (answer.includes('pi')) {
-			answer = answer.replace('\\pi', '');
-			ps = 'Ответ сократите на $\\pi$.';
-		}
+		console.log(radiusNew);
 
 		let paint1 = function(ctx) {
+			ctx.translate(-10, -40);
 			ctx.lineWidth = 2;
-			//образующие
-			ctx.drawLine(60,180,150,10);
-			ctx.drawLine(240,180,150,10);
-			//эллипс
-			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.strokeStyle = "#809DF2";
+			ctx.fillStyle = ["#D777F2", "#F2A2D6"].iz();
+
+			ctx.beginPath();
+			if (radiusNew[1] == 'площадь большого круга') {
+				ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 0, 2 * Math.PI);
+			} else
+				ctx.arc(100, 150, 80, 0, Math.PI * 2, true);
+
+			ctx.fill();
+			ctx.closePath();
+
+
+			//шар 1
+			ctx.beginPath();
+			ctx.arc(100, 150, 80, 0, Math.PI * 2, true); // Внешняя окружность
 			ctx.stroke();
-			
+			ctx.closePath();
+
+			ctx.beginPath();
+			ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.stroke();
+			ctx.closePath();
+
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(100, 150, 20, 80, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
-			//радиус
-			if(variable.T()[0].includes('радиус основания'))
-			ctx.drawLine(150,180,240,180);
-			//высота
-			if(variable.T()[0].includes('высота'))
-			ctx.drawLine(150,180,150,10);
+			ctx.closePath();
+			ctx.drawLine(100, 150, 180, 150);
+
+			//шар 2
+			ctx.translate(200, 0);
+			ctx.beginPath();
+			if (radiusNew[1] == 'площадь большого круга') {
+				ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 0, 2 * Math.PI);
+			} else
+				ctx.arc(100, 150, 100, 0, Math.PI * 2, true);
+			ctx.fill();
+			ctx.closePath();
+
+			ctx.beginPath();
+			ctx.setLineDash([0, 0]);
+			ctx.arc(100, 150, 100, 0, Math.PI * 2, true); // Внешняя окружность
+			ctx.stroke();
+			ctx.closePath();
+
+			ctx.beginPath();
+			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.setLineDash([5, 5]);
+			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.stroke();
+
+			ctx.drawLine(100, 150, 200, 150);
 		};
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
-			text: name[0].ie.toZagl() + ' конуса ' + ['равен', 'равна'][name[0].rod] + ' $' + number[0] + '$, ' +
-				name[1].ie + ' ' + ['равен', 'равна'][name[1].rod] + ' $' + number[1] + '$. ' +
-				'Найдите ' + name[2].ve + ' конуса. ' + ps,
-			answers: '$' + answer + '$',
+			text: 'Радиусы двух шаров равны $' + radiuses.join('$ и $') + '$. ' +
+				'Найдите радиус шара, ' + radiusNew[1] + ' которого равна ' +
+				'сумме ' + sklonlxkand(radiusNew[1]).rm + ' двух данных шаров.',
+			answers: radiusNew[0].sqrt(),
 			authors: ['Суматохина Александра'],
-			analys: name[2].ie.toZagl() + ': $' + number[2] + '$',
 		});
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 300,
-			height: 300,
+		NAtask.modifiers.multiplyAnswerBySqrt(7);
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
 	}, 1000);
 })();
-//27135 75647 75691 75649 75651 75653 75655 75657 75659 75661 75663 75665 75667 75669 75671 75673 75675 75677 75679 75681 75683 75685 75687 75689 75693 75695
+//27163 76361 76377 76363 76365 76367 76369 76371 76373 76375 76379 76381
