@@ -31,8 +31,7 @@
 		};
 		NAtask.setTask({
 			text: 'Во сколько раз увеличится ' + nameView[1].ie + ' правильного тетраэдра, ' +
-				'если его ' + nameView[0].ve.replace('сторона','сторону').replace('основанию','основания') + ' увеличится в ' + chislitlx(ratio, 'раз') + '?',
-
+				'если его ' + nameView[0].ie + ' увеличится в ' + chislitlx(ratio, 'раз') + '?',
 			answers: answ,
 		});
 		NAtask.modifiers.addCanvasIllustration({
