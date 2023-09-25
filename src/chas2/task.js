@@ -548,13 +548,47 @@ chas2.task = {
 		let expr = math.parse(o.expr);
 		let answer = expr.evaluate();
 
-		genAssertZ1000(answer, 'Ответ существенно нецелый');
+		o.forbiddenAnswers = o.forbiddenAnswers || [];
+		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
+
+		if(!o.askAboutFraction){
+			genAssertZ1000(answer, 'Ответ существенно нецелый');
+			genAssert(answer.ts().length < 7, 'Ответ слишком длинный');
+		}
 
 		//TODO: o.maxAnswer, o.minAnswer, o.maxAnswerLength, o.minAnswerLength
 		genAssert(answer <  1000000, 'Ответ слишком большой'  );
 		genAssert(answer > -1000000, 'Ответ слишком маленький');
 		genAssert(answer.abs() > 2/1024/1024 || answer === 0, 'Ответ слишком маленький (по модулю)');
-		genAssert(answer.ts().length < 7, 'Ответ слишком длинный');
+
+		let textAboutFraction = "";
+		if(o.askAboutFraction){
+			genAssert(!answer.isAlmostInteger(), 'Ответ должен быть дробью, а не целым числом');
+			let denominatorFound = false;
+
+			//TODO: вообще-то угадывание рационального представления десятичной дроби -
+			//это отдельное осмысленное действие, и должно быть отдельной функцией
+			//или даже использоваться из внешней библиотеки
+			for(let i = (o.minDenominator || 2); i < (o.maxDenominator || 12); i++){
+				if((answer*i).isAlmostInteger()){
+					textAboutFraction = " Представьте результат в виде несократимой обыкновенной дроби. ";
+					task.analys =
+						(task.analys || "") +
+						" Значение выражения в виде дроби: " +
+						(answer*i).ts() + "/" + i;
+					if(sl1()){
+						answer = answer*i;
+						textAboutFraction += "В ответ запишите числитель этой дроби."
+					} else {
+						answer = i;
+						textAboutFraction += "В ответ запишите знаменатель этой дроби."
+					}
+					denominatorFound = true;
+					break;
+				}
+			}
+			genAssert(denominatorFound, 'Не удалось угадать знаменатель');
+		}
 
 		if (o.simplifyConstant){
 			expr = math.simplifyConstant(expr);
@@ -570,14 +604,13 @@ chas2.task = {
 		expr = math.simplify(expr, mathjsRules.omit1sqrt);
 		expr = math.simplify(expr, mathjsRules.trig2trigPow);
 
-		o.forbiddenAnswers = o.forbiddenAnswers || [];
-		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
 
 		let tex = expr.toTex().allDecimalsToStandard(true);
 
 		task.text =
 			"Найдите значение выражения:" +
-			"$$" + tex + "$$";
+			"$$" + tex + "$$" +
+			textAboutFraction;
 		task.answers = answer;
 
 		NAtask.setTask(task);
