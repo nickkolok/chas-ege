@@ -1,17 +1,15 @@
 (function() {
+	retryWhileError(function() {
+		'use strict';
 
-var a=sluchch(2,99);
-var b=sluchch(1,89);
-var c=sluchch(1,2);
-var d=sluchch(1,99);
-var f=(c%2)?(-1):(1);
-var g=['\\cos','\\sin'].shuffle();
+		let angle1 = slKrome([15, 30, 45, 60, 75], 2, 89);
 
-window.vopr.txt=('Найдите значение выражения $$\\frac{'+a+g[0]+' '+b+'^\\circ}{'+g[1]+' '+(90+c*180-b)+'^\\circ}+'+d+'$$').plusminus();
-window.vopr.ver=[''+(a*f+d)];
-
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=1;
+		NAtask.setEvaluationTask({
+			expr: [sl(2, 50).pm() + 'cosdeg(' + (angle1+ 180 * sl(-2, 2)) + ')', sl(2, 50).pm() + 'sindeg(' + (90 - angle1) + ')'].shuffle().join(
+				'/') + sl(0, 100).pm(),
+			//forbiddenAnswers: [0],
+			authors: ['Суматохина Александра'],
+		});
+	}, 1000);
 })();
+//26757 63229 63141 63143 63145 63147 63149 63151 63153 63155 63157 63159 63161 63163 63165 63167 63169 63171 63173 63175 63177 63179 63181 63183 63185 63187 63189 63191 63193 63195 63197 63199 63201 63203 63205 63207 63209 63211 63213 63215 63217 63219 63221 63223 63225 63227 26765 63763 63709 63711 63713 63715 63717 63719 63721 63723 63725 63727 63729 63731 63733 63735 63737 63739 63741 63743 63745 63747 63749 63751 63753 63755 63757 63759 63761
