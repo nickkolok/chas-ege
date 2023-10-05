@@ -8,7 +8,7 @@
 		let num3 = base.pow(sl(2,10));
 		genAssert(num2!=num3||num1!=num3||num1!=num2,'Дробь сократилась');
 		NAtask.setEvaluationTask({
-			expr: 'sqrtpow('+num1+','+power+')'+'sqrtpow('+num2+','+power+')/sqrtpow('+num3+','+power+')',
+			expr: 'nthRoot('+num1+','+power+')'+'nthRoot('+num2+','+power+')/nthRoot('+num3+','+power+')',
 			//forbiddenAnswers: [0],
 			authors: ['Суматохина Александра'],
 		});
