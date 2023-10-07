@@ -448,12 +448,10 @@ function removeGridFields() {
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
 	var hline = "\n\\\\\n\\hline\n";
 	return (
-		'\n\\begin{tabular}{*{' + (kZ / 50).ceil() + '}l}' +//TODO: надо как-то узнать количество всех заданий и сколько оно делится на 50(тк 50 ответов обычно влазит на страницу(вообще в идеале 47)) и только l поставить
-		'\n\\begin{tabular}[t]{' + (new Array(cellsInFirstRow)).fill('|l').join('') + '|' + '}' +
-		'\n\\hline\n' +
-		answersParsedToTeX.join(hline) +
-		hline +
-		'\\end{tabular}' +
+		'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
+			'\n\\hline\n' +
+			answersParsedToTeX.join(hline) +
+			hline +
 		'\\end{tabular}' +
 		'\n\n\n'
 	);
@@ -509,7 +507,14 @@ function createLaTeXbunchTasks(variantN) {
 }
 
 function createLaTeXbunch(variantN) {
-	return createLaTeXbunchTasks(variantN) + '\n\\newpage\n Ответы\n\n' + createLaTeXbunchAnswers(variantN) + '\n\\newpage\n';
+	return (
+		createLaTeXbunchTasks(variantN) +
+		'\n\\newpage\n Ответы\n\n' +
+		'\\begin{table}[h]' +
+			createLaTeXbunchAnswers(variantN) +
+		'\\end{table}' +
+		'\n\\newpage\n'
+	);
 }
 
 function refreshLaTeXarchive() {
@@ -518,6 +523,8 @@ function refreshLaTeXarchive() {
 	}
 	var zip = new JSZip();
 	var bunchUnited = "", bunchTasks = "";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+variantsGenerated.length+"}";
+
 	for(var variantN of variantsGenerated){
 		var head =
 			'\n\n' +
@@ -529,9 +536,15 @@ function refreshLaTeXarchive() {
 			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
 		bunchTasks  += head + createLaTeXbunchTasks(variantN) + tail;
 		bunchUnited += head + createLaTeXbunch(variantN) + tail;
+		answers += createLaTeXbunchAnswers(variantN);
 	}
+
+	answers += "\n\n\\end{multicols}\n\n\\end{document}";
+
 	zip.file("tasks-with-answers.tex", bunchUnited);
 	zip.file("tasks.tex", bunchTasks);
+	zip.file("answers.tex", "\\documentclass[a5paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n" + answers);
+
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
 		img.file(i + ".png", preparedImages[i], { base64: true });
