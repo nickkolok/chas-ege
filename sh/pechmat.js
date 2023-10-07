@@ -504,17 +504,6 @@ function createLaTeXbunchTasks(variantN) {
 	return bunchText;
 }
 
-function createLaTeXbunch(variantN) {
-	return (
-		createLaTeXbunchTasks(variantN) +
-		'\n\\newpage\n Ответы\n\n' +
-		'\\begin{table}[h]' +
-			createLaTeXbunchAnswers(variantN) +
-		'\\end{table}' +
-		'\n\\newpage\n'
-	);
-}
-
 function refreshLaTeXarchive(){
 	if(!options.prepareLaTeX){
 		return;
@@ -532,14 +521,12 @@ function refreshLaTeXarchive(){
 			'\n\n';
 		var tail =
 			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
-		bunchTasks  += head + createLaTeXbunchTasks(variantN) + tail;
-		bunchUnited += head + createLaTeXbunch(variantN) + tail;
+		bunchTasks += head + createLaTeXbunchTasks(variantN) + tail;
 		answers += createLaTeXbunchAnswers(variantN);
 	}
 
 	answers += "\n\n\\end{multicols}\n\n\\end{document}";
 
-	zip.file("tasks-with-answers.tex", bunchUnited);
 	zip.file("tasks.tex", bunchTasks);
 	zip.file("answers.tex", "\\documentclass[a5paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n" + answers);
 
