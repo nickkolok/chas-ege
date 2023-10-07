@@ -459,7 +459,7 @@ function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
 	);
 }
 
-function getAnswersTableLaTeX(variantN) {
+function createLaTeXbunchAnswers(variantN) {
 
 	var answerRows = $('table#pech-answers-table-variant-' + variantN + ' tr');
 
@@ -509,7 +509,7 @@ function createLaTeXbunchTasks(variantN) {
 }
 
 function createLaTeXbunch(variantN) {
-	return createLaTeXbunchTasks(variantN) + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
+	return createLaTeXbunchTasks(variantN) + '\n\\newpage\n Ответы\n\n' + createLaTeXbunchAnswers(variantN) + '\n\\newpage\n';
 }
 
 function refreshLaTeXarchive() {
