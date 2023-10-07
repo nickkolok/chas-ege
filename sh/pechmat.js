@@ -41,6 +41,7 @@ function zapusk() {
 	options.editable = $('#redakt').is(':checked');
 	options.largeFont = $('#largeFont').is(':checked');
 	options.customNumber = $('#customNumber').is(':checked');
+	options.variantPrefix = $('#variantPrefix').val();
 	options.vanishVariants = $('#vanishVariants').is(':checked');
 	options.nopagebreak = $('#nopagebreak').is(':checked');
 	options.compactAnswers = $('#compact-answers').is(':checked');
@@ -155,7 +156,7 @@ function bumpVariantNumber() {
 
 function appendVariantTasksCaption() {
 	if (!options.vanishVariants) {
-		strVopr += '<h2 class="d">Вариант №' + variantNumber + '</h2>';
+		strVopr += '<h2 class="d">Вариант №' + options.variantPrefix + variantNumber + '</h2>';
 	}
 }
 
@@ -174,9 +175,9 @@ function appendVariantAnswersCaption() {
 	if (!options.vanishVariants) {
 		strOtv += '<tr><th colspan="10">';
 		if (options.compactAnswers) {
-			strOtv += 'Вар. ' + variantNumber;
+			strOtv += 'Вар. ' + options.variantPrefix + variantNumber;
 		} else {
-			strOtv += 'Ответы к варианту<br/>№' + variantNumber;
+			strOtv += 'Ответы к варианту<br/>№' + options.variantPrefix + variantNumber;
 		}
 		strOtv += '</th></tr>';
 	}
@@ -259,7 +260,7 @@ function createHtmlForTask(nazvzad) {
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
-			('<td>' + variantNumber + '</td>').esli(!options.vanishVariants) +
+			('<td>' + options.variantPrefix + variantNumber + '</td>').esli(!options.vanishVariants) +
 			'<td>' + nazvzad + '</td>' +
 			'<td>' + window.vopr.ver.join('; ') + '</td>' +
 			('<td>' + window.vopr.rsh + '</td>').esli(options.solutionsIntoAnswers) +
@@ -267,8 +268,10 @@ function createHtmlForTask(nazvzad) {
 		rsh:
 			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
 				(
-					'<h3>'+('Вариант №'+variantNumber+', ').esli(!options.vanishVariants) +
-					'задача '+nazvzad+'</h3><br/>'+
+					'<h3>'+
+						('Вариант №'+options.variantPrefix+variantNumber+', ').esli(!options.vanishVariants) +
+						'задача '+nazvzad+
+					'</h3><br/>'+
 					vopr.rsh
 				).esli(vopr.rsh)+
 			'</div>',
@@ -524,7 +527,7 @@ function refreshLaTeXarchive(){
 		var head =
 			'\n\n' +
 			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
-			'\\def\\examvart{Вариант ' + variantN + '}\n' +
+			'\\def\\examvart{Вариант ' + options.variantPrefix + variantN + '}\n' +
 			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
 			'\n\n';
 		var tail =
