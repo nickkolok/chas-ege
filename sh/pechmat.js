@@ -517,25 +517,21 @@ function refreshLaTeXarchive() {
 		return;
 	}
 	var zip = new JSZip();
-	var bunch = "";
+	var bunchUnited = "", bunchTasks = "";
 	for(var variantN of variantsGenerated){
-		bunch +=
+		var head =
 			'\n\n' +
 			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
 			'\\def\\examvart{Вариант ' + variantN + '}\n' +
 			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
-			'\n\n' +
-			createLaTeXbunch(variantN) +
+			'\n\n';
+		var tail =
 			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
+		bunchTasks  += head + createLaTeXbunchTasks(variantN) + tail;
+		bunchUnited += head + createLaTeXbunch(variantN) + tail;
 	}
-
-	//zip.file("task.tex", preambula+'\n\n\\begin{document}'+bunch+'\n\\end{document}');
-
-	zip.file("task"+ ".tex", preambula + '\n\n\\begin{document}' + bunch + '\n\\newpage\n '+ getAnswersTableLaTeX(variantN) + '\n' + '\\end{document}');
-
-
-	zip.file("task_watermark.tex", preambula + watermark + hyperref + '\n\n\\begin{document}' + bunch + '\\end{document}');
-
+	zip.file("tasks-with-answers.tex", bunchUnited);
+	zip.file("tasks.tex", bunchTasks);
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
 		img.file(i + ".png", preparedImages[i], { base64: true });
