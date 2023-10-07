@@ -514,8 +514,15 @@ function refreshLaTeXarchive() {
 	}
 	var zip = new JSZip();
 	var bunch = "";
-	for (var variantN of variantsGenerated) {
-		bunch += createLaTeXbunch(variantN);
+	for(var variantN of variantsGenerated){
+		bunch +=
+			'\n\n' +
+			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
+			'\\def\\examvart{Вариант ' + variantN + '}\n' +
+			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
+			'\n\n' +
+			createLaTeXbunch(variantN) +
+			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
 	}
 
 	//zip.file("task.tex", preambula+'\n\n\\begin{document}'+bunch+'\n\\end{document}');
