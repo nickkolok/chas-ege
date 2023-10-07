@@ -246,7 +246,7 @@ function createHtmlForTask(nazvzad) {
 
 	return {
 		txt:
-			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'">'+
+			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
 				'<div class="b">'+nazvzad+'</div>'+
 				'<div class="z">'+
 					window.vopr.txt+
@@ -381,6 +381,7 @@ function renewTask() {
 	console.log(wrapper);
 	var taskId = wrapper.attr('data-task-id');
 	var taskNumber = wrapper.attr('data-task-number');
+	variantNumber = wrapper.attr('data-variant-number');
 	var answerRow = $('tr.answer-container[data-task-id=' + taskId + ']');
 	var solution = $('div.solution-container[data-task-id=' + taskId + ']');
 
@@ -479,6 +480,7 @@ function replaceCanvasWithImgInTask(element, text) {
 		// Nothing to do
 		return text;
 	}
+	console.log(element);
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
 	console.log(canvases);
 	for (var i = 0; i < canvases.length; i++) {
