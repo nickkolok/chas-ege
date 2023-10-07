@@ -514,12 +514,13 @@ function refreshLaTeXarchive(){
 	var bunch = "";
 	for(var variantN of variantsGenerated){
 		bunch +=
-			'\n\n\n\n' +
-			'\\cleardoublepage\n' +
+			'\n\n' +
+			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
 			'\\def\\examvart{Вариант ' + variantN + '}\n' +
-			'\\normalsize\n\\input{instruction.tex}\n\\startpartone\n\\large' +
-			'\n\n\n\n' +
-			createLaTeXbunch(variantN);
+			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
+			'\n\n' +
+			createLaTeXbunch(variantN) +
+			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
 	}
 	zip.file("tasks.tex", bunch);
 	var img = zip.folder("images");
