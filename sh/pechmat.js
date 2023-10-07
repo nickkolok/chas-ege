@@ -491,7 +491,7 @@ function replaceCanvasWithImgInTask(element, text) {
 	return text;
 }
 
-function createLaTeXbunch(variantN) {
+function createLaTeXbunchTasks(variantN) {
 	var bunchText = "";
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
@@ -503,7 +503,11 @@ function createLaTeXbunch(variantN) {
 		}
 
 	}
-	return bunchText + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
+	return bunchText;
+}
+
+function createLaTeXbunch(variantN) {
+	return createLaTeXbunchTasks(variantN) + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
 }
 
 function refreshLaTeXarchive(){
