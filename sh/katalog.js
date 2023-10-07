@@ -53,7 +53,7 @@ function generateHtmlForTask(kat,zdn,masdey){
 				'<div class="katalog-authors">' +
 						'Автор' + ('ы').esli(vopr.authors.length > 1) + ': &nbsp;' +
 						vopr.authors.join(', ') +
-				'<div/>'+
+				'</div>'+
 				'<br/>'+
 			'');
 		}
