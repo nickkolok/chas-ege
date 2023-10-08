@@ -5,7 +5,12 @@
         let angle1 = slKrome([15, 30, 45, 60, 75], 2, 89);
 
 		NAtask.setEvaluationTask({
-			expr: [sl(2,50).pm()+['cosdeg('+(angle1+180*sl(-1,1))+')','sindeg('+(angle1+180*sl(-1,1))+')'].shuffle().join(''),sl(2,50).pm()+'sindeg('+2*(angle1+180*sl(-1,1))+')'].shuffle().join('/'),
+			expr: [
+				sl(2,50).pm() + [
+					'cosdeg('+(angle1+180*sl(-1,1))+')','sindeg('+(angle1+180*sl(-1,1))+')'
+				].shuffle().join(''),
+				sl(2,50).pm()+'sindeg('+2*(angle1+180*sl(-1,1))+')'
+			].shuffle().join('/'),
 			//forbiddenAnswers: [0],
 			authors: ['Суматохина Александра'],
 		});
