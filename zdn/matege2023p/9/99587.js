@@ -1,19 +1,4 @@
-﻿class GeometricProgression {
-	constructor(first, factor) {
-		this.first = first;
-		this.factor = factor;
-		this.nmember = 0;
-
-	}
-
-	member(nmember) {
-		this.nmember = nmember;
-		return (this.first * Math.pow(this.factor, this.nmember - 1)).toFixed(0);
-	}
-
-}
-
-let b1 = sluchch(2, 3);
+﻿let b1 = sluchch(2, 3);
 let a1 = sluchch(2000, 7000, 500);
 n1 = sluchch(6, 9);
 
