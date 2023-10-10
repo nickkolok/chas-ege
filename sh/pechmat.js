@@ -41,6 +41,7 @@ function zapusk() {
 	options.editable = $('#redakt').is(':checked');
 	options.largeFont = $('#largeFont').is(':checked');
 	options.customNumber = $('#customNumber').is(':checked');
+	options.variantPrefix = $('#variantPrefix').val();
 	options.vanishVariants = $('#vanishVariants').is(':checked');
 	options.nopagebreak = $('#nopagebreak').is(':checked');
 	options.compactAnswers = $('#compact-answers').is(':checked');
@@ -155,7 +156,7 @@ function bumpVariantNumber() {
 
 function appendVariantTasksCaption() {
 	if (!options.vanishVariants) {
-		strVopr += '<h2 class="d">Вариант №' + variantNumber + '</h2>';
+		strVopr += '<h2 class="d">Вариант №' + options.variantPrefix + variantNumber + '</h2>';
 	}
 }
 
@@ -174,9 +175,9 @@ function appendVariantAnswersCaption() {
 	if (!options.vanishVariants) {
 		strOtv += '<tr><th colspan="10">';
 		if (options.compactAnswers) {
-			strOtv += 'Вар. ' + variantNumber;
+			strOtv += 'Вар. ' + options.variantPrefix + variantNumber;
 		} else {
-			strOtv += 'Ответы к варианту<br/>№' + variantNumber;
+			strOtv += 'Ответы к варианту<br/>№' + options.variantPrefix + variantNumber;
 		}
 		strOtv += '</th></tr>';
 	}
@@ -246,7 +247,7 @@ function createHtmlForTask(nazvzad) {
 
 	return {
 		txt:
-			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'">'+
+			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
 				'<div class="b">'+nazvzad+'</div>'+
 				'<div class="z">'+
 					window.vopr.txt+
@@ -259,7 +260,7 @@ function createHtmlForTask(nazvzad) {
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
-			('<td>' + variantNumber + '</td>').esli(!options.vanishVariants) +
+			('<td>' + options.variantPrefix + variantNumber + '</td>').esli(!options.vanishVariants) +
 			'<td>' + nazvzad + '</td>' +
 			'<td>' + window.vopr.ver.join('; ') + '</td>' +
 			('<td>' + window.vopr.rsh + '</td>').esli(options.solutionsIntoAnswers) +
@@ -267,8 +268,10 @@ function createHtmlForTask(nazvzad) {
 		rsh:
 			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
 				(
-					'<h3>'+('Вариант №'+variantNumber+', ').esli(!options.vanishVariants) +
-					'задача '+nazvzad+'</h3><br/>'+
+					'<h3>'+
+						('Вариант №'+options.variantPrefix+variantNumber+', ').esli(!options.vanishVariants) +
+						'задача '+nazvzad+
+					'</h3><br/>'+
 					vopr.rsh
 				).esli(vopr.rsh)+
 			'</div>',
@@ -381,6 +384,7 @@ function renewTask() {
 	console.log(wrapper);
 	var taskId = wrapper.attr('data-task-id');
 	var taskNumber = wrapper.attr('data-task-number');
+	variantNumber = wrapper.attr('data-variant-number');
 	var answerRow = $('tr.answer-container[data-task-id=' + taskId + ']');
 	var solution = $('div.solution-container[data-task-id=' + taskId + ']');
 
@@ -448,18 +452,16 @@ function removeGridFields() {
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
 	var hline = "\n\\\\\n\\hline\n";
 	return (
-		'\\begin{table}[h]' +
-			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
-				'\n\\hline\n' +
-				answersParsedToTeX.join(hline) +
-				hline +
-			'\\end{tabular}' +
-		'\\end{table}' +
+		'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
+			'\n\\hline\n' +
+			answersParsedToTeX.join(hline) +
+			hline +
+		'\\end{tabular}' +
 		'\n\n\n'
 	);
 }
 
-function getAnswersTableLaTeX(variantN) {
+function createLaTeXbunchAnswers(variantN) {
 
 	var answerRows = $('table#pech-answers-table-variant-' + variantN + ' tr');
 
@@ -481,17 +483,26 @@ function replaceCanvasWithImgInTask(element, text) {
 		// Nothing to do
 		return text;
 	}
+	console.log(element);
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
 	console.log(canvases);
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
-		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictocenter[]{images/'+imageName+'}');
+		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.4\\linewidth]{'+imageName+'}');
 	}
+	if (canvases.length) {
+		text =
+			'\\ifdefined\\OnBeforeIllustratedTask\\OnBeforeIllustratedTask\\fi\n' +
+			text.trim() +
+			'\n\\ifdefined\\OnAfterIllustratedTask\\OnAfterIllustratedTask\\fi' +
+		'';
+	}
+
 	return text;
 }
 
-function createLaTeXbunch(variantN) {
+function createLaTeXbunchTasks(variantN) {
 	var bunchText = "";
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
@@ -503,7 +514,7 @@ function createLaTeXbunch(variantN) {
 		}
 
 	}
-	return bunchText + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
+	return bunchText;
 }
 
 function refreshLaTeXarchive(){
@@ -511,17 +522,27 @@ function refreshLaTeXarchive(){
 		return;
 	}
 	var zip = new JSZip();
-	var bunch = "";
+	var bunchUnited = "", bunchTasks = "";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+variantsGenerated.length+"}";
+
 	for(var variantN of variantsGenerated){
-		bunch +=
-			'\n\n\n\n' +
-			'\\cleardoublepage\n' +
-			'\\def\\examvart{Вариант ' + variantN + '}\n' +
-			'\\normalsize\n\\input{instruction.tex}\n\\startpartone\n\\large' +
-			'\n\n\n\n' +
-			createLaTeXbunch(variantN);
+		var head =
+			'\n\n' +
+			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
+			'\\def\\examvart{Вариант ' + options.variantPrefix + variantN + '}\n' +
+			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
+			'\n\n';
+		var tail =
+			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
+		bunchTasks += head + createLaTeXbunchTasks(variantN) + tail;
+		answers += createLaTeXbunchAnswers(variantN);
 	}
-	zip.file("tasks.tex", bunch);
+
+	answers += "\n\n\\end{multicols}\n\n\\end{document}";
+
+	zip.file("tasks.tex", bunchTasks);
+	zip.file("answers.tex", "\\documentclass[a5paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n" + answers);
+
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
 		img.file(i + ".png", preparedImages[i], { base64: true });
