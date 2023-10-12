@@ -564,30 +564,27 @@ chas2.task = {
 		let textAboutFraction = "";
 		if(o.askAboutFraction){
 			genAssert(!answer.isAlmostInteger(), 'Ответ должен быть дробью, а не целым числом');
-			let denominatorFound = false;
+			answer = math.fraction(answer);
+			genAssert(answer.n < 1000000, 'Числитель дроби слишком большой (по модулю)');
+			genAssert(answer.d <= (o.maxDenominator || 20), 'Знаменатель дроби слишком большой');
+			genAssert(answer.d >= (o.minDenominator ||  2), 'Знаменатель дроби слишком маленький');
+1
+			// Вносим минус в числитель
+			answer.n *= answer.s;
 
-			//TODO: вообще-то угадывание рационального представления десятичной дроби -
-			//это отдельное осмысленное действие, и должно быть отдельной функцией
-			//или даже использоваться из внешней библиотеки
-			for(let i = (o.minDenominator || 2); i < (o.maxDenominator || 12); i++){
-				if((answer*i).isAlmostInteger()){
-					textAboutFraction = " Представьте результат в виде несократимой обыкновенной дроби. ";
-					task.analys =
-						(task.analys || "") +
-						" Значение выражения в виде дроби: " +
-						(answer*i).ts() + "/" + i;
-					if(sl1()){
-						answer = answer*i;
-						textAboutFraction += "В ответ запишите числитель этой дроби."
-					} else {
-						answer = i;
-						textAboutFraction += "В ответ запишите знаменатель этой дроби."
-					}
-					denominatorFound = true;
-					break;
-				}
+			textAboutFraction = " Представьте результат в виде несократимой обыкновенной дроби. ";
+			task.analys =
+				(task.analys || "") +
+				" Значение выражения в виде дроби: " +
+				answer.n.ts() + "/" + answer.d.ts();
+			if(sl1()){
+				answer = answer.n;
+				textAboutFraction += "В ответ запишите числитель этой дроби."
+			} else {
+				answer = answer.d;
+				textAboutFraction += "В ответ запишите знаменатель этой дроби."
 			}
-			genAssert(denominatorFound, 'Не удалось угадать знаменатель');
+
 			genAssert(answer.ts().length < 7, 'Ответ слишком длинный - вероятна ложная точность');
 		}
 
