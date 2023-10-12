@@ -588,6 +588,7 @@ chas2.task = {
 				}
 			}
 			genAssert(denominatorFound, 'Не удалось угадать знаменатель');
+			genAssert(answer.ts().length < 7, 'Ответ слишком длинный - вероятна ложная точность');
 		}
 
 		if (o.simplifyConstant){
