@@ -3,16 +3,9 @@
 		return n.fct() / ((n - k).fct() * k.fct());
 	}
 
-	function declensionOfAdjectives(number, adjective) {
-		adjective = sklonlxkand(adjective);
-		return chislitM(number, adjective.ie, adjective.rm, adjective.rm);
-	}
 	retryWhileError(function() {
 		let number = sl(3, 5);
-		let color = ['аквамариновый', 'гранатовый', 'бежевый', 'бирюзовый',
-			'бобровый', 'бордовый', 'изумрудный', 'кирпичный', 'коралловый', 'мятный',
-			'небесный', 'оливковый', 'персиковый', 'песочный', 'пурпурный', 'салатовый', 'фисташковый',
-		].iz(number);
+		let color = om.trickyColors.iz(number);
 
 		let summary = sl(10, 50, 5);
 		let thing = sklonlxkand(['ластик', 'карандаш', 'шарик', 'бант', 'блокнот', 'значок', 'брелок', 'фломастер', ].iz());
