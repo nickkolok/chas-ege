@@ -30,6 +30,7 @@
 		let answ = combination(m, question[0][1]) * combination(n, question[1][1]) / combination(m + n, summary);
 
 		genAssertZ1000(answ * 100, 'Слишком много знаков после запятой');
+		genAssert(answ>0.001)
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
