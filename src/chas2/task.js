@@ -584,6 +584,109 @@ chas2.task = {
 	},
 
 
+	/** @function NApi.task.setEvaluationTask
+	 * Составить задание о нахождении значения выражения
+	 * @param {String} o.expr mathjs-выражение, значение которого нужно найти
+	 * @param {String}  o.leftEnd mathjs-запись левого конца отрезка
+	 * @param {String}  o.rightEnd mathjs-запись правого конца отрезка
+	 * @param {Number}  o.primaryStep шаг первичного перебора значений x, по умолчанию 0.001
+	 * @param {Number}  o.secondaryStep шаг вторичного перебора значений x, по умолчанию o.primaryStep.sqr()
+	 * @param {Boolean}  o.forbidMinY запретить спрашивать минимум
+	 * @param {Boolean}  o.forbidMaxY запретить спрашивать максимум
+	 */
+	setMinimaxFunctionTask: function (o) {
+		let task = o.clone();
+
+		let expr = math.parse(o.expr);
+		let lEnd = math.parse(o.leftEnd).evaluate();
+		let rEnd = math.parse(o.rightEnd).evaluate();
+
+		let minY = expr.evaluate({x:rEnd});
+		let maxY = minY;
+		let minX = rEnd;
+		let maxX = rEnd;
+
+		o.primaryStep = (o.primaryStep || 0.001);
+		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
+
+		for (let x = lEnd; x < rEnd; x += o.primaryStep) {
+			let y = expr.evaluate({x});
+			if (y > maxY) {
+				maxX = x;
+				maxY = y;
+			} else if (y < minY) {
+				minX = x;
+				minY = y;
+			}
+		}
+
+		//Sharpen the values a bit...
+		minY += 1;
+		for (let x = minX - 3 * o.primaryStep; x < minX + 3 * o.primaryStep; x += o.secondaryStep) {
+			let y = expr.evaluate({x});
+			if (y < minY) {
+				minX = x;
+				minY = y;
+			}
+		}
+		maxY -= 1;
+		for (let x = maxX - 3 * o.primaryStep; x < maxX + 3 * o.primaryStep; x += o.secondaryStep) {
+			let y = expr.evaluate({x});
+			if (y > maxY) {
+				maxX = x;
+				maxY = y;
+			}
+		}
+
+
+		console.log('minX: ' + minX + " ; minY: " + minY + " ;   maxX: " + maxX + " ; maxY: " + maxY);
+
+		if (!(minY*1000).isAlmostInteger() || o.forbidMinY) {
+			minY = null;
+		}
+
+		if (!(maxY*1000).isAlmostInteger() || o.forbidMaxY) {
+			maxY = null;
+		}
+
+		genAssert(minY !== null || maxY !== null);
+
+		var chooseMinMax;
+		if (maxY === null || (minY !== null && sl1())) {
+			chooseMinMax = 'наименьшее';
+			o.answers = minY;
+		} else {
+			chooseMinMax = 'наибольшее';
+			o.answers = maxY;
+		}
+
+		o.answers = o.answers.ts();
+		genAssert(o.answers.length < 7);
+
+		if (o.simplifyConstant){
+			expr = math.simplifyConstant(expr);
+		}
+
+		if (!o.keepFractionsIrreduced){
+			expr = math.simplify(expr,mathjsRules.reduceFractions);
+			expr = math.simplify(expr,mathjsRules.reduceFractionsPi);
+		}
+
+		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
+		expr = math.simplify(expr, mathjsRules.omit1pi);
+		expr = math.simplify(expr, mathjsRules.omit1sqrt);
+		expr = math.simplify(expr, mathjsRules.trig2trigPow);
+
+
+		let tex = expr.toTex().allDecimalsToStandard(true);
+		o.text =
+			'Найдите '+ chooseMinMax + ' значение функции $y=' + tex + '$ на отрезке ' +
+			'$\\left[' + math.parse(o.leftEnd).toTex() + ' ; ' + math.parse(o.rightEnd).toTex() + '\\right]$.'
+
+		chas2.task.setTask(o);
+	},
+
+
 	/** @function NApi.task.setTwoStatementTask
 	 * Составить задание о двух утверждениях
 	 * @param {String|Object[]} stA первое утверждение (или массив утверждений)
