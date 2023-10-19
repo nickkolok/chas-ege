@@ -8,13 +8,9 @@ retryWhileUndefined(function() {
 	let b = sl(-3, 3);
 	if ((-b / k).abs() > 6 && f(-b / k).abs() > 6)
 		return;
-	let sign = [
-		['>', ' \\geq '].iz(), ['>', '\\geq'].iz()
-	];
-	if (k < 0)
-		sign[0] = ['<', ' \\leq '].iz();
-	if (b < 0)
-		sign[1] = ['<', ' \\leq '].iz();
+	let sign1 = (k>0)?['>', ' \\geq '].iz():['<', ' \\leq '].iz();
+	let sign2 = (b==0)?[' \\geq ',' \\leq '].iz():(((b>0))?['>', ' \\geq '].iz():['<', ' \\leq '].iz());
+	
 	let p = intPoints(f, {
 		minX: 0,
 		maxX: 6,
@@ -57,8 +53,8 @@ retryWhileUndefined(function() {
 		graph9AmarkCircles(ct, p, 4, 0.15);
 	};
 	NAtask.setTask({
-		text: 'На рисунке изображен график функций $f(x)=\\Bigl|k|x|+b\\Bigr|$' + (', где $k' + sign[0] + '0$, $b' + 
-		sign[1] + '0$').esli(variant[2]) + '. Найдите ' + variant[0] +
+		text: 'На рисунке изображен график функций $f(x)=\\Bigl|k|x|+b\\Bigr|$' + (', где $k' + sign1 + '0$, $b' +
+				sign2 + '0$').esli(variant[2]) + '. Найдите ' + variant[0] +
 			'.',
 		answers: variant[1],
 		analys: ('$f(x)=\\Bigl|' + k.ts() + '|x|+' + b.ts() + '\\Bigr|').replace('+-', '-') + '$'
