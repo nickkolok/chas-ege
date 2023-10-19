@@ -675,6 +675,14 @@ chas2.task = {
 		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
 		expr = math.simplify(expr, mathjsRules.omit1pi);
 		expr = math.simplify(expr, mathjsRules.omit1sqrt);
+
+		let derivative = math.derivative(expr, 'x');
+
+		o.analys = "Производная функции: $y' = " +
+			derivative.toTex() + "$" +
+			(o.analys || '');
+
+
 		expr = math.simplify(expr, mathjsRules.trig2trigPow);
 
 
