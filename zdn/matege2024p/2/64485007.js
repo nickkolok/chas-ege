@@ -14,6 +14,8 @@
 
 
 		let coeffs = generateMatrix(4, 2, -10, 10);
+		coeffs.forEach((elem)=>genAssert(objUmn(elem[0],elem[1]),'Нулевой коэффициент'));
+		
 		let vectorsCopy = vectors.slice().map((elem, i) => objUmn(elem, coeffs[i][0] / coeffs[i][1]));
 		let subVector1, subVector2;
 		let condition = [];
