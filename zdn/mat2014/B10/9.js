@@ -17,7 +17,7 @@
 
 		var q = ['увеличит', 'уменьшит'][v0];
 		let paint1 = function(ct) {
-			ct.translate(100, 30);
+			ct.translate(100, 60);
 			ct.scale(20, 20);
 			ct.lineWidth = 2 / 20;
 			let cubeEdge = 13;
@@ -31,7 +31,7 @@
 				strokeStyle: "#809DF2",
 				diagonalStrokeStyle: ["#D777F2", "#F2A2D6"].iz(),
 			}, [0, 2, 3, 4, 6], false, [0.5, 0.2]);
-			ct.translate(-59 / 20, -96 / 20);
+			ct.translate(-64 / 20, -104 / 20);
 
 			ct.drawParallelepiped({
 				width: cubeEdge,
