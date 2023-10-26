@@ -695,8 +695,14 @@ chas2.task = {
 		 */
 		variativeABC : (function() {
 			var alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-			return function() {
+			return function(variativeABCstrings) {
 				var alph2 = alph.slice().shuffle();
+				if (variativeABCstrings) {
+					for (let i = 0; i < variativeABCstrings.length; i++) {
+						variativeABCstrings[i] =
+							variativeABCstrings[i].cepZamena(alph, alph2);
+					}
+				}
 				chas2.task.setTask(
 					mapRecursive(
 						chas2.task.getTask(),
