@@ -57,9 +57,9 @@
 				'$, $AA_1=' + c + '$. ' +
 				'Найдите ' + question + ' угла между прямыми $' + letters1 + '$ и $' + letters2 + '$.',
 			answers: answ,
-			author: ['Суматохина Александра']
+			author: ['Суматохина Александра'],
 		});
-		//NAtask.modifiers.variativeABC(allLet);
+		NAtask.modifiers.variativeABC(allLet);
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
