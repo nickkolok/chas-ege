@@ -6,8 +6,8 @@
 			return spline.at(x);
 		}
 		NAinfo.requireApiVersion(0, 2);
-		let maxX = sl(8, 10);
-		let minX = maxX - sl(13, 18);
+		let maxX = sl(6, 8);
+		let minX = maxX - sl(9, 14);
 		let X = [];
 		let Y = [];
 		for (let i = minX; i <= maxX; i += sl(1.3, 3.4, 0.3))
@@ -25,20 +25,20 @@
 		let extremum = [];
 		let points = [];
 		let step = 0.001;
-		for (let i = minX; i < maxX; i += step) {
-			genAssert(f(i).abs() < 8, 'Слишком большой горбик');
-			let funcNext = f(i + step);
-			let funcPrevious = f(i - step);
-			if (f(i) < funcPrevious && f(i) < funcNext || (f(i) > funcPrevious && f(i) > funcNext)) {
-				genAssert((i.abs() - i.round().abs()).abs() > 0.3, 'Экстремум целый');
-				extremum.push([i, f(i)]);
-			}
 
-			if (extremum.length > 0) {
-				genAssert(extremum[extremum.length - 1][1].abs().round() != 0, 'Слишком непонятный экстремум');
-			}
-		}
-		genAssert(extremum.length > 1, 'Экстремумов недостаточно');
+		genAssert(f(maxX).abs() < 8);
+
+		let extremum1 = findExtremumsOfFunction(f, minX, maxX, step);
+		extremum = extremum1.minP.concat(extremum1.maxP);
+
+		genAssert(extremum.length > 2, 'Экстремумов недостаточно');
+
+		let extremumX = extremum.T()[0];
+		let extremumY = extremum.T()[1];
+
+		genAssert(extremumY.maxE() < 8 && extremumY.minE() > -8, 'Слишком большой горб');
+		extremumX.forEach((elem) => genAssert((elem.abs() - elem.round().abs()).abs() > 0.3, 'Экстремум целый'));
+		extremumY.forEach((elem) => genAssert(elem.round() != 0, 'Слишком непонятный экстремум'));
 
 		for (let i = minX + 1; i < maxX; i++)
 			points.push(i);
@@ -55,7 +55,6 @@
 			}
 		}
 
-
 		let condition = [
 			['положительна', [
 				['сумму', pointsOfIncreasing.sum()],
@@ -68,8 +67,8 @@
 		].iz();
 
 		let paint1 = function(ct) {
-			let h = 380;
-			let w = 500;
+			let h = 400;
+			let w = 400;
 			ct.drawCoordinatePlane(w, h, {
 				hor: 1,
 				ver: 1
@@ -114,7 +113,7 @@
 			answers: condition[1][1],
 		});
 		NAtask.modifiers.addCanvasIllustration({
-			width: 500,
+			width: 400,
 			height: 400,
 			paint: paint1,
 		});
