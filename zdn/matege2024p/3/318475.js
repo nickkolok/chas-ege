@@ -1,18 +1,24 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
+		let letters = ['A', 'B', 'C', 'D'];
+		let letterWithIndex = letters.map((elem) => elem + '₁');
+		let allLet = letters.concat(letterWithIndex);
+		
 
 		let paint1 = function(ctx) {
-			ctx.translate(110, 50);
+			ctx.translate(95, 50);
 			let edge = 25;
 			ctx.scale(10, 10);
 
 			ctx.lineWidth = 0.2;
+			ctx.font = "2.5px liberation_sans";
 			ctx.drawParallelepiped({
 				width: edge*1.1,
 				height: edge*0.9,
 				depth: edge / 2,
 				angle: 40,
+				lettersOnVertex: allLet,
 				scale: 20,
 			}, [0, 3, 4], false, [0.4, 0.5]);
 		};
@@ -22,7 +28,7 @@
 			answers: 60,
 			author: ['Суматохина Александра']
 		});
-		NAtask.modifiers.variativeABC();
+		NAtask.modifiers.variativeABC(allLet);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
@@ -30,4 +36,3 @@
 		});
 	});
 })();
-// 318475 530450 530552 318575 318577 319053 319055
