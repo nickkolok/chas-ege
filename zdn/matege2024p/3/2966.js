@@ -1,6 +1,9 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
+		let letters = ['A', 'B', 'C', 'D'];
+		let letterWithIndex = letters.map((elem) => elem + '₁');
+		let allLet = letters.concat(letterWithIndex);
 
 		let a = sl(1, 10);
 		let b = sl(1, 10);
@@ -14,18 +17,20 @@
 		let answ = find.pop();
 		
 		let paint1 = function(ctx) {
-		ctx.translate(110, 50);
-		let edge = 17;
+		ctx.translate(100, 50);
+		let edge = 15;
 		ctx.scale(10, 10);
 
 		ctx.font = "3px liberation_sans";
 		ctx.lineWidth = 0.2;
+		ctx.font = "2.5px liberation_sans";
 		ctx.drawParallelepiped({
 			width: edge * 1.6,
 			height: edge * 1.3,
 			depth: edge / 1.5,
 			angle: Math.PI / 1.1,
 			scale: 20,
+			lettersOnVertex: allLet,
 		}, [0, 3, 4], find[0].includes('диагонали'), [0.4, 0.5]);
 	};
 
@@ -36,7 +41,7 @@
 			answers: answ,
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
-		NAtask.modifiers.variativeABC();
+		NAtask.modifiers.variativeABC(allLet);
 		NAtask.modifiers.addCanvasIllustration({
 		width: 400,
 		height: 400,
