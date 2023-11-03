@@ -596,8 +596,6 @@ chas2.task = {
 	 * @param {Boolean}  o.forbidAnalys запретить писать решение (если оно кривое)
 	 */
 	setMinimaxFunctionTask: function (o) {
-		let task = o.clone();
-
 		let expr = math.parse(o.expr);
 		let lEnd = math.parse(o.leftEnd).evaluate();
 		let rEnd = math.parse(o.rightEnd).evaluate();
