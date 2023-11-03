@@ -593,6 +593,7 @@ chas2.task = {
 	 * @param {Number}  o.secondaryStep шаг вторичного перебора значений x, по умолчанию o.primaryStep.sqr()
 	 * @param {Boolean}  o.forbidMinY запретить спрашивать минимум
 	 * @param {Boolean}  o.forbidMaxY запретить спрашивать максимум
+	 * @param {Boolean}  o.forbidAnalys запретить писать решение (если оно кривое)
 	 */
 	setMinimaxFunctionTask: function (o) {
 		let task = o.clone();
@@ -678,10 +679,11 @@ chas2.task = {
 
 		let derivative = math.derivative(expr, 'x');
 
-		o.analys = "Производная функции: $y' = " +
-			derivative.toTex() + "$" +
-			(o.analys || '');
-
+		if (!o.forbidAnalys) {
+			o.analys = "Производная функции: $y' = " +
+				derivative.toTex() + "$" +
+				(o.analys || '');
+		}
 
 		expr = math.simplify(expr, mathjsRules.trig2trigPow);
 
