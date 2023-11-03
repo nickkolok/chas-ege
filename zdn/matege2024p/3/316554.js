@@ -3,6 +3,8 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let letters = ['A', 'B', 'C', 'D'];
+		let letterWithIndex = letters.map((elem) => elem + '₁');
+		let allLet = letters.concat(letterWithIndex);
 
 		let letters1, letters2;
 
@@ -30,15 +32,18 @@
 
 		let paint1 = function(ct) {
 			ct.translate(110, 60);
-			ct.scale(20, 20);
-			ct.lineWidth = 2 / 20;
-			let cubeEdge = 12;
+			ct.scale(10, 10);
+			ct.lineWidth = 2 / 10;
+			let cubeEdge = 26;
 
+			ct.font = "2.5px liberation_sans";
 			ct.drawParallelepiped({
 				width: cubeEdge,
 				height: cubeEdge,
 				depth: cubeEdge / (2.5),
 				angle: 40,
+				scale: 20,
+				lettersOnVertex: allLet,
 				strokeStyle: om.secondaryBrandColors,
 				diagonalStrokeStyle: om.primaryBrandColors.iz(),
 			}, [0, 3, 4], false, [0.5, 0.2]);
