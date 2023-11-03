@@ -675,9 +675,9 @@ chas2.task = {
 		expr = math.simplify(expr, mathjsRules.omit1pi);
 		expr = math.simplify(expr, mathjsRules.omit1sqrt);
 
-		let derivative = math.derivative(expr, 'x');
 
 		if (!o.forbidAnalys) {
+			let derivative = math.derivative(expr, 'x', {simplify: false});
 			o.analys = "Производная функции: $y' = " +
 				derivative.toTex() + "$" +
 				(o.analys || '');
