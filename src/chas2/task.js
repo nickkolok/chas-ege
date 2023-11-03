@@ -684,10 +684,7 @@ chas2.task = {
 			let derivative = math.derivative(expr, 'x', {simplify: false});
 
 			//... but simplify something that is safe
-			derivative = math.simplify(derivative, [{l: "n1+0", r: "n1"}]);
-			derivative = math.simplify(derivative, [{l: "n1-0", r: "n1"}]);
-			derivative = math.simplify(derivative, [{l: "n1*1", r: "n1"}]);
-			derivative = math.simplify(derivative, [{l: "n1*-n2", r: "(-n1)*n2"}]);
+			derivative = math.simplify(derivative, mathjsRules.safeTrivialSimplification);
 			derivative = math.simplify(derivative, mathjsRules.trig2trigPow);
 
 			o.analys = "Производная функции: $y' = " +
