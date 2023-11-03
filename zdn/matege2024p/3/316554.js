@@ -4,6 +4,7 @@
 
 		let letters = ['A', 'B', 'C', 'D'];
 		let letterWithIndex = letters.map((elem) => elem + '₁');
+		let allLet = letters.concat(letterWithIndex);
 
 		let letters1 = [
 			[letters[0], letters[2]],
@@ -24,12 +25,14 @@
 			ctx.scale(10, 10);
 
 			ctx.lineWidth = 0.2;
+			ctx.font = "2.5px liberation_sans";
 			ctx.drawParallelepiped({
 				width: edge,
 				height: edge,
 				depth: edge / 2,
 				angle: 40,
 				scale: 20,
+				lettersOnVertex: allLet,
 				internalLinesWithDash: [
 					[sl(0, 7), sl(0, 7)]
 				],
@@ -41,7 +44,7 @@
 			answers: 60,
 			author: ['Суматохина Александра']
 		});
-		NAtask.modifiers.variativeABC(letters);
+		NAtask.modifiers.variativeABC(allLet);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
