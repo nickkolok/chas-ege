@@ -651,12 +651,15 @@ chas2.task = {
 		genAssert(minY !== null || maxY !== null);
 
 		var chooseMinMax;
+		let chosenX;
 		if (maxY === null || (minY !== null && sl1())) {
 			chooseMinMax = 'наименьшее';
 			o.answers = minY;
+			chosenX = minX;
 		} else {
 			chooseMinMax = 'наибольшее';
 			o.answers = maxY;
+			chosenX = maxX;
 		}
 
 		o.answers = o.answers.ts();
@@ -697,6 +700,22 @@ chas2.task = {
 		let intervalName = 'отрезке';
 		let intervalEndL = '[';
 		let intervalEndR = ']';
+
+		if (!o.forbidOpenEnds) {
+			if (!sl(3) && (chosenX - lEnd).abs() > o.primaryStep && (chosenX - rEnd).abs() > o.primaryStep) {
+				intervalName = 'интервале';
+				intervalEndL = '(';
+				intervalEndR = ')';
+			} else if (!sl(2) && (chosenX - lEnd).abs() > o.primaryStep) {
+				intervalName = 'полуинтервале';
+				intervalEndL = '(';
+				intervalEndR = ']';
+			} else if (!sl(1) && (chosenX - rEnd).abs() > o.primaryStep) {
+				intervalName = 'полуинтервале';
+				intervalEndL = '[';
+				intervalEndR = ')';
+			}
+		}
 
 		let tex = expr.toTex().allDecimalsToStandard(true);
 		o.text =
