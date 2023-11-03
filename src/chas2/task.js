@@ -694,11 +694,15 @@ chas2.task = {
 
 		expr = math.simplify(expr, mathjsRules.trig2trigPow);
 
+		let intervalName = 'отрезке';
+		let intervalEndL = '[';
+		let intervalEndR = ']';
 
 		let tex = expr.toTex().allDecimalsToStandard(true);
 		o.text =
-			'Найдите '+ chooseMinMax + ' значение функции $y=' + tex + '$ на отрезке ' +
-			'$\\left[' + math.parse(o.leftEnd).toTex() + ' ; ' + math.parse(o.rightEnd).toTex() + '\\right]$.'
+			'Найдите '+ chooseMinMax + ' значение функции $y=' + tex + '$ на ' + intervalName + ' ' +
+			'$\\left' + intervalEndL + math.parse(o.leftEnd).toTex() + ' ; ' +
+			math.parse(o.rightEnd).toTex() + '\\right' + intervalEndR + '$.'
 
 		chas2.task.setTask(o);
 	},
