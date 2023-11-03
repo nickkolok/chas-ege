@@ -608,6 +608,8 @@ chas2.task = {
 		o.primaryStep = (o.primaryStep || 0.001);
 		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
 
+		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
+
 		for (let x = lEnd; x < rEnd; x += o.primaryStep) {
 			let y = expr.evaluate({x});
 			if (y > maxY) {
