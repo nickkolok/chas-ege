@@ -285,36 +285,36 @@ var unqDict = {};
 function obnov() {
 	var nazvzad;
 
-		if (options.transitTaskNumbers){
-			nazvzad = options.startTransitNumber + aZ.sum() - iZ.sum() - 1;
-		}else{
-			nazvzad =
-				dvig.getzadname(nZ)+
-				(aZ[nZ]==1? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1) );
-		}
-		var html = createHtmlForTask(nazvzad);
+	if (options.transitTaskNumbers) {
+		nazvzad = options.startTransitNumber + aZ.sum() - iZ.sum() - 1;
+	} else {
+		nazvzad =
+			dvig.getzadname(nZ) +
+			(aZ[nZ] == 1 ? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1));
+	}
+	var html = createHtmlForTask(nazvzad);
 
-		if(options.uniqueAnswersAndSolutions && (html.unq in unqDict)){
-			console.log('Deduplicating ' + nazvzad + '...');
-			dvig.zadan(obnov,nZ);
-			return;
-		}
+	if (options.uniqueAnswersAndSolutions && (html.unq in unqDict)) {
+		console.log('Deduplicating ' + nazvzad + '...');
+		dvig.zadan(obnov, nZ);
+		return;
+	}
 
-		unqDict[html.unq] = true;
+	unqDict[html.unq] = true;
 
-		strVopr += html.txt;
-		strOtv  += html.ver;
-		strResh += html.rsh;
+	strVopr += html.txt;
+	strOtv  += html.ver;
+	strResh += html.rsh;
 
-		generatedTasks[vopr.taskId] = vopr.clone();
+	generatedTasks[vopr.taskId] = vopr.clone();
 
-		var sdel=aZ.sum()*(aV-nV+1)-iZ.sum();
-		var w=sdel/kZ;
-		$('.tx').text((100*w).toFixedLess(1).dopdo(' ',4)+'%');
-		$('#pr1').width($('#pr0').width()*w);
-		var v=(vr1+vr2)*(kZ-sdel)/1000;
-		$('#vrem').text(sdel+' из '+kZ+' '+v.toDvoet());
-		zadan();
+	var sdel = aZ.sum() * (aV - nV + 1) - iZ.sum();
+	var w = sdel / kZ;
+	$('.tx').text((100 * w).toFixedLess(1).dopdo(' ', 4) + '%');
+	$('#pr1').width($('#pr0').width() * w);
+	var v = (vr1 + vr2) * (kZ - sdel) / 1000;
+	$('#vrem').text(sdel + ' из ' + kZ + ' ' + v.toDvoet());
+	zadan();
 }
 
 function shirprim() {
@@ -485,7 +485,6 @@ function replaceCanvasWithImgInTask(element, text) {
 	}
 	console.log(element);
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
-	console.log(canvases);
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
@@ -517,8 +516,9 @@ function createLaTeXbunchTasks(variantN) {
 	return bunchText;
 }
 
-function refreshLaTeXarchive(){
-	if(!options.prepareLaTeX){
+
+function refreshLaTeXarchive() {
+	if (!options.prepareLaTeX) {
 		return;
 	}
 	var zip = new JSZip();
