@@ -12,24 +12,25 @@
 		let heat_system_skl=sklonlxkand(heat_system);
 
 		let log_zn = sl(1,6);//значение логарифма, x*j/a*c*m
-		let T_R = sl(15,30,0.1);//температура помещения
-		let T_L = sl(T_R+10,99,0.1);//температура жидкости
-		let x = sl(10,300,0.1);//длина трубы
-		let m = sl(0.1,0.9,0.1);//расход жидкости
-		let alpha = sl(0.1,0.9,0.1);//коэф альфа
-		let gamma = sl(10,50,0.1);//коэф гамма
+		let alpha = sl(0.1,1.9,0.01);//коэф альфа
+		let gamma = sl(10,50,0.01);//коэф гамма
+		let m = sl(0.1,0.9,0.01);//расход жидкости
+		let x = alpha*capacity[liquid]*m*log_zn/gamma;//длина трубы
+		let T_R = sl(15,30,0.01);//температура помещения
+		let T_L = sl(T_R+10,99,0.01);//температура жидкости
 		let T = (T_L-T_R)/math.pow(2,log_zn)+T_R;
-		
+
+		genAssertZ1000(x,'Длина слишком дробная');
 		genAssertZ1000(T,'Ответ слишком дробный');
 
 		NAtask.setTask({
 			text: 'Для обогрева '+room_skl.re+', температура в котор'+['ом','ой','ом','ых'][room_skl.rod]+
 				' поддерживается на уровне $T_'+room[0].toUpperCase()+'='+T_R.ts()+' {}^\\circ C$, через '+
-				heat_system_skl.ve+' отопления '+['пропускают','прокачивают'].iz()+' горяч'+['ий','ую','ее','ие'][liquid_skl.rod]+' '+liquid+'. '+
+				heat_system_skl.ve+' отопления '+['пропускают','прокачивают'].iz()+' горяч'+['ий','ую','ее','ие'][liquid_skl.rod]+' '+liquid_skl.ve+'. '+
 				'Расход проходящ'+['его','ей','его','их'][liquid_skl.rod]+' через трубу '+heat_system_skl.re+' '+liquid_skl.re+' $m='+m.ts()+
-				' \\dfrac{кг}{с}$. Проходя по трубе расстояние $x$, '+liquid+' охлаждается от начальной температуры '+
+				' \\dfrac{кг}{с}$. Проходя по трубе расстояние $x~(м)$, '+liquid+' охлаждается от начальной температуры '+
 				'$T_'+liquid[0].toUpperCase()+'='+T_L.ts()+
-				' {}^\\circ C$, до температуры $T {}^\\circ C$, причём $x=\\alpha \\cdot \\dfrac{cm}{\\gamma}\\cdot \\log_2 \\dfrac{T_'+
+				' {}^\\circ C$, до температуры $T~({}^\\circ C)$, причём $x=\\alpha \\cdot \\dfrac{cm}{\\gamma}\\cdot \\log_2 \\dfrac{T_'+
 				liquid[0].toUpperCase()+'-T_'+room[0].toUpperCase()+'}{T-T_'+room[0].toUpperCase()+'}$, где '+
 				'$c='+capacity[liquid]+'\\dfrac{Вт\\cdot c}{кг\\cdot {}^\\circ C}$ — теплоёмкость '+liquid_skl.re+', $\\gamma='+
 				gamma.ts()+'\\dfrac{Вт}{м\\cdot {}^\\circ C}$ — коэффициент '+
@@ -40,7 +41,7 @@
 			analys: '$\\log_2 \\dfrac{'+T_L.ts()+'-'+T_R.ts()+'}{T-'+T_R.ts()+'}='+log_zn+'$',
 			authors: ['Aisse-258'],
 		});
-	}, 1000);
+	}, 20000);
 })();
 //Aisse-258
 /*РешуЕГЭ 27995, 28477, 43049, 28479, 28481
