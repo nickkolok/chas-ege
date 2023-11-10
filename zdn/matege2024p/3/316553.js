@@ -9,7 +9,7 @@
 		let letterQ = letters.slice().permuteCyclic(sl(0, letters.length - 1));
 		letterQ = [letterQ.slice(0, 2).shuffleJoin(), [letterQ[2] + '_1', letterQ[3] + '_1'].shuffleJoin()];
 
-		let edge = [sl(1, 10), sl(1, 20).texfracpi(sl(2, 30)), '|\\arc' + ['sin', 'cos', 'tg', 'ctg'].iz() + '(' + sl(1, 20).texfracpi(sl(2, 30)) + ')'+'|', sl(1, 20).texsqrtfrac(sl(2, 30))
+		let edge = [sl(1, 10), sl(1, 20).texfracpi(sl(2, 30)), '|\\arc' + ['sin', 'cos', 'tg', 'ctg'].iz() + '(' + sl(1, 9).texfrac(sl(10, 30)) + ')'+'|', sl(1, 20).texsqrtfrac(sl(2, 30))
 		].iz();
 
 		let paint1 = function(ctx) {
