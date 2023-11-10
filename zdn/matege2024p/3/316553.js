@@ -7,20 +7,9 @@
 		let allLet = letters.concat(letterWithIndex);
 
 		let letterQ = letters.slice().permuteCyclic(sl(0, letters.length - 1));
-		let answ;
+		letterQ = [letterQ.slice(0, 2).shuffleJoin(), [letterQ[2] + '_1', letterQ[3] + '_1'].shuffleJoin()];
 		
 		let edge = sl(1,10);
-
-		switch (sl1()) {
-		case 0:
-			letterQ = [letterQ.slice(0, 2).shuffleJoin(), [letterQ[2] + '_1', letterQ[3] + '_1'].shuffleJoin()];
-			answ = 30;
-			break;
-		case 1:
-			letterQ = [letterQ.slice(0, 2).shuffleJoin(), [letterQ[4] + '_1', letterQ[5] + '_1'].shuffleJoin()];
-			answ = 60;
-			break;
-		}
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 0.5;
@@ -49,7 +38,7 @@
 		NAtask.setTask({
 			text: 'В правильной шестиугольной призме $ABCDEFA_1B_1C_1D_1E_1F_1$, все рёбра которой ' +
 				'равны $'+edge+'$, найдите угол между прямыми $' + letterQ[0] + '$ и $' + letterQ[1] + '$. Ответ дайте в градусах.',
-			answers: answ,
+			answers: 60,
 			analys: '',
 		});
 		NAtask.modifiers.addCanvasIllustration({
