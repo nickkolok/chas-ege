@@ -8,8 +8,9 @@
 
 		let letterQ = letters.slice().permuteCyclic(sl(0, letters.length - 1));
 		letterQ = [letterQ.slice(0, 2).shuffleJoin(), [letterQ[2] + '_1', letterQ[3] + '_1'].shuffleJoin()];
-		
-		let edge = sl(1,10);
+
+		let edge = [sl(1, 10), sl(1, 20).texfracpi(sl(2, 30)), '\\arc' + ['sin', 'cos', 'tg', 'ctg'].iz() + '(' + sl(1, 20).texfracpi(sl(2, 30)) + ')', sl(1, 20).texsqrtfrac(sl(2, 30))
+		].iz();
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 0.5;
@@ -37,7 +38,8 @@
 		};
 		NAtask.setTask({
 			text: 'В правильной шестиугольной призме $ABCDEFA_1B_1C_1D_1E_1F_1$, все рёбра которой ' +
-				'равны $'+edge+'$, найдите угол между прямыми $' + letterQ[0] + '$ и $' + letterQ[1] + '$. Ответ дайте в градусах.',
+				'равны $' + edge + '$, найдите угол между прямыми $' + letterQ[0] + '$ и $' + letterQ[1] +
+				'$. Ответ дайте в градусах.',
 			answers: 60,
 			analys: '',
 		});
