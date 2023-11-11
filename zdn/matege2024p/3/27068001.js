@@ -7,7 +7,7 @@
 			['отсечённой', 1 / 3]
 		].iz()];
 		let ratio = question[1].pop();
-		question[1]+=' призмы';
+		question[1]+='треугольной призмы';
 
 		console.log(question);
 
