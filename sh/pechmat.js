@@ -529,7 +529,7 @@ function refreshLaTeXarchive() {
 		var head =
 			'\n\n' +
 			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
-			'\\def\\examvart{Вариант ' + options.variantPrefix + variantN + '}\n' +
+			'\\def\\examvart{\\varianttitle ' + options.variantPrefix + variantN + '}\n' +
 			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
 			'\n\n';
 		var tail =
