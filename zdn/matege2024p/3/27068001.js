@@ -9,8 +9,6 @@
 		let ratio = question[1].pop();
 		question[1]+='треугольной призмы';
 
-		console.log(question);
-
 		let number = sl(5, 100);
 		let answ = !rand ? number * ratio : number / ratio;
 		
