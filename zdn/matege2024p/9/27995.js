@@ -25,18 +25,18 @@
 
 		NAtask.setTask({
 			text: 'Для обогрева '+room_skl.re+', температура в котор'+['ом','ой','ом','ых'][room_skl.rod]+
-				' поддерживается на уровне $T_'+room[0].toUpperCase()+'='+T_R.ts()+' {}^\\circ C$, через '+
+				' поддерживается на уровне $T_\\text{'+room[0].toUpperCase()+'}='+T_R.ts()+' {}^\\circ C$, через '+
 				heat_system_skl.ve+' отопления '+['пропускают','прокачивают'].iz()+' горяч'+['ий','ую','ее','ие'][liquid_skl.rod]+' '+liquid_skl.ve+'. '+
 				'Расход проходящ'+['его','ей','его','их'][liquid_skl.rod]+' через трубу '+heat_system_skl.re+' '+liquid_skl.re+' $m='+m.ts()+
-				' \\dfrac{кг}{с}$. Проходя по трубе расстояние $x~(м)$, '+liquid+' охлаждается от начальной температуры '+
-				'$T_'+liquid[0].toUpperCase()+'='+T_L.ts()+
-				' {}^\\circ C$, до температуры $T~({}^\\circ C)$, причём $x=\\alpha \\cdot \\dfrac{cm}{\\gamma}\\cdot \\log_2 \\dfrac{T_'+
-				liquid[0].toUpperCase()+'-T_'+room[0].toUpperCase()+'}{T-T_'+room[0].toUpperCase()+'}$, где '+
-				'$c='+capacity[liquid]+'\\dfrac{Вт\\cdot c}{кг\\cdot {}^\\circ C}$ — теплоёмкость '+liquid_skl.re+', $\\gamma='+
-				gamma.ts()+'\\dfrac{Вт}{м\\cdot {}^\\circ C}$ — коэффициент '+
+				' \\dfrac{\\mbox{кг}}{\\mbox{с}}$. Проходя по трубе расстояние $x~(\\mbox{м})$, '+liquid+' охлаждается от начальной температуры '+
+				'$T_\\text{'+liquid[0].toUpperCase()+'}='+T_L.ts()+
+				' {}^\\circ C$, до температуры $T~({}^\\circ C)$, причём $x=\\alpha \\cdot \\dfrac{cm}{\\gamma}\\cdot \\log_2 \\dfrac{T_\\text{'+
+				liquid[0].toUpperCase()+'}-T_\\text{'+room[0].toUpperCase()+'}}{T-T_\\text{'+room[0].toUpperCase()+'}}$, где '+
+				'$c='+capacity[liquid]+'\\dfrac{\\mbox{Вт}\\cdot \\mbox{с}}{\\mbox{кг}\\cdot {}^\\circ C}$ — теплоёмкость '+liquid_skl.re+', $\\gamma='+
+				gamma.ts()+'\\dfrac{\\mbox{Вт}}{\\mbox{м}\\cdot {}^\\circ C}$ — коэффициент '+
 				'теплообмена, а $\\alpha='+alpha.ts()+'$ — постоянная. Найдите, до какой температуры (в градусах '+
 				'Цельсия) охладится '+liquid+', если длина трубы '+heat_system_skl.re+' '+
-				'равна $'+x.ts()+' ~м$.',
+				'равна $'+x.ts()+' ~\\mbox{м}$.',
 			answers: T,
 			analys: '$\\log_2 \\dfrac{'+T_L.ts()+'-'+T_R.ts()+'}{T-'+T_R.ts()+'}='+log_zn+'$',
 			authors: ['Aisse-258'],
