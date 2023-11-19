@@ -4,72 +4,56 @@
 
 		let angle = sl(2, 89);
 
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 6);
+		let vertices = window.latbukv.iz(6);
+
+		let rand = sl1();
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = "#809DF2";
 
+			let coordinatesByAngle = (x, y, angle, length) => [x + angle.cos() * length, y + angle.sin() * length];//А надо ли это в функцию?
+
+			let angle = -Math.PI / 3.2;
+			let vertex = coordinatesByAngle(10, 370, angle, 400);
+
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawLine(10, 370, 390, 370);
-			ctx.drawLine(10, 370, 150, 70);
-			ctx.drawLine(150, 70, 390, 370);
+			ctx.drawLine(10, 370, vertex[0], vertex[1]);
+			ctx.drawLine(390, 370, vertex[0], vertex[1]);
 
-			ctx.drawLine(10, 370, 270 - 2, 220 - 5);
-			ctx.drawLine(79 + 4, 220 - 10, 390, 370);
 
-			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
+			ctx.drawLineAtAngle(390, 370, Math.atan2(-370 + vertex[1], -390 + vertex[0]) / 2 - Math.PI / 2, 317);
+			ctx.drawLineAtAngle(10, 370, angle / 2, 345);
 
-			ctx.beginPath();
-			ctx.arc(183, 270, 30, 0.10 * Math.PI, -1.13 * Math.PI);
-			ctx.stroke();
+			let bisector1 = coordinatesByAngle(10, 370, angle / 2, 345);
+			let bisector2 = coordinatesByAngle(390, 370, Math.atan2(-370 + vertex[1], -390 + vertex[0]) / 2 - Math.PI / 2, 317);
 
-			ctx.beginPath();
-			ctx.arc(10, 370, 30, 0, -0.17 * Math.PI, true);
-			ctx.stroke();
-			ctx.beginPath();
-			ctx.arc(10, 370, 25, -0.17 * Math.PI, -0.34 * Math.PI, true);
-			ctx.stroke();
+			ctx.strokeStyle = om.primaryBrandColors[rand];
+			ctx.arcBetweenSegmentsCount([vertex[0], vertex[1], 10, 370].concat(bisector1), 30, 2);
+			ctx.arcBetweenSegmentsCount(bisector1.concat([10, 370, 390, 370]), 40, 2);
 
-			ctx.beginPath();
-			ctx.arc(390, 370, 30, -Math.PI, -0.85 * Math.PI);
-			ctx.stroke();
-			ctx.beginPath();
-			ctx.arc(390, 370, 35, -Math.PI, -0.85 * Math.PI);
-			ctx.stroke();
+			ctx.strokeStyle = om.primaryBrandColors[rand];
+			ctx.arcBetweenSegments([10, 370, 390, 370].concat(bisector2), 30);
+			ctx.arcBetweenSegments((bisector2.concat([390, 370, vertex[0], vertex[1]])), 40);
 
-			ctx.beginPath();
-			ctx.arc(390, 370, 40, -0.85 * Math.PI, -0.72 * Math.PI);
-			ctx.stroke();
-			ctx.beginPath();
-			ctx.arc(390, 370, 45, -0.85 * Math.PI, -0.72 * Math.PI);
-			ctx.stroke();
-
+			ctx.strokeStyle = om.primaryBrandColors[1 - rand];
+			ctx.arcBetweenSegmentsCount(bisector1.concat([10, 370]).concat(bisector2).concat([390, 370]), 25, 3);
 
 			ctx.font = "23px liberation_sans";
-			ctx.fillText(vertices[0], 150, 70 - 10);
+			ctx.fillText(vertices[0], vertex[0], vertex[1] - 10);
 			ctx.fillText(vertices[1], 10 - 5, 370 + 20);
 			ctx.fillText(vertices[2], 390 - 20, 370 + 20);
 
-			ctx.fillText(vertices[3], 270 + 10, 220 + 5);
-			ctx.fillText(vertices[4], 90 - 30, 200 + 20);
+			ctx.fillText(vertices[3], bisector1[0], bisector1[1]);
+			ctx.fillText(vertices[4], bisector2[0] - 20, bisector2[1]);
 
-			ctx.fillText(vertices[5], 180, 270 + 25);
-
-
+			ctx.fillText(vertices[5], 210, 250);
 		};
 
 		NAtask.setTask({
-			text: 'В треугольнике $' + vertices.slice(0, 3).shuffle().join('') + '$ угол $' + vertices[0] + '$ равен $' + angle +
+			text: 'В треугольнике $' + vertices.slice(0, 3).join('') + '$ угол $' + vertices[0] + '$ равен $' + angle +
 				'^{\\circ}$, углы $' + vertices[1] + '$ и $' + vertices[2] + '$ – острые, ' +
-				'биссектрисы $' + [vertices[1], vertices[3]].shuffle().join('') + '$ и $' + [vertices[2], vertices[4]].shuffle()
-				.join(
-					'') +
+				'биссектрисы $' + [vertices[1], vertices[3]].shuffleJoin() + '$ и $' + [vertices[2], vertices[4]].shuffleJoin() +
 				'$ пересекаются в точке $' + vertices[5] + '$. Найдите угол $' + vertices[2] + vertices[5] + vertices[1] +
 				'$. Ответ дайте в градусах.',
 			answers: 90 + 0.5 * angle,
