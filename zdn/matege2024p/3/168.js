@@ -10,7 +10,7 @@
 
 		let question = [
 			[sklonlxkand('боковое ребро'), b.texsqrt(sl1())],
-			//[sklonlxkand('сторона основания'), a],
+			[sklonlxkand('сторона основания'), a],
 			[sklonlxkand('высота'), h],
 			[sklonlxkand('апофема'), ap.texsqrt(sl1())],
 		].iz(3);
@@ -45,7 +45,7 @@
 				question[1][0].ie + ' рав' + ['ен', 'на', 'но'][question[1][0].rod] + ' $' + question[1][1] + '$. ' +
 				'Найдите ' + question[2][0].ve + ' пирамиды.',
 			answers: answ,
-			analys: '',
+			author: ['Суматохина Александра'],
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
 		NAtask.modifiers.addCanvasIllustration({
