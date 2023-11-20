@@ -29,7 +29,7 @@
 			text: 'В правильной четырёхугольной пирамиде все рёбра равны $'+a+'$. '+
 			'Найдите площадь сечения пирамиды плоскостью, проходящей через середины боковых рёбер.',
 			answers: a*a/4,
-			analys: '',
+			author: ['Суматохина Александра'],
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
 		NAtask.modifiers.addCanvasIllustration({
