@@ -31,7 +31,6 @@
 			answers: a*a/4,
 			author: ['Суматохина Александра'],
 		});
-		NAtask.modifiers.multiplyAnswerBySqrt(13);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
