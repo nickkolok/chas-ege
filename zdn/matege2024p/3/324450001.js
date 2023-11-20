@@ -4,7 +4,7 @@
 		let a = sl(2, 20);
 		let v = a.pow(3) / (8 * 3 * (2).sqrt());
 		let s = 0.5 * a * (a ^ 2 - (a / 2) ^ 2).sqrt();
-		let h = 0.5 * a * (2).sqrt();
+		let h = 0.5 * a / (2).sqrt();
 
 		let question = [
 			['объём', v],
