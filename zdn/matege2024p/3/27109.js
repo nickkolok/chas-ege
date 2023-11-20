@@ -31,7 +31,7 @@
 				question[1][0].ie + ' рав' + ['ен', 'на', 'но'][question[1][0].rod] + ' $' + question[1][1] + '$. ' +
 				'Найдите ' + question[2][0].ve + ' пирамиды.',
 			answers: question[2][1],
-			analys: '',
+			author: ['Суматохина Александра'],
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
 		NAtask.modifiers.addCanvasIllustration({
