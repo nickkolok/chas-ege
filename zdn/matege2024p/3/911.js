@@ -11,7 +11,6 @@
 			[[letters[0] + letters[2], letters[1] + letters[3]].iz(), d],
 			[letters.slice(4, 6).join(''), h],
 		].iz(3);
-		console.log(question);
 
 		let answ = Number.isInteger(question[2][1]) ? question[2][1] : b.sqrt();
 
@@ -33,6 +32,7 @@
 			text: 'В правильной четырёхугольной пирамиде $ABCDE$ с вершиной $E$ точка $F$ – центр основания, $' + question[0].join('=') + '$, ' +
 				'$' + question[1].join('=') + '$. Найдите длину отрезка $' + question[2][0] + '$.',
 			answers: answ,
+			author: ['Суматохина Александра'],
 		});
 		NAtask.modifiers.variativeABC(letters);
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
