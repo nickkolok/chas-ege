@@ -130,7 +130,7 @@ chas2.task = {
 		chas2.task._.validateTask(o);
 
 		window.vopr.podg();
-		window.vopr.txt = o.text;
+		window.vopr.txt = o.text.allDecimalsToStandard(true);
 		window.vopr.rsh = o.analys;
 		window.vopr.ver = o.answers;
 		window.vopr.nev = o.wrongAnswers;
