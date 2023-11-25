@@ -165,8 +165,10 @@ chas2.task = {
 		chas2.task._.normalizeTask(o);
 		chas2.task._.validateTask(o);
 
+		let text = 
+
 		window.vopr.podg();
-		window.vopr.txt = o.text.splitTextToLexems().allDecimalsToStandard(true);
+		window.vopr.txt = o.text.splitTextToLexems().joinLexems();
 		window.vopr.rsh = o.analys;
 		window.vopr.ver = o.answers;
 		window.vopr.nev = o.wrongAnswers;
