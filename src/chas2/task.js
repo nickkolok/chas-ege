@@ -130,7 +130,43 @@ chas2.task = {
 		chas2.task._.validateTask(o);
 
 		window.vopr.podg();
-		window.vopr.txt = o.text.allDecimalsToStandard(true);
+		window.vopr.txt = o.text;
+		window.vopr.rsh = o.analys;
+		window.vopr.ver = o.answers;
+		window.vopr.nev = o.wrongAnswers;
+		window.vopr.authors = o.authors;
+		if (o.checkAnswer) {
+			window.vopr.vrn = o.checkAnswer;
+		}
+		if (o.draw) {
+			window.vopr.dey = o.draw;
+		}
+
+		window.vopr.kat.importFrom(o.tags);
+
+		var voprcheck = dvig.validateVopr();
+		if (voprcheck) {
+			chas2.Lwarn('Результат проверки вопроса:\n\t' + voprcheck);
+		}
+	},
+
+	/** @function chas2.task.setTask
+	 * Установить задание
+	 * @param {String} text текст задания
+	 * @param {String} analys текст разбора задания
+	 * @param {String|Number|String[]|Number[]} answers правильные ответы
+	 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
+	 * @param {String|String[]} authors авторы шаблона
+	 * @param {String[]} tags теги
+	 * @param {Function} checkAnswer функция проверки ответа
+	 * @param {Function} draw функция отрисовки
+	 */
+	setTaskVer2 : function(o) {
+		chas2.task._.normalizeTask(o);
+		chas2.task._.validateTask(o);
+
+		window.vopr.podg();
+		window.vopr.txt = o.text.splitTextToLexems().allDecimalsToStandard(true);
 		window.vopr.rsh = o.analys;
 		window.vopr.ver = o.answers;
 		window.vopr.nev = o.wrongAnswers;
