@@ -25,7 +25,9 @@
 			answers: sin_a
 		});
 	}, 20000);
-	
+
+	chas2.task.modifiers.roundUpTo(-2); //модификатор округления ответа
+
 	window.vopr.kat['log'] = 0;
 	window.vopr.kat['prz'] = 0;
 	window.vopr.kat['drs'] = 0;
