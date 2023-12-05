@@ -908,9 +908,10 @@ chas2.task = {
 		/** @function NAtask.modifiers.allDecimalsToStandard
 		Применяет .ts() ко всем цифрам с излишней точностью в задании.
 		*/
-		allDecimalsToStandard : function() {
+		allDecimalsToStandard : function(p1) {
 			var o = NAtask.getTask();
-			o.text = o.text.allDecimalsToStandard()
+			p1 = p1 || false;
+			o.text = o.text.allDecimalsToStandard(p1)
 			NAtask.setTask(o);
 		},
 	},
