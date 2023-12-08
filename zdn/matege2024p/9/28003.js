@@ -2,11 +2,10 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let predm = ['мячик','камешек','небольшой мячик','теннисный мячик',
+		let predm_skl = sklonlxkand(['мячик','камешек','небольшой мячик','теннисный мячик',
 			'небольшой камешек','учебную граната','стеклянную бутылка',
 			'грузик','небольшой грузик','ботинок', 'мяч','бейсбольный мяч',
-			'резиновый мячик'].iz();
-		let predm_skl = sklonlxkand(predm);
+			'резиновый мячик'].iz());
 		let angle_name = ['alpha','beta','gamma','theta'].iz();
 		let alpha = [30,45,60].iz();
 		let cos_2a = alpha==30?0.5:(alpha==45?0:-0.5);
