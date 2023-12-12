@@ -16,8 +16,8 @@
 		['мишка', 'зайка', 'белочка', 'ёжик'],
 	]).iz().iz(2));
 	NAtask.setTask({
-		text: `${chislitlx(r1,things[0].ie)} дешевле ${things[1].re} на $${pr1}\\%$.` +
-		` На сколько процентов таких же ${chislitlx(r2,things[0].ie)} дороже ${things[1].re}?`,
+		text: `${chislitlx(r1,things[0].ie)} дешевле ${things[1].re на $${pr1}%.` +
+		` На сколько процентов ${r2} таких же ${chislit(r2,things[0].ie,things[0].re,things[0].rm)} дороже ${things[1].re}?`,
 		answers: an,
 	});
 })();
