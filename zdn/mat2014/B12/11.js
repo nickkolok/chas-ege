@@ -1,29 +1,43 @@
 (function() {
+	retryWhileError(function() {
+		NAinfo.requireApiVersion(0, 2);
 
-    var body =  sklonlxkand((['мяч', 'стакан', 'тело', 'молот']).iz());
-    var velbeg = sluchch(10.0, 30.0);
-    var time = sluchch(1.0, 4.0);
-    var phys_g = 10;
+		let body =  sklonlxkand((['мяч', 'стакан', 'тело', 'молот', 'камень', 'бутылка', 'ботинок']).iz());
+		let velbeg = sl(10,30,0.01);
+		let time = sluchch(1,4,0.01);
+		let sin_a = time * 10 / 2 / velbeg;
+	
+		genAssert(sin_a<=1,"Синус больше 1");
+		genAssertZ1000(sin_a);
+	
+		let angname = ['alpha', 'beta', 'gamma'].iz();
+	
+		NAtask.setTask({
+			text: [body.ve + ' бросили под углом к плоской горизонтальной поверхности земли',
+				'под углом к плоской горизонтальной поверхности земли бросили '+body.ve].iz().toZagl() +
+				'. Время полёта ' + body.re +' (в секундах) '+['задаётся законом','определяется по формуле'].iz()+
+				' $t=\\dfrac{2v_0\\sin\\' + angname + '}{g}$. ' +
+				'При каком наименьшем значении угла $\\' + angname + '$ время полёта ' +
+				'будет не меньше, чем $'+time.ts()+ '$ ' + chislitlx(time, 'секунда').split(" ")[1] + ', ' +
+				' если ' + body.ve + ' бросают с начальной скоростью $v_0=' + velbeg.ts() +'\\dfrac{\\text{м}}{\\text{с}}$? ' +
+				'Считайте, что ускорение свободного падения $g=10\\dfrac{\\text{м}}{\\text{с}^2}$. ' +
+				'Дайте в качестве ответа синус угла $\\'+ angname +'$.',
+			answers: sin_a
+		});
+	}, 20000);
 
-    var angname = ['alpha', 'beta', 'gamma'].iz();
-    var angname_tex = '$\\' + angname + '$';
+	chas2.task.modifiers.roundUpTo(-2); //модификатор округления ответа
 
-    chas2.task.setTask({
-		text: body.ie.toZagl() + ' бросили под углом к плоской горизонтальной поверхности земли. ' +
-            'Время полёта ' + body.re +' задаётся законом $t=\\frac{2v_0\\sin\\' + angname + '}{g}$ с. ' +
-            'При каком наименьшем значении угла ' + angname_tex + ' время полёта ' +
-            'будет не меньше, чем ' + chislitlx(time, 'секунда') + ', ' +
-            ' если ' + body.ie + ' бросают с начальной скоростью $v_0=' + velbeg +'\\frac{\\mbox{м}}{\\mbox{с}}$? ' +
-            'Считайте, что ускорение свободного падения $g=$' + phys_g + '$\\frac{\\mbox{м}}{\\mbox{с}^2}$. ' +
-            'Дайте в качестве ответа синус угла $\\'+ angname +'$.',
-        answers: time * phys_g / 2.0 / velbeg,
-	});
-    chas2.task.modifiers.roundUpTo(-1); //модификатор округления ответа
-	//Синус больше единицы. Зло!
-    window.vopr.kat['log'] = 0;
-    window.vopr.kat['prz'] = 0;
-    window.vopr.kat['drs'] = 0;
-    window.vopr.kat['tri'] = 0;
+	window.vopr.kat['log'] = 0;
+	window.vopr.kat['prz'] = 0;
+	window.vopr.kat['drs'] = 0;
+	window.vopr.kat['tri'] = 0;
 })();
 // kbsx32
-
+/*Рефакторинг: Aisse-258
+Прямого аналога в РешуЕГЭ нет
+Похожие задачи: 27998, 28519, 43175, 28521, 28523
+		, 28525, 28527, 28529, 43147, 43149
+		, 43151, 43153, 43155, 43157, 43159
+		, 43161, 43163, 43165, 43167, 43169
+		, 43171, 43173*/
