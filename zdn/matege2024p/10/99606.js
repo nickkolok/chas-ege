@@ -24,7 +24,7 @@
 			answers: v_avg,
 			authors: ['Aisse-258']
 		});
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true); //$123{,}456$
 	}, 20000);
 })();
 //Aisse-258
