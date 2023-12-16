@@ -38,7 +38,7 @@
 			analys: '$\\log_2 \\dfrac{'+T_L+'-'+T_R+'}{T-'+T_R+'}='+log_zn+'$',
 			authors: ['Aisse-258'],
 		});
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 20000);
 })();
 //Aisse-258
