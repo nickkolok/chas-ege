@@ -16,7 +16,7 @@
 		let rab_num=['первый','второй'];
 
 		NAtask.setTask({
-			text: ['Заказ на','Задание на изготовление'].iz()+' '+chislitlx(A, detail.ie,'r')+' первый '+rab.ie+' выполняет на '+n+' часов быстрее, чем второй. '+
+			text: ['Заказ на','Задание на изготовление'].iz()+' '+chislitlx(A, detail.ie,'r')+' первый '+rab.ie+' выполняет на '+chislitlx(n, 'час')+' быстрее, чем второй. '+
 				['Сколько '+detail.rm+' в час делает '+rab_num[v]+' '+rab.ie+', если известно, что '+rab_num[1-v]+' за час делает на '+chislitlx(b, detail.ie,'r')+' больше?',
 				'Сколько '+detail.rm+' в час делает '+rab_num[v]+' '+rab.ie+', если известно, что он за час делает на '+chislitlx(b, detail.ie,'r')+' меньше, чем '+rab_num[1-v]+'?'].iz(),
 			answers: v==1 ? x : x+b,
