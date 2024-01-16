@@ -12,11 +12,13 @@
 		let rab = sklonlxkand(['рабочий','сотрудник','работник','мастер'].iz());
 		let v=sl1();
 		let rab_num=['первый','второй'];
+		let v1=sl1();
+		let kolvo=[[['медленнее','дольше'].iz(),'меньше'],['быстрее','больше']];
 
 		NAtask.setTask({
-			text: ['Заказ на','Задание на изготовление'].iz()+' '+chislitlx(A, detail.ie,'r')+' первый '+rab.ie+' выполняет на '+chislitlx(n, 'час')+' быстрее, чем второй. '+
-				['Сколько '+detail.rm+' в час делает '+rab_num[v]+' '+rab.ie+', если известно, что '+rab_num[1-v]+' за час делает на '+chislitlx(b, detail.ie,'r')+' больше?',
-				'Сколько '+detail.rm+' в час делает '+rab_num[v]+' '+rab.ie+', если известно, что он за час делает на '+chislitlx(b, detail.ie,'r')+' меньше, чем '+rab_num[1-v]+'?'].iz(),
+			text: ['Заказ на','Задание на изготовление'].iz()+' '+chislitlx(A, detail.ie,'r')+' '+rab_num[v1]+' '+rab.ie+' выполняет на '+chislitlx(n, 'час')+' '+kolvo[1-v1][0]+', чем '+rab_num[1-v1]+'. '+
+				['Сколько '+detail.rm+' '+['в','за'].iz()+' час делает '+rab_num[v]+' '+rab.ie+', если известно, что '+rab_num[1-v]+' '+['в','за'].iz()+' час делает на '+chislitlx(b, detail.ie,'r')+' '+kolvo[v][1]+'?',
+				'Сколько '+detail.rm+' '+['в','за'].iz()+' час делает '+rab_num[v]+' '+rab.ie+', если известно, что он '+['в','за'].iz()+' час делает на '+chislitlx(b, detail.ie,'r')+' '+kolvo[1-v][1]+', чем '+rab_num[1-v]+'?'].iz(),
 			answers: v==1 ? x : x+b,
 			authors: ['Aisse-258']
 		});
