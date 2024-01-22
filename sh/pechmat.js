@@ -88,7 +88,7 @@ function zapusk() {
 	$('#gotov').show();
 	zadan();
 }
-console.log(nNumber);
+
 function testGotov() {
 	$('#gotov').hide();
 	if (options.editable) {
