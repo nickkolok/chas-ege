@@ -54,10 +54,18 @@ function zapusk() {
 	options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
+	options.nNumber = $('#nNumber').is(':checked');
 
 	if (customNumber) {
 		variantNumber = $('#start-number').val() - 1;
 	}
+
+	if (options.nNumber) {
+		window.nNumber = true;
+	}
+	else{
+		window.nNumber = false;}
+	
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
@@ -80,7 +88,7 @@ function zapusk() {
 	$('#gotov').show();
 	zadan();
 }
-
+console.log(nNumber);
 function testGotov() {
 	$('#gotov').hide();
 	if (options.editable) {
