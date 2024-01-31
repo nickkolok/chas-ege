@@ -9,8 +9,7 @@
 		let v = v0*Math.sin(2*Math.PI*t/T);//скорость
 		let m = sl(0.01,1,0.01);//масса
 		let E = m*v*v/2;
-		
-		//genAssertZ1000(T/10,'Время слишком дробное: '+T);
+
 		genAssertZ1000(E*10,'Ответ слишком дробный: '+E);
 
 		let gruz = sklonlxkand(['груз','грузик','мячик','кольцо','шарик'].iz());
@@ -25,7 +24,7 @@
 				'Ответ дайте в джоулях.',
 			answers: E,
 			authors: ['Aisse-258'],
-			analys: ''+Math.sin(2*Math.PI*t/T)+''
+			analys: '$\\sin\\dfrac{2\\pi t}{T}='+Math.sin(2*Math.PI*t/T)+'$'
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000000);
