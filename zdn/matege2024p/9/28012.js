@@ -26,7 +26,7 @@
 			authors: ['Aisse-258'],
 			analys: '$\\sin\\dfrac{2\\pi t}{T}='+Math.sin(2*Math.PI*t/T)+'$'
 		});
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 2000000);
 })();
 
