@@ -5,7 +5,7 @@
 		let alpha_2=[30,45,60,90].iz();//угол
 		let m = sl(1,20,0.01);//масса
 		let v= sl(1,20,0.01);//скорость
-		let Q=m*v*v*Math.sin(alpha_2*Math.PI/180)*Math.sin(alpha_2*Math.PI/180);//энергия
+		let Q = m*(v*(alpha_2*Math.PI/180).sin()).sqr();//энергия
 		genAssertZ1000(Q,'Ответ слишком дробный: '+Q);
 
 		let gruz = sklonlxkand(['груз','тело','мяч','предмет','шар','куб','камень'].iz());
