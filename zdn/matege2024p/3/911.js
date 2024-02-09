@@ -12,7 +12,7 @@
 			[letters.slice(4, 6).join(''), h],
 		].iz(3);
 
-		let answ = Number.isInteger(question[2][1]) ? question[2][1] : b.sqrt();
+		let answ = question[2][1].isAlmostInteger() ? question[2][1] : b.sqrt();
 
 		let paint1 = function(ctx) {
 			ctx.translate(0, 500);
