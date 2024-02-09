@@ -44,7 +44,7 @@
 			analys: '$\\log_2 \\dfrac{'+V1+'}{V_2}='+log_2+'$',
 			authors: ['Aisse-258'],
 		});
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 20000);
 })();
 //Aisse-258
