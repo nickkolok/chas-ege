@@ -522,8 +522,8 @@ function refreshLaTeXarchive() {
 		return;
 	}
 	var zip = new JSZip();
-	var bunchUnited = "", bunchTasks = "";
-	var answers = "\\begin{document}\n\n\\begin{multicols}{"+variantsGenerated.length+"}";
+	var bunchTasks = "";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+(variantsGenerated.length>10)?6:variantsGenerated.length+"}";
 
 	for(var variantN of variantsGenerated){
 		var head =
