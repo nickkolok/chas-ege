@@ -60,12 +60,7 @@ function zapusk() {
 		variantNumber = $('#start-number').val() - 1;
 	}
 
-	if (options.nNumber) {
-		window.nNumber = true;
-	}
-	else{
-		window.nNumber = false;}
-	
+	sluchch.forceIntegers = (options.nNumber) ? true : false; 	
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
