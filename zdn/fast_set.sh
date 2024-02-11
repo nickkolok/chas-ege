@@ -8,10 +8,11 @@ array=()
 
 if [[ ${#array[@]} -eq 0 ]]; then
      echo "change array in file"
+     exit
 fi
 
 result=${PWD##*/}
-result=${result:-/} 
+result=${result:-/}
 touch $result.js
 printf "if (!window.nabor)\n\twindow.nabor = {};\nwindow.nabor.importFrom({\n\tnZad: "${#array[@]}",\n \tadres: '../zdn/"$result"/',\n" >> $result.js
 printf "\tname: '"$result"',\n});\n" >> $result.js
@@ -24,7 +25,7 @@ do
      cd $i;
      ln -s $1/${array[$index]}.js ${array[$index]}.js;
      ((i++));
-     
+
      touch main.js
      printf "window.nomer=[\n" >> main.js;
      printf "\t%s,\n" ${array[$index]} >> main.js
