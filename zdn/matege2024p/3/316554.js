@@ -25,7 +25,7 @@
 			ctx.scale(10, 10);
 
 			ctx.lineWidth = 0.2;
-			ctx.font = "2.5px liberation_sans";
+			ctx.font = "3px liberation_sans";
 			ctx.drawParallelepiped({
 				width: edge,
 				height: edge,
