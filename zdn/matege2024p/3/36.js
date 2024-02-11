@@ -5,7 +5,6 @@
 		let letters = ['A', 'B', 'C', 'D'];
 		let letterWithIndex = letters.map((elem) => elem + '₁');
 		let allLet = letters.concat(letterWithIndex);
-		let rand = sl1();
 
 		let letters1 = letters.slice().iz();
 
@@ -28,7 +27,7 @@
 			ctx.translate(105, 50);
 			let edge = 24;
 			ctx.scale(10, 10);
-			ctx.font = "2.5px liberation_sans";
+			ctx.font = "3px liberation_sans";
 
 			ctx.lineWidth = 0.2;
 			ctx.drawParallelepiped({
