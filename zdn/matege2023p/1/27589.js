@@ -7,14 +7,14 @@
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
 
-			ctx.drawLine(10, 370, 390, 370);
-			ctx.drawLine(10, 370, 180, 50);
-			ctx.drawLine(180, 50, 390, 370);
+			ctx.drawLineAtAngle(30, 300, -Math.PI / 3, 340);
+			ctx.drawLineAtAngle(370, 300, 4 * Math.PI / 3, 340);
+			ctx.drawLine(30, 300, 370, 300);
 
 			//штрихи
 			ctx.lineWidth = 1;
-			ctx.strokeInMiddleOfSegment(10, 370, 180, 50, 10);
-			ctx.strokeInMiddleOfSegment(390, 370, 180, 50, 10);
+			ctx.strokeInMiddleOfSegment(30, 300, 200, 10, 10);
+			ctx.strokeInMiddleOfSegment(370, 300, 200, 10, 10);
 		};
 
 		NAtask.setTask({
