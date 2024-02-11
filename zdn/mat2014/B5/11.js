@@ -11,12 +11,13 @@
 		NAtask.setTask({
 			text: 'Стороны ' + ['правильного', 'равностороннего', 'равноугольного'].iz() + ' треугольника $ABC$ равны $' +
 				length.texsqrt(sl1()) + '$. ' +
-				'Найдите ' + question + ' $\\overrightarrow{AB}$' + ['$+$', ' и '][rand] + '$\\overrightarrow{AC}$.',
+				'Найдите ' + question +' $'+ ['\\overrightarrow{AB}', '\\overrightarrow{AC}'].shuffleJoin(['+', '$ и $'][rand])+'$'+'.',
 			answers: answ,
 			analys: '',
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(12);
 	}, 1000);
+	NAtask.modifiers.variativeABC();
 })();
 //Гущин 27720
 //nadraliev
