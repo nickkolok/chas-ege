@@ -6,7 +6,6 @@
 		let paint1 = function(ctx) {
 			ctx.translate(0, 480);
 			ctx.scale(10, 10);
-			ctx.font = "3px liberation_sans";
 
 			ctx.lineWidth = 2 / 15;
 
