@@ -5,13 +5,11 @@
 		let a = sl(10, 89);
 		let b = slKrome(a, 10, a - 1);
 
-		let vertices = om.latbukv.iz(4)
+		let vertices = om.latbukv.iz(4);
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.beginPath();
-			ctx.arc(200, 200, 180, 0, 2 * Math.PI);
-			ctx.stroke();
+			ctx.drawArc(200, 200, 180, 0, 2 * Math.PI);
 
 			ctx.drawLine(50, 98, 100, 350);
 			ctx.drawLine(100, 350, 310, 340);
