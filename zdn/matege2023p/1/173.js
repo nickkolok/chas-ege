@@ -5,13 +5,7 @@
 		let a = sl(10, 89);
 		let b = slKrome(a, 10, a - 1);
 
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 4);
+		let vertices = om.latbukv.iz(4)
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
