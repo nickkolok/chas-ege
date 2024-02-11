@@ -5,13 +5,7 @@
 		let a = sl(2, 89);
 		let b = sl(0.01, 0.99, 0.01);
 
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 4);
+		let vertices = window.latbukv.iz(4);
 
 		genAssertZ1000(a / (1 - b.pow(2)).sqrt(), 'Кривой ответ');
 
@@ -31,8 +25,8 @@
 
 			//штрихи
 
-			ctx.drawLine(275, 210, 300, 200);
-			ctx.drawLine(80, 200, 105, 210);
+			ctx.strokeInMiddleOfSegment(10, 370, 180, 50, 10);
+			ctx.strokeInMiddleOfSegment(180, 50, 390, 370, 10);
 
 			ctx.font = "23px liberation_sans";
 			ctx.fillText(vertices[0], 10 - 5, 370 + 25);
