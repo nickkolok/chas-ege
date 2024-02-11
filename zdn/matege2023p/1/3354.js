@@ -4,13 +4,7 @@
 
 		let angle = sl(2, 89);
 
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 4);
+		let vertices = om.latbukv.iz(4)
 
 		let copyVertices = vertices.slice(0, 4);
 		if (sl1()) {
