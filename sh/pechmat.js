@@ -54,13 +54,13 @@ function zapusk() {
 	options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
-	options.nNumber = $('#nNumber').is(':checked');
+	options.forceIntegers = $('#forceIntegers').is(':checked');
 
 	if (customNumber) {
 		variantNumber = $('#start-number').val() - 1;
 	}
 
-	sluchch.forceIntegers = (options.nNumber) ? true : false; 	
+	sluchch.forceIntegers = (options.forceIntegers) ? true : false; 	
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
