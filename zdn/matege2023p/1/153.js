@@ -5,20 +5,13 @@
 		let a = sl(2, 50);
 		let b = sl(2, 50);
 		let c = slKrome([a, b], 2, 50);
+		genAssert(b + c - a > 0);
 
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 4);
+		let vertices = window.latbukv.iz(4);
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.beginPath();
-			ctx.arc(180, 200, 150, 0, 2 * Math.PI);
-			ctx.stroke();
+			ctx.drawArc(180, 200, 150, 0, 2 * Math.PI);
 
 			ctx.drawLine(10, 30, 45, 350);
 			ctx.drawLine(45, 350, 290, 350);
