@@ -1,6 +1,5 @@
 (function() {
 	retryWhileError(function() {
-		lx_declareClarifiedPhrase('ребро', 'боковое');
 		lx_declareClarifiedPhrase('сторона', 'основания');
 		NAinfo.requireApiVersion(0, 2);
 		let a = sl(2, 20, 2);
