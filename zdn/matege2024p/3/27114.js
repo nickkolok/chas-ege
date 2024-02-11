@@ -25,6 +25,7 @@
 				angle: Math.PI / 4,
 				height: -23,
 				scale: 10,
+				strokeStyle: om.secondaryBrandColors.iz(),
 				lettersOnVertex: letters.slice(0, 5),
 			}, [0, 2, 5], [1, 0.7]);
 		};
