@@ -8,12 +8,12 @@
 		let b = (a * (2).sqrt() / 2).pow(2) + h.pow(2);
 
 		let question = [
-			[sklonlxkand('сторона основания'), a],
 			[sklonlxkand('боковое ребро'), b.texsqrt(sl1())],
 			[sklonlxkand('объём'), (a * a * h).texrndfrac(3)],
-		].iz(3);
+		].shuffle();
+		question.unshift([sklonlxkand('сторона основания'), a]);
 
-		let answ = Number.isInteger(question[2][1]) ? question[2][1] : b.sqrt();
+		let answ = question[2][1].isAlmostInteger() ? question[2][1] : b.sqrt();
 
 		let paint1 = function(ctx) {
 			ctx.font = "3px liberation_sans";
