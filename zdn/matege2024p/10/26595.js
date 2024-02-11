@@ -19,7 +19,8 @@
 
 		NAtask.setTask({
 			text: 'На '+izgot+' '+chislitlx(A, detail.ie,'r')+' первый '+rab.ie+' тратит на '+
-				chislitlx(n, 'час')+' меньше, чем второй '+rab.ie+' на '+izgot+' '+[chislitlx(B, detail.ie,'r'),B + ' таких же '+chislitlx(B, detail.ie,'r').split(' ')[1]].iz()+
+				chislitlx(n, 'час')+' меньше, чем второй '+rab.ie+' на '+izgot+' '+
+				chislitlx(B, detail, 'r', [' ', ' таких же '].iz())+
 				'. Известно, что первый '+rab.ie+' '+['в','за'].iz()+' час делает на '+chislitlx(k, detail.ie,'r')+' больше, чем второй.'+
 				' Сколько '+detail.rm+' '+['в','за'].iz()+' час делает '+rab_num[v]+' '+rab.ie+'?',
 			answers: v==1 ? x : x+k,
