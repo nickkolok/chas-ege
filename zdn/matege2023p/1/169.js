@@ -5,24 +5,20 @@
 		let a = sl(2, 89);
 		let b = slKrome(a, 2, 89);
 
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 4);
+		let vertices = om.latbukv.iz(4);
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawArc(200, 200, 180, 0, 2 * Math.PI);
 
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.drawLine(50, 98, 100, 350);
-			ctx.drawLine(100, 350, 310, 340);
-			ctx.drawLine(310, 340, 370, 140);
+			ctx.drawLine(100, 350, 310, 342);
+			ctx.drawLine(310, 342, 370, 140);
 			ctx.drawLine(50, 98, 370, 140);
 
-			ctx.drawLine(50, 98, 310, 340);
+			ctx.drawLine(50, 98, 310, 342);
 			ctx.drawLine(100, 350, 370, 140);
 
 			ctx.drawFilledCircle(200, 200, 2);
