@@ -12,10 +12,12 @@
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
 
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawLine(10, 370, 390, 370);
 			ctx.drawLine(10, 370, 180, 50);
 			ctx.drawLine(180, 50, 390, 370);
 
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.drawLine(180, 50, 180, 370);
 
 			//прямой угол
@@ -40,7 +42,7 @@
 			text: 'В треугольнике  $' + vertices.slice(0, 3).shuffle().join('') + '$ $' +
 				vertices.slice(0, 2).shuffle().join('') +
 				'=' + vertices.slice(1, 3).shuffle().join('') + '$, высота $' + [vertices[1], vertices[3]].shuffle().join('') +
-				'$ равна $' + a + '$, $\\cos{' + [vertices[0], vertices[2]].iz() + '} = ' + b.ts() +
+				'$ равна $' + a + '$, $\\cos{' + [vertices[0], vertices[2]].iz() + '} = ' + b.ts(1) +
 				' $. Найдите $' + [vertices.slice(0, 2),
 					vertices.slice(1, 3)
 				].iz().shuffle().join('') + '$.',
