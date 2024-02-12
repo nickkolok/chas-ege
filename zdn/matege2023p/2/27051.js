@@ -20,6 +20,7 @@
 
 				ct.lineWidth = 2;
 				//цилиндр
+				ct.strokeStyle = om.secondaryBrandColors.iz();
 				ct.beginPath();
 				ct.ellipse(0, -height / 2, radius, 40, 0, 0, 2 * Math.PI);
 				ct.stroke();
@@ -38,6 +39,7 @@
 				ct.drawLine(radius, height / 2, radius, -height / 2);
 
 				//конус
+				ct.strokeStyle = om.primaryBrandColors.iz();
 				ct.setLineDash([4, 5]);
 				ct.drawLine(-radius, height / 2, 0, -height / 2);
 				ct.drawLine(radius, height / 2, 0, -height / 2);
@@ -52,9 +54,8 @@
 			NAtask.setTask({
 				text: 'Цилиндр и конус имеют общие основание и высоту. Высота цилиндра равна радиусу основания. ' +
 					nameFigura[0].toZagl() + ' ' + ['цилиндра', 'конуса'][rand1] + ' ' + ['равен', 'равна'][rand2] +
-					' $' + nameFigura[1 + rand1].texsqrt(1) + '$. Найдите ' + nameFigura[0] + ' ' + ['цилиндра', 'конуса'][1 -
-						rand1
-					] + '.',
+					' $' + nameFigura[1 + rand1].texsqrt(1) + '$. Найдите ' + nameFigura[0] + ' '+
+					['цилиндра', 'конуса'][1 -rand1] + '.',
 				answers: nameFigura[2 - rand1].sqrt(),
 			});
 			NAtask.modifiers.multiplyAnswerBySqrt(3);
