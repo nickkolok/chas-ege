@@ -11,42 +11,37 @@
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
 
-			let coordinatesByAngle = (x, y, angle, length) => [x + angle.cos() * length, y + angle.sin() * length];//А надо ли это в функцию?
-
 			let angle = -Math.PI / 3.2;
-			let vertex = coordinatesByAngle(10, 370, angle, 400);
+			let vertex = ctx.drawLineAtAngle(10, 370, angle, 400);
 
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawLine(10, 370, 390, 370);
-			ctx.drawLine(10, 370, vertex[0], vertex[1]);
-			ctx.drawLine(390, 370, vertex[0], vertex[1]);
+			ctx.drawLine(10, 370, vertex.x, vertex.y);
+			ctx.drawLine(390, 370, vertex.x, vertex.y);
 
 			//Биссектрисы
-			ctx.drawLineAtAngle(390, 370, Math.atan2(-370 + vertex[1], -390 + vertex[0]) / 2 - Math.PI / 2, 317);
-			ctx.drawLineAtAngle(10, 370, angle / 2, 345);
-
-			let bisector1 = coordinatesByAngle(10, 370, angle / 2, 345);
-			let bisector2 = coordinatesByAngle(390, 370, Math.atan2(-370 + vertex[1], -390 + vertex[0]) / 2 - Math.PI / 2, 317);
+			let bisector1 = ctx.drawLineAtAngle(10, 370, angle / 2, 345);
+			let bisector2 = ctx.drawLineAtAngle(390, 370, Math.atan2(-370 + vertex.y, -390 + vertex.x) / 2 - Math.PI / 2, 317);
 
 			//Углы
 			ctx.strokeStyle = om.primaryBrandColors[rand];
-			ctx.arcBetweenSegmentsCount([vertex[0], vertex[1], 10, 370].concat(bisector1), 30, 2);
-			ctx.arcBetweenSegmentsCount(bisector1.concat([10, 370, 390, 370]), 40, 2);
+			ctx.arcBetweenSegmentsCount([vertex.x, vertex.y, 10, 370].concat([bisector1.x, bisector1.y]), 30, 2);
+			ctx.arcBetweenSegmentsCount([bisector1.x, bisector1.y].concat([10, 370, 390, 370]), 40, 2);
 
 			ctx.strokeStyle = om.primaryBrandColors[rand];
-			ctx.arcBetweenSegments([10, 370, 390, 370].concat(bisector2), 30);
-			ctx.arcBetweenSegments((bisector2.concat([390, 370, vertex[0], vertex[1]])), 40);
+			ctx.arcBetweenSegments([10, 370, 390, 370].concat([bisector2.x, bisector2.y]), 30);
+			ctx.arcBetweenSegments(([bisector2.x, bisector2.y].concat([390, 370, vertex.x, vertex.y])), 40);
 
 			ctx.strokeStyle = om.primaryBrandColors[1 - rand];
-			ctx.arcBetweenSegmentsCount(bisector1.concat([10, 370]).concat(bisector2).concat([390, 370]), 25, 3);
+			ctx.arcBetweenSegmentsCount([bisector1.x, bisector1.y].concat([10, 370]).concat([bisector2.x, bisector2.y]).concat([390, 370]), 25, 3);
 
 			ctx.font = "23px liberation_sans";
-			ctx.fillText(vertices[0], vertex[0], vertex[1] - 10);
+			ctx.fillText(vertices[0], vertex.x, vertex.y - 10);
 			ctx.fillText(vertices[1], 10 - 5, 370 + 20);
 			ctx.fillText(vertices[2], 390 - 20, 370 + 20);
 
-			ctx.fillText(vertices[3], bisector1[0], bisector1[1]);
-			ctx.fillText(vertices[4], bisector2[0] - 20, bisector2[1]);
+			ctx.fillText(vertices[3], bisector1.x, bisector1.y);
+			ctx.fillText(vertices[4], bisector2.x - 20, bisector2.y);
 
 			ctx.fillText(vertices[5], 210, 250);
 		};
