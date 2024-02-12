@@ -13,8 +13,6 @@
 		].shuffle();
 		question.unshift([sklonlxkand('сторона основания'), a]);
 
-		let answ = question[2][1].isAlmostInteger() ? question[2][1] : b.sqrt();
-
 		let paint1 = function(ctx) {
 			ctx.font = "3px liberation_sans";
 			ctx.translate(0, 500);
@@ -34,7 +32,7 @@
 				'основанием $ABCD$ ' + question[0][0].ie + ' рав' + ['ен', 'на', 'но'][question[0][0].rod] + ' $' + question[0][1] + '$, ' +
 				question[1][0].ie + ' рав' + ['ен', 'на', 'но'][question[1][0].rod] + ' $' + question[1][1] + '$' +
 				'. Найдите ' + question[2][0].ve + ' пирамиды.',
-			answers: answ,
+			answers: question[2][1],
 			author: ['Суматохина Александра'],
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
