@@ -4,7 +4,7 @@
 
 		let angle = sl(2, 89);
 
-		let vertices = om.latbukv.iz(4)
+		let vertices = om.latbukv.iz(4);
 
 		let copyVertices = vertices.slice(0, 4);
 		if (sl1()) {
@@ -34,11 +34,13 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawLine(100, 80, 350, 80);
 			ctx.drawLine(10, 320, 270, 320);
 			ctx.drawLine(100, 80, 10, 320);
 			ctx.drawLine(270, 320, 350, 80);
 
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.drawLine(100, 80, 270, 320);
 
 			ctx.font = "23px liberation_sans";
