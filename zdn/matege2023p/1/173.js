@@ -9,13 +9,15 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawArc(200, 200, 180, 0, 2 * Math.PI);
 
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.drawLine(50, 98, 100, 350);
 			ctx.drawLine(100, 350, 310, 342);
 			ctx.drawLine(310, 342, 370, 140);
 			ctx.drawLine(50, 98, 370, 140);
-
+			
 			ctx.drawLine(50, 98, 310, 342);
 			ctx.drawLine(100, 350, 370, 140);
 
