@@ -14,28 +14,27 @@
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 
-			ctx.drawLineAtAngle(210, 20, Math.PI / 3, 300);
-			ctx.drawLineAtAngle(210, 20, 4 * Math.PI / 6, 320);
-			ctx.drawLine(210 + (Math.PI / 3).cos() * 300, 20 + (Math.PI / 3).sin() * 300, 210 + (4 * Math.PI / 6).cos() *
-				320, 20 + (4 * Math.PI / 6).sin() * 320);
+			let ver1 = ctx.drawLineAtAngle(210, 20, Math.PI / 3, 300);
+			let ver2 = ctx.drawLineAtAngle(210, 20, 4 * Math.PI / 6, 320);
+			ctx.drawLine(ver1.x, ver1.y, ver2.x, ver2.y);
 
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
-			ctx.drawLine(200, 200, 210 + (4 * Math.PI / 6).cos() * 320, 20 + (4 * Math.PI / 6).sin() * 320);
-			ctx.drawLine(200, 200, 210 + (Math.PI / 3).cos() * 300, 20 + (Math.PI / 3).sin() * 300);
+			ctx.drawLine(200, 200, ver2.x, ver2.y);
+			ctx.drawLine(200, 200, ver1.x, ver1.y);
 
 
 			ctx.font = "23px liberation_sans";
-			ctx.fillText(letter[0], 210, 20 - 5);
-			ctx.fillText(letter[1], 210 + (Math.PI / 3).cos() * 300 + 10, 20 + (Math.PI / 3).sin() * 300);
-			ctx.fillText(letter[2], 210 + (4 * Math.PI / 6).cos() * 320 - 30, 20 + (4 * Math.PI / 6).sin() * 320);
+			ctx.fillText(letter[0], 210, 20 - 2);
+			ctx.fillText(letter[1], ver1.x + 10, ver1.y + 20);
+			ctx.fillText(letter[2], ver2.x - 30, ver1.y + 20);
 
 			ctx.fillText(letter[3], 200 + 5, 200);
 		};
 
 		NAtask.setTask({
 			text: 'Треугольник $' + letter.slice(0, 3).shuffleJoin() + '$ вписан в окружность с центром $' + letter[3] +
-				'$. Угол $' + letter[1] + letter[0] + letter[2] + '$ равен $' + angle + '^\\circ$.' +
-				'Найдите угол $' + letter[1] + letter[3] + letter[2] + '$. Ответ дайте в градусах.',
+				'$. Угол $' + [letter[1], letter[0], letter[2]].randomReverse().join('') + '$ равен $' + angle + '^\\circ$.' +
+				'Найдите угол $' + [letter[1], letter[3], letter[2]].randomReverse().join('') + '$. Ответ дайте в градусах.',
 			answers: angle * 2,
 			analys: ''
 		});
