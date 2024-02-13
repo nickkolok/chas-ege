@@ -14,9 +14,9 @@
 		question.unshift([sklonlxkand('сторона основания'), a]);
 
 		let paint1 = function(ctx) {
-			ctx.font = "3px liberation_sans";
 			ctx.translate(0, 500);
 			ctx.scale(10, 10);
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.lineWidth = 2 / 15;
 			ctx.drawRightPyramid4({
 				edge: 21,
@@ -29,8 +29,8 @@
 
 		NAtask.setTask({
 			text: 'В правильной четырёхугольной пирамиде $SABCD$ с ' +
-				'основанием $ABCD$ ' + question[0][0].ie + ' рав' + ['ен', 'на', 'но'][question[0][0].rod] + ' $' + question[0][1] + '$, ' +
-				question[1][0].ie + ' рав' + ['ен', 'на', 'но'][question[1][0].rod] + ' $' + question[1][1] + '$' +
+				'основанием $ABCD$ ' + [question[0][0].ie + ' рав' + ['ен', 'на', 'но'][question[0][0].rod] + ' $' + question[0][1] + '$',
+				question[1][0].ie + ' рав' + ['ен', 'на', 'но'][question[1][0].rod] + ' $' + question[1][1] + '$'].shuffleJoin(', ') +
 				'. Найдите ' + question[2][0].ve + ' пирамиды.',
 			answers: question[2][1],
 			author: ['Суматохина Александра'],
