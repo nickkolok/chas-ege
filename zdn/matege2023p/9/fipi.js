@@ -28,4 +28,7 @@ window.nomer = [
     99619,
     113443,
 ].iz();
+
+window.nomer = 1;
+
 window.comment = 'Текстовые задачи';

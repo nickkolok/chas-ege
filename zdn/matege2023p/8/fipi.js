@@ -16,4 +16,7 @@ window.nomer = [
     27996,
     28003,
 ].iz();
+
+window.nomer = 27995;
+
 window.comment = 'Задачи с прикладным содержанием';

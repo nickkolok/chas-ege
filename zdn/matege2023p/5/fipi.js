@@ -36,4 +36,7 @@ window.nomer = [
      315535,
      525399,
 ].iz();
+
+window.nomer=26668;
+
 window.comment = 'Простейшие уравнения';
