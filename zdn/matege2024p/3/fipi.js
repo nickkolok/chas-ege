@@ -65,4 +65,7 @@ window.nomer=[
 	324450,
 	509458,
 ].iz()
+
+window.nomer = 27051;
+
 window.comment='Стереометрия';

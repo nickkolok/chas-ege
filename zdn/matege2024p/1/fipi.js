@@ -51,5 +51,7 @@ window.nomer=[
 	 319157,
 	 500246,
 	 2743901,
-].iz()
+].iz();
+
+window.nomer=27764;
 window.comment='Планиметрия';
