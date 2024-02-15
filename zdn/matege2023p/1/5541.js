@@ -8,24 +8,25 @@
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
 
-			ctx.drawLine(10, 300, 390, 300);
-			ctx.drawLine(10, 300, 150, 100);
-			ctx.drawLine(150, 100, 390, 300);
-			ctx.drawLine(150, 100, 390 / 2.2, 300);
-			ctx.drawLine(150, 100, 150, 300);
+			let angle = Math.PI / 2.9;
 
-			//прямой угол
-			ctx.lineWidth = 1.2;
-			ctx.drawLine(150 - 20, 300, 150 - 20, 300 - 20);
-			ctx.drawLine(150, 300 - 20, 150 - 20, 300 - 20);
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawLine(10, 250, 390 - 8, 250);
+			let ver = ctx.drawLineAtAngle(10, 250, -angle, 200 - 25);
+			ctx.drawLineAtAngle(ver.x, ver.y, -angle + Math.PI / 2, 350 - 20);
+			//биссектриса
+			ctx.strokeStyle = om.primaryBrandColors[0];
+			let bis = ctx.drawLineAtAngle(ver.x, ver.y, (-angle + Math.PI / 2) + Math.PI / 4, 160 + 2);
+			//высота
+			ctx.strokeStyle = om.primaryBrandColors[1];
+			ctx.drawLine(ver.x, ver.y, ver.x, 250);
+			//угол
+			ctx.drawLine(ver.x, 250 - 20, ver.x + 20, 250 - 20);
+			ctx.drawLine(ver.x + 20, 250 - 20, ver.x + 20, 250);
 
-			ctx.beginPath();
-			ctx.arc(150, 100, 50, 0.45 * Math.PI, 0.69 * Math.PI);
-			ctx.stroke();
-			ctx.beginPath();
-			ctx.arc(150, 100, 40, 0.22 * Math.PI, 0.45 * Math.PI);
-
-			ctx.stroke();
+			ctx.strokeStyle = om.primaryBrandColors[0];
+			ctx.arcBetweenSegments([10, 250, ver.x, ver.y, bis.x, bis.y], 30);
+			ctx.arcBetweenSegments([390 - 8, 250, ver.x, ver.y, bis.x, bis.y], 38);
 
 		};
 
