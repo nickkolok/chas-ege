@@ -12,11 +12,10 @@
 			ctx.lineWidth = 2;
 
 			let angle = -Math.PI / 3.2;
-			let vertex = ctx.drawLineAtAngle(10, 370, angle, 400);
-
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			
+			let vertex = ctx.drawLineAtAngle(10, 370, angle, 400);
 			ctx.drawLine(10, 370, 390, 370);
-			ctx.drawLine(10, 370, vertex.x, vertex.y);
 			ctx.drawLine(390, 370, vertex.x, vertex.y);
 
 			//Биссектрисы
