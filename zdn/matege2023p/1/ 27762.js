@@ -4,55 +4,46 @@
 
 		let angle = sl(2, 89);
 
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 6);
+		let vertices = om.latbukv.iz(6);
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			let arc = Math.PI / 2.9;
 
-			ctx.drawLine(10, 370, 390, 370);
-			ctx.drawLine(10, 370, 150, 70);
-			ctx.drawLine(150, 70, 390, 370);
+			ctx.drawLine(10, 355, 390 - 8, 355);
 
-			ctx.drawLine(10, 370, 270, 220);
-			ctx.drawLine(79, 220, 390, 370);
+			let ver1 = ctx.drawLineAtAngle(10, 355, -arc, 200 - 25);
+			let ver2 = ctx.drawLineAtAngle(390 - 8, 355, Math.PI * 0.95 + arc, 223);
 
-			//прямой угол
-			ctx.lineWidth = 1.2;
-			ctx.drawLine(79 + 20, 220 + 10, 90 + 20, 200 + 10);
-			ctx.drawLine(79 + 10, 220 - 19, 90 + 20, 200 + 10);
+			ctx.drawLineAtAngle(ver2.x, ver2.y, Math.PI * 0.95 + arc, 141);
+			let ver3 = ctx.drawLineAtAngle(ver1.x, ver1.y, -arc, 154);
 
-			ctx.drawLine(270 - 35, 220 - 7, 270 - 20, 220 + 13);
-			ctx.drawLine(270 - 35, 220 - 7, 270 - 15, 220 - 20);
+			ctx.strokeStyle = om.primaryBrandColors[0];
+			ctx.drawLineAtAngle(ver1.x, ver1.y, -arc + Math.PI / 2, 328);
+			ctx.drawLineAtAngle(ver2.x, ver2.y, Math.PI * 0.95 + arc - Math.PI / 2, 295);
 
-			ctx.beginPath();
-			ctx.arc(183, 270, 30, 1.15 * Math.PI, -0.15 * Math.PI);
-			ctx.stroke();
+			ctx.strokeStyle = om.primaryBrandColors[1];
+			ctx.arcBetweenSegments([10, 355, ver2.x, ver2.y, 390 - 8, 355, ver1.x, ver1.y], 30);
+
+			ctx.arcBetweenSegments([10, 355, ver2.x, ver2.y, ver3.x, ver3.y], 30);
 
 			ctx.font = "23px liberation_sans";
-			ctx.fillText(vertices[0], 150, 70 - 10);
-			ctx.fillText(vertices[1], 10 - 5, 370 + 20);
-			ctx.fillText(vertices[2], 390 - 20, 370 + 20);
+			ctx.fillText(vertices[0], 150 + 10, 70 - 10);
+			ctx.fillText(vertices[1], 10 - 5, 370 + 10);
+			ctx.fillText(vertices[2], 390 - 20, 370 + 10);
 
-			ctx.fillText(vertices[3], 270 + 10, 220 + 5);
-			ctx.fillText(vertices[4], 90 - 30, 200 + 20);
+			ctx.fillText(vertices[3], ver2.x + 10, ver2.y);
+			ctx.fillText(vertices[4], ver1.x - 20, ver1.y);
 
-			ctx.fillText(vertices[5], 180, 270 + 25);
-
-
+			ctx.fillText(vertices[5], 160, 260);
 		};
 
 		NAtask.setTask({
-			text: 'В треугольнике $' + vertices.slice(0, 3).shuffle().join('') + '$ угол $' + vertices[0] + '$ равен $' + angle +
-				'^{\\circ}$, углы $' + vertices[1] + '$ и $' + vertices[2] + '$ – острые, ' +
-				'высоты $' + [vertices[1], vertices[3]].shuffle().join('') + '$ и $' + [vertices[2], vertices[4]].shuffle().join(
-					'') +
-				'$ пересекаются в точке $' + vertices[5] + '$. Найдите угол $' + vertices[3] + vertices[5] + vertices[4] +
+			text: 'В треугольнике $' + vertices.slice(0, 3).shuffleJoin() + '$ угол $' + vertices[0] + '$ равен $' +
+				angle +	'^{\\circ}$, углы $' + vertices[1] + '$ и $' + vertices[2] + '$ – острые, ' +
+				'высоты $' + [vertices[1], vertices[3]].shuffleJoin() + '$ и $' + [vertices[2], vertices[4]].shuffle().join('') +
+				'$ пересекаются в точке $' + vertices[5] + '$. Найдите угол $' + [vertices[3], vertices[5], vertices[4]].randomReverse().join('') +
 				'$. Ответ дайте в градусах.',
 			answers: 180 - angle,
 			analys: '',
