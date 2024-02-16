@@ -72,7 +72,7 @@ function generateKatalog(){
 	for(var kat in nabor.upak){
 		window.comment='';
 		try{
-				nabor.upak[kat].main()
+				nabor.upak[kat][nabor.scheduler]()
 		}catch(e){
 			console.log(e);
 		}
