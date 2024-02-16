@@ -1,3 +1,5 @@
+//node dvig_lx.js ../dev/dvig/number/ matege2023p/1/
+
 'use strict';
 String.prototype.isSpace = function () {
 	/**Состоит ли строка только из пробельных символов?*/
@@ -7,10 +9,8 @@ String.prototype.isNumeric = function () {
 	/**Является ли строка числом, возможно, с десятичной точкой или запятой?*/
 	return /^-?[0-9]+([.,][0-9])?$/.test(this);
 }
-const prompt = require('prompt-sync')();
 
-const pathP = prompt('Path from Path to:  ');
-let path=pathP.split(' ');
+let path = process.argv.slice(2,4);
 const fs = require('fs')
 const filenames = fs.readdirSync(path[0]);
 let text;
@@ -24,8 +24,3 @@ for (let i = 0; i < filenames.length; i++) {
 		console.error(err);
 	}
 }
-//node dvig_lx.js
-//Path from Path to: ../dev/dvig/number/ matege2023p/1/
- 
-
-
