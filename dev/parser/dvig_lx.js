@@ -2,10 +2,11 @@
 
 'use strict';
 
-require('../../src/chaslib/Object_generic.js');
-require('../../lib/string.js');
-require('../../lib/func.js');
-require('../../lib/lx.js');
+// Костылинг. Но - нам нужна вся мощь наших библиотек.
+// Причём именно так, одним куском - чтобы они видели друг друга...
+global.document = {};
+global.CanvasRenderingContext2D = {prototype:{}};
+require('../../dist/lib/chas-lib.min.js');
 
 let path = process.argv.slice(2,4);
 const fs = require('fs')
