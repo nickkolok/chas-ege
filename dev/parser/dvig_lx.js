@@ -1,14 +1,11 @@
 //node dvig_lx.js ../dev/dvig/number/ matege2023p/1/
 
 'use strict';
-String.prototype.isSpace = function () {
-	/**Состоит ли строка только из пробельных символов?*/
-	return (/^\s+$/).test(this);
-};
-String.prototype.isNumeric = function () {
-	/**Является ли строка числом, возможно, с десятичной точкой или запятой?*/
-	return /^-?[0-9]+([.,][0-9])?$/.test(this);
-}
+
+require('../../src/chaslib/Object_generic.js');
+require('../../lib/string.js');
+require('../../lib/func.js');
+require('../../lib/lx.js');
 
 let path = process.argv.slice(2,4);
 const fs = require('fs')
