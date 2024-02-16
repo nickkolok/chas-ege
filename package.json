@@ -12,8 +12,7 @@
     "cubic-spline-browserified": "^3.0.3",
     "html2canvas": "^1.0.0-rc.7",
     "jszip": "^3.10.1",
-    "mathjs": "^11.5.1",
-    "prompt-sync": "^4.2.0"
+    "mathjs": "^11.5.1"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
