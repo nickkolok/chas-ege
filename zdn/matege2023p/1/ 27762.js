@@ -26,10 +26,12 @@
 			ctx.strokeStyle = om.primaryBrandColors[1];
 			ctx.arcBetweenSegments([10, 355, ver2.x, ver2.y, 390 - 8, 355, ver1.x, ver1.y], 30);
 
-			ctx.arcBetweenSegments([10, 355, ver2.x, ver2.y, ver3.x, ver3.y], 30);
+			//прямые углы
+			ctx.arcBetweenSegments([10, 355, ver2.x, ver2.y, ver3.x, ver3.y], 20);
+			ctx.arcBetweenSegments([390 - 8, 355, ver1.x, ver1.y, ver3.x, ver3.y], 20);
 
 			ctx.font = "23px liberation_sans";
-			ctx.fillText(vertices[0], 150 + 10, 70 - 10);
+			ctx.fillText(vertices[0], 150, 70 - 10);
 			ctx.fillText(vertices[1], 10 - 5, 370 + 10);
 			ctx.fillText(vertices[2], 390 - 20, 370 + 10);
 
