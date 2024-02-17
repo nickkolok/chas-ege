@@ -1,13 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 3);
+		let vertices = om.latbukv.iz(3);
 
 		let angle = sl(2, 150);
 		let question = angle < 90 ? [vertices[0], vertices[2], 180 - 2 * angle] : [vertices[2], vertices[0], 0.5 * (180 -
@@ -15,19 +9,21 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			
 			ctx.drawLine(10, 300, 390, 300);
 			ctx.drawLine(10, 300, 190, 100);
 			ctx.drawLine(190, 100, 390, 300);
 
 			//штрихи
-			ctx.drawLine(105 - 15, 300 / 1.5, 105, 300 / 1.5 + 10);
-			ctx.drawLine(400-100 , 300 / 1.5, 400-100-15, 300 / 1.5 + 10);
+			ctx.strokeStyle = om.primaryBrandColors.iz();
+			ctx.strokeInMiddleOfSegment(10, 300, 190, 100, 10);
+			ctx.strokeInMiddleOfSegment(390, 300, 190, 100, 10);
 
 			ctx.font = "23px liberation_sans";
 			ctx.fillText(vertices[0], 5, 330);
 			ctx.fillText(vertices[1], 390 - 15, 330);
-			ctx.fillText(vertices[2], 190 - 10, 100 - 10);
+			ctx.fillText(vertices[2], 190 - 5, 100 - 10);
 		};
 
 		NAtask.setTask({
