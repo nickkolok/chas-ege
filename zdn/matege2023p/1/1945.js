@@ -4,7 +4,7 @@
 		let vertices = om.latbukv.iz(3);
 
 		let angle = sl(2, 150);
-		let question = angle < 90 ? [vertices[0], vertices[2], 180 - 2 * angle] : [vertices[2], vertices[0], 0.5 * (180 -
+		let question = angle < 90 ? [vertices.slice(0,2).iz(), vertices[2], 180 - 2 * angle] : [vertices[2], vertices.slice(0,2).iz(), 0.5 * (180 -
 			angle)];
 
 		let paint1 = function(ctx) {
@@ -27,10 +27,10 @@
 		};
 
 		NAtask.setTask({
-			text: 'В треугольнике $' + vertices.shuffle().join('') + '$ угол $' + question[0] + '$ равен $' + angle +
+			text: 'В треугольнике $' + vertices.slice().shuffleJoin() + '$ угол $' + question[0] + '$ равен $' + angle +
 				'^{\\circ}$, стороны $' +
-				vertices[2] + vertices[0] + '$ и $' +
-				vertices[2] + vertices[1] + '$ равны. Найдите угол $' + question[1] + '$. Ответ дайте в градусах.',
+				[vertices[2], vertices[0]].shuffleJoin() + '$ и $' +
+				[vertices[2], vertices[1]].shuffleJoin() + '$ равны. Найдите угол $' + question[1] + '$. Ответ дайте в градусах.',
 			answers: question[2],
 			analys: '',
 		});
