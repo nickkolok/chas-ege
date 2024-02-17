@@ -4,19 +4,8 @@
 
 		let angle = sl(91, 179);
 
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 4);
-
-		let copyVertices = vertices.slice(0, 4);
-		if (sl1()) {
-			copyVertices = copyVertices.reverse();
-		}
-
+		let vertices = om.latbukv.iz(4);
+	
 		let numbers = [
 			[0, 1, 3],
 			[3, 1, 2],
@@ -25,19 +14,14 @@
 		].iz();
 		//не придумала ничего умнее, чем просто перечислить спрашиваемые вершины
 		let letters = numbers.map((elem) => vertices[elem]);
-		if (sl1()) {
-			letters = letters.reverse();
-		}
+		letters = letters.randomReverse();
+		
+		let subangle = [vertices[1],[vertices[0], vertices[2]].iz(), vertices[3]].randomReverse();
 
-		let subangle = [vertices[1],
-			[vertices[0], vertices[2]].iz(), vertices[3]
-		];
-		if (sl1()) {
-			subangle = subangle.reverse();
-		}
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawLine(100, 80, 350, 80);
 			ctx.drawLine(10, 320, 270, 320);
 			ctx.drawLine(100, 80, 10, 320);
@@ -54,7 +38,7 @@
 		};
 
 		NAtask.setTask({
-			text: 'В ромбе $' + copyVertices.permuteCyclic(sl(1, 3)).join('') + '$ угол $' + subangle.join('') +
+			text: 'В ромбе $' + vertices.slice().randomReverse().permuteCyclic(sl(0, 3)).join('') + '$ угол $' + subangle.slice().randomReverse().join('') +
 				'$ равен $' + angle + '^\\circ$. Найдите ' +
 				'угол $' + letters.join('') + '$. Ответ дайте в градусах',
 			answers: 0.5 * (180 - angle),
@@ -67,3 +51,4 @@
 	}, 1000);
 })();
 //3353
+s
