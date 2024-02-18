@@ -10,20 +10,15 @@
 			[a, 150, 0.25]
 		].iz();
 
-		let vertices = [];
-		do {
-			let a = slLetter(vertices).toUpperCase();
-			if (!vertices.includes(a))
-				vertices.push(a);
-		}
-		while (vertices.length < 3);
+		let vertices = om.latbukv.iz(3);
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.beginPath();
-			ctx.arc(200, 200, 180, 0, 2 * Math.PI);
-			ctx.stroke();
+						
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawArc(200, 200, 180, 0, 2 * Math.PI);
 
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.drawLine(200 - 160, 200 - 86, 200 + 170, 200 - 60);
 			ctx.drawLine(200 - 160, 200 - 86, 200 - 15, 200 - 180);
 			ctx.drawLine(200 - 15, 200 - 180, 200 + 170, 200 - 60);
