@@ -59,7 +59,7 @@ function createFromTextarea(){
 				eval(code);
 		}
 	} catch (e) {
-		$("#question").html(e+'<br/>'+e.name + " : " + e.message);
+		$("#question").html(e.message.replace(/\n/g,'<br/>'));
 		console.error(e);
 		return;
 	}
