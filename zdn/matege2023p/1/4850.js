@@ -8,7 +8,7 @@
 		let rand = sl1();
 		let h = sl(1, !rand ? [a, b].minE() - 1 : [a, b].maxE() - 1);
 
-		let answ = !rand ? [a, b].minE() * h / [a, b].maxE() : [a, b].maxE() / ([a, b].minE() * h);
+		let answ = !rand ? [a, b].minE() * h / [a, b].maxE() : [a, b].maxE()* h / [a, b].minE();
 
 		genAssertZ1000(answ, 'Кривой ответ');
 
