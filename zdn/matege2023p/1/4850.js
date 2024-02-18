@@ -4,37 +4,41 @@
 
 		let a = sl(2, 50);
 		let b = slKrome(a, 2, 50);
-		let h = sl(1, [a, b].minE() - 1);
 
-		let answ = [a, b].minE() * h / [a, b].maxE();
+		let rand = sl1();
+		let h = sl(1, !rand ? [a, b].minE() - 1 : [a, b].maxE() - 1);
+
+		let answ = !rand ? [a, b].minE() * h / [a, b].maxE() : [a, b].maxE() / ([a, b].minE() * h);
 
 		genAssertZ1000(answ, 'Кривой ответ');
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.drawLine(50, 80, 350, 80);
-			ctx.drawLine(10, 320, 310, 320);
-			ctx.drawLine(50, 80, 10, 320);
-			ctx.drawLine(310, 320, 350, 80);
+
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+
+			let angle = Math.PI / 2.5;
+
+			let ver1 = ctx.drawLineAtAngle(20, 300, -angle, 250);
+			ctx.drawLine(ver1.x, ver1.y, 340, ver1.y);
+			ctx.drawLine(20, 300, 300 - 40, 300);
+			ctx.drawLine(300 - 40, 300, 340, ver1.y);
 
 			//высоты
-			ctx.drawLine(50, 80, 50, 320);
-			ctx.drawLine(50, 80, 339, 140);
+			ctx.strokeStyle = om.primaryBrandColors[0];
+			ctx.drawLine(ver1.x, ver1.y, ver1.x, 300);
+			let ver2 = ctx.drawLineAtAngle(ver1.x, ver1.y, -angle - 1.5 * Math.PI, 230);
 
 			//прямые углы
-			ctx.lineWidth = 1;
-			ctx.drawLine(50, 320 - 20, 50 + 20, 320 - 20);
-			ctx.drawLine(50 + 20, 320, 50 + 20, 320 - 20);
-
-			ctx.drawLine(339 - 20, 140 - 28, 342, 140 - 23);
-			ctx.drawLine(339 - 20, 140 - 28, 339 - 25, 140 - 4);
-
+			ctx.strokeStyle = om.primaryBrandColors[1];
+			ctx.arcBetweenSegments([ver1.x, ver1.y, ver1.x, 300, 300 - 40, 300], 20);
+			ctx.arcBetweenSegments([340, ver1.y, ver2.x, ver2.y, ver1.x, ver1.y], 20);
 		};
 
 		NAtask.setTask({
-			text: 'Стороны параллелограмма равны $' + [a, b].shuffle().join('$ и $') + '$. Высота, ' +
-				'опущенная на меньшую из этих сторон, ' +
-				'равна $' + h + '$. Найдите высоту, опущенную на большую сторону параллелограмма.',
+			text: 'Стороны параллелограмма равны $' + [a, b].shuffleJoin('$ и $') + '$. Высота, ' +
+				'опущенная на ' + ['меньшую', 'большую'][rand] + ' из этих сторон, ' +
+				'равна $' + h + '$. Найдите высоту, опущенную на '+['меньшую', 'большую'][1-rand]+' сторону параллелограмма.',
 			answers: answ,
 		});
 		NAtask.modifiers.addCanvasIllustration({
