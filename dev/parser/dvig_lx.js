@@ -7,6 +7,7 @@
 global.document = {};
 global.CanvasRenderingContext2D = {prototype:{}};
 require('../../dist/lib/chas-lib.min.js');
+require('../../dist/lib/decorations.js'); // Не входит в сборку
 
 let path = process.argv.slice(2,4);
 const fs = require('fs')
