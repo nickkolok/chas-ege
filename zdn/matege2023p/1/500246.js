@@ -4,6 +4,12 @@
 		let angle = sl(10, 89);
 		let letter = window.latbukv.iz(4);
 
+		let rand = sl1();
+		let answ = rand ? angle * 2 : angle;
+		let angleText = [[letter[1], letter[0], letter[2]].randomReverse().join(''), [letter[1], letter[3], letter[2]].randomReverse().join('')];
+		angleText = !rand ? angleText.reverse() : angleText;
+		let angleNumber = !rand ? angle * 2 : angle;
+
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
 
@@ -33,9 +39,9 @@
 
 		NAtask.setTask({
 			text: 'Треугольник $' + letter.slice(0, 3).shuffleJoin() + '$ вписан в окружность с центром $' + letter[3] +
-				'$. Угол $' + [letter[1], letter[0], letter[2]].randomReverse().join('') + '$ равен $' + angle + '^\\circ$.' +
-				'Найдите угол $' + [letter[1], letter[3], letter[2]].randomReverse().join('') + '$. Ответ дайте в градусах.',
-			answers: angle * 2,
+				'$. Угол $' + angleText[0] + '$ равен $' + angleNumber + '^\\circ$.' +
+				'Найдите угол $' + angleText[1] + '$. Ответ дайте в градусах.',
+			answers: answ,
 			analys: ''
 		});
 		NAtask.modifiers.addCanvasIllustration({
