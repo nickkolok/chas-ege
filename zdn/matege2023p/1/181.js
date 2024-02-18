@@ -2,8 +2,10 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 		'use strict'
-		let a = sl(10, 89);
-		let b = slKrome(a, 10, 89);
+		let a = sl(10, 150);
+		let b = slKrome(a, 10, 150);
+		
+		genAssert(a+b!=180, 'Сумма углов равна 180');
 
 		let question = [
 			['меньший', [180 - a, 180 - b].minE()],
@@ -12,10 +14,11 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.beginPath();
-			ctx.arc(200, 200, 180, 0, 2 * Math.PI);
-			ctx.stroke();
 
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawArc(200, 200, 180, 0, 2 * Math.PI);
+
+			ctx.strokeStyle = om.primaryBrandColors[0];
 			ctx.drawLine(200 - 160, 200 - 86, 200 - 120, 200 + 134);
 			ctx.drawLine(200 - 120, 200 + 134, 200 + 82, 200 + 160);
 			ctx.drawLine(200 + 82, 200 + 160, 200 + 170, 200 - 60);
