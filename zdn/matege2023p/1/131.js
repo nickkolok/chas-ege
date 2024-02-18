@@ -30,11 +30,11 @@
 
 		NAtask.setTask({
 			text: 'На окружности отмечены точки $' + vertices[0] + '$, $' + vertices[1] + '$ и $' + vertices[2] + '$. ' +
-				'Дуга окружности $' + [vertices[0], vertices[2]].shuffleJoin() + '$, не содержащая точку $' + vertices[1] +
-				'$, составляет $' + a + '^\\circ$. ' +
+				['Дуга окружности $' + [vertices[0], vertices[2]].shuffleJoin() + '$, не содержащая точку $' + vertices[1] +
+				'$, составляет $' + a + '^\\circ$. ',
 				'Дуга окружности $' + vertices.slice(1, 4).shuffleJoin()  + '$, не содержащая точку $' + vertices[0] +
 				'$, составляет $' + b +
-				'^\\circ$. ' +
+				'^\\circ$. '].shuffleJoin() +
 				'Найдите вписанный угол $' + [vertices[0], vertices[2], vertices[1]].randomReverse().join('') + '$. Ответ дайте в градусах.',
 			answers: (360 - a - b) / 2,
 		});
