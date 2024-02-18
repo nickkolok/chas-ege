@@ -19,15 +19,15 @@
 			ctx.drawArc(200, 200, 180, 0, 2 * Math.PI);
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.drawLine(200 - 160, 200 - 86, 200 + 170, 200 - 60);
+			ctx.drawLine(200 - 160, 200 - 86, 200 + 80, 200 - 160);
 			ctx.drawLine(200 - 160, 200 - 86, 200 - 15, 200 - 180);
-			ctx.drawLine(200 - 15, 200 - 180, 200 + 170, 200 - 60);
+			ctx.drawLine(200 - 15, 200 - 180, 200 + 80, 200 - 160);
 
 			ctx.drawFilledCircle(200, 200, 2);
 
 			ctx.font = "23px liberation_sans";
 			ctx.fillText(vertices[0], 200 - 160 - 20, 200 - 86);
-			ctx.fillText(vertices[1], 200 + 170, 200 - 60);
+			ctx.fillText(vertices[1], 200 + 80, 200 - 160);
 			ctx.fillText(vertices[2], 200 - 15 - 5, 200 - 180 - 3);
 
 		};
