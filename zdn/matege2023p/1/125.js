@@ -3,13 +3,8 @@
 
 	let angle = sl(2, 89);
 
-	let vertices = [];
-	do {
-		let a = slLetter(vertices).toUpperCase();
-		if (!vertices.includes(a))
-			vertices.push(a);
-	}
-	while (vertices.length < 5);
+
+	let vertices = om.latbukv.iz(5);
 
 	let subangle1 = [vertices[4], vertices[0], vertices[3]];
 	let subangle2 = [
@@ -23,19 +18,20 @@
 
 	let paint1 = function(ctx) {
 		ctx.lineWidth = 2;
-		ctx.beginPath();
-		ctx.arc(200, 200, 180, 0, 2 * Math.PI);
-		ctx.stroke();
+
+		ctx.strokeStyle = om.secondaryBrandColors.iz();
+		ctx.drawArc(200, 200, 180, 0, 2 * Math.PI);
 
 		let deltaX = (angle > 90 ? 140 : 70);
 		let deltaY = (angle > 90 ? 111 : 165);
 
 		//центральный
-		ctx.drawFilledCircle(200, 200, 3);
+		ctx.strokeStyle = om.primaryBrandColors.iz();
 		ctx.drawLine(200 - deltaX, 200 - deltaY, 200 + deltaX, 200 + deltaY);
 		ctx.drawLine(200 - deltaX, 200 + deltaY, 200 + deltaX, 200 - deltaY);
 
 		ctx.drawLine(200 - deltaX, 200 - deltaY, 200 - deltaX, 200 + deltaY);
+		ctx.drawFilledCircle(200, 200, 3);
 
 		ctx.font = "23px liberation_sans";
 		ctx.fillText(vertices[0], 200 - deltaX - 10, 200 - deltaY - 15);
@@ -49,8 +45,8 @@
 	};
 
 	NAtask.setTask({
-		text: 'Отрезки $' + vertices.slice(0, 2).shuffle().join('') + '$ и $' + vertices.slice(2, 4).shuffle()
-			.join('') + '$ – диаметры окружности с центром $' + vertices[4] +
+		text: 'Отрезки $' + [vertices.slice(0, 2).shuffleJoin(), vertices.slice(2, 4).shuffleJoin()].shuffleJoin('$ и $') +
+			'$ – диаметры окружности с центром $' + vertices[4] +
 			'$. Угол $' + subangle1.join('') + '$ равен $' + angle + '^\\circ$. Найдите угол $' + subangle2.join('') +
 			'$. ' +
 			'Ответ дайте в градусах.',
