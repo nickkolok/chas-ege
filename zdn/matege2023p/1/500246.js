@@ -39,7 +39,7 @@
 
 		NAtask.setTask({
 			text: 'Треугольник $' + letter.slice(0, 3).shuffleJoin() + '$ вписан в окружность с центром $' + letter[3] +
-				'$. Угол $' + angleText[0] + '$ равен $' + angleNumber + '^\\circ$.' +
+				'$. Угол $' + angleText[0] + '$ равен $' + angleNumber + '^\\circ$. ' +
 				'Найдите угол $' + angleText[1] + '$. Ответ дайте в градусах.',
 			answers: answ,
 			analys: ''
