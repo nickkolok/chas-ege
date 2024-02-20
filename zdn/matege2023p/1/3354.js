@@ -20,17 +20,15 @@
 		//не придумала ничего умнее, чем просто перечислить спрашиваемые вершины
 		let letters = numbers.map((elem) => vertices[elem]);
 
-		if (sl1()) {
-			letters = letters.reverse();
-		}
+		letters.randomReverse();
+
 
 		let subangle = [vertices[0],
 			[vertices[1], vertices[3]].iz(), vertices[2]
 		];
 
-		if (sl1()) {
-			subangle = subangle.reverse();
-		}
+		subangle.randomReverse();
+		
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
