@@ -43,8 +43,8 @@
 
 		NAtask.setTask({
 			text: 'В треугольнике $' + vertices.slice(0, 3).shuffleJoin() + '$ угол $' + vertices[0] + '$ равен $' +
-				angle +	'^{\\circ}$, углы $' + vertices[1] + '$ и $' + vertices[2] + '$ – острые, ' +
-				'высоты $' + [vertices[1], vertices[3]].shuffleJoin() + '$ и $' + [vertices[2], vertices[4]].shuffle().join('') +
+				angle + '^{\\circ}$, углы $' + [vertices[1], vertices[2]].shuffleJoin('$ и $') + '$ – острые, ' +
+				'высоты $' + [[vertices[1], vertices[3]].shuffleJoin(), [vertices[2], vertices[4]].shuffleJoin()].shuffleJoin('$ и $') +
 				'$ пересекаются в точке $' + vertices[5] + '$. Найдите угол $' + [vertices[3], vertices[5], vertices[4]].randomReverse().join('') +
 				'$. Ответ дайте в градусах.',
 			answers: 180 - angle,
