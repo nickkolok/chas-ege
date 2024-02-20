@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let angle = sl(91, 179);
+		let angle = slKrome(90, 1, 179);
 
 		let vertices = om.latbukv.iz(4);
 	
@@ -16,8 +16,8 @@
 		let letters = numbers.map((elem) => vertices[elem]);
 		letters = letters.randomReverse();
 		
-		let subangle = [vertices[1],[vertices[0], vertices[2]].iz(), vertices[3]].randomReverse();
-
+		let subangle = [vertices[1],[vertices[0], vertices[2]].iz(), vertices[3]];
+		vertices=(angle<90)?vertices.slice().permuteCyclic(1):vertices.slice();
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
@@ -27,7 +27,7 @@
 			ctx.drawLine(100, 80, 10, 320);
 			ctx.drawLine(270, 320, 350, 80);
 
-			ctx.drawLine(10, 320, 350, 80);
+			(angle<90)?ctx.drawLine(100, 80, 270, 320):ctx.drawLine(10, 320, 350, 80);
 
 			ctx.font = "23px liberation_sans";
 			ctx.fillText(vertices[0], 100, 80 - 10);
@@ -51,4 +51,4 @@
 	}, 1000);
 })();
 //3353
-s
+
