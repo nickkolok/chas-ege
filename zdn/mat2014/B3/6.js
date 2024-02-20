@@ -2,8 +2,7 @@
 
 var c=1*(sluchch(0.1,0.5,0.1).toFixedLess(2));
 var a=sluchch(30,50,c);
-var d=sl1();
-var f=a+18*c;
+var f=a+17*c;
 var b=[];
 b[0]=sluchch(a,f,c);
 for(var i=1;i<29;i++){
@@ -24,7 +23,6 @@ if(!m[h])
 	m[h]=1;
 
 var paint = function(ct) {
-	var w=600;
 	var h2=400;
 	ct.lineWidth=2;
 	ct.translate(0,h2);
