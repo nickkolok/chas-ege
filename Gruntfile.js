@@ -278,6 +278,13 @@ module.exports = function(grunt) {
 				],
 				tasks: ['process-lib']
 			},
+			libNoUglify: {
+				files: [
+					'lib/*', '!lib/head*',
+					'src/**',
+				],
+				tasks: ['process-lib-nouglify']
+			},
 			taskSets: {
 				files: [
 					'zdn/**',
@@ -389,6 +396,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('process-pages-js', ['newer:copy:pagesJs']);
 	grunt.registerTask('process-task-sets', ['concurrent:process-task-sets']);
 	grunt.registerTask('process-lib', ['concurrent:process-lib']);
+	grunt.registerTask('process-lib-nouglify', ['newer:copy:lib', 'concat:chasLib', 'concat:chasUijs', 'concat:init']);
 	grunt.registerTask('process-css', ['cssmin', 'newer:copy:css']);
 	grunt.registerTask('process-ext', ['newer:copy:externals']);
 	grunt.registerTask('process-unit-test', ['swigtemplates:unitTest', 'copy:unitTest']);
