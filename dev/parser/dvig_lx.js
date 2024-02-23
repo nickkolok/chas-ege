@@ -14,7 +14,7 @@ const fs = require('fs')
 const filenames = fs.readdirSync(path[0]);
 let text;
 for (let i = 0; i < filenames.length; i++) {
-	let lib = require('../../lib/dvig_lz.js');
+	let lib = require('../../sh/dvig_lz.js');
 	text = fs.readFileSync(path[0] + filenames[i], 'utf8')
 	text = lib.makeTemplateFromPlainText(text);
 	try {
