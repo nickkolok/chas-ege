@@ -584,9 +584,9 @@ chas2.task = {
 	},
 
 
-	/** @function NApi.task.setEvaluationTask
-	 * Составить задание о нахождении значения выражения
-	 * @param {String} o.expr mathjs-выражение, значение которого нужно найти
+	/** @function NApi.task.setMinimaxFunctionTask
+	 * Составить задание о нахождении минимального/максимального значения функции на промежутке
+	 * @param {String}  o.expr mathjs-запись исследуемой функции
 	 * @param {String}  o.leftEnd mathjs-запись левого конца отрезка
 	 * @param {String}  o.rightEnd mathjs-запись правого конца отрезка
 	 * @param {Number}  o.primaryStep шаг первичного перебора значений x, по умолчанию 0.001
@@ -594,6 +594,9 @@ chas2.task = {
 	 * @param {Boolean}  o.forbidMinY запретить спрашивать минимум
 	 * @param {Boolean}  o.forbidMaxY запретить спрашивать максимум
 	 * @param {Boolean}  o.forbidAnalys запретить писать решение (если оно кривое)
+	 * @param {Boolean}  o.forbidOpenEnds запретить полуинтервалы и интервалы, спрашивать только про отрезок (в ФИПИ так)
+	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
+	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
 	 */
 	setMinimaxFunctionTask: function (o) {
 		let expr = math.parse(o.expr);
