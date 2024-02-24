@@ -37,7 +37,7 @@ function variateOtherNumbers(lexemArray, variableList) {
 function makeTemplateFromPlainText(text) {
 	text = text.replace(/­/g, ""); //Убиваем мягкий перенос
 	text = text.replace(/\n/g, ""); //Убиваем перенос
-	text = text.replace(/(\d+)(?=[А-ЯЁ])/ig, "$1 "); //Отделяем от слов "прилипшие" числа
+	text = text.replace(/(\d+)(?=[А-ЯЁ\-])/ig, "$1 "); //Отделяем от слов "прилипшие" числа
 	var lexemArray = splitTextToLexems(text);
 	console.log(lexemArray);
 
