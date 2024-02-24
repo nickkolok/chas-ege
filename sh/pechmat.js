@@ -122,10 +122,7 @@ function konecSozd() {
 			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
-			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
+			).replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
 		}
 	}
 
@@ -250,16 +247,16 @@ function createHtmlForTask(nazvzad) {
 
 	return {
 		txt:
-			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
-				'<div class="b">'+nazvzad+'</div>'+
-				'<div class="z">'+
-					window.vopr.txt+
-					'<button class="noprint renewbutton" title="Заменить задание на похожее"'+
-					'>' +
-						'&#x27F3;' +
-					'</button>'+
-				'</div>'+
-				'<div class="grid-for-writing"></div>'+
+			'<div class="d" data-task-id="' + taskId + '" data-task-number="' + nZ + '">' +
+			'<div class="b">' + nazvzad + '</div>' +
+			'<div class="z">' +
+			window.vopr.txt +
+			'<button class="noprint renewbutton" title="Заменить задание на похожее"' +
+			'>' +
+			'&#x27F3;' +
+			'</button>' +
+			'</div>' +
+			'<div class="grid-for-writing"></div>' +
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
@@ -306,7 +303,7 @@ function obnov() {
 	unqDict[html.unq] = true;
 
 	strVopr += html.txt;
-	strOtv  += html.ver;
+	strOtv += html.ver;
 	strResh += html.rsh;
 
 	generatedTasks[vopr.taskId] = vopr.clone();
@@ -453,7 +450,7 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = "\n\\\\\n\\hline\n";
+	var hline = "\n\n\\hline\n";
 	return (
 		'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
 			'\n\\hline\n' +
@@ -471,13 +468,15 @@ function createLaTeXbunchAnswers(variantN) {
 	var answersParsedToTeX = [];
 	// The first row may be the caption, so...
 	var cellsInFirstRow = (answerRows[2] || answerRows[1] || answerRows[0]).getElementsByTagName('td').length;
+	let count = 0;
 	for (var row of Array.from(answerRows)) {
+		count++;
 		var tdCells = row.getElementsByTagName('td');
 		if (tdCells.length) {
 			//TODO: reverse-decode LaTeX from MathJax
-			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & ')+'\\\\');
-			if (count % 50 == 0&&count<kZ)
-				answersParsedToTeX.push('\\end{tabular}&\\begin{tabular}[t]{'+ (new Array(cellsInFirstRow)).fill('|l').join('') + '|' +'}')
+			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & ') + '\\\\');
+			if (count % 50 == 0 && count < kZ)
+				answersParsedToTeX.push('\\end{tabular}&\\begin{tabular}[t]{' + (new Array(cellsInFirstRow)).fill('|l').join('') + '|' + '}')
 		}
 	}
 	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
@@ -511,10 +510,10 @@ function createLaTeXbunchTasks(variantN) {
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
-				'\n' +
-				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
-				tasksInLaTeX[taskId] + '\n' +
-				'\\end{taskBN}' + '\n';
+				"\n" +
+				"\\begin{taskBN}{" + generatedTasks[taskId].taskCategory + "}" + "\n" +
+				tasksInLaTeX[taskId] + "\n" +
+				"\\end{taskBN}\n\n";
 		}
 
 	}
@@ -527,7 +526,7 @@ function refreshLaTeXarchive() {
 	}
 	var zip = new JSZip();
 	var bunchTasks = "";
-	var answers = "\\begin{document}\n\n\\begin{multicols}{"+(variantsGenerated.length>10)?6:variantsGenerated.length+"}";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>10)?6:variantsGenerated.length)+"}";
 
 	for(var variantN of variantsGenerated){
 		var head =
@@ -556,9 +555,3 @@ function refreshLaTeXarchive() {
 		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
 	});
 }
-
-var preambula = ['\\documentclass[4apaper]{article}\n\\usepackage{dashbox}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../egetask_ver}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
-
-var hyperref = '\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
-
-var watermark = '\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n';
