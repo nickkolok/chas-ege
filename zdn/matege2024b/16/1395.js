@@ -5,7 +5,7 @@
 		let b = sl(2, 9);
 		let c = a * b * b;
 		NAtask.setEvaluationTask({
-			expr: '(' + (a * b) + '*10^' + sl(1, 3) + ')' + '/' + '(' + (a) + '*10^' + sl(-3, -1) + ')',
+			expr: 'divideColon(' + (a * b) + '*10^' + sl(1, 3) + ',  ' + a + '*10^' + sl(-3, -1) + ')',
 			//forbiddenAnswers: [0],
 			authors: ['Алендарь Сергей'],
 		});
