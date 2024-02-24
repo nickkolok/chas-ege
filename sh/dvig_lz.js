@@ -183,7 +183,7 @@ function safepushtodict(obj,prop,item) {
 }
 
 function lx_guessWordForm(word, form) {
-	form = form.toLowerCase();
+	form = form.toLowerCase().replace('-','');//Гасим паразитный перенос
 	var obj = sklonlxkand(word);
 	for (var prop of chislitlxPossibleForms) {
 		if (String(obj[prop]).toLowerCase() == form) {
