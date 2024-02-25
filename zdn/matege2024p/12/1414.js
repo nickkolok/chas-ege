@@ -25,25 +25,25 @@
 
 	chas2.task.setTask({
 		text: 'Найдите точку ' + arr1[maxmin1] + ' функции:' +
-			'$$  y=(' + plusmin(b + 'x-' + a) + ')' + plusmin('cosx-' + b) + plusmin('sinx+' + d) + ', $$' +
+			'$$  y=(' + plusmin(b + 'x-' + a) + ')' + '\\cos ' + plusmin('x-' + b) + '\\sin ' + plusmin('x+' + d) + ', $$' +
 			'принадлежащую промежутку $(0, \\frac{\\pi}{2} )$',
-		analys: '$$ y^{\'}=(' + plusmin(b + 'x-' + a) + ')^{\'}cosx+(' + plusmin(b + 'x-' + a) + ')(cosx)^{\'}+(' + -b +
-			'sinx)^{\'}$$' +
-			'$$ y^{\'}=' + b + 'cosx-(' + plusmin(b + 'x-' + a) + ')' + plusmin('sinx-' + b) + 'cosx' + ' \\Rightarrow\\ ' +
-			'y^{\'}=-(' + plusmin(b + 'x-' + a) + ')sinx$$' +
-			'$$ y^{\'}=0' + ' \\Rightarrow\\ ' + '(' + plusmin(b + 'x-' + a) + ')sinx=0$$' +
+		analys: '$$ y^{\'}=(' + plusmin(b + 'x-' + a) + ')^{\'}\\cos x+(' + plusmin(b + 'x-' + a) + ')(\\cos x)^{\'}+(' + -b + '\\sin x)^{\'}$$' +
+			'$$ y^{\'}=' + b + '\\cos x-(' + plusmin(b + 'x-' + a) + ')' + '\\sin ' + plusmin('x-' + b) + '\\cos x' + ' \\Rightarrow\\ ' +
+			'y^{\'}=-(' + plusmin(b + 'x-' + a) + ')\\sin x$$' +
+			'$$ y^{\'}=0' + ' \\Rightarrow\\ ' + '(' + plusmin(b + 'x-' + a) + ')\\sin x=0$$' +
 			'$$1)' + plusmin(b + 'x-' + a) + '=0' + ' \\Rightarrow\\ ' +
-			+b + 'x=' + a + ' \\Rightarrow\\ ' + 'x=' + ans + '$$' +
-			'$$2)sinx=0' + ' \\Rightarrow\\ ' + 'x=0' + '$$' +
+			b + 'x=' + a + ' \\Rightarrow\\ ' + 'x=' + ans + '$$' +
+			'$$2)\\sin x=0' + ' \\Rightarrow\\ ' + 'x=0' + '$$' +
 			'Промежутку $(0,\\frac{\\pi}{2}  )$ принадлежит только точка: "$' + ans +
 			'$". Подставляя любые значения из промежутка $(0,' + ans +
 			')$ в найденную производную, мы узнаём, что она имеет ' + arr2[maxmin1] +
 			' знак, а на промежутке $(' + ans + ', \\frac{\\pi}{2} )$ ' + arr2[maxmin2] +
 			'. Производная функции меняет знак с ' +
 			sklonlxkand(arr2[maxmin1]).re + ', на ' + arr2[maxmin2] + ',' + ' значит, "$' + ans +
-			'$" - это искомая точка ' + arr1[maxmin1] + ' .',
+			'$" - это искомая точка ' + arr1[maxmin1] + '.',
 
 		answers: ans,
 	});
 })();
 //1414
+
