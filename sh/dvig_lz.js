@@ -63,13 +63,19 @@ function makeTemplateFromPlainText(text) {
 		while(str.includes(' '+punctuation[i]))
 		str=str.replace(' '+punctuation[i],punctuation[i]);
 	}
+
+	// Режем строку по границе предложений / фраз
+	str = str.replace(/([а-яё'][\.])\s([А-ЯЁ][а-яё])/g, "$1 '+\n\t\t\t'$2");
+	str = str.replace(/([а-яё'][\,])\s([а-яё])/g, "$1 '+\n\t\t\t'$2");
+
 	return (
 		"(function() { 'use strict'; retryWhileError(function() {\n" +
 			"\t/* " + text + " */\n\n" +
 			joinVariableList(variableList) + "\n" +
 			joinDecorationList(decorationList, array2word) + "\n" +
 			"\tNAtask.setTask({\n" +
-				"\t\ttext: '" + str + "',\n"+
+				"\t\ttext:\n"+
+				"\t\t\t'" + str + "',\n"+
 				"\t\tanswers: n00,\n"+
 				"\t\tauthors: [''],\n"+
 			"\t});\n"+
