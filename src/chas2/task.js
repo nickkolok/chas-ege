@@ -609,7 +609,7 @@ chas2.task = {
 		let minX = rEnd;
 		let maxX = rEnd;
 
-		o.primaryStep = (o.primaryStep || 0.001);
+		o.primaryStep = (o.primaryStep || 0.01);
 		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
 
 		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
