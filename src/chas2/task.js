@@ -597,6 +597,7 @@ chas2.task = {
 	 * @param {Boolean}  o.forbidOpenEnds запретить полуинтервалы и интервалы, спрашивать только про отрезок (в ФИПИ так)
 	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
 	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
+	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
 	 */
 	setMinimaxFunctionTask: function (o) {
 		let expr = math.parse(o.expr);
@@ -677,6 +678,10 @@ chas2.task = {
 		if (!o.keepFractionsIrreduced){
 			expr = math.simplify(expr,mathjsRules.reduceFractions);
 			expr = math.simplify(expr,mathjsRules.reduceFractionsPi);
+		}
+
+		if (!o.keepSumOrder){
+			expr = math.simplify(expr, mathjsRules.shuffleSums);
 		}
 
 		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
