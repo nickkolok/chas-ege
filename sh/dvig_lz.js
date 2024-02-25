@@ -41,6 +41,8 @@ function makeTemplateFromPlainText(text) {
 	var lexemArray = splitTextToLexems(text);
 	console.log(lexemArray);
 
+	var needsVariativeABC = /\s[A-Z]+\s/.test(text);
+
 	var variableList = {};
 	lexemArray = variateNumbersWithNouns(lexemArray, variableList);
 	lexemArray = variateOtherNumbers(lexemArray, variableList);
@@ -80,6 +82,7 @@ function makeTemplateFromPlainText(text) {
 				"\t\tauthors: [''],\n"+
 			"\t});\n"+
 			"\tNAtask.modifiers.allDecimalsToStandard(/*true*/);\n"+
+			"\tNAtask.modifiers.variativeABC();\n".esli(needsVariativeABC)+
 		"}, 2000);})();\n" +
 		"// \n"
 	);
