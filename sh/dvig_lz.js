@@ -114,7 +114,7 @@ function makeTemplateFromPlainText(text) {
 function joinVariableList(variableList) {
 	var code = '';
 	for (var variable in variableList) {
-		code += '\tvar ' + variable + '=' + variableList[variable] + ';\n';
+		code += '\tlet ' + variable + '=' + variableList[variable] + ';\n';
 	}
 	return code;
 }
@@ -124,7 +124,7 @@ function joinDecorationList(decorationList, array2word) {
 	function genVarString(j){
 		var noDeclension = (decor[decorationList[decoration][j]].declensionType === 'none');
 		return (
-			'var ' + decoration + ' = ' +
+			'let ' + decoration + ' = ' +
 			'sklonlxkand('.esli(!noDeclension) +
 			'decor.' + decorationList[decoration][j] + '.iz(' +
 			('' + array2word[decorationList[decoration][j]].length).esli(array2word[decorationList[decoration][j]].length > 1) +
@@ -142,7 +142,7 @@ function joinDecorationList(decorationList, array2word) {
 			code += '\t//' + genVarString(i);
 		}
 	}
-	return code + '\n\t//var   = sklonlxkand([].iz()); // Заготовочка!\n';
+	return code + '\n\t//let   = sklonlxkand([].iz()); // Заготовочка!\n';
 }
 
 
