@@ -74,6 +74,9 @@ function makeTemplateFromPlainText(text) {
 		"(function() { 'use strict'; retryWhileError(function() {\n" +
 			"\t/* " + text + " */\n\n" +
 			joinVariableList(variableList) + "\n" +
+			"\t//genAssert(,''); //Заготовочка!\n" +
+			"\t//genAssertZ1000(,''); //Заготовочка!\n" +
+			"\n" +
 			joinDecorationList(decorationList, array2word) + "\n" +
 			"\tNAtask.setTask({\n" +
 				"\t\ttext:\n"+
