@@ -239,14 +239,16 @@ function replaceDecorationsSoloWords(lexemArray, form2word, array2word, word2arr
 			}
 
 			console.log(word, array);
-			safepushtodict(decorationList, 's' + decorationCounter, array);
+
+			var variableName = 'the_' + word2array[word][0];
+			safepushtodict(decorationList, variableName, array);
 			for (var j = 0; j < lexemArray.length; j++) {
 				var form = lexemArray[j];
 				if (form2word[form] != word) {
 					continue;
 				}
 				lexemArray[j] =
-					"' + s" + decorationCounter +
+					"' + " + variableName +
 					("." + lx_guessWordForm(word, form)).esli(decor[array].declensionType !== 'none') +
 					".toZagl()".esli(form.toZagl() == form) +
 					" +'";
