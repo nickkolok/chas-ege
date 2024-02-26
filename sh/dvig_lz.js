@@ -133,6 +133,7 @@ function variateNumbersWithNouns(lexemArray, variableList) {
 	var actualWord = '', actualCase = '';
 
 	function chislitlxCheck(number, word, wordForm) {
+		wordForm = wordForm.replace('-','');//Гасим паразитный перенос
 		for (var p of ['','i','r','d','v','t','p']){
 			if (chislitlx(number, word, p) == number + ' ' + wordForm) {
 				actualWord = word;
@@ -152,7 +153,10 @@ function variateNumbersWithNouns(lexemArray, variableList) {
 			/[а-яё\-]{3,}/i.test(newLexemArray[i + 1]) // Слово
 		) {
 			//TODO: человекопонятные названия переменных на основе ближайших слов, если не заняты
-			var foundWord = newLexemArray[i + 1];
+
+			//Гасим паразитный перенос;
+			//TODO: шапка-невидимка
+			var foundWord = newLexemArray[i + 1].replace('-','');
 			var foundNumber = newLexemArray[i];
 			actualWord = '';
 			actualCase = '';
