@@ -56,6 +56,12 @@ function makeTemplateFromPlainText(text) {
 	text = text.replace(/­/g, ""); //Убиваем мягкий перенос
 	text = text.replace(/\n/g, ""); //Убиваем перенос
 	text = text.replace(/(\d+)(?=[А-ЯЁ\-])/ig, "$1 "); //Отделяем от слов "прилипшие" числа
+
+	// Полностью ликвидируем дефисы
+	// TODO: вообще так быть не должно, можно продолбать всякие шапки-невидимки
+	// Но пока выгоды осязаемы, а издержки только гипотетические
+	text = text.replace(/([а-яё])-([а-яё])/g, "$1$2"); //Отделяем от слов "прилипшие" числа
+
 	var lexemArray = splitTextToLexems(text);
 	rejoinTwowordDecorations(lexemArray);
 	console.log(lexemArray);
