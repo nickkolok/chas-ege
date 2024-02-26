@@ -22,6 +22,24 @@ function joinLexemsToText(lexemArray){
 	return text;
 }
 
+function rejoinTwowordDecorations(lexemArray) {
+	for (let array in decor) {
+		for (let word of decor[array]) {
+			if (!/\s/.test(word)) {
+				continue;
+			}
+			for (let i = 0; i < lexemArray.length - 1; i++) {
+				let twoword = lexemArray[i] + ' ' + lexemArray[i + 1];
+				let form = lx_guessWordForm(word, twoword);
+				if (!form) {
+					continue;
+				}
+				lexemArray[i] = twoword;
+				lexemArray.splice(i + 1, 1);
+			}
+		}
+	}
+}
 
 function variateOtherNumbers(lexemArray, variableList) {
 //TODO: человекопонятные названия переменных на основе ближайших слов, если не заняты
@@ -39,6 +57,7 @@ function makeTemplateFromPlainText(text) {
 	text = text.replace(/\n/g, ""); //Убиваем перенос
 	text = text.replace(/(\d+)(?=[А-ЯЁ\-])/ig, "$1 "); //Отделяем от слов "прилипшие" числа
 	var lexemArray = splitTextToLexems(text);
+	rejoinTwowordDecorations(lexemArray);
 	console.log(lexemArray);
 
 	var needsVariativeABC = /\s[A-Z]+\s/.test(text);
