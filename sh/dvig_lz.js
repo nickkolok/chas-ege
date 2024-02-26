@@ -25,17 +25,18 @@ function joinLexemsToText(lexemArray){
 function rejoinTwowordDecorations(lexemArray) {
 	for (let array in decor) {
 		for (let word of decor[array]) {
-			if (!/\s/.test(word)) {
+			let numberOfWords = word.split(" ").length;
+			if (numberOfWords < 2) {
 				continue;
 			}
-			for (let i = 0; i < lexemArray.length - 1; i++) {
-				let twoword = lexemArray[i] + ' ' + lexemArray[i + 1];
+s			for (let i = 0; i < lexemArray.length - 1; i++) {
+				let twoword = lexemArray.slice(i, i + numberOfWords).join(' ');
 				let form = lx_guessWordForm(word, twoword);
 				if (!form) {
 					continue;
 				}
 				lexemArray[i] = twoword;
-				lexemArray.splice(i + 1, 1);
+				lexemArray.splice(i + 1, numberOfWords - 1);
 			}
 		}
 	}
