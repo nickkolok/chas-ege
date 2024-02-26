@@ -122,15 +122,16 @@ function joinVariableList(variableList) {
 
 function joinDecorationList(decorationList, array2word) {
 	function genVarString(j){
-		var noDeclension = (decor[decorationList[decoration][j]].declensionType === 'none');
+		var topic = decorationList[decoration][j];
+		var noDeclension = (decor[topic].declensionType === 'none');
 		return (
 			'let ' + decoration + ' = ' +
 			'sklonlxkand('.esli(!noDeclension) +
-			'decor.' + decorationList[decoration][j] + '.iz(' +
-			('' + array2word[decorationList[decoration][j]].length).esli(array2word[decorationList[decoration][j]].length > 1) +
+			'decor.' + topic + '.iz(' +
+			('' + array2word[topic].length).esli(array2word[topic].length > 1) +
 			')'.esli(!noDeclension) +
 			'); ' +
-			'// ' + JSON.stringify(decor[decorationList[decoration][j]].slice()) +
+			'// ' + JSON.stringify(decor[topic].slice()) +
 			'\n'
 		);
 	}
