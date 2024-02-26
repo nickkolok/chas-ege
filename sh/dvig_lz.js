@@ -106,6 +106,7 @@ function makeTemplateFromPlainText(text) {
 			"\tNAtask.modifiers.allDecimalsToStandard(/*true*/);\n"+
 			"\tNAtask.modifiers.variativeABC();\n".esli(needsVariativeABC)+
 		"}, 2000);})();\n" +
+		"// РешуЕГЭ: \n" +
 		"// \n"
 	);
 }
