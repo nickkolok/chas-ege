@@ -99,11 +99,14 @@ function joinVariableList(variableList) {
 
 function joinDecorationList(decorationList, array2word) {
 	function genVarString(j){
+		var noDeclension = (decor[decorationList[decoration][j]].declensionType === 'none');
 		return (
-			'var ' + decoration +
-			' = sklonlxkand(decor.' + decorationList[decoration][j] + '.iz(' +
+			'var ' + decoration + ' = ' +
+			'sklonlxkand('.esli(!noDeclension) +
+			'decor.' + decorationList[decoration][j] + '.iz(' +
 			('' + array2word[decorationList[decoration][j]].length).esli(array2word[decorationList[decoration][j]].length > 1) +
-			')); ' +
+			')'.esli(!noDeclension) +
+			'); ' +
 			'// ' + JSON.stringify(decor[decorationList[decoration][j]].slice()) +
 			'\n'
 		);
@@ -236,7 +239,8 @@ function replaceDecorationsSoloWords(lexemArray, form2word, array2word, word2arr
 					continue;
 				}
 				lexemArray[j] =
-					"' + s" + decorationCounter + "." + lx_guessWordForm(word, form) +
+					"' + s" + decorationCounter +
+					("." + lx_guessWordForm(word, form)).esli(decor[array].declensionType !== 'none') +
 					".toZagl()".esli(form.toZagl() == form) +
 					" +'";
 			}
