@@ -29,7 +29,7 @@ function rejoinTwowordDecorations(lexemArray) {
 			if (numberOfWords < 2) {
 				continue;
 			}
-s			for (let i = 0; i < lexemArray.length - 1; i++) {
+			for (let i = 0; i < lexemArray.length - 1; i++) {
 				let twoword = lexemArray.slice(i, i + numberOfWords).join(' ');
 				let form = lx_guessWordForm(word, twoword);
 				if (!form) {
