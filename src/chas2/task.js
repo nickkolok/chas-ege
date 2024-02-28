@@ -70,6 +70,26 @@ chas2.task = {
 		},
 
 
+		/** @function chas2.task._.unfoldTask
+		 * Развернуть вопросы в стандартный объект-задание,
+		 * а именно - обработать questions и postquestion
+		 */
+		unfoldTask : function(o) {
+			if (o.questions) {
+				let question = o.questions.iz();
+				o.text += question[0];
+				o.answers = [question[1]];
+				//TODO: черпать o.wrongAnswers из невостребованных вопросов?
+				if (question[2]) {
+					o.analys += question[2];
+				}
+			}
+			if (o.postquestion) {
+				o.text += o.postquestion;
+			}
+		},
+
+
 		/** @function chas2.task._.normalizeCanvasOptions
 		 * Привести опции canvas к нормальному виду
 		 * @param {Number} o.width ширина canvas
@@ -127,6 +147,7 @@ chas2.task = {
 	 */
 	setTask : function(o) {
 		chas2.task._.normalizeTask(o);
+		chas2.task._.unfoldTask(o);
 		chas2.task._.validateTask(o);
 
 		window.vopr.podg();
