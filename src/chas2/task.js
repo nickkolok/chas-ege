@@ -654,7 +654,7 @@ chas2.task = {
 			maxY = null;
 		}
 
-		genAssert(minY !== null || maxY !== null);
+		genAssert(minY !== null || maxY !== null, 'Экстремальное значение запрещено или не удовлетворяет условиям');
 
 		var chooseMinMax;
 		let chosenX;
@@ -669,7 +669,7 @@ chas2.task = {
 		}
 
 		o.answers = o.answers.ts();
-		genAssert(o.answers.length < 7);
+		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
 
 		if (o.simplifyConstant){
 			expr = math.simplifyConstant(expr);
