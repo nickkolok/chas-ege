@@ -69,6 +69,7 @@ function variateOtherNumbers(lexemArray, variableList) {
 function makeTemplateFromPlainText(text) {
 	text = text.replace(/­/g, ""); //Убиваем мягкий перенос
 	text = text.replace(/\n/g, ""); //Убиваем перенос
+	text = text.replace(/\s+/g, " "); //Все пробелы - один пробел!
 	text = text.replace(/(\d+)(?=[А-ЯЁ\-])/ig, "$1 "); //Отделяем от слов "прилипшие" числа
 
 	// Полностью ликвидируем дефисы
