@@ -42,6 +42,19 @@ function rejoinTwowordDecorations(lexemArray) {
 	}
 }
 
+function variateHourMinuteNumbers(lexemArray, variableList) {
+	for (var i = 0; i < lexemArray.length; i++) {
+		if (/^\d{1,2}\:\d\d/.test(lexemArray[i])) {
+			var numbers = lexemArray[i].split(':');
+			var minutes = 60 * numbers[0] + 1 * numbers[1];
+			variableList['minutes' + i] = 'sl(' + 30 + ', ' + minutes + ', ' + '30)';
+			lexemArray[i] = "' + minutes" + i + ".toDvoet() + '";
+		}
+	}
+	return lexemArray;
+}
+
+
 function variateOtherNumbers(lexemArray, variableList) {
 //TODO: человекопонятные названия переменных на основе ближайших слов, если не заняты
 	for (var i = 0; i < lexemArray.length; i++) {
@@ -71,6 +84,7 @@ function makeTemplateFromPlainText(text) {
 
 	var variableList = {};
 	lexemArray = variateNumbersWithNouns(lexemArray, variableList);
+	lexemArray = variateHourMinuteNumbers(lexemArray, variableList);
 	lexemArray = variateOtherNumbers(lexemArray, variableList);
 
 	var form2word = {}, array2word = {}, word2array = {};
