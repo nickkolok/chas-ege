@@ -6,15 +6,16 @@
 			return spline.at(x);
 		}
 		NAinfo.requireApiVersion(0, 2);
-		let maxX = sl(5, 10);
+		let maxX = sl(5, 11);
 		let minX = -sl(5, 10);
 		let segmentMin = sl(minX + 1, (maxX / 2).floor());
 		let segmentMax = sl(segmentMin + 1, maxX - 0.5);
 
 		let X = [];
 		let Y = [];
-		for (let i = minX; i <= maxX; i += sl(0.5, 2, 0.5))
+		for (let i = minX; i <= maxX; i += sl(0.5, 2, 0.5)) {
 			X.push(i);
+		}
 		Y.push(sl(1, 6).pm());
 		for (let i = 1; i < X.length; i++) {
 			do {
@@ -26,13 +27,16 @@
 		genAssert(f(maxX).abs() < 7, 'Экстремум за пределами сетки');
 
 		let extremums = findExtremumsOfFunction(f, minX, maxX, 0.1);
-		extremums = extremums.minP.concat(extremums.maxP);
+		let extremumsAll = extremums.minP.concat(extremums.maxP);
 
-		let extremumsX = extremums.T()[0].sortNumericArr();
-		let extremumsY = extremums.T()[1];
+		genAssert(extremumsAll.length > 2, 'Экстремумов недостаточно');
 
-		extremumsX.forEach((elem) => genAssert((elem.abs().ceil() - elem.abs()).abs() > 0.5),
-			'Экстремум за пределами сетки');
+		let extremumsX = extremumsAll.T()[0].sortNumericArr();
+		let extremumsY = extremumsAll.T()[1];
+
+		extremumsX.forEach((elem) => genAssert((elem - segmentMin).abs() > 0.3), 'Экстремум слишком близко к левому концу');
+		extremumsX.forEach((elem) => genAssert((segmentMax - elem).abs() > 0.3), 'Экстремум слишком близко к правому концу');
+
 		extremumsY.forEach((elem) => genAssert(elem.abs() < 7), 'Экстремум за пределами сетки');
 		extremumsY.forEach((elem, index) => {
 			if (index != extremumsY.length - 1)
@@ -40,12 +44,10 @@
 					'Экстремумы слишком близко');
 		});
 
-		genAssert(extremums.length > 2, 'Экстремумов недостаточно');
-
 		let answ = extremumsX.kolvoMzhd(segmentMin, segmentMax, true);
 
 		let paint1 = function(ctx) {
-			let h = 380;
+			let h = 400;
 			let w = 500;
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawCoordinatePlane(w, h, {
@@ -60,10 +62,12 @@
 			ctx.strokeStyle = 'black';
 			ctx.drawLine(20 * maxX, 5, 20 * maxX, -5);
 			ctx.drawLine(20 * minX, 5, 20 * minX, -5);
-			if (maxX != 0 && maxX != 1)
+			if (maxX != 0 && maxX != 1) {
 				ctx.fillText(maxX, 20 * maxX, 15);
-			if (minX != 0 && minX != 1)
+			}
+			if (minX != 0 && minX != 1) {
 				ctx.fillText(minX, 20 * minX - 13, 15);
+			}
 			ctx.scale(20, -20);
 			ctx.lineWidth = 0.13;
 
@@ -92,7 +96,8 @@
 					'количество решений уравнения $f\'(x)=0$'
 				].iz() + ' на отрезке $[' + segmentMin + '; ' + segmentMax + ']$.',
 			answers: answ,
-			analys: 'Точек экстремума: ' + extremums.length,
+			analys: 'Точек экстремума: ' + extremumsAll.length + '<br>' +
+				extremumsAll.map((elem) => '$(' + elem[0].ts(1) + ';' + elem[1].ts(1) + ')$').join('<br>'),
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
