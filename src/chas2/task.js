@@ -1199,5 +1199,16 @@ chas2.task = {
 			o.analys = o.analys.allDecimalsToStandard(p1);
 			NAtask.setTask(o);
 		},
+
+		/** @function NAtask.modifiers.assertSaneDecimals
+		Вызывает ошибку при наличии слишком длинных десятичных дробей.
+		*/
+		assertSaneDecimals : function() {
+			let o = NAtask.getTask();
+			let insaneDecimal = /(\d|[.,]|\{[.,]\}){8}/;
+			genAssert(!insaneDecimal.test(o.text), 'Текст задания содержит слишком длинные десятичные дроби');
+			genAssert(!insaneDecimal.test(o.analys), 'Решение задания содержит слишком длинные десятичные дроби');
+			genAssert(!insaneDecimal.test(o.answers.join('__')), 'Один из ответов задания содержит слишком длинные десятичные дроби');
+		},
 	},
 };
