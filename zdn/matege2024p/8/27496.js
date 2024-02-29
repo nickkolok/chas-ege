@@ -6,8 +6,8 @@
 			return spline.at(x);
 		}
 		NAinfo.requireApiVersion(0, 2);
-		let maxX = sl(5, 11);
 		let minX = -sl(5, 10);
+		let maxX = sl(5, 11);
 		let segmentMin = sl(minX + 1, (maxX / 2).floor());
 		let segmentMax = sl(segmentMin + 1, maxX - 0.5);
 
@@ -35,13 +35,12 @@
 		let extremumsY = extremumsAll.T()[1];
 
 		extremumsX.forEach((elem) => genAssert((elem - segmentMin).abs() > 0.3), 'Экстремум слишком близко к левому концу');
-		extremumsX.forEach((elem) => genAssert((segmentMax - elem).abs() > 0.3), 'Экстремум слишком близко к правому концу');
+		extremumsX.forEach((elem) => genAssert((elem - segmentMax).abs() > 0.3), 'Экстремум слишком близко к правому концу');
 
 		extremumsY.forEach((elem) => genAssert(elem.abs() < 7), 'Экстремум за пределами сетки');
 		extremumsY.forEach((elem, index) => {
 			if (index != extremumsY.length - 1)
-				genAssert(([elem, extremumsY[index + 1]].maxE() - [elem, extremumsY[index + 1]].minE()).abs() > 1,
-					'Экстремумы слишком близко');
+				genAssert((elem - extremumsY[index + 1]).abs() > 1,	'Экстремумы слишком близко');
 		});
 
 		let answ = extremumsX.kolvoMzhd(segmentMin, segmentMax, true);
@@ -90,11 +89,9 @@
 		};
 		NAtask.setTask({
 			text: 'На рисунке изображен график функции $y = f(x)$, определенной на интервале $(' + minX + '; ' + maxX +
-				')$. Найдите ' + ['количество точек, в которых ' + ['касательная к графику функции параллельна прямой $y=' +
-						sl(0, 20, 0.1).ts(1) + '$ или совпадает с ней', 'производная функции $f(x)$ равна $0$'
-					].iz(),
-					'количество решений уравнения $f\'(x)=0$'
-				].iz() + ' на отрезке $[' + segmentMin + '; ' + segmentMax + ']$.',
+				')$. Найдите количество ' + ['точек, в которых ' + ['касательная к графику функции параллельна прямой $y=' +
+				sl(0, 20, 0.1).ts(1) + '$ или совпадает с ней', 'производная функции $f(x)$ равна $0$'].iz(),
+				'решений уравнения $f\'(x)=0$'].iz() + ' на отрезке $[' + segmentMin + '; ' + segmentMax + ']$.',
 			answers: answ,
 			analys: 'Точек экстремума: ' + extremumsAll.length + '<br>' +
 				extremumsAll.map((elem) => '$(' + elem[0].ts(1) + ';' + elem[1].ts(1) + ')$').join('<br>'),
