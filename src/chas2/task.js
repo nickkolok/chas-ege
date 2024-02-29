@@ -70,6 +70,29 @@ chas2.task = {
 		},
 
 
+		/** @function chas2.task._.unfoldTask
+		 * Развернуть вопросы в стандартный объект-задание,
+		 * а именно - обработать questions и postquestion
+		 */
+		unfoldTask : function(o) {
+			if (o.questions) {
+				let question = o.questions.iz();
+				if (! ('answer' in question) ){
+					question.answer = question.answers;
+				}
+				o.text += question.text;
+				o.answers = chaslib.toStringsArray(question.answer);
+				//TODO: черпать o.wrongAnswers из невостребованных вопросов?
+				if (question.analys) {
+					o.analys += question.analys;
+				}
+			}
+			if (o.postquestion) {
+				o.text += o.postquestion;
+			}
+		},
+
+
 		/** @function chas2.task._.normalizeCanvasOptions
 		 * Привести опции canvas к нормальному виду
 		 * @param {Number} o.width ширина canvas
@@ -127,6 +150,7 @@ chas2.task = {
 	 */
 	setTask : function(o) {
 		chas2.task._.normalizeTask(o);
+		chas2.task._.unfoldTask(o);
 		chas2.task._.validateTask(o);
 
 		window.vopr.podg();
@@ -537,6 +561,84 @@ chas2.task = {
 	},
 
 
+	/** @function NApi.task.setEvaluationTask
+	 * Составить задание о нахождении значения выражения
+	 * @param {String} o.expr выражение, значение которого нужно найти
+	 * @param {Array}  o.forbiddenAnswers (необязательно) массив значений, которые не должны получаться (например, 0)
+	 */
+	setEvaluationTask: function (o) {
+		let task = o.clone();
+
+		let expr = math.parse(o.expr);
+		let answer = expr.evaluate();
+
+		o.forbiddenAnswers = o.forbiddenAnswers || [];
+		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
+
+		if(!o.askAboutFraction){
+			genAssertZ1000(answer, 'Ответ существенно нецелый');
+			genAssert(answer.ts().length < 7, 'Ответ слишком длинный');
+		}
+
+		//TODO: o.maxAnswer, o.minAnswer, o.maxAnswerLength, o.minAnswerLength
+		genAssert(answer <  1000000, 'Ответ слишком большой'  );
+		genAssert(answer > -1000000, 'Ответ слишком маленький');
+		genAssert(answer.abs() > 2/1024/1024 || answer === 0, 'Ответ слишком маленький (по модулю)');
+
+		let textAboutFraction = "";
+		if(o.askAboutFraction){
+			genAssert(!answer.isAlmostInteger(), 'Ответ должен быть дробью, а не целым числом');
+			answer = math.fraction(answer);
+			genAssert(answer.n < 1000000, 'Числитель дроби слишком большой (по модулю)');
+			genAssert(answer.d <= (o.maxDenominator || 20), 'Знаменатель дроби слишком большой');
+			genAssert(answer.d >= (o.minDenominator ||  2), 'Знаменатель дроби слишком маленький');
+1
+			// Вносим минус в числитель
+			answer.n *= answer.s;
+
+			textAboutFraction = " Представьте результат в виде несократимой обыкновенной дроби. ";
+			task.analys =
+				(task.analys || "") +
+				" Значение выражения в виде дроби: " +
+				answer.n.ts() + "/" + answer.d.ts();
+			if(sl1()){
+				answer = answer.n;
+				textAboutFraction += "В ответ запишите числитель этой дроби."
+			} else {
+				answer = answer.d;
+				textAboutFraction += "В ответ запишите знаменатель этой дроби."
+			}
+
+			genAssert(answer.ts().length < 7, 'Ответ слишком длинный - вероятна ложная точность');
+		}
+
+		if (o.simplifyConstant){
+			expr = math.simplifyConstant(expr);
+		}
+
+		if (!o.keepFractionsIrreduced){
+			expr = math.simplify(expr,mathjsRules.reduceFractions);
+			expr = math.simplify(expr,mathjsRules.reduceFractionsPi);
+		}
+
+		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
+		expr = math.simplify(expr, mathjsRules.omit1pi);
+		expr = math.simplify(expr, mathjsRules.omit1sqrt);
+		expr = math.simplify(expr, mathjsRules.trig2trigPow);
+
+
+		let tex = expr.toTex().allDecimalsToStandard(true);
+
+		task.text =
+			"Найдите значение выражения:" +
+			"$$" + tex + "$$" +
+			textAboutFraction;
+		task.answers = answer;
+
+		NAtask.setTask(task);
+	},
+
+
 	/** @function NApi.task.setTwoStatementTask
 	 * Составить задание о двух утверждениях
 	 * @param {String|Object[]} stA первое утверждение (или массив утверждений)
@@ -648,8 +750,14 @@ chas2.task = {
 		 */
 		variativeABC : (function() {
 			var alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-			return function() {
+			return function(variativeABCstrings) {
 				var alph2 = alph.slice().shuffle();
+				if (variativeABCstrings) {
+					for (let i = 0; i < variativeABCstrings.length; i++) {
+						variativeABCstrings[i] =
+							variativeABCstrings[i].cepZamena(alph, alph2);
+					}
+				}
 				chas2.task.setTask(
 					mapRecursive(
 						chas2.task.getTask(),
@@ -820,6 +928,15 @@ chas2.task = {
 			currentTask.answers = [answ];
 			chas2.task.setTask(currentTask);
 		},
-
+		
+		/** @function NAtask.modifiers.allDecimalsToStandard
+		Применяет .ts() ко всем цифрам с излишней точностью в задании.
+		*/
+		allDecimalsToStandard : function(p1) {
+			var o = NAtask.getTask();
+			o.text = o.text.allDecimalsToStandard(p1);
+			o.analys = o.analys.allDecimalsToStandard(p1);
+			NAtask.setTask(o);
+		},
 	},
 };

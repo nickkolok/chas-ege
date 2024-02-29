@@ -3,14 +3,6 @@
 	let k = [1, 2, 3, 0.2, 0.4, 0.5, ].iz().pm();
 	let b = sluchch(0, 3).pm();
 	let chisl = sluchch(7, 20, 0.5).pm();
-	let find, answ;
-	if (sl1()) {
-		find = `$f(${chisl.ts()})$`;
-		answ = (chisl * k + b).ts();
-	} else {
-		answ = chisl.ts();
-		find = `значение $x$, при котором $f(x)=${(chisl * k+ b).ts() }$`;
-	}
 
 	let X = [],
 		Y = [];
@@ -42,8 +34,19 @@
 		graph9AmarkCircles(ct, [X,Y].T(), 2);
 	};
 	NAtask.setTask({
-		text: `На рисунке изображён график функции $f(x)=kx+b$. Найдите ${find}. `,
-		answers: answ,
+		text: `На рисунке изображён график функции $f(x)=kx+b$. Найдите `,
+		questions: [
+			{
+				text: `$f(${chisl.ts()})$`,
+				answer: (chisl * k + b).ts(),
+			},
+			{
+				text: `значение $x$, при котором $f(x)=${(chisl * k+ b).ts() }$`,
+				answer: chisl.ts(),
+				analys: `, $x=\\frac{${chisl}-${b}}{${k}}$`.plusminus(),
+			},
+		],
+		postquestion: `.`,
 		analys: `$f(x)=` + (k + `x+` + (b / 20)).replace('+0', '').plusminus() + `$`,
 	});
 	chas2.task.modifiers.addCanvasIllustration({
