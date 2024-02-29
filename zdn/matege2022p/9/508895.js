@@ -36,15 +36,15 @@
 	NAtask.setTask({
 		text: `На рисунке изображён график функции $f(x)=kx+b$. Найдите `,
 		questions: [
-			[
-				`$f(${chisl.ts()})$`,
-				(chisl * k + b).ts(),
-			],
-			[
-				`значение $x$, при котором $f(x)=${(chisl * k+ b).ts() }$`,
-				chisl.ts(),
-				`, $x=\\frac{${chisl}-${b}}{${k}}$`.plusminus(),
-			],
+			{
+				text: `$f(${chisl.ts()})$`,
+				answer: (chisl * k + b).ts(),
+			},
+			{
+				text: `значение $x$, при котором $f(x)=${(chisl * k+ b).ts() }$`,
+				answer: chisl.ts(),
+				analys: `, $x=\\frac{${chisl}-${b}}{${k}}$`.plusminus(),
+			},
 		],
 		postquestion: `.`,
 		analys: `$f(x)=` + (k + `x+` + (b / 20)).replace('+0', '').plusminus() + `$`,

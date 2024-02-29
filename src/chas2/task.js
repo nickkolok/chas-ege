@@ -77,11 +77,14 @@ chas2.task = {
 		unfoldTask : function(o) {
 			if (o.questions) {
 				let question = o.questions.iz();
-				o.text += question[0];
-				o.answers = [question[1]];
+				if (! ('answer' in question) ){
+					question.answer = question.answers;
+				}
+				o.text += question.text;
+				o.answers = chaslib.toStringsArray(question.answer);
 				//TODO: черпать o.wrongAnswers из невостребованных вопросов?
-				if (question[2]) {
-					o.analys += question[2];
+				if (question.analys) {
+					o.analys += question.analys;
 				}
 			}
 			if (o.postquestion) {
