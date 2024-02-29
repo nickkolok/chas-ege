@@ -44,28 +44,28 @@
 			question.find = vertices.slice(1, 5);
 			question.answ = a * 3;
 			break;
-		} //TODO: упростить
+		}
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.drawLine(10, 350, 390, 350);
 			ctx.drawLine(10, 350, 120, 50);
-			
+
 			ctx.drawLine(120, 50, 390, 350);
 
 			ctx.drawLine(65, 200, 255, 200);
 
 			//штрихи
 			ctx.lineWidth = 1;
+
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.strokeInMiddleOfSegment(10, 350, 65, 200, 10);
 			ctx.strokeInMiddleOfSegment(120, 50, 65, 200, 10);
-			
-			ctx.strokeInMiddleOfSegment(120, 50, 255, 200, 10);
-			ctx.strokeInMiddleOfSegment(120+5, 50+5, 255, 200, 10);
-			
-			ctx.strokeInMiddleOfSegment(390, 350, 255, 200, 10);
-			ctx.strokeInMiddleOfSegment(390+5, 350+5, 255, 200, 10);
+
+			ctx.strokeInMiddleOfSegment(120, 50, 255, 200, 10, 2);
+			ctx.strokeInMiddleOfSegment(390, 350, 255, 200, 10, 2);
 
 			ctx.font = "23px liberation_sans";
 			ctx.fillText(vertices[0], 120, 40);
