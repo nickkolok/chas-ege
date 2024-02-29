@@ -90,11 +90,11 @@
 		NAtask.setTask({
 			text: 'На рисунке изображен график функции $y = f(x)$, определенной на интервале $(' + minX + '; ' + maxX +
 				')$. Найдите количество ' + ['точек, в которых ' + ['касательная к графику функции параллельна прямой $y=' +
-				sl(0, 20, 0.1).ts(1) + '$ или совпадает с ней', 'производная функции $f(x)$ равна $0$'].iz(),
+				sl(0, 20, 0.1).ts(1) + '$ или совпадает с ней,', 'производная функции $f(x)$ равна $0$,'].iz(),
 				'решений уравнения $f\'(x)=0$'].iz() + ' на отрезке $[' + segmentMin + '; ' + segmentMax + ']$.',
 			answers: answ,
-			analys: 'Точек экстремума: ' + extremumsAll.length + '<br>' +
-				extremumsAll.map((elem) => '$(' + elem[0].ts(1) + ';' + elem[1].ts(1) + ')$').join('<br>'),
+			analys: 'Всего точек экстремума: ' + extremumsAll.length + '<br>' +
+				extremumsAll.map((elem) => '$(' + elem[0].toFixedLess(2) + ';' + elem[1].toFixedLess(2) + ')$').join('<br>'),
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
