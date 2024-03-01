@@ -675,6 +675,8 @@ chas2.task = {
 	 */
 	setMinimaxFunctionTask: function (o) {
 		let expr = math.parse(o.expr);
+		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
+
 		let lEnd = math.parse(o.leftEnd).evaluate();
 		let rEnd = math.parse(o.rightEnd).evaluate();
 
