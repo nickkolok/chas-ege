@@ -571,6 +571,8 @@ chas2.task = {
 		let task = o.clone();
 
 		let expr = math.parse(o.expr);
+		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
+
 		let answer;
 
 		if (o.variables) {
