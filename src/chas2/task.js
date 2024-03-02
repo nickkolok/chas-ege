@@ -812,6 +812,34 @@ chas2.task = {
 	setLocalExtremumTask: function (o) {
 		let expr = math.parse(o.expr);
 		//TODO: parse sl()
+		expr = math.simplify(expr, mathjsRules.safeTrivialSimplification);
+
+		if (!o.extremums) {
+			// We have to find them here...
+			let expr2 = math.simplify(expr, [{l:'ln(n1)', r:'log(n1)'}]);
+			expr2 = math.simplify(expr2, [{l:'log(n1,n2)', r:'(log(n1)/log(n2))'}]);
+			let derivative = math.derivative(expr2, 'x', {simplify: false});
+			derivative = math.simplify(derivative, mathjsRules.safeTrivialSimplification);
+
+			// Some trick to avoid problems with equations...
+			let eq = 'eq(' + derivative.toString() + ')';
+			eq = math.simplify(eq, [{l:'n1*n2 + n1*n3', r:'n1*(n2+n3)'}]);
+			eq = math.simplify(eq, [{l:'eq(n1*e^n2)', r:'eq(n1)'}]);
+			eq = eq.args[0];
+			console.log(eq.toString());
+			// Solve the equation eq using nerdamer
+
+			let roots = nerdamer.solve(eq.toString()+'=0', 'x').toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
+			//console.log(roots);
+			o.extremums = [];
+			for (let root of roots) {
+				let stringRoot = root.toString();
+				genAssert(stringRoot.length < 7, 'Слишком кривой ноль производной');
+				o.extremums.push(stringRoot);
+			}
+			//o.extremums = roots.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
+		}
+
 
 		let sortedExtremums = {min:[], max:[], not:[]};
 
