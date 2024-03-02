@@ -755,7 +755,7 @@ chas2.task = {
 			derivative = math.simplify(derivative, mathjsRules.safeTrivialSimplification);
 			derivative = math.simplify(derivative, mathjsRules.trig2trigPow);
 			//TODO: a separate rule for this?
-			derivative = math.simplify(derivative, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+			//derivative = math.simplify(derivative, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
 
 			o.analys = "Производная функции: $y' = " +
 				derivative.toTex() + "$" +
@@ -829,15 +829,17 @@ chas2.task = {
 			console.log(eq.toString());
 			// Solve the equation eq using nerdamer
 
-			let roots = nerdamer.solve(eq.toString()+'=0', 'x').toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
+			let roots = nerdamer.solve(eq.toString()+'=0', 'x');//.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
 			//console.log(roots);
+			/*
 			o.extremums = [];
 			for (let root of roots) {
 				let stringRoot = root.toString();
 				genAssert(stringRoot.length < 7, 'Слишком кривой ноль производной');
 				o.extremums.push(stringRoot);
 			}
-			//o.extremums = roots.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
+			* */
+			o.extremums = roots.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
 		}
 
 
