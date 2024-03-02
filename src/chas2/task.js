@@ -829,17 +829,17 @@ chas2.task = {
 			console.log(eq.toString());
 			// Solve the equation eq using nerdamer
 
-			let roots = nerdamer.solve(eq.toString()+'=0', 'x');//.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
-			//console.log(roots);
-			/*
+			let roots = nerdamer.solve(eq.toString()+'=0', 'x').toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
+			console.log(roots);
+
 			o.extremums = [];
 			for (let root of roots) {
 				let stringRoot = root.toString();
 				genAssert(stringRoot.length < 7, 'Слишком кривой ноль производной');
 				o.extremums.push(stringRoot);
 			}
-			* */
-			o.extremums = roots.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
+
+			//o.extremums = roots.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
 		}
 
 
