@@ -865,9 +865,11 @@ chas2.task = {
 		genAssertNonempty(whatToFind, 'Искать-то нечего!');
 		whatToFind = whatToFind[0];
 		let theExtremum = sortedExtremums[whatToFind][0];
+
+		theExtremum = eval(theExtremum);
+		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
+
 		let extremumName = {min: 'минимум', max: 'максимум'}[whatToFind];
-
-
 
 		let tex = expr.toTex({parenthesis: 'auto'}).allDecimalsToStandard(true);
 		o.text = 'Найдите точку '+ extremumName + 'а функции $y=' + tex + '$.'
