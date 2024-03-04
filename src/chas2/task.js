@@ -755,7 +755,7 @@ chas2.task = {
 			derivative = math.simplify(derivative, mathjsRules.safeTrivialSimplification);
 			derivative = math.simplify(derivative, mathjsRules.trig2trigPow);
 			//TODO: a separate rule for this?
-			derivative = math.simplify(derivative, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+			//derivative = math.simplify(derivative, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
 
 			o.analys = "Производная функции: $y' = " +
 				derivative.toTex() + "$" +
