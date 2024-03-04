@@ -794,6 +794,59 @@ chas2.task = {
 	},
 
 
+	/** @function NApi.task.setLocalExtremumTask
+	 * Составить задание о нахождении минимального/максимального значения функции на промежутке
+	 * @param {String}  o.expr mathjs-запись исследуемой функции
+	 * @param {String}  o.leftEnd mathjs-запись левого конца отрезка
+	 * @param {String}  o.rightEnd mathjs-запись правого конца отрезка
+	 * @param {Number}  o.primaryStep шаг первичного перебора значений x, по умолчанию 0.001
+	 * @param {Number}  o.secondaryStep шаг вторичного перебора значений x, по умолчанию o.primaryStep.sqr()
+	 * @param {Boolean}  o.forbidMinY запретить спрашивать минимум
+	 * @param {Boolean}  o.forbidMaxY запретить спрашивать максимум
+	 * @param {Boolean}  o.forbidAnalys запретить писать решение (если оно кривое)
+	 * @param {Boolean}  o.forbidOpenEnds запретить полуинтервалы и интервалы, спрашивать только про отрезок (в ФИПИ так)
+	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
+	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
+	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
+	 */
+	setLocalExtremumTask: function (o) {
+		let expr = math.parse(o.expr);
+		//TODO: parse sl()
+
+		let sortedExtremums = {min:[], max:[], not:[]};
+
+		//sort extremums
+		for (let e of o.extremums) {
+			console.log(e);
+			sortedExtremums[
+				mathjs_helpers.testLocalExtremum(expr.toString(), ''+e, '1/100')
+			].push(e);
+		}
+
+		if (sortedExtremums.min.length !== 1) {
+			delete sortedExtremums.min;
+		}
+		if (sortedExtremums.max.length !== 1) {
+			delete sortedExtremums.max;
+		}
+		delete sortedExtremums.not;
+
+		let whatToFind = Object.keys(sortedExtremums).shuffle();
+		genAssertNonempty(whatToFind, 'Искать-то нечего!');
+		whatToFind = whatToFind[0];
+		let theExtremum = sortedExtremums[whatToFind][0];
+		let extremumName = {min: 'минимум', max: 'максимум'}[whatToFind];
+
+
+
+		let tex = expr.toTex({parenthesis: 'auto'}).allDecimalsToStandard(true);
+		o.text = 'Найдите точку '+ extremumName + 'а функции $y=' + tex + '$.'
+
+		o.answers = [theExtremum];
+
+		chas2.task.setTask(o);
+	},
+
 	/** @function NApi.task.setTwoStatementTask
 	 * Составить задание о двух утверждениях
 	 * @param {String|Object[]} stA первое утверждение (или массив утверждений)
