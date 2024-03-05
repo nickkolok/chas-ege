@@ -2,11 +2,11 @@
 	retryWhileError(function() {
 		'use strict';
 		NAtask.setEvaluationTask({
-			expr: sl(0.01, 0.1, 0.09) + '^' + sl(2, 5) + '/' + '10^' + sl(-1, -5) + '*10^' + sl(2, 6),
+			expr: [0.01, 0.1].iz() + '^' + sl(2, 5) + '/' + '10^' + sl(-1, -5) + '*10^' + sl(2, 6),
 			//forbiddenAnswers: [0],
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10000);
 })();
-//1400
+//512907
 
