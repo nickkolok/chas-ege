@@ -18,6 +18,8 @@
 				height = 300;
 				ct.translate(200, 200);
 				ct.lineWidth = 2;
+				ct.strokeStyle = "#809DF2";
+
 
 				//цилиндр
 				ct.beginPath();
@@ -28,13 +30,15 @@
 				ct.ellipse(0, height / 2, radius, 40, 0, 0, Math.PI);
 				ct.stroke();
 
-				ct.setLineDash([4, 5]);
+				ct.setLineDash([4, 4]);
 				ct.beginPath();
 				ct.ellipse(0, height / 2, radius, 40, 0, Math.PI, 2 * Math.PI);
 				ct.stroke();
 				ct.setLineDash([]);
 
 				//призма
+				ct.strokeStyle = ["#D777F2", "#F2A2D6"].iz();
+
 				ct.beginPath();
 				ct.moveTo(-radius, -150);
 
@@ -60,6 +64,7 @@
 				ct.drawLine(90, height - 116, 90, -116);
 
 				//правая высота цилиндра
+				ct.strokeStyle = "#809DF2";
 				ct.moveTo(radius, 150);
 				ct.lineTo(radius, -height + 150);
 				ct.stroke();

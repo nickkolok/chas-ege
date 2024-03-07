@@ -34,19 +34,25 @@ retryWhileUndefined(function() {
 	if (points.length < 2)
 		return;
 	let paint1 = function(ct) {
-		h = 300;
-		//Оси координат 
-		graph9AdrawAxes_20_300(ct);
-		ct.translate(-10, -10);
+		let h = 400;
+		let w = 400;
+		//Оси координат
+		ct.drawCoordinatePlane (w, h, {
+			hor: 1,
+			ver: 1
+		}, {
+			x1: '1',
+			y1: '1',
+			sh1: 13,
+		}, 20);
 		//график
-		ct.translate(h / 2, h / 2);
 		ct.scale(20, -20);
 		ct.lineWidth = 0.1;
 		graph9AdrawFunction(ct, f, {
-			minX: -5.5,
-			maxX: 6.5,
-			minY: -6.8,
-			maxY: 5.5,
+			minX: -8,
+			maxX: 8,
+			minY: -7,
+			maxY: 7,
 			step: 0.05
 		});
 		//точки
@@ -58,9 +64,9 @@ retryWhileUndefined(function() {
 		answers: answ,
 		analys: ('$f(x)=' + `-`.esli(zn < 0) + '\\log_{' + a + '}(' + 'x+' + b + ')+' + c + '$').plusminus(),
 	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
+	NAtask.modifiers.addCanvasIllustration({
+		width: 400,
+		height: 400,
 		paint: paint1,
 	});
 	return true;

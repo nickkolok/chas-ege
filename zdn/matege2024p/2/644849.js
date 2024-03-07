@@ -58,9 +58,9 @@
 		};
 
 		NAtask.setTask({
-			text: 'На координатной плоскости изображены векторы $\\overrightarrow{' + letter[0] + '}$ и $\\overrightarrow{' +
-				letter[1] + '}$. Найдите скалярное произведение $\\overrightarrow{' + letter[0] + '}\\cdot\\overrightarrow{' +
-				letter[1] + '}$.',
+			text: 'На координатной плоскости изображены векторы $\\vec{' + letter[0] + '}$ и $\\vec{' +
+				letter[1] + '}$. Найдите скалярное произведение $\\vec{' + letter[0] + '}\\cdot\\vec{' +
+				letter[1] + '}$',
 			answers: coordA[0] * coordB[0] + coordA[1] * coordB[1],
 			analys: '',
 		});
