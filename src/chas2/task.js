@@ -565,12 +565,21 @@ chas2.task = {
 	 * Составить задание о нахождении значения выражения
 	 * @param {String} o.expr выражение, значение которого нужно найти
 	 * @param {Array}  o.forbiddenAnswers (необязательно) массив значений, которые не должны получаться (например, 0)
+	 * @param {Object}  o.variables (необязательно) переменные, которые надлежит подставить
 	 */
 	setEvaluationTask: function (o) {
 		let task = o.clone();
 
 		let expr = math.parse(o.expr);
-		let answer = expr.evaluate();
+		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
+
+		let answer;
+
+		if (o.variables) {
+			answer = expr.evaluate(o.variables);
+		} else {
+			answer = expr.evaluate();
+		}
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
@@ -629,9 +638,19 @@ chas2.task = {
 
 		let tex = expr.toTex().allDecimalsToStandard(true);
 
+		let vars = '';
+		if (o.variables) {
+			vars = '<br/>при ';
+			for (let v in o.variables) {
+				vars += '$' + v + '=' + math.parse('' + o.variables[v]).toTex() + '$, ';
+			}
+			vars = vars.replace(/,\s$/, '.');
+		}
+
 		task.text =
 			"Найдите значение выражения:" +
 			"$$" + tex + "$$" +
+			vars +
 			textAboutFraction;
 		task.answers = answer;
 
@@ -656,6 +675,8 @@ chas2.task = {
 	 */
 	setMinimaxFunctionTask: function (o) {
 		let expr = math.parse(o.expr);
+		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
+
 		let lEnd = math.parse(o.leftEnd).evaluate();
 		let rEnd = math.parse(o.rightEnd).evaluate();
 
