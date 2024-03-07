@@ -70,6 +70,29 @@ chas2.task = {
 		},
 
 
+		/** @function chas2.task._.unfoldTask
+		 * Развернуть вопросы в стандартный объект-задание,
+		 * а именно - обработать questions и postquestion
+		 */
+		unfoldTask : function(o) {
+			if (o.questions) {
+				let question = o.questions.iz();
+				if (! ('answer' in question) ){
+					question.answer = question.answers;
+				}
+				o.text += question.text;
+				o.answers = chaslib.toStringsArray(question.answer);
+				//TODO: черпать o.wrongAnswers из невостребованных вопросов?
+				if (question.analys) {
+					o.analys += question.analys;
+				}
+			}
+			if (o.postquestion) {
+				o.text += o.postquestion;
+			}
+		},
+
+
 		/** @function chas2.task._.normalizeCanvasOptions
 		 * Привести опции canvas к нормальному виду
 		 * @param {Number} o.width ширина canvas
@@ -127,6 +150,7 @@ chas2.task = {
 	 */
 	setTask : function(o) {
 		chas2.task._.normalizeTask(o);
+		chas2.task._.unfoldTask(o);
 		chas2.task._.validateTask(o);
 
 		window.vopr.podg();
@@ -615,6 +639,161 @@ chas2.task = {
 	},
 
 
+	/** @function NApi.task.setMinimaxFunctionTask
+	 * Составить задание о нахождении минимального/максимального значения функции на промежутке
+	 * @param {String}  o.expr mathjs-запись исследуемой функции
+	 * @param {String}  o.leftEnd mathjs-запись левого конца отрезка
+	 * @param {String}  o.rightEnd mathjs-запись правого конца отрезка
+	 * @param {Number}  o.primaryStep шаг первичного перебора значений x, по умолчанию 0.001
+	 * @param {Number}  o.secondaryStep шаг вторичного перебора значений x, по умолчанию o.primaryStep.sqr()
+	 * @param {Boolean}  o.forbidMinY запретить спрашивать минимум
+	 * @param {Boolean}  o.forbidMaxY запретить спрашивать максимум
+	 * @param {Boolean}  o.forbidAnalys запретить писать решение (если оно кривое)
+	 * @param {Boolean}  o.forbidOpenEnds запретить полуинтервалы и интервалы, спрашивать только про отрезок (в ФИПИ так)
+	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
+	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
+	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
+	 */
+	setMinimaxFunctionTask: function (o) {
+		let expr = math.parse(o.expr);
+		let lEnd = math.parse(o.leftEnd).evaluate();
+		let rEnd = math.parse(o.rightEnd).evaluate();
+
+		let minY = expr.evaluate({x:rEnd});
+		let maxY = minY;
+		let minX = rEnd;
+		let maxX = rEnd;
+
+		o.primaryStep = (o.primaryStep || 0.01);
+		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
+
+		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
+
+		for (let x = lEnd; x < rEnd; x += o.primaryStep) {
+			let y = expr.evaluate({x});
+			if (y > maxY) {
+				maxX = x;
+				maxY = y;
+			} else if (y < minY) {
+				minX = x;
+				minY = y;
+			}
+		}
+
+		//Sharpen the values a bit...
+		minY += 1;
+		for (let x = minX - 3 * o.primaryStep; x < minX + 3 * o.primaryStep; x += o.secondaryStep) {
+			let y = expr.evaluate({x});
+			if (y < minY) {
+				minX = x;
+				minY = y;
+			}
+		}
+		maxY -= 1;
+		for (let x = maxX - 3 * o.primaryStep; x < maxX + 3 * o.primaryStep; x += o.secondaryStep) {
+			let y = expr.evaluate({x});
+			if (y > maxY) {
+				maxX = x;
+				maxY = y;
+			}
+		}
+
+
+		console.log('minX: ' + minX + " ; minY: " + minY + " ;   maxX: " + maxX + " ; maxY: " + maxY);
+
+		if (!(minY*1000).isAlmostInteger() || o.forbidMinY) {
+			minY = null;
+		}
+
+		if (!(maxY*1000).isAlmostInteger() || o.forbidMaxY) {
+			maxY = null;
+		}
+
+		genAssert(minY !== null || maxY !== null, 'Экстремальное значение запрещено или не удовлетворяет условиям');
+
+		var chooseMinMax;
+		let chosenX;
+		if (maxY === null || (minY !== null && sl1())) {
+			chooseMinMax = 'наименьшее';
+			o.answers = minY;
+			chosenX = minX;
+		} else {
+			chooseMinMax = 'наибольшее';
+			o.answers = maxY;
+			chosenX = maxX;
+		}
+
+		o.answers = o.answers.ts();
+		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
+
+		if (o.simplifyConstant){
+			expr = math.simplifyConstant(expr);
+		}
+
+		if (!o.keepFractionsIrreduced){
+			expr = math.simplify(expr,mathjsRules.reduceFractions);
+			expr = math.simplify(expr,mathjsRules.reduceFractionsPi);
+		}
+
+		if (!o.keepSumOrder){
+			expr = math.simplify(expr, mathjsRules.shuffleSums);
+		}
+
+		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
+		expr = math.simplify(expr, mathjsRules.omit1pi);
+		expr = math.simplify(expr, mathjsRules.omit1sqrt);
+
+
+		if (!o.forbidAnalys) {
+			// In case of Russian-style tg(x)
+			expr = math.simplify(expr, mathjsRules.rusTrig2eng);
+
+			//Don't simplify in order to prevent numerical evaluation
+			let derivative = math.derivative(expr, 'x', {simplify: false});
+
+			//... but simplify something that is safe
+			derivative = math.simplify(derivative, mathjsRules.safeTrivialSimplification);
+			derivative = math.simplify(derivative, mathjsRules.trig2trigPow);
+			//TODO: a separate rule for this?
+			derivative = math.simplify(derivative, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+
+			o.analys = "Производная функции: $y' = " +
+				derivative.toTex() + "$" +
+				(o.analys || '');
+		}
+
+		expr = math.simplify(expr, mathjsRules.trig2trigPow);
+
+		let intervalName = 'отрезке';
+		let intervalEndL = '[';
+		let intervalEndR = ']';
+
+		if (!o.forbidOpenEnds) {
+			if (!sl(3) && (chosenX - lEnd).abs() > o.primaryStep && (chosenX - rEnd).abs() > o.primaryStep) {
+				intervalName = 'интервале';
+				intervalEndL = '(';
+				intervalEndR = ')';
+			} else if (!sl(2) && (chosenX - lEnd).abs() > o.primaryStep) {
+				intervalName = 'полуинтервале';
+				intervalEndL = '(';
+				intervalEndR = ']';
+			} else if (!sl(1) && (chosenX - rEnd).abs() > o.primaryStep) {
+				intervalName = 'полуинтервале';
+				intervalEndL = '[';
+				intervalEndR = ')';
+			}
+		}
+
+		let tex = expr.toTex().allDecimalsToStandard(true);
+		o.text =
+			'Найдите '+ chooseMinMax + ' значение функции $y=' + tex + '$ на ' + intervalName + ' ' +
+			'$\\left' + intervalEndL + math.parse(o.leftEnd).toTex() + ' ; ' +
+			math.parse(o.rightEnd).toTex() + '\\right' + intervalEndR + '$.'
+
+		chas2.task.setTask(o);
+	},
+
+
 	/** @function NApi.task.setTwoStatementTask
 	 * Составить задание о двух утверждениях
 	 * @param {String|Object[]} stA первое утверждение (или массив утверждений)
@@ -782,6 +961,47 @@ chas2.task = {
 					return;
 				} else if((ans*i.sqrt()*1000).isAlmostInteger()){
 					o.text += ' Ответ умножьте на $' + i.texsqrt(opts.useMultiples) + '$.';
+					o.answers = [(ans * i.sqrt()).okrugldo((10).pow(-6)).ts()]
+					chas2.task.setTask(o);
+					return;
+				}
+			}
+			throw new RangeError('multiplyAnswerBySqrt(): can find no appropriate square root');
+		},
+
+		/** @function chas2.task.modifiers.roundUpTo
+		 * Добавить фразу "Ответ умножьте на $\sqrt{..}$." и домножить сам ответ.
+		 * @param {Number} n Максимальное число, до которого можно домножать на корень
+		 */
+		multiplyAnswerBySqrt : function(n) {
+			var o = chas2.task.getTask();
+			if (o.answers.length != 1){
+				throw new TypeError('Fixme: cannot apply multiplyAnswerBySqrt() to multiple answers')
+			}
+			//Меняем запятую на точку для корректной работы Number
+			var ans = Number(o.answers[0].replace(',', '.'));
+
+			if ((ans*1000).isAlmostInteger()){
+				//Ответ и так хорош!
+				return;
+			}
+
+			var possibleMultipliers = [2,3];
+			for (var i = 5; i <= n; i++){
+				if(!i.isPolnKvadr()){
+					possibleMultipliers.push(i);
+				}
+			}
+			possibleMultipliers.shuffle();
+			console.log(possibleMultipliers);
+			for (var i of possibleMultipliers){
+				if(sl1() && (ans/i.sqrt()*1000).isAlmostInteger()){
+					o.text += ' Ответ разделите на $' + i.texsqrt() + '$.';
+					o.answers = [(ans / i.sqrt()).okrugldo((10).pow(-6)).ts()]
+					chas2.task.setTask(o);
+					return;
+				} else if((ans*i.sqrt()*1000).isAlmostInteger()){
+					o.text += ' Ответ умножьте на $' + i.texsqrt() + '$.';
 					o.answers = [(ans * i.sqrt()).okrugldo((10).pow(-6)).ts()]
 					chas2.task.setTask(o);
 					return;
