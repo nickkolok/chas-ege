@@ -573,13 +573,7 @@ chas2.task = {
 		let expr = math.parse(o.expr);
 		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
 
-		let answer;
-
-		if (o.variables) {
-			answer = expr.evaluate(o.variables);
-		} else {
-			answer = expr.evaluate();
-		}
+		let answer = o.variables ? expr.evaluate(o.variables) : expr.evaluate();
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
@@ -1189,7 +1183,7 @@ chas2.task = {
 			currentTask.answers = [answ];
 			chas2.task.setTask(currentTask);
 		},
-		
+
 		/** @function NAtask.modifiers.allDecimalsToStandard
 		Применяет .ts() ко всем цифрам с излишней точностью в задании.
 		*/
