@@ -54,10 +54,13 @@ function zapusk() {
 	options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
+	options.forceIntegers = $('#forceIntegers').is(':checked');
 
 	if (customNumber) {
 		variantNumber = $('#start-number').val() - 1;
 	}
+
+	sluchch.forceIntegers = (options.forceIntegers) ? true : false; 	
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
@@ -119,10 +122,7 @@ function konecSozd() {
 			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
-			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
+			).replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
 		}
 	}
 
@@ -167,9 +167,9 @@ function appendVariantTasksEnding() {
 
 function appendVariantAnswersCaption() {
 	strOtv +=
-		'<table '+
-			'class="normtabl tablpech pech-answers-table" ' +
-			'id="pech-answers-table-variant-' + variantNumber +
+		'<table ' +
+		'class="normtabl tablpech pech-answers-table" ' +
+		'id="pech-answers-table-variant-' + variantNumber +
 		'">';
 
 	if (!options.vanishVariants) {
@@ -247,16 +247,16 @@ function createHtmlForTask(nazvzad) {
 
 	return {
 		txt:
-			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
-				'<div class="b">'+nazvzad+'</div>'+
-				'<div class="z">'+
-					window.vopr.txt+
-					'<button class="noprint renewbutton" title="Заменить задание на похожее"'+
-					'>' +
-						'&#x27F3;' +
-					'</button>'+
-				'</div>'+
-				'<div class="grid-for-writing"></div>'+
+			'<div class="d" data-task-id="' + taskId + '" data-task-number="' + nZ + '">' +
+			'<div class="b">' + nazvzad + '</div>' +
+			'<div class="z">' +
+			window.vopr.txt +
+			'<button class="noprint renewbutton" title="Заменить задание на похожее"' +
+			'>' +
+			'&#x27F3;' +
+			'</button>' +
+			'</div>' +
+			'<div class="grid-for-writing"></div>' +
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
@@ -303,7 +303,7 @@ function obnov() {
 	unqDict[html.unq] = true;
 
 	strVopr += html.txt;
-	strOtv  += html.ver;
+	strOtv += html.ver;
 	strResh += html.rsh;
 
 	generatedTasks[vopr.taskId] = vopr.clone();
@@ -392,9 +392,9 @@ function renewTask() {
 	dvig.zadan(function () {
 		console.log(wrapper);
 		var taskHtml = createHtmlForTask(nazvzad);
-		wrapper  .replaceWith(taskHtml.txt);
+		wrapper.replaceWith(taskHtml.txt);
 		answerRow.replaceWith(taskHtml.ver);
-		solution .replaceWith(taskHtml.rsh);
+		solution.replaceWith(taskHtml.rsh);
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
 		generatedTasks[vopr.taskId] = vopr.clone();
@@ -413,16 +413,16 @@ function insertGridFields() {
 	$('#grid-svg-template')[0].style.minHeight = fieldHeight + 'cm';
 
 	var cellSize = $('#grid-cell-size').val();
-	$('#grid-pattern')[0].setAttribute('width' ,cellSize);
-	$('#grid-pattern')[0].setAttribute('height',cellSize);
+	$('#grid-pattern')[0].setAttribute('width', cellSize);
+	$('#grid-pattern')[0].setAttribute('height', cellSize);
 
-	$('#grid-pattern-line-1')[0].setAttribute('x1',cellSize/2);
-	$('#grid-pattern-line-1')[0].setAttribute('x2',cellSize/2);
-	$('#grid-pattern-line-1')[0].setAttribute('y2',cellSize  );
+	$('#grid-pattern-line-1')[0].setAttribute('x1', cellSize / 2);
+	$('#grid-pattern-line-1')[0].setAttribute('x2', cellSize / 2);
+	$('#grid-pattern-line-1')[0].setAttribute('y2', cellSize);
 
-	$('#grid-pattern-line-2')[0].setAttribute('y1',cellSize/2);
-	$('#grid-pattern-line-2')[0].setAttribute('y2',cellSize/2);
-	$('#grid-pattern-line-2')[0].setAttribute('x2',cellSize  );
+	$('#grid-pattern-line-2')[0].setAttribute('y1', cellSize / 2);
+	$('#grid-pattern-line-2')[0].setAttribute('y2', cellSize / 2);
+	$('#grid-pattern-line-2')[0].setAttribute('x2', cellSize);
 
 
 	var svg = $('#grid-svg-container').html();
@@ -430,12 +430,12 @@ function insertGridFields() {
 
 
 	$('#grid-style-placeholder').html(
-		'<style>'+
-			'.grid-for-writing { ' +
-				'display: block;' +
-				'min-height: ' + fieldHeight + 'cm;' +
-				'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
-			'}'+
+		'<style>' +
+		'.grid-for-writing { ' +
+		'display: block;' +
+		'min-height: ' + fieldHeight + 'cm;' +
+		'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
+		'}' +
 		'</style>'
 	);
 
@@ -450,7 +450,7 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = "\n\\\\\n\\hline\n";
+	var hline = "\n\n\\hline\n";
 	return (
 		'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
 			'\n\\hline\n' +
@@ -468,11 +468,15 @@ function createLaTeXbunchAnswers(variantN) {
 	var answersParsedToTeX = [];
 	// The first row may be the caption, so...
 	var cellsInFirstRow = (answerRows[2] || answerRows[1] || answerRows[0]).getElementsByTagName('td').length;
+	let count = 0;
 	for (var row of Array.from(answerRows)) {
+		count++;
 		var tdCells = row.getElementsByTagName('td');
 		if (tdCells.length) {
 			//TODO: reverse-decode LaTeX from MathJax
-			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & '));
+			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & ') + '\\\\');
+			if (count % 50 == 0 && count < kZ)
+				answersParsedToTeX.push('\\end{tabular}&\\begin{tabular}[t]{' + (new Array(cellsInFirstRow)).fill('|l').join('') + '|' + '}')
 		}
 	}
 	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
@@ -506,24 +510,23 @@ function createLaTeXbunchTasks(variantN) {
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
-				'\n' +
-				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
-					tasksInLaTeX[taskId] + '\n' +
-				'\\end{taskBN}' + '\n';
+				"\n" +
+				"\\begin{taskBN}{" + generatedTasks[taskId].taskCategory + "}" + "\n" +
+				tasksInLaTeX[taskId] + "\n" +
+				"\\end{taskBN}\n\n";
 		}
 
 	}
 	return bunchText;
 }
 
-
 function refreshLaTeXarchive() {
 	if (!options.prepareLaTeX) {
 		return;
 	}
 	var zip = new JSZip();
-	var bunchUnited = "", bunchTasks = "";
-	var answers = "\\begin{document}\n\n\\begin{multicols}{"+variantsGenerated.length+"}";
+	var bunchTasks = "";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>10)?6:variantsGenerated.length)+"}";
 
 	for(var variantN of variantsGenerated){
 		var head =
@@ -541,7 +544,7 @@ function refreshLaTeXarchive() {
 	answers += "\n\n\\end{multicols}\n\n\\end{document}";
 
 	zip.file("tasks.tex", bunchTasks);
-	zip.file("answers.tex", "\\documentclass[a5paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n" + answers);
+	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
 
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
