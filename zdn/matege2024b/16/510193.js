@@ -5,7 +5,7 @@
 		let b = sl(2, 9);
 		let znak = (1).pm();
 		NAtask.setEvaluationTask({
-			expr: ['(' + b + '*10^' + znak * sl(1, 9) + ')', '(' + a + '*10^' + znak * sl(-9, -1) + ')'].shuffle().join('*'),
+			expr: ['forceBrackets(' + b + '*10^' + znak * sl(1, 9) + ')', 'forceBrackets(' + a + '*10^' + znak * sl(-9, -1) + ')'].shuffle().join('*'),
 			//forbiddenAnswers: [0],
 			authors: ['Алендарь Сергей'],
 		});
