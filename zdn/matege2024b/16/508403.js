@@ -2,8 +2,11 @@
 	retryWhileError(function() {
 		'use strict';
 		let a = sl(2, 9);
+		let b = sl(1, 9).pm();
+		let c = slKrome([b, 0, 1], 2, 9);
+		let d = slKrome([b, c, 0, 1], 2, 9);
 		NAtask.setEvaluationTask({
-			expr: a + '^' + sl(1, 9).pm() + '*(' + a + '^' + sl(1, 9).pm() + '/' + a + '^' + sl(1, 9).pm() + ')',
+			expr: a + '^' + b + '*(' + a + '^' + c + '/' + a + '^' + d + ')',
 			//forbiddenAnswers: [0],
 			authors: ['Алендарь Сергей'],
 		});
