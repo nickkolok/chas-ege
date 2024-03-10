@@ -1,13 +1,12 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-		let a = -1;
 		NAtask.setEvaluationTask({
-			expr: sl(2, 99) + '*(' + a + ')^' + sl(1, 9) + '+' + sl(2, 99) + '*(' + a + ')^' + sl(1, 9),
+			expr: sl(2, 99) + '*(-1)^' + sl(0, 9).pm() + '+' + sl(2, 99) + '*(-1)^' + sl(0, 9).pm(),
 			//forbiddenAnswers: [0],
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10000);
 })();
-//512214
+//51221
 
