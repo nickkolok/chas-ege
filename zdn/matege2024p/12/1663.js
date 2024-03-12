@@ -13,9 +13,14 @@
 		}
 		var v = sl1();
 		var znak = (v ? '+' : '-');
+		var l1 = sl(0, 1);
+		var l2 = (l1 + 1) % 2;
+		var l3 = sl(0, 2);
+		var sc = ['sin', 'cos'];
+		var pm = ['', '-'];
 
-		var mult1 = math.parse('cos(x)' + znak + '+1/2');
-		var mult2 = math.parse('cos(x)' + znak + '+2');
+		var mult1 = math.parse(sc[l1] + '(x)' + znak + '1/2');
+		var mult2 = math.parse(sc[l1] + '(x)' + znak + '2');
 		var a = sl(2, 9);
 		var b = sl(1, 9);
 		a = String(a);
@@ -39,8 +44,8 @@
 		}]);
 		var e8 = math.simplifyCore(e7);
 		var e9 = math.simplify(e8, [{
-			l: '(cos(n1))^2',
-			r: '1-(sin(n1))^2'
+			l: '(' + sc[l1] + '(n1))^2',
+			r: '1' + pm[l1] + '(' + sc[l2] + '(n1))^2'
 		}]);
 		var e10 = math.simplify(e9, [{
 			r: 'n1*n3 - n2*n3',
@@ -49,13 +54,13 @@
 		var e11 = math.simplify(e10);
 		if (sl(0, 1)) {
 			var e12 = math.simplify(e11, [{
-				l: 'cos(n1)',
-				r: 'sin(n1+ pi/2)'
+				l: sc[l1] + '(n1)',
+				r: sc[l2] + '(n1+ pi/2)'
 			}]);
 		} else {
 			var e12 = e11;
 		}
-		if (sl(0, 1)) {
+		if (sl1()) {
 			var e13 = new math.OperatorNode('*', 'multiply', [math.parse(b), e12]);
 		} else {
 			var e13 = e12;
@@ -67,7 +72,9 @@
 			text: "$$" +
 				e15.toTex() + '=0' +
 				"$$",
-			answers: 'cosx' + znak + '1/2=0 cosx' + znak + '2=0',
+			analys: '$$Ответ: \\quad \\' + sc[l1] + ' x' + znak + '\\frac{1}{2}=0 \\quad \\' + sc[l1] + ' x' + znak +
+				'2=0$$',
+			answers: sc[l1] + znak + '1/2=0 ' + sc[l1] + znak + '2=0',
 		});
 		return true;
 	});
