@@ -26,6 +26,7 @@
 			answers: v1==1 ? x : x+b,
 			authors: ['Aisse-258']
 		});
+		NAtask.modifiers.assertSaneDecimals();
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000000);
 })();
