@@ -19,10 +19,21 @@
 			'Дорога между ' + the_humanSettlementDestination.tm +' A и B состоит из подъёма и спуска, '+
 			'а её длина равна ' + S + ' км. '+
 			'Путь из A в B занял у ' + the_pedestrianOnRoad.re +' ' + T.toChMin() + ', '+
-			'из которых ' + t.toChMin() + ' ушло на спуск. ' + the_orderToFind.toZagl() +' скорость ' + the_pedestrianOnRoad.re +' на спуске, '+
-			'если она больше скорости на подъёме на ' + v + ' км/ч. '+
-			'Ответ дайте в км/ч.',
-		answers: answ,
+			'из которых ' + t.toChMin() + ' ушло на спуск.',
+		questions: [{
+				text: the_orderToFind.toZagl() +' скорость ' + the_pedestrianOnRoad.re +' на спуске, '+
+					'если она больше скорости на подъёме на ' + v + ' км/ч. '+
+					'Ответ дайте в км/ч.',
+				answer: answ,
+				analys: '$\\dfrac{{\\large s}+v(\\textit{Т}-t)}{\\textit{Т}}$'
+			}, {
+				text: the_orderToFind.toZagl() +' скорость ' + the_pedestrianOnRoad.re +' на подъёме, '+
+					'если она меньше скорости на спуске на ' + v + ' км/ч. '+
+					'Ответ дайте в км/ч.',
+				answer: answ-v,
+				analys: '$\\dfrac{{\\large s}-vt}{\\textit{Т}}$'
+			}
+		],
 		authors: ['Aisse-258'],
 	});
 	NAtask.modifiers.allDecimalsToStandard();
