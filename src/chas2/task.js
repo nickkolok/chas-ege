@@ -1026,19 +1026,24 @@ chas2.task = {
 		 */
 		variativeABC : (function() {
 			var alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-			return function(variativeABCstrings) {
-				var alph2 = alph.slice().shuffle();
+			return function(variativeABCstrings, o) {
+				o = o || {};
+				var alph1 = alph.slice();
+				if (o.preserve) {
+					alph1 = alph1.filter(e => !o.preserve.includes(e));
+				}
+				var alph2 = alph1.slice().shuffle();
 				if (variativeABCstrings) {
 					for (let i = 0; i < variativeABCstrings.length; i++) {
 						variativeABCstrings[i] =
-							variativeABCstrings[i].cepZamena(alph, alph2);
+							variativeABCstrings[i].cepZamena(alph1, alph2);
 					}
 				}
 				chas2.task.setTask(
 					mapRecursive(
 						chas2.task.getTask(),
 						function(str) {
-							return ('' + str).cepZamena(alph, alph2);
+							return ('' + str).cepZamena(alph1, alph2);
 						}
 					)
 				);
