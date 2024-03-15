@@ -19,7 +19,7 @@
 			'Дорога между ' + the_humanSettlementDestination.tm +' A и B состоит из подъёма и спуска, '+
 			'а её длина равна ' + S + ' км. '+
 			'Путь из A в B занял у ' + the_pedestrianOnRoad.re +' ' + T.toChMin() + ', '+
-			'из которых ' + t.toChMin() + ' ушло на спуск.',
+			'из которых ' + t.toChMin() + ' ушло на спуск. ',
 		questions: [{
 				text: the_orderToFind.toZagl() +' скорость ' + the_pedestrianOnRoad.re +' на спуске, '+
 					'если она больше скорости на подъёме на ' + v + ' км/ч. '+
