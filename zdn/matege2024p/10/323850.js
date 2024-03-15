@@ -25,19 +25,19 @@
 					'если она больше скорости на подъёме на ' + v + ' км/ч. '+
 					'Ответ дайте в км/ч.',
 				answer: answ,
-				analys: '$\\dfrac{{\\large s}+v(\\textit{Т}-t)}{\\textit{Т}}$'
+				analys: '$\\dfrac{S+v(T-t)}{T}$'
 			}, {
 				text: the_orderToFind.toZagl() +' скорость ' + the_pedestrianOnRoad.re +' на подъёме, '+
 					'если она меньше скорости на спуске на ' + v + ' км/ч. '+
 					'Ответ дайте в км/ч.',
 				answer: answ-v,
-				analys: '$\\dfrac{{\\large s}-vt}{\\textit{Т}}$'
+				analys: '$\\dfrac{S-vt}{T}$'
 			}
 		],
 		authors: ['Aisse-258'],
 	});
 	NAtask.modifiers.allDecimalsToStandard();
-	NAtask.modifiers.variativeABC();
+	NAtask.modifiers.variativeABC([],{preserve:['S','T']});
 }, 20000);})();
 /*Решу ЕГЭ 323850: 503125 323897 323899 323901 323903 323905 323907 323909 323911 323935
 			323913 323915 323917 323919 323921 323923 323925 323927 323929 323931 323933*/
