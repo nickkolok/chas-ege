@@ -2,8 +2,8 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 		
-		let lengthA = sl(1,100);
-		let lengthB = sl(1,100);
+		let lengthA = sl(1,20);
+		let lengthB = sl(1,20);
 		
 		let angle = [0,30,45,60,90,120,135,150,180].iz();
 		
@@ -12,8 +12,8 @@
 			answers: (lengthA*lengthB).sqrt()*cosdeg(angle),
 			analys: '',
 		});
+		NAtask.modifiers.multiplyAnswerBySqrt(13);
 	}, 1000);
-	NAtask.modifiers.multiplyAnswerBySqrt(13);
 })();
 //https://ege314.ru/2-vektory/reshenie-4504/
 //4504
