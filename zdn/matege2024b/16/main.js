@@ -18,3 +18,4 @@ window.nomer=[
 	527441,
 	10001803,
 ].iz();
+window.comment = '16';
