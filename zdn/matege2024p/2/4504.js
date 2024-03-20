@@ -9,7 +9,7 @@
 		
 		NAtask.setTask({
 			text: 'Длины векторов $\\vec{a}$ и $\\vec{b}$ равны $'+lengthA.texsqrt(1)+'$ и $'+lengthB.texsqrt(1)+'$, а угол между ними равен $'+angle+'^\\circ$. Найдите скалярное произведение $\\vec{a}\\cdot\\vec{b}$.',
-			answers: (lengthA*lengthA).sqrt()*cosdeg(angle),
+			answers: (lengthA*lengthB).sqrt()*cosdeg(angle),
 			analys: '',
 		});
 	}, 1000);
