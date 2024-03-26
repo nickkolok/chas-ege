@@ -13,11 +13,12 @@
 		}
 		var v = sl1();
 		var znak = (v ? '+' : '-');
-		var l1 = sl(0, 1);
+		var l1 = sl1();
 		var l2 = (l1 + 1) % 2;
 		var l3 = sl(0, 2);
 		var sc = ['sin', 'cos'];
 		var pm = ['', '-'];
+		var mass = [pm[l1] + sc[l2] + '(n1+ pi/2)', pm[l2] + sc[l2] + '(n1+ 3pi/2)'];
 
 		var mult1 = math.parse(sc[l1] + '(x)' + znak + '1/2');
 		var mult2 = math.parse(sc[l1] + '(x)' + znak + '2');
@@ -52,10 +53,10 @@
 			l: '(n1-n2)*n3'
 		}]);
 		var e11 = math.simplify(e10);
-		if (sl(0, 1)) {
+		if (sl1()) {
 			var e12 = math.simplify(e11, [{
 				l: sc[l1] + '(n1)',
-				r: sc[l2] + '(n1+ pi/2)'
+				r: mass[l2],
 			}]);
 		} else {
 			var e12 = e11;
@@ -72,7 +73,12 @@
 			text: "$$" +
 				e15.toTex() + '=0' +
 				"$$",
-			analys: '$$Ответ: \\quad \\' + sc[l1] + ' x' + znak + '\\frac{1}{2}=0 \\quad \\' + sc[l1] + ' x' + znak +
+			analys: '$$' + e11.toTex() + '$$' +
+				'$$' + e9.toTex() + '$$' +
+				'$$' + e7.toTex() + '$$' +
+				'$$' + e5.toTex() + '$$' +
+				'$$' + e3.toTex() + '$$' +
+				'$$Ответ: \\quad \\' + sc[l1] + ' x' + znak + '\\frac{1}{2}=0 \\quad \\' + sc[l1] + ' x' + znak +
 				'2=0$$',
 			answers: sc[l1] + znak + '1/2=0 ' + sc[l1] + znak + '2=0',
 		});
