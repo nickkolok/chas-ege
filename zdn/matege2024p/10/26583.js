@@ -30,7 +30,7 @@
 			},
 		],
 		postquestion: ' Ответ дайте в км/ч.',
-		authors: [''],
+		authors: ['Николай Авдеев'],
 	});
 	NAtask.modifiers.allDecimalsToStandard();
 }, 2000);})();
