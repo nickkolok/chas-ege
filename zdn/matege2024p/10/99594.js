@@ -5,10 +5,10 @@
 	let y=sl(10, 90, 0.01);
 	let delay=sl(0.5, 3, 0.01);
 	let v=x*y/(x-y*delay);
-	genAssertZ1000(v,'');
-	genAssert(v>=5 && v<100,'');
+	genAssertZ1000(v,'Скорость слишком дробная');
+	genAssert(v>=5 && v<100,'Скорость не принадлежит диапазону');
 	let S=x*y/v+x;
-	genAssertZ1000(S,'');
+	genAssertZ1000(S,'Расстояние слишком дробное');
 
 
 	let the_humanSettlementDestination = sklonlxkand(["пункт","город","село","деревня","посёлок","п."].iz());
