@@ -32,8 +32,8 @@
 		text: 'Найдите точку ' + arr1[maxmin1] + ' функции' +
 			'$$ y=(' + plusmin(b + 'x-' + a) + ')' + '\\cos ' + plusmin('x-' + b) + '\\sin ' + plusmin('x+' + d) + ', $$' +
 			'принадлежащую промежутку $(0; \\frac{\\pi}{2} )$.',
-		analys: '$$ y^{\'}=(' + plusmin(b + 'x-' + a) + ')^{\'}\\cos x+(' + plusmin(b + 'x-' + a) + ')(\\cos x)^{\'}+
-			(' + -b + '\\sin x)^{\'}$$' +
+		analys: '$$ y^{\'}=(' + plusmin(b + 'x-' + a) + ')^{\'}\\cos x+(' + plusmin(b + 'x-' + a) +')'+
+			'(\\cos x)^{\'}+(' + -b + '\\sin x)^{\'}$$' +
 			'$$ y^{\'}=' + b + '\\cos x-(' + plusmin(b + 'x-' + a) + ')' + '\\sin ' + plusmin('x-' + b) + '\\cos x' +
 			' \\Rightarrow\\ ' +
 			'y^{\'}=-(' + plusmin(b + 'x-' + a) + ')\\sin x$$' +
@@ -52,5 +52,6 @@
 		answers: ans,
 	});
 })();
-//1414
+//77492
+
 
