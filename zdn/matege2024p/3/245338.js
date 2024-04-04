@@ -48,13 +48,11 @@
 
 		let point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		let h = 400;
-		let w = 400;
 		autoScale(par, camera, point2DPar, {
-			startX: -w/2+20 ,
-			finishX: w/2-20,
-			startY: -h/2+40,
-			finishY: h/2-40,
+			startX: -180,
+			finishX: 160,
+			startY: -160,
+			finishY: 160,
 			maxScale: 50,
 		});
 
@@ -63,7 +61,9 @@
 		let point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
 		let paint1 = function(ctx) {
-			ctx.translate(h/2, w/2);
+			let h = 400;
+			let w = 400;
+			ctx.translate(h / 2, w / 2);
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.primaryBrandColors[0];
 			ctx.drawFigure(point2DPyr, matrixPyr);
@@ -82,8 +82,8 @@
 				answers: pyr.volume
 			}],
 			postquestion: ' многогранника, вершинами которого являются вершины $' + 
-			['A', 'B', 'C', 'D', 'A_1'].shuffleJoin(', ') + 
-			'$ прямоугольного параллелепипеда $ABCDA_1B_1C_1D_1$, у которого ' + 
+			['A', 'B', 'C', 'D', 'A_1'].shuffleJoin(', ') +
+				'$ прямоугольного параллелепипеда $ABCDA_1B_1C_1D_1$, у которого ' + 
 			['$AB=' + depth + '$', ' $BC=' + width + '$', ' $BB_1=' + height + '$'].shuffleJoin(', ') + '.',
 			analys: '$BA_1=' + (pyr.sideEdgeA.pow(2)).texsqrt(1) + '$<br>' + '$DA_1=' + (pyr.sideEdgeB.pow(2)).texsqrt(1) +
 				'$' + '<br>' + '$CA_1=' + (pyr.sideEdgeC.pow(2)).texsqrt(1) + '$',
