@@ -27,7 +27,7 @@
             [strok],
             [[strok, 0][v], 1],
             [strok, 0, 1],
-            [0, 0, [strok, 0][1 - v], 1],
+            [0, 0, [1, 0][1 - v], 1],
             [strok, [strok, 0][1 - v], 0, 0, 1],
             [0, 1, 0, 0, 0, 1],
             [0, 0, 1, 0, 1, [1, 0][v], 1],
@@ -61,7 +61,7 @@
         let paint1 = function (ctx) {
             let h = 400;
             let w = 400;
-            ctx.translate(h, w);
+            ctx.translate(h/2, w/2);
             ctx.lineWidth = 2;
             ctx.strokeStyle = om.primaryBrandColors[0];
             ctx.strokeStyle = om.secondaryBrandColors;
