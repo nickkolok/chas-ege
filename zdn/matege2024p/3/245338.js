@@ -84,7 +84,7 @@
 			postquestion: ' многогранника, вершинами которого являются вершины $' + 
 			['A', 'B', 'C', 'D', 'A_1'].shuffleJoin(', ') +
 				'$ прямоугольного параллелепипеда $ABCDA_1B_1C_1D_1$, у которого ' + 
-			['$AB=' + depth + '$', ' $BC=' + width + '$', ' $BB_1=' + height + '$'].shuffleJoin(', ') + '.',
+			['$AB=' + width + '$', ' $BC=' + depth + '$', ' $BB_1=' + height + '$'].shuffleJoin(', ') + '.',
 			analys: '$BA_1=' + (pyr.sideEdgeA.pow(2)).texsqrt(1) + '$<br>' + '$DA_1=' + (pyr.sideEdgeB.pow(2)).texsqrt(1) +
 				'$' + '<br>' + '$CA_1=' + (pyr.sideEdgeC.pow(2)).texsqrt(1) + '$',
 			author: ['Суматохина Александра']
