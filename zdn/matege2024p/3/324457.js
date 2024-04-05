@@ -26,6 +26,8 @@
           vert = [copyLetter[0], copyLetter[1], copyLetter[4], copyLetter[5], copyLetter.filter((_, i) => ![0, 1, 4, 5].includes(i)).iz()];
         }
 
+		vert=vert.replaceAll('₁','_1')
+
 		let strok = [5, 4];
 
 		let matrixPar = [
