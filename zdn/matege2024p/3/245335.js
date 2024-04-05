@@ -73,8 +73,8 @@
 
         NAinfo.requireApiVersion(0, 2);
         NAtask.setTask({
-            text: 'В прямоугольном параллелепипеде $A B C D A_1 B_1 C_1 D_1$ известно, что ' + ['$AB=' + depth + '$',
-            ' $BC=' + width + '$', ' $BB_1=' + height + '$'
+            text: 'В прямоугольном параллелепипеде $A B C D A_1 B_1 C_1 D_1$ известно, что ' + ['$AB=' + width + '$',
+            ' $BC=' + depth + '$', ' $BB_1=' + height + '$'
             ].shuffleJoin(', ') + '. Найдите ',
             questions: [{
                 text: 'объём',
