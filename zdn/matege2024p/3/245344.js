@@ -9,7 +9,7 @@
 			numberSide: 6
 		});
 
-		let prism3 = new Pyramid({
+		let prism3 = new Prism({
 			height: prism6.height,
 			baseArea: prism6.baseArea.ceil() / 6,
 		});
