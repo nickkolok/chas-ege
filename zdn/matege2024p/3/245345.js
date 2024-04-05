@@ -5,13 +5,13 @@
 
 		let prism6 = new RegularPrism({
 			height: sl(10, 30),
-			baseSide: sl(1, 10)*6,
+			baseSide: sl(1, 10) * 6,
 			numberSide: 6
 		});
 
 		let prism4 = new Pyramid({
 			height: prism6.height,
-			baseArea: 5*prism6.baseArea.ceil()/6,
+			baseArea: 5 * prism6.baseArea.ceil() / 6,
 		});
 
 		let letter = ['A', 'B', 'C', 'D', 'E', 'F', 'F₁', 'A₁', 'B₁', 'C₁', 'D₁', 'E₁', ];
@@ -31,10 +31,10 @@
 			[0, 0, 0, 0, strok, 0, 1, 0, 0, 0, 1],
 		];
 
-		let vert =['A', 'B', 'C', 'D', 'E', 'F'];
-		vert = vert.permuteCyclic(sl(0,5));
-		vert = vert.slice(0,2).concat(vert.slice(3,5))
-		vert = vert.concat(vert.map((elem)=>elem+'_1'));
+		let vert = ['A', 'B', 'C', 'D', 'E', 'F'];
+		vert = vert.permuteCyclic(sl(0, 5));
+		vert = vert.slice(0, 2).concat(vert.slice(3, 5))
+		vert = vert.concat(vert.map((elem) => elem + '_1'));
 
 		let camera = {
 			x: 0,
@@ -79,14 +79,14 @@
 			][v],
 			questions: [{
 				text: 'объём',
-				answers: [prism4.volume, 6*prism4.volume/5][v],
+				answers: [prism4.volume, 6 * prism4.volume / 5][v],
 			}, ],
 			postquestion: [' многогранника, ' +
 				'вершинами которого являются вершины $' + vert.shuffleJoin(', ') +
 				'$ правильной шестиугольной призмы ' +
-				'$ABCDFEA_1B_1C_1D_1F_1E_1$, площадь основания которой равна $' + prism4.baseArea + '$, а боковое ребро равно $' +
-				prism4.height +
-				'$', ' прямой призмы с вершинами $' + ['A', 'B', 'C', 'A_1', 'B_1', 'C_1'].shuffleJoin(', ') + '$'
+				'$ABCDFEA_1B_1C_1D_1F_1E_1$, площадь основания которой равна $' + 6 * prism4.baseArea / 5 +
+				'$, а боковое ребро равно $' + prism4.height + '$', ' прямой призмы с вершинами $' + ['A', 'B', 'C', 'D', 'E', 'F', 'A_1', 'B_1', 'C_1', 'D_1', 'E_1', 'F_1']
+				.shuffleJoin(', ') + '$'
 			][v] + '.',
 			analys: '',
 			author: ['Суматохина Александра']
