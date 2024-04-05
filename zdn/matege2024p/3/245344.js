@@ -5,7 +5,7 @@
 
 		let prism6 = new RegularPrism({
 			height: sl(10, 30),
-			baseSide: sl(1, 10) * 6,
+			baseSide: sl(5, 10) * 6,
 			numberSide: 6
 		});
 
