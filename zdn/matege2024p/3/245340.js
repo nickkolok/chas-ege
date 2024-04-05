@@ -11,7 +11,7 @@
 		});
 
 		let pyr = new Pyramid({
-			height: sl(10, 30),
+			height: prism.height,
 			baseArea: prism.baseArea.ceil(),
 		});
 
