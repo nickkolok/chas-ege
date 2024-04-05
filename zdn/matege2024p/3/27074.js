@@ -20,6 +20,8 @@
             ];
         }
 
+        vert=vert.replaceAll('₁','_1')
+
         let strok = [5, 4];
 
         let matrixPar = [
