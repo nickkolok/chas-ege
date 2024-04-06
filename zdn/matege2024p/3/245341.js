@@ -5,14 +5,14 @@
 		let v2 = sl1();
 
 		let prism = new RegularPrism({
-			height: sl(10, 40),
-			baseSide: sl(10, 50),
+			height: sl(10, 100),
+			baseSide: sl(10, 100)*(3).sqrt(),
 			numberSide: 3
 		});
 
 		let pyr = new Pyramid({
-			height: prism.height,
-			baseArea: prism.baseArea.ceil(),
+			height: 0.5*prism.baseSide*(3).sqrt(),
+			baseArea: prism.baseSide*prism.height,
 		});
 
 		let letter = ['A', 'B', 'C', 'C₁', 'A₁', 'B₁', ];
@@ -55,8 +55,6 @@
 		});
 
 		point2DPar = prism.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
-		if (v1)
-			genAssert((point2DPar[3].y - point2DPar[2].y).abs() > 40, 'Сечение не видно');
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -74,21 +72,21 @@
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
 			text: ['Найдите ', 'Дана пирамида $' + vert.shuffleJoin('') + '$, площадь основания которой равна $' +
-				pyr.baseArea + '$, а высота, проведённая к этому основанию, равна $' + pyr.height + '$. Найдите '
+				pyr.baseArea + '$, а высота, проведённая к этому основанию, равна $' + (pyr.height.pow(2)).texsqrt(1) + '$. Найдите '
 			][v2],
 			questions: [{
 				text: 'объём',
-				answers: [pyr.volume, 1.5*pyr.volume][v2],
+				answers: [pyr.volume, prism.volume][v2],
 			}, ],
 			postquestion: [' многогранника, ' +
 				'вершинами которого являются вершины $' + vert.shuffleJoin(', ') +
 				'$ правильной треугольной призмы ' +
-				'$ABCA_1B_1C_1$, площадь основания которой равна $' + pyr.baseArea + '$, а боковое ребро равно $' + prism.height +
+				'$ABCA_1B_1C_1$, площадь основания которой равна $' + (prism.baseArea.pow(2)).texsqrt(1) + '$, а боковое ребро равно $' + prism.height +
 				'$', ' прямой призмы с вершинами $' + ['A', 'B', 'C', 'A_1', 'B_1', 'C_1'].shuffleJoin(', ') + '$'
 			][v2] + '.',
-			analys: '',
 			author: ['Суматохина Александра']
 		});
+		NAtask.modifiers.multiplyAnswerBySqrt(12);
 		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.assertSaneDecimals();
 		NAtask.modifiers.variativeABC(letter);
