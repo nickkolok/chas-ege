@@ -7,7 +7,7 @@
         });
 
         let letter = ['A', 'B', 'C', 'D', 'D₁', 'A₁', 'B₁', 'C₁',];
-        let copyLetter = ['A', 'B', 'C', 'D', 'A₁', 'B₁', 'C₁', 'D₁'];
+        let copyLetter = ['A', 'B', 'C', 'D', 'A_1', 'B_1', 'C_1', 'D_1'];
         let vert;
         if (sl1()) {
             copyLetter = copyLetter.randomReverse();
@@ -19,8 +19,6 @@
                     i)).iz()
             ];
         }
-
-        vert=vert.replaceAll('₁','_1')
 
         let strok = [5, 4];
 
