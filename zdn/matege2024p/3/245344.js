@@ -4,14 +4,14 @@
 		let v = sl1();
 
 		let prism6 = new RegularPrism({
-			height: sl(10, 30),
-			baseSide: sl(5, 10) * 6,
+			height: sl(10, 100),
+			baseSide: sl(15, 100) ,
 			numberSide: 6
 		});
 
 		let prism3 = new Prism({
 			height: prism6.height,
-			baseArea: prism6.baseArea.ceil() / 6,
+			baseArea: prism6.baseArea / 6,
 		});
 
 		let letter = ['A', 'B', 'C', 'D', 'E', 'F', 'F₁', 'A₁', 'B₁', 'C₁', 'D₁', 'E₁', ];
@@ -75,7 +75,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
 			text: ['Найдите ', 'Дана треугольная призма $' + vert.join('') + '$, площадь основания которой равна $' +
-				prism3.baseArea + '$, а высота, проведённая к этому основанию, равна $' + prism3.height + '$. Найдите '
+				(6 * prism3.baseArea).pow(2).texsqrt(1) + '$, а высота, проведённая к этому основанию, равна $' + prism3.height + '$. Найдите '
 			][v],
 			questions: [{
 				text: 'объём',
@@ -84,7 +84,7 @@
 			postquestion: [' многогранника, ' +
 				'вершинами которого являются вершины $' + vert.shuffleJoin(', ') +
 				'$ правильной шестиугольной призмы ' +
-				'$ABCDFEA_1B_1C_1D_1F_1E_1$, площадь основания которой равна $' + 6 * prism3.baseArea +
+				'$ABCDFEA_1B_1C_1D_1F_1E_1$, площадь основания которой равна $' + (6 * prism3.baseArea).pow(2).texsqrt(1) +
 				'$, а боковое ребро равно $' +
 				prism3.height +
 				'$', ' прямой призмы с вершинами $' + ['A', 'B', 'C', 'D', 'E', 'F', 'A_1', 'B_1', 'C_1', 'D_1', 'E_1', 'F_1']
@@ -93,6 +93,7 @@
 			analys: '',
 			author: ['Суматохина Александра']
 		});
+		NAtask.modifiers.multiplyAnswerBySqrt(12);
 		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.assertSaneDecimals();
 		NAtask.modifiers.variativeABC(letter);
