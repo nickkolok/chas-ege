@@ -1,7 +1,7 @@
 (function() {
 	retryWhileError(function() {
 
-		let v = 1;
+		let v = sl1();
 
 		let prism6 = new RegularPrism({
 			height: sl(10, 100),
