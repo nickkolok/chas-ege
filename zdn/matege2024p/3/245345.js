@@ -1,17 +1,17 @@
 (function() {
 	retryWhileError(function() {
 
-		let v = sl1();
+		let v = 1;
 
 		let prism6 = new RegularPrism({
-			height: sl(10, 30),
-			baseSide: sl(1, 10) * 6,
+			height: sl(10, 100),
+			baseSide: sl(10, 100),
 			numberSide: 6
 		});
 
 		let prism4 = new Prism({
 			height: prism6.height,
-			baseArea: 5 * prism6.baseArea.ceil() / 6,
+			baseArea: 5 * prism6.baseArea/ 6,
 		});
 
 		let letter = ['A', 'B', 'C', 'D', 'E', 'F', 'F₁', 'A₁', 'B₁', 'C₁', 'D₁', 'E₁', ];
@@ -75,22 +75,23 @@
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
 			text: ['Найдите ', 'Дан параллелепипед $' + vert.join('') + '$, площадь основания которого равна $' +
-				prism4.baseArea + '$, а высота, проведённая к этому основанию, равна $' + prism4.height + '$. Найдите '
+				prism4.baseArea.pow(2).texsqrt(1) + '$, а высота, проведённая к этому основанию, равна $' + prism4.height + '$. Найдите '
 			][v],
 			questions: [{
 				text: 'объём',
-				answers: [prism4.volume, 6 * prism4.volume / 5][v],
+				answers: [prism4.volume, prism6.volume][v],
 			}, ],
 			postquestion: [' многогранника, ' +
 				'вершинами которого являются вершины $' + vert.shuffleJoin(', ') +
 				'$ правильной шестиугольной призмы ' +
-				'$ABCDFEA_1B_1C_1D_1F_1E_1$, площадь основания которой равна $' + 6 * prism4.baseArea / 5 +
-				'$, а боковое ребро равно $' + prism4.height + '$', ' прямой призмы с вершинами $' + ['A', 'B', 'C', 'D', 'E', 'F', 'A_1', 'B_1', 'C_1', 'D_1', 'E_1', 'F_1']
+				'$ABCDFEA_1B_1C_1D_1F_1E_1$, площадь основания которой равна $' + prism6.baseArea.pow(2).texsqrt(1) +
+				'$, а боковое ребро равно $' + prism6.height + '$', ' прямой призмы с вершинами $' + ['A', 'B', 'C', 'D', 'E', 'F', 'A_1', 'B_1', 'C_1', 'D_1', 'E_1', 'F_1']
 				.shuffleJoin(', ') + '$'
 			][v] + '.',
 			analys: '',
 			author: ['Суматохина Александра']
 		});
+		NAtask.modifiers.multiplyAnswerBySqrt(12);
 		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.assertSaneDecimals();
 		NAtask.modifiers.variativeABC(letter);
