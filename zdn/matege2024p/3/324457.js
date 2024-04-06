@@ -16,7 +16,7 @@
 		});
 
 		let letter = ['A', 'B', 'C', 'D', 'D₁', 'A₁', 'B₁', 'C₁', ];
-		let copyLetter = ['A', 'B', 'C', 'D', 'A₁', 'B₁', 'C₁', 'D₁'];
+		let copyLetter = ['A', 'B', 'C', 'D', 'A_1', 'B_1', 'C_1', 'D_1'];
 		let vert;
         if (sl1()) {
           copyLetter = copyLetter.randomReverse();
@@ -25,8 +25,6 @@
           copyLetter.permuteCyclic(sl(0, 6, 2));
           vert = [copyLetter[0], copyLetter[1], copyLetter[4], copyLetter[5], copyLetter.filter((_, i) => ![0, 1, 4, 5].includes(i)).iz()];
         }
-
-		vert=vert.replaceAll('₁','_1')
 
 		let strok = [5, 4];
 
