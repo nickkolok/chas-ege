@@ -78,7 +78,7 @@
 			][v2],
 			questions: [{
 				text: 'объём',
-				answers: [pyr.volume, pyr.volume * 2][v2],
+				answers: [pyr.volume, 1.5*pyr.volume][v2],
 			}, ],
 			postquestion: [' многогранника, ' +
 				'вершинами которого являются вершины $' + vert.shuffleJoin(', ') +
