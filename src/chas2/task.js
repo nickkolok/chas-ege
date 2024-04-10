@@ -684,8 +684,10 @@ chas2.task = {
 
 		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
 
+		let compiledExpr = math.compile(expr.toString());
+
 		for (let x = lEnd; x < rEnd; x += o.primaryStep) {
-			let y = expr.evaluate({x});
+			let y = compiledExpr.evaluate({x});
 			if (y > maxY) {
 				maxX = x;
 				maxY = y;
@@ -698,7 +700,7 @@ chas2.task = {
 		//Sharpen the values a bit...
 		minY += 1;
 		for (let x = minX - 3 * o.primaryStep; x < minX + 3 * o.primaryStep; x += o.secondaryStep) {
-			let y = expr.evaluate({x});
+			let y = compiledExpr.evaluate({x});
 			if (y < minY) {
 				minX = x;
 				minY = y;
@@ -706,7 +708,7 @@ chas2.task = {
 		}
 		maxY -= 1;
 		for (let x = maxX - 3 * o.primaryStep; x < maxX + 3 * o.primaryStep; x += o.secondaryStep) {
-			let y = expr.evaluate({x});
+			let y = compiledExpr.evaluate({x});
 			if (y > maxY) {
 				maxX = x;
 				maxY = y;
