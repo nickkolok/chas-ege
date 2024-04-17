@@ -36,7 +36,7 @@
 			finishX: 160,
 			startY: -160,
 			finishY: 160,
-			maxScale: 100,
+			maxScale: 200,
 			step: 0.5,
 		});
 
@@ -52,11 +52,9 @@
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.setLineDash([4, 5]);
-			ctx.drawArc(0, 0, point2DCube[1].y, 0, Math.PI * 2, true); // Внешняя окружность
+			ctx.drawArc(0, 0, point2DCube[1].y, 0, Math.PI * 2, true);
 
-			ctx.beginPath();
-			ctx.ellipse(0, 0, point2DCube[1].y, 20, 0, Math.PI * 2, 0); // Внешняя окружность
-			ctx.stroke();
+			ctx.drawEllipse(0, 0, point2DCube[1].y, 20, 0, Math.PI * 2, 0);
 		};
 
 		NAtask.setTask({
