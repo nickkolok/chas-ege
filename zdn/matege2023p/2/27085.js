@@ -1,38 +1,79 @@
 (function() {
 	retryWhileError(function() {
-		NAinfo.requireApiVersion(0, 2);
 		let ratio = sl(2, 27);
+		let baseSide = sl(1, 100);
 
-		let name = ['ребро', 'высота', ['площадь боковой поверхности', 'площадь грани',
-			'полная площадь поверхности'].iz(), 'объём'];
-		let name1=name.iz(2);
-		let nameView = sklonlxkand(name1);
-		let number = [
-			[0,            ratio, ratio.pow(2), ratio.pow(3)],
-			[ratio,        0, ratio.pow(2), ratio.pow(3)],
-			[ratio.sqrt(), ratio.sqrt(), 0, 0.0001],
-			[Math.cbrt(ratio), 0.0001, 0.0001, 0.0001, 0]
+		NAinfo.requireApiVersion(0, 2);
+		let pyr1 = new RegularPyramid({
+			height: (6).sqrt() * baseSide / 3,
+			baseSide: baseSide,
+			numberSide: 3
+		});
+
+		let pyr2 = new RegularPyramid({
+			height: pyr1.height * ratio,
+			baseSide: pyr1.baseSide * ratio,
+			numberSide: 3
+		});
+
+		let name = [
+			['ребро', pyr2.baseSide / pyr1.baseSide],
+			['высота', pyr2.height / pyr1.height],
+			[
+				['площадь боковой поверхности', pyr2.sideSurfaceArea / pyr2.sideSurfaceArea],
+				['площадь грани', pyr2.baseArea / pyr1.baseArea],
+				['полная площадь поверхности', pyr2.surfaceArea / pyr1.surfaceArea]
+			].iz(), ['объём', pyr2.volume / pyr1.volume]
+		].iz(2);
+
+		let strok = [5, 4];
+
+		let matrixPyr = [
+			[1],
+			[strok, 1],
+			[1, 1, 1],
 		];
-		let answ = number[name.indexOf(name1[0])][name.indexOf(name1[1])];
 
-		genAssert((answ * 100).isZ() && answ, 'плохой ответ');
+		let camera = {
+			x: 0,
+			y: 0,
+			z: 0,
+			scale: 1,
 
-		let paint1 = function(ct) {
-			ct.translate(10, 20);
-			ct.scale(18, -18);
-			ct.lineWidth = 2 / 20;
-			ct.strokeStyle = "#809DF2";
+			rotationX: -Math.PI / 2 + Math.PI / 13,
+			rotationY: 0,
+			rotationZ: -2 * Math.PI / 6,
+		};
 
-			ct.rightPyramid3({
-				edge: 17,
-				angle: Math.PI / 8,
-				height: 11,
-			}, [1], [0.5, 0.2], name.includes('высота'), name.includes('апофема'));
+		let point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+		console.log(pyr1.verticesOfFigure);
+
+		autoScale(pyr1, camera, point2DPyr, {
+			startX: -390 / 2,
+			finishX: 390 / 2,
+			startY: -390 / 2,
+			finishY: 390 / 2,
+			maxScale: 50,
+		});
+
+		point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		let paint1 = function(ctx) {
+			let h = 400;
+			let w = 400;
+
+			ctx.translate(w / 2, h / 2);
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors;
+
+			ctx.drawFigure(point2DPyr, matrixPyr);
+
 		};
 		NAtask.setTask({
-			text: 'Во сколько раз увеличится ' + nameView[1].ie + ' правильного тетраэдра, ' +
-				'если его ' + nameView[0].ie + ' увеличится в ' + chislitlx(ratio, 'раз') + '?',
-			answers: answ,
+			text: 'Во сколько раз увеличится ' + sklonlxkand(name[0][0]).ie + ' правильного тетраэдра, ' +
+				'если его ' + sklonlxkand(name[1][0]).ve + ' увеличить ' + ' в $' + chislitlx(name[1][1], '$ раз') + '?',
+
+			answers: name[0][1],
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
