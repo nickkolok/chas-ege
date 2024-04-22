@@ -699,15 +699,20 @@ chas2.task = {
 
 		//Sharpen the values a bit...
 		minY += 1;
-		for (let x = minX - 3 * o.primaryStep; x < minX + 3 * o.primaryStep; x += o.secondaryStep) {
+		let xFrom = Math.max(minX - 3 * o.primaryStep, lEnd);
+		let xTo   = Math.min(minX + 3 * o.primaryStep, rEnd);
+		for (let x = xFrom; x < xTo; x += o.secondaryStep) {
 			let y = compiledExpr.evaluate({x});
 			if (y < minY) {
 				minX = x;
 				minY = y;
 			}
 		}
+
 		maxY -= 1;
-		for (let x = maxX - 3 * o.primaryStep; x < maxX + 3 * o.primaryStep; x += o.secondaryStep) {
+		xFrom = Math.max(maxX - 3 * o.primaryStep, lEnd);
+		xTo   = Math.min(maxX + 3 * o.primaryStep, rEnd);
+		for (let x = xFrom; x < xTo; x += o.secondaryStep) {
 			let y = compiledExpr.evaluate({x});
 			if (y > maxY) {
 				maxX = x;
