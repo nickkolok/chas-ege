@@ -32,25 +32,29 @@
 		}
 
 		let paint1 = function(ctx) {
-			ctx.translate(50, -40);
+
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
 			//шар 1
 			ctx.beginPath();
-			ctx.arc(100, 150, 100, 0, Math.PI * 2, true); // Внешняя окружность
+			ctx.arc(200, 200, 150, 0, Math.PI * 2, true); // Внешняя окружность
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
-			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.ellipse(200, 200, 30, 150, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(200, 200, 30, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
-			ctx.drawLine(100, 150, 200, 150);
+
+			ctx.strokeStyle = ["#D777F2", "#F2A2D6"].iz();
+
+			ctx.drawLine(200, 200, 200, 50);
 
 		};
 
@@ -62,11 +66,11 @@
 			authors: ['Суматохина Александра'],
 			analys: name[1].ie.toZagl() + ': $' + number[1] + '$',
 		});
-		chas2.task.modifiers.addCanvasIllustration({
-			width: 300,
-			height: 250,
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
 			paint: paint1,
 		});
-	}, 1000);
+	}, 1500);
 })();
 //27059 5049 27185 72765 72719 72721 72723 72725 72727 72729 72731 72733 72735 72737 72739 72741 72743 72745 72747 72749 72751 72753 72755 72757 72759 72761 72763
