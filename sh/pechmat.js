@@ -41,6 +41,7 @@ function zapusk() {
 	options.editable = $('#redakt').is(':checked');
 	options.largeFont = $('#largeFont').is(':checked');
 	options.customNumber = $('#customNumber').is(':checked');
+	options.variantPrefix = $('#variantPrefix').val();
 	options.vanishVariants = $('#vanishVariants').is(':checked');
 	options.nopagebreak = $('#nopagebreak').is(':checked');
 	options.compactAnswers = $('#compact-answers').is(':checked');
@@ -53,10 +54,13 @@ function zapusk() {
 	options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
+	options.forceIntegers = $('#forceIntegers').is(':checked');
 
 	if (customNumber) {
 		variantNumber = $('#start-number').val() - 1;
 	}
+
+	sluchch.forceIntegers = (options.forceIntegers) ? true : false; 	
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
@@ -118,10 +122,7 @@ function konecSozd() {
 			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
-			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
+			).replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
 		}
 	}
 
@@ -155,7 +156,7 @@ function bumpVariantNumber() {
 
 function appendVariantTasksCaption() {
 	if (!options.vanishVariants) {
-		strVopr += '<h2 class="d">Вариант №' + variantNumber + '</h2>';
+		strVopr += '<h2 class="d">Вариант №' + options.variantPrefix + variantNumber + '</h2>';
 	}
 }
 
@@ -166,17 +167,17 @@ function appendVariantTasksEnding() {
 
 function appendVariantAnswersCaption() {
 	strOtv +=
-		'<table '+
-			'class="normtabl tablpech pech-answers-table" ' +
-			'id="pech-answers-table-variant-' + variantNumber +
+		'<table ' +
+		'class="normtabl tablpech pech-answers-table" ' +
+		'id="pech-answers-table-variant-' + variantNumber +
 		'">';
 
 	if (!options.vanishVariants) {
 		strOtv += '<tr><th colspan="10">';
 		if (options.compactAnswers) {
-			strOtv += 'Вар. ' + variantNumber;
+			strOtv += 'Вар. ' + options.variantPrefix + variantNumber;
 		} else {
-			strOtv += 'Ответы к варианту<br/>№' + variantNumber;
+			strOtv += 'Ответы к варианту<br/>№' + options.variantPrefix + variantNumber;
 		}
 		strOtv += '</th></tr>';
 	}
@@ -246,7 +247,7 @@ function createHtmlForTask(nazvzad) {
 
 	return {
 		txt:
-			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'">'+
+			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
 				'<div class="b">'+nazvzad+'</div>'+
 				'<div class="z">'+
 					window.vopr.txt+
@@ -259,7 +260,7 @@ function createHtmlForTask(nazvzad) {
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
-			('<td>' + variantNumber + '</td>').esli(!options.vanishVariants) +
+			('<td>' + options.variantPrefix + variantNumber + '</td>').esli(!options.vanishVariants) +
 			'<td>' + nazvzad + '</td>' +
 			'<td>' + window.vopr.ver.join('; ') + '</td>' +
 			('<td>' + window.vopr.rsh + '</td>').esli(options.solutionsIntoAnswers) +
@@ -267,8 +268,10 @@ function createHtmlForTask(nazvzad) {
 		rsh:
 			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
 				(
-					'<h3>'+('Вариант №'+variantNumber+', ').esli(!options.vanishVariants) +
-					'задача '+nazvzad+'</h3><br/>'+
+					'<h3>'+
+						('Вариант №'+options.variantPrefix+variantNumber+', ').esli(!options.vanishVariants) +
+						'задача '+nazvzad+
+					'</h3><br/>'+
 					vopr.rsh
 				).esli(vopr.rsh)+
 			'</div>',
@@ -282,36 +285,36 @@ var unqDict = {};
 function obnov() {
 	var nazvzad;
 
-		if (options.transitTaskNumbers){
-			nazvzad = options.startTransitNumber + aZ.sum() - iZ.sum() - 1;
-		}else{
-			nazvzad =
-				dvig.getzadname(nZ)+
-				(aZ[nZ]==1? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1) );
-		}
-		var html = createHtmlForTask(nazvzad);
+	if (options.transitTaskNumbers) {
+		nazvzad = options.startTransitNumber + aZ.sum() - iZ.sum() - 1;
+	} else {
+		nazvzad =
+			dvig.getzadname(nZ) +
+			(aZ[nZ] == 1 ? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1));
+	}
+	var html = createHtmlForTask(nazvzad);
 
-		if(options.uniqueAnswersAndSolutions && (html.unq in unqDict)){
-			console.log('Deduplicating ' + nazvzad + '...');
-			dvig.zadan(obnov,nZ);
-			return;
-		}
+	if (options.uniqueAnswersAndSolutions && (html.unq in unqDict)) {
+		console.log('Deduplicating ' + nazvzad + '...');
+		dvig.zadan(obnov, nZ);
+		return;
+	}
 
-		unqDict[html.unq] = true;
+	unqDict[html.unq] = true;
 
-		strVopr += html.txt;
-		strOtv  += html.ver;
-		strResh += html.rsh;
+	strVopr += html.txt;
+	strOtv  += html.ver;
+	strResh += html.rsh;
 
-		generatedTasks[vopr.taskId] = vopr.clone();
+	generatedTasks[vopr.taskId] = vopr.clone();
 
-		var sdel=aZ.sum()*(aV-nV+1)-iZ.sum();
-		var w=sdel/kZ;
-		$('.tx').text((100*w).toFixedLess(1).dopdo(' ',4)+'%');
-		$('#pr1').width($('#pr0').width()*w);
-		var v=(vr1+vr2)*(kZ-sdel)/1000;
-		$('#vrem').text(sdel+' из '+kZ+' '+v.toDvoet());
-		zadan();
+	var sdel = aZ.sum() * (aV - nV + 1) - iZ.sum();
+	var w = sdel / kZ;
+	$('.tx').text((100 * w).toFixedLess(1).dopdo(' ', 4) + '%');
+	$('#pr1').width($('#pr0').width() * w);
+	var v = (vr1 + vr2) * (kZ - sdel) / 1000;
+	$('#vrem').text(sdel + ' из ' + kZ + ' ' + v.toDvoet());
+	zadan();
 }
 
 function shirprim() {
@@ -381,6 +384,7 @@ function renewTask() {
 	console.log(wrapper);
 	var taskId = wrapper.attr('data-task-id');
 	var taskNumber = wrapper.attr('data-task-number');
+	variantNumber = wrapper.attr('data-variant-number');
 	var answerRow = $('tr.answer-container[data-task-id=' + taskId + ']');
 	var solution = $('div.solution-container[data-task-id=' + taskId + ']');
 
@@ -388,9 +392,9 @@ function renewTask() {
 	dvig.zadan(function () {
 		console.log(wrapper);
 		var taskHtml = createHtmlForTask(nazvzad);
-		wrapper  .replaceWith(taskHtml.txt);
+		wrapper.replaceWith(taskHtml.txt);
 		answerRow.replaceWith(taskHtml.ver);
-		solution .replaceWith(taskHtml.rsh);
+		solution.replaceWith(taskHtml.rsh);
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
 		generatedTasks[vopr.taskId] = vopr.clone();
@@ -409,16 +413,16 @@ function insertGridFields() {
 	$('#grid-svg-template')[0].style.minHeight = fieldHeight + 'cm';
 
 	var cellSize = $('#grid-cell-size').val();
-	$('#grid-pattern')[0].setAttribute('width' ,cellSize);
-	$('#grid-pattern')[0].setAttribute('height',cellSize);
+	$('#grid-pattern')[0].setAttribute('width', cellSize);
+	$('#grid-pattern')[0].setAttribute('height', cellSize);
 
-	$('#grid-pattern-line-1')[0].setAttribute('x1',cellSize/2);
-	$('#grid-pattern-line-1')[0].setAttribute('x2',cellSize/2);
-	$('#grid-pattern-line-1')[0].setAttribute('y2',cellSize  );
+	$('#grid-pattern-line-1')[0].setAttribute('x1', cellSize / 2);
+	$('#grid-pattern-line-1')[0].setAttribute('x2', cellSize / 2);
+	$('#grid-pattern-line-1')[0].setAttribute('y2', cellSize);
 
-	$('#grid-pattern-line-2')[0].setAttribute('y1',cellSize/2);
-	$('#grid-pattern-line-2')[0].setAttribute('y2',cellSize/2);
-	$('#grid-pattern-line-2')[0].setAttribute('x2',cellSize  );
+	$('#grid-pattern-line-2')[0].setAttribute('y1', cellSize / 2);
+	$('#grid-pattern-line-2')[0].setAttribute('y2', cellSize / 2);
+	$('#grid-pattern-line-2')[0].setAttribute('x2', cellSize);
 
 
 	var svg = $('#grid-svg-container').html();
@@ -426,12 +430,12 @@ function insertGridFields() {
 
 
 	$('#grid-style-placeholder').html(
-		'<style>'+
-			'.grid-for-writing { ' +
-				'display: block;' +
-				'min-height: ' + fieldHeight + 'cm;' +
-				'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
-			'}'+
+		'<style>' +
+		'.grid-for-writing { ' +
+		'display: block;' +
+		'min-height: ' + fieldHeight + 'cm;' +
+		'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
+		'}' +
 		'</style>'
 	);
 
@@ -446,31 +450,33 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = "\n\\\\\n\\hline\n";
+	var hline = "\n\n\\hline\n";
 	return (
-		'\\begin{table}[h]' +
-			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
-				'\n\\hline\n' +
-				answersParsedToTeX.join(hline) +
-				hline +
-			'\\end{tabular}' +
-		'\\end{table}' +
+		'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
+			'\n\\hline\n' +
+			answersParsedToTeX.join(hline) +
+			hline +
+		'\\end{tabular}' +
 		'\n\n\n'
 	);
 }
 
-function getAnswersTableLaTeX(variantN) {
+function createLaTeXbunchAnswers(variantN) {
 
 	var answerRows = $('table#pech-answers-table-variant-' + variantN + ' tr');
 
 	var answersParsedToTeX = [];
 	// The first row may be the caption, so...
 	var cellsInFirstRow = (answerRows[2] || answerRows[1] || answerRows[0]).getElementsByTagName('td').length;
+	let count = 0;
 	for (var row of Array.from(answerRows)) {
+		count++;
 		var tdCells = row.getElementsByTagName('td');
 		if (tdCells.length) {
 			//TODO: reverse-decode LaTeX from MathJax
-			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & '));
+			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & ') + '\\\\');
+			if (count % 50 == 0 && count < kZ)
+				answersParsedToTeX.push('\\end{tabular}&\\begin{tabular}[t]{' + (new Array(cellsInFirstRow)).fill('|l').join('') + '|' + '}')
 		}
 	}
 	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
@@ -481,47 +487,65 @@ function replaceCanvasWithImgInTask(element, text) {
 		// Nothing to do
 		return text;
 	}
+	console.log(element);
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
-	console.log(canvases);
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
-		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictocenter[]{images/'+imageName+'}');
+		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.4\\linewidth]{'+imageName+'}');
 	}
+	if (canvases.length) {
+		text =
+			'\\ifdefined\\OnBeforeIllustratedTask\\OnBeforeIllustratedTask\\fi\n' +
+			text.trim() +
+			'\n\\ifdefined\\OnAfterIllustratedTask\\OnAfterIllustratedTask\\fi' +
+		'';
+	}
+
 	return text;
 }
 
-function createLaTeXbunch(variantN) {
+function createLaTeXbunchTasks(variantN) {
 	var bunchText = "";
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
-				'\n' +
-				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
-					tasksInLaTeX[taskId] + '\n' +
-				'\\end{taskBN}' + '\n';
+				"\n" +
+				"\\begin{taskBN}{" + generatedTasks[taskId].taskCategory + "}" + "\n" +
+				tasksInLaTeX[taskId] + "\n" +
+				"\\end{taskBN}\n\n";
 		}
 
 	}
-	return bunchText + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
+	return bunchText;
 }
 
-function refreshLaTeXarchive(){
-	if(!options.prepareLaTeX){
+function refreshLaTeXarchive() {
+	if (!options.prepareLaTeX) {
 		return;
 	}
 	var zip = new JSZip();
-	var bunch = "";
+	var bunchTasks = "";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>10)?6:variantsGenerated.length)+"}";
+
 	for(var variantN of variantsGenerated){
-		bunch +=
-			'\n\n\n\n' +
-			'\\cleardoublepage\n' +
-			'\\def\\examvart{Вариант ' + variantN + '}\n' +
-			'\\normalsize\n\\input{instruction.tex}\n\\startpartone\n\\large' +
-			'\n\n\n\n' +
-			createLaTeXbunch(variantN);
+		var head =
+			'\n\n' +
+			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
+			'\\def\\examvart{\\varianttitle ' + options.variantPrefix + variantN + '}\n' +
+			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
+			'\n\n';
+		var tail =
+			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
+		bunchTasks += head + createLaTeXbunchTasks(variantN) + tail;
+		answers += createLaTeXbunchAnswers(variantN);
 	}
-	zip.file("tasks.tex", bunch);
+
+	answers += "\n\n\\end{multicols}\n\n\\end{document}";
+
+	zip.file("tasks.tex", bunchTasks);
+	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
+
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
 		img.file(i + ".png", preparedImages[i], { base64: true });
