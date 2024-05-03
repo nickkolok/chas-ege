@@ -4,8 +4,8 @@
 
 		let pyr = new RegularPyramid({
 			height: sl(30, 50),
-			baseSide: sl(20, 50),
-			numberSide: 6
+			baseSide: sl(20, 50)*(3).sqrt(),
+			numberSide: 3
 		});
 
 		let question = [
@@ -28,7 +28,7 @@
 
 			rotationX: -Math.PI / 2 + Math.PI / 13,
 			rotationY: 0,
-			rotationZ: -2 * Math.PI / sl(12,15),
+			rotationZ: -2 * Math.PI / (pyr.numberSide - 2),
 		};
 
 		let point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
@@ -57,7 +57,7 @@
 
 		NAtask.setTask({
 			text: 'В правильной ' + ['тре', 'четырёх', 'пяти', 'шести', 'семи', 'восьми', 'девяти', 'десяти'][pyr.numberSide - 3] +
-				'угольной пирамиде ' + name[0] + [' составляет ', ' равна '].iz() + '$' + number[0].pow(2).texsqrt(1) + '$; ' + name[1] + 
+				'угольной пирамиде ' + name[0] + [' составляет ', ' равно '].iz() + '$' + number[0].pow(2).texsqrt(1) + '$; ' + name[1] + 
 				[' составляет ', ' равна '].iz() + '$' + number[1].pow(2).texsqrt(1) +
 				'$. Чему равна ' + name[2] + ' пирамиды?',
 			answers: number[2],
@@ -71,3 +71,4 @@
 		});
 	}, 10000);
 })();
+//140 по Ширяевой 2024
