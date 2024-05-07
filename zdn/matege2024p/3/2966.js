@@ -8,7 +8,7 @@
 		});
 
 		let find = [
-			['длину диагонали ' + ['$AC_1$', 'параллелепипеда'].iz(), par.mainDiagonal],
+			['длину диагонали параллелепипеда', par.mainDiagonal],
 			['объём параллелепипеда', par.volume],
 			['площадь полной поверхности параллелепипеда', par.surfaceArea]
 		].iz();
@@ -17,14 +17,16 @@
 
 		let strok = [5, 4];
 
+		let diag = (find[0].includes('диагонали')) ? [0, 0, 0, strok].shuffle() : 0;
+
 		let matrixPar = [
 			[strok],
 			[0, 1],
 			[strok, 0, 1],
-			[0, 0, 0, 1],
-			[strok, 0, 0, 0, 1],
-			[0, 1, 0, 0, 0, 1],
-			[0, 0, 1, 0, 1, 0, 1],
+			[0, diag[0], 0, 1],
+			[strok, 0, diag[1], 0, 1],
+			[0, 1, 0, diag[2], 0, 1],
+			[diag[3], 0, 1, 0, 1, 0, 1, ],
 		];
 
 		let camera = {
@@ -71,7 +73,7 @@
 				'. Найдите ' + find[0] + '.',
 			answers: find.pop(),
 		});
-		NAtask.modifiers.multiplyAnswerBySqrt(13);
+		NAtask.modifiers.multiplyAnswerBySqrt(30);
 		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.assertSaneDecimals();
 		NAtask.modifiers.variativeABC(letter);
