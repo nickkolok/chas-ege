@@ -17,11 +17,7 @@
 
 		let vertex1 = pyr1.verticesOfFigure.slice();
 
-		vertex1 = vertex1.map((elem) => elem = {
-			x: elem.x,
-			y: elem.y,
-			z: elem.z - (pyr2.verticesOfFigure[0].z - vertex1[0].z),
-		});
+		vertex1 = vertex1.map((elem) => shiftCoordinate3D(elem,{x:0,y:0,z:(pyr2.verticesOfFigure[0].z - vertex1[0].z)}));
 
 		let strok = [5, 4];
 
