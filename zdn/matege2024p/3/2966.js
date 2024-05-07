@@ -1,54 +1,87 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let letters = ['A', 'B', 'C', 'D'];
-		let letterWithIndex = letters.map((elem) => elem + '₁');
-		let allLet = letters.concat(letterWithIndex);
-
-		let a = sl(1, 10);
-		let b = sl(1, 10);
-		let c = sl(1, 10);
+		let par = new Parallelepiped({
+			depth: sl(10, 50),
+			height: sl(10, 50),
+			width: sl(10, 50),
+		});
 
 		let find = [
-			['длину диагонали '+['$AC_1$','параллелепипеда'].iz(), (a.pow(2) + b.pow(2) + c.pow(2)).sqrt()],
-			['объём параллелепипеда', a * b * c],
-			['площадь полной поверхности параллелепипеда', 2 * (a * b + a * c + b * c)]
+			['длину диагонали ' + ['$AC_1$', 'параллелепипеда'].iz(), par.mainDiagonal],
+			['объём параллелепипеда', par.volume],
+			['площадь полной поверхности параллелепипеда', par.surfaceArea]
 		].iz();
-		let answ = find.pop();
-		
-		let paint1 = function(ctx) {
-		ctx.translate(100, 50);
-		let edge = 15;
-		ctx.scale(10, 10);
 
-		ctx.font = "3px liberation_sans";
-		ctx.lineWidth = 0.2;
-		ctx.font = "2.5px liberation_sans";
-		ctx.drawParallelepiped({
-			width: edge * 1.6,
-			height: edge * 1.3,
-			depth: edge / 1.5,
-			angle: Math.PI / 1.1,
-			scale: 20,
-			lettersOnVertex: allLet,
-		}, [0, 3, 4], find[0].includes('диагонали'), [0.4, 0.5]);
-	};
+		let letter = ['A', 'B', 'C', 'D', 'D₁', 'A₁', 'B₁', 'C₁', ];
+
+		let strok = [5, 4];
+
+		let matrixPar = [
+			[strok],
+			[0, 1],
+			[strok, 0, 1],
+			[0, 0, 0, 1],
+			[strok, 0, 0, 0, 1],
+			[0, 1, 0, 0, 0, 1],
+			[0, 0, 1, 0, 1, 0, 1],
+		];
+
+		let camera = {
+			x: 0,
+			y: 0,
+			z: 0,
+			scale: 5,
+
+			rotationX: -Math.PI / 2 + Math.PI / 14,
+			rotationY: 0,
+			rotationZ: 2 * Math.PI / 3,
+		};
+
+		let point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+		genAssert((point2DPar[0].x - point2DPar[2].x).abs() > 20, 'Сечение не видно');
+
+		autoScale(par, camera, point2DPar, {
+			startX: -180,
+			finishX: 160,
+			startY: -160,
+			finishY: 160,
+			maxScale: 50,
+		});
+
+		point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+		genAssert((point2DPar[0].x - point2DPar[2].x).abs() > 20, 'Сечение не видно');
+
+		let paint1 = function(ctx) {
+			let h = 400;
+			let w = 400;
+			ctx.translate(h / 2, w / 2);
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.drawFigure(point2DPar, matrixPar);
+			ctx.font = "25px liberation_sans";
+
+			point2DPar.forEach((elem, i) => ctx.fillText(letter[i], elem.x, elem.y + ((i < point2DPar.length / 2) ? 15 : -10)));
+		};
 
 		NAtask.setTask({
-			text: 'В прямоугольном параллелепипеде $ABCDA_1B_1C_1D_1$ известно, что ' + 
-            ['$DD_1=' + a + '$', '$C_1D_1=' + b + '$', '$B_1C_1=' + c + '$' ].shuffleJoin(', ') +
-			'. Найдите ' + find.iz() + '.',
-			answers: answ,
+			text: 'В прямоугольном параллелепипеде $ABCDA_1B_1C_1D_1$ известно, что ' + ['$DD_1=' + par.height + '$',
+					'$C_1D_1=' + par.width + '$', '$B_1C_1=' + par.depth + '$'
+				].shuffleJoin(', ') +
+				'. Найдите ' + find[0] + '.',
+			answers: find.pop(),
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
-		NAtask.modifiers.variativeABC(allLet);
+		NAtask.modifiers.allDecimalsToStandard(true);
+		NAtask.modifiers.assertSaneDecimals();
+		NAtask.modifiers.variativeABC(letter);
 		NAtask.modifiers.addCanvasIllustration({
-		width: 400,
-		height: 400,
-		paint: paint1,
-	});
-	});
-	
+			width: 400,
+			height: 400,
+			paint: paint1,
+		});
+	}, 1000);
 })();
+
 //2966
 //https://ege314.ru/8-stereometriya-ege/reshenie-2966/
