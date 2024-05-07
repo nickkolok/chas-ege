@@ -61,12 +61,15 @@
 		};
 
 		NAtask.setTask({
-			text: 'Объём правильной четырёхугольной пирамиды $SABCD$ равен $' + v + '$. ' +
+			text: 'Объём правильной четырёхугольной пирамиды $SABCD$ равен $' + pyr1.volume.pow(2).texsqrt(1) + '$. ' +
 				'Точка $E$ – середина ребра $SA$. Найдите объём треугольной пирамиды $EABD$.',
-			answers: v / 4,
+			answers: pyr2.volume,
 			author: ['Суматохина Александра'],
 		});
 		NAtask.modifiers.variativeABC(letters);
+		NAtask.modifiers.multiplyAnswerBySqrt(13);
+		NAtask.modifiers.allDecimalsToStandard(true);
+		NAtask.modifiers.assertSaneDecimals();
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
