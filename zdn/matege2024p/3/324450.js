@@ -1,34 +1,85 @@
 (function() {
 	retryWhileError(function() {
 
-		let a = sl(2,20);
-		
+		let edge = sl(2, 50);
+
+		let pyr1 = new RegularPyramid({
+			height: (0.5).sqrt() * edge,
+			baseSide: edge,
+			numberSide: 4
+		});
+
+		let pyr2 = new RegularPyramid({
+			height: 2 * pyr1.height,
+			baseSide: 2 * pyr1.baseSide,
+			numberSide: 4
+		});
+
+		let vertex1 = pyr1.verticesOfFigure.slice();
+
+		vertex1 = vertex1.map((elem) => elem = {
+			x: elem.x,
+			y: elem.y,
+			z: elem.z - (pyr2.verticesOfFigure[0].z - vertex1[0].z),
+		});
+
+		let strok = [5, 4];
+
+		let matrixPyr1 = [
+			[1],
+			[0, strok],
+			[1, 0, strok],
+			[0, 0, 0, 0, ],
+		];
+
+		let matrixPyr2 = [
+			[1],
+			[0, strok],
+			[1, 0, strok],
+			[1, 1, strok, 1, ],
+		];
+
+		let camera = {
+			x: 0,
+			y: 0,
+			z: 0,
+			scale: 5,
+
+			rotationX: -Math.PI / 2 + Math.PI / 14,
+			rotationY: 0,
+			rotationZ: [1, 2].iz() * Math.PI / 3,
+		};
+
+
+		let point2DPyr2 = pyr2.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		autoScale(pyr2, camera, point2DPyr2, {
+			startX: -180,
+			finishX: 160,
+			startY: -160,
+			finishY: 160,
+			maxScale: 50,
+		});
+
+		point2DPyr2 = pyr2.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+		let point2DPyr1 = vertex1.map((coord3D) => project3DTo2D(coord3D, camera));
+
+
 		let paint1 = function(ctx) {
-			ctx.translate(0, 500);
-			ctx.scale(10, 10);
-			ctx.lineWidth = 2 / 15;
-			ctx.drawRightPyramid4({
-				edge: 21,
-				angle: Math.PI / 4,
-				height: -23,
-				scale: 10,
-			}, [0, 2, 5], [1, 0.7]);
-			
-			ctx.translate(9, -20.54);
-			ctx.lineWidth = 3 / 15;
-			ctx.drawRightPyramid4({
-				edge: 21/2,
-				angle: Math.PI / 4,
-				height: -23/2,
-				scale: 10,
-				strokeStyle: om.primaryBrandColors.iz(),
-			}, [0, 2, 5], [1, 0.7]);
+			let h = 400;
+			let w = 400;
+			ctx.translate(h / 2, w / 2);
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.drawFigure(point2DPyr1, matrixPyr1);
+			ctx.drawFigure(point2DPyr2, matrixPyr2);
+
 		};
 
 		NAtask.setTask({
-			text: 'В правильной четырёхугольной пирамиде все рёбра равны $'+a+'$. '+
-			'Найдите площадь сечения пирамиды плоскостью, проходящей через середины боковых рёбер.',
-			answers: a*a/4,
+			text: 'В правильной четырёхугольной пирамиде все рёбра равны $' + pyr2.baseSide + '$. ' +
+				'Найдите площадь сечения пирамиды плоскостью, проходящей через середины боковых рёбер.',
+			answers: pyr1.baseArea,
 			author: ['Суматохина Александра'],
 		});
 		NAtask.modifiers.addCanvasIllustration({
