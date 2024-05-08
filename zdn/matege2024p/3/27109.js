@@ -17,13 +17,6 @@
 
 		let strok = [5, 4];
 
-		let matrixPyr = [
-			[1],
-			[0, strok],
-			[1, 0, strok],
-			[1, 1, strok, 1, ],
-		];
-
 		let camera = {
 			x: 0,
 			y: 0,
@@ -53,7 +46,12 @@
 			ctx.translate(h / 2, w / 2);
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.drawFigure(point2DPyr, matrixPyr);
+			ctx.drawFigure(point2DPyr, [
+				[1],
+				[0, strok],
+				[1, 0, strok],
+				[1, 1, strok, 1, ],
+			]);
 
 		};
 
