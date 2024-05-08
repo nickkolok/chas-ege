@@ -1,27 +1,51 @@
 (function() {
 	retryWhileError(function() {
 
-		let v = sl(1, 400);
+		let pyr2 = new RegularPyramid({
+			height: pyr1.height,
+			baseSide: 0.5 * pyr1.baseSide,
+			numberSide: 3
+		});
+
+		pyr1.verticesOfFigure.push(coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[1]));
+		pyr1.verticesOfFigure.push(coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[2]));
+
+		let strok = [5, 4];
+
+		let camera = {
+			x: 0,
+			y: 0,
+			z: 0,
+			scale: 5,
+
+			rotationX: -Math.PI / 2 + Math.PI / 14,
+			rotationY: 0,
+			rotationZ: sl(1,2)* Math.PI / 8,
+		};
+
+		let point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		autoScale(pyr1, camera, point2DPyr, {
+			startX: -180,
+			finishX: 160,
+			startY: -160,
+			finishY: 160,
+			maxScale: 50,
+		});
+
+		point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
 		let paint1 = function(ctx) {
-			ctx.translate(0, 480);
-			ctx.scale(10, 10);
-			ctx.font = "3px liberation_sans";
-
-			ctx.lineWidth = 2 / 15;
-
-
-			ctx.drawRightPyramid3({
-				edge: 25,
-				angle: Math.PI / 8,
-				height: -25,
-				scale: 10,
-			}, [0], [1, 0.7]);
-			ctx.translate(0, -48);
-			ctx.drawSection([
-				[16, 3],
-				[24, 31],
-				[12, 31]
+			let h = 400;
+			let w = 400;
+			ctx.translate(h / 2, w / 2);
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.drawFigure(point2DPyr, [
+				[1],
+				[strok, strok],
+				[1, 1, strok, 0, 1, strok],
+				[0, 0, 0, 0, 0, strok]
 			]);
 		};
 
