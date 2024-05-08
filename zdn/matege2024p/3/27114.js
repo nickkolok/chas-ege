@@ -1,32 +1,63 @@
 (function() {
 	retryWhileError(function() {
-		let letters = ['A', 'B', 'C', 'D', 'S', 'E'];
 
-		let v = sl(1, 400);
+		let pyr1 = new RegularPyramid({
+			height: sl(30, 70),
+			baseSide: sl(20, 50),
+			numberSide: 4
+		});
+
+		let pyr2 = new Pyramid({
+			height: 0.5 * pyr1.height,
+			baseArea: 0.5 * pyr1.baseArea,
+		});
+
+		pyr1.verticesOfFigure = coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[4]);
+
+		let camera = {
+			x: 0,
+			y: 0,
+			z: 0,
+			scale: 5,
+
+			rotationX: -Math.PI / 2 + Math.PI / 14,
+			rotationY: 0,
+			rotationZ: [1, 2].iz() * Math.PI / 3,
+		};
+
+		let point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		autoScale(pyr1, camera, point2DPyr, {
+			startX: -180,
+			finishX: 160,
+			startY: -160,
+			finishY: 160,
+			maxScale: 50,
+		});
+
+		point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		let letters = ['A', 'B', 'C', 'D', 'S', 'E'];
+		let strok = [5, 4];
 
 		let paint1 = function(ctx) {
-			ctx.translate(0, 500);
-			ctx.scale(10, 10);
-			ctx.font = "3px liberation_sans";
+			let h = 400;
+			let w = 400;
+			ctx.translate(h / 2, w / 2);
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.drawFigure(point2DPyr, [
+				[1],
+				[0, strok],
+				[1, strok, strok],
+				[1, 1, strok, 1, ],
+				[0, 1, 0, 1, 0]
+			]);
 
-			ctx.lineWidth = 2 / 15;
+			ctx.font = "30px liberation_sans";
+			point2DPyr.forEach((elem, i) => ctx.fillText(letters[i], elem.x, elem.y + ((i <= point2DPyr.length - 3) ? 15 : -
+				10)));
 
-			ctx.drawRightPyramid3({
-				edge: 21,
-				angle: Math.PI / 4,
-				height: -15.4,
-				scale: 10,
-				strokeStyle: om.primaryBrandColors.iz(),
-				lettersOnVertex: ['', '', ''].concat(letters[5]),
-			}, [0, 2, 4], [1, 0.7]);
-
-			ctx.drawRightPyramid4({
-				edge: 21,
-				angle: Math.PI / 4,
-				height: -23,
-				scale: 10,
-				lettersOnVertex: letters.slice(0, 5),
-			}, [0, 2, 5], [1, 0.7]);
 		};
 
 		NAtask.setTask({
