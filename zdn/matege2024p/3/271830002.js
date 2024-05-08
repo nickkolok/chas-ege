@@ -1,38 +1,15 @@
 (function() {
 	retryWhileError(function() {
-
-		let baseSide = sl(2, 50);
-
 		let v = 1;
 
-		let cube = new Cube(baseSide);
+		let cube = new Cube(sl(2, 50));
 
 		let prism = new IrregularTriangularPrism({
-			height: baseSide,
-			sideA: 0.5 * baseSide,
-			sideB: 0.5 * baseSide,
+			height: cube.baseSide,
+			sideA: 0.5 * cube.baseSide,
+			sideB: 0.5 * cube.baseSide,
 			sideC: 0.5 * cube.DWDiagonal
 		});
-
-		let strok = [5, 4];
-
-		let matrixCube = [
-			[strok],
-			[0, 1],
-			[strok, 0, 1],
-			[0, 0, 0, 1],
-			[strok, 0, 0, 0, 1],
-			[0, 1, 0, 0, 0, 1],
-			[0, 0, 1, 0, 1, 0, 1],
-		];
-
-		let matrixPrism = [
-			[0],
-			[0, strok],
-			[0],
-			[0, 1, 0, 0],
-			[0, 0, strok, 0, 1]
-		];
 
 		let camera = {
 			x: 0,
@@ -42,11 +19,15 @@
 
 			rotationX: -Math.PI / 2 + Math.PI / 14,
 			rotationY: 0,
-			rotationZ: 2 * Math.PI / 3,
+			rotationZ: Math.PI / 3,
 		};
 
+		cube.verticesOfFigure.push(coordinatesMiddleOfSegment3D(cube.verticesOfFigure[1], cube.verticesOfFigure[2]),
+			coordinatesMiddleOfSegment3D(cube.verticesOfFigure[2], cube.verticesOfFigure[3]),
+			coordinatesMiddleOfSegment3D(cube.verticesOfFigure[4], cube.verticesOfFigure[7]),
+			coordinatesMiddleOfSegment3D(cube.verticesOfFigure[6], cube.verticesOfFigure[7]));
+
 		let point2DPar = cube.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
-		genAssert((point2DPar[0].x - point2DPar[2].x).abs() > 20, 'Сечение не видно')
 
 		autoScale(cube, camera, point2DPar, {
 			startX: -180,
@@ -57,17 +38,27 @@
 		});
 
 		point2DPar = cube.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
-		point2DPrism = prism.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		let strok = [5, 4];
 
 		let paint1 = function(ctx) {
 			let h = 400;
 			let w = 400;
-			ctx.translate(200, 200);
+			ctx.translate(w/2, h/2);
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.drawFigure(point2DPar, matrixCube);
-			ctx.translate(79, -4);
-			ctx.drawFigure(point2DPrism, matrixPrism);
+			ctx.drawFigure(point2DPar, [
+				[1],
+				[0, 1],
+				[strok, 0, strok],
+				[0, 0, 0, strok],
+				[1, 0, 0, 0, 1],
+				[0, 1, 0, 0, 0, 1],
+				[0, 0, 1, 0, 1, 0, 1],
+				[0, 0, 0, 0, 0, 0, 0, 0, 0, strok, 0, 1],
+				[],
+				[0, 0, 0, 0, 0, 0, 0, 0, 0, strok, 0, 1],
+			]);
 		};
 
 		NAinfo.requireApiVersion(0, 2);
