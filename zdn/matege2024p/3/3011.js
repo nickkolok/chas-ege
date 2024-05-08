@@ -73,7 +73,7 @@
 				question[1][0].ie + ' рав' + ['ен', 'на', 'но'][question[1][0].rod] + ' $' + question[1][1].pow(2).texsqrt(1) +'$'
 				].shuffleJoin(', ') +
 				'. Найдите ' + question[2][0].ve + ' пирамиды.',
-			answers: answ,
+			answers: question[2][1],
 			author: ['Суматохина Александра'],
 		});
 		NAtask.modifiers.variativeABC(letters);
@@ -85,7 +85,7 @@
 			height: 400,
 			paint: paint1,
 		});
-	});
+	},10);
 })();
 //https://ege314.ru/8-stereometriya-ege/reshenie-3011/
 //3011
