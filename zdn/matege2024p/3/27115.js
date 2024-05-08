@@ -1,5 +1,11 @@
 (function() {
 	retryWhileError(function() {
+		
+		let pyr1 = new RegularPyramid({
+			height: sl(10, 30)*(3).sqrt(),
+			baseSide: sl(20, 50),
+			numberSide: 3
+		});
 
 		let pyr2 = new RegularPyramid({
 			height: pyr1.height,
@@ -53,14 +59,17 @@
 			text: ' Объём треугольной пирамиды равен $' + v + '$. ' +
 				'Через вершину пирамиды и среднюю линию её основания проведена плоскость (см. рисунок). ' +
 				'Найдите объём отсечённой треугольной пирамиды.',
-			answers: v / 4,
+			answers: pyr2.volume,
 			author: ['Суматохина Александра'],
 		});
+		NAtask.modifiers.multiplyAnswerBySqrt(13);
+		NAtask.modifiers.allDecimalsToStandard(true);
+		NAtask.modifiers.assertSaneDecimals();
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
 		});
-	});
+	}, 1000);
 })();
 //27115 75065 75109 75113 514460 75067 75069 75071 75073 75075 75077 75079 75081 75083 75085 75087 75089 75091 75093 75095 75097 75099 75101 75103 75105 75107 75111
