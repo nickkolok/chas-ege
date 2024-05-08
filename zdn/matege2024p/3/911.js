@@ -8,14 +8,11 @@
 			numberSide: 4
 		});
 
-		let vertex = pyr.verticesOfFigure.slice();
-		vertex.push({
+		pyr.verticesOfFigure.push({
 			x: 0,
 			y: 0,
 			z: pyr.verticesOfFigure[0].z
 		});
-
-		console.log(vertex);
 
 		let letters = ['A', 'B', 'C', 'D', 'E', 'F'];
 
@@ -29,13 +26,6 @@
 
 		let strok = [5, 4];
 
-		let matrixPyr = [
-			[1],
-			[strok, strok],
-			[1, strok, strok],
-			[1, 1, strok, 1, 0, strok],
-		];
-
 		let camera = {
 			x: 0,
 			y: 0,
@@ -47,7 +37,7 @@
 			rotationZ: [1, 2].iz() * Math.PI / 3,
 		};
 
-		let point2DPyr = vertex.map((coord3D) => project3DTo2D(coord3D, camera));
+		let point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
 		autoScale(pyr, camera, point2DPyr, {
 			startX: -180,
@@ -57,17 +47,20 @@
 			maxScale: 50,
 		});
 
-		point2DPyr = vertex.map((coord3D) => project3DTo2D(coord3D, camera));
-
-		console.log(point2DPyr);
-
+		point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+		
 		let paint1 = function(ctx) {
 			let h = 400;
 			let w = 400;
 			ctx.translate(h / 2, w / 2);
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.drawFigure(point2DPyr, matrixPyr);
+			ctx.drawFigure(point2DPyr, [
+				[1],
+				[strok, strok],
+				[1, strok, strok],
+				[1, 1, strok, 1, 0, strok],
+			]);
 
 			ctx.font = "30px liberation_sans";
 			point2DPyr.forEach((elem, i) => ctx.fillText(letters[i], elem.x, elem.y + ((i != point2DPyr.length - 2) ? 15 : -
