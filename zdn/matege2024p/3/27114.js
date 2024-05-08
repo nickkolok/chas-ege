@@ -25,9 +25,8 @@
 		];
 
 		let vertex = pyr1.verticesOfFigure.slice();
-		console.log(vertex)
 		vertex.push(coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0],pyr1.verticesOfFigure[4]));
-		console.log(vertex)
+
 
 		let camera = {
 			x: 0,
