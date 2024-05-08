@@ -13,17 +13,10 @@
 			numberSide: 3
 		});
 
-		pyr1.verticesOfFigure = coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[1]);
-		pyr1.verticesOfFigure = coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[2]);
+		pyr1.verticesOfFigure.push(coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[1]));
+		pyr1.verticesOfFigure.push(coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[2]));
 
 		let strok = [5, 4];
-
-		pyr1.connectionMatrix = [
-			[1],
-			[strok, strok],
-			[1, 1, strok, 0, 1, strok],
-			[0, 0, 0, 0, 0, strok]
-		];
 
 		let camera = {
 			x: 0,
@@ -54,7 +47,12 @@
 			ctx.translate(h / 2, w / 2);
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.drawFigure(point2DPyr, pyr1.connectionMatrix);
+			ctx.drawFigure(point2DPyr, [
+				[1],
+				[strok, strok],
+				[1, 1, strok, 0, 1, strok],
+				[0, 0, 0, 0, 0, strok]
+			]);
 		};
 
 		NAtask.setTask({
