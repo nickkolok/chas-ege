@@ -10,8 +10,6 @@
 			sideC: sl(10, 20),
 		});
 
-		console.log(prism);
-
 		let rand1 = sl1();
 		let rand2 = sl1();
 		let question = [
@@ -57,7 +55,7 @@
 		let paint1 = function(ctx) {
 			let h = 400;
 			let w = 400;
-			ctx.translate(200, 200);
+			ctx.translate(w/2, h/2);
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
 			ctx.drawFigure(point2DPrism, [
