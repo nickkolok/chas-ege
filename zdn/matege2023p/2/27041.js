@@ -108,6 +108,7 @@
 				}],
 				postquestion: ' ' + ['цилиндра', 'параллелепипеда'][rand] + '.',
 			});
+			NAtask.modifiers.multiplyAnswerBySqrt(13);
 			NAtask.modifiers.multiplyAnswerByPI();
 			NAtask.modifiers.allDecimalsToStandard(true);
 			NAtask.modifiers.assertSaneDecimals();
