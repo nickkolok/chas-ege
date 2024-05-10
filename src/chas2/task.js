@@ -1076,6 +1076,31 @@ chas2.task = {
 			throw new RangeError('multiplyAnswerBySqrt(): can find no appropriate square root');
 		},
 
+		/** @function chas2.task.modifiers.multiplyAnswerByPI
+		 * Добавить фразу "Ответ умножьте на $\PI$." и домножить сам ответ.
+		 */
+		multiplyAnswerByPI : function() {
+			var o = chas2.task.getTask();
+			if (o.answers.length != 1){
+				throw new TypeError('Fixme: cannot apply multiplyAnswerByPI() to multiple answers')
+			}
+			//Меняем запятую на точку для корректной работы Number
+			var ans = Number(o.answers[0].replace(',', '.'));
+
+			if ((ans*1000).isAlmostInteger()){
+				//Ответ и так хорош!
+				return;
+			}
+
+			if (sl1() && (ans / Math.PI * 1000).isAlmostInteger()) {
+				o.text += ' Ответ разделите на $\\pi$.';
+				o.answers = [(ans / Math.PI).okrugldo((10).pow(-6)).ts()]
+				chas2.task.setTask(o);
+				return;
+			}
+			throw new RangeError('multiplyAnswerByPI(): can find no appropriate square root');
+		},
+
 		/** @function chas2.task.modifiers.roundUpTo
 		 * Добавить фразу "Округлить до ..." и округлить сам ответ.
 		 * @param {Number} n степень 10 (округлить до 10^n)
