@@ -21,15 +21,15 @@
 				height: cyl.height
 			});
 
-			let rand = sl1();
+			let rand1 = sl1();
+			let rand2 = sl1();
 
 			let nameCylinder = [
 				['высота', cyl.height],
 				[
 					['площадь боковой поверхности', cyl.sideSurfaceArea],
 					['объём', cyl.volume]
-				].iz(), 
-				['радиус основания', cyl.radius],
+				].iz(), ['радиус основания', cyl.radius],
 				['площадь основания', cyl.baseArea],
 			].iz(3);
 
@@ -38,8 +38,10 @@
 				['объём', par.volume],
 				['диагональ', par.mainDiagonal],
 				['диагональ одной из боковых сторон', par.DHDiagonal],
-				[['сторона основания', par.width],
-				['диагональ основания', par.DWDiagonal]].iz(),
+				[
+					['сторона основания', par.width],
+					['диагональ основания', par.DWDiagonal]
+				].iz(),
 			].iz(3);
 
 			let strok = [5, 4];
@@ -96,17 +98,30 @@
 				ctx.drawLine(coord5.x, coord5.y, coord4.x, coord4.y);
 				ctx.drawEllipse(0, -coord1.y, radius, 30, 0, 0, 2 * Math.PI);
 			};
+			let question = [nameCylinder[0][0].toZagl() + ' которого равен $' + nameCylinder[0][1].texsqrt(1) +
+				nameCylinder[0][3] + '$. ' + nameParal[0][0].toZagl() + ' параллелепипеда равен $' + nameParal[0][1].texsqrt(1) +
+				nameParal[0][3] + '$.' + ' Найдите ' + sklonlxkand(nameCylinder[2][0]).ve + ' цилиндра' + nameCylinder[2][2] +
+				'.', nameCylinder[2][1]
+			];
+
+
 			NAtask.setTask({
-				text: 'Прямоугольный параллелепипед описан около цилиндра. ' + [nameParal[0][0].toZagl(), nameCylinder[0][0].toZagl()][rand] +
-					' и ' + [nameParal[1][0], nameCylinder[1][0]][rand] + ' ' + ['параллелепипеда', 'цилиндра'][rand] + ' равны $' + 
-					[nameParal[0][1].pow(2).texsqrt(1), nameCylinder[0][1].texpi()][rand] +
-					'$ и $' + [nameParal[1][1].pow(2).texsqrt(1), nameCylinder[1][1].texpi()][rand] +
-					'$ соотвественно. Найдите ',
+				text: 'Прямоугольный параллелепипед описан около цилиндра. ' + 
+				[[nameParal[0][0].toZagl(), nameCylinder[0][0].toZagl()][rand1] +
+					' и ' + [nameParal[1][0], nameCylinder[1][0]][rand1] + ' ' + ['параллелепипеда', 'цилиндра'][rand1] +
+					' равны $' + [nameParal[0][1].pow(2).texsqrt(1), nameCylinder[0][1].texpi()][rand1] +
+					'$ и $' + [nameParal[1][1].pow(2).texsqrt(1), nameCylinder[1][1].texpi()][rand1] +
+					'$ соотвественно', 
+					nameCylinder[0][0].toZagl() + ' которого ' + ' рав' + ['ен', 'на', 'но'][sklonlxkand(nameCylinder[0][0]).rod] + 
+					' $' + nameCylinder[0][1].texpi() + '$. ' +
+					nameParal[0][0].toZagl() + ' параллелепипеда ' + ' рав' + ['ен', 'на', 'но'][sklonlxkand(nameParal[0][0]).rod] +
+					' $' + nameParal[0][1].pow(2).texsqrt(1) + '$'
+				][rand2] + '. Найдите ',
 				questions: [{
-					text: [sklonlxkand(nameCylinder[2][0]).ve, sklonlxkand(nameParal[2][0]).ve][rand],
-					answers: [nameCylinder[2][1], nameParal[2][1]][rand]
+					text: [sklonlxkand(nameCylinder[2][0]).ve, sklonlxkand(nameParal[2][0]).ve][rand1],
+					answers: [nameCylinder[2][1], nameParal[2][1]][rand1]
 				}],
-				postquestion: ' ' + ['цилиндра', 'параллелепипеда'][rand] + '.',
+				postquestion: ' ' + ['цилиндра', 'параллелепипеда'][rand1] + '.',
 			});
 			NAtask.modifiers.multiplyAnswerBySqrt(13);
 			NAtask.modifiers.multiplyAnswerByPI();
