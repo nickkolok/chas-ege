@@ -98,12 +98,6 @@
 				ctx.drawLine(coord5.x, coord5.y, coord4.x, coord4.y);
 				ctx.drawEllipse(0, -coord1.y, radius, 30, 0, 0, 2 * Math.PI);
 			};
-			let question = [nameCylinder[0][0].toZagl() + ' которого равен $' + nameCylinder[0][1].texsqrt(1) +
-				nameCylinder[0][3] + '$. ' + nameParal[0][0].toZagl() + ' параллелепипеда равен $' + nameParal[0][1].texsqrt(1) +
-				nameParal[0][3] + '$.' + ' Найдите ' + sklonlxkand(nameCylinder[2][0]).ve + ' цилиндра' + nameCylinder[2][2] +
-				'.', nameCylinder[2][1]
-			];
-
 
 			NAtask.setTask({
 				text: 'Прямоугольный параллелепипед описан около цилиндра. ' + 
