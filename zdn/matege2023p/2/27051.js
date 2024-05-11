@@ -49,7 +49,6 @@
 				ctx.drawLine(0, height / 2, 0, -height / 2);
 				ctx.drawLine(0, height / 2, radius, height / 2);
 			};
-			console.log(rand1, rand2, nameFigura[1 + rand1].texsqrtpi(), nameFigura[2 - rand1].texsqrtpi());
 
 			NAtask.setTask({
 				text: 'Цилиндр и конус имеют общие основание и высоту. ' + 'Высота цилиндра равна радиусу основания. '.esli(rand2) +
