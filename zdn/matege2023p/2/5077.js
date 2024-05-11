@@ -37,7 +37,6 @@
 			ctx.translate(100, 40);
 			ctx.scale = (100, 100);
 			ctx.strokeStyle = om.secondaryBrandColors;
-			let radius = 400;
 
 			//верхний эллипс
 
