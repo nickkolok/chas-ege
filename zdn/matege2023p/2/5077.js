@@ -1,86 +1,82 @@
 (function() {
-	lx_declareClarifiedPhrase('площадь', 'поверхности');
+	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 	lx_declareClarifiedPhrase('диаметр', 'основания');
-	lx_declareClarifiedPhrase('полная', 'площадь поверхности');
-	lx['полная площадь поверхности'] = {
-		ve: 'полную площадь поверхности',
-		rod: 1,
-	};
+	lx_declareClarifiedPhrase('радиус', 'основания');
+	lx_declareClarifiedPhrase('полная', ' площадь поверхности');
 
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let radius = sl(2, 10);
+
+		let rand = sl1();
+
+		let sphere = new Sphere(sl(1, 100));
+		let cyl = new Cylinder({
+			radius: sphere.radius,
+			height: 2 * sphere.radius
+		});
 
 		let nameCylinder = [
-			['радиус основания', radius],
-			['площадь поверхности', 2 * radius.pow(2), ', делённую на $\\pi$', '\\pi'],
-			['объём', 2 * radius.pow(3), ', делённый на $\\pi$', '\\pi'],
+			['радиус основания', cyl.radius],
+			['площадь боковой поверхности', cyl.sideSurfaceArea],
+			['объём', cyl.volume],
 			[
-				['диаметр основания', 'высота'].iz(), 2 * radius
+				['диаметр основания', 'высота'].iz(), cyl.height
 			],
-			['полная площадь поверхности', 6 * radius.pow(2), ', делённую на $\\pi$', '\\pi']
+			['полная площадь поверхности', cyl.surfaceArea, ]
 		].iz();
 		let nameSphere = [
-			['радиус', radius],
-			['площадь поверхности', 4 * radius.pow(2), ', делённую на $\\pi$', '\\pi'],
-			['объём', 4 * radius.pow(3) / 3, ', делённый на $\\pi$', '\\pi'],
-			['диаметр', 2 * radius]
+			['радиус', sphere.radius],
+			['площадь поверхности', sphere.surfaceArea, ],
+			['объём', sphere.volume],
+			['диаметр', sphere.diameter]
 		].iz();
 
-		genAssert((nameSphere[1] * 100).isZ(), 'кривой ответ');
+		let paint1 = function(ctx) {
 
-		let paint1 = function(ct) {
-
-			ct.lineWidth = 2;
-			ct.translate(100, 40);
-			ct.scale = (100, 100);
-			ct.fillStyle = "black";
+			ctx.lineWidth = 2;
+			ctx.translate(100, 40);
+			ctx.scale = (100, 100);
+			ctx.strokeStyle = om.secondaryBrandColors;
+			let radius = 400;
 
 			//верхний эллипс
-			ct.beginPath();
-			ct.ellipse(100, 10, 150, 30, 0, 0, Math.PI);
-			ct.stroke();
-			ct.ellipse(100, 10, 150, 30, 0, Math.PI, 2 * Math.PI);
-			ct.stroke();
+
+			ctx.drawEllipse(100, 10, 150, 30, 0, 0, Math.PI);
+			ctx.drawEllipse(100, 10, 150, 30, 0, Math.PI, 2 * Math.PI);
 
 			//нижний эллипс
-			ct.beginPath();
-			ct.setLineDash([4, 5]);
-			ct.ellipse(100, 310, 150, 30, 0, Math.PI, 2 * Math.PI);
-			ct.stroke();
-			ct.setLineDash([0, 0]);
-			ct.ellipse(100, 310, 150, 30, 0, 0, Math.PI);
-			ct.stroke();
+
+			ctx.setLineDash([4, 5]);
+			ctx.drawEllipse(100, 310, 150, 30, 0, Math.PI, 2 * Math.PI);
+			ctx.setLineDash([0, 0]);
+			ctx.drawEllipse(100, 310, 150, 30, 0, 0, Math.PI);
 
 			//образующие
-			ct.drawLine(100 + 150, 10, 100 + 150, 310);
-			ct.drawLine(100 - 150, 10, 100 - 150, 310);
+			ctx.drawLine(100 + 150, 10, 100 + 150, 310);
+			ctx.drawLine(100 - 150, 10, 100 - 150, 310);
 
-			ct.translate(0, 80);
-			ct.beginPath();
-			ct.setLineDash([4, 5]);
-			ct.arc(100, 80, 150, 0, 2 * Math.PI);
-			ct.ellipse(100, 80, 150, 30, 0, 0, 2 * Math.PI);
-			ct.stroke();
+			ctx.translate(0, 80);
+			ctx.setLineDash([4, 5]);
+			ctx.strokeStyle = om.primaryBrandColors.iz();
+			ctx.drawArc(100, 80, 150, 0, 2 * Math.PI);
+			ctx.drawEllipse(100, 80, 150, 30, 0, 0, 2 * Math.PI);
+
 		};
-		let question = [
-			['Шар вписан в цилиндр. ' + nameSphere[0].toZagl() + ' шара ' + ['равен', 'равна'][sklonlxkand(
-					nameSphere[0]).rod] + ' $' + nameSphere[1] + (nameSphere[3] || '') +
-				'$. Найдите ' + sklonlxkand(nameCylinder[0]).ve + ' цилиндра' + (nameCylinder[2] || '') + '.',
-				nameCylinder[1]
-			],
-			[' Цилиндр, ' + nameCylinder[0] + ' которого ' + ['равен', 'равна'][sklonlxkand(nameCylinder[0]).rod] +
-				' $' + nameCylinder[1] + (nameCylinder[3] || '') + '$, описан около шара. Найдите ' + sklonlxkand(nameSphere[0])
-				.ve + ' шара' + (nameSphere[2] ||
-					'') + '.', nameSphere[1]
-			]
-		].iz();
 
 		NAtask.setTask({
-			text: question[0],
-			answers: question[1],
+			text: [
+				'Шар вписан в цилиндр. ' + nameSphere[0].toZagl() + ' шара ' + ['равен', 'равна'][sklonlxkand(
+					nameSphere[0]).rod] + ' $' + nameSphere[1].texpi() +
+				'$. Найдите ' + sklonlxkand(nameCylinder[0]).ve + ' цилиндра.',
+				' Цилиндр, ' + nameCylinder[0] + ' которого ' + ['равен', 'равна'][sklonlxkand(nameCylinder[0]).rod] +
+				' $' + nameCylinder[1].texpi() + '$, описан около шара. Найдите ' + sklonlxkand(nameSphere[0]).ve + ' шара.'
+			][rand],
+			answers: [nameCylinder[1], nameSphere[1]][rand],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.multiplyAnswerByPI();
+		NAtask.modifiers.allDecimalsToStandard(true);
+		NAtask.modifiers.assertSaneDecimals();
+		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
