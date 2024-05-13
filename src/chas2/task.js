@@ -1078,6 +1078,7 @@ chas2.task = {
 
 		/** @function chas2.task.modifiers.multiplyAnswerByPI
 		 * Добавить фразу "Ответ умножьте на $\PI$." и домножить сам ответ.
+		 * Добавить фразу "Ответ разделите на $\PI$." и разделить сам ответ.
 		 */
 		multiplyAnswerByPI : function() {
 			var o = chas2.task.getTask();
@@ -1092,13 +1093,21 @@ chas2.task = {
 				return;
 			}
 
-			if (sl1() && (ans / Math.PI * 1000).isAlmostInteger()) {
+			if ((ans / Math.PI * 1000).isAlmostInteger()) {
 				o.text += ' Ответ разделите на $\\pi$.';
 				o.answers = [(ans / Math.PI).okrugldo((10).pow(-6)).ts()]
 				chas2.task.setTask(o);
 				return;
 			}
-			throw new RangeError('multiplyAnswerByPI(): can find no appropriate square root');
+
+			if ((ans * Math.PI * 1000).isAlmostInteger()) {
+				o.text += ' Ответ умножьте на $\\pi$.';
+				o.answers = [(ans * Math.PI).okrugldo((10).pow(-6)).ts()]
+				chas2.task.setTask(o);
+				return;
+			}
+
+			throw new RangeError('multiplyAnswerByPI(): the answer is not integer when multiplied or divided by PI');
 		},
 
 		/** @function chas2.task.modifiers.roundUpTo
