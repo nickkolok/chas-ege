@@ -1,73 +1,98 @@
 (function() {
 	retryWhileError(function() {
 			NAinfo.requireApiVersion(0, 2);
-			let a = sl(10, 17);
-			let b = sl(10, 15);
-			let c = sl(3, a * 0.6);
-			let d = sl(3, b * 0.6);
-			let f = sl(4, 8);
 
-			console.log(['a=' + a, 'b=' + b, 'c=' + c, 'd=' + d]);
+			let stroke = [4, 2];
 
+			let matrixConnections = {
+				0: [1, [3, stroke], 5],
+				2: [1, [3, stroke], 7],
+				4: [
+					[3, stroke], 5, 12
+				],
+				6: [1, 7, 14],
+				9: [8, [10, stroke], 14],
+				11: [
+					8, [10, stroke],
+					12
+				],
+				13: [5, 8, 12],
+				15: [7, [10, stroke], 14],
+			};
+
+			let par1 = new Parallelepiped({
+				depth: sl(10, 20),
+				height: sl(10, 20),
+				width: sl(10, 20),
+			});
+
+			let par2 = new Parallelepiped({
+				depth: par1.depth,
+				height: sl(5, par1.height - 2),
+				width: slKrome(par1.width, 5, par1.width - 5),
+			});
+
+			let vertex3D = par1.verticesOfFigure.concat(par2.verticesOfFigure.map((elem) => shiftCoordinate3D(elem, {
+				x: 0,
+				y: 0,
+				z: -0.5 * (par1.height - par2.height),
+			})));
+
+			let camera = {
+				x: 0,
+				y: 0,
+				z: 0,
+				scale: 1,
+
+				rotationX: -Math.PI / 2 + Math.PI / 14,
+				rotationY: 0,
+				rotationZ: Math.PI / sl(12, 14),
+			};
+
+			let point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
+
+			autoScale(vertex3D, camera, point2D, {
+				startX: -180,
+				finishX: 160,
+				startY: -160,
+				finishY: 160,
+				maxScale: 100,
+			});
+
+			point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
+			genAssert((point2D[3].y - point2D[8].y).abs() > 20);
+			genAssert((point2D[3].x - point2D[8].x).abs() > 20);
+			genAssert(distanceFromPointToSegment(point2D[3], point2D[8], point2D[11]) > 10);
 
 			let rand = sl1();
-			let s = [a * b * f - d * c * f, 2 * (a * b + a * f + b * f - c * d + c * f)][rand];
 
 			let paint1 = function(ctx) {
-
-				ctx.translate(80, 30);
+				let h = 400;
+				let w = 400;
+				ctx.translate(w / 2, h / 2);
 				ctx.lineWidth = 2;
-				let koefA = (a > 15 && b > 10) ? 15 : 20;
-				a *= koefA;
-				b *= koefA;
-				c *= koefA;
-				d *= koefA;
+				ctx.strokeStyle = om.secondaryBrandColors;
+				ctx.drawFigureVer2(point2D, matrixConnections);
 
-				let depth = 80;
+				let point = [point2D[10], point2D[11], point2D[9], point2D[14]].mt_coordinatesOfIntersectionOfTwoSegments();
+				ctx.drawLine(point2D[11].x, point2D[11].y, point.x, point.y);
 
-				angle = -Math.PI - Math.PI / 3;
-				ctx.drawParallelepiped({
-					width: a,
-					height: b,
-					depth: depth,
-					angle: angle
-				}, [0, 3, 4], false, [4, 5]);
-
-				ctx.translate((a - d) / 2, 0);
-				ctx.drawParallelepiped({
-					width: d,
-					height: c,
-					depth: depth,
-					angle: angle
-				}, [ 1, 3, 4, 5], false, [4, 5]);
-
-
-				ctx.strokeStyle = "white";
-				ctx.drawLine(1, 0, d - 0.5, 0);
-				ctx.translate(depth * (angle).cos() + 5, -depth * (angle).cos());
-				ctx.drawLine(-2, 0, d - 5, 0);
-
-				ctx.strokeStyle = "black";
-				ctx.font = "20px serif";
-				ctx.fillText(a / koefA, a / 3 + depth * (angle).cos(), b + 17, 18);
-				ctx.fillText(f, -depth * (angle).cos() - 20, 0, 18);
-				ctx.translate(0, c / 2);
-
-
-				ctx.fillText(c / koefA, 0, 0, 18);
-
-				ctx.translate(d / 2, c / 2);
-				ctx.fillText(d / koefA, 0, -5, 18);
-
-				ctx.translate(d / 2 + (a - d) / 2, 0);
-				ctx.fillText(b / koefA, 0, -5, 18);
+				ctx.font = "20px liberation_sans";
+				ctx.signSegmentInMiddle(point2D[2].x, point2D[2].y, point2D[7].x, point2D[7].y, par1.height, 10, 20);
+				ctx.signSegmentInMiddle(point2D[8].x, point2D[8].y, point2D[13].x, point2D[13].y, par2.height, -22, 20);
+				ctx.signSegmentInMiddle(point2D[8].x, point2D[8].y, point2D[9].x, point2D[9].y, par2.width, -5, 20);
+				ctx.signSegmentInMiddle(point2D[0].x, point2D[0].y, point2D[1].x, point2D[1].y, par1.width, 18, 20);
+				ctx.signSegmentInMiddle(point2D[1].x, point2D[1].y, point2D[2].x, point2D[2].y, par1.depth, 18, 20);
 			};
+
 			NAtask.setTask({
-				text: 'Найдите ' + ['объём', 'площадь поверхности'][rand] +
-					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
-				answers: s,
+				text: 'Найдите ' + ['площадь поверхности', 'объём'][rand] +
+					' многогранника, изображённого на рисунке (все двугранные углы – прямые)..',
+				answers: [par1.surfaceArea + 2 * par2.height * par2.depth + par2.width * par2.depth, par1.volume - par2.volume]
+					[rand],
+				author: ['Суматохина Александра']
 			});
-			chas2.task.modifiers.addCanvasIllustration({
+			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
 				paint: paint1,
