@@ -71,10 +71,6 @@
 			genAssert((point2D[4].y - point2D[13].y).abs() > 50);
 			genAssert((point2D[12].x - point2D[14].x).abs() > 40);
 
-			let rand = sl1();
-
-			let letter = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', ];
-
 			let paint1 = function(ctx) {
 				let h = 400;
 				let w = 400;
@@ -82,9 +78,6 @@
 				ctx.lineWidth = 2;
 				ctx.strokeStyle = om.secondaryBrandColors;
 				ctx.drawFigureVer2(point2D, matrixConnections);
-
-				ctx.font = "15px liberation_sans";
-				point2D.forEach((elem, i) => ctx.fillText(letter[i], elem.x, elem.y));
 
 				if (point2D[4].x > point2D[8].x) {
 					let point = [point2D[4], point2D[5], point2D[8], point2D[13]].mt_coordinatesOfIntersectionOfTwoSegments();
