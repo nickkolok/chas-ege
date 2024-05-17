@@ -70,6 +70,8 @@
 			genAssert((point2D[4].x - point2D[8].x).abs() > 20);
 			genAssert((point2D[4].y - point2D[13].y).abs() > 50);
 			genAssert((point2D[12].x - point2D[14].x).abs() > 40);
+			
+			let rand = sl1();
 
 			let paint1 = function(ctx) {
 				let h = 400;
