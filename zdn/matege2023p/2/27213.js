@@ -88,9 +88,8 @@
 			});
 
 			point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
-			genAssert((point2D[12].y-point2D[3].y).abs()>20);
-			genAssert((point2D[13].y-point2D[3].y).abs()>20);
-			
+			genAssert((point2D[12].y - point2D[3].y).abs() > 20);
+			genAssert((point2D[13].y - point2D[3].y).abs() > 20);
 			let rand = sl1();
 
 			let paint1 = function(ctx) {
@@ -103,12 +102,14 @@
 
 				ctx.font = "20px liberation_sans";
 				ctx.signSegmentInMiddle(point2D[8].x, point2D[8].y, point2D[13].x, point2D[13].y, par2.height, -22, 20);
-				ctx.signSegmentInMiddle(point2D[7].x, point2D[7].y, point2D[20].x, point2D[20].y, par1.height - par2.height, -5, 20);
+				ctx.signSegmentInMiddle(point2D[7].x, point2D[7].y, point2D[20].x, point2D[20].y, par1.height - par2.height, -5,
+					20);
 				ctx.signSegmentInMiddle(point2D[8].x, point2D[8].y, point2D[9].x, point2D[9].y, par2.width, 20, 20);
-				ctx.signSegmentInMiddle(point2D[1].x, point2D[1].y, point2D[17].x, point2D[17].y, par3.width, -5, 20);
-				ctx.signSegmentInMiddle(point2D[5].x, point2D[5].y, point2D[4].x, point2D[4].y, par1.depth, -15, 20);
-				ctx.signSegmentInMiddle(point2D[13].x, point2D[13].y,point2D[12].x, point2D[12].y,  par2.depth, -15, 20);
-				
+				ctx.signSegmentInMiddle(point2D[1].x, point2D[1].y, point2D[17].x, point2D[17].y, par3.width, 20, 20);
+				ctx.signSegmentInMiddle(point2D[5].x, point2D[5].y, point2D[4].x - 20, point2D[4].y + 20, par1.depth, -15, 20);
+				ctx.signSegmentInMiddle(point2D[13].x, point2D[13].y, point2D[12].x - 20, point2D[12].y + 20, par2.depth, -15,
+					20);
+
 			};
 			NAtask.setTask({
 				text: 'Найдите ' + ['площадь поверхности', 'объём'][rand] +
