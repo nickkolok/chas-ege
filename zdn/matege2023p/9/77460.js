@@ -12,8 +12,8 @@
 			expr: '' + a + arr1[maxmin] + b + ' x ' + arr2[maxmin] + [' x sqrt(x) ','x^(3/2)'].iz(),
 			leftEnd: '' + c,
 			rightEnd: '' + d,
-			primaryStep: 0.1,
-			secondaryStep: 1,
+			primaryStep: 1,
+			secondaryStep: 0.001,
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10000);
