@@ -88,7 +88,7 @@
 			NAtask.setTask({
 				text: 'Найдите ' + ['площадь поверхности', 'объём'][rand] +
 					' многогранника, изображённого на рисунке (все двугранные углы – прямые)..',
-				answers: [par1.surfaceArea + 2 * par2.height * par2.depth + par2.width * par2.depth, par1.volume - par2.volume]
+				answers: [par1.surfaceArea + 2 * par2.height * par2.depth - 2 * par2.height * par2.width, par1.volume - par2.volume]
 					[rand],
 				author: ['Суматохина Александра']
 			});
