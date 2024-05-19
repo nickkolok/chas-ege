@@ -8,7 +8,7 @@
 		NAtask.setTask({
 			text: 'В прямоугольном треугольнике $ABC$ с прямым углом $C$ известно, что $AC = ' + lenAC.texsqrt(sl1()) +
 				'$, $CB = ' + lenCB.texsqrt(sl1()) +
-				'$. Найдите длину разности векторов $\\vec{CA}$ и $\\vec{CB}$.',
+				'$. Найдите длину разности векторов $\\overrightarrow{CA}$ и $\\overrightarrow{CB}$.',
 			answers: (lenAC + lenCB).sqrt(),
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);

@@ -10,12 +10,11 @@
 	}
 
 	function drawGraph(ct) {
-		ct.translate(h / 2, h / 2);
 		ct.scale(20, -20);
 		ct.lineWidth = 0.1;
-		for (let i = -5.8; i < 6.5; i += 0.1)
-			if (f(i - 0.1) < 5.5)
-				if (f(i - 0.1) > -6.5)
+		for (let i = -8; i < 8.6; i += 0.1)
+			if (f(i - 0.1) < 7.2)
+				if (f(i - 0.1) > -8)
 					ct.drawLine(i - 0.1, f(i - 0.1), i, f(i));
 	}
 	let b = sluchch(0, 3).pm();
@@ -41,10 +40,17 @@
 			Y.push(f(i));
 		}
 	let paint1 = function(ct) {
-		h = 300;
+		let h = 400;
+		let w = 400;
 		//Оси координат
-		graph9AdrawAxes_20_300(ct);
-		ct.translate(-10, -10);
+		ct.drawCoordinatePlane (w, h, {
+			hor: 1,
+			ver: 1
+		}, {
+			x1: '1',
+			y1: '1',
+			sh1: 13,
+		}, 20);
 		//график
 		drawGraph(ct);
 		//точки
@@ -58,9 +64,9 @@
 		answers: answ,
 		analys: `$f(x)= ${(`\\frac {${k}}{x} +`+(b)).plusminus() } $`,
 	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
+	NAtask.modifiers.addCanvasIllustration({
+		width: 400,
+		height: 400,
 		paint: paint1,
 	});
 })();
