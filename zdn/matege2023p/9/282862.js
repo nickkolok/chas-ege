@@ -11,7 +11,7 @@
 			leftEnd: '' + c,
 			rightEnd: '' + d,
 			primaryStep: 0.1,
-			secondaryStep: 1,
+			secondaryStep: 0.001,
 			authors: ['Алендарь Сергей'],
 		});
 	}, 100);
