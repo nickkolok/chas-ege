@@ -15,8 +15,6 @@
 			height: cyl1.height / heightRatio
 		});
 
-		console.log(cyl1, cyl2);
-
 		let variant = 1;
 
 		let paint1 = function(ctx) {

@@ -37,8 +37,7 @@ Number.prototype.texcube = function(p1, p2) {
 			cube -= radiuses[radiuses.length - 1];
 		}
 		genAssert(radiuses.length < 5 && radiuses.length > 1, 'radiusNew');
-		console.log(radiuses);
-
+		
 		let radiusView = radiuses.map((elem) => elem.texcube(1));
 
 		let paint1 = function(ctx) {

@@ -59,7 +59,6 @@
 
 		let variant = sl1();
 		if (['высота', 'образующая'].includes(name[1].ie) && variant) {
-			console.log('!');
 			ratio[1] -= ratio[0];
 		} else variant = 0;
 		let NOD = ratio[1].nod(ratio[0]);

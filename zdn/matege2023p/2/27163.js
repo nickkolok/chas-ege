@@ -18,8 +18,6 @@
 			.iz()
 		];
 
-		console.log(radiusNew);
-
 		let paint1 = function(ctx) {
 			ctx.translate(-10, -40);
 			ctx.lineWidth = 2;
