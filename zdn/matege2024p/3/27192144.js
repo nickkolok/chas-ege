@@ -186,9 +186,7 @@
 			NAtask.setTask({
 				text: 'Найдите ' + ['площадь поверхности', 'объём'][rand] +
 					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
-				answers: [par1.surfaceArea - 2 * par2.baseArea + par2.surfaceArea + 2 * par3.height * par3.depth - 2 * par3.height * par3.width, par1.volume + par2.volume - par3.volume][
-					rand
-				],
+					answers: [par1.surfaceArea - [2 * par2.baseArea, 2 * par1.baseArea].minE() + par2.surfaceArea + 2 * par3.height * par3.depth - 2 * par3.height * par3.width, par1.volume + par2.volume - par3.volume][rand],
 			});
 			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
