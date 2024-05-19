@@ -32,7 +32,7 @@
 
 		let point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(pyr, camera, point2DPyr, {
+		autoScale(pyr.verticesOfFigure, camera, point2DPyr, {
 			startX: -390 / 2,
 			finishX: 390 / 2,
 			startY: -390 / 2,

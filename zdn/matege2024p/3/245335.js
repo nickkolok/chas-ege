@@ -47,7 +47,7 @@
         let point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
         genAssert((point2DPar[0].x - point2DPar[2].x).abs() > 20, 'Сечение не видно')
 
-        autoScale(par, camera, point2DPar, {
+        autoScale(par.verticesOfFigure, camera, point2DPar, {
             startX: -180,
             finishX: 160,
             startY: -160,

@@ -38,7 +38,7 @@
 
 		let point2DPrism = prism.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(prism, camera, point2DPrism, {
+		autoScale(prism.verticesOfFigure, camera, point2DPrism, {
 			startX: -180,
 			finishX: 160,
 			startY: -160,

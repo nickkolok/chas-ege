@@ -48,7 +48,7 @@
 
 		let point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(par, camera, point2DPar, {
+		autoScale(par.verticesOfFigure, camera, point2DPar, {
 			startX: -180,
 			finishX: 160,
 			startY: -160,

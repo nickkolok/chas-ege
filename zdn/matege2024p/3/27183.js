@@ -29,7 +29,7 @@
 
 		let point2DPar = cube.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(cube, camera, point2DPar, {
+		autoScale(cube.verticesOfFigure, camera, point2DPar, {
 			startX: -180,
 			finishX: 160,
 			startY: -160,
