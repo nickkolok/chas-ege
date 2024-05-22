@@ -6,7 +6,7 @@
     genAssertZ1000(d,'Корень не должен быть слишком дробным');
     genAssertZ1000(e,'Корень не должен быть слишком дробным');
     NAtask.setEquationTask({
-      parts: ['x^2+'+c, b+'x'],
+            parts: ['x^2+'+c, b+'x'],
 	    roots: [d,e],
 	    handleMultipleRoots: 'randomExceptList',
     });
