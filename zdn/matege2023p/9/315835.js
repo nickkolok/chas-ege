@@ -10,8 +10,8 @@
 			expr: a + 'x^5' + arr1.iz() + b + 'x^3' + [arr1.iz() + c + 'x', arr1.iz() + d].iz(),
 			leftEnd: '-' + sl(4, 20),
 			rightEnd: '' + sl(0, 2).pm(),
-			primaryStep: 0.1,
-			secondaryStep: 1,
+			primaryStep: 1,
+			secondaryStep: 0.1,
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10);
