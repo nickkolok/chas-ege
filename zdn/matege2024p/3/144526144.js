@@ -80,7 +80,7 @@
 				ctx.lineWidth = 2;
 				ctx.strokeStyle = om.secondaryBrandColors;
 				ctx.drawFigureVer2(point2D, matrixConnections);
-
+				
 				let point = [];
 				ctx.drawLine(point2D[4].x, point2D[4].y, point.x, point.y);
 				if (point2D[6].x < point2D[15].x)
@@ -88,6 +88,9 @@
 				else
 					point = [point2D[10], point2D[15], point2D[6], point2D[9]].mt_coordinatesOfIntersectionOfTwoSegments();
 				ctx.drawLine(point2D[15].x, point2D[15].y, point.x, point.y);
+				
+				point = [point2D[12], point2D[13], point2D[4], point2D[11]].mt_coordinatesOfIntersectionOfTwoSegments();
+				ctx.drawLine(point2D[4].x, point2D[4].y, point.x, point.y);
 
 				ctx.font = "20px liberation_sans";
 				ctx.signSegmentInMiddle(point2D[2].x, point2D[2].y, point2D[7].x, point2D[7].y, par1.height, 10, 20);
