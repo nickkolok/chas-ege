@@ -13,7 +13,7 @@
 			leftEnd: ['-2pi/3', '-5pi/6'].iz(),
 			rightEnd: '0',
 			primaryStep: 0.1,
-			secondaryStep: 1,
+			secondaryStep: 0.001,
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10000);
