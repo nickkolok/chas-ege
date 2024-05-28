@@ -10,8 +10,8 @@
 			expr: [arr1.iz() + 'x^3', arr1.iz() + a + 'x^2', arr1.iz() + b + 'x'].iz(sl(2, 3)).join('+') + arr2.iz() + c,
 			leftEnd: '-' + sl(1, 9, 0.5),
 			rightEnd: '' + sl(1, 9, 0.5),
-			primaryStep: 0.1,
-			secondaryStep: 1,
+			primaryStep: 1,
+			secondaryStep: 0.001,
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10);
