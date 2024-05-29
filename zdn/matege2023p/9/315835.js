@@ -11,7 +11,7 @@
 			leftEnd: '-' + sl(4, 20),
 			rightEnd: '' + sl(0, 2).pm(),
 			primaryStep: 1,
-			secondaryStep: 0.1,
+			secondaryStep: 0.001,
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10);
