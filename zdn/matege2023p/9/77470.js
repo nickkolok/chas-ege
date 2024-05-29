@@ -1,7 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-		let a = sl(3, 30) * * 2;
+		let a = sl(3, 30) * 2;
 		let d = sl(-15, 15);
 		let e = d + sl(3, 30);
 		NAtask.setMinimaxFunctionTask({
