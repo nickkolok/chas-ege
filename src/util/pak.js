@@ -37,8 +37,10 @@ module.exports.packZdnSync = function(src, dest) {
 					console.log('Пропускаем файл ' + crrTemplate.full + ' - временный файл мёржа');
 					continue;
 				}
+				buf += '\n';
 				buf += '"' + crrTemplate.name + '" :function(){';
 				buf += fs.readFileSync(crrTemplate.full);
+				buf += '\n';
 				buf += '},';
 			}
 
