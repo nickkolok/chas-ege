@@ -10,30 +10,23 @@
 			cube -= radiuses[radiuses.length - 1];
 		}
 		genAssert(radiuses.length < 5 && radiuses.length > 1, 'radiusNew');
-		console.log(radiuses);
-
-		let radiusView = radiuses.map((elem) => elem.texcube(1));
+		
+		let radiusView = radiuses.map((elem) => elem.texcbrt(1));
 
 		let paint1 = function(ctx) {
-			ctx.translate(30, -40);
+			ctx.strokeStyle = om.secondaryBrandColors;
 			ctx.lineWidth = 2;
 			//шар 1
-			ctx.beginPath();
-			ctx.arc(100, 150, 100, 0, Math.PI * 2, true); // Внешняя окружность
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawArc(200, 200, 150, 0, Math.PI * 2, true); 
+			
+			// Внешняя окружность
+			ctx.drawEllipse(200, 200, 20, 150, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-			ctx.beginPath();
-			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
-
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
-			ctx.drawLine(100, 150, 200, 150);
+			ctx.drawEllipse(200, 200, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			
+			ctx.strokeStyle = om.primaryBrandColors.iz();
+			ctx.drawLine(200, 200, 200, 50);
 		};
 
 		NAinfo.requireApiVersion(0, 2);
