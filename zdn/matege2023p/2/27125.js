@@ -1,30 +1,3 @@
-Number.prototype.perfectCubicMultiplier = function() {
-	/**Максимальный делитель данного числа, куб которого также является делителем данного числа.*/
-	if (this == 0)
-		return 0;
-	var t = this.abs();
-	var i = 1;
-	for (var rez = 1; i.pow(3) <= t; i++)
-		if (t.kratno(i.pow(3)))
-			rez = i;
-	return rez;
-};
-Number.prototype.texcube = function(p1, p2) {
-	/**TeX-представление корня из данного числа.
-	Если данное число - полный квадрат, то корень из числа.
-	Если p1, то из-под корня будут вынесены возможные множители.
-	Если p1, p2 и из-под корня выносится единица, то она будет опущена.*/
-	if ((Math.cbrt(this) * 1000).isZ())
-		return Math.cbrt(this).ts();
-	var a = '';
-	var t = this;
-	if (p1) {
-		a = this.perfectCubicMultiplier();
-		t = t / a.pow(3);
-	}
-	return a.printIf(a != 1 || p2) + '\\sqrt[3]{' + t.ts() + '}';
-};
-
 (function() {
 	retryWhileError(function() {
 
@@ -38,29 +11,21 @@ Number.prototype.texcube = function(p1, p2) {
 		}
 		genAssert(radiuses.length < 5 && radiuses.length > 1, 'radiusNew');
 		
-		let radiusView = radiuses.map((elem) => elem.texcube(1));
+		let radiusView = radiuses.map((elem) => elem.texcbrt(1));
 
 		let paint1 = function(ctx) {
-			ctx.strokeStyle = "#809DF2";
+			ctx.strokeStyle = om.secondaryBrandColors;
 			ctx.lineWidth = 2;
 			//шар 1
-			ctx.beginPath();
-			ctx.arc(200, 200, 150, 0, Math.PI * 2, true); // Внешняя окружность
-			ctx.stroke();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.ellipse(200, 200, 20, 150, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.setLineDash([5, 5]);
-			ctx.ellipse(200, 200, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawArc(200, 200, 150, 0, Math.PI * 2, true); 
 			
-			ctx.strokeStyle = ["#D777F2", "#F2A2D6"].iz();
+			// Внешняя окружность
+			ctx.drawEllipse(200, 200, 20, 150, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+
+			ctx.setLineDash([5, 5]);
+			ctx.drawEllipse(200, 200, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.drawLine(200, 200, 200, 50);
 		};
 
