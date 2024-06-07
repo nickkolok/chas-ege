@@ -679,13 +679,16 @@ chas2.task = {
 		let minX = rEnd;
 		let maxX = rEnd;
 
+		o.epsilon = (o.epsilon || 1/1024/1024);
 		o.primaryStep = (o.primaryStep || 0.01);
 		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
 
 		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
 
-		for (let x = lEnd; x < rEnd; x += o.primaryStep) {
-			let y = expr.evaluate({x});
+		let compiledExpr = math.compile(expr.toString());
+
+		for (let x = lEnd; x <= rEnd + o.epsilon; x += o.primaryStep) {
+			let y = compiledExpr.evaluate({x});
 			if (y > maxY) {
 				maxX = x;
 				maxY = y;
@@ -696,17 +699,22 @@ chas2.task = {
 		}
 
 		//Sharpen the values a bit...
-		minY += 1;
-		for (let x = minX - 3 * o.primaryStep; x < minX + 3 * o.primaryStep; x += o.secondaryStep) {
-			let y = expr.evaluate({x});
+		minY += 0.5;
+		let xFrom = Math.max(minX - 3 * o.primaryStep, lEnd);
+		let xTo   = Math.min(minX + 3 * o.primaryStep, rEnd);
+		for (let x = xFrom; x <= xTo + o.epsilon; x += o.secondaryStep) {
+			let y = compiledExpr.evaluate({x});
 			if (y < minY) {
 				minX = x;
 				minY = y;
 			}
 		}
-		maxY -= 1;
-		for (let x = maxX - 3 * o.primaryStep; x < maxX + 3 * o.primaryStep; x += o.secondaryStep) {
-			let y = expr.evaluate({x});
+
+		maxY -= 0.5;
+		xFrom = Math.max(maxX - 3 * o.primaryStep, lEnd);
+		xTo   = Math.min(maxX + 3 * o.primaryStep, rEnd);
+		for (let x = xFrom; x <= xTo + o.epsilon; x += o.secondaryStep) {
+			let y = compiledExpr.evaluate({x});
 			if (y > maxY) {
 				maxX = x;
 				maxY = y;
