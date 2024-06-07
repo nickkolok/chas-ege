@@ -666,6 +666,7 @@ chas2.task = {
 	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
 	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
 	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
+	 * @param {Boolean}  o.avoidTrivialSimplification избегать тривиальных упрощений - например, не превращать 1x в x
 	 */
 	setMinimaxFunctionTask: function (o) {
 		let expr = math.parse(o.expr);
@@ -760,6 +761,10 @@ chas2.task = {
 
 		if (!o.keepSumOrder){
 			expr = math.simplify(expr, mathjsRules.shuffleSums);
+		}
+
+		if (!o.avoidTrivialSimplification){
+			expr = math.simplify(expr, mathjsRules.safeTrivialSimplification);
 		}
 
 		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
