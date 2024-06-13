@@ -791,6 +791,8 @@ chas2.task = {
 		}
 
 		expr = math.simplify(expr, mathjsRules.trig2trigPow);
+		expr = math.simplify(expr, mathjsRules.engTrig2rus);
+		//TODO: tan^2 x -> tg^2 x
 
 		let intervalName = 'отрезке';
 		let intervalEndL = '[';
