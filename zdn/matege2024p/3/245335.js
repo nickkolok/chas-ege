@@ -45,7 +45,7 @@
         };
 
         let point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
-        genAssert((point2DPar[0].x - point2DPar[2].x).abs() > 20, 'Сечение не видно')
+        genAssert((point2DPar[0].x - point2DPar[2].x).abs() > 20, 'Сечение не видно');
 
         autoScale(par, camera, point2DPar, {
             startX: -180,
@@ -54,7 +54,6 @@
             finishY: 160,
             maxScale: 50,
         });
-        []
 
         point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
@@ -68,7 +67,7 @@
             ctx.drawFigure(point2DPar, matrixPar);
             ctx.font = "25px liberation_sans";
 
-            point2DPar.forEach((elem, i) => ctx.fillText(letter[i], elem.x, elem.y + ((i < point2DPar.length / 2) ? 15 : -10)))
+            point2DPar.forEach((elem, i) => ctx.fillText(letter[i], elem.x, elem.y + ((i < point2DPar.length / 2) ? 15 : -10)));
         };
 
         NAinfo.requireApiVersion(0, 2);
@@ -85,7 +84,7 @@
                 ['A', 'C', 'D', 'A_1', 'C_1', 'D_1']
             ].iz(),
             [['A', 'B', 'C', 'D', 'A_1', 'D_1'],
-            ['A_1', 'B_1', 'C_1', 'D_1', 'B', 'C']].iz()].iz().shuffleJoin('$, $') + '$.',
+            ['A_1', 'B_1', 'C_1', 'D_1', 'B', 'C']].iz()][v].shuffleJoin('$, $') + '$.',
             analys: 'Полный объём многогранника: $' + par.volume + '$' + '<br>' +
                 'Диагональ основания:$' + (par.DWDiagonal.pow(2)).texsqrt(1) + '$',
             author: ['Суматохина Александра']
