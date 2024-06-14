@@ -69,7 +69,7 @@
 				ctx.drawFigureVer2(point2D, matrixConnections);
 
 				ctx.font = "20px liberation_sans";
-				ctx.signSegmentInMiddle(point2D[4].x, point2D[4].y, point2D[7].x, point2D[7].y, par1.height, -10, 20);
+				ctx.signSegmentInMiddle(point2D[2].x, point2D[2].y, point2D[7].x, point2D[7].y, par1.height, 10, 20);
 				ctx.signSegmentInMiddle(point2D[10].x, point2D[10].y, point2D[15].x, point2D[15].y, par2.height, -20, 20);
 				ctx.signSegmentInMiddle(point2D[12].x, point2D[12].y, point2D[15].x, point2D[15].y, par2.width, 20, 20);
 				ctx.signSegmentInMiddle(point2D[0].x, point2D[0].y, point2D[1].x, point2D[1].y, par1.width, 18, 20);
