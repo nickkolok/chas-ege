@@ -7,7 +7,7 @@
 		let rand = sl1();
 
 		let cube = new Cube(sl(1, 50));
-		let sphere = new Sphere(2 * cube.baseSide);
+		let sphere = new Sphere(0.5 * cube.baseSide);
 
 		let nameCube = [
 			['ребро', cube.baseSide],
