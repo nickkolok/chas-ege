@@ -54,10 +54,13 @@ function zapusk() {
 	options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
+	options.forceIntegers = $('#forceIntegers').is(':checked');
 
 	if (customNumber) {
 		variantNumber = $('#start-number').val() - 1;
 	}
+
+	sluchch.forceIntegers = (options.forceIntegers) ? true : false; 	
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
@@ -522,8 +525,8 @@ function refreshLaTeXarchive() {
 		return;
 	}
 	var zip = new JSZip();
-	var bunchUnited = "", bunchTasks = "";
-	var answers = "\\begin{document}\n\n\\begin{multicols}{"+variantsGenerated.length+"}";
+	var bunchTasks = "";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+(variantsGenerated.length>10)?6:variantsGenerated.length+"}";
 
 	for(var variantN of variantsGenerated){
 		var head =
@@ -541,7 +544,7 @@ function refreshLaTeXarchive() {
 	answers += "\n\n\\end{multicols}\n\n\\end{document}";
 
 	zip.file("tasks.tex", bunchTasks);
-	zip.file("answers.tex", "\\documentclass[a5paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n" + answers);
+	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
 
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
