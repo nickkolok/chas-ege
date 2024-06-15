@@ -663,6 +663,7 @@ chas2.task = {
 	 * @param {Boolean}  o.forbidMaxY запретить спрашивать максимум
 	 * @param {Boolean}  o.forbidAnalys запретить писать решение (если оно кривое)
 	 * @param {Boolean}  o.forbidOpenEnds запретить полуинтервалы и интервалы, спрашивать только про отрезок (в ФИПИ так)
+	 * @param {Array}   o.forbiddenAnswers (необязательно) массив значений, которые не должны получаться (например, 0)
 	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
 	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
 	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
@@ -683,6 +684,7 @@ chas2.task = {
 		o.epsilon = (o.epsilon || 1/1024/1024);
 		o.primaryStep = (o.primaryStep || 0.01);
 		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
+		o.forbiddenAnswers = o.forbiddenAnswers || [];
 
 		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
 
@@ -749,6 +751,7 @@ chas2.task = {
 
 		o.answers = o.answers.ts();
 		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
+		genAssert(!o.forbiddenAnswers.hasElem(o.answers), 'Ответ находится в списке запрещённых');
 
 		if (o.simplifyConstant){
 			expr = math.simplifyConstant(expr);
