@@ -10,7 +10,6 @@
 			leftEnd: '' + d,
 			rightEnd: '' + e,
 			primaryStep: 0.1,
-			primaryStep: 0.01,
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10000);
