@@ -1,17 +1,19 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-		let a = sl(3, 30) * 2;
+		let a = sl(2, 14);
+		let b = a * a;
 		let d = sl(-15, 15);
-		let e = d + sl(3, 30);
+		let e = sl(3, 30);
 		NAtask.setMinimaxFunctionTask({
-			expr: '(x^2+' + a + ')/x',
+			expr: '(x^2+' + b + ')/x',
 			leftEnd: '' + d,
 			rightEnd: '' + e,
-			primaryStep: 1,
+			primaryStep: 0.1,
+			primaryStep: 0.01,
 			authors: ['Алендарь Сергей'],
 		});
-	}, 10);
+	}, 10000);
 })();
 //77470
 
