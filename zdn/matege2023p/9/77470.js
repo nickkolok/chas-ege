@@ -4,7 +4,7 @@
 		let a = sl(2, 14);
 		let b = a * a;
 		let d = sl(-15, 15);
-		let e = sl(3, 30);
+		let e = d + sl(3, 30);
 		NAtask.setMinimaxFunctionTask({
 			expr: '(x^2+' + b + ')/x',
 			leftEnd: '' + d,
