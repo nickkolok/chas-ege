@@ -663,9 +663,11 @@ chas2.task = {
 	 * @param {Boolean}  o.forbidMaxY запретить спрашивать максимум
 	 * @param {Boolean}  o.forbidAnalys запретить писать решение (если оно кривое)
 	 * @param {Boolean}  o.forbidOpenEnds запретить полуинтервалы и интервалы, спрашивать только про отрезок (в ФИПИ так)
+	 * @param {Array}   o.forbiddenAnswers (необязательно) массив значений, которые не должны получаться (например, 0)
 	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
 	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
 	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
+	 * @param {Boolean}  o.avoidTrivialSimplification избегать тривиальных упрощений - например, не превращать 1x в x
 	 */
 	setMinimaxFunctionTask: function (o) {
 		let expr = math.parse(o.expr);
@@ -679,13 +681,17 @@ chas2.task = {
 		let minX = rEnd;
 		let maxX = rEnd;
 
+		o.epsilon = (o.epsilon || 1/1024/1024);
 		o.primaryStep = (o.primaryStep || 0.01);
 		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
+		o.forbiddenAnswers = o.forbiddenAnswers || [];
 
 		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
 
-		for (let x = lEnd; x < rEnd; x += o.primaryStep) {
-			let y = expr.evaluate({x});
+		let compiledExpr = math.compile(expr.toString());
+
+		for (let x = lEnd; x <= rEnd + o.epsilon; x += o.primaryStep) {
+			let y = compiledExpr.evaluate({x});
 			if (y > maxY) {
 				maxX = x;
 				maxY = y;
@@ -696,17 +702,22 @@ chas2.task = {
 		}
 
 		//Sharpen the values a bit...
-		minY += 1;
-		for (let x = minX - 3 * o.primaryStep; x < minX + 3 * o.primaryStep; x += o.secondaryStep) {
-			let y = expr.evaluate({x});
+		minY += 0.5;
+		let xFrom = Math.max(minX - 3 * o.primaryStep, lEnd);
+		let xTo   = Math.min(minX + 3 * o.primaryStep, rEnd);
+		for (let x = xFrom; x <= xTo + o.epsilon; x += o.secondaryStep) {
+			let y = compiledExpr.evaluate({x});
 			if (y < minY) {
 				minX = x;
 				minY = y;
 			}
 		}
-		maxY -= 1;
-		for (let x = maxX - 3 * o.primaryStep; x < maxX + 3 * o.primaryStep; x += o.secondaryStep) {
-			let y = expr.evaluate({x});
+
+		maxY -= 0.5;
+		xFrom = Math.max(maxX - 3 * o.primaryStep, lEnd);
+		xTo   = Math.min(maxX + 3 * o.primaryStep, rEnd);
+		for (let x = xFrom; x <= xTo + o.epsilon; x += o.secondaryStep) {
+			let y = compiledExpr.evaluate({x});
 			if (y > maxY) {
 				maxX = x;
 				maxY = y;
@@ -740,6 +751,7 @@ chas2.task = {
 
 		o.answers = o.answers.ts();
 		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
+		genAssert(!o.forbiddenAnswers.hasElem(o.answers), 'Ответ находится в списке запрещённых');
 
 		if (o.simplifyConstant){
 			expr = math.simplifyConstant(expr);
@@ -752,6 +764,10 @@ chas2.task = {
 
 		if (!o.keepSumOrder){
 			expr = math.simplify(expr, mathjsRules.shuffleSums);
+		}
+
+		if (!o.avoidTrivialSimplification){
+			expr = math.simplify(expr, mathjsRules.safeTrivialSimplification);
 		}
 
 		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
@@ -778,6 +794,8 @@ chas2.task = {
 		}
 
 		expr = math.simplify(expr, mathjsRules.trig2trigPow);
+		expr = math.simplify(expr, mathjsRules.engTrig2rus);
+		//TODO: tan^2 x -> tg^2 x
 
 		let intervalName = 'отрезке';
 		let intervalEndL = '[';
