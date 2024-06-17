@@ -10,7 +10,7 @@
 		let maxmin = sl1();
 		let b1 = [3, 4, 5, 7, 11, 13, b * 2].iz();
 		let a1 = sl(2, 7);
-		if (2 * b > b1) {
+		if ( b > b1) {
 			a1 = 1;
 		}
 		genAssertIrreducible(a1, b1);
