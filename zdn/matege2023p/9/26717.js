@@ -13,7 +13,7 @@
 		let arr1 = ['+', '-'];
 		arr1.shuffle();
 		NAtask.setMinimaxFunctionTask({
-			expr: arr1[0] + [a + 'log(x+' + b + ')', 'log(x+' + b + ')^' + c].iz() + '+' + arr1[1] + c + 'x+' + k,
+			expr: arr1[0] + [a + 'log(x+' + b + ')', 'log((x+' + b + ')^' + c + ')'].iz() + '+' + arr1[1] + c + 'x+' + k,
 			leftEnd: '' + l,
 			rightEnd: '0',
 			primaryStep: 0.01,
