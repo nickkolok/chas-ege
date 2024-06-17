@@ -1,4 +1,3 @@
-
 (function() {
 	retryWhileError(function() {
 		'use strict';
@@ -9,10 +8,9 @@
 		let k = sl(0, 10).pm();
 		let g = 1;
 		if (d == 0) {
-			g = sl(2, 9);
+			g = a;
 			k = 0;
 			a = 1;
-			c = g;
 		}
 		let l = -b-1-sl(0, 1.5, 0.5);
 		let arr1 = ['+', '-'];
@@ -28,4 +26,3 @@
 		});
 	}, 1000);
 })();
-//26717
