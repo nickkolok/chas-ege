@@ -3,21 +3,18 @@
 		'use strict';
 		let a = sl(1, 20);
 		let b = sl(1, 15);
-		let c = a;
-		let d = sl1();
-		let k = sl(0, 10).pm();
+		let k = sl(-10, 10);
 		let g = 1;
-		if (d == 0) {
-			g = a;
+		if (sl1()) {
+		g = a;
 			k = 0;
 			a = 1;
 		}
 		let l = -b-1-sl(0, 1.5, 0.5);
 		let arr1 = ['+', '-'];
-		let arr2 = ['-', '+'];
-		let maxmin = sl1();
+		arr1.shuffle();
 		NAtask.setMinimaxFunctionTask({
-			expr: arr1[maxmin]+a + 'log(x+' + b + ')^' + g + '+'+arr2[maxmin] + c + 'x+' + k,
+			expr: arr1[0]+a + 'log(x+' + b + ')^' + g + '+'+arr1[1] + a + 'x+' + k,
 			leftEnd: '' +l,
 			rightEnd: '0',
 			primaryStep: 0.01,
@@ -26,3 +23,5 @@
 		});
 	}, 1000);
 })();
+//26717
+
