@@ -1,8 +1,8 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-		let a = sl(1, 20);
-		let b = sl(7, 19);
+		let a = sl(1, 100).pm();
+		let b = sl(2, 19);
 		let l = sl(-20.5, 1, 0.5);
 		let r = sl(-20.5, 1, 0.5);
 		let arr1 = ['+', '-'];
