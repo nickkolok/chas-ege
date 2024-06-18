@@ -796,6 +796,8 @@ chas2.task = {
 		expr = math.simplify(expr, mathjsRules.trig2trigPow);
 		expr = math.simplify(expr, mathjsRules.engTrig2rus);
 		//TODO: tan^2 x -> tg^2 x
+		// Костылик для убирания лишних скобок вокруг логарифма от степени
+		expr = math.simplify(expr, [{ l: 'log(n1)', r: 'ln(n1)' }]);
 
 		let intervalName = 'отрезке';
 		let intervalEndL = '[';
