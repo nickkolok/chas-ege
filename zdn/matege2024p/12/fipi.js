@@ -62,3 +62,6 @@ window.nomer=[
 	315835,
 ].iz()
 window.comment = 'Наибольшее и наименьшее значение';
+
+// Запрещаем интервалы - это не по ФИПИ
+chas2.task.setMinimaxFunctionTask.forbidOpenEnds = true;
