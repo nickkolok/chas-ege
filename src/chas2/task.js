@@ -685,6 +685,7 @@ chas2.task = {
 		o.primaryStep = (o.primaryStep || 0.01);
 		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
+		o.forbidOpenEnds = o.forbidOpenEnds || this.forbidOpenEnds;
 
 		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
 
