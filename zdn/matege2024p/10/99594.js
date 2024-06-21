@@ -20,7 +20,7 @@
 			'Расстояние между ' + the_humanSettlementDestination.tm +' A и B равно ' + S + ' км. '+
 			'Из ' + the_humanSettlementDestination.re +' A в ' + the_humanSettlementDestination.ve +' B выехал ' + the_vehicleRacingOnRoad[0].ie +', '+
 			'а через ' + [chislitlx(delay, 'час'),(delay*60).toChMin()].iz() + ' следом за ним со скоростью ' + v + ' км/ч выехал ' + the_vehicleRacingOnRoad[1].ie +', '+
-			'догнал ' + the_vehicleRacingOnRoad[0].ie +' в ' + the_humanSettlementDestination.pe +' C и повернул обратно. '+
+			'догнал ' + the_vehicleRacingOnRoad[0].ve +' в ' + the_humanSettlementDestination.pe +' C и повернул обратно. '+
 			'Когда он вернулся в A, ' + the_vehicleRacingOnRoad[0].ie +' прибыл в B. ' + the_orderToFind.toZagl() +' расстояние от A до C. Ответ дайте в километрах.',
 		answers: x,
 		authors: ['Aisse-258'],
