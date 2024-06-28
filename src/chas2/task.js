@@ -805,15 +805,15 @@ chas2.task = {
 		let intervalEndR = ']';
 
 		if (!o.forbidOpenEnds) {
-			if (!sl(3) && (chosenX - lEnd).abs() > o.primaryStep && (chosenX - rEnd).abs() > o.primaryStep) {
+			if (!sl(3) && (chosenX - lEnd).abs() > 2 * o.primaryStep && (chosenX - rEnd).abs() > 2 * o.primaryStep) {
 				intervalName = 'интервале';
 				intervalEndL = '(';
 				intervalEndR = ')';
-			} else if (!sl(2) && (chosenX - lEnd).abs() > o.primaryStep) {
+			} else if (!sl(2) && (chosenX - lEnd).abs() > 2 * o.primaryStep) {
 				intervalName = 'полуинтервале';
 				intervalEndL = '(';
 				intervalEndR = ']';
-			} else if (!sl(1) && (chosenX - rEnd).abs() > o.primaryStep) {
+			} else if (!sl(1) && (chosenX - rEnd).abs() > 2 * o.primaryStep) {
 				intervalName = 'полуинтервале';
 				intervalEndL = '[';
 				intervalEndR = ')';
