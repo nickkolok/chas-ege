@@ -6,7 +6,7 @@
 
 	let T = a*Math.pow(10, b);
 
-	let mantP = (57*Math.pow(a, 4)*c).toFixedLess(2); // Знаков после запятой всегда не больше двух! При использовании ts() артифачит.
+	let mantP = (57*Math.pow(a, 4)*c).toFixedLess(2); // Знаков после запятой всегда не больше двух! При использовании ts() артефачит.
 	let expP = 4*b+d-9;
 
 	let S;
@@ -27,7 +27,7 @@
 		площадь поверхности $S = ${S} \\cdot 10^{${d}} \\ \\mbox{м}^2$, а излучаемая ею мощность $P = ${mantP} \\cdot 10^{${expP}} \\ \\mbox{Вт}$. Определите температуру этой звезды. Дайте ответ в градусах Кельвина.
 		`,
 		answers: T,
-		authors: [''],
+		authors: ['mcFrene'],
 	});
 	NAtask.modifiers.allDecimalsToStandard(/*true*/);
 }, 2000);})();
