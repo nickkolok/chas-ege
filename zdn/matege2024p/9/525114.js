@@ -1,7 +1,6 @@
 (function() { 'use strict'; retryWhileError(function() {
     let a = sl(1, 1000, 0.1);
     let b = Math.pow(2, sl(0, 6, 1)) * Math.pow(5, sl(0, 3, 1));
-    b = b===1? 2: b;
     let ans = a/b;
 
     let decor;
