@@ -21,8 +21,8 @@
     let ans = Math.pow(a/b * Math.pow(10, d-f), g);
     genAssertZ1000(ans);
     
-    let decorV = ['Найдите, какой объём', 'Какой наибольший объeм']
-    let decorP = ['давлении $p$, равном', 'давлениях $p$ не ниже']
+    let decorV = ['Найдите, какой объём', 'Какой наибольший объeм'];
+    let decorP = ['давлении $p$, равном', 'давлениях $p$ не ниже'];
     let randInd = sl1();
 
 	NAtask.setTask({
