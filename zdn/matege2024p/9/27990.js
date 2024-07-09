@@ -1,11 +1,11 @@
 (function() { 'use strict'; retryWhileError(function() {
     let a=sl(1, 9, 0.1);
-    let b=Math.pow(2, sl(0, 6, 1)) * Math.pow(5, sl(0, 3, 1)) * [0.1, 1].iz();
-    let d=sl(1, 4, 1);
-    let e=sl(1, 4, 1);
-    let f=sl(1, d, 1);
-    let g=sl(1, 4, 1);
-    let c=slKrome(g, 2, 3, 1);
+    let b=Math.pow(2, sl(0, 6)) * Math.pow(5, sl(0, 3)) * [0.1, 1].iz();
+    let d=sl(1, 4);
+    let e=sl(1, 4);
+    let f=sl(1, d);
+    let g=sl(1, 4);
+    let c=slKrome(g, 2, 3);
 
     let mantP = Math.pow(b, c);
     genAssertZ1000(mantP);
@@ -20,11 +20,14 @@
     let expConst = c*d + e;
     let ans = Math.pow(a/b * Math.pow(10, d-f), g);
     genAssertZ1000(ans);
-   
+    
+    let decorV = ['Найдите, какой объём', 'Какой наибольший объeм']
+    let decorP = ['давлении $p$, равном', 'давлениях $p$ не ниже']
+    let randInd = sl1();
 
 	NAtask.setTask({
 		text: `При адиабатическом процессе для идеального газа выполняется закон $pV^k = ${mantConst} \\cdot 10^{${expConst}} \\ \\mbox{Па} \\cdot \\mbox{м}^3$, где $p$ - давление в газе (в $\\mbox{Па}$),
-        $V$ - объём газа (в $\\mbox{м}^3$), k = $${c.texrndfrac(g)}$. Найдите, какой объём $V$ (в $\\mbox{м}^3$) будет занимать газ при давлении $p$, равном $${mantP} \\cdot 10^{${expP}} \\ \\mbox{Па}$`,
+        $V$ - объём газа (в $\\mbox{м}^3$), k = $${c.texrndfrac(g)}$. ${decorV[randInd]} $V$ (в $\\mbox{м}^3$) будет занимать газ при ${decorP[randInd]} $${mantP} \\cdot 10^{${expP}} \\ \\mbox{Па}$`,
 		answers: ans,
 		authors: ['mcFrene'],
 	});
