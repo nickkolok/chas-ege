@@ -1,6 +1,6 @@
 (function() { 'use strict'; retryWhileError(function() {
     let r = sl(0.1, 10, 0.1);
-    let e = sl(50, 300)
+    let e = sl(50, 300);
     let U = sl(49, e-1);
     let ans = U*r/(e-U);
     genAssertZ1000(ans);
