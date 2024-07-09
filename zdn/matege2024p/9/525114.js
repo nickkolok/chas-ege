@@ -1,13 +1,9 @@
 (function() { 'use strict'; retryWhileError(function() {
     let a = sl(1, 1000, 0.1);
-    let b = Math.pow(2, sl(0, 6, 1)) * Math.pow(5, sl(0, 3, 1));
+    let b = (2).pow(sl(0, 6)) * (5).pow(sl(0, 3));
     let ans = a/b;
-
-    let decor;
-    if(b === 1)
-        decor = `равно одной атмосфере`
-    else
-        decor = chislitlx(b, 'атмосфера');
+    genAssertZ1000(ans);
+    let decor = b === 1 ? `равно одной атмосфере` : chislitlx(b, 'атмосфера');
 
 	NAtask.setTask({
 		text: `Установка для демонстрации адиабатического сжатия представляет собой сосуд с поршнем, резко сжимающим газ. При этом объём и давление
