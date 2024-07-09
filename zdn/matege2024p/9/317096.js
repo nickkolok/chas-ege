@@ -5,7 +5,7 @@
     let InWeight = slKrome(TrWeight, 2, 7);
     let R = sl(1, 100);
     let Q = sl1();
-    let ans = (InWeight + 1 + TrWeight + Q) * rangeU / R ;
+    let ans = (InWeight + 1 + TrWeight + Q) * rangeU / R;
     genAssertZ1000(ans);
     
     let chisl = ['вдвое', 'втрое', 'вчетверо', 'впятеро', 'вшестеро', 'всемеро'];    
