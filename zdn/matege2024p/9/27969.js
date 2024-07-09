@@ -1,21 +1,17 @@
 (function() { 'use strict'; retryWhileError(function() {
-	let a=sl(1, 7, 1);
-	let b=sl(2, 5, 1);
+	let a=sl(1, 7);
+	let b=sl(2, 5);
 	let c=sl(1, 7, 0.01);
-	let d=sl(17, 25, 1);
+	let d=sl(17, 25);
 
-	let T = a*Math.pow(10, b);
+	let T = a * (10).pow(b);
 
-	let mantP = (57*Math.pow(a, 4)*c).toFixedLess(2); // Знаков после запятой всегда не больше двух! При использовании ts() артефачит.
+	let mantP = (57 * a.pow(4) * c).toFixedLess(2); // Знаков после запятой всегда не больше двух! При использовании ts() артефачит.
 	let expP = 4*b+d-9;
 
-	let S;
-	let pw = Math.pow(10, c.toFixedLess(2).length - 2);
+	let pw = (10).pow(c.toFixedLess(2).length - 2);
 	let intc = Number((c * pw).toFixed()); // Полученное число всегда целое.
-	if(intc % 2 === 0 || intc % 5 === 0)
-		S = [c, intc.texrndfrac(pw)].iz();
-	else
-		S = c;
+	let S = (intc % 2 === 0 || intc % 5 === 0)?[c, intc.texrndfrac(pw)].iz():c; 
 
 	NAtask.setTask({
 		text: `Для определения эффективной температуры звёзд используют закон
