@@ -9,6 +9,7 @@
 
     let mantP = Math.pow(b, c);
     genAssertZ1000(mantP);
+
     let expP = c*f + e;
     while(mantP >= 10 && mantP % 10 == 0){
         mantP /= 10;
@@ -17,10 +18,14 @@
 
     let mantConst = Math.pow(a, c);
     genAssertZ1000(mantConst);
+
     let expConst = c*d + e;
+
     let ans = Math.pow(a/b * Math.pow(10, d-f), g);
+
     genAssertZ1000(ans);
-    
+    genAssert((''+ans+'.').split('.')[1].length <=3 && ans <= 10000, 'ans-dot');
+
     let decorV = ['Найдите, какой объём', 'Какой наибольший объeм'];
     let decorP = ['давлении $p$, равном', 'давлениях $p$ не ниже'];
     let randInd = sl1();
