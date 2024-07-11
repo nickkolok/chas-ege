@@ -306,7 +306,7 @@
    let image = new Image();
    image.src = url;
 	let paint1 = function(ct) {
-        image.onload = function() {
+      image.onload = function() { 
 			ct.drawImage(image, 0, 0);
          URL.revokeObjectURL(url);
 		};
