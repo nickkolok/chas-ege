@@ -48,7 +48,7 @@
 			<text
 			   xml:space="preserve"
 			   transform="matrix(0.9,0,0,-1,114.267,39.268)"
-			   style="font-variant:normal;font-weight:normal;font-size:11.5px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
+			   style="font-variant:normal;font-weight:normal;font-size:11.5px;font-family:'Liberation Serif';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
 			   id="text22"><tspan
 				 x="0 6.1525002 11.9025 17.641001 23.391001 28.418833 34.573341"
 				 y="0"
@@ -69,7 +69,7 @@
 			<text
 			   xml:space="preserve"
 			   transform="matrix(0,0.9,1,0,39.5328,55.2539)"
-			   style="font-variant:normal;font-weight:normal;font-size:11.5px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
+			   style="font-variant:normal;font-weight:normal;font-size:11.5px;font-family:'Liberation Serif';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
 			   id="text28"><tspan
 				 x="0 6.1545143 12.309022 18.047522 23.797522"
 				 y="0"
@@ -106,7 +106,7 @@
 			<text
 			   xml:space="preserve"
 			   transform="matrix(0.9,0,0,-1,34.3563,36.9469)"
-			   style="font-variant:normal;font-weight:normal;font-size:11.5px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
+			   style="font-variant:normal;font-weight:normal;font-size:11.5px;font-family:'Liberation Serif';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
 			   id="text44"><tspan
 				 x="0"
 				 y="0"
@@ -114,7 +114,7 @@
 			<text
 			   xml:space="preserve"
 			   transform="matrix(0.9,0,0,-1,15.88245,147.1899)"
-			   style="font-style:italic;font-variant:normal;font-size:11.5px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPS-ItalicMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
+			   style="font-style:italic;font-variant:normal;font-size:11.5px;font-family:'Liberation Serif';-inkscape-font-specification:TimesNewRomanPS-ItalicMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
 			   id="text48"><tspan
 				 x="0"
 				 y="0"
@@ -122,7 +122,7 @@
 			<text
 			   xml:space="preserve"
 			   transform="matrix(0.9,0,0,-1,22.298075,147.1899)"
-			   style="font-variant:normal;font-weight:normal;font-size:11.5px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
+			   style="font-variant:normal;font-weight:normal;font-size:11.5px;font-family:'Liberation Serif';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
 			   id="text52"><tspan
 				 x="0 4.841578 12.314235"
 				 y="0"
@@ -131,7 +131,7 @@
 			<text
 			   xml:space="preserve"
 			   transform="matrix(0.9,0,0,-1,218.6397,34.5789)"
-			   style="font-style:italic;font-variant:normal;font-size:11.5px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPS-ItalicMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
+			   style="font-style:italic;font-variant:normal;font-size:11.5px;font-family:'Liberation Serif';-inkscape-font-specification:TimesNewRomanPS-ItalicMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
 			   id="text56"><tspan
 				 x="0"
 				 y="0"
@@ -139,7 +139,7 @@
 			<text
 			   xml:space="preserve"
 			   transform="matrix(0.9,0,0,-1,225.22094,34.5789)"
-			   style="font-variant:normal;font-weight:normal;font-size:11.5px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
+			   style="font-variant:normal;font-weight:normal;font-size:11.5px;font-family:'Liberation Serif';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#040606;fill-opacity:1;fill-rule:nonzero;stroke:none"
 			   id="text60"><tspan
 				 x="0 4.8411379 12.314241"
 				 y="0"
