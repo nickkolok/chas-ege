@@ -3,9 +3,9 @@
 	let b = -sl(0.1, 0.9, 0.01);
 	let c = sl(1, 100);
 	let x = sl(5, 100, 5);
-	genAssert(x < -b/a, 'Запрашиваемая ванта вообще находится в пределах пролёта');
-	let f = (x => a*x*x+b*x+c);
-	genAssert(f(-b/(2*a)) > 1, 'Ванты не опускаются до полотна и не провисают');
+	genAssert(x < -b / a, 'Запрашиваемая ванта вообще находится в пределах пролёта');
+	let f = (x => a * x * x + b * x + c);
+	genAssert(f(-b / (2 * a)) > 1, 'Ванты не опускаются до полотна и не провисают');
 	let y = f(x);
 	genAssertZ1000(y, 'Ответ имеет не более 3 знаков после запятой');
 
@@ -300,13 +300,13 @@
       </g>
    </svg>`;
 
-   let svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+   let svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
 	let url = URL.createObjectURL(svgBlob);
 
    let image = new Image();
    image.src = url;
 	let paint1 = function(ct) {
-      image.onload = function() { 
+      image.onload = function() {
 			ct.drawImage(image, 0, 0);
          URL.revokeObjectURL(url);
 		};
@@ -330,13 +330,13 @@
 			'Найдите длину ванты, расположенной в ' + chislitlx(x, 'метр', 'p$') + ' от пилона. ' +
 			'Ответ дайте в метрах.',
 		answers: y,
-		authors: ['Aisse-258', 'NickKolok', 'mcFrene'],
+		authors: ['Aisse-258', 'NickKolok', 'mcFrene']
 	});
 	NAtask.modifiers.allDecimalsToStandard(true);
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 400,
 		height: 400,
-		paint: paint1,
+		paint: paint1
 	});
 }, 2000);})();
 // РешуЕГЭ: 324467: 325722, 325723, 325724, 325725, 325726, 325727, 325728, 325729, 325730
