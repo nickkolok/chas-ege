@@ -6,18 +6,19 @@
     let v0 = -(t1+t2)*c;
     let a = 2*c;
 
-    let the_vehicleRacingOnRoad = sklonlxkand(decor.vehicleRacingOnRoad.iz());
-    let the_humanSettlementDestination = sklonlxkand(decor.humanSettlementDestination.iz());
+    let the_vehicleRacingOnRoad = sklonlxkand(getAdequateVehicles(v0).iz());
+    let the_humanSettlementDestination = sklonlxkand(getAdequateDestinations(v0).iz());
     let the_orderToFind = decor.orderToFind.iz(); 
     let decorPreFormula = [
-        `(в км) от ${the_vehicleRacingOnRoad.re} до города вычисляется по формуле`,
-        `от ${the_vehicleRacingOnRoad.re} до города, измеряемое в километрах, определяется выражением`
+        `(в км) от ${the_vehicleRacingOnRoad.re} до ${the_humanSettlementDestination.re} вычисляется по формуле`,
+        `от ${the_vehicleRacingOnRoad.re} до ${the_humanSettlementDestination.re}, измеряемое в километрах, определяется выражением`
     ].iz();
-    let decorPostFormula = [`, прошедшее после выезда из города`, ``].iz();
+    let decorPostFormula = [`, прошедшее после выезда из ${the_humanSettlementDestination.re}`, ``].iz();
     let decorQuestion = [
-        `время, прошедшее после выезда ${the_vehicleRacingOnRoad.re} из города, если известно, что за это время он удалился от города на ${S} км`,
+        `время, прошедшее после выезда ${the_vehicleRacingOnRoad.re} из ${the_humanSettlementDestination.re}, если известно, что за это время он удалился от 
+        ${the_humanSettlementDestination.re} на ${S} км`,
         `наибольшее время, в течение которого ${the_vehicleRacingOnRoad.ie} будет находиться в зоне функционирования сотовой связи, 
-        если оператор гарантирует покрытие на расстоянии не далее чем в ${S} км от города`
+        если оператор гарантирует покрытие на расстоянии не далее чем в ${S} км от ${the_humanSettlementDestination.re}`
     ].iz();
 
 	NAtask.setTask({
