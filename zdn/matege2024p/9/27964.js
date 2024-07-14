@@ -2,8 +2,11 @@
     let t1 = sl(-100, -10);
     let t2 = sl(1, -t1-1);
     let c = sl(1, 10, 0.5);
-    let S = -t1*t2*c;
+    
     let v0 = -(t1+t2)*c;
+    genAssert(v0 <= 400, 'скорость не должна превышать 400 км/ч');
+
+    let S = -t1*t2*c;
     let a = 2*c;
 
     let the_vehicleRacingOnRoad = sklonlxkand(getAdequateVehicles(v0).iz());
