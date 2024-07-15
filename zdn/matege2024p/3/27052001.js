@@ -1,12 +1,4 @@
 (function() {
-	lx['образующая'] = {
-		ie: 'образующая',
-		ve: 'образующую',
-		im: 'образующие',
-		rod: 1,
-		odu: 0,
-	};
-
 	lx_declareClarifiedPhrase('площадь', 'поверхности');
 	lx_declareClarifiedPhrase('радиус', 'основания');
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
