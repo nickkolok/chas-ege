@@ -1,9 +1,4 @@
 (function() {
-	lx['образующая'].ie = 'образующая';
-	lx['образующая'].ve = 'образующую';
-	lx['образующая'].rod = 1;
-	lx['образующая'].odu = 0;
-
 	lx_declareClarifiedPhrase('площадь', 'поверхности');
 	lx_declareClarifiedPhrase('диаметр', 'основания');
 	lx_declareClarifiedPhrase('радиус', 'основания');
