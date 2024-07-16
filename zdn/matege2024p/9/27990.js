@@ -32,7 +32,7 @@
 
 	NAtask.setTask({
 		text: `При адиабатическом процессе для идеального газа выполняется закон $pV^k = ${mantConst} \\cdot 10^{${expConst}} \\ \\mbox{Па} \\cdot \\mbox{м}^3$, где $p$ - давление в газе (в $\\mbox{Па}$),
-        $V$ - объём газа (в $\\mbox{м}^3$), k = $${c.texrndfrac(g)}$. ${decorV[randInd]} $V$ (в $\\mbox{м}^3$) будет занимать газ при ${decorP[randInd]} $${mantP} \\cdot 10^{${expP}} \\ \\mbox{Па}$`,
+        $V$ - объём газа (в $\\mbox{м}^3$), k = $${c.texrndfrac(g)}$. ${decorV[randInd]} $V$ (в $\\mbox{м}^3$) будет занимать газ при ${decorP[randInd]} $${mantP} \\cdot 10^{${expP}} \\ \\mbox{Па}$.`,
 		answers: ans,
 		authors: ['mcFrene'],
 	});
