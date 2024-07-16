@@ -9,8 +9,8 @@
     genAssertZ1000(f, 'Корень не должен быть слишком дробным');
     NAtask.setEquationTask({
     	parts: ['('+a+'x+'+b+')('+c+'x+'+d+')', '0'],
-	    roots: [e,f],
-	    handleMultipleRoots: 'randomExceptList',
+        roots: [e,f],
+        handleMultipleRoots: 'randomExceptList',
 	
     });	
 }, 100);})();
