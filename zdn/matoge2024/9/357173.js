@@ -4,7 +4,7 @@
     let e=-d;
     NAtask.setEquationTask({
     	    parts: ['x^2-'+a, 0],
-	        roots: [d,e],
-	        handleMultipleRoots: 'randomExceptList',
+            roots: [d,e],
+	    handleMultipleRoots: 'randomExceptList',
     });
 }, 20);})();
