@@ -11,8 +11,8 @@
     genAssertZ1000(e, 'Корень не должен быть слишком дробным');
     NAtask.setEquationTask({
             parts: [a+'x^2+'+b+'x+'+c, 0],
-	          roots: [d,e],
-	          handleMultipleRoots: 'randomExceptList',
+	    roots: [d,e],
+            handleMultipleRoots: 'randomExceptList',
     });
 }, 20);})();
 //VeronikaKit
