@@ -1,7 +1,7 @@
 (function() { retryWhileError(function() {
-    let a=sluchch(1,20).pm();
-    let b=sluchch(1,20).pm();
-    let c=sluchch(1,20).pm();
+    let a=sluchch(1,10).pm();
+    let b=sluchch(1,10).pm();
+    let c=sluchch(1,10).pm();
     let e=(a**2+c);
     let f=a*b;
     let g=b**2;
