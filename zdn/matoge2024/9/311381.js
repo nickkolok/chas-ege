@@ -1,8 +1,8 @@
 (function() { retryWhileError(function() {
-    let c=sluchch(1,20).pm();
-    let a=slKrome(c,1,20).pm();
-    let b=sluchch(1,20).pm();
-    let e=sluchch(1,20).pm();
+    let c=sluchch(1,30).pm();
+    let a=slKrome(c,1,30).pm();
+    let b=sluchch(1,30).pm();
+    let e=sluchch(1,30).pm();
     let d=(b*c-e*a)/(a-c);
     genAssertZ1000(d, 'Корень не должен быть слишком дробным');
     NAtask.setEquationTask({
