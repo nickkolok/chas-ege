@@ -5,9 +5,9 @@
     let e=-b/a;
     genAssertZ1000(e, 'Корень не должен быть слишком дробным');
     NAtask.setEquationTask({
-    	    parts: [a+'x^2+'+b+'x', 0],
-	    roots: [d,e],
-	    handleMultipleRoots: 'randomExceptList',
+        parts: [a+'x^2+'+b+'x', 0],
+        roots: [d,e],
+        handleMultipleRoots: 'randomExceptList',
     });
 }, 20);})();
 //VeronikaKit
