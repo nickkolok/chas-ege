@@ -10,3 +10,5 @@
 	    handleMultipleRoots: 'randomExceptList',
     });
 }, 20);})();
+//VeronikaKit
+//РешуОГЭ 311447
