@@ -48,12 +48,13 @@
 		let point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 		console.log(pyr1.verticesOfFigure);
 
-		autoScale(pyr1, camera, point2DPyr, {
+		autoScale(pyr1.verticesOfFigure, camera, point2DPyr, {
 			startX: -390 / 2,
 			finishX: 390 / 2,
 			startY: -390 / 2,
 			finishY: 390 / 2,
 			maxScale: 50,
+			step: 0.1,
 		});
 
 		point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
