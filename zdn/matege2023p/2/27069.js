@@ -27,12 +27,12 @@
 
 			rotationX: -Math.PI / 2 + Math.PI / 13,
 			rotationY: 0,
-			rotationZ: -2 * Math.PI / (pyr.numberSide - 2),
+			rotationZ: -2 * Math.PI / (pyr.numberSide*1.5),
 		};
 
 		let point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(pyr, camera, point2DPyr, {
+		autoScale(pyr.verticesOfFigure, camera, point2DPyr, {
 			startX: -390 / 2,
 			finishX: 390 / 2,
 			startY: -390 / 2,
@@ -41,6 +41,11 @@
 		});
 
 		point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+		
+		let connectionMatrix= [
+			[1],
+			[1,1]
+			];
 
 		let paint1 = function(ctx) {
 			let h = 400;
