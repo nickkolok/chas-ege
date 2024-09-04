@@ -1084,7 +1084,7 @@ chas2.task = {
 				}
 			}
 			possibleMultipliers.shuffle();
-			console.log(possibleMultipliers);
+			//console.log(possibleMultipliers);
 			for (var i of possibleMultipliers){
 				if(sl1() && (ans/i.sqrt()*1000).isAlmostInteger()){
 					o.text += ' Ответ разделите на $' + i.texsqrt(opts.useMultiples) + '$.';
@@ -1099,6 +1099,40 @@ chas2.task = {
 				}
 			}
 			throw new RangeError('multiplyAnswerBySqrt(): can find no appropriate square root');
+		},
+
+		/** @function chas2.task.modifiers.multiplyAnswerByPI
+		 * Добавить фразу "Ответ умножьте на $\PI$." и домножить сам ответ.
+		 * Добавить фразу "Ответ разделите на $\PI$." и разделить сам ответ.
+		 */
+		multiplyAnswerByPI : function() {
+			var o = chas2.task.getTask();
+			if (o.answers.length != 1){
+				throw new TypeError('Fixme: cannot apply multiplyAnswerByPI() to multiple answers')
+			}
+			//Меняем запятую на точку для корректной работы Number
+			var ans = Number(o.answers[0].replace(',', '.'));
+
+			if ((ans*1000).isAlmostInteger()){
+				//Ответ и так хорош!
+				return;
+			}
+
+			if ((ans / Math.PI * 1000).isAlmostInteger()) {
+				o.text += ' Ответ разделите на $\\pi$.';
+				o.answers = [(ans / Math.PI).okrugldo((10).pow(-6)).ts()]
+				chas2.task.setTask(o);
+				return;
+			}
+
+			if ((ans * Math.PI * 1000).isAlmostInteger()) {
+				o.text += ' Ответ умножьте на $\\pi$.';
+				o.answers = [(ans * Math.PI).okrugldo((10).pow(-6)).ts()]
+				chas2.task.setTask(o);
+				return;
+			}
+
+			throw new RangeError('multiplyAnswerByPI(): the answer is not integer when multiplied or divided by PI');
 		},
 
 		/** @function chas2.task.modifiers.roundUpTo
