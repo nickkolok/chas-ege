@@ -3,7 +3,7 @@
 var vr1 = chas.mode.svinta ? 100 : 200;
 var vr2 = chas.mode.svinta ? 100 : 1500;
 
-var variantNumber;
+var variantNumber = 0;
 var nV = 1;
 var nZ = 1;
 var aZ = [];
@@ -33,11 +33,7 @@ function vse0() {
 	$('#cV').val(1);
 }
 
-function zapusk() {
-	//Сохраняем параметры генерации
-	chasStorage.domData.save();
-
-	//Читаем настройки
+function readOptions() {
 	options.editable = $('#redakt').is(':checked');
 	options.largeFont = $('#largeFont').is(':checked');
 	options.customNumber = $('#customNumber').is(':checked');
@@ -60,15 +56,24 @@ function zapusk() {
 		options.randomSeed = Date.now();
 	}
 
-	if (customNumber) {
+	if (options.customNumber) {
 		variantNumber = $('#start-number').val() - 1;
 	}
 
-	sluchch.forceIntegers = (options.forceIntegers) ? true : false; 	
+	sluchch.forceIntegers = (options.forceIntegers) ? true : false;
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
 	}
+}
+
+
+function zapusk() {
+	//Сохраняем параметры генерации
+	chasStorage.domData.save();
+
+	//Читаем настройки
+	readOptions();
 
 	//Читаем количество заданий
 	aV = nV = 1 * $('#cV').val();
