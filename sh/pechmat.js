@@ -309,7 +309,7 @@ function obnov() {
 	strOtv  += html.ver;
 	strResh += html.rsh;
 
-	generatedTasks[vopr.taskId] = vopr.clone();
+	grabCurrentTask();
 
 	var sdel = aZ.sum() * (aV - nV + 1) - iZ.sum();
 	var w = sdel / kZ;
@@ -380,6 +380,13 @@ function getTaskTextContainerByTaskId(taskId) {
 	return $('div.d[data-task-id="' + taskId + '"]')[0];
 }
 
+function grabCurrentTask(){
+	generatedTasks[vopr.taskId] = vopr.clone();
+	generatedTasks[vopr.taskId].address =
+		window.nabor.adres + dvig.getzadname(nZ) + '/' + window.nomer;
+
+}
+
 function renewTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.d');
@@ -400,7 +407,7 @@ function renewTask() {
 		solution .replaceWith(taskHtml.rsh);
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
-		generatedTasks[vopr.taskId] = vopr.clone();
+		grabCurrentTask();
 		if (options.prepareLaTeX) {
 			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
 			refreshLaTeXarchive();
@@ -511,6 +518,7 @@ function createLaTeXbunchTasks(variantN) {
 			bunchText +=
 				'\n' +
 				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
+					'% ' + generatedTasks[taskId].address + '\n' +
 					tasksInLaTeX[taskId] + '\n' +
 				'\\end{taskBN}' + '\n';
 		}
