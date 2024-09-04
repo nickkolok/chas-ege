@@ -17,7 +17,8 @@
     "html2canvas": "^1.0.0-rc.7",
     "jszip": "^3.10.1",
     "mathjs": "^11.5.1",
-    "nerdamer": "^1.1.13"
+    "nerdamer": "^1.1.13",
+    "seedrandom": "^3.0.5"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
