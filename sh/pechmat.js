@@ -55,6 +55,10 @@ function zapusk() {
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
 	options.forceIntegers = $('#forceIntegers').is(':checked');
+	options.randomSeed = $('#randomSeed').val();
+	if (options.randomSeed === '') {
+		options.randomSeed = Date.now();
+	}
 
 	if (customNumber) {
 		variantNumber = $('#start-number').val() - 1;
@@ -227,8 +231,14 @@ function zadan() {
 			nZ++;
 			zadan();
 		} else {
+			let tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
+			// Именно в этой точке происходит подсидовка -
+			// использование предсказуемых псевдослучайных чисел вместо встроенных случайных,
+			// позволяющее перегенерировать только отдельные задания из варианта
+			let seed = options.randomSeed + "__" + variantsGenerated.length + "__" + tasksReadyInCurrentVariant;
+			Math.seedrandom(seed);
+
 			if (options.splitAnswerTables) {
-				var tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
 				if (tasksReadyInCurrentVariant && (tasksReadyInCurrentVariant % options.splitAnswersNumber === 0)) {
 					appendVariantAnswersEnding();
 					appendVariantAnswersCaption();
@@ -550,6 +560,8 @@ function refreshLaTeXarchive() {
 	}
 
 	answers += "\n\n\\end{multicols}\n\n\\end{document}";
+
+	bunchTasks += "\n\n%Random seed:" + options.randomSeed;
 
 	zip.file("tasks.tex", bunchTasks);
 	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
