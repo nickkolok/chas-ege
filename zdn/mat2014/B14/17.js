@@ -7,7 +7,7 @@
 		var coincidenceNumber = sl(1,20);
 		var bias = 1*(minutes > hours*5 + minutes/12);
 		var answer = -minutes + 60 * (hours + 12* (coincidenceNumber - 1 + bias)) / 11;
-		console.log(answer, bias);
+		//console.log(answer, bias);
 	}while(!(1000*answer).isZ() || answer <= 0);
 
 	NAtask.setTask({

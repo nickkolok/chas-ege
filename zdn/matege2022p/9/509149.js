@@ -37,18 +37,18 @@ retryWhileUndefined(function() {
 	if (D < 0 || !D.isPolnKvadr() || (Math.abs(x0) > 6 || Math.abs(y0) > 5))
 		return;
 	let pointsP = intPoints(pf, {
-		minX: -5,
-		maxX: 6,
-		minY: -5.5,
-		maxY: 5.5
+		minX: -8,
+		maxX: 8,
+		minY: -9,
+		maxY: 7,
 	});
 	if (pointsP.length < 3)
 		return;
 	let pointsK = intPoints(kf, {
-		minX: -5,
-		maxX: 6,
-		minY: -5.5,
-		maxY: 5.5
+		minX: -8,
+		maxX: 8,
+		minY: -9,
+		maxY: 7,
 	});
 	if (pointsK.length < 2)
 		return;
@@ -61,27 +61,34 @@ retryWhileUndefined(function() {
 		answ = x2;
 	}
 	let paint1 = function(ct) {
-		let h = 300;
-		let w = 300;
+		let h = 400;
+		let w = 400;
 		//Оси координат
-		graph9AdrawAxes_20_300(ct);
-		ct.translate(-10, -10);
+		ct.drawCoordPlane(w, h, {
+			hor: 1,
+			ver: 1
+		}, {
+			x1: '1',
+			y1: '1',
+			sh1: 13,
+		}, 20);
+
 		ct.lineWidth = 0.1;
-		ct.translate(h / 2, h / 2);
+
 		ct.scale(20, -20);
 		//График
 		graph9AdrawFunction(ct, kf, {
-			minX: -6,
-			maxX: 6,
-			minY: -7,
-			maxY: 5.7,
+			minX: -8.5,
+			maxX: 8.5,
+			minY: -9.5,
+			maxY: 7.7,
 			step: 0.05,
 		});
 		graph9AdrawFunction(ct, pf, {
-			minX: -6,
-			maxX: 5.7,
-			minY: -7,
-			maxY: 6,
+			minX: -8.5,
+			maxX: 8.5,
+			minY: -9.5,
+			maxY: 7.7,
 			step: 0.05,
 		});
 		//точки
@@ -98,7 +105,7 @@ retryWhileUndefined(function() {
 	if (!d && sl1())
 		pryamay = 'kx+d';
 	else
-		pryamay = (['k',k].iz()+'x +' + ['d',d].iz()).replace('+0', '').plusminus();
+		pryamay = (['k', k].iz() + 'x +' + ['d', d].iz()).replace('+0', '').plusminus();
 
 	NAtask.setTask({
 		text: 'На рисунке изображены графики функций $f(x)=' + pryamay +
@@ -107,12 +114,12 @@ retryWhileUndefined(function() {
 		answers: answ,
 		analys: '$f(x)=' + (k + 'x+' + d).replace('+0', '').plusminus() + `;$<br>` +
 			'$g(x)=' + (a + 'x^2+' + b + 'x+' + c).replace('+0', '').plusminus() + '.$<br>' +
-			'$A(' + x1 + ';' + y1 + ')$<br>'+
+			'$A(' + x1 + ';' + y1 + ')$<br>' +
 			'$B(' + x2 + ';' + y2 + ')$',
 	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
+	NAtask.modifiers.addCanvasIllustration({
+		width: 400,
+		height: 400,
 		paint: paint1,
 	});
 	return true;

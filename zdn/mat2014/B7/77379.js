@@ -27,8 +27,8 @@ switch(sl(1,3)){
 if(NOD%10==0)
 	NOD/=10;
 
-//console.log('c = '+c+'   '+(n-c*x));
-//console.log('m = '+m+'   n = '+n);
+////console.log('c = '+c+'   '+(n-c*x));
+////console.log('m = '+m+'   n = '+n);
 
 var p1=[
 		'{'+m.pow(NOD)+'}^{'+[((c/NOD).ts()+'x').esli(c),((p-c*x)/NOD).ts()].slag0()+'}',

@@ -33,42 +33,43 @@ retryWhileUndefined(function () {
         answ = px;
     }
     let p1 = intPoints(f1, {
-        minX: -5,
-        maxX: 5,
-        minY: -6,
-        maxY: 5
+        minX: -8,
+        maxX: 8,
+        minY: -9,
+        maxY: 7,
     });
     if (p1.length < 2)
         return;
     let p2 = intPoints(f2, {
-        minX: -5,
-        maxX: 5,
-        minY: -6,
-        maxY: 5
+        minX: -8,
+        maxX: 8,
+        minY: -9,
+        maxY: 7,
     });
     if (p2.length < 2)
         return;
     let paint1 = function (ct) {
-        h = 300;
+        let h = 400;
+        let w = 400;
         //Оси координат
-        graph9AdrawAxes_20_300(ct);
-        ct.translate(-10, -10);
+        ct.drawCoordPlane(w, h, { hor: 1, ver: 1 }, { x1: '1', y1: '1', sh1: 13, }, 20);
+
         //график
-        ct.translate(h / 2, h / 2);
+
         ct.scale(20, -20);
         ct.lineWidth = 0.1;
         graph9AdrawFunction(ct, f1, {
-            minX: -6,
-            maxX: 7,
-            minY: -7,
-            maxY: 6,
+            minX: -8.5,
+            maxX: 8.5,
+            minY: -9.5,
+            maxY: 7.7,
             step: 0.05,
         });
         graph9AdrawFunction(ct, f2, {
-            minX: -6,
-            maxX: 7,
-            minY: -7,
-            maxY: 6,
+            minX: -8.5,
+            maxX: 8.5,
+            minY: -9.5,
+            maxY: 7.7,
             step: 0.05,
         });
         //точки
@@ -81,9 +82,9 @@ retryWhileUndefined(function () {
         analys: '$f_1(x)=' + (k1.ch.texfrac(k1.zn) + 'x+' + b1).replace('+0', '').plusminus() + '$<br>' +
             '$f_2(x)=' + (k2.ch.texfrac(k2.zn) + 'x+' + b2).replace('+0', '').plusminus() + '$',
     });
-    chas2.task.modifiers.addCanvasIllustration({
-        width: 300,
-        height: 300,
+    NAtask.modifiers.addCanvasIllustration({
+        width: 400,
+        height: 400,
         paint: paint1,
     });
     return true;

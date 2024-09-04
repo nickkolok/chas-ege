@@ -4,6 +4,8 @@ var a=sluchch(2,9).pm();
 var g=sluchch(1,9).pm();
 
 var d=sluchch(2,2*a*g-1).pm();
+while(d==0)
+	d=sluchch(2,2*a*g-1).pm();
 var b=(2*a*g+d);
 
 var f=sluchch(1,a*g*g-1).pm();
@@ -13,7 +15,7 @@ var m=[a,c,d,f];
 var n=['a','c','d','f'];
 var h=sluchch(0,3);
 
-window.vopr.txt=('Прямая $y='+((h-2)?(d):('d'))+'x+'+((h-3)?(f):('f'))+
+window.vopr.txt=('Прямая $y='+ (((h-2)?(d):('d'))+'x+').esli(d || (h==2) )+'x+'+((h-3)?(f):('f'))+
 					'$ является касательной к графику функции $y='+
 					((h)?(a):('a'))+'x^{2}+'+b+'x+'+((h-1)?(c):('c'))+'$. Найдите $'+n[h]+'$.'
 				).plusminus();

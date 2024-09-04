@@ -32,7 +32,7 @@ switch(sl(1,3)){
 		break;
 }
 
-console.log(NOD1+'   '+NOD2);
+//console.log(NOD1+'   '+NOD2);
 
 var toSmall = NOD1.nod(NOD2);
 if(NOD1>7 || NOD2>7){
