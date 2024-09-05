@@ -3,7 +3,7 @@
 var vr1 = chas.mode.svinta ? 100 : 200;
 var vr2 = chas.mode.svinta ? 100 : 1500;
 
-var variantNumber;
+var variantNumber = 0;
 var nV = 1;
 var nZ = 1;
 var aZ = [];
@@ -33,11 +33,7 @@ function vse0() {
 	$('#cV').val(1);
 }
 
-function zapusk() {
-	//Сохраняем параметры генерации
-	chasStorage.domData.save();
-
-	//Читаем настройки
+function readOptions() {
 	options.editable = $('#redakt').is(':checked');
 	options.largeFont = $('#largeFont').is(':checked');
 	options.customNumber = $('#customNumber').is(':checked');
@@ -55,16 +51,29 @@ function zapusk() {
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
 	options.forceIntegers = $('#forceIntegers').is(':checked');
+	options.randomSeed = $('#randomSeed').val();
+	if (options.randomSeed === '') {
+		options.randomSeed = Date.now();
+	}
 
-	if (customNumber) {
+	if (options.customNumber) {
 		variantNumber = $('#start-number').val() - 1;
 	}
 
-	sluchch.forceIntegers = (options.forceIntegers) ? true : false; 	
+	sluchch.forceIntegers = (options.forceIntegers) ? true : false;
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
 	}
+}
+
+
+function zapusk() {
+	//Сохраняем параметры генерации
+	chasStorage.domData.save();
+
+	//Читаем настройки
+	readOptions();
 
 	//Читаем количество заданий
 	aV = nV = 1 * $('#cV').val();
@@ -224,8 +233,14 @@ function zadan() {
 			nZ++;
 			zadan();
 		} else {
+			let tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
+			// Именно в этой точке происходит подсидовка -
+			// использование предсказуемых псевдослучайных чисел вместо встроенных случайных,
+			// позволяющее перегенерировать только отдельные задания из варианта
+			let seed = options.randomSeed + "__" + variantsGenerated.length + "__" + tasksReadyInCurrentVariant;
+			Math.seedrandom(seed);
+
 			if (options.splitAnswerTables) {
-				var tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
 				if (tasksReadyInCurrentVariant && (tasksReadyInCurrentVariant % options.splitAnswersNumber === 0)) {
 					appendVariantAnswersEnding();
 					appendVariantAnswersCaption();
@@ -542,6 +557,8 @@ function refreshLaTeXarchive() {
 	}
 
 	answers += "\n\n\\end{multicols}\n\n\\end{document}";
+
+	bunchTasks += "\n\n%Random seed:" + options.randomSeed;
 
 	zip.file("tasks.tex", bunchTasks);
 	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
