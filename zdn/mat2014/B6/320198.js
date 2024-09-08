@@ -33,5 +33,7 @@ NAtask.setTask({
 		'верно решит больше '+min+' задач, равна '+ver2+'. Найдите вероятность '+
 		'того, что '+name+'. верно решит ровно '+max+' задач.',
 	answers,
+	authors: ['aisse-258'],
 });
+NAtask.modifiers.allDecimalsToStandard();
 })();
