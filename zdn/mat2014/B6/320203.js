@@ -34,8 +34,9 @@ NAtask.setTask({
 		'Найдите вероятность того, что число пассажиров будет от ' + min + ' до ' + (max - 1) + '.',
 
 	answers: ver1 - ver2,
-
+	authors: ['aisse-258'],
 });
+NAtask.modifiers.allDecimalsToStandard();
 NAtask.modifiers.variativeABC();//расставляем случайные буквы
 })();
 
