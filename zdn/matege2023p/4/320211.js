@@ -33,4 +33,5 @@
 
         answers,
     });
+    NAtask.modifiers.allDecimalsToStandard();
 })();

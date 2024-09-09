@@ -51,4 +51,5 @@
 
         answers,
     });
+    NAtask.modifiers.allDecimalsToStandard();
 })();
