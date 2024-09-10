@@ -48,7 +48,6 @@
 		let paint1 = function(ctx) {
 			let h = 400;
 			let w = 500;
-			//ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawCoordinatePlane(w, h, {
 				hor: 1,
 				ver: 1

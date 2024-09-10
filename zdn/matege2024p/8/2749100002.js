@@ -51,7 +51,7 @@
 		if (f(root) > f(root + 0.1) && f(root) < f(root - 0.1))
 			condition = 'наименьшее';
 		else
-			condition = 'наибольшее';
+			genAssert(false);
 
 		let paint1 = function(ct) {
 			let h = 380;

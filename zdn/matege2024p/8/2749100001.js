@@ -49,7 +49,7 @@
 		root = root.iz();
 		
 		if (f(root) > f(root + 0.1) && f(root) < f(root - 0.1))
-			condition = 'наименьшее';
+			genAssert(false);
 		else
 			condition = 'наибольшее';
 
