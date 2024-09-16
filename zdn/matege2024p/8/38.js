@@ -31,20 +31,15 @@
 		let extremumsY = extremumsAll.T()[1];
 		extremumsY.forEach((elem) => genAssert(elem.abs() < 5), 'Экстремум за пределами сетки');
 		extremumsY.forEach((elem) => genAssert(elem.abs() > 0.5), 'Экстремум слишком близко к Ox');
+		
+		let rootsF = roots(f, minX, maxX);
+		genAssert(rootsF.length == 2, 'Слишком много корней');
+		rootsF.forEach((elem) => genAssert((elem.abs() - elem.abs().floor()).abs() < 0.05,
+			'Экстремум кажется нецелым ' + elem));
+		
+		rootsF = rootsF.iz();
 
-		let root = [];
-		let step = 0.01;
-		let number = 0;
-		for (let i = minX + step; i < maxX - step; i += step)
-			if ((f(i) >= number && f(i + step) <= number) || (f(i) <= number && f(i + step) >= number)) {
-				genAssert((i.round().abs() - i.abs()).abs() < 0.05, 'Кривые корни');
-				root.push(i.round());
-			}
-
-		genAssert(root.length == 2, 'Слишком много корней');
-		root = root.iz();
-
-		let condition = (f(root) > f(root + 0.3) && f(root) < f(root - 0.3)) ?  'максимума' : 'минимума';
+		let condition = (f(rootsF) > f(rootsF + 0.3) && f(rootsF) < f(rootsF - 0.3)) ?  'максимума' : 'минимума';
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -94,7 +89,7 @@
 			text: 'На рисунке изображён график $y=f\'(x)$ — производной функции $f(x)$, определенной на интервале $(' +
 				minX + ';' + maxX + ')$. ' +
 				'Найдите точку ' + condition + ' функции $f(x)$.',
-			answers: root,
+			answers: rootsF,
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 500,

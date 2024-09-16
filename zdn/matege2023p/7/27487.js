@@ -5,12 +5,13 @@
 		function f(x) {
 			return spline.at(x);
 		}
+
 		NAinfo.requireApiVersion(0, 2);
 		let maxX = sl(8, 10);
 		let minX = maxX - sl(13, 18);
 		let X = [];
 		let Y = [];
-		for (let i = minX; i <= maxX; i += sl(1.3, 3.4, 0.3))
+		for (let i = minX; i <= maxX; i += sl(1.3, 4.3, 0.3))
 			X.push(i);
 		Y.push(sl(1, 6).pm());
 		for (let i = 1; i < X.length; i++) {
@@ -19,56 +20,50 @@
 					Y[i] = Y[i - 1] + sl(4, 6).pm();
 				else
 					Y[i] = 0;
-			} while (Y[i].abs() > 5);
+			} while (Y[i].abs() > 9);
 		}
 		let spline = new Spline(X, Y);
-		let extremum = [];
-		let points = [];
-		let step = 0.001;
-		for (let i = minX; i < maxX; i += step) {
-			genAssert(f(i).abs() < 8, 'Слишком большой горбик');
-			if (f(i) < f(i - step) && f(i) < f(i + step) || (f(i) > f(i - step) && f(i) > f(i + step))) {
-				genAssert((i.abs() - i.round().abs()).abs() > 0.3, 'Экстремум целый');
-				extremum.push([i, f(i)]);
-			}
+		genAssert(f(maxX).abs() < 9, 'Экстремум за пределами сетки');
+		genAssertGraphIntersectsPointWithNeighborhood(f, 1.1, -0.3, 0.2);
+		genAssertGraphIntersectsPointWithNeighborhood(f, -0.5, 1.1, 0.3);
+		genAssertGraphIntersectsPointWithNeighborhood(f, -0.3, -0.3, 0.2);
+		genAssertGraphIntersectsPointWithNeighborhood(f, maxX, -0.3, 0.2);
+		genAssertGraphIntersectsPointWithNeighborhood(f, minX, -0.3, 0.2);
 
+		let extremums = findExtremumsOfFunction(f, minX, maxX);
+		let extremumsAll = [...extremums.minP, ...extremums.maxP].sort((a, b) => a[0] - b[0]);
+		genAssert(extremumsAll.length > 1, 'Экстремумов недостаточно');
 
-			if (extremum.length > 0) {
-				genAssert(extremum[extremum.length - 1][1].abs().round() != 0, 'Слишком непонятный экстремум');
-			}
-		}
-		genAssert(extremum.length > 1, 'Экстремумов недостаточно');
+		let extremumsY = extremumsAll.T()[1];
+		extremumsY.forEach((elem) => genAssert(elem.abs() < 5), 'Экстремум за пределами сетки');
+		extremumsY.forEach((elem) => genAssert(elem.abs() > 0.5), 'Экстремум слишком близко к Ox');
 
-		for (let i = minX + 1; i < maxX; i++)
-			points.push(i);
-
-		let pointsOfIncreasing = [];
-		let pointsOfDecreasing = [];
-
-		for (let i = 0; i < points.length; i++) {
-			if (f(points[i]))
-				if (f(points[i]) > f(points[i] - 0.1) && f(points[i]) < f(points[i] + 0.1))
-					pointsOfIncreasing.push(points[i]);
-				else
-					pointsOfDecreasing.push(points[i]);
+		for (let i = 0; i < extremumsY.length - 1; i++) {
+			 genAssert(Math.abs(extremumsY[i] - extremumsY[i + 1]) > 1);
 		}
 
+		let extremumsX = extremumsAll.T()[0].sortNumericArr();
+		extremumsX.forEach((elem) => genAssert((elem.abs() - elem.abs().floor()).abs() > 0.5,
+			'Невозможно определить целую точку, если экстремум в ' + elem));
+
+		let intervals = findIntervalsOfIncreaseAndDecrease(f, minX, maxX, extremums);
+		let points = findIncreasingAndDecreasingPoints(intervals, minX, maxX);
 
 		let condition = [
 			['положительна', [
-				['сумму', pointsOfIncreasing.sum()],
-				['количество', pointsOfIncreasing.length]
+				['сумму', points.increasingPoints.sum()],
+				['количество', points.increasingPoints.length]
 			].iz()],
 			['отрицательна', [
-				['сумму', pointsOfDecreasing.sum()],
-				['количество', pointsOfDecreasing.length]
+				['сумму', points.decreasingPoints.sum()],
+				['количество', points.decreasingPoints.length]
 			].iz()]
 		].iz();
 
-		let paint1 = function(ct) {
-			let h = 380;
+		let paint1 = function(ctx) {
+			let h = 400;
 			let w = 500;
-			ct.drawCoordinatePlane(w, h, {
+			ctx.drawCoordinatePlane(w, h, {
 				hor: 1,
 				ver: 1
 			}, {
@@ -76,42 +71,43 @@
 				y1: '1',
 				sh1: 13,
 			}, 20);
-			ct.font = "12px liberation_sans";
-			ct.drawLine(20 * maxX, 5, 20 * maxX, -5);
-			ct.drawLine(20 * minX, 5, 20 * minX, -5);
+			ctx.font = "12px liberation_sans";
+			ctx.drawLine(20 * maxX, 5, 20 * maxX, -5);
+			ctx.drawLine(20 * minX, 5, 20 * minX, -5);
 			if (maxX != 0 && maxX != 1)
-				ct.fillText(maxX, 20 * maxX - 5, 15);
+				ctx.fillText(maxX, 20 * maxX - 5, 15);
 			if (minX != 0 && minX != 1)
-				ct.fillText(minX, 20 * minX - 10, 15);
-			ct.scale(20, -20);
-			ct.lineWidth = 0.15;
+				ctx.fillText(minX, 20 * minX - 10, 15);
+			ctx.scale(20, -20);
+			ctx.lineWidth = 0.1;
 
-			graph9AdrawFunction(ct, f, {
+			graph9AdrawFunction(ctx, f, {
 				minX: minX,
 				maxX: maxX,
 				minY: -9,
 				maxY: 9,
 				step: 0.01
 			});
-			graph9AmarkCircles(ct, [
+			graph9AmarkCircles(ctx, [
 				[maxX, f(maxX)],
 				[minX, f(minX)]
 			], 2, 0.2);
-			ct.fillStyle = "white";
-			graph9AmarkCircles(ct, [
+			ctx.fillStyle = "white";
+			graph9AmarkCircles(ctx, [
 				[maxX, f(maxX)],
 				[minX, f(minX)]
 			], 2, 0.1);
 
-			ct.fillStyle = "blue";
 		};
 		NAtask.setTask({
-			text: 'На рисунке изображен график функции y = f(x), определенной на интервале $(' + minX + '; ' + maxX +
+			text: 'На рисунке изображен график функции $y = f(x)$, определенной на интервале $(' + minX + '; ' + maxX +
 				')$. ' +
 				'Определите ' + condition[1][0] + ' целых точек, в которых производная функции ' + condition[0] + '.',
 			answers: condition[1][1],
+			analys: 'Точки возрастания: $' + points.increasingPoints.join(', ') + '$<br>' +
+				'Точки убывания: $' + points.decreasingPoints.join(', ') + '$',
 		});
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 500,
 			height: 400,
 			paint: paint1,
