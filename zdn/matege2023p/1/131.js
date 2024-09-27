@@ -27,7 +27,7 @@
 			ctx.fillText(vertices[2], 200 - 90, 200 - 160);
 
 		};
-s
+
 		NAtask.setTask({
 			text: 'На окружности отмечены точки $' + vertices[0] + '$, $' + vertices[1] + '$ и $' + vertices[2] + '$. ' +
 				['Дуга окружности $' + [vertices[0], vertices[2]].shuffleJoin() + '$, не содержащая точку $' + vertices[1] +
