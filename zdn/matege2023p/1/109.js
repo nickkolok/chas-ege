@@ -20,7 +20,7 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = "#809DF2";
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.drawLine(10, 370, 390, 370);
 			ctx.drawLine(10, 370, 180, 50);
@@ -31,7 +31,7 @@
 
 			//прямой угол
 			ctx.lineWidth = 1.2;
-			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			
 			ctx.drawLine(280 - 33, 200 - 5, 280 - 20, 200 + 14);
 			ctx.drawLine(280 - 33, 200 - 5, 280 - 13, 200 - 18);
