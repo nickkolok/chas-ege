@@ -19,7 +19,7 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = "#809DF2"
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.drawLine(10, 370, 390, 370);
 			ctx.drawLine(10, 370, 180, 200);
@@ -31,7 +31,7 @@
 			ctx.drawLine(180 - 40, 200 - 33, 10, 370);
 
 			//прямой угол
-			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.drawLine(180 - 52, 200 - 13, 180 - 35, 200 - 1);
 			ctx.drawLine(180 - 35, 200 - 1, 180 - 23, 200 - 17);
 
@@ -49,10 +49,10 @@
 		};
 
 		NAtask.setTask({
-			text: 'В треугольнике  $' + vertices.slice(0, 3).shuffle().join('') + '$ $' +
-				vertices.slice(0, 2).shuffle().join('') +
-				'=' + vertices.slice(1, 3).shuffle().join('') + '$, $' + vertices[0] + vertices[2] + '=' + a + '$, высота $' + 
-				[vertices[0], vertices[3]].shuffle().join('') +
+			text: 'В треугольнике  $' + vertices.slice(0, 3).shuffleJoin('') + '$ $' +
+				vertices.slice(0, 2).shuffleJoin('') +
+				'=' + vertices.slice(1, 3).shuffleJoin('') + '$, $' + vertices[0] + vertices[2] + '=' + a + '$, высота $' + 
+				[vertices[0], vertices[3]].shuffleJoin('') +
 				'$ равна $' + b + '$. Найдите $\\sin \\angle ' + angle.join('') + '$.',
 			answers: b / a,
 			analys: '',
