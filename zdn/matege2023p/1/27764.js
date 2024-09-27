@@ -10,7 +10,6 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = "#809DF2";
 
 			let angle = -Math.PI / 3.2;
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
