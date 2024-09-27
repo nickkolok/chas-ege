@@ -7,12 +7,9 @@
 	lx_declareClarifiedPhrase('площадь', 'осевого сечения');
 	retryWhileError(function() {
 
-		let radius = sl(1, 50);
-		let height = sl(1, 50);
-		let generatrixСone = radius.pow(2) + height.pow(2);
-		genAssert(generatrixСone.sqrt().isZ(), 'Образующая нормальная');
-		let variable = [
-
+		let radiuses = [sl(1, 20)];
+		radiuses.push(slKrome(radiuses[0], 1, 20));
+		variable=[
 			['высота', height],
 			[
 				['диаметр основания', 2 * radius],
@@ -31,7 +28,6 @@
 
 		variable = variable.iz(3);
 
-		let name = sklonlxkand(variable.T()[0]);
 		let number = variable.T()[1];
 		let answer = number[2];
 
@@ -71,12 +67,11 @@
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
-			text: name[0].ie.toZagl() + ' конуса ' + ['равен', 'равна'][name[0].rod] + ' $' + number[0] + '$, ' +
-				name[1].ie + ' ' + ['равен', 'равна'][name[1].rod] + ' $' + number[1] + '$. ' +
-				'Найдите ' + name[2].ve + ' конуса. ' + ps,
-			answers: '$' + answer + '$',
+			text: 'Радиусы двух шаров равны $' + radiuses.join('$ и $') + '$. ' +
+				'Найдите радиус шара, ' + radiusNew[1] + ' которого равна ' +
+				'сумме ' + sklonlxkand(radiusNew[1]).rm + ' двух данных шаров.',
+			answers: radiusNew[0].sqrt(),
 			authors: ['Суматохина Александра'],
-			analys: name[2].ie.toZagl() + ': $' + number[2] + '$',
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 400,

@@ -85,7 +85,7 @@
 		measurements: measurements,
 		figureName: 'шар',
 		dilationCoefficient: sl(2, 10),
-		authors: ['Суматохина Ася'],
+		authors: ['Суматохина Александра'],
 	});
 	NAtask.modifiers.addCanvasIllustration({
 		width: 400,
