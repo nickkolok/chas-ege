@@ -36,4 +36,7 @@ window.nomer = [
     113443,
     323850,
 ].iz();
+
+window.nomer = 1;
+
 window.comment = 'Текстовые задачи';

@@ -20,4 +20,7 @@ window.nomer = [
      // 509271,
      // 509275,
 ].iz();
+
+window.nomer = 509001;
+
 window.comment = 'Графики функций';

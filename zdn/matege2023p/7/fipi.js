@@ -12,4 +12,6 @@ window.nomer = [
       // 40130,
       // 510384,
 ].iz();
+
+window.nomer = 5;
 window.comment = 'Производная и первообразная';

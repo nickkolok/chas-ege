@@ -14,4 +14,5 @@ window.nomer = [
      // 320194,
      320195,
 ].iz();
+window.nomer = 320195;
 window.comment = 'Начала теории вероятностей';
