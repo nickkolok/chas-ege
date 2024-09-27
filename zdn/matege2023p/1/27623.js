@@ -25,6 +25,8 @@
 
 			//прямой угол
 			ctx.lineWidth = 1.2;
+			ctx.strokeStyle = om.primaryBrandColors.iz();
+
 			ctx.drawLine(79 + 21, 220 + 10, 90 + 20, 200 + 11);
 			ctx.drawLine(79 + 10, 220 - 19, 90 + 20, 200 + 11);
 
