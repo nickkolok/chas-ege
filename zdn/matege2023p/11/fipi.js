@@ -38,4 +38,6 @@ window.nomer = [
     // 37,
     // 38,
 ].iz();
+
+window.nomer = 28;
 window.comment = 'Наибольшее и наименьшее значение';
