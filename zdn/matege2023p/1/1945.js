@@ -15,6 +15,8 @@
 			ctx.drawLine(10, 300, 190, 100);
 			ctx.drawLine(190, 100, 390, 300);
 
+			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
+
 			//штрихи
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.strokeInMiddleOfSegment(10, 300, 190, 100, 10);

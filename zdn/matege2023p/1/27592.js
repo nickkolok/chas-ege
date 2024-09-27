@@ -55,6 +55,8 @@
 
 			ctx.drawLine(120, 50, 390, 350);
 
+			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
+
 			ctx.drawLine(65, 200, 255, 200);
 
 			//штрихи

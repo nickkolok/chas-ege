@@ -6,6 +6,7 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#809DF2";
 
 			let arc = Math.PI/2.9;
 			

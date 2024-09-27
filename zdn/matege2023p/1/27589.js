@@ -6,6 +6,7 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.drawLineAtAngle(200, 10, 5*Math.PI/12, 350);
 			ctx.drawLineAtAngle(200, 10, -17*Math.PI/12, 350);
