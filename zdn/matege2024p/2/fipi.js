@@ -16,4 +16,7 @@ window.nomer=[
 	// 644544198,
 	// 687657781,
 ].iz()
+
+window.nomer=64485004;
+
 window.comment='Вектора';
