@@ -34,12 +34,12 @@
 			],
 			[
 				[{
-					name: 'площади оснований',
-					wordToClarify: true,
-				}, {
 					name: 'радиусы оснований',
 					wordToClarify: true,
-				}].iz(), [{
+				}, {
+					name: 'площадь основания',
+					power: 1,
+				}, {
 					name: 'высота',
 					power: 1,
 				}, {
