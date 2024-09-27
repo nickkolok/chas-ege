@@ -75,7 +75,7 @@
 		let paint1 = function(ctx) {
 			//конус побольше
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = "#809DF2";
+			ctx.strokeStyle = om.secondaryBrandColors.iz();;
 			//образующие
 			ctx.drawLine(50, 300, 200, 10);
 			ctx.drawLine(350, 300, 200, 10);

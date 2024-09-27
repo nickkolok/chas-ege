@@ -21,8 +21,8 @@
 		let paint1 = function(ctx) {
 			ctx.translate(-10, -40);
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = "#809DF2";
-			ctx.fillStyle = ["#D777F2", "#F2A2D6"].iz();
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.fillStyle = om.primaryBrandColors.iz();
 
 			ctx.beginPath();
 			if (radiusNew[1] == 'площадь большого круга') {

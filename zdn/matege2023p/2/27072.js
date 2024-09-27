@@ -18,7 +18,7 @@
 	let paint1 = function(ctx) {
 		ctx.translate(-10, 50);
 		ctx.lineWidth = 2;
-		ctx.strokeStyle = "#809DF2";
+		ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 		ctx.beginPath();
 		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь поверхности'))
@@ -27,7 +27,7 @@
 		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь большого круга'))
 			ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 0, 2 * Math.PI);
 
-		ctx.fillStyle = ["#D777F2", "#F2A2D6"].iz();
+		ctx.fillStyle = om.primaryBrandColors.iz();
 		ctx.fill();
 		ctx.closePath();
 

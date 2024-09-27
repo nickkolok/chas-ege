@@ -102,7 +102,7 @@
 	let paint1 = function(ctx) {
 		ctx.lineWidth = 2;
 		ctx.translate(30, 0);
-		ctx.strokeStyle = "#809DF2";
+		ctx.strokeStyle = om.secondaryBrandColors.iz();
 		//образующие
 		ctx.drawLine(0, 300, 150, 10);
 		ctx.drawLine(300, 300, 150, 10);
@@ -115,7 +115,7 @@
 		ctx.ellipse(150, 300, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 		ctx.stroke();
 
-		ctx.strokeStyle = ["#D777F2", "#F2A2D6"].iz();
+		ctx.strokeStyle = om.primaryBrandColors.iz();
 		for (let i = 0; i < copy.length; i++) {
 			//радиус
 			if (copy[i].name.ie == 'радиус основания')

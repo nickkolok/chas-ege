@@ -36,7 +36,7 @@
 				add = 9;
 			}
 
-			ctx.fillStyle = ["#D777F2", "#F2A2D6"].iz();
+			ctx.fillStyle = om.primaryBrandColors.iz();
 			ctx.beginPath();
 			ctx.moveTo(150 - (140 * (1 - frac) + add), 300 * frac);
 			ctx.lineTo(150 + 140 * (1 - frac) + add, 300 * frac);
@@ -49,7 +49,7 @@
 			ctx.fill();
 			ctx.closePath();
 
-			ctx.strokeStyle = "#809DF2";
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.beginPath();
 			ctx.ellipse(150, 300 * frac, 10, 140 * (1 - frac) + add, Math.PI / 2, -0.5 * Math.PI, -1.5 * Math.PI);
 			ctx.stroke();

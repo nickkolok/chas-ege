@@ -46,7 +46,7 @@
 
 		let paint1 = function(ct) {
 			ct.translate(10, 150);
-			ct.strokeStyle = "#809DF2";
+			ct.strokeStyle = om.secondaryBrandColors.iz();
 			ct.scale(10, -10);
 			ct.lineWidth = 2 / 15;
 			ct.rightPyramid4({
