@@ -262,16 +262,16 @@ function createHtmlForTask(nazvzad) {
 
 	return {
 		txt:
-			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
-				'<div class="b">'+nazvzad+'</div>'+
-				'<div class="z">'+
-					window.vopr.txt+
-					'<button class="noprint renewbutton" title="Заменить задание на похожее"'+
-					'>' +
-						'&#x27F3;' +
-					'</button>'+
-				'</div>'+
-				'<div class="grid-for-writing"></div>'+
+			'<div class="d" data-task-id="' + taskId + '" data-task-number="' + nZ + '">' +
+			'<div class="b">' + nazvzad + '</div>' +
+			'<div class="z">' +
+			window.vopr.txt +
+			'<button class="noprint renewbutton" title="Заменить задание на похожее"' +
+			'>' +
+			'&#x27F3;' +
+			'</button>' +
+			'</div>' +
+			'<div class="grid-for-writing"></div>' +
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
@@ -318,7 +318,7 @@ function obnov() {
 	unqDict[html.unq] = true;
 
 	strVopr += html.txt;
-	strOtv  += html.ver;
+	strOtv += html.ver;
 	strResh += html.rsh;
 
 	grabCurrentTask();
@@ -581,8 +581,10 @@ function refreshLaTeXarchive() {
 	});
 }
 
-var preambula = ['\\documentclass[twocolumn]{article}\n\\usepackage{dashbox}\n\\setlength{\\columnsep}{40pt}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{images/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../../egetask}\n\\usepackage{../../egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
+var preambula = "\\documentclass[twocolumn]{article}\n\\usepackage{dashbox}\n\\setlength{\\columnsep}{40pt}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\graphicspath{{images/}}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../../egetask}\n\\usepackage{../../egetask-math-11-2022}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}";
 
-var hyperref = '\\def\\rfoottext{Разрешается свободное копирование в некоммерческих целях с указанием источника }\n\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
+var hyperref = "\\def\\rfoottext{Разрешается свободное копирование в некоммерческих целях с указанием источника }\n\\def\\0.4lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}";
 
-var watermark='\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n';
+var watermark = "\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n";
+
+var preambulaForTab = "\\documentclass[a4paper,landscape,9pt]{extarticle}" + "\\usepackage{dashbox}\n" + "\\setlength{\\columnsep}{40pt}\n" + "\\usepackage[T2A]{fontenc}\n" + "\\usepackage[utf8]{inputenc}\n" + "\\usepackage[english,russian]{babel}\n" + "\\usepackage{graphicx}\n" + "\\usepackage{multirow}\n\n" + "\\graphicspath{{images/}}\n\n" + "\\usepackage{egetask_alternative}\n\n" + "\\linespread{1.15}\n\n";
