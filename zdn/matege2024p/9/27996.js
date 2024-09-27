@@ -18,7 +18,7 @@
 		    	kol=sklonlxkand(['баллон','шар','баклажка','ёмкость'].iz());
 		    	gas=sklonlxkand(['воздух','гелий','кислород','газ','метан','пропан','бутан'].iz());
 		}
-		let nach=(nazn==''?'':nazn+' ')+kol.ve;
+		let nach=(nazn==''?'':nazn+' ')+kol_skl.ve;
 
 		let log_2 = sl(1,6);//log_2(V1/V2)=A/avT - значение логарифма
 		let alpha = sl(4,20,0.01);//alpha - постоянная
@@ -44,7 +44,7 @@
 			analys: '$\\log_2 \\dfrac{'+V1+'}{V_2}='+log_2+'$',
 			authors: ['Aisse-258'],
 		});
-		NAtask.modifiers.allDecimalsToStandard(true);
+		NAtask.modifiers.allDecimalsToStandard();
 	}, 20000);
 })();
 //Aisse-258
