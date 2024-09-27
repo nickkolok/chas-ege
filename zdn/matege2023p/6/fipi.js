@@ -61,6 +61,6 @@ window.nomer = [
     7741402,
 ].iz();
 
-window.nomer = 26862;
+window.nomer = 26861;
 
 window.comment = 'Вычисления и преобразования';
