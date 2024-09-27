@@ -16,13 +16,13 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = "#809DF2";
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.beginPath();
 			ctx.arc(130, 200, 120, 0, 2 * Math.PI);
 			ctx.stroke();
 
-			ctx.strokeStyle = ["#D777F2","#F2A2D6"].iz();
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 
 			ctx.drawLine(130 - 67 - 27, 200 - 100, 380, 200 - 100);
 			ctx.drawLine(130, 200 + 120, 380, 200 - 100);
