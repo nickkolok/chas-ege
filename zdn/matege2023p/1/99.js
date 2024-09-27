@@ -11,7 +11,7 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = "#809DF2";
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawLine(10, 370, 390, 370);
