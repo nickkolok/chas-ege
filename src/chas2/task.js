@@ -479,26 +479,39 @@ chas2.task = {
  * @param {Boolean} extremumsIsInteger
  * @param {Boolean} rootsIsInteger 
  */
-	setTaskWithGraphOfFunctionDerivative: function ({ type, boundariesOfGraph: { minX, maxX, minY, maxY }, subBoundaries:{subMinX, subMaxX}, canvasSettings:{height, width, scale, }, questionsF:{main, variants, conditions} , extremumsIsInteger, rootsIsInteger }) {
-		let task = chas2.task.clone();
+	setTaskWithGraphOfFunctionDerivative: function (o) {
+		let { type, boundariesOfGraph: { minX, maxX }, subBoundaries: { subMinX, subMaxX } = {}, canvasSettings: { height, width, scale } = {}, questionsF: { main, variants, conditions }, extremumsIsInteger = false, rootsIsInteger = false } = o;
+
+		let task = o.clone();
+		task.text = [];
 
 		let answer;
+		let X = [];
+		let Y = [];
+		for (let i = minX; i <= maxX; i += sl(0.5, 4, 0.1))
+			X.push(i);
+		Y.push(sl(1, 6).pm());
+		for (let i = 1; i < X.length; i++) {
+			do {
+				Y[i] = Y[i - 1] + sl(2, 10).pm();
+			} while (Y[i].abs() > 5 || Y[i] == 0);
+		}
 		let spline = new Spline(X, Y);
 		const func = (x) => spline.at(x);
 
-		task.text = `На рисунке изображён график `;
+		task.text.push(`На рисунке изображён график`);
 		switch (type) {
 			case `function`:
-				task.text += `$y=f(x)$`;
+				task.text.push(`$y=f(x)$,`);
 				break;
 			case `derivative`:
-				task.text += `$y=f\`(x)$ — производной функции`;
+				task.text.push(`$y=f\`(x)$ — производной функции,`);
 				break;
 			default:
 				throw new Error('Не выбран тип задания. Укажите type.');
 		}
 
-		task.text += ', определённой на интервале $(' + minX + ';' + maxX + ')$. ' + ['Найдите', 'Определите'].iz() + ' ';
+		task.text.push('определённой на интервале $(' + minX + ';' + maxX + ')$. ' + ['Найдите', 'Определите'].iz());
 
 		let find = '';
 		if (type == 'function')
@@ -519,59 +532,66 @@ chas2.task = {
 					find = 'находятся экстремумы функции $f(x)$'
 					answer = findExtremumsOfFunctionSort(func, minX, maxX)
 					break;
+				case 'function_is_positive':
+					find = 'функции положительна'
+					answer = findPositiveIntervals(func, minX, maxX)
+					break;
+				case 'function_is_negative':
+					find = 'функции отрицательна'
+					answer = findNegativeIntervals(func, minX, maxX)
+					break;
 				default:
 					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
-
 			}
 
 		switch (main) {
 			case 'points':
 				switch (variants.iz()) {
 					case 'sum':
-						task.text += 'сумму';
+						task.text.push('сумму');
 						answer = answer.sum()
 						break;
 					case 'production':
-						task.text += 'произведение';
+						task.text.push('произведение');
 						answer = answer.production()
 						break;
 					case 'number':
-						task.text += 'количество';
+						task.text.push('количество');
 						answer = answer.length
 						break;
 					case 'largest':
-						task.text += 'наибольшую из';
+						task.text.push('наибольшую из');
 						answer = answer.maxE()
 						break;
 					case 'smallest':
-						task.text += 'наименьшую из';
+						task.text.push('наименьшую из');
 						answer = answer.minE()
 						break;
 				};
-				task.text += ' целых точек, в которых ';
+				task.text.push(' целых точек, в которых');
 				break;
 			case 'interval':
 				switch (variants || ['largest', 'smallest'].iz()) {
 					case 'largest':
-						task.text += 'наибольший';
+						task.text.push('наибольший');
 						break;
 					case 'smallest':
-						task.text += 'наименьший';
+						task.text.push('наименьший');
 						break;
 				}
-				task.text += ' интервал, на котором ';
+				task.text.push(' интервал, на котором');
 				break;
 			default:
 				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
 		}
 
-		task.text += find + '.';
+		task.text.push(find + '.');
+		task.text = task.text.join(' ');
+		task.answers = answer;
 
 
 		NAtask.setTask(task);
 	},
-
-
 	/** @function NApi.task.setDilationTask
 	 * Составить задание о растяжении геометрической фигуры
 	 */
