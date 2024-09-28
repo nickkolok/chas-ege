@@ -509,12 +509,15 @@ chas2.task = {
 					break;
 				case 'derivative_is_negative':
 					find = 'производная функции отрицательна'
+					answer = findDecreasingIntervals(func, minX, maxX)
 					break;
 				case 'derivative_is_zero' && main == 'points':
 					find = 'производная функции' + ['равна нулю', ', в которых касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$']].iz()
+					answer = findExtremumsOfFunctionSort(func, minX, maxX)
 					break;
 				case 'extreme_points' && main == 'points':
 					find = 'находятся экстремумы функции $f(x)$'
+					answer = findExtremumsOfFunctionSort(func, minX, maxX)
 					break;
 				default:
 					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
@@ -526,18 +529,23 @@ chas2.task = {
 				switch (variants.iz()) {
 					case 'sum':
 						task.text += 'сумму';
+						answer = answer.sum()
 						break;
 					case 'production':
 						task.text += 'произведение';
+						answer = answer.production()
 						break;
 					case 'number':
 						task.text += 'количество';
+						answer = answer.length
 						break;
 					case 'largest':
 						task.text += 'наибольшую из';
+						answer = answer.maxE()
 						break;
 					case 'smallest':
 						task.text += 'наименьшую из';
+						answer = answer.minE()
 						break;
 				};
 				task.text += ' целых точек, в которых ';
