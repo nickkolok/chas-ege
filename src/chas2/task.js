@@ -543,6 +543,7 @@ chas2.task = {
 				default:
 					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
 			}
+			console.log(answer);
 
 		switch (main) {
 			case 'points':
@@ -550,6 +551,7 @@ chas2.task = {
 					case 'sum':
 						task.text.push('сумму');
 						answer = answer.sum()
+						console.log(answer.sum());
 						break;
 					case 'production':
 						task.text.push('произведение');
