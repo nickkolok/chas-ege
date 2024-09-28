@@ -469,6 +469,112 @@ chas2.task = {
 		chas2.task.setEquationTask(o, taskOptions);
 	},
 
+	/** @function NApi.task.setTaskWithGraphOfFunctionDerivative
+ * На рисунке изображён график производной/функции
+ * @param {String} o.type derivative or function
+ * @param {Object} o.boundariesOfGraph {minX, maxX, minY, maxY}
+ * @param {Object} o.subBoundaries {minX, maxX}
+ * @param {Object} o.canvasSettings {height, width, scale, }
+ * @param {Array} o.questionsF {main:points||intervals, variants, conditions} 
+ * @param {Boolean} o.extremumsIsInteger
+ * @param {Boolean} o.rootsIsInteger 
+ */
+	setTaskWithGraphOfFunctionDerivative: function (o) {
+		let task = o.clone();
+		/* 		let spline = new Spline(X, Y);
+				let func = (x) => spline(x);
+				let der = (f, x, h = 1e-7) => (f(x + h) - f(x - h)) / (2 * h);
+				let mathFunc; */
+
+		task.text = `На рисунке изображён график `;
+		switch (o.type) {
+			case `function`:
+				task.text += `$y=f(x)$`;
+				break;
+			case `derivative`:
+				task.text += `$y=f\`(x)$ — производной функции`;
+				break;
+			default:
+				throw new Error('Не выбран тип задания. Укажите o.type.');
+		}
+
+		task.text += ', определённой на интервале $(' + o.boundariesOfGraph.minX + ';' + o.boundariesOfGraph.maxX + ')$. ' + ['Найдите', 'Определите'].iz() + ' ';
+		switch (o.questionsF.main) {
+			case 'points':
+				switch (o.questionsF.variants.iz()) {
+					case 'sum':
+						task.text += 'сумму';
+						break;
+					case 'production':
+						task.text += 'произведение';
+						break;
+					case 'number':
+						task.text += 'количество';
+						break;
+					case 'largest':
+						task.text += 'наибольшую из';
+						break;
+					case 'smallest':
+						task.text += 'наименьшую из';
+						break;
+				};
+				task.text += ' целых точек, в которых ';
+				break;
+			case 'interval':
+				switch (o.questionsF.variants || ['largest', 'smallest'].iz()) {
+					case 'largest':
+						task.text += 'наибольший';
+						break;
+					case 'smallest':
+						task.text += 'наименьший';
+						break;
+				}
+				task.text += ' интервал, на котором ';
+				break;
+			default:
+				throw new Error('Не указано, что будут находиться точки или интервал. Определите o.questionsF.main.');
+		}
+		/*
+Для функций 
+ТИ производная положительная
+ТИ производная отрицательна
+Т производная  равна нулю
+Т касательная к графику функции параллельна прямой y=c
+Т касательная к графику функции параллельна оси абсцисс
+Т точки экстремума*/
+
+		let find = '';
+		if (o.type == 'function')
+			switch (o.questionsF.conditions.iz()) {
+				case 'derivative_is_positive':
+					find = 'производная функции положительна'
+					break;
+				case 'derivative_is_negative':
+					find = 'производная функции отрицательна'
+					break;
+				case 'derivative_is_zero' && o.questionsF.main == 'points':
+					find = 'производная функции' + ['равна нулю', ', в которых касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$']].iz()
+					break;
+				case 'extreme_points' && o.questionsF.main == 'points':
+					find = 'находятся экстремумы функции $f(x)$'
+					break;
+				default:
+					throw new Error('Не получилось образовать вопрос. Попробуйте сменить o.questionsF.main или o.questionsF.conditions');
+
+			}
+		/* Для производной
+		Т наибольшее значение функции
+		Т наибольшее значение функции
+		Т точки максимума
+		Т точки минимума
+		ТИ промежутки возрастания
+		ТИ промежутки убывания  */
+		task.text += find + '.';
+
+
+		NAtask.setTask(task);
+	},
+
 
 	/** @function NApi.task.setDilationTask
 	 * Составить задание о растяжении геометрической фигуры
