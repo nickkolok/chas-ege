@@ -563,6 +563,36 @@ chas2.task = {
 			}
 			return func;
 		};
+
+		function paintSpline(options) {
+			const {
+				func,
+				minX,
+				maxX,
+				scale = 20,
+				height = 400,
+				width = 500,
+				font = "12px liberation_sans",
+				lineWidth = 0.1
+			} = options;
+		
+			return function(ctx) {
+				ctx.drawCoordinatePlane(width, height, { hor: 1, ver: 1 }, { x1: '1', y1: '1', sh1: 13 }, scale);
+				ctx.font = font;
+				ctx.drawLine(scale * maxX, 5, scale * maxX, -5);
+				ctx.drawLine(scale * minX, 5, scale * minX, -5);
+				if (maxX != 0 && maxX != 1) ctx.fillText(maxX, scale * maxX, 15);
+				if (minX != 0 && minX != 1) ctx.fillText(minX, scale * minX - 13, 15);
+				ctx.scale(scale, -scale);
+				ctx.lineWidth = lineWidth;
+				graph9AdrawFunction(ctx, func, { minX: minX, maxX: maxX, minY: -9, maxY: 9, step: 0.01 });
+				graph9AmarkCircles(ctx, [ [maxX, func(maxX)], [minX, func(minX)] ], 2, 0.2);
+				ctx.fillStyle = "white";
+				graph9AmarkCircles(ctx, [ [maxX, func(maxX)], [minX, func(minX)] ], 2, 0.1);
+			};
+		}
+
+		
 		let func = createSpline({
 			minX: minX,
 			maxX: maxX,
@@ -573,7 +603,13 @@ chas2.task = {
 			type: type,
 			stepForX: stepForX,
 			stepForY: stepForY
-		});	
+		});
+
+		let paint = paintSpline({
+			func: func,
+			minX: minX,
+			maxX: maxX,
+		});
 
 		console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
 
@@ -688,6 +724,11 @@ chas2.task = {
 
 
 		NAtask.setTask(task);
+		NAtask.modifiers.addCanvasIllustration({
+			width: width,
+			height: height,
+			paint: paint,
+		});
 	},
 	/** @function NApi.task.setDilationTask
 	 * Составить задание о растяжении геометрической фигуры
