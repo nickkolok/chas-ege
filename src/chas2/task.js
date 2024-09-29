@@ -668,7 +668,7 @@ chas2.task = {
 					break;
 				case 'points_on_the_segment':
 					find = 'на отрезке';
-					answer = findExtremumsOfFunction(func, minX, maxX);
+					answer = transformExtremumsToIntervals(minX, maxX);
 				default:
 					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
 			}
