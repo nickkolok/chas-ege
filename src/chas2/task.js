@@ -487,8 +487,8 @@ chas2.task = {
 			questionsF: { main = ['integer_points', 'point', 'intervals'].iz(), 
 			variants, 
 			conditions},  
-			extremumsIsInteger = false, 
-			rootsIsInteger = false } = o;
+			extremumsIsInteger = undefined, 
+			rootsIsInteger = undefined } = o;
 
 		let task = o.clone();
 		const func = createSpline({
