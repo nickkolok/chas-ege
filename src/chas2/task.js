@@ -1,5 +1,4 @@
 'use strict';
-const createSpline = require('./lib/math_functions').createSpline;
 
 /** @namespace chas2.task
  * Параметры задания
@@ -492,6 +491,78 @@ chas2.task = {
 			rootsIsInteger = undefined } = o;
 
 		let task = o.clone();
+		function createSpline({ minX, maxX, stepForX = 1, minY, maxY, stepForY = 1, extremumsIsInteger = false, rootsIsInteger = false, type }) {
+			let X = [];
+			let Y = [];
+		
+			for (let i = minX; i <= maxX; i += stepForX) {
+				X.push(i);
+				Y.push(sl(minY, maxY, stepForY));
+			}
+			let spline = new Spline(X, Y);
+			let func;
+			switch (type) {
+				case 'derivative':
+					func = (x) => 1000 * (spline.at(x + 0.001) - spline.at(x - 0.001));
+					break;
+				case 'function':
+				default:
+					func = (x) => spline.at(x);
+					break;
+			}
+		
+			genAssert(func(minY) < maxX, 'Функция вышла за пределы сетки с правого конца');
+			genAssert(func(minY) > minY, 'Функция вышла за пределы сетки с левого конца');
+		
+			let extX = extremumsX(func, minX, maxX);
+			console.log(extX);
+			extX.forEach((elem) => genAssert((elem - minX).abs() > 0.5), 'Экстремум слишком близко к левому концу');
+			extX.forEach((elem) => genAssert((elem - maxX).abs() > 0.5), 'Экстремум слишком близко к правому концу');
+		
+			let extY = extremumsY(func, minX, maxX)
+			console.log(extY);
+			extY.forEach((elem) => genAssert(elem < maxY), 'Функция вышла за пределы сетки сверху')
+			extY.forEach((elem) => genAssert(elem > minY), 'Функция вышла за пределы сетки снизу')
+			extY.forEach((elem) => genAssert(elem.abs() > 0.5), 'Экстремум слишком близко к оси Ox');
+		
+			genAssertGraphIntersectsPointWithNeighborhood(func, 1.1, -0.3, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(func, -0.5, 1.1, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(func, -0.3, -0.3, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(func, maxX, -0.3, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(func, minX, -0.3, 0.2);
+		
+			switch (extremumsIsInteger) {
+				case true:
+					extY.forEach((elem) => {
+						genAssert(isCloseToInteger(Math.abs(elem - Math.round(elem)), 0.2), 'Значение экстремума отличается от целого числа более чем на 0.2');
+					});
+					break;
+				case false:
+					extY.forEach((elem) => {
+						genAssert(!isCloseToInteger(Math.abs(elem - Math.round(elem)), 0.2), 'Значение экстремума отличается от целого числа менее чем на 0.2');
+					});
+					break;
+				default:
+					break;
+			}
+		
+			let rootFunc = roots(func, minX, maxX);
+			switch (rootsIsInteger) {
+				case true:
+					rootFunc.forEach((root) => {
+						genAssert(isCloseToInteger(root, 0.2), 'Значение корня отличается от целого числа более чем на 0.2');
+					});
+					break;
+				case false:
+					rootFunc.forEach((root) => {
+						genAssert(!isCloseToInteger(root, 0.2), 'Значение корня отличается от целого числа менее чем на 0.2');
+					});
+					break;
+				default:
+					break;
+			}
+			return func;
+		};
 		let func = createSpline({
 			minX: minX,
 			maxX: maxX,
