@@ -524,11 +524,11 @@ chas2.task = {
 					find = 'производная функции отрицательна'
 					answer = findDecreasingIntervals(func, minX, maxX)
 					break;
-				case 'derivative_is_zero' && main == 'points':
+				case 'derivative_is_zero' && main == 'integer_points':
 					find = 'производная функции' + ['равна нулю', ', в которых касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$']].iz()
 					answer = findExtremumsOfFunctionSort(func, minX, maxX)
 					break;
-				case 'extreme_points' && main == 'points':
+				case 'extreme_points' && main == 'integer_points':
 					find = 'находятся экстремумы функции $f(x)$'
 					answer = findExtremumsOfFunctionSort(func, minX, maxX)
 					break;
@@ -546,7 +546,7 @@ chas2.task = {
 			console.log(answer);
 
 		switch (main) {
-			case 'points':
+			case 'integer_points':
 				switch (variants.iz()) {
 					case 'sum':
 						task.text.push('сумму');
