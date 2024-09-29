@@ -543,15 +543,13 @@ chas2.task = {
 				default:
 					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
 			}
-			console.log(answer);
-
 		switch (main) {
 			case 'integer_points':
+			answer = answer.flatMap((elem)=>findIntegerPointsInInterval(elem));
 				switch (variants.iz()) {
 					case 'sum':
 						task.text.push('сумму');
 						answer = answer.sum()
-						console.log(answer.sum());
 						break;
 					case 'production':
 						task.text.push('произведение');
@@ -572,8 +570,23 @@ chas2.task = {
 				};
 				task.text.push(' целых точек, в которых');
 				break;
+			case 'point':
+				switch (variants.iz()){
+					case 'minimum':
+					find = 'точку минимума'
+					answer = [];
+					break;
+					case 'maximum':
+					find = 'точку максимума'
+					answer = [];
+					break;
+					case 'extremum':
+					find = 'точку экстремума'
+					answer = [];
+					break;
+				}
 			case 'interval':
-				switch (variants || ['largest', 'smallest'].iz()) {
+				switch (variants) {
 					case 'largest':
 						task.text.push('наибольший');
 						break;
