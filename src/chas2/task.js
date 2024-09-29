@@ -547,6 +547,7 @@ chas2.task = {
 		switch (main) {
 			case 'integer_points':
 			answer = answer.flatMap((elem)=>findIntegerPointsInInterval(elem));
+			console.log(answer)
 				switch (variants.iz()) {
 					case 'sum':
 						task.text.push('сумму');
