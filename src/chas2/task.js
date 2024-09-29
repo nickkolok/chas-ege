@@ -543,11 +543,11 @@ chas2.task = {
 				default:
 					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
 			}
-			console.log(answer)
+			console.log('Выбранные интервалы',answer)
 		switch (main) {
 			case 'integer_points':
-			answer = answer.map((elem)=>findIntegerPointsInInterval(elem, elem[0], elem[1]));
-			console.log(answer)
+			answer = answer.flatMap((elem)=>findIntegerPointsInInterval(elem, elem[0], elem[1]));
+			console.log('после обработки flatMap',answer)
 				switch (variants.iz()) {
 					case 'sum':
 						task.text.push('сумму');
@@ -601,7 +601,7 @@ chas2.task = {
 			default:
 				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
 		}
-		console.log(answer)
+		console.log('Готовый ответ',answer)
 		task.text.push(find + '.');
 		task.text = task.text.join(' ');
 		task.answers = answer;
