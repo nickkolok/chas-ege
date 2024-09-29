@@ -475,12 +475,20 @@ chas2.task = {
  * @param {Object} boundariesOfGraph {minX, maxX, minY, maxY}
  * @param {Object} subBoundaries {minX, maxX}
  * @param {Object} canvasSettings {height, width, scale, }
- * @param {Array} questionsF {main:points||intervals, variants, conditions} 
+ * @param {Array} questionsF {main:integer_points||point||intervals, variants, conditions} 
  * @param {Boolean} extremumsIsInteger
  * @param {Boolean} rootsIsInteger 
  */
 	setTaskWithGraphOfFunctionDerivative: function (o) {
-		let { type, boundariesOfGraph: { minX, maxX }, subBoundaries: { subMinX, subMaxX } = {}, canvasSettings: { height, width, scale } = {}, questionsF: { main, variants, conditions }, extremumsIsInteger = false, rootsIsInteger = false } = o;
+		let { type = ['function', 'derivative'].iz(), 
+			boundariesOfGraph: { minX, maxX }, 
+			subBoundaries: { subMinX, subMaxX } = {}, 
+			canvasSettings: { height = 400, width = 500, scale = 20 } = {}, 
+			questionsF: { main = ['integer_points', 'point', 'intervals'].iz(), 
+			variants, 
+			conditions}, 
+			extremumsIsInteger = false, 
+			rootsIsInteger = false } = o;
 
 		let task = o.clone();
 		task.text = [];
@@ -488,13 +496,20 @@ chas2.task = {
 		let answer;
 		let X = [];
 		let Y = [];
-		for (let i = minX; i <= maxX; i += sl(0.5, 4, 0.1))
+
+		// Generate X values
+		for (let i = minX; i <= maxX; i += sl(0.5, 4, 0.1)) {
 			X.push(i);
+		}
+
+		// Generate Y values
 		Y.push(sl(1, 6).pm());
 		for (let i = 1; i < X.length; i++) {
+			let newY;
 			do {
-				Y[i] = Y[i - 1] + sl(2, 10).pm();
-			} while (Y[i].abs() > 5 || Y[i] == 0);
+				newY = Y[i - 1] + sl(2, 10).pm();
+			} while (newY.abs() > 5 || newY === 0);
+			Y.push(newY);
 		}
 		let spline = new Spline(X, Y);
 		const func = (x) => spline.at(x);
@@ -543,11 +558,12 @@ chas2.task = {
 				default:
 					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
 			}
-			console.log('Выбранные интервалы',answer)
+		console.log('Выбранные интервалы', answer)
 		switch (main) {
 			case 'integer_points':
-			answer = answer.flatMap((elem)=>findIntegerPointsInInterval(elem, elem[0], elem[1]));
-			console.log('после обработки flatMap',answer)
+				answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
+				genAssertNonempty(answer, 'Не нашлось ни одной целой точки');
+				console.log('после обработки flatMap', answer)
 				switch (variants.iz()) {
 					case 'sum':
 						task.text.push('сумму');
@@ -573,19 +589,19 @@ chas2.task = {
 				task.text.push(' целых точек, в которых');
 				break;
 			case 'point':
-				switch (variants.iz()){
+				switch (variants.iz()) {
 					case 'minimum':
-					find = 'точку минимума'
-					answer = [];
-					break;
+						find = 'точку минимума'
+						answer = [];
+						break;
 					case 'maximum':
-					find = 'точку максимума'
-					answer = [];
-					break;
+						find = 'точку максимума'
+						answer = [];
+						break;
 					case 'extremum':
-					find = 'точку экстремума'
-					answer = [];
-					break;
+						find = 'точку экстремума'
+						answer = [];
+						break;
 				}
 			case 'interval':
 				switch (variants) {
@@ -601,7 +617,7 @@ chas2.task = {
 			default:
 				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
 		}
-		console.log('Готовый ответ',answer)
+		console.log('Готовый ответ', answer)
 		task.text.push(find + '.');
 		task.text = task.text.join(' ');
 		task.answers = answer;
