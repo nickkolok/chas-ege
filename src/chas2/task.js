@@ -543,6 +543,7 @@ chas2.task = {
 				default:
 					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
 			}
+			console.log(answer)
 		switch (main) {
 			case 'integer_points':
 			answer = answer.flatMap((elem)=>findIntegerPointsInInterval(elem));
@@ -599,7 +600,7 @@ chas2.task = {
 			default:
 				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
 		}
-
+		console.log(answer)
 		task.text.push(find + '.');
 		task.text = task.text.join(' ');
 		task.answers = answer;
