@@ -491,7 +491,7 @@ chas2.task = {
 			rootsIsInteger = undefined } = o;
 
 		let task = o.clone();
-		function createSpline({ minX, maxX, stepForX = 1, minY, maxY, stepForY = 1, extremumsIsInteger = false, rootsIsInteger = false, type }) {
+		function createSpline({ type, minX, maxX,  minY, maxY, stepForX = 1, stepForY = 1, extremumsIsInteger = false, rootsIsInteger = false}) {
 			let X = [];
 			let Y = [];
 		
@@ -521,9 +521,9 @@ chas2.task = {
 		
 			let extY = extremumsY(func, minX, maxX)
 			console.log(extY);
-			extY.forEach((elem) => genAssert(elem < maxY), 'Функция вышла за пределы сетки сверху')
-			extY.forEach((elem) => genAssert(elem > minY), 'Функция вышла за пределы сетки снизу')
-			extY.forEach((elem) => genAssert(elem.abs() > 0.5), 'Экстремум слишком близко к оси Ox');
+			extY.forEach((elem) => genAssert(elem < maxY, 'Функция вышла за пределы сетки сверху'))
+			extY.forEach((elem) => genAssert(elem > minY, 'Функция вышла за пределы сетки снизу'))
+			extY.forEach((elem) => genAssert(elem.abs() > 0.5, 'Экстремум слишком близко к оси Ox'));
 		
 			genAssertGraphIntersectsPointWithNeighborhood(func, 1.1, -0.3, 0.2);
 			genAssertGraphIntersectsPointWithNeighborhood(func, -0.5, 1.1, 0.2);
