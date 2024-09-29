@@ -497,7 +497,7 @@ chas2.task = {
 		
 			for (let i = minX; i <= maxX; i += stepForX) {
 				X.push(i);
-				Y.push(sl(minY, maxY, stepForY));
+				Y.push(sl(minY+1, maxY-1, stepForY));
 			}
 			let spline = new Spline(X, Y);
 			let func;
