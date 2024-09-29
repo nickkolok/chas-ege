@@ -666,12 +666,15 @@ chas2.task = {
 					find = 'функции отрицательна'
 					answer = findNegativeIntervals(func, minX, maxX)
 					break;
+				case 'points_on_the_segment':
+					find = 'на отрезке';
+					answer = findExtremumsOfFunction(func, minX, maxX);
 				default:
 					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
 			}
-		console.log('Выбранные интервалы', answer)
+		console.log('Выбранное', answer)
 		switch (main) {
-			case 'integer_points':
+			case 'integer_points' && conditions!== 'points_on_the_segment':
 				answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 				genAssertNonempty(answer, 'Не нашлось ни одной целой точки');
 				console.log('после обработки flatMap', answer)
@@ -699,7 +702,7 @@ chas2.task = {
 				};
 				task.text.push(' целых точек, в которых');
 				break;
-			case 'point':
+			case 'point'&& conditions!== 'points_on_the_segment':
 				switch (variants.iz()) {
 					case 'minimum':
 						find = 'точку минимума'
@@ -714,7 +717,7 @@ chas2.task = {
 						answer = [];
 						break;
 				}
-			case 'interval':
+			case 'interval'&& conditions!== 'points_on_the_segment':
 				answer = answer.map((elem)=>elem[1]-elem[0]);
 				switch (variants) {
 					case 'largest':
