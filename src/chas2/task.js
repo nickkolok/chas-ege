@@ -1,4 +1,5 @@
 'use strict';
+const createSpline = require('./lib/math_functions').createSpline;
 
 /** @namespace chas2.task
  * Параметры задания
