@@ -496,8 +496,8 @@ chas2.task = {
 			maxX: maxX,
 			minY: minY,
 			maxY: maxY,
-			extremumsIsInteger: true,
-			rootsIsInteger: false
+			extremumsIsInteger: extremumsIsInteger,
+			rootsIsInteger: rootsIsInteger
 		});	
 
 		task.text = [];
