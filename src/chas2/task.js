@@ -491,7 +491,7 @@ chas2.task = {
 			rootsIsInteger = undefined } = o;
 
 		let task = o.clone();
-		const func = createSpline({
+		let func = createSpline({
 			minX: minX,
 			maxX: maxX,
 			minY: minY,
