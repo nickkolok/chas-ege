@@ -482,16 +482,17 @@ chas2.task = {
 	setTaskWithGraphOfFunctionDerivative: function (o) {
 		let { type = ['function', 'derivative'].iz(), 
 			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1}, 
-			subBoundaries: { subMinX, subMaxX } = {}, 
 			canvasSettings: { height = 400, width = 500, scale = 20 } = {}, 
 			questionsF: { main = ['integer_points', 'point', 'intervals'].iz(), 
 			variants, 
-			conditions},  
+			conditions},
+			minimumNumberOfExtremes = 0,
+			minimumDifferenceBetweenExtremes = 2, 
 			extremumsIsInteger = undefined, 
 			rootsIsInteger = undefined } = o;
 
 		let task = o.clone();
-		function createSpline({ type, minX, maxX,  minY, maxY, stepForX = 1, stepForY = 1, extremumsIsInteger = false, rootsIsInteger = false}) {
+		function createSpline({ type, minX, maxX,  minY, maxY, stepForX = 1, stepForY = 1, extremumsIsInteger = false, rootsIsInteger = false, minimumDifferenceBetweenExtremes = 1}) {
 			let X = [];
 			let Y = [];
 		
@@ -500,62 +501,70 @@ chas2.task = {
 				Y.push(sl(minY+1, maxY-1, stepForY));
 			}
 			let spline = new Spline(X, Y);
-			let func;
+			let func = (x) => spline.at(x);
+			let painFunc;
 			switch (type) {
 				case 'derivative':
-					func = (x) => 1000 * (spline.at(x + 0.001) - spline.at(x - 0.001));
+					painFunc = (x) => 1000 * (spline.at(x + 0.001) - spline.at(x - 0.001));
 					break;
 				case 'function':
 				default:
-					func = (x) => spline.at(x);
+					painFunc = (x) => spline.at(x);
 					break;
 			}
 		
-			genAssert(func(maxX) < maxY && func(maxX) > minY, 'Функция вышла за пределы сетки с правого конца');
-			genAssert(func(minX) < maxY && func(minX) > minY, 'Функция вышла за пределы сетки с левого конца');
+			genAssert(painFunc(maxX) < maxY && painFunc(maxX) > minY, 'Функция вышла за пределы сетки с правого конца');
+			genAssert(painFunc(minX) < maxY && painFunc(minX) > minY, 'Функция вышла за пределы сетки с левого конца');
 		
-			let extX = extremumsX(func, minX, maxX);
+			let extX = extremumsX(painFunc, minX, maxX);
+			console.log('extX',extX, minimumNumberOfExtremes);
+			genAssert(extX.length > minimumNumberOfExtremes, 'Минимальное количество экстремумов '+minimumNumberOfExtremes);
 			console.log(extX);
 			extX.forEach((elem) => genAssert((elem - minX).abs() > 0.5, 'Экстремум слишком близко к левому концу'));
 			extX.forEach((elem) => genAssert((elem - maxX).abs() > 0.5, 'Экстремум слишком близко к правому концу'));
 		
-			let extY = extremumsY(func, minX, maxX)
+			let extY = extremumsY(painFunc, minX, maxX)
 			console.log(extY);
 			extY.forEach((elem) => genAssert(elem < maxY, 'Функция вышла за пределы сетки сверху'))
 			extY.forEach((elem) => genAssert(elem > minY, 'Функция вышла за пределы сетки снизу'))
 			extY.forEach((elem) => genAssert(elem.abs() > 0.5, 'Экстремум слишком близко к оси Ox'));
+			extY.forEach((elem, index) => {
+				if (index > 0) {
+					genAssert(Math.abs(elem - extY[index - 1]) >= minimumDifferenceBetweenExtremes, 'Разница между соседними экстремумами меньше, чем '+minimumDifferenceBetweenExtremes);
+				}
+			});
 		
-			genAssertGraphIntersectsPointWithNeighborhood(func, 1.1, -0.3, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(func, -0.5, 1.1, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(func, -0.3, -0.3, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(func, maxX, -0.3, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(func, minX, -0.3, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(painFunc, 1.1, -0.3, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(painFunc, -0.5, 1.1, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(painFunc, -0.3, -0.3, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(painFunc, maxX, -0.3, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(painFunc, minX, -0.3, 0.2);
 		
 			switch (extremumsIsInteger) {
 				case true:
-					extY.forEach((elem) => {
-						genAssert(isCloseToInteger(Math.abs(elem - Math.round(elem)), 0.05), 'Значение экстремума отличается от целого числа более чем на 0.05');
+					extX.forEach((elem) => {
+						genAssert(isCloseToInteger(elem, 0.1), 'Значение экстремума отличается от целого числа более чем на 0.1');
 					});
 					break;
 				case false:
-					extY.forEach((elem) => {
-						genAssert(!isCloseToInteger(Math.abs(elem - Math.round(elem)), 0.05), 'Значение экстремума отличается от целого числа менее чем на 0.05');
+					extX.forEach((elem) => {
+						genAssert(!isCloseToInteger(elem, 0.3), 'Значение экстремума отличается от целого числа менее чем на 0.3');
 					});
 					break;
 				default:
 					break;
 			}
 		
-			let rootFunc = roots(func, minX, maxX);
+			let rootFunc = roots(painFunc, minX, maxX);
 			switch (rootsIsInteger) {
 				case true:
 					rootFunc.forEach((root) => {
-						genAssert(isCloseToInteger(root, 0.05), 'Значение корня отличается от целого числа более чем на 0.05');
+						genAssert(isCloseToInteger(root, 0.1), 'Значение корня отличается от целого числа более чем на 0.1');
 					});
 					break;
 				case false:
 					rootFunc.forEach((root) => {
-						genAssert(!isCloseToInteger(root, 0.05), 'Значение корня отличается от целого числа менее чем на 0.05');
+						genAssert(!isCloseToInteger(root, 0.3), 'Значение корня отличается от целого числа менее чем на 0.3');
 					});
 					break;
 				default:
@@ -602,13 +611,15 @@ chas2.task = {
 			rootsIsInteger: rootsIsInteger,
 			type: type,
 			stepForX: stepForX,
-			stepForY: stepForY
+			stepForY: stepForY,
+			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
 		});
 
 		let paint = paintSpline({
 			func: func,
 			minX: minX,
 			maxX: maxX,
+			scale: scale
 		});
 
 		console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
@@ -617,7 +628,7 @@ chas2.task = {
 		task.text.push('На рисунке изображён график');
 		switch (type) {
 			case 'function':
-				task.text.push('$y=f(x)$,');
+				task.text.push('функции $y=f(x)$,');
 				break;
 			case 'derivative':
 				task.text.push('$y=f\'(x)$ — производной функции,');
@@ -704,12 +715,15 @@ chas2.task = {
 						break;
 				}
 			case 'interval':
+				answer = answer.map((elem)=>elem[1]-elem[0]);
 				switch (variants) {
 					case 'largest':
 						task.text.push('наибольший');
+						answer = answer.maxE()
 						break;
 					case 'smallest':
 						task.text.push('наименьший');
+						answer = answer.minE()
 						break;
 				}
 				task.text.push(' интервал, на котором');
