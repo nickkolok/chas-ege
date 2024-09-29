@@ -500,6 +500,8 @@ chas2.task = {
 			rootsIsInteger: rootsIsInteger
 		});	
 
+		console.log(findExtremumsOfFunctionSort(func, minX, maxX))
+
 		task.text = [];
 		task.text.push(`На рисунке изображён график`);
 		switch (type) {
