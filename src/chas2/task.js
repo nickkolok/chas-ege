@@ -497,7 +497,8 @@ chas2.task = {
 			minY: minY,
 			maxY: maxY,
 			extremumsIsInteger: extremumsIsInteger,
-			rootsIsInteger: rootsIsInteger
+			rootsIsInteger: rootsIsInteger,
+			type: type,
 		});	
 
 		console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
