@@ -481,39 +481,26 @@ chas2.task = {
  */
 	setTaskWithGraphOfFunctionDerivative: function (o) {
 		let { type = ['function', 'derivative'].iz(), 
-			boundariesOfGraph: { minX, maxX }, 
+			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1}, 
 			subBoundaries: { subMinX, subMaxX } = {}, 
 			canvasSettings: { height = 400, width = 500, scale = 20 } = {}, 
 			questionsF: { main = ['integer_points', 'point', 'intervals'].iz(), 
 			variants, 
-			conditions}, 
+			conditions},  
 			extremumsIsInteger = false, 
 			rootsIsInteger = false } = o;
 
 		let task = o.clone();
+		const func = createSpline({
+			minX: minX,
+			maxX: maxX,
+			minY: minY,
+			maxY: maxY,
+			extremumsIsInteger: true,
+			rootsIsInteger: false
+		});	
+
 		task.text = [];
-
-		let answer;
-		let X = [];
-		let Y = [];
-
-		// Generate X values
-		for (let i = minX; i <= maxX; i += sl(0.5, 4, 0.1)) {
-			X.push(i);
-		}
-
-		// Generate Y values
-		Y.push(sl(1, 6).pm());
-		for (let i = 1; i < X.length; i++) {
-			let newY;
-			do {
-				newY = Y[i - 1] + sl(2, 10).pm();
-			} while (newY.abs() > 5 || newY === 0);
-			Y.push(newY);
-		}
-		let spline = new Spline(X, Y);
-		const func = (x) => spline.at(x);
-
 		task.text.push(`На рисунке изображён график`);
 		switch (type) {
 			case `function`:
