@@ -491,7 +491,7 @@ chas2.task = {
 			rootsIsInteger = undefined } = o;
 
 		let task = o.clone();
-/* 		const func = createSpline({
+		const func = createSpline({
 			minX: minX,
 			maxX: maxX,
 			minY: minY,
@@ -501,7 +501,7 @@ chas2.task = {
 			type: type,
 			stepForX: stepForX,
 			stepForY: stepForY
-		});	 */
+		});	
 
 		console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
 
