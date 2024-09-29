@@ -511,8 +511,8 @@ chas2.task = {
 					break;
 			}
 		
-			genAssert(func(maxX) < maxY, 'Функция вышла за пределы сетки с правого конца');
-			genAssert(func(minX) > minY, 'Функция вышла за пределы сетки с левого конца');
+			genAssert(func(maxX) < maxY && func(maxX) > minY, 'Функция вышла за пределы сетки с правого конца');
+			genAssert(func(minX) < maxY && func(minX) > minY, 'Функция вышла за пределы сетки с левого конца');
 		
 			let extX = extremumsX(func, minX, maxX);
 			console.log(extX);
@@ -534,12 +534,12 @@ chas2.task = {
 			switch (extremumsIsInteger) {
 				case true:
 					extY.forEach((elem) => {
-						genAssert(isCloseToInteger(Math.abs(elem - Math.round(elem)), 0.2), 'Значение экстремума отличается от целого числа более чем на 0.2');
+						genAssert(isCloseToInteger(Math.abs(elem - Math.round(elem)), 0.05), 'Значение экстремума отличается от целого числа более чем на 0.05');
 					});
 					break;
 				case false:
 					extY.forEach((elem) => {
-						genAssert(!isCloseToInteger(Math.abs(elem - Math.round(elem)), 0.2), 'Значение экстремума отличается от целого числа менее чем на 0.2');
+						genAssert(!isCloseToInteger(Math.abs(elem - Math.round(elem)), 0.05), 'Значение экстремума отличается от целого числа менее чем на 0.05');
 					});
 					break;
 				default:
@@ -550,12 +550,12 @@ chas2.task = {
 			switch (rootsIsInteger) {
 				case true:
 					rootFunc.forEach((root) => {
-						genAssert(isCloseToInteger(root, 0.2), 'Значение корня отличается от целого числа более чем на 0.2');
+						genAssert(isCloseToInteger(root, 0.05), 'Значение корня отличается от целого числа более чем на 0.05');
 					});
 					break;
 				case false:
 					rootFunc.forEach((root) => {
-						genAssert(!isCloseToInteger(root, 0.2), 'Значение корня отличается от целого числа менее чем на 0.2');
+						genAssert(!isCloseToInteger(root, 0.05), 'Значение корня отличается от целого числа менее чем на 0.05');
 					});
 					break;
 				default:
