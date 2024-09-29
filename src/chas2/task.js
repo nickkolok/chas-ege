@@ -511,13 +511,13 @@ chas2.task = {
 					break;
 			}
 		
-			genAssert(func(minY) < maxX, 'Функция вышла за пределы сетки с правого конца');
-			genAssert(func(minY) > minY, 'Функция вышла за пределы сетки с левого конца');
+			genAssert(func(maxX) < maxY, 'Функция вышла за пределы сетки с правого конца');
+			genAssert(func(minX) > minY, 'Функция вышла за пределы сетки с левого конца');
 		
 			let extX = extremumsX(func, minX, maxX);
 			console.log(extX);
-			extX.forEach((elem) => genAssert((elem - minX).abs() > 0.5), 'Экстремум слишком близко к левому концу');
-			extX.forEach((elem) => genAssert((elem - maxX).abs() > 0.5), 'Экстремум слишком близко к правому концу');
+			extX.forEach((elem) => genAssert((elem - minX).abs() > 0.5, 'Экстремум слишком близко к левому концу'));
+			extX.forEach((elem) => genAssert((elem - maxX).abs() > 0.5, 'Экстремум слишком близко к правому концу'));
 		
 			let extY = extremumsY(func, minX, maxX)
 			console.log(extY);
