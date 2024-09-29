@@ -506,13 +506,13 @@ chas2.task = {
 		console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
 
 		task.text = [];
-		task.text.push(`На рисунке изображён график`);
+		task.text.push('На рисунке изображён график');
 		switch (type) {
-			case `function`:
-				task.text.push(`$y=f(x)$,`);
+			case 'function':
+				task.text.push('$y=f(x)$,');
 				break;
-			case `derivative`:
-				task.text.push(`$y=f\`(x)$ — производной функции,`);
+			case 'derivative':
+				task.text.push('$y=f\'(x)$ — производной функции,');
 				break;
 			default:
 				throw new Error('Не выбран тип задания. Укажите type.');
