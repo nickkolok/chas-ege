@@ -469,7 +469,284 @@ chas2.task = {
 		chas2.task.setEquationTask(o, taskOptions);
 	},
 
+	/** @function NApi.task.setTaskWithGraphOfFunctionDerivative
+ * На рисунке изображён график производной/функции
+ * @param {String} type derivative or function
+ * @param {Object} boundariesOfGraph {minX, maxX, minY, maxY}
+ * @param {Object} subBoundaries {minX, maxX}
+ * @param {Object} canvasSettings {height, width, scale, }
+ * @param {Array} questionsF {main:integer_points||point||intervals, variants, conditions} 
+ * @param {Boolean} extremumsIsInteger
+ * @param {Boolean} rootsIsInteger 
+ */
+	setTaskWithGraphOfFunctionDerivative: function (o) {
+		let { type = ['function', 'derivative'].iz(), 
+			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1}, 
+			canvasSettings: { height = 400, width = 500, scale = 20 } = {}, 
+			questionsF: { main = ['integer_points', 'point', 'intervals'].iz(), 
+			variants, 
+			conditions},
+			minimumNumberOfExtremes = 0,
+			minimumDifferenceBetweenExtremes = 2, 
+			extremumsIsInteger = undefined, 
+			rootsIsInteger = undefined } = o;
 
+		let task = o.clone();
+		function createSpline({ type, minX, maxX,  minY, maxY, stepForX = 1, stepForY = 1, extremumsIsInteger = false, rootsIsInteger = false, minimumDifferenceBetweenExtremes = 1}) {
+			let X = [];
+			let Y = [];
+		
+			for (let i = minX; i <= maxX; i += stepForX) {
+				X.push(i);
+				Y.push(sl(minY+1, maxY-1, stepForY));
+			}
+			let spline = new Spline(X, Y);
+			let func = (x) => spline.at(x);
+			let painFunc;
+			switch (type) {
+				case 'derivative':
+					painFunc = (x) => 1000 * (spline.at(x + 0.001) - spline.at(x - 0.001));
+					break;
+				case 'function':
+				default:
+					painFunc = (x) => spline.at(x);
+					break;
+			}
+		
+			genAssert(painFunc(maxX) < maxY && painFunc(maxX) > minY, 'Функция вышла за пределы сетки с правого конца');
+			genAssert(painFunc(minX) < maxY && painFunc(minX) > minY, 'Функция вышла за пределы сетки с левого конца');
+		
+			let extX = extremumsX(painFunc, minX, maxX);
+			console.log('extX',extX, minimumNumberOfExtremes);
+			genAssert(extX.length > minimumNumberOfExtremes, 'Минимальное количество экстремумов '+minimumNumberOfExtremes);
+			console.log(extX);
+			extX.forEach((elem) => genAssert((elem - minX).abs() > 0.5, 'Экстремум слишком близко к левому концу'));
+			extX.forEach((elem) => genAssert((elem - maxX).abs() > 0.5, 'Экстремум слишком близко к правому концу'));
+		
+			let extY = extremumsY(painFunc, minX, maxX)
+			console.log(extY);
+			extY.forEach((elem) => genAssert(elem < maxY, 'Функция вышла за пределы сетки сверху'))
+			extY.forEach((elem) => genAssert(elem > minY, 'Функция вышла за пределы сетки снизу'))
+			extY.forEach((elem) => genAssert(elem.abs() > 0.5, 'Экстремум слишком близко к оси Ox'));
+			extY.forEach((elem, index) => {
+				if (index > 0) {
+					genAssert(Math.abs(elem - extY[index - 1]) >= minimumDifferenceBetweenExtremes, 'Разница между соседними экстремумами меньше, чем '+minimumDifferenceBetweenExtremes);
+				}
+			});
+		
+			genAssertGraphIntersectsPointWithNeighborhood(painFunc, 1.1, -0.3, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(painFunc, -0.5, 1.1, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(painFunc, -0.3, -0.3, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(painFunc, maxX, -0.3, 0.2);
+			genAssertGraphIntersectsPointWithNeighborhood(painFunc, minX, -0.3, 0.2);
+		
+			switch (extremumsIsInteger) {
+				case true:
+					extX.forEach((elem) => {
+						genAssert(isCloseToInteger(elem, 0.1), 'Значение экстремума отличается от целого числа более чем на 0.1');
+					});
+					break;
+				case false:
+					extX.forEach((elem) => {
+						genAssert(!isCloseToInteger(elem, 0.3), 'Значение экстремума отличается от целого числа менее чем на 0.3');
+					});
+					break;
+				default:
+					break;
+			}
+		
+			let rootFunc = roots(painFunc, minX, maxX);
+			switch (rootsIsInteger) {
+				case true:
+					rootFunc.forEach((root) => {
+						genAssert(isCloseToInteger(root, 0.1), 'Значение корня отличается от целого числа более чем на 0.1');
+					});
+					break;
+				case false:
+					rootFunc.forEach((root) => {
+						genAssert(!isCloseToInteger(root, 0.3), 'Значение корня отличается от целого числа менее чем на 0.3');
+					});
+					break;
+				default:
+					break;
+			}
+			return func;
+		};
+
+		function paintSpline(options) {
+			const {
+				func,
+				minX,
+				maxX,
+				scale = 20,
+				height = 400,
+				width = 500,
+				font = "12px liberation_sans",
+				lineWidth = 0.1
+			} = options;
+		
+			return function(ctx) {
+				ctx.drawCoordinatePlane(width, height, { hor: 1, ver: 1 }, { x1: '1', y1: '1', sh1: 13 }, scale);
+				ctx.font = font;
+				ctx.drawLine(scale * maxX, 5, scale * maxX, -5);
+				ctx.drawLine(scale * minX, 5, scale * minX, -5);
+				if (maxX != 0 && maxX != 1) ctx.fillText(maxX, scale * maxX, 15);
+				if (minX != 0 && minX != 1) ctx.fillText(minX, scale * minX - 13, 15);
+				ctx.scale(scale, -scale);
+				ctx.lineWidth = lineWidth;
+				graph9AdrawFunction(ctx, func, { minX: minX, maxX: maxX, minY: -9, maxY: 9, step: 0.01 });
+				graph9AmarkCircles(ctx, [ [maxX, func(maxX)], [minX, func(minX)] ], 2, 0.2);
+				ctx.fillStyle = "white";
+				graph9AmarkCircles(ctx, [ [maxX, func(maxX)], [minX, func(minX)] ], 2, 0.1);
+			};
+		}
+
+		
+		let func = createSpline({
+			minX: minX,
+			maxX: maxX,
+			minY: minY,
+			maxY: maxY,
+			extremumsIsInteger: extremumsIsInteger,
+			rootsIsInteger: rootsIsInteger,
+			type: type,
+			stepForX: stepForX,
+			stepForY: stepForY,
+			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
+		});
+
+		let paint = paintSpline({
+			func: func,
+			minX: minX,
+			maxX: maxX,
+			scale: scale
+		});
+
+		console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
+
+		task.text = [];
+		task.text.push('На рисунке изображён график');
+		switch (type) {
+			case 'function':
+				task.text.push('функции $y=f(x)$,');
+				break;
+			case 'derivative':
+				task.text.push('$y=f\'(x)$ — производной функции,');
+				break;
+			default:
+				throw new Error('Не выбран тип задания. Укажите type.');
+		}
+
+		task.text.push('определённой на интервале $(' + minX + ';' + maxX + ')$. ' + ['Найдите', 'Определите'].iz());
+
+		let find = '';
+		if (type == 'function')
+			switch (conditions.iz()) {
+				case 'derivative_is_positive':
+					find = 'производная функции положительна'
+					answer = findIncreasingIntervals(func, minX, maxX)
+					break;
+				case 'derivative_is_negative':
+					find = 'производная функции отрицательна'
+					answer = findDecreasingIntervals(func, minX, maxX)
+					break;
+				case 'derivative_is_zero' && main == 'integer_points':
+					find = 'производная функции' + ['равна нулю', ', в которых касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$']].iz()
+					answer = findExtremumsOfFunctionSort(func, minX, maxX)
+					break;
+				case 'extreme_points' && main == 'integer_points':
+					find = 'находятся экстремумы функции $f(x)$'
+					answer = findExtremumsOfFunctionSort(func, minX, maxX)
+					break;
+				case 'function_is_positive':
+					find = 'функции положительна'
+					answer = findPositiveIntervals(func, minX, maxX)
+					break;
+				case 'function_is_negative':
+					find = 'функции отрицательна'
+					answer = findNegativeIntervals(func, minX, maxX)
+					break;
+				case 'points_on_the_segment':
+					find = 'на отрезке';
+					answer = transformExtremumsToIntervals(minX, maxX);
+				default:
+					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
+			}
+		console.log('Выбранное', answer)
+		switch (main) {
+			case 'integer_points' && conditions!== 'points_on_the_segment':
+				answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
+				genAssertNonempty(answer, 'Не нашлось ни одной целой точки');
+				console.log('после обработки flatMap', answer)
+				switch (variants.iz()) {
+					case 'sum':
+						task.text.push('сумму');
+						answer = answer.sum()
+						break;
+					case 'production':
+						task.text.push('произведение');
+						answer = answer.production()
+						break;
+					case 'number':
+						task.text.push('количество');
+						answer = answer.length
+						break;
+					case 'largest':
+						task.text.push('наибольшую из');
+						answer = answer.maxE()
+						break;
+					case 'smallest':
+						task.text.push('наименьшую из');
+						answer = answer.minE()
+						break;
+				};
+				task.text.push(' целых точек, в которых');
+				break;
+			case 'point'&& conditions!== 'points_on_the_segment':
+				switch (variants.iz()) {
+					case 'minimum':
+						find = 'точку минимума'
+						answer = [];
+						break;
+					case 'maximum':
+						find = 'точку максимума'
+						answer = [];
+						break;
+					case 'extremum':
+						find = 'точку экстремума'
+						answer = [];
+						break;
+				}
+			case 'interval'&& conditions!== 'points_on_the_segment':
+				answer = answer.map((elem)=>elem[1]-elem[0]);
+				switch (variants) {
+					case 'largest':
+						task.text.push('наибольший');
+						answer = answer.maxE()
+						break;
+					case 'smallest':
+						task.text.push('наименьший');
+						answer = answer.minE()
+						break;
+				}
+				task.text.push(' интервал, на котором');
+				break;
+			default:
+				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
+		}
+		console.log('Готовый ответ', answer)
+		task.text.push(find + '.');
+		task.text = task.text.join(' ');
+		task.answers = answer;
+
+
+		NAtask.setTask(task);
+		NAtask.modifiers.addCanvasIllustration({
+			width: width,
+			height: height,
+			paint: paint,
+		});
+	},
 	/** @function NApi.task.setDilationTask
 	 * Составить задание о растяжении геометрической фигуры
 	 */
@@ -1084,7 +1361,7 @@ chas2.task = {
 				}
 			}
 			possibleMultipliers.shuffle();
-			console.log(possibleMultipliers);
+			//console.log(possibleMultipliers);
 			for (var i of possibleMultipliers){
 				if(sl1() && (ans/i.sqrt()*1000).isAlmostInteger()){
 					o.text += ' Ответ разделите на $' + i.texsqrt(opts.useMultiples) + '$.';
@@ -1099,6 +1376,40 @@ chas2.task = {
 				}
 			}
 			throw new RangeError('multiplyAnswerBySqrt(): can find no appropriate square root');
+		},
+
+		/** @function chas2.task.modifiers.multiplyAnswerByPI
+		 * Добавить фразу "Ответ умножьте на $\PI$." и домножить сам ответ.
+		 * Добавить фразу "Ответ разделите на $\PI$." и разделить сам ответ.
+		 */
+		multiplyAnswerByPI : function() {
+			var o = chas2.task.getTask();
+			if (o.answers.length != 1){
+				throw new TypeError('Fixme: cannot apply multiplyAnswerByPI() to multiple answers')
+			}
+			//Меняем запятую на точку для корректной работы Number
+			var ans = Number(o.answers[0].replace(',', '.'));
+
+			if ((ans*1000).isAlmostInteger()){
+				//Ответ и так хорош!
+				return;
+			}
+
+			if ((ans / Math.PI * 1000).isAlmostInteger()) {
+				o.text += ' Ответ разделите на $\\pi$.';
+				o.answers = [(ans / Math.PI).okrugldo((10).pow(-6)).ts()]
+				chas2.task.setTask(o);
+				return;
+			}
+
+			if ((ans * Math.PI * 1000).isAlmostInteger()) {
+				o.text += ' Ответ умножьте на $\\pi$.';
+				o.answers = [(ans * Math.PI).okrugldo((10).pow(-6)).ts()]
+				chas2.task.setTask(o);
+				return;
+			}
+
+			throw new RangeError('multiplyAnswerByPI(): the answer is not integer when multiplied or divided by PI');
 		},
 
 		/** @function chas2.task.modifiers.roundUpTo
