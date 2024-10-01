@@ -482,17 +482,18 @@ chas2.task = {
 	setTaskWithGraphOfFunctionDerivative: function (o) {
 		let { type, 
 			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1}, 
-			canvasSettings: { height = 400, width = 500, scale = 20 } = {}, 
+			canvasSettings: {step = 0.01, scale = 20, height = 400, width = 500, font = "12px liberation_sans", lineWidth = 0.1, singleSegmentX = 1, singleSegmentY = 1}, 
 			questionsF: { main, variants, conditions},
 			minimumNumberOfExtremes = 1,
 			minimumDifferenceBetweenExtremes = 1, 
 			extremumsIsInteger = false, 
 			rootsIsInteger = false } = o;
+
 		conditions = conditions.iz();
 
 		let task = o.clone();
 		
-		let test = createSpline({
+		let func = createSpline({
 			minX: minX,
 			maxX: maxX,
 			minY: minY,
@@ -506,20 +507,21 @@ chas2.task = {
 			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
 		});
 
-		let func = test[0];
-		let X = test[1];
-		let Y = test[2];
-
-		console.log(func);
-
 		let paint = paintSpline({
 			func: func,
 			minX: minX,
 			maxX: maxX,
-			scale: scale
-		},[X,Y].T());
-
-		//console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
+			minY: minY,
+			maxY: maxY,
+			scale: scale,
+			step: step,
+			height: height,
+			width: width,
+			font: font,
+			lineWidth: lineWidth,
+			singleSegmentX: singleSegmentX,
+			singleSegmentY: singleSegmentY,
+		});
 
 		task.text = [];
 		task.text.push('На рисунке изображён график');
@@ -630,11 +632,9 @@ chas2.task = {
 			default:
 				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
 		}
-		//console.log('Готовый ответ', answer)
 		task.text.push(find + '.');
 		task.text = task.text.join(' ');
 		task.answers = answer;
-
 
 		NAtask.setTask(task);
 		NAtask.modifiers.addCanvasIllustration({
