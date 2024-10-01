@@ -572,6 +572,7 @@ chas2.task = {
 		switch (main) {
 			case 'integer_points':
 				answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
+				task.analys = 'Целые точки: $'+answer.join(',')+'$',
 				genAssertNonempty(answer, 'Не нашлось ни одной целой точки');
 				switch (variants.iz()) {
 					case 'sum':
