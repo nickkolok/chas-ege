@@ -480,16 +480,15 @@ chas2.task = {
  * @param {Boolean} rootsIsInteger 
  */
 	setTaskWithGraphOfFunctionDerivative: function (o) {
-		let { type = ['function', 'derivative'].iz(), 
+		let { type, 
 			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1}, 
 			canvasSettings: { height = 400, width = 500, scale = 20 } = {}, 
-			questionsF: { main = ['integer_points', 'point', 'intervals'].iz(), 
-			variants, 
-			conditions},
+			questionsF: { main, variants, conditions},
 			minimumNumberOfExtremes = 1,
-			minimumDifferenceBetweenExtremes = 2, 
-			extremumsIsInteger = undefined, 
-			rootsIsInteger = undefined } = o;
+			minimumDifferenceBetweenExtremes = 1, 
+			extremumsIsInteger = false, 
+			rootsIsInteger = false } = o;
+		conditions = conditions.iz();
 
 		let task = o.clone();
 		
@@ -507,6 +506,8 @@ chas2.task = {
 			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
 		});
 
+		console.log(func);
+
 		let paint = paintSpline({
 			func: func,
 			minX: minX,
@@ -514,7 +515,7 @@ chas2.task = {
 			scale: scale
 		});
 
-		console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
+		//console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
 
 		task.text = [];
 		task.text.push('На рисунке изображён график');
@@ -533,7 +534,7 @@ chas2.task = {
 
 		let find = '';
 		if (type == 'function')
-			switch (conditions.iz()) {
+			switch (conditions) {
 				case 'derivative_is_positive':
 					find = 'производная функции положительна'
 					answer = findIncreasingIntervals(func, minX, maxX)
@@ -562,14 +563,12 @@ chas2.task = {
 					find = 'на отрезке';
 					answer = transformExtremumsToIntervals(minX, maxX);
 				default:
-					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions');
+					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: '+main+' conditions: '+conditions);
 			}
-		console.log('Выбранное', answer)
 		switch (main) {
-			case 'integer_points' && conditions!== 'points_on_the_segment':
+			case 'integer_points':
 				answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 				genAssertNonempty(answer, 'Не нашлось ни одной целой точки');
-				console.log('после обработки flatMap', answer)
 				switch (variants.iz()) {
 					case 'sum':
 						task.text.push('сумму');
@@ -626,7 +625,7 @@ chas2.task = {
 			default:
 				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
 		}
-		console.log('Готовый ответ', answer)
+		//console.log('Готовый ответ', answer)
 		task.text.push(find + '.');
 		task.text = task.text.join(' ');
 		task.answers = answer;
