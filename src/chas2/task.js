@@ -486,121 +486,12 @@ chas2.task = {
 			questionsF: { main = ['integer_points', 'point', 'intervals'].iz(), 
 			variants, 
 			conditions},
-			minimumNumberOfExtremes = 0,
+			minimumNumberOfExtremes = 1,
 			minimumDifferenceBetweenExtremes = 2, 
 			extremumsIsInteger = undefined, 
 			rootsIsInteger = undefined } = o;
 
 		let task = o.clone();
-		function createSpline({ type, minX, maxX,  minY, maxY, stepForX = 1, stepForY = 1, extremumsIsInteger = false, rootsIsInteger = false, minimumDifferenceBetweenExtremes = 1}) {
-			let X = [];
-			let Y = [];
-		
-			for (let i = minX; i <= maxX; i += stepForX) {
-				X.push(i);
-				Y.push(sl(minY+1, maxY-1, stepForY));
-			}
-			let spline = new Spline(X, Y);
-			let func = (x) => spline.at(x);
-			let painFunc;
-			switch (type) {
-				case 'derivative':
-					painFunc = (x) => 1000 * (spline.at(x + 0.001) - spline.at(x - 0.001));
-					break;
-				case 'function':
-				default:
-					painFunc = (x) => spline.at(x);
-					break;
-			}
-		
-			genAssert(painFunc(maxX) < maxY && painFunc(maxX) > minY, 'Функция вышла за пределы сетки с правого конца');
-			genAssert(painFunc(minX) < maxY && painFunc(minX) > minY, 'Функция вышла за пределы сетки с левого конца');
-		
-			let extX = extremumsX(painFunc, minX, maxX);
-			console.log('extX',extX, minimumNumberOfExtremes);
-			genAssert(extX.length > minimumNumberOfExtremes, 'Минимальное количество экстремумов '+minimumNumberOfExtremes);
-			console.log(extX);
-			extX.forEach((elem) => genAssert((elem - minX).abs() > 0.5, 'Экстремум слишком близко к левому концу'));
-			extX.forEach((elem) => genAssert((elem - maxX).abs() > 0.5, 'Экстремум слишком близко к правому концу'));
-		
-			let extY = extremumsY(painFunc, minX, maxX)
-			console.log(extY);
-			extY.forEach((elem) => genAssert(elem < maxY, 'Функция вышла за пределы сетки сверху'))
-			extY.forEach((elem) => genAssert(elem > minY, 'Функция вышла за пределы сетки снизу'))
-			extY.forEach((elem) => genAssert(elem.abs() > 0.5, 'Экстремум слишком близко к оси Ox'));
-			extY.forEach((elem, index) => {
-				if (index > 0) {
-					genAssert(Math.abs(elem - extY[index - 1]) >= minimumDifferenceBetweenExtremes, 'Разница между соседними экстремумами меньше, чем '+minimumDifferenceBetweenExtremes);
-				}
-			});
-		
-			genAssertGraphIntersectsPointWithNeighborhood(painFunc, 1.1, -0.3, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(painFunc, -0.5, 1.1, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(painFunc, -0.3, -0.3, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(painFunc, maxX, -0.3, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(painFunc, minX, -0.3, 0.2);
-		
-			switch (extremumsIsInteger) {
-				case true:
-					extX.forEach((elem) => {
-						genAssert(isCloseToInteger(elem, 0.1), 'Значение экстремума отличается от целого числа более чем на 0.1');
-					});
-					break;
-				case false:
-					extX.forEach((elem) => {
-						genAssert(!isCloseToInteger(elem, 0.3), 'Значение экстремума отличается от целого числа менее чем на 0.3');
-					});
-					break;
-				default:
-					break;
-			}
-		
-			let rootFunc = roots(painFunc, minX, maxX);
-			switch (rootsIsInteger) {
-				case true:
-					rootFunc.forEach((root) => {
-						genAssert(isCloseToInteger(root, 0.1), 'Значение корня отличается от целого числа более чем на 0.1');
-					});
-					break;
-				case false:
-					rootFunc.forEach((root) => {
-						genAssert(!isCloseToInteger(root, 0.3), 'Значение корня отличается от целого числа менее чем на 0.3');
-					});
-					break;
-				default:
-					break;
-			}
-			return func;
-		};
-
-		function paintSpline(options) {
-			const {
-				func,
-				minX,
-				maxX,
-				scale = 20,
-				height = 400,
-				width = 500,
-				font = "12px liberation_sans",
-				lineWidth = 0.1
-			} = options;
-		
-			return function(ctx) {
-				ctx.drawCoordinatePlane(width, height, { hor: 1, ver: 1 }, { x1: '1', y1: '1', sh1: 13 }, scale);
-				ctx.font = font;
-				ctx.drawLine(scale * maxX, 5, scale * maxX, -5);
-				ctx.drawLine(scale * minX, 5, scale * minX, -5);
-				if (maxX != 0 && maxX != 1) ctx.fillText(maxX, scale * maxX, 15);
-				if (minX != 0 && minX != 1) ctx.fillText(minX, scale * minX - 13, 15);
-				ctx.scale(scale, -scale);
-				ctx.lineWidth = lineWidth;
-				graph9AdrawFunction(ctx, func, { minX: minX, maxX: maxX, minY: -9, maxY: 9, step: 0.01 });
-				graph9AmarkCircles(ctx, [ [maxX, func(maxX)], [minX, func(minX)] ], 2, 0.2);
-				ctx.fillStyle = "white";
-				graph9AmarkCircles(ctx, [ [maxX, func(maxX)], [minX, func(minX)] ], 2, 0.1);
-			};
-		}
-
 		
 		let func = createSpline({
 			minX: minX,
@@ -612,6 +503,7 @@ chas2.task = {
 			type: type,
 			stepForX: stepForX,
 			stepForY: stepForY,
+			minimumNumberOfExtremes: minimumNumberOfExtremes,
 			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
 		});
 
