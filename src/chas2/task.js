@@ -492,7 +492,7 @@ chas2.task = {
 
 		let task = o.clone();
 		
-		let func = createSpline({
+		let test = createSpline({
 			minX: minX,
 			maxX: maxX,
 			minY: minY,
@@ -506,6 +506,10 @@ chas2.task = {
 			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
 		});
 
+		let func = test[0];
+		let X = test[1];
+		let Y = test[2];
+
 		console.log(func);
 
 		let paint = paintSpline({
@@ -513,7 +517,7 @@ chas2.task = {
 			minX: minX,
 			maxX: maxX,
 			scale: scale
-		});
+		},[X,Y].T());
 
 		//console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
 
