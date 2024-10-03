@@ -487,8 +487,8 @@ chas2.task = {
 			numberOfExtremes = {min:0, max:1000},
 			numberOfRoots = {min:0, max:1000},
 			minimumDifferenceBetweenExtremes = 1,
-			extremumsIsInteger = false,
-			rootsIsInteger = false } = o;
+			extremumsIsInteger = {int: 'no_matter', tolerance: 0.2},
+			rootsIsInteger = {int: 'no_matter', tolerance: 0.2}, } = o;
 
 		conditions = conditions.iz();
 		variants = variants.iz()
@@ -562,6 +562,14 @@ chas2.task = {
 					answer = extremumsX(func, minX, maxX)
 					console.log(answer);
 					break;
+				case 'minimum_points':
+					find = 'точек минимума'
+					answer = findMinimum(func, minX, maxX).map((elem)=>elem[0]);
+					break;
+				case 'maximums_points':
+					find = 'точек максимума'
+					answer = findMaximum(func, minX, maxX).map((elem)=>elem[0]);
+					break;
 				case 'function_is_positive':
 					find = 'функции положительна'
 					answer = findPositiveIntervals(func, minX, maxX)
@@ -578,7 +586,7 @@ chas2.task = {
 			}
 		switch (main) {
 			case 'integer_points':
-				if (!['extreme_points', 'derivative_is_zero'].includes(conditions)) {
+				if (!['extreme_points', 'derivative_is_zero', 'minimum_points', 'maximums_points'].includes(conditions)) {
 					answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 					task.analys = 'Целые точки: $' + answer.join(',') + '$';
 				}else{
@@ -608,7 +616,7 @@ chas2.task = {
 						answer = answer.minE()
 						break;
 				};
-				if (!['extreme_points'].includes(conditions)) {
+				if (!['extreme_points', 'maximums_points', 'minimum_points'].includes(conditions)) {
 					task.text.push(' целых точек, в которых');
 				}
 				break;
