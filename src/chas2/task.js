@@ -541,11 +541,11 @@ chas2.task = {
 
 		task.text.push('определённой на интервале $(' + minX + ';' + maxX + ')$.');
 
-		if (conditions !== 'value_on_the_segment') {
-			task.text.push(['Найдите', 'Определите'].iz());
+		if (conditions == 'value_on_the_segment' && ['largest_value','smallest_value'].includes(variants)) {
+			task.text.push('В какой точке отрезка');
 		}
 		else {
-			task.text.push('В какой точке отрезка');
+			task.text.push(['Найдите', 'Определите'].iz());
 		}
 
 		let find = '';
@@ -592,7 +592,6 @@ chas2.task = {
 				switch (conditions) {
 					case 'value_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX);
-						task.text.push('функция $f(x)$');
 						console.log(answer);
 						break;
 					//case 'extremums_points':
@@ -649,25 +648,23 @@ chas2.task = {
 			case 'point':
 				switch (variants) {
 					case 'minimum':
-						find = 'имеет точку минимума';
 						answer = answer.intIntervalsMinimums.iz();
-						task.text.splice(task.text.length - 1, 0, '$['+answer.leftEnd+';'+answer.rightEnd+']$');
+						find = 'точку минимума функция $f(x)$ на отрезке $['+answer.leftEnd+';'+answer.rightEnd+']$';
 						answer = answer.ext.round();
 						break;
 					case 'maximum':
-						find = 'имеет точку максимума'
 						answer = answer.intIntervalsMaximums.iz();
-						task.text.splice(task.text.length - 1, 0, '$['+answer.leftEnd+';'+answer.rightEnd+']$');
+						find = 'точку максимума функция $f(x)$ на отрезке $['+answer.leftEnd+';'+answer.rightEnd+']$';
 						answer = answer.ext.round();
 						break;
 					case 'smallest_value':
-						find = 'принимает наименьшее значение';
+						find = 'функция $f(x)$ принимает наименьшее значение';
 						answer = answer.intIntervalsMinimums.iz();
 						task.text.splice(task.text.length - 1, 0, '$['+answer.leftEnd+';'+answer.rightEnd+']$');
 						answer = answer.ext.round();
 						break;
 					case 'largest_value':
-						find = 'принимает наибольшее значение';
+						find = 'функция $f(x)$ принимает наибольшее значение';
 						answer = answer.intIntervalsMaximums.iz();
 						task.text.splice(task.text.length - 1, 0, '$['+answer.leftEnd+';'+answer.rightEnd+']$');
 						answer = answer.ext.round();
