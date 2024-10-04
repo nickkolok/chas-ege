@@ -484,18 +484,18 @@ chas2.task = {
 			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1 },
 			canvasSettings: { step = 0.01, scale = 20, height = 400, width = 500, font = "12px liberation_sans", lineWidth = 0.1, singleSegmentX = 1, singleSegmentY = 1 },
 			questionsF: { main, variants, conditions },
-			numberOfExtremes = {min:0, max:1000},
-			numberOfRoots = {min:0, max:1000},
+			numberOfExtremes = { min: 0, max: 1000 },
+			numberOfRoots = { min: 0, max: 1000 },
 			minimumDifferenceBetweenExtremes = 1,
-			extremumsIsInteger = {int: 'no_matter', tolerance: 0.2},
-			rootsIsInteger = {int: 'no_matter', tolerance: 0.2}, } = o;
+			extremumsIsInteger = { int: 'no_matter', tolerance: 0.2 },
+			rootsIsInteger = { int: 'no_matter', tolerance: 0.2 }, } = o;
 
 		conditions = conditions.iz();
 		variants = variants.iz()
 
 		let task = o.clone();
 
-		let func = createSpline({
+		let {func, painFunc} = createSpline({
 			type: type,
 			minX: minX,
 			maxX: maxX,
@@ -506,12 +506,12 @@ chas2.task = {
 			stepForX: stepForX,
 			stepForY: stepForY,
 			numberOfExtremes: numberOfExtremes,
-			numberOfRoots: numberOfRoots, 
+			numberOfRoots: numberOfRoots,
 			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
 		});
 
 		let paint = paintSpline({
-			func: func,
+			func: painFunc,
 			minX: minX,
 			maxX: maxX,
 			minY: minY,
@@ -539,58 +539,84 @@ chas2.task = {
 				throw new Error('Не выбран тип задания. Укажите type.');
 		}
 
-		task.text.push('определённой на интервале $(' + minX + ';' + maxX + ')$. ' + ['Найдите', 'Определите'].iz());
+		task.text.push('определённой на интервале $(' + minX + ';' + maxX + ')$.');
+
+		if (conditions !== 'value_on_the_segment') {
+			task.text.push(['Найдите', 'Определите'].iz());
+		}
+		else {
+			task.text.push('В какой точке отрезка');
+		}
 
 		let find = '';
-		if (type == 'function')
-			switch (conditions) {
-				case 'derivative_is_positive':
-					find = 'производная функции положительна'
-					answer = findIncreasingIntervals(func, minX, maxX)
-					break;
-				case 'derivative_is_negative':
-					find = 'производная функции отрицательна'
-					answer = findDecreasingIntervals(func, minX, maxX)
-					break;
-				case 'derivative_is_zero':
-					find = 'производная функции' + ['равна нулю', ', в которых касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$']].iz()
-					answer = extremumsX(func, minX, maxX)
-					console.log(answer);
-					break;
-				case 'extreme_points':
-					find = 'точек экстремума'
-					answer = extremumsX(func, minX, maxX)
-					console.log(answer);
-					break;
-				case 'minimum_points':
-					find = 'точек минимума'
-					answer = findMinimum(func, minX, maxX).map((elem)=>elem[0]);
-					break;
-				case 'maximums_points':
-					find = 'точек максимума'
-					answer = findMaximum(func, minX, maxX).map((elem)=>elem[0]);
-					break;
-				case 'function_is_positive':
-					find = 'функции положительна'
-					answer = findPositiveIntervals(func, minX, maxX)
-					break;
-				case 'function_is_negative':
-					find = 'функции отрицательна'
-					answer = findNegativeIntervals(func, minX, maxX)
-					break;
-				case 'points_on_the_segment':
-					find = 'на отрезке';
-					answer = transformExtremumsToIntervals(minX, maxX);
-				default:
-					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: ' + main + ' conditions: ' + conditions);
-			}
+		switch (type) {
+			case 'function':
+				switch (conditions) {
+					case 'derivative_is_positive':
+						find = 'производная функции положительна'
+						answer = findIncreasingIntervals(func, minX, maxX)
+						break;
+					case 'derivative_is_negative':
+						find = 'производная функции отрицательна'
+						answer = findDecreasingIntervals(func, minX, maxX)
+						break;
+					case 'derivative_is_zero':
+						find = 'производная функции' + ['равна нулю', ', в которых касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$']].iz()
+						answer = extremumsX(func, minX, maxX)
+						break;
+					case 'extreme_points':
+						find = 'точек экстремума'
+						answer = extremumsX(func, minX, maxX)
+						break;
+					case 'minimum_points':
+						find = 'точек минимума'
+						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
+						break;
+					case 'maximums_points':
+						find = 'точек максимума'
+						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
+						break;
+					case 'function_is_positive':
+						find = 'функции положительна'
+						answer = findPositiveIntervals(func, minX, maxX)
+						break;
+					case 'function_is_negative':
+						find = 'функции отрицательна'
+						answer = findNegativeIntervals(func, minX, maxX)
+						break;
+					default:
+						break;
+				}
+				break;
+			case 'derivative':
+				switch (conditions) {
+					case 'value_on_the_segment':
+						answer = transformExtremumsToIntervals(func, minX, maxX);
+						task.text.push('функция $f(x)$');
+						console.log(answer);
+						break;
+					//case 'extremums_points':
+					case 'minimum_points':
+						find = 'точек минимума'
+						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
+						break;
+					case 'maximums_points':
+						find = 'точек максимума'
+						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
+						break;
+				}
+				break;
+			default:
+				throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: ' + main + ' conditions: ' + conditions);
+		}
+
 		switch (main) {
 			case 'integer_points':
 				if (!['extreme_points', 'derivative_is_zero', 'minimum_points', 'maximums_points'].includes(conditions)) {
 					answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 					task.analys = 'Целые точки: $' + answer.join(',') + '$';
-				}else{
-					answer = answer.map((elem)=>elem.round());
+				} else {
+					answer = answer.map((elem) => elem.round());
 					task.analys = 'Точки экстремума: $' + answer.join(',') + '$';
 				}
 				genAssertNonempty(answer, 'Не нашлось ни одной целой точки');
@@ -623,18 +649,30 @@ chas2.task = {
 			case 'point':
 				switch (variants) {
 					case 'minimum':
-						find = 'точку минимума'
-						answer = [];
+						find = 'имеет точку минимума';
+						answer = answer.intIntervalsMinimums.iz();
+						task.text.splice(task.text.length - 1, 0, '$['+answer.leftEnd+';'+answer.rightEnd+']$');
+						answer = answer.ext.round();
 						break;
 					case 'maximum':
-						find = 'точку максимума'
-						answer = [];
+						find = 'имеет точку максимума'
+						answer = answer.intIntervalsMaximums.iz();
+						task.text.splice(task.text.length - 1, 0, '$['+answer.leftEnd+';'+answer.rightEnd+']$');
+						answer = answer.ext.round();
 						break;
-					case 'extremum':
-						find = 'точку экстремума'
-						answer = [];
+					case 'smallest_value':
+						find = 'принимает наименьшее значение';
+						answer = answer.intIntervalsMinimums.iz();
+						task.text.splice(task.text.length - 1, 0, '$['+answer.leftEnd+';'+answer.rightEnd+']$');
+						answer = answer.ext.round();
 						break;
+					case 'largest_value':
+						find = 'принимает наибольшее значение';
+						answer = answer.intIntervalsMaximums.iz();
+						task.text.splice(task.text.length - 1, 0, '$['+answer.leftEnd+';'+answer.rightEnd+']$');
+						answer = answer.ext.round();
 				}
+				break;
 			case 'interval':
 				answer = answer.map((elem) => elem[1] - elem[0]);
 				switch (variants) {
