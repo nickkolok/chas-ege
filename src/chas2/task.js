@@ -572,7 +572,7 @@ chas2.task = {
 						find = 'точек минимума'
 						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
 						break;
-					case 'maximums_points':
+					case 'maximum_points':
 						find = 'точек максимума'
 						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
 						break;
@@ -594,14 +594,17 @@ chas2.task = {
 						answer = transformExtremumsToIntervals(func, minX, maxX);
 						console.log(answer);
 						break;
-					//case 'extremums_points':
+					case 'extreme_points':
+						find = 'точек экстремума функции $f(x)$'
+						answer = extremumsX(func, minX, maxX);
+						break;
 					case 'minimum_points':
-						find = 'точек минимума'
+						find = 'точек минимума функции $f(x)$'
 						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
 						break;
-					case 'maximums_points':
-						find = 'точек максимума'
-						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
+					case 'maximum_points':
+						find = 'точек максимума функции $f(x)$'
+						answer = findMaximums(func, minX, maxX).map((elem) => elem[0]);
 						break;
 				}
 				break;
@@ -611,7 +614,7 @@ chas2.task = {
 
 		switch (main) {
 			case 'integer_points':
-				if (!['extreme_points', 'derivative_is_zero', 'minimum_points', 'maximums_points'].includes(conditions)) {
+				if (!['extreme_points', 'derivative_is_zero', 'minimum_points', 'maximum_points'].includes(conditions)) {
 					answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 					task.analys = 'Целые точки: $' + answer.join(',') + '$';
 				} else {
@@ -641,7 +644,7 @@ chas2.task = {
 						answer = answer.minE()
 						break;
 				};
-				if (!['extreme_points', 'maximums_points', 'minimum_points'].includes(conditions)) {
+				if (!['extreme_points', 'maximum_points', 'minimum_points'].includes(conditions)) {
 					task.text.push(' целых точек, в которых');
 				}
 				break;
@@ -649,12 +652,12 @@ chas2.task = {
 				switch (variants) {
 					case 'minimum':
 						answer = answer.intIntervalsMinimums.iz();
-						find = 'точку минимума функция $f(x)$ на отрезке $['+answer.leftEnd+';'+answer.rightEnd+']$';
+						find = 'точку минимума функции $f(x)$ на отрезке $['+answer.leftEnd+';'+answer.rightEnd+']$';
 						answer = answer.ext.round();
 						break;
 					case 'maximum':
 						answer = answer.intIntervalsMaximums.iz();
-						find = 'точку максимума функция $f(x)$ на отрезке $['+answer.leftEnd+';'+answer.rightEnd+']$';
+						find = 'точку максимума функции $f(x)$ на отрезке $['+answer.leftEnd+';'+answer.rightEnd+']$';
 						answer = answer.ext.round();
 						break;
 					case 'smallest_value':
