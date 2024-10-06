@@ -571,8 +571,11 @@ chas2.task = {
                     find = 'производная функции отрицательна';
                     answer = findDecreasingIntervals(func, minX, maxX);
                     break;
+				case 'tangent_to_graph':
+					find = 'касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$ или совпадает с ней'].iz();
+					answer = extremumsX(func, minX, maxX);
                 case 'derivative_is_zero':
-						find = 'производная функции' + ['равна нулю', ', в которых касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$']].iz()
+					find = 'производная функции равна нулю';
                     answer = extremumsX(func, minX, maxX);
                     break;
                 case 'extreme_points':
@@ -636,12 +639,17 @@ chas2.task = {
 						find = 'функция убывает';
 						answer = findDecreasingIntervals(func, minX, maxX);
 						break;
+					case 'tangent_to_graph' :
+						find = 'касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + [+ sl(-20, 20, 0.1), sl(-20, 20, 0.1)+'x'].shuffleJoin('+').plusminus().replace('0x+',
+							'') + '$ или совпадает с ней'].iz();
+						answer = extremumsX(func, minX, maxX);
                 }
 				break;
 			default:
 				throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: ' + main + ' conditions: ' + conditions);
 		}
-
+		
+		if(main!== 'interval')
 		switch (conditions) {
 			case 'derivative_is_positive':
 			case 'derivative_is_negative':
@@ -658,6 +666,7 @@ chas2.task = {
 			case 'extreme_points':
 			case 'minimum_points':
 			case 'maximum_points':
+			case 'tangent_to_graph':
 				answer = answer.map((elem) => elem.round());
 				break;
 			case 'value_on_the_segment':
@@ -712,10 +721,15 @@ chas2.task = {
 						answer = answer.intIntervalsMaximums.iz();
 						task.text.splice(task.text.length - 1, 0, '$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
 						answer = answer.ext.round();
+					case 'abscissa': 
+						task.text.push('абсциссу')
+						answer = answer.iz();
 				}
 				break;
 			case 'interval':
-				answer = answer.map((elem) => elem[1] - elem[0]);
+				console.log(answer.map((elem) => [elem[0].round(),elem[1].round()]));
+				answer = answer.map((elem) => elem[1].round() - elem[0].round());
+				console.log(answer)
 				switch (variants) {
 					case 'largest':
 						task.text.push('наибольший');
@@ -726,12 +740,14 @@ chas2.task = {
 						answer = answer.minE()
 						break;
 				}
+				genAssert(answer!==0, 'Интервал не может быть нулевой длины')
 				task.text.push('по длине интервал, на котором');
 				break;
 			default:
 				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
 		}
 
+		if(main != 'interval')
 		switch (conditions) {
 			case 'derivative_is_positive':
 			case 'derivative_is_negative':
@@ -742,6 +758,12 @@ chas2.task = {
 			case 'function_is_decreasing':
 				task.text.push(' целых точек, в которых');
 				break;
+			case 'tangent_to_graph':
+				if(main == 'integer_points')
+				task.text.push('точек, в которых');
+				if(main == 'point')
+				task.text.push('точки, в которой');
+				break
 			default:
 				break;
 		}
@@ -756,6 +778,7 @@ chas2.task = {
 			height: height,
 			paint: paint,
 		});
+		NAtask.modifiers.allDecimalsToStandard();
 	},
 	/** @function NApi.task.setDilationTask
 	 * Составить задание о растяжении геометрической фигуры
