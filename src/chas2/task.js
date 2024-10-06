@@ -492,6 +492,7 @@ chas2.task = {
 
 		conditions = conditions.iz();
 		variants = variants.iz()
+		let answer;
 
 		let task = o.clone();
 
@@ -554,74 +555,79 @@ chas2.task = {
 				switch (conditions) {
 					case 'derivative_is_positive':
 						find = 'производная функции положительна'
-						answer = findIncreasingIntervals(func, minX, maxX)
+						answer = findIncreasingIntervals(func, minX, maxX).flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 						break;
 					case 'derivative_is_negative':
 						find = 'производная функции отрицательна'
-						answer = findDecreasingIntervals(func, minX, maxX)
+						answer = findDecreasingIntervals(func, minX, maxX).flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 						break;
 					case 'derivative_is_zero':
 						find = 'производная функции' + ['равна нулю', ', в которых касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$']].iz()
-						answer = extremumsX(func, minX, maxX)
+						answer = extremumsX(func, minX, maxX).map((elem)=>elem.round());
 						break;
 					case 'extreme_points':
 						find = 'точек экстремума'
-						answer = extremumsX(func, minX, maxX)
+						answer = extremumsX(func, minX, maxX).map((elem)=>elem.round());
 						break;
 					case 'minimum_points':
 						find = 'точек минимума'
-						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
+						answer = minimumsX(func, minX, maxX).map((elem)=>elem.round());
 						break;
 					case 'maximum_points':
 						find = 'точек максимума'
-						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
+						answer = maximumsX(func, minX, maxX).map((elem)=>elem.round());
 						break;
 					case 'function_is_positive':
 						find = 'функции положительна'
-						answer = findPositiveIntervals(func, minX, maxX)
+						answer = findPositiveIntervals(func, minX, maxX).flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 						break;
 					case 'function_is_negative':
 						find = 'функции отрицательна'
-						answer = findNegativeIntervals(func, minX, maxX)
+						answer = findNegativeIntervals(func, minX, maxX).flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 						break;
 					default:
 						break;
 				}
 				break;
 			case 'derivative':
+				let subSegment = getRandomSubSegment(minX, maxX, stepForX)
 				switch (conditions) {
 					case 'value_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX);
-						console.log(answer);
 						break;
 					case 'extreme_points':
 						find = 'точек экстремума функции $f(x)$'
-						answer = extremumsX(func, minX, maxX);
+						answer = extremumsX(func, minX, maxX).map((elem)=>elem.round());
 						break;
 					case 'minimum_points':
-						find = 'точек минимума функции $f(x)$'
-						answer = findMinimums(func, minX, maxX).map((elem) => elem[0]);
+						find = 'точек минимума функции $f(x)$';
+						answer = minimumsX(func, minX, maxX).map((elem)=>elem.round());
 						break;
 					case 'maximum_points':
-						find = 'точек максимума функции $f(x)$'
-						answer = findMaximums(func, minX, maxX).map((elem) => elem[0]);
+						find = 'точек максимума функции $f(x)$';
+						answer = maximumsX(func, minX, maxX).map((elem)=>elem.round());
+						break;
+					case 'extreme_points_on_the_segment':
+						find = 'точек экстремума функции $f(x)$ на отрезке $['+subSegment[0]+';'+subSegment[1]+']$'
+						answer = extremumsX(func, subSegment[0],subSegment[1]).map((elem)=>elem.round());
+						break;
+					case 'minimum_points_on_the_segment':
+						find = 'точек минимума функции $f(x)$ на отрезке $['+subSegment[0]+';'+subSegment[1]+']$'
+						answer = minimumsX(func, subSegment[0],subSegment[1]).map((elem)=>elem.round());
+						break;
+					case 'maximum_points_on_the_segment':
+						find = 'точек максимума функции $f(x)$ на отрезке $['+subSegment[0]+';'+subSegment[1]+']$'
+						answer = maximumsX(func, subSegment[0],subSegment[1]).map((elem)=>elem.round());
 						break;
 				}
 				break;
 			default:
 				throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: ' + main + ' conditions: ' + conditions);
 		}
-
+		console.log(answer);
 		switch (main) {
 			case 'integer_points':
-				if (!['extreme_points', 'derivative_is_zero', 'minimum_points', 'maximum_points'].includes(conditions)) {
-					answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
-					task.analys = 'Целые точки: $' + answer.join(',') + '$';
-				} else {
-					answer = answer.map((elem) => elem.round());
-					task.analys = 'Точки экстремума: $' + answer.join(',') + '$';
-				}
-				genAssertNonempty(answer, 'Не нашлось ни одной целой точки');
+				//genAssertNonempty(answer, 'Не нашлось ни одной целой точки');
 				switch (variants) {
 					case 'sum':
 						task.text.push('сумму');
@@ -644,7 +650,7 @@ chas2.task = {
 						answer = answer.minE()
 						break;
 				};
-				if (!['extreme_points', 'maximum_points', 'minimum_points'].includes(conditions)) {
+				if (!['extreme_points', 'maximum_points', 'minimum_points','extreme_points_on_the_segment', 'maximum_points_on_the_segment', 'minimum_points_on_the_segment', ].includes(conditions)) {
 					task.text.push(' целых точек, в которых');
 				}
 				break;
@@ -826,7 +832,7 @@ chas2.task = {
 			genAssert(answer.n < 1000000, 'Числитель дроби слишком большой (по модулю)');
 			genAssert(answer.d <= (o.maxDenominator || 20), 'Знаменатель дроби слишком большой');
 			genAssert(answer.d >= (o.minDenominator ||  2), 'Знаменатель дроби слишком маленький');
-1
+
 			// Вносим минус в числитель
 			answer.n *= answer.s;
 
