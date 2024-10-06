@@ -572,7 +572,7 @@ chas2.task = {
                     answer = findDecreasingIntervals(func, minX, maxX);
                     break;
 				case 'tangent_to_graph':
-					find = 'касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$ или совпадает с ней'].iz();
+					find = 'касательная к графику функции $f(x)$ параллельна ' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$ или совпадает с ней'].iz();
 					answer = extremumsX(func, minX, maxX);
                 case 'derivative_is_zero':
 					find = 'производная функции равна нулю';
@@ -640,9 +640,19 @@ chas2.task = {
 						answer = findDecreasingIntervals(func, minX, maxX);
 						break;
 					case 'tangent_to_graph' :
-						find = 'касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + [+ sl(-20, 20, 0.1), sl(-20, 20, 0.1)+'x'].shuffleJoin('+').plusminus().replace('0x+',
-							'') + '$ или совпадает с ней'].iz();
-						answer = extremumsX(func, minX, maxX);
+						answer = intPointsWithTolerance
+							(painFunc, {
+								minX: minX+1,
+								maxX: maxX-1,
+								minY: minY,
+								maxY: maxY,
+								step: 1,
+								tolerance: 0.1,
+							});
+						answer = answer.iz()
+						find = 'касательная к графику функции $f(x)$ параллельна ';
+						find += (answer[1].round() == 0)? 'оси абсцисс': 'графику функции $y=' + [+ sl(-20, 20, 0.1), answer[1].round()+'x'].shuffleJoin('+').plusminus()+'$';
+						find += ' или совпадает с ней';
                 }
 				break;
 			default:
@@ -672,7 +682,6 @@ chas2.task = {
 			case 'value_on_the_segment':
 				break;
 		}
-		console.log(answer);
 		switch (main) {
 			case 'integer_points':
 				switch (variants) {
@@ -723,13 +732,11 @@ chas2.task = {
 						answer = answer.ext.round();
 					case 'abscissa': 
 						task.text.push('абсциссу')
-						answer = answer.iz();
+						answer = answer[0];
 				}
 				break;
 			case 'interval':
-				console.log(answer.map((elem) => [elem[0].round(),elem[1].round()]));
 				answer = answer.map((elem) => elem[1].round() - elem[0].round());
-				console.log(answer)
 				switch (variants) {
 					case 'largest':
 						task.text.push('наибольший');
