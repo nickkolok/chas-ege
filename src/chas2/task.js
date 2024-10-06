@@ -763,7 +763,7 @@ chas2.task = {
 				}
 				break;
 			case 'interval':
-				task.analys += answer.map((elem)=>'$['+elem[0]+' ;'+elem[1]+']$').join(', ')
+				task.analys += answer.map((elem)=>'$['+elem[0].round()+' ;'+elem[1].round()+']$').join(', ')
 				answer = answer.map((elem) => elem[1].round() - elem[0].round());
 				switch (variants) {
 					case 'largest':
