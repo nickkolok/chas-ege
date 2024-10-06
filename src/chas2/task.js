@@ -566,36 +566,45 @@ chas2.task = {
                 case 'derivative_is_positive':
                     find = 'производная функции положительна';
                     answer = findIncreasingIntervals(func, minX, maxX);
+					task.analys = 'Интервалы, где производная функции положительна:'
                     break;
                 case 'derivative_is_negative':
                     find = 'производная функции отрицательна';
+					task.analys = 'Интервалы, где производная функции отрицательна:'
                     answer = findDecreasingIntervals(func, minX, maxX);
                     break;
 				case 'tangent_to_graph':
 					find = 'касательная к графику функции $f(x)$ параллельна ' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$ или совпадает с ней'].iz();
+					task.analys = 'Точки экстремума:'
 					answer = extremumsX(func, minX, maxX);
                 case 'derivative_is_zero':
 					find = 'производная функции равна нулю';
+					task.analys = 'Точки экстремума:'
                     answer = extremumsX(func, minX, maxX);
                     break;
                 case 'extreme_points':
                     find = 'точек экстремума';
+					task.analys = 'Точки экстремума:'
                     answer = extremumsX(func, minX, maxX);
                     break;
                 case 'minimum_points':
                     find = 'точек минимума';
+					task.analys = 'Точки минимума:'
                     answer = minimumsX(func, minX, maxX);
                     break;
                 case 'maximum_points':
                     find = 'точек максимума';
+					task.analys = 'Точки максимума:'
                     answer = maximumsX(func, minX, maxX);
                     break;
                 case 'function_is_positive':
-                    find = 'функции положительна';
+                    find = 'функция положительна';
+					task.analys = 'Интервалы, где функции положительна:'
                     answer = findPositiveIntervals(func, minX, maxX);
                     break;
                 case 'function_is_negative':
-                    find = 'функции отрицательна';
+                    find = 'функция отрицательна';
+					task.analys = 'Интервалы, где функции отрицательна:'
                     answer = findNegativeIntervals(func, minX, maxX);
                     break;
                 default:
@@ -609,34 +618,42 @@ chas2.task = {
                         break;
                     case 'extreme_points':
                         find = 'точек экстремума функции $f(x)$';
+						task.analys = 'Точки экстремума:'
                         answer = extremumsX(func, minX, maxX);
                         break;
                     case 'minimum_points':
                         find = 'точек минимума функции $f(x)$';
+						task.analys = 'Точки минимума:'
                         answer = minimumsX(func, minX, maxX);
                         break;
                     case 'maximum_points':
                         find = 'точек максимума функции $f(x)$';
+						task.analys = 'Точки максимума:'
                         answer = maximumsX(func, minX, maxX);
                         break;
                     case 'extreme_points_on_the_segment':
                         find = 'точек экстремума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
-                        answer = extremumsX(func, subSegment[0], subSegment[1]);
+                        task.analys = 'Точки экстремума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
+						answer = extremumsX(func, subSegment[0], subSegment[1]);
                         break;
                     case 'minimum_points_on_the_segment':
                         find = 'точек минимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
-                        answer = minimumsX(func, subSegment[0], subSegment[1]);
+                        task.analys = 'Точки минимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
+						answer = minimumsX(func, subSegment[0], subSegment[1]);
                         break;
                     case 'maximum_points_on_the_segment':
                         find = 'точек максимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
-                        answer = maximumsX(func, subSegment[0], subSegment[1]);
+                        task.analys = 'Точки максимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
+						answer = maximumsX(func, subSegment[0], subSegment[1]);
                         break;
 					case 'function_is_increasing':
 						find = 'функция возрастает';
+						task.analys = 'Интервалы, где функция возрастает:'
 						answer = findIncreasingIntervals(func, minX, maxX);
 						break;
 					case 'function_is_decreasing':
 						find = 'функция убывает';
+						task.analys = 'Интервалы, где функция убывает:'
 						answer = findDecreasingIntervals(func, minX, maxX);
 						break;
 					case 'tangent_to_graph' :
@@ -667,6 +684,7 @@ chas2.task = {
 			case 'function_is_negative':
 			case 'function_is_increasing':
 			case 'function_is_decreasing':
+				task.analys+= answer.map((elem)=>'$['+elem[0].ts()+' ;'+elem[1].ts()+']$').join(', ')+ '<br>'
 				answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 				break;
 			case 'extreme_points_on_the_segment':
@@ -684,6 +702,7 @@ chas2.task = {
 		}
 		switch (main) {
 			case 'integer_points':
+				task.analys+= 'Целые точки: $'+answer.join(', ') + '$';
 				switch (variants) {
 					case 'sum':
 						task.text.push('сумму');
@@ -732,10 +751,12 @@ chas2.task = {
 						answer = answer.ext.round();
 					case 'abscissa': 
 						task.text.push('абсциссу')
+						task.analys = 'Угловой коэффициент равен $'+answer[1]+'$, искомая точка $x='+answer[0]+'$.'
 						answer = answer[0];
 				}
 				break;
 			case 'interval':
+				task.analys += answer.map((elem)=>'$['+elem[0]+' ;'+elem[1]+']$').join(', ')
 				answer = answer.map((elem) => elem[1].round() - elem[0].round());
 				switch (variants) {
 					case 'largest':
