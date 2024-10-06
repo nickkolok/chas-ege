@@ -554,6 +554,7 @@ chas2.task = {
 						task.text.push('В какой точке отрезка');
 						break;
 				}
+			break;
 			default:
 				task.text.push(['Найдите', 'Определите'].iz());
 				break;
@@ -741,13 +742,19 @@ chas2.task = {
 					case 'smallest_value':
 						find = 'функция $f(x)$ принимает наименьшее значение';
 						answer = answer.intIntervalsMinimums.iz();
-						task.text.splice(task.text.length - 1, 0, '$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
+						if(conditions == 'value_on_the_segment')
+							task.text.push('$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
+						else
+							task.text.splice(task.text.length - 1, 0, '$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
 						answer = answer.ext.round();
 						break;
 					case 'largest_value':
 						find = 'функция $f(x)$ принимает наибольшее значение';
 						answer = answer.intIntervalsMaximums.iz();
-						task.text.splice(task.text.length - 1, 0, '$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
+						if(conditions == 'value_on_the_segment')
+							task.text.push('$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
+						else
+							task.text.splice(task.text.length - 1, 0, '$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
 						answer = answer.ext.round();
 					case 'abscissa': 
 						task.text.push('абсциссу')
