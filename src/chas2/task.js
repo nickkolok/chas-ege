@@ -685,7 +685,7 @@ chas2.task = {
 			case 'function_is_negative':
 			case 'function_is_increasing':
 			case 'function_is_decreasing':
-				task.analys+= answer.map((elem)=>'$['+elem[0].ts()+' ;'+elem[1].ts()+']$').join(', ')+ '<br>'
+				task.analys+= ' ' + answer.map((elem)=>'$['+elem[0].ts()+' ;'+elem[1].ts()+']$').join(', ');
 				answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
 				break;
 			case 'extreme_points_on_the_segment':
@@ -703,7 +703,7 @@ chas2.task = {
 		}
 		switch (main) {
 			case 'integer_points':
-				task.analys+= 'Целые точки: $'+answer.join(', ') + '$';
+				task.analys+= '$'+answer.join(', ') + '$';
 				switch (variants) {
 					case 'sum':
 						task.text.push('сумму');
