@@ -481,6 +481,7 @@ chas2.task = {
  */
 	setTaskWithGraphOfFunctionDerivative: function (o) {
 		let { type,
+			defined_on_interval = true,
 			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1 },
 			canvasSettings: { step = 0.01, scale = 20, height = 400, width = 500, font = "12px liberation_sans", lineWidth = 0.1, singleSegmentX = 1, singleSegmentY = 1 },
 			questionsF: { main, variants, conditions },
@@ -535,16 +536,20 @@ chas2.task = {
 		task.text = ['На рисунке изображён график'];
 		switch (type) {
 			case 'function':
-				task.text.push('функции $y=f(x)$,');
+				task.text.push('функции $y=f(x)$');
 				break;
 			case 'derivative':
-				task.text.push('$y=f\'(x)$ — производной функции,');
+				task.text.push('$y=f\'(x)$ — производной функции');
 				break;
 			default:
 				throw new Error('Не выбран тип задания. Укажите type.');
 		}
 
-		task.text.push('определённой на интервале $(' + minX + ';' + maxX + ')$.');
+		if (defined_on_interval) {
+			task.text.push(', определённой на интервале $(' + minX + ';' + maxX + ')$');
+		}
+		task.text[task.text.length - 1] += '.';
+		
 
 		switch (conditions) {
 			case 'value_on_the_segment':
