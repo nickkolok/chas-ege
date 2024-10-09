@@ -618,17 +618,27 @@ chas2.task = {
 					case 'extreme_points_on_the_segment':
 						find = 'точек экстремума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки экстремума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = extremumsX(func, subSegment[0], subSegment[1]);
+						answer = extremumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
 						break;
 					case 'minimum_points_on_the_segment':
 						find = 'точек минимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки минимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = minimumsX(func, subSegment[0], subSegment[1]);
+						answer = minimumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
 						break;
 					case 'maximum_points_on_the_segment':
 						find = 'точек максимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки максимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = maximumsX(func, subSegment[0], subSegment[1]);
+						answer = maximumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
+						break;
+					case 'derivative_is_zero_on_the_segment':
+						find = 'производная функции равна нулю на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						//task.analys = 'Точки экстремума:'
+						answer = extremumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
+						break;
+					case 'solutions_equation_on_the_segment':
+						find = 'решений уравнения $f\'(x)=0$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						//task.analys = 'Точки экстремума:'
+						answer = extremumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
 						break;
 					default:
 						break;
@@ -657,17 +667,17 @@ chas2.task = {
 					case 'extreme_points_on_the_segment':
 						find = 'точек экстремума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки экстремума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = extremumsX(func, subSegment[0], subSegment[1]);
+						answer = extremumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
 						break;
 					case 'minimum_points_on_the_segment':
 						find = 'точек минимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки минимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = minimumsX(func, subSegment[0], subSegment[1]);
+						answer = minimumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
 						break;
 					case 'maximum_points_on_the_segment':
 						find = 'точек максимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки максимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = maximumsX(func, subSegment[0], subSegment[1]);
+						answer = maximumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
 						break;
 					case 'function_is_increasing':
 						find = 'функция возрастает';
@@ -715,11 +725,13 @@ chas2.task = {
 				case 'minimum_points_on_the_segment':
 				case 'maximum_points_on_the_segment':
 				case 'derivative_is_zero':
+				case 'derivative_is_zero_on_the_segment':
 				case 'extreme_points':
 				case 'minimum_points':
 				case 'maximum_points':
 				case 'tangent_to_graph':
 				case 'solutions_equation':
+				case 'solutions_equation_on_the_segment':
 					answer = answer.map((elem) => elem.round());
 					break;
 				case 'value_on_the_segment':
