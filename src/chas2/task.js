@@ -561,6 +561,7 @@ chas2.task = {
 		}
 
 		let find = '';
+		let subSegment = getRandomSubSegment(minX, maxX, stepForX);
 		switch (type) {
 			case 'function':
 				switch (conditions) {
@@ -614,12 +615,26 @@ chas2.task = {
 						//task.analys = 'Интервалы, где функции отрицательна:'
 						answer = findNegativeIntervals(func, minX, maxX);
 						break;
+					case 'extreme_points_on_the_segment':
+						find = 'точек экстремума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						//task.analys = 'Точки экстремума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
+						answer = extremumsX(func, subSegment[0], subSegment[1]);
+						break;
+					case 'minimum_points_on_the_segment':
+						find = 'точек минимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						//task.analys = 'Точки минимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
+						answer = minimumsX(func, subSegment[0], subSegment[1]);
+						break;
+					case 'maximum_points_on_the_segment':
+						find = 'точек максимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						//task.analys = 'Точки максимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
+						answer = maximumsX(func, subSegment[0], subSegment[1]);
+						break;
 					default:
 						break;
 				}
 				break;
 			case 'derivative':
-				let subSegment = getRandomSubSegment(minX, maxX, stepForX);
 				switch (conditions) {
 					case 'value_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX);
