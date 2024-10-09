@@ -583,6 +583,11 @@ chas2.task = {
 					//task.analys = 'Точки экстремума:'
                     answer = extremumsX(func, minX, maxX);
                     break;
+				case 'solutions_equation':
+					find = 'решений уравнения $f\'(x)=0$';
+					//task.analys = 'Точки экстремума:'
+					answer = extremumsX(func, minX, maxX);
+					break;
                 case 'extreme_points':
                     find = 'точек экстремума';
 					//task.analys = 'Точки экстремума:'
@@ -696,6 +701,7 @@ chas2.task = {
 			case 'minimum_points':
 			case 'maximum_points':
 			case 'tangent_to_graph':
+			case 'solving_equation':
 				answer = answer.map((elem) => elem.round());
 				break;
 			case 'value_on_the_segment':
