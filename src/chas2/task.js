@@ -517,6 +517,8 @@ chas2.task = {
 			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
 		});
 
+		let points = generateMatrix(1, sl(4,10), minX+stepForX*0.25, maxX-stepForX*0.25, 0.1).iz();
+
 		let paint = paintSpline({
 			func: painFunc,
 			minX: minX,
@@ -531,6 +533,7 @@ chas2.task = {
 			lineWidth: lineWidth,
 			singleSegmentX: singleSegmentX,
 			singleSegmentY: singleSegmentY,
+			points: points,
 		});
 
 		task.text = ['На рисунке изображён график'];
@@ -619,6 +622,16 @@ chas2.task = {
 						find = 'функция отрицательна';
 						//task.analys = 'Интервалы, где функции отрицательна:'
 						answer = findNegativeIntervals(func, minX, maxX);
+						break;
+					case 'function_is_increasing':
+						find = 'функция возрастает';
+						//task.analys = 'Интервалы, где функция возрастает:'
+						answer = findIncreasingIntervals(func, minX, maxX);
+						break;
+					case 'function_is_decreasing':
+						find = 'функция убывает';
+						//task.analys = 'Интервалы, где функция убывает:'
+						answer = findDecreasingIntervals(func, minX, maxX);
 						break;
 					case 'extreme_points_on_the_segment':
 						find = 'точек экстремума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
@@ -714,7 +727,6 @@ chas2.task = {
 			default:
 				throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: ' + main + ' conditions: ' + conditions);
 		}
-
 		if (main !== 'interval')
 			switch (conditions) {
 				case 'derivative_is_positive':
@@ -724,7 +736,10 @@ chas2.task = {
 				case 'function_is_increasing':
 				case 'function_is_decreasing':
 					//task.analys+= ' ' + answer.map((elem)=>'$['+elem[0].ts()+' ;'+elem[1].ts()+']$').join(', ');
-					answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
+					if (main == 'integer_points')
+						answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
+					if (main == 'marked_points'){
+						answer = answer.flatMap((elem) => findPointsInIntervals(points, elem));}
 					break;
 				case 'extreme_points_on_the_segment':
 				case 'minimum_points_on_the_segment':
@@ -820,6 +835,23 @@ chas2.task = {
 				task.text.push('по длине интервал, на котором');
 				find += '. В ответ запишите длину этого интервала'
 				break;
+			case 'marked_points':
+				task.text.push('На оси абсцисс отмечены $'+points.length+'$ точек: $x\_1, x\_2, x\_3, \\dots, x\_' + points.length +'$.');
+				switch (variants) {
+					case 'number':
+						task.text.push('количество');
+						answer = answer.length;
+						break;
+					case 'largest':
+						task.text.push('наибольшую из');
+						answer = answer.maxE();
+						break;
+					case 'smallest':
+						task.text.push('наименьшую из');
+						answer = answer.minE();
+						break;
+				};
+				break;
 			default:
 				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
 		}
@@ -833,7 +865,10 @@ chas2.task = {
 				case 'function_is_negative':
 				case 'function_is_increasing':
 				case 'function_is_decreasing':
-					task.text.push(' целых точек, в которых');
+					if(main == 'integer_points')
+						task.text.push(' целых точек, в которых');
+					if(main == 'marked_points')
+						task.text.push('точек, в которых');
 					break;
 				case 'tangent_to_graph':
 					if (main == 'integer_points')
