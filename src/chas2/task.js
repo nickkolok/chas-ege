@@ -481,9 +481,10 @@ chas2.task = {
  */
 	setTaskWithGraphOfFunctionDerivative: function (o) {
 		let { type,
-			defined_on_interval = true,
+			definedOnInterval = true,
 			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1 },
-			canvasSettings: { step = 0.01, scale = 20, height = 400, width = 500, font = "12px liberation_sans", lineWidth = 0.1, singleSegmentX = 1, singleSegmentY = 1 },
+			canvasSettings: { step = 0.01, scale = 20, height = 400, width = 500, font = "14px liberation_sans", lineWidth = 0.1, singleSegmentX = 1, singleSegmentY = 1,
+				markedPoints = { type: ['symbol', 'number'].iz(), step: 2, fontMarkedPoints: "16px liberation_sans", numberOfPoints: { min: 4, max: 10 }, } },
 			questionsF: { main, variants, conditions },
 			numberOfExtremes = { min: 0, max: 1000 },
 			numberOfRoots = { min: 0, max: 1000 },
@@ -517,7 +518,16 @@ chas2.task = {
 			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
 		});
 
-		let points = generateMatrix(1, sl(4,10), minX+stepForX*0.25, maxX-stepForX*0.25, 0.1).iz();
+		let points = []
+		if (main == 'marked_points') {
+			let epsilon = sl(stepForX * 0.1, stepForX * 0.5, 0.1)
+			for (let x = minX + epsilon; x <= maxX - epsilon; x += markedPoints.step) {
+				if (func(x).abs() > 1)
+					points.push(x);
+			}
+			genAssert(points.length >= markedPoints.numberOfPoints.min, 'Минимальное количество отмеченных точек ' + markedPoints.numberOfPoints.min)
+			genAssert(points.length <= markedPoints.numberOfPoints.max, 'Максимальное количество отмеченных точек ' + markedPoints.numberOfPoints.max)
+		}
 
 		let paint = paintSpline({
 			func: painFunc,
@@ -534,6 +544,8 @@ chas2.task = {
 			singleSegmentX: singleSegmentX,
 			singleSegmentY: singleSegmentY,
 			points: points,
+			markedPoints: markedPoints,
+			definedOnInterval: definedOnInterval
 		});
 
 		task.text = ['На рисунке изображён график'];
@@ -548,11 +560,11 @@ chas2.task = {
 				throw new Error('Не выбран тип задания. Укажите type.');
 		}
 
-		if (defined_on_interval) {
+		if (definedOnInterval) {
 			task.text.push(', определённой на интервале $(' + minX + ';' + maxX + ')$');
 		}
 		task.text[task.text.length - 1] += '.';
-		
+
 
 		switch (conditions) {
 			case 'value_on_the_segment':
@@ -598,6 +610,11 @@ chas2.task = {
 						//task.analys = 'Точки экстремума:'
 						answer = extremumsX(func, minX, maxX);
 						break;
+					case 'solution_equation':
+						find = 'решение уравнения $f\'(x)=0$';
+						//task.analys = 'Точки экстремума:'
+						answer = extremumsX(func, minX, maxX);
+						break;
 					case 'extreme_points':
 						find = 'точек экстремума';
 						//task.analys = 'Точки экстремума:'
@@ -636,27 +653,27 @@ chas2.task = {
 					case 'extreme_points_on_the_segment':
 						find = 'точек экстремума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки экстремума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = extremumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
+						answer = extremumsX(func, subSegment[0] - stepForX * 0.25, subSegment[1] + stepForX * 0.25);
 						break;
 					case 'minimum_points_on_the_segment':
 						find = 'точек минимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки минимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = minimumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
+						answer = minimumsX(func, subSegment[0] - stepForX * 0.25, subSegment[1] + stepForX * 0.25);
 						break;
 					case 'maximum_points_on_the_segment':
 						find = 'точек максимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки максимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = maximumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
+						answer = maximumsX(func, subSegment[0] - stepForX * 0.25, subSegment[1] + stepForX * 0.25);
 						break;
 					case 'derivative_is_zero_on_the_segment':
 						find = 'производная функции равна нулю на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки экстремума:'
-						answer = extremumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
+						answer = extremumsX(func, subSegment[0] - stepForX * 0.25, subSegment[1] + stepForX * 0.25);
 						break;
 					case 'solutions_equation_on_the_segment':
 						find = 'решений уравнения $f\'(x)=0$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки экстремума:'
-						answer = extremumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
+						answer = extremumsX(func, subSegment[0] - stepForX * 0.25, subSegment[1] + stepForX * 0.25);
 						break;
 					default:
 						break;
@@ -685,17 +702,17 @@ chas2.task = {
 					case 'extreme_points_on_the_segment':
 						find = 'точек экстремума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки экстремума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = extremumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
+						answer = extremumsX(func, subSegment[0] - stepForX * 0.25, subSegment[1] + stepForX * 0.25);
 						break;
 					case 'minimum_points_on_the_segment':
 						find = 'точек минимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки минимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = minimumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
+						answer = minimumsX(func, subSegment[0] - stepForX * 0.25, subSegment[1] + stepForX * 0.25);
 						break;
 					case 'maximum_points_on_the_segment':
 						find = 'точек максимума функции $f(x)$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
 						//task.analys = 'Точки максимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = maximumsX(func, subSegment[0] - stepForX*0.25, subSegment[1] + stepForX*0.25);
+						answer = maximumsX(func, subSegment[0] - stepForX * 0.25, subSegment[1] + stepForX * 0.25);
 						break;
 					case 'function_is_increasing':
 						find = 'функция возрастает';
@@ -738,8 +755,9 @@ chas2.task = {
 					//task.analys+= ' ' + answer.map((elem)=>'$['+elem[0].ts()+' ;'+elem[1].ts()+']$').join(', ');
 					if (main == 'integer_points')
 						answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
-					if (main == 'marked_points'){
-						answer = answer.flatMap((elem) => findPointsInIntervals(points, elem));}
+					if (main == 'marked_points') {
+						answer = answer.flatMap((elem) => findPointsInIntervals(points, elem));
+					}
 					break;
 				case 'extreme_points_on_the_segment':
 				case 'minimum_points_on_the_segment':
@@ -751,6 +769,7 @@ chas2.task = {
 				case 'maximum_points':
 				case 'tangent_to_graph':
 				case 'solutions_equation':
+				case 'solution_equation':
 				case 'solutions_equation_on_the_segment':
 					answer = answer.map((elem) => elem.round());
 					break;
@@ -816,6 +835,10 @@ chas2.task = {
 						task.text.push('абсциссу')
 						//task.analys = 'Угловой коэффициент равен $'+answer[1]+'$, искомая точка $x='+answer[0]+'$.'
 						answer = answer[0];
+						break;
+					case 'empty':
+						answer = answer.iz();
+						break;
 				}
 				break;
 			case 'interval':
@@ -836,7 +859,19 @@ chas2.task = {
 				find += '. В ответ запишите длину этого интервала'
 				break;
 			case 'marked_points':
-				task.text.push('На оси абсцисс отмечены $'+points.length+'$ точек: $x\_1, x\_2, x\_3, \\dots, x\_' + points.length +'$.');
+				let description = 'На оси абсцисс отмечены ' + chislitlx(points.length, 'точка') + ': $';
+				if (markedPoints.type == 'symbol') {
+					if (points.length > 5) {
+						description+='x\\_1, x\\_2, x\\_3, \\\\dots, x\\_' + points.length;
+					} else {
+						description+=points.map((_, index) => 'x\\_' + index + 1).join(', ');
+					}
+				}
+				else {
+					description+=points.map((point) => point).join('; ');
+				}
+				description+='$.';
+				task.text.splice(-1, 0, description);
 				switch (variants) {
 					case 'number':
 						task.text.push('количество');
@@ -865,9 +900,9 @@ chas2.task = {
 				case 'function_is_negative':
 				case 'function_is_increasing':
 				case 'function_is_decreasing':
-					if(main == 'integer_points')
+					if (main == 'integer_points')
 						task.text.push(' целых точек, в которых');
-					if(main == 'marked_points')
+					if (main == 'marked_points')
 						task.text.push('точек, в которых');
 					break;
 				case 'tangent_to_graph':
