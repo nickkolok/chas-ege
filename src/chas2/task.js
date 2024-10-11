@@ -522,7 +522,7 @@ chas2.task = {
 		if (main == 'marked_points') {
 			let epsilon = sl(stepForX * 0.1, stepForX * 0.5, 0.1)
 			for (let x = minX + epsilon; x <= maxX - epsilon; x += markedPoints.step) {
-				if (func(x).abs() > 1)
+				if (func(x).abs() > 1 && x.abs() > 1 && !isCloseToInteger(x, 0.2))
 					points.push(x);
 			}
 			genAssert(points.length >= markedPoints.numberOfPoints.min, 'Минимальное количество отмеченных точек ' + markedPoints.numberOfPoints.min)
@@ -862,15 +862,15 @@ chas2.task = {
 				let description = 'На оси абсцисс отмечены ' + chislitlx(points.length, 'точка') + ': $';
 				if (markedPoints.type == 'symbol') {
 					if (points.length > 5) {
-						description+='x\\_1, x\\_2, x\\_3, \\\\dots, x\\_' + points.length;
+						description += 'x_1, x_2, x_3, \\dots, x_' + points.length;
 					} else {
-						description+=points.map((_, index) => 'x\\_' + index + 1).join(', ');
+						description += points.map((_, index) => 'x_' + (index + 1)).join(', ');
 					}
 				}
 				else {
-					description+=points.map((point) => point).join('; ');
+					description += points.map((point) => point).join('; ');
 				}
-				description+='$.';
+				description += '$.';
 				task.text.splice(-1, 0, description);
 				switch (variants) {
 					case 'number':
