@@ -522,7 +522,7 @@ chas2.task = {
 		if (main == 'marked_points') {
 			let epsilon = sl(stepForX * 0.1, stepForX * 0.5, 0.1)
 			for (let x = minX + epsilon; x <= maxX - epsilon; x += markedPoints.step) {
-				if (func(x).abs() > 1 && x.abs() > 1 && !isCloseToInteger(x, 0.2))
+				if (painFunc(x).abs() > 1 && x.abs() > 1 && !isCloseToInteger(x, 0.2))
 					points.push(x);
 			}
 			genAssert(points.length >= markedPoints.numberOfPoints.min, 'Минимальное количество отмеченных точек ' + markedPoints.numberOfPoints.min)
