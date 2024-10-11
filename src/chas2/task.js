@@ -595,6 +595,18 @@ chas2.task = {
 						//task.analys = 'Интервалы, где производная функции отрицательна:'
 						answer = findDecreasingIntervals(func, minX, maxX);
 						break;
+					case 'derivative_is_largest':
+						find = 'точку, в которой производная функции $f(x)$ принимает наибольшее значение';
+						answer = points.map((x)=>1000 * (func(x + 0.001) - func(x - 0.001)));
+						genAssert(isDistinctByTolerance(answer, 0.3), 'Значения производных в точках отличаются менее чем на '+0.3);
+						answer = answer.maxE().round();
+						break;
+					case 'derivative_is_smallest':
+						find = 'точку, в которой производная функции $f(x)$ принимает наибольшее значение';
+						answer = points.map((x)=>1000 * (func(x + 0.001) - func(x - 0.001)));
+						genAssert(isDistinctByTolerance(answer, 0.3), 'Значения производных в точках отличаются менее чем на '+0.3);
+						answer = answer.minE().round();
+						break;
 					case 'tangent_to_graph':
 						find = 'касательная к графику функции $f(x)$ параллельна ' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$ или совпадает с ней'].iz();
 						//task.analys = 'Точки экстремума:'
