@@ -483,7 +483,7 @@ chas2.task = {
 		let { type,
 			definedOnInterval = true,
 			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1 },
-			canvasSettings: { step = 0.01, scale = 20, height = 400, width = 500, font = "14px liberation_sans", lineWidth = 0.1, singleSegmentX = 1, singleSegmentY = 1,
+			canvasSettings: { step = 0.01, scale = 20, height = 400, width = 500, font = "14px liberation_sans", lineWidth = 0.1, singleSegmentX = 1, singleSegmentY = 1, monotoneFunction = false,
 				markedPoints = { type: ['symbol', 'number'].iz(), step: 2, fontMarkedPoints: "16px liberation_sans", numberOfPoints: { min: 4, max: 10 }, } },
 			questionsF: { main, variants, conditions },
 			numberOfExtremes = { min: 0, max: 1000 },
@@ -516,17 +516,19 @@ chas2.task = {
 			numberOfExtremes: numberOfExtremes,
 			numberOfRoots: numberOfRoots,
 			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
+			monotoneFunction: monotoneFunction, 
 		});
 
-		let points = []
-		if (main == 'marked_points') {
-			let epsilon = sl(stepForX * 0.1, stepForX * 0.5, 0.1)
+		let points = [];
+		if (main === 'marked_points') {
+			const epsilon = sl(stepForX * 0.1, stepForX * 0.5, 0.1);
 			for (let x = minX + epsilon; x <= maxX - epsilon; x += markedPoints.step) {
-				if (painFunc(x).abs() > 1 && x.abs() > 1 && !isCloseToInteger(x, 0.2))
+				if (Math.abs(painFunc(x)) > 1 && Math.abs(x) > 1 && !isCloseToInteger(x, 0.2)) {
 					points.push(x);
+				}
 			}
-			genAssert(points.length >= markedPoints.numberOfPoints.min, 'Минимальное количество отмеченных точек ' + markedPoints.numberOfPoints.min)
-			genAssert(points.length <= markedPoints.numberOfPoints.max, 'Максимальное количество отмеченных точек ' + markedPoints.numberOfPoints.max)
+			genAssert(points.length >= markedPoints.numberOfPoints.min, 'Минимальное количество отмеченных точек ' + markedPoints.numberOfPoints.min);
+			genAssert(points.length <= markedPoints.numberOfPoints.max, 'Максимальное количество отмеченных точек ' + markedPoints.numberOfPoints.max);
 		}
 
 		let paint = paintSpline({
@@ -561,7 +563,8 @@ chas2.task = {
 		}
 
 		if (definedOnInterval) {
-			task.text.push(', определённой на интервале $(' + minX + ';' + maxX + ')$');
+			task.text[task.text.length - 1] += ','
+			task.text.push('определённой на интервале $(' + minX + ';' + maxX + ')$');
 		}
 		task.text[task.text.length - 1] += '.';
 
@@ -597,18 +600,23 @@ chas2.task = {
 						break;
 					case 'derivative_is_largest':
 						find = 'точку, в которой производная функции $f(x)$ принимает наибольшее значение';
-						answer = points.map((x)=>1000 * (func(x + 0.001) - func(x - 0.001)));
-						genAssert(isDistinctByTolerance(answer, 0.3), 'Значения производных в точках отличаются менее чем на '+0.3);
+						answer = points.map((x) => 1000 * (func(x + 0.001) - func(x - 0.001)));
+						genAssert(isDistinctByTolerance(answer, 0.3), 'Значения производных в точках отличаются менее чем на ' + 0.3);
 						answer = answer.maxE().round();
 						break;
 					case 'derivative_is_smallest':
 						find = 'точку, в которой производная функции $f(x)$ принимает наибольшее значение';
-						answer = points.map((x)=>1000 * (func(x + 0.001) - func(x - 0.001)));
-						genAssert(isDistinctByTolerance(answer, 0.3), 'Значения производных в точках отличаются менее чем на '+0.3);
+						answer = points.map((x) => 1000 * (func(x + 0.001) - func(x - 0.001)));
+						genAssert(isDistinctByTolerance(answer, 0.3), 'Значения производных в точках отличаются менее чем на ' + 0.3);
 						answer = answer.minE().round();
 						break;
-					case 'tangent_to_graph':
-						find = 'касательная к графику функции $f(x)$ параллельна ' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$ или совпадает с ней'].iz();
+					case 'tangent_to_graph_abscissa':
+						find = 'касательная к графику функции $f(x)$ параллельна оси абсцисс';
+						//task.analys = 'Точки экстремума:'
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'tangent_to_graph_const':
+						find = 'касательная к графику функции $f(x)$ параллельна графику функции $y=' + sl(-20, 20, 0.1) + '$ или совпадает с ней';
 						//task.analys = 'Точки экстремума:'
 						answer = extremumsX(func, minX, maxX);
 						break;
@@ -687,6 +695,13 @@ chas2.task = {
 						//task.analys = 'Точки экстремума:'
 						answer = extremumsX(func, subSegment[0] - stepForX * 0.25, subSegment[1] + stepForX * 0.25);
 						break;
+					case 'solution_equation_on_the_segment':
+						answer = transformExtremumsToIntervals(func, minX, maxX, true);
+						answer = [answer.intIntervalsMinimums.iz(), answer.intIntervalsMaximums.iz()].iz();
+						find = 'решение уравнения $f\'(x)=0$ на отрезке $[' + answer.leftEnd + ';' + answer.rightEnd + ']$';
+						answer = [answer.ext.round()];
+						//task.analys = 'Точки экстремума:'
+						break;
 					default:
 						break;
 				}
@@ -695,6 +710,7 @@ chas2.task = {
 				switch (conditions) {
 					case 'value_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX);
+						console.log(answer)
 						break;
 					case 'extreme_points':
 						find = 'точек экстремума функции $f(x)$';
@@ -708,6 +724,21 @@ chas2.task = {
 						break;
 					case 'maximum_points':
 						find = 'точек максимума функции $f(x)$';
+						//task.analys = 'Точки максимума:'
+						answer = maximumsX(func, minX, maxX);
+						break;
+					case 'extreme_point':
+						find = 'точку экстремума функции $f(x)$';
+						//task.analys = 'Точки экстремума:'
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'minimum_point':
+						find = 'точку минимума функции $f(x)$';
+						//task.analys = 'Точки минимума:'
+						answer = minimumsX(func, minX, maxX);
+						break;
+					case 'maximum_point':
+						find = 'точку максимума функции $f(x)$';
 						//task.analys = 'Точки максимума:'
 						answer = maximumsX(func, minX, maxX);
 						break;
@@ -736,7 +767,7 @@ chas2.task = {
 						//task.analys = 'Интервалы, где функция убывает:'
 						answer = findDecreasingIntervals(func, minX, maxX);
 						break;
-					case 'tangent_to_graph':
+					case 'tangent_to_graph_abscissa':
 						answer = intPointsWithTolerance
 							(painFunc, {
 								minX: minX + 1,
@@ -747,8 +778,27 @@ chas2.task = {
 								tolerance: 0.1,
 							});
 						answer = answer.iz()
+						genAssert(answer[1].round() == 0, 'Вопрос про абсциссу не составлен');
+						genAssert(findIntersectionPoints(painFunc, answer[1].round(), minX, maxX).length == 1, 'Точек пересечения с прямой $y=' + answer[1].round() + '$ больше одной')
 						find = 'касательная к графику функции $f(x)$ параллельна ';
-						find += (answer[1].round() == 0) ? 'оси абсцисс' : 'графику функции $y=' + [+ sl(-20, 20, 0.1), answer[1].round() + 'x'].shuffleJoin('+').plusminus() + '$';
+						find += 'оси абсцисс';
+						find += ' или совпадает с ней';
+						break;
+					case 'tangent_to_graph_const':
+						answer = intPointsWithTolerance
+							(painFunc, {
+								minX: minX + 1,
+								maxX: maxX - 1,
+								minY: minY,
+								maxY: maxY,
+								step: 1,
+								tolerance: 0.1,
+							});
+						answer = answer.iz()
+						genAssert(answer[1].round() != 0, 'Вопрос про абсциссу не составлен');
+						genAssert(findIntersectionPoints(painFunc, answer[1].round(), minX, maxX).length == 1, 'Точек пересечения с прямой $y=' + answer[1].round() + '$ больше одной')
+						find = 'касательная к графику функции $f(x)$ параллельна ';
+						find += 'графику функции $y=' + [+ sl(-20, 20, 0.1), answer[1].round() + 'x'].shuffleJoin('+').plusminus() + '$';
 						find += ' или совпадает с ней';
 						break;
 				}
@@ -756,6 +806,9 @@ chas2.task = {
 			default:
 				throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: ' + main + ' conditions: ' + conditions);
 		}
+		if (Array.isArray(answer))
+			genAssertNonempty(answer, 'Ответ не образован на первом этапе');
+
 		if (main !== 'interval')
 			switch (conditions) {
 				case 'derivative_is_positive':
@@ -779,13 +832,18 @@ chas2.task = {
 				case 'extreme_points':
 				case 'minimum_points':
 				case 'maximum_points':
-				case 'tangent_to_graph':
+				case 'extreme_point':
+				case 'minimum_point':
+				case 'maximum_point':
+				case 'tangent_to_graph_abscissa':
+				case 'tangent_to_graph_const':
 				case 'solutions_equation':
 				case 'solution_equation':
 				case 'solutions_equation_on_the_segment':
 					answer = answer.map((elem) => elem.round());
 					break;
 				case 'value_on_the_segment':
+				case 'solution_equation_on_the_segment':
 					break;
 			}
 		switch (main) {
@@ -917,7 +975,8 @@ chas2.task = {
 					if (main == 'marked_points')
 						task.text.push('точек, в которых');
 					break;
-				case 'tangent_to_graph':
+				case 'tangent_to_graph_const':
+				case 'tangent_to_graph_abscissa':
 					if (main == 'integer_points')
 						task.text.push('точек, в которых');
 					if (main == 'point')
