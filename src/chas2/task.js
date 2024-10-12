@@ -710,7 +710,9 @@ chas2.task = {
 				switch (conditions) {
 					case 'value_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX);
-						console.log(answer)
+						break;
+					case 'value_on_the_segment_with_ends':
+						answer = findIntervalsOfIncreaseAndDecrease(func, minX, maxX);
 						break;
 					case 'extreme_points':
 						find = 'точек экстремума функции $f(x)$';
@@ -844,6 +846,7 @@ chas2.task = {
 					break;
 				case 'value_on_the_segment':
 				case 'solution_equation_on_the_segment':
+				case 'value_on_the_segment_with_ends':
 					break;
 			}
 		switch (main) {
@@ -886,21 +889,43 @@ chas2.task = {
 						break;
 					case 'smallest_value':
 						find = 'функция $f(x)$ принимает наименьшее значение';
-						answer = answer.intIntervalsMinimums.iz();
-						if (conditions == 'value_on_the_segment')
+						if (conditions == 'value_on_the_segment') {
+							answer = answer.intIntervalsMinimums.iz();
 							task.text.push('$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
-						else
-							task.text.splice(task.text.length - 1, 0, '$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
-						answer = answer.ext.round();
+							answer = answer.ext.round();
+						}
+						if (conditions == 'value_on_the_segment_with_ends') {
+							if (sl1()) {
+								answer = answer.decreasingIntervals.iz();
+								task.text.push('$[' + (answer[0] + 1).round() + ';' + (answer[1] - 1).round() + ']$');
+								answer = (answer[1] - 1).round()
+							} else {
+								answer = answer.increasingIntervals.iz();
+								task.text.push('$[' + (answer[0] + 1).round() + ';' + (answer[1] - 1).round() + ']$');
+								answer = (answer[0] + 1).round()
+							}
+							genAssert((answer[0] + 1).round() != (answer[1] - 1).round(), 'начало и конец отрезка совпали');
+						}
 						break;
 					case 'largest_value':
 						find = 'функция $f(x)$ принимает наибольшее значение';
-						answer = answer.intIntervalsMaximums.iz();
-						if (conditions == 'value_on_the_segment')
+						if (conditions == 'value_on_the_segment') {
+							answer = answer.intIntervalsMaximums.iz();
 							task.text.push('$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
-						else
-							task.text.splice(task.text.length - 1, 0, '$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
-						answer = answer.ext.round();
+							answer = answer.ext.round();
+						}
+						if (conditions == 'value_on_the_segment_with_ends') {
+							if (sl1()) {
+								answer = answer.decreasingIntervals.iz();
+								task.text.push('$[' + (answer[0] + 1).round() + ';' + (answer[1] - 1).round() + ']$');
+								answer = (answer[0] + 1).round()
+							} else {
+								answer = answer.increasingIntervals.iz();
+								task.text.push('$[' + (answer[0] + 1).round() + ';' + (answer[1] - 1).round() + ']$');
+								answer = (answer[1] - 1).round()
+							}
+						}
+						break;
 					case 'abscissa':
 						task.text.push('абсциссу')
 						//task.analys = 'Угловой коэффициент равен $'+answer[1]+'$, искомая точка $x='+answer[0]+'$.'
