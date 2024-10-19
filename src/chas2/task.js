@@ -523,9 +523,10 @@ chas2.task = {
 		if (main === 'marked_points') {
 			const epsilon = sl(stepForX * 0.1, stepForX * 0.5, 0.1);
 			for (let x = minX + epsilon; x <= maxX - epsilon; x += markedPoints.step) {
-				if (Math.abs(painFunc(x)) > 1 && Math.abs(x) > 1 && !isCloseToInteger(x, 0.2)) {
+				if ((painFunc(x) > 0 && Math.abs(x) > 2) || (painFunc(x) < 0 && Math.abs(x) > 1)&&!isCloseToInteger(x, 0.3)) {
 					points.push(x);
 				}
+
 			}
 			genAssert(points.length >= markedPoints.numberOfPoints.min, 'Минимальное количество отмеченных точек ' + markedPoints.numberOfPoints.min);
 			genAssert(points.length <= markedPoints.numberOfPoints.max, 'Максимальное количество отмеченных точек ' + markedPoints.numberOfPoints.max);
@@ -604,14 +605,12 @@ chas2.task = {
 					case 'derivative_is_largest':
 						find = 'производная функции $f(x)$ принимает наибольшее значение';
 						deriv = points.map((x) => 1000 * (func(x + 0.001) - func(x - 0.001)));
-						console.log(deriv);
 						genAssert(isDistinctByTolerance(deriv, 1), 'Значения производных в точках отличаются менее чем на ' + 0.5);
 						answer = points[deriv.max()];
 						break;
 					case 'derivative_is_smallest':
 						find = 'производная функции $f(x)$ принимает наименьшее значение';
 						deriv = points.map((x) => 1000 * (func(x + 0.001) - func(x - 0.001)));
-						console.log(deriv);
 						genAssert(isDistinctByTolerance(deriv, 1), 'Значения производных в точках отличаются менее чем на ' + 0.5);
 						answer = points[deriv.min()];
 						break;
@@ -703,7 +702,7 @@ chas2.task = {
 						answer = answer.ext.round();
 						break;
 					case 'derivative_is_zero_on_the_segment':
-						answer = transformExtremumsToIntervals(func, minX, maxX, true);
+						answer = transformExtremumsToIntervals(func, minX, maxX, false);
 						answer = [answer.intIntervalsMinimums.iz(), answer.intIntervalsMaximums.iz()].iz();
 						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 						find = 'производная функции $f(x)$ равна нулю на отрезке $[' + answer.leftEnd + ';' + answer.rightEnd + ']$';
@@ -884,7 +883,6 @@ chas2.task = {
 				case 'tangent_to_graph_equation':
 					if (main == 'integer_points'){
 						answer = findIntersectionPoints(painFunc, answer[1].round(), minX, maxX);
-						console.log(answer);
 					}
 					if (main == 'point'){
 						answer = answer.map((elem) => elem.round());
@@ -968,7 +966,6 @@ chas2.task = {
 						break;
 					case 'abscissa':
 						task.text.push('абсциссу')
-						console.log(answer);
 						//task.analys = 'Угловой коэффициент равен $'+answer[1]+'$, искомая точка $x='+answer[0]+'$.'
 						answer = answer.iz();
 						break;
