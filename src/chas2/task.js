@@ -469,7 +469,7 @@ chas2.task = {
 		chas2.task.setEquationTask(o, taskOptions);
 	},
 
-	/** @function NApi.task.setTaskWithGraphOfFunctionDerivative
+	/** @function NApi.task.setGraphicFunctionDerivativeTask
  * На рисунке изображён график производной/функции
  * @param {String} type derivative or function
  * @param {Object} boundariesOfGraph {minX, maxX, minY, maxY}
@@ -479,7 +479,7 @@ chas2.task = {
  * @param {Boolean} extremumsIsInteger
  * @param {Boolean} rootsIsInteger 
  */
-	setTaskWithGraphOfFunctionDerivative: function (o) {
+	setGraphicFunctionDerivativeTask: function (o) {
 		let { type,
 			definedOnInterval = true,
 			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1 },
@@ -503,7 +503,7 @@ chas2.task = {
 
 		let task = o.clone();
 
-		let { func, painFunc } = createSpline({
+		let { func, paintFunc } = createSpline({
 			type: type,
 			minX: minX,
 			maxX: maxX,
@@ -523,7 +523,7 @@ chas2.task = {
 		if (main === 'marked_points') {
 			const epsilon = sl(stepForX * 0.1, stepForX * 0.5, 0.1);
 			for (let x = minX + epsilon; x <= maxX - epsilon; x += markedPoints.step) {
-				if ((painFunc(x) > 0 && Math.abs(x) > 2) || (painFunc(x) < 0 && Math.abs(x) > 1) && !isCloseToInteger(x, 0.3)) {
+				if ((paintFunc(x) > 0 && Math.abs(x) > 2) || (paintFunc(x) < 0 && Math.abs(x) > 1) && !isCloseToInteger(x, 0.3)) {
 					points.push(x);
 				}
 
@@ -532,25 +532,7 @@ chas2.task = {
 			genAssert(points.length <= markedPoints.numberOfPoints.max, 'Максимальное количество отмеченных точек ' + markedPoints.numberOfPoints.max);
 		}
 
-		let paint = paintSpline({
-			func: painFunc,
-			minX: minX,
-			maxX: maxX,
-			minY: minY,
-			maxY: maxY,
-			scale: scale,
-			step: step,
-			height: height,
-			width: width,
-			font: font,
-			lineWidth: lineWidth,
-			lineDash: lineDash,
-			singleSegmentX: singleSegmentX,
-			singleSegmentY: singleSegmentY,
-			points: points,
-			markedPoints: markedPoints,
-			definedOnInterval: definedOnInterval
-		});
+		let paint = paintSpline({func: paintFunc, minX, maxX, minY, maxY, scale, step, height, width, font, lineWidth, lineDash, singleSegmentX, singleSegmentY, points, markedPoints, definedOnInterval});
 
 		task.text = ['На рисунке изображён график'];
 		switch (type) {
@@ -826,7 +808,7 @@ chas2.task = {
 						break;
 					case 'tangent_to_graph_equation':
 						answer = intPointsWithTolerance
-							(painFunc, {
+							(paintFunc, {
 								minX: minX + 1,
 								maxX: maxX - 1,
 								minY: minY,
@@ -836,7 +818,7 @@ chas2.task = {
 							});
 						answer = answer.iz()
 						genAssert(answer[1].round() != 0, '0x не подходит');
-						let extY = extremumsY(painFunc, minX, maxX);
+						let extY = extremumsY(paintFunc, minX, maxX);
 						extY.forEach(elem => genAssert(Math.abs(elem - answer[1].round()) > 1), 'Точки пересечения невозможно понять');
 						find = 'касательная к графику ' + functionsFx + ' параллельна ';
 						find += 'графику функции $y=' + [+ sl(-20, 20, 0.1), answer[1].round() + 'x'].shuffleJoin('+').plusminus() + '$';
@@ -847,7 +829,7 @@ chas2.task = {
 				}
 				break;
 			default:
-				throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: ' + main + ' conditions: ' + conditions);
+				throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: ' + main + '. conditions: ' + conditions);
 		}
 		if (Array.isArray(answer))
 			genAssertNonempty(answer, 'Ответ не образован на первом этапе');
@@ -887,7 +869,7 @@ chas2.task = {
 					break;
 				case 'tangent_to_graph_equation':
 					if (main == 'integer_points') {
-						answer = findIntersectionPoints(painFunc, answer[1].round(), minX, maxX);
+						answer = findIntersectionPoints(paintFunc, answer[1].round(), minX, maxX);
 					}
 					if (main == 'point') {
 						answer = answer.map((elem) => elem.round());
