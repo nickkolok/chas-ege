@@ -22,6 +22,7 @@ NAtask.setTask({
 		'интернет-магазины работают независимо друг от друга, '+
 		'найдите вероятность того, что ни один магазин не доставит товар.',
 	answers:(1-verA)*(1-verB),
-
+	authors: ['aisse-258'],
 });
+NAtask.modifiers.allDecimalsToStandard();
 })();
