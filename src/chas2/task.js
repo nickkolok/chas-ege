@@ -663,9 +663,11 @@ chas2.task = {
 	 * @param {Boolean}  o.forbidMaxY запретить спрашивать максимум
 	 * @param {Boolean}  o.forbidAnalys запретить писать решение (если оно кривое)
 	 * @param {Boolean}  o.forbidOpenEnds запретить полуинтервалы и интервалы, спрашивать только про отрезок (в ФИПИ так)
+	 * @param {Array}   o.forbiddenAnswers (необязательно) массив значений, которые не должны получаться (например, 0)
 	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
 	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
 	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
+	 * @param {Boolean}  o.avoidTrivialSimplification избегать тривиальных упрощений - например, не превращать 1x в x
 	 */
 	setMinimaxFunctionTask: function (o) {
 		let expr = math.parse(o.expr);
@@ -679,14 +681,17 @@ chas2.task = {
 		let minX = rEnd;
 		let maxX = rEnd;
 
+		o.epsilon = (o.epsilon || 1/1024/1024);
 		o.primaryStep = (o.primaryStep || 0.01);
 		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
+		o.forbiddenAnswers = o.forbiddenAnswers || [];
+		o.forbidOpenEnds = o.forbidOpenEnds || chas2.task.setMinimaxFunctionTask.forbidOpenEnds;
 
 		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
 
 		let compiledExpr = math.compile(expr.toString());
 
-		for (let x = lEnd; x < rEnd; x += o.primaryStep) {
+		for (let x = lEnd; x <= rEnd + o.epsilon; x += o.primaryStep) {
 			let y = compiledExpr.evaluate({x});
 			if (y > maxY) {
 				maxX = x;
@@ -698,10 +703,10 @@ chas2.task = {
 		}
 
 		//Sharpen the values a bit...
-		minY += 1;
+		minY += 0.5;
 		let xFrom = Math.max(minX - 3 * o.primaryStep, lEnd);
 		let xTo   = Math.min(minX + 3 * o.primaryStep, rEnd);
-		for (let x = xFrom; x < xTo; x += o.secondaryStep) {
+		for (let x = xFrom; x <= xTo + o.epsilon; x += o.secondaryStep) {
 			let y = compiledExpr.evaluate({x});
 			if (y < minY) {
 				minX = x;
@@ -709,10 +714,10 @@ chas2.task = {
 			}
 		}
 
-		maxY -= 1;
+		maxY -= 0.5;
 		xFrom = Math.max(maxX - 3 * o.primaryStep, lEnd);
 		xTo   = Math.min(maxX + 3 * o.primaryStep, rEnd);
-		for (let x = xFrom; x < xTo; x += o.secondaryStep) {
+		for (let x = xFrom; x <= xTo + o.epsilon; x += o.secondaryStep) {
 			let y = compiledExpr.evaluate({x});
 			if (y > maxY) {
 				maxX = x;
@@ -747,6 +752,7 @@ chas2.task = {
 
 		o.answers = o.answers.ts();
 		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
+		genAssert(!o.forbiddenAnswers.hasElem(o.answers), 'Ответ находится в списке запрещённых');
 
 		if (o.simplifyConstant){
 			expr = math.simplifyConstant(expr);
@@ -761,23 +767,33 @@ chas2.task = {
 			expr = math.simplify(expr, mathjsRules.shuffleSums);
 		}
 
+		if (!o.avoidTrivialSimplification){
+			expr = math.simplify(expr, mathjsRules.safeTrivialSimplification);
+		}
+
 		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
 		expr = math.simplify(expr, mathjsRules.omit1pi);
 		expr = math.simplify(expr, mathjsRules.omit1sqrt);
+		expr = math.simplify(expr, [{l: 'n1+-c2*n3', r: 'n1-c2 n3'}]);
+		expr = math.simplify(expr, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+		expr = math.simplify(expr, [{l: 'n1+c2*-n3', r: 'n1-c2 n3'}]);
+		expr = math.simplify(expr, [{l: 'n1+n2*-c3', r: 'n1-c3 n2'}]);
+		expr = math.simplify(expr, [{l: 'n1+n2*-n3', r: 'n1-n2*n3'}]);
 
 
 		if (!o.forbidAnalys) {
 			// In case of Russian-style tg(x)
-			expr = math.simplify(expr, mathjsRules.rusTrig2eng);
+			var expr2diff = math.simplify(expr, mathjsRules.rusTrig2eng);
 
 			//Don't simplify in order to prevent numerical evaluation
-			let derivative = math.derivative(expr, 'x', {simplify: false});
+			let derivative = math.derivative(expr2diff, 'x', {simplify: false});
 
 			//... but simplify something that is safe
 			derivative = math.simplify(derivative, mathjsRules.safeTrivialSimplification);
 			derivative = math.simplify(derivative, mathjsRules.trig2trigPow);
 			//TODO: a separate rule for this?
-			//derivative = math.simplify(derivative, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+			derivative = math.simplify(derivative, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+			derivative = math.simplify(derivative, [{l: 'n1+n2*-n3', r: 'n1-n2*n3'}]);
 
 			o.analys = "Производная функции: $y' = " +
 				derivative.toTex() + "$" +
@@ -785,21 +801,25 @@ chas2.task = {
 		}
 
 		expr = math.simplify(expr, mathjsRules.trig2trigPow);
+		expr = math.simplify(expr, mathjsRules.engTrig2rus);
+		//TODO: tan^2 x -> tg^2 x
+		// Костылик для убирания лишних скобок вокруг логарифма от степени
+		expr = math.simplify(expr, [{ l: 'log(n1)', r: 'ln(n1)' }]);
 
 		let intervalName = 'отрезке';
 		let intervalEndL = '[';
 		let intervalEndR = ']';
 
 		if (!o.forbidOpenEnds) {
-			if (!sl(3) && (chosenX - lEnd).abs() > o.primaryStep && (chosenX - rEnd).abs() > o.primaryStep) {
+			if (!sl(3) && (chosenX - lEnd).abs() > 2 * o.primaryStep && (chosenX - rEnd).abs() > 2 * o.primaryStep) {
 				intervalName = 'интервале';
 				intervalEndL = '(';
 				intervalEndR = ')';
-			} else if (!sl(2) && (chosenX - lEnd).abs() > o.primaryStep) {
+			} else if (!sl(2) && (chosenX - lEnd).abs() > 2 * o.primaryStep) {
 				intervalName = 'полуинтервале';
 				intervalEndL = '(';
 				intervalEndR = ']';
-			} else if (!sl(1) && (chosenX - rEnd).abs() > o.primaryStep) {
+			} else if (!sl(1) && (chosenX - rEnd).abs() > 2 * o.primaryStep) {
 				intervalName = 'полуинтервале';
 				intervalEndL = '[';
 				intervalEndR = ')';
@@ -1012,19 +1032,24 @@ chas2.task = {
 		 */
 		variativeABC : (function() {
 			var alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-			return function(variativeABCstrings) {
-				var alph2 = alph.slice().shuffle();
+			return function(variativeABCstrings, o) {
+				o = o || {};
+				var alph1 = alph.slice();
+				if (o.preserve) {
+					alph1 = alph1.filter(e => !o.preserve.includes(e));
+				}
+				var alph2 = alph1.slice().shuffle();
 				if (variativeABCstrings) {
 					for (let i = 0; i < variativeABCstrings.length; i++) {
 						variativeABCstrings[i] =
-							variativeABCstrings[i].cepZamena(alph, alph2);
+							variativeABCstrings[i].cepZamena(alph1, alph2);
 					}
 				}
 				chas2.task.setTask(
 					mapRecursive(
 						chas2.task.getTask(),
 						function(str) {
-							return ('' + str).cepZamena(alph, alph2);
+							return ('' + str).cepZamena(alph1, alph2);
 						}
 					)
 				);
