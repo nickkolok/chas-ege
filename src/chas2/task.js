@@ -903,9 +903,20 @@ chas2.task = {
 		}
 		delete sortedExtremums.not;
 
-		let whatToFind = Object.keys(sortedExtremums).shuffle();
+		let whatToFind = Object.keys(sortedExtremums);
 		genAssertNonempty(whatToFind, 'Искать-то нечего!');
-		whatToFind = whatToFind[0];
+
+		switch(true){
+			case o.forbidMinY:
+				whatToFind = 'max';
+				break;
+			case o.forbidMaxY:
+				whatToFind = 'min';
+				break;
+			default:
+				whatToFind = whatToFind.shuffle()[0];
+		}
+			
 		let theExtremum = sortedExtremums[whatToFind][0];
 
 		theExtremum = eval(theExtremum);
