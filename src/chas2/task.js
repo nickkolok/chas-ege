@@ -738,17 +738,23 @@ chas2.task = {
 
 		genAssert(minY !== null || maxY !== null, 'Экстремальное значение запрещено или не удовлетворяет условиям');
 
-		var chooseMinMax;
+		let whatToFind = ['min', 'max'];
 		let chosenX;
-		if (maxY === null || (minY !== null && sl1())) {
-			chooseMinMax = 'наименьшее';
-			o.answers = minY;
-			chosenX = minX;
-		} else {
-			chooseMinMax = 'наибольшее';
-			o.answers = maxY;
-			chosenX = maxX;
+		let chooseMinMax;
+		switch(true){
+			case o.forbidMinY && maxY !== null:
+				whatToFind = 'max';
+				break;
+			case o.forbidMaxY && minY !== null:
+				whatToFind = 'min';
+				break;
+			default:
+				whatToFind = whatToFind.shuffle().iz()			
 		}
+
+		o.answers = {min: minY, max: maxY}[whatToFind];
+		chosenX = {min: minX, max: maxX}[whatToFind];
+		chooseMinMax = {min: 'наименьшее', max: 'наибольшее'}[whatToFind];
 
 		o.answers = o.answers.ts();
 		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
@@ -917,7 +923,7 @@ chas2.task = {
 				whatToFind = whatToFind.shuffle()[0];
 		}
 			
-		let theExtremum = sortedExtremums[whatToFind][0];
+		let theExtremum = sortedExtremums[whatToFind];
 
 		theExtremum = eval(theExtremum);
 		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
