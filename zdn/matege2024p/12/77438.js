@@ -6,24 +6,31 @@
 		let c = sl(1, 50);
 		let arr1 = [' ', '-'];
 		let arr2 = ['+', '-'];
+		let key = "77438";
+		let func = [arr1.iz() + 'x^3', arr1.iz() + a + 'x^2', arr1.iz() + b + 'x']
+		func = usePreference(key, [{
+			preference: 'cubic',
+			preferenceValue: [arr1.iz() + 'x^3', arr1.iz() + b + 'x'].shuffle(),
+		}, {
+			preference: 'cubic_and_quadratic',
+			preferenceValue: [arr1.iz() + 'x^3', arr1.iz() + a + 'x^2', arr1.iz() + b + 'x'].shuffle(),
+		}], func.iz(sl(2, 3)));
 
 		NAtask.setMinimaxFunctionTask({
-			expr: [arr1.iz() + 'x^3', arr1.iz() + a + 'x^2', arr1.iz() + b + 'x'].iz(sl(2, 3)).join('+') + arr2.iz() + c,
+			expr: func.join('+') + arr2.iz() + c,
 			leftEnd: '-' + sl(1, 9, 0.5),
 			rightEnd: '' + sl(1, 9, 0.5),
 			primaryStep: 1,
 			secondaryStep: 0.001,
 			authors: ['Алендарь Сергей'],
-			forbidMinY: usePreference("77438", {
+			forbidMinY: usePreference(key, {
 				preference: 'maximum',
 				preferenceValue: true,
-				defaultValue: false
-			}),
-			forbidMaxY: usePreference("77438", {
+			},false),
+			forbidMaxY: usePreference(key, {
 				preference: 'minimum',
 				preferenceValue: true,
-				defaultValue: false
-			}),
+			}, false),
 		});
 	}, 10);
 })();
