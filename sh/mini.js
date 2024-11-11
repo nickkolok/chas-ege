@@ -1,82 +1,106 @@
-var slvopr;
-function obnov(p1){
-	slvopr=p1;
-	$('#pole').html(slvopr.txt);
-	slvopr.trd();
-	MathJax.Hub.Typeset();
-	setTimeout('MathJax.Hub.Typeset();',5000);//Костыль, на случай, если не отрисовалось
-}
+'use strict';
 
-var currentZdn='';
+let currentTask = null;
 
-function sozdat(){
-	$('#pole').html('Задание составляется, подождите...');
-	try{
-		currentZdn = parsedJSON.mini.src.iz()
-		zagr(currentZdn);
-	}catch(e){
-		$('#pole').text('Не удалось выделить адреса шаблонов.');
-		$('#panel').hide();
-	}
-	dvig.flObn=0;
-	dvig.startxt=window.vopr.txt;
-	dvig.obnov(obnov);
+/**
+ * Обновляет содержимое поля с задачей.
+ * @param {Object} task - Объект задачи.
+ */
+const updateTaskContent = (task) => {
+    currentTask = task;
+    $('#pole').html(currentTask.txt);
+    currentTask.trd();
+    MathJax.Hub.Typeset();
+    // Костыль на случай, если не отрисовалось
+    setTimeout(() => MathJax.Hub.Typeset(), 5000);
+};
 
-	if(!checkJQuery('sozdat()','pole'))
-		return;
-	if(!checkMathJax('sozdat()','pole'))
-		return;
-	$('#protv').hide();
-	$('#otv').val('');
-	$('#prov').unbind('click');
-	$('#prov').bind('click',prover);
-	$('#prov').show();
-	$('#sozd').hide();
-	$('#podob').hide();
-}
+/**
+ * Создает новую задачу.
+ */
+const createTask = () => {
+    $('#pole').html('Задание составляется, подождите...');
+    try {
+        const taskSource = parsedJSON.mini.src.iz();
+        loadTask(taskSource);
+    } catch (error) {
+        $('#pole').text('Не удалось выделить адреса шаблонов.');
+        $('#panel').hide();
+    }
 
-function prover(){
-	var statisticalResponse = '';
+    dvig.flObn = 0;
+    dvig.startxt = window.vopr.txt;
+    dvig.obnov(updateTaskContent);
 
-	var kand=$('#otv').val();
-	if(kand===''){
-		if(!confirm('Вы не ввели ответ, нажмите "Отмена" для того, чтобы ввести ответ или "ОК", чтобы сдаться и посмотреть ответ.'))
-			return;
-		statisticalResponse = 'N'
-	}
-	$('#protv').show();
-	var txt='';
-	if(slvopr.vrn(kand)){
-		txt='Правильно!';
-		statisticalResponse = 1;
-	}else{
-		txt='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
-		if(statisticalResponse == ''){
-			statisticalResponse = 0;
-		}
-	}
-	if(vopr.rsh)
-		txt+='<br/><br/>'+vopr.rsh;
-	$('#protv').html(txt);
-	MathJax.Hub.Typeset();
-	$('#prov').hide();
-	$('#sozd').show();
-	specCounter('mini'+'#egeok'.esli(chas.mode.egeok)+'#'+currentZdn+':'+statisticalResponse);
-}
+    if (!checkJQuery('createTask', 'pole')) return;
+    if (!checkMathJax('createTask', 'pole')) return;
 
-function trysozd(){
-	if(window.MathJax===undefined){
-		setTimeout(trysozd,100);
-	}else{
-		sozdat();
-	}
-}
+    $('#protv').hide();
+    $('#otv').val('');
+    $('#prov').off('click').on('click', checkAnswer);
+    $('#prov').show();
+    $('#sozd').hide();
+    $('#podob').hide();
+};
 
-var startShell = function (){
-	$('#prov').hide();
-	$(trysozd);
-	allLinksToSpans();
-	if(!chas.mode.egeok){
-		$('#check-yourself-strip').show().css({'background-color':'#999','color':'white'});
-	}
-}
+/**
+ * Проверяет ответ пользователя.
+ */
+const checkAnswer = () => {
+    let statisticalResponse = '';
+
+    const userAnswer = $('#otv').val();
+    if (userAnswer === '') {
+        if (!confirm('Вы не ввели ответ, нажмите "Отмена" для того, чтобы ввести ответ или "ОК", чтобы сдаться и посмотреть ответ.')) {
+            return;
+        }
+        statisticalResponse = 'N';
+    }
+
+    $('#protv').show();
+    let feedback = '';
+    if (currentTask.vrn(userAnswer)) {
+        feedback = 'Правильно!';
+        statisticalResponse = 1;
+    } else {
+        feedback = `Неправильно! Правильный ответ: ${currentTask.ver.join(' или ')}`;
+        if (statisticalResponse === '') {
+            statisticalResponse = 0;
+        }
+    }
+
+    if (vopr.rsh) {
+        feedback += `<br/><br/>${vopr.rsh}`;
+    }
+
+    $('#protv').html(feedback);
+    MathJax.Hub.Typeset();
+    $('#prov').hide();
+    $('#sozd').show();
+    specCounter(`mini#egeok${chas.mode.egeok ? '#egeok' : ''}#${currentTask}: ${statisticalResponse}`);
+};
+
+/**
+ * Пытается создать задачу, когда MathJax загружен.
+ */
+const tryCreateTask = () => {
+    if (window.MathJax === undefined) {
+        setTimeout(tryCreateTask, 100);
+    } else {
+        createTask();
+    }
+};
+
+/**
+ * Инициализирует начальные действия.
+ */
+const initializeShell = () => {
+    $('#prov').hide();
+    $(tryCreateTask);
+    allLinksToSpans();
+    if (!chas.mode.egeok) {
+        $('#check-yourself-strip').show().css({ 'background-color': '#999', 'color': 'white' });
+    }
+};
+
+initializeShell();
