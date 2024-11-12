@@ -14,37 +14,44 @@ function generateHtmlForTask(kat, zdn, masdey) {
     rez += `<div class="task-wrapper" data-category="${kat}" data-tasknumber="${zdn}">`;
     rez += currentTask.vTag('h2');
     console.log(currentTask);
+
     try {
         nabor.upak[kat][zdn]();
         vopr.template = currentTask.replace(/^(\.\.\/)+/, '');
         vopr.taskNumber = kat;
         rez += `<br/>${vopr.txt.vTag('div')}<br/>`;
-        rez += (
-            `<button class="copybutton" style="display:block; float:right;" title="Экспорт в РешуЕГЭ" data-task="${encodeURIComponent(JSON.stringify(vopr))}">&#x2398;</button>` +
-            `<button class="renewbutton" style="display:block; float:right; margin-right:1.46em;" title="Заменить задание на похожее">&#x27F3;</button>` +
-            `<button class="addbutton" style="display:block; float:right; margin-right:1.46em;" title="Добавить похожее задание">+</button>` +
-            `Ответ: ${vopr.ver.join('или')}`
-        ).vTag('div') + '<br/>';
+        rez += `
+            <div>
+                <button class="copybutton" style="float:right;" title="Экспорт в РешуЕГЭ" data-task="${encodeURIComponent(JSON.stringify(vopr))}">&#x2398;</button>
+                <button class="renewbutton" style="float:right; margin-right:1.46em;" title="Заменить задание на похожее">&#x27F3;</button>
+                <button class="addbutton" style="float:right; margin-right:1.46em;" title="Добавить похожее задание">+</button>
+                Ответ: ${vopr.ver.join('или')}
+            </div>
+            <br/>
+        `;
         masdey.push(vopr.dey);
+
         if (vopr.rsh) {
-            rez += (
-                'Показать решение '.vTag('button', 'class="spoiler-show"') +
-                'Скрыть   решение '.vTag('button', 'class="spoiler-hide"') +
-                `<div class="spoiler-body">Решение: <br/>${vopr.rsh}</div>`
-            );
+            rez += `
+                <button class="spoiler-show">Показать решение</button>
+                <button class="spoiler-hide">Скрыть решение</button>
+                <div class="spoiler-body">Решение: <br/>${vopr.rsh}</div>
+            `;
         }
+
         if (vopr.authors && vopr.authors.length) {
-            rez += (
-                '<br/>' +
-                '<div class="katalog-authors">' +
-                `Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;` +
-                vopr.authors.join(', ') +
-                '</div><br/>'
-            );
+            rez += `
+                <br/>
+                <div class="katalog-authors">
+                    Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;${vopr.authors.join(', ')}
+                </div>
+                <br/>
+            `;
         }
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
+
     rez += '</div>';
     return rez;
 }
@@ -57,25 +64,26 @@ function generateKatalog() {
     let toc = '';
     const masdey = [];
     const br = '<br/>';
+
     for (const kat in nabor.upak) {
         window.comment = '';
         window.availableTaskNumbers = null;
+
         try {
             nabor.upak[kat][nabor.scheduler]();
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
-        rez += (
-            `Показать категорию ${kat}`.vTag('button', 'class="spoiler-show"') +
-            `Скрыть   категорию ${kat}`.vTag('button', 'class="spoiler-hide"') +
-            `<div class="spoiler-body">` +
-            `Категория ${kat}`.vTag('h1', `id="${kat}"`) +
-            window.comment
-        );
-        toc += (
-            `${kat}. ${window.comment}`.vTag('a', `href="#${kat}"`) +
-            br
-        );
+
+        rez += `
+            <button class="spoiler-show">Показать категорию ${kat}</button>
+            <button class="spoiler-hide">Скрыть категорию ${kat}</button>
+            <div class="spoiler-body">
+                <h1 id="${kat}">Категория ${kat}</h1>
+                ${window.comment}
+        `;
+        toc += `<a href="#${kat}">${kat}. ${window.comment}</a>${br}`;
+
         const tasksToList = window.availableTaskNumbers || Object.keys(nabor.upak[kat]);
 
         for (const zdn of tasksToList) {
@@ -83,17 +91,20 @@ function generateKatalog() {
                 rez += generateHtmlForTask(kat, zdn, masdey);
             }
         }
+
         rez += '</div>';
     }
+
     $('#divrez').html(toc + br + rez);
-    const len = masdey.length;
-    for (let i = 0; i < len; i++) {
+
+    masdey.forEach(action => {
         try {
-            masdey[i]();
+            action();
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
-    }
+    });
+
     MathJax.Hub.Typeset();
     afterTasksGenerated();
     $('.spoiler-show').click();
@@ -118,7 +129,8 @@ function copyTask() {
     console.log(theTask);
     theTask = JSON.parse(theTask);
     console.log(theTask);
-    replaceCanvasWithImgInTaskAndHTML($(this).parents('div.task-wrapper')[0], theTask, () => {
+
+    replaceCanvasWithImgInTaskAndHTML($(this).closest('div.task-wrapper')[0], theTask, () => {
         const fillerCode = createFiller(theTask);
         copyToClipboard(fillerCode);
     });
@@ -129,7 +141,7 @@ function copyTask() {
  */
 function renewTask() {
     console.log(this);
-    const wrapper = $(this).parents('div.task-wrapper')[0];
+    const wrapper = $(this).closest('div.task-wrapper')[0];
     const actions = [];
     const taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'), wrapper.getAttribute('data-tasknumber'), actions));
     $(wrapper).replaceWith(taskHtml);
@@ -143,7 +155,7 @@ function renewTask() {
  */
 function addTask() {
     console.log(this);
-    const wrapper = $(this).parents('div.task-wrapper')[0];
+    const wrapper = $(this).closest('div.task-wrapper')[0];
     const actions = [];
     const taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'), wrapper.getAttribute('data-tasknumber'), actions));
     taskHtml.insertAfter(wrapper);
