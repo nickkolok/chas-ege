@@ -294,6 +294,8 @@ function createHtmlForTask(nazvzad) {
     vopr.taskCategory = nazvzad;
     vopr.variantNumber = variantNumber;
 
+    const solutionText = vopr.rsh ? vopr.rsh : ' '; // Вставляем пробел, если решение пустое
+
     return {
         txt: `<div class="d" data-task-id="${taskId}" data-task-number="${nZ}" data-variant-number="${variantNumber}">
                 <div class="b">${nazvzad}</div>
@@ -307,7 +309,7 @@ function createHtmlForTask(nazvzad) {
                 ${options.vanishVariants ? '' : `<td>${options.variantPrefix}${variantNumber}</td>`}
                 <td>${nazvzad}</td>
                 <td>${window.vopr.ver.join('; ')}</td>
-                ${options.solutionsIntoAnswers ? `<td>${window.vopr.rsh}</td>` : ''}
+                ${options.solutionsIntoAnswers ? `<td>${solutionText}</td>` : ''}
               </tr>`,
         rsh: `<div class="solution-container" data-task-id="${variantNumber}-${nazvzad}">
                 ${vopr.rsh ? `<h3>${options.vanishVariants ? '' : `Вариант №${options.variantPrefix}${variantNumber}, `}задача ${nazvzad}</h3><br/>${vopr.rsh}` : ''}
