@@ -22,38 +22,64 @@ let preparedImages = {};
 let options = {};
 
 const largeFontStyle = 'div.z{font-size:128%}\n .MathJax_SVG_Display {font-size: 128%;}'.vTag('style');
+const SELECTORS = {
+    kolvo: '.kolvo',
+    cV: '#cV',
+    panel: '#panel',
+    gotov: '#gotov',
+    otv: '#otv',
+    rez: '#rez',
+    rsh: '#rsh',
+    dopoln: '#dopoln',
+    pr0: '#pr0',
+    pr1: '#pr1',
+    vrem: '#vrem',
+    shir: '#shir',
+    gridFieldHeight: '#grid-field-height',
+    gridCellSize: '#grid-cell-size',
+    gridSvgTemplate: '#grid-svg-template',
+    gridPattern: '#grid-pattern',
+    gridPatternLine1: '#grid-pattern-line-1',
+    gridPatternLine2: '#grid-pattern-line-2',
+    gridSvgContainer: '#grid-svg-container',
+    gridStylePlaceholder: '#grid-style-placeholder',
+    buttonRemoveGridFields: '#button-removeGridFields',
+    latexArchivePlaceholder: '#latex-archive-placeholder'
+};
 
 // Устанавливает значение 1 для всех элементов с классом 'kolvo'
 function vse1() {
-    $('.kolvo').val(1);
+    $(SELECTORS.kolvo).val(1);
 }
 
 // Устанавливает значение 0 для всех элементов с классом 'kolvo' и 1 для элемента с id 'cV'
 function vse0() {
-    $('.kolvo').val(0);
-    $('#cV').val(1);
+    $(SELECTORS.kolvo).val(0);
+    $(SELECTORS.cV).val(1);
 }
 
 // Читает настройки из элементов управления и сохраняет их в объекте options
 function readOptions() {
-    options.editable = $('#redakt').is(':checked');
-    options.largeFont = $('#largeFont').is(':checked');
-    options.customNumber = $('#customNumber').is(':checked');
-    options.variantPrefix = $('#variantPrefix').val();
-    options.vanishVariants = $('#vanishVariants').is(':checked');
-    options.nopagebreak = $('#nopagebreak').is(':checked');
-    options.compactAnswers = $('#compact-answers').is(':checked');
-    options.solutionsIntoAnswers = $('#solutions-into-answers').is(':checked');
-    options.nobackground = $('#nobackground').is(':checked');
-    options.firstTaskNumber = Number($('#first-task-number').val());
-    options.transitTaskNumbers = $('#transitTaskNumbers').is(':checked');
-    options.splitAnswersNumber = Number($('#split-answers-number').val());
-    options.splitAnswerTables = $('#splitAnswerTables').is(':checked');
-    options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
-    options.startTransitNumber = Number($('#start-transit-number').val());
-    options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
-    options.forceIntegers = $('#forceIntegers').is(':checked');
-    options.randomSeed = $('#randomSeed').val() || Date.now();
+    options = {
+        editable: $('#redakt').is(':checked'),
+        largeFont: $('#largeFont').is(':checked'),
+        customNumber: $('#customNumber').is(':checked'),
+        variantPrefix: $('#variantPrefix').val(),
+        vanishVariants: $('#vanishVariants').is(':checked'),
+        nopagebreak: $('#nopagebreak').is(':checked'),
+        compactAnswers: $('#compact-answers').is(':checked'),
+        solutionsIntoAnswers: $('#solutions-into-answers').is(':checked'),
+        nobackground: $('#nobackground').is(':checked'),
+        firstTaskNumber: Number($('#first-task-number').val()),
+        transitTaskNumbers: $('#transitTaskNumbers').is(':checked'),
+        splitAnswersNumber: Number($('#split-answers-number').val()),
+        splitAnswerTables: $('#splitAnswerTables').is(':checked'),
+        uniqueAnswersAndSolutions: $('#uniqueAnswersAndSolutions').is(':checked'),
+        startTransitNumber: Number($('#start-transit-number').val()),
+        prepareLaTeX: $('#prepareLaTeX').is(':checked'),
+        forceIntegers: $('#forceIntegers').is(':checked'),
+        randomSeed: $('#randomSeed').val() || Date.now()
+    };
 
     if (options.customNumber) {
         variantNumber = $('#start-number').val() - 1;
@@ -71,7 +97,7 @@ function zapusk() {
     chasStorage.domData.save();
     readOptions();
 
-    aV = nV = Number($('#cV').val());
+    aV = nV = Number($(SELECTORS.cV).val());
     for (let i = 1; i <= nabor.nZad; i++) {
         aZ[i] = Number($('#cB' + i).val());
     }
@@ -84,25 +110,25 @@ function zapusk() {
     }
     iZ = aZ.slice();
     nZ = 0;
-    $('#panel').html('Тесты составляются, подождите...');
-    $('#gotov').show();
+    $(SELECTORS.panel).html('Тесты составляются, подождите...');
+    $(SELECTORS.gotov).show();
     zadan();
 }
 
 // Показывает сообщение о завершении генерации тестов
 function testGotov() {
-    $('#gotov').hide();
+    $(SELECTORS.gotov).hide();
     if (options.editable) {
-        $('#rez, #otv, #rsh').attr('contenteditable', 'true');
+        $(SELECTORS.rez + ', ' + SELECTORS.otv + ', ' + SELECTORS.rsh).attr('contenteditable', 'true');
     }
-    $('#dopoln').show();
+    $(SELECTORS.dopoln).show();
     alert('Тесты составлены.\nТеперь Вы можете распечатать их с помощью Вашего браузера.');
     specCounter('pech');
 }
 
 // Удаляет элементы панели
 function udalPanel() {
-    $('#panel, #menucenter, #inf').remove();
+    $(SELECTORS.panel + ', #menucenter, #inf').remove();
 }
 
 // Завершает создание тестов и обновляет интерфейс
@@ -113,10 +139,10 @@ function konecSozd() {
         strOtv = largeFontStyle + strOtv;
     }
 
-    $('#otv').html(strOtv);
-    $('#rez').html(strVopr);
+    $(SELECTORS.otv).html(strOtv);
+    $(SELECTORS.rez).html(strVopr);
     if (strResh) {
-        $('#rsh').html('<h2>Решения</h2>' + strResh);
+        $(SELECTORS.rsh).html('<h2>Решения</h2>' + strResh);
     }
 
     for (let id in generatedTasks) {
