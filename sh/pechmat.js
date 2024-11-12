@@ -1,582 +1,561 @@
 'use strict';
 
-var vr1 = chas.mode.svinta ? 100 : 200;
-var vr2 = chas.mode.svinta ? 100 : 1500;
+const vr1 = chas.mode.svinta ? 100 : 200;
+const vr2 = chas.mode.svinta ? 100 : 1500;
 
-var variantNumber = 0;
-var nV = 1;
-var nZ = 1;
-var aZ = [];
-var iZ = [];
-var aV;
-var kZ;
-var strVopr = '';
-var strOtv = '';
-var strResh = '';
+let variantNumber = 0;
+let nV = 1;
+let nZ = 1;
+let aZ = [];
+let iZ = [];
+let aV;
+let kZ;
+let strVopr = '';
+let strOtv = '';
+let strResh = '';
 
-var variantsGenerated = [];
-var generatedTasks = {};
-var tasksInLaTeX = {};
-var preparedImages = {};
+let variantsGenerated = [];
+let generatedTasks = {};
+let tasksInLaTeX = {};
+let preparedImages = {};
 
-var options = {};
+let options = {};
 
+const largeFontStyle = 'div.z{font-size:128%}\n .MathJax_SVG_Display {font-size: 128%;}'.vTag('style');
 
-var largeFontStyle = 'div.z{font-size:128%}\n .MathJax_SVG_Display {font-size: 128%;}'.vTag('style');
-
+// Устанавливает значение 1 для всех элементов с классом 'kolvo'
 function vse1() {
-	$('.kolvo').val(1);
+    $('.kolvo').val(1);
 }
 
+// Устанавливает значение 0 для всех элементов с классом 'kolvo' и 1 для элемента с id 'cV'
 function vse0() {
-	$('.kolvo').val(0);
-	$('#cV').val(1);
+    $('.kolvo').val(0);
+    $('#cV').val(1);
 }
 
+// Читает настройки из элементов управления и сохраняет их в объекте options
 function readOptions() {
-	options.editable = $('#redakt').is(':checked');
-	options.largeFont = $('#largeFont').is(':checked');
-	options.customNumber = $('#customNumber').is(':checked');
-	options.variantPrefix = $('#variantPrefix').val();
-	options.vanishVariants = $('#vanishVariants').is(':checked');
-	options.nopagebreak = $('#nopagebreak').is(':checked');
-	options.compactAnswers = $('#compact-answers').is(':checked');
-	options.solutionsIntoAnswers = $('#solutions-into-answers').is(':checked');
-	options.nobackground = $('#nobackground').is(':checked');
-	options.firstTaskNumber = 1 * $('#first-task-number').val();
-	options.transitTaskNumbers = $('#transitTaskNumbers').is(':checked');
-	options.splitAnswersNumber = 1 * $('#split-answers-number').val();
-	options.splitAnswerTables = $('#splitAnswerTables').is(':checked');
-	options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
-	options.startTransitNumber = 1 * $('#start-transit-number').val();
-	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
-	options.forceIntegers = $('#forceIntegers').is(':checked');
-	options.randomSeed = $('#randomSeed').val();
-	if (options.randomSeed === '') {
-		options.randomSeed = Date.now();
-	}
+    options.editable = $('#redakt').is(':checked');
+    options.largeFont = $('#largeFont').is(':checked');
+    options.customNumber = $('#customNumber').is(':checked');
+    options.variantPrefix = $('#variantPrefix').val();
+    options.vanishVariants = $('#vanishVariants').is(':checked');
+    options.nopagebreak = $('#nopagebreak').is(':checked');
+    options.compactAnswers = $('#compact-answers').is(':checked');
+    options.solutionsIntoAnswers = $('#solutions-into-answers').is(':checked');
+    options.nobackground = $('#nobackground').is(':checked');
+    options.firstTaskNumber = Number($('#first-task-number').val());
+    options.transitTaskNumbers = $('#transitTaskNumbers').is(':checked');
+    options.splitAnswersNumber = Number($('#split-answers-number').val());
+    options.splitAnswerTables = $('#splitAnswerTables').is(':checked');
+    options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
+    options.startTransitNumber = Number($('#start-transit-number').val());
+    options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
+    options.forceIntegers = $('#forceIntegers').is(':checked');
+    options.randomSeed = $('#randomSeed').val() || Date.now();
 
-	if (options.customNumber) {
-		variantNumber = $('#start-number').val() - 1;
-	}
+    if (options.customNumber) {
+        variantNumber = $('#start-number').val() - 1;
+    }
 
-	sluchch.forceIntegers = (options.forceIntegers) ? true : false;
+    sluchch.forceIntegers = options.forceIntegers;
 
-	if ($('#htmlcss').is(':checked')) {
-		MathJax.Hub.setRenderer('HTML-CSS');
-	}
+    if ($('#htmlcss').is(':checked')) {
+        MathJax.Hub.setRenderer('HTML-CSS');
+    }
 }
 
-
+// Запускает процесс генерации тестов
 function zapusk() {
-	//Сохраняем параметры генерации
-	chasStorage.domData.save();
+    chasStorage.domData.save();
+    readOptions();
 
-	//Читаем настройки
-	readOptions();
+    aV = nV = Number($('#cV').val());
+    for (let i = 1; i <= nabor.nZad; i++) {
+        aZ[i] = Number($('#cB' + i).val());
+    }
 
-	//Читаем количество заданий
-	aV = nV = 1 * $('#cV').val();
-	for (var i = 1; i <= nabor.nZad; i++)
-		aZ[i] = 1 * ($('#cB' + i).val());
-
-	cacheKat();
-	kZ = aZ.sum() * aV;
-	if (!kZ) {
-		alert('Ни одно задание не выбрано.');
-		return;
-	}
-	iZ = aZ.slice();
-	nZ = 0;
-	$('#panel').html('Тесты составляются, подождите...');
-	$('#gotov').show();
-	zadan();
+    cacheKat();
+    kZ = aZ.reduce((sum, val) => sum + val, 0) * aV;
+    if (!kZ) {
+        alert('Ни одно задание не выбрано.');
+        return;
+    }
+    iZ = aZ.slice();
+    nZ = 0;
+    $('#panel').html('Тесты составляются, подождите...');
+    $('#gotov').show();
+    zadan();
 }
 
+// Показывает сообщение о завершении генерации тестов
 function testGotov() {
-	$('#gotov').hide();
-	if (options.editable) {
-		$('#rez, #otv, #rsh').attr('contenteditable', 'true');
-	}
-	$('#dopoln').show();
-	alert('Тесты составлены.\nТеперь Вы можете распечатать их с помощью Вашего браузера.');
-	specCounter('pech');
+    $('#gotov').hide();
+    if (options.editable) {
+        $('#rez, #otv, #rsh').attr('contenteditable', 'true');
+    }
+    $('#dopoln').show();
+    alert('Тесты составлены.\nТеперь Вы можете распечатать их с помощью Вашего браузера.');
+    specCounter('pech');
 }
 
+// Удаляет элементы панели
 function udalPanel() {
-	$('#panel, #menucenter, #inf').remove();
+    $('#panel, #menucenter, #inf').remove();
 }
 
+// Завершает создание тестов и обновляет интерфейс
 function konecSozd() {
-	strOtv = '<h2>Ответы</h2>' + strOtv;
+    strOtv = '<h2>Ответы</h2>' + strOtv;
 
-	if (options.largeFont) {
-		strOtv = largeFontStyle + strOtv;
-	}
+    if (options.largeFont) {
+        strOtv = largeFontStyle + strOtv;
+    }
 
-	$('#otv').html(strOtv);
-	$('#rez').html(strVopr);
-	if (strResh) {
-		$('#rsh').html('<h2>Решения</h2>' + strResh);
-	}
+    $('#otv').html(strOtv);
+    $('#rez').html(strVopr);
+    if (strResh) {
+        $('#rsh').html('<h2>Решения</h2>' + strResh);
+    }
 
-	for (var id in generatedTasks) {
-		try {
-			generatedTasks[id].dey();
-		} catch (e) { };
-	}
-	convertCanvasToImagesIfNeeded();
-	if (options.prepareLaTeX) {
-		for (var id in generatedTasks) {
-			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
-				getTaskTextContainerByTaskId(id),
-				generatedTasks[id].txt
-			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
-		}
-	}
+    for (let id in generatedTasks) {
+        try {
+            generatedTasks[id].dey();
+        } catch (e) {}
+    }
+    convertCanvasToImagesIfNeeded();
+    if (options.prepareLaTeX) {
+        for (let id in generatedTasks) {
+            tasksInLaTeX[id] = replaceCanvasWithImgInTask(
+                getTaskTextContainerByTaskId(id),
+                generatedTasks[id].txt
+            )
+            .replace(/\\?%/g, '\\%')
+            .replace(/<br>/g, '\\\\')
+            .replace(/<br\/>/g, '\\\\')
+            .replace(/<b>/g, '\\textbf{')
+            .replace(/<\/b>/g, '}');
+        }
+    }
 
-	refreshLaTeXarchive();
-	MathJax.Hub.Typeset(testGotov);
-	udalPanel();
-	spoiler();
-	$('.spoiler-show').click();
-	$("hr:first").remove();
-	$("hr:first").remove();
-	document.body.style.backgroundColor = "white";
-	$('body').append('<script>udalPanel()</script>');
+    refreshLaTeXarchive();
+    MathJax.Hub.Typeset(testGotov);
+    udalPanel();
+    spoiler();
+    $('.spoiler-show').click();
+    $("hr:first").remove();
+    $("hr:first").remove();
+    document.body.style.backgroundColor = "white";
+    $('body').append('<script>udalPanel()</script>');
 
-	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
+    $('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
 }
 
+// Конвертирует все canvas в изображения, если это необходимо
 function convertCanvasToImagesIfNeeded() {
-	if (!options.nobackground) {
-		allCanvasToBackgroundImage();
-	}
+    if (!options.nobackground) {
+        allCanvasToBackgroundImage();
+    }
 }
 
+// Увеличивает номер варианта
 function bumpVariantNumber() {
-	if (options.customNumber) {
-		variantNumber++;
-	} else {
-		variantNumber = new Date().getTime();
-	}
-	variantsGenerated.push(variantNumber);
+    if (options.customNumber) {
+        variantNumber++;
+    } else {
+        variantNumber = new Date().getTime();
+    }
+    variantsGenerated.push(variantNumber);
 }
 
+// Добавляет заголовок для задач варианта
 function appendVariantTasksCaption() {
-	if (!options.vanishVariants) {
-		strVopr += '<h2 class="d">Вариант №' + options.variantPrefix + variantNumber + '</h2>';
-	}
+    if (!options.vanishVariants) {
+        strVopr += `<h2 class="d">Вариант №${options.variantPrefix}${variantNumber}</h2>`;
+    }
 }
 
+// Добавляет окончание для задач варианта
 function appendVariantTasksEnding() {
-	if (!options.nopagebreak)
-		strVopr += '<p style="page-break-before: always"></p>';
+    if (!options.nopagebreak) {
+        strVopr += '<p style="page-break-before: always"></p>';
+    }
 }
 
+// Добавляет заголовок для ответов варианта
 function appendVariantAnswersCaption() {
-	strOtv +=
-		'<table '+
-			'class="normtabl tablpech pech-answers-table" ' +
-			'id="pech-answers-table-variant-' + variantNumber +
-		'">';
+    strOtv +=
+        `<table class="normtabl tablpech pech-answers-table" id="pech-answers-table-variant-${variantNumber}">`;
 
-	if (!options.vanishVariants) {
-		strOtv += '<tr><th colspan="10">';
-		if (options.compactAnswers) {
-			strOtv += 'Вар. ' + options.variantPrefix + variantNumber;
-		} else {
-			strOtv += 'Ответы к варианту<br/>№' + options.variantPrefix + variantNumber;
-		}
-		strOtv += '</th></tr>';
-	}
+    if (!options.vanishVariants) {
+        strOtv += '<tr><th colspan="10">';
+        if (options.compactAnswers) {
+            strOtv += `Вар. ${options.variantPrefix}${variantNumber}`;
+        } else {
+            strOtv += `Ответы к варианту<br/>№${options.variantPrefix}${variantNumber}`;
+        }
+        strOtv += '</th></tr>';
+    }
 }
 
+// Добавляет окончание для ответов варианта
 function appendVariantAnswersEnding() {
-	strOtv += '</table>';
+    strOtv += '</table>';
 }
 
+// Завершает текущий вариант
 function endCurrentVariant() {
-	nV--;
-	nZ = 0;
-	appendVariantTasksEnding();
-	appendVariantAnswersEnding();
-	if(options.uniqueAnswersOnlyInOneVariant){
-		unqDict={};
-	}
-	zadan();
+    nV--;
+    nZ = 0;
+    appendVariantTasksEnding();
+    appendVariantAnswersEnding();
+    if (options.uniqueAnswersOnlyInOneVariant) {
+        unqDict = {};
+    }
+    zadan();
 }
 
+// Обрабатывает задания
 function zadan() {
-	if (nZ == 1 + 1 * nabor.nZad) {
-		endCurrentVariant();
-		return;
-	}
+    if (nZ === 1 + nabor.nZad) {
+        endCurrentVariant();
+        return;
+    }
 
-	if (nZ == 0) {
-		if (!nV) {
-			konecSozd();
-			return;
-		} else {
-			iZ = aZ.slice();
+    if (nZ === 0) {
+        if (!nV) {
+            konecSozd();
+            return;
+        } else {
+            iZ = aZ.slice();
 
-			bumpVariantNumber();
-			appendVariantTasksCaption();
-			appendVariantAnswersCaption();
+            bumpVariantNumber();
+            appendVariantTasksCaption();
+            appendVariantAnswersCaption();
 
-			nZ = 1;
-			zadan();
-			return;
-		}
-	} else {
-		if (iZ[nZ] == 0) {
-			nZ++;
-			zadan();
-		} else {
-			let tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
-			// Именно в этой точке происходит подсидовка -
-			// использование предсказуемых псевдослучайных чисел вместо встроенных случайных,
-			// позволяющее перегенерировать только отдельные задания из варианта
-			let seed = options.randomSeed + "__" + variantsGenerated.length + "__" + tasksReadyInCurrentVariant;
-			Math.seedrandom(seed);
+            nZ = 1;
+            zadan();
+            return;
+        }
+    } else {
+        if (iZ[nZ] === 0) {
+            nZ++;
+            zadan();
+        } else {
+            const tasksReadyInCurrentVariant = aZ.reduce((sum, val) => sum + val, 0) - iZ.reduce((sum, val) => sum + val, 0);
+            const seed = `${options.randomSeed}__${variantsGenerated.length}__${tasksReadyInCurrentVariant}`;
+            Math.seedrandom(seed);
 
-			if (options.splitAnswerTables) {
-				if (tasksReadyInCurrentVariant && (tasksReadyInCurrentVariant % options.splitAnswersNumber === 0)) {
-					appendVariantAnswersEnding();
-					appendVariantAnswersCaption();
-				}
-			}
-			iZ[nZ]--;
-			dvig.zadan(obnov, nZ);
-		}
-		return;
-	}
+            if (options.splitAnswerTables) {
+                if (tasksReadyInCurrentVariant && (tasksReadyInCurrentVariant % options.splitAnswersNumber === 0)) {
+                    appendVariantAnswersEnding();
+                    appendVariantAnswersCaption();
+                }
+            }
+            iZ[nZ]--;
+            dvig.zadan(obnov, nZ);
+        }
+        return;
+    }
 }
 
+// Создает HTML для задания
 function createHtmlForTask(nazvzad) {
-	var taskId = variantNumber + '-' + nazvzad;
-	vopr.taskId = taskId;
-	vopr.taskNumber = nZ;
-	vopr.taskCategory = nazvzad;
-	vopr.variantNumber = variantNumber;
+    const taskId = `${variantNumber}-${nazvzad}`;
+    vopr.taskId = taskId;
+    vopr.taskNumber = nZ;
+    vopr.taskCategory = nazvzad;
+    vopr.variantNumber = variantNumber;
 
-	return {
-		txt:
-			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
-				'<div class="b">'+nazvzad+'</div>'+
-				'<div class="z">'+
-					window.vopr.txt+
-					'<button class="noprint renewbutton" title="Заменить задание на похожее"'+
-					'>' +
-						'&#x27F3;' +
-					'</button>'+
-				'</div>'+
-				'<div class="grid-for-writing"></div>'+
-			'</div>',
-		ver:
-			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
-			('<td>' + options.variantPrefix + variantNumber + '</td>').esli(!options.vanishVariants) +
-			'<td>' + nazvzad + '</td>' +
-			'<td>' + window.vopr.ver.join('; ') + '</td>' +
-			('<td>' + window.vopr.rsh + '</td>').esli(options.solutionsIntoAnswers) +
-			'</tr>',
-		rsh:
-			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
-				(
-					'<h3>'+
-						('Вариант №'+options.variantPrefix+variantNumber+', ').esli(!options.vanishVariants) +
-						'задача '+nazvzad+
-					'</h3><br/>'+
-					vopr.rsh
-				).esli(vopr.rsh)+
-			'</div>',
-		unq:
-			[vopr.ver.join('; '), vopr.rsh, vopr.unq].join(' [:////:] '), // Да, это служебная комбинация символов "баян"
-	};
+    return {
+        txt: `<div class="d" data-task-id="${taskId}" data-task-number="${nZ}" data-variant-number="${variantNumber}">
+                <div class="b">${nazvzad}</div>
+                <div class="z">
+                    ${window.vopr.txt}
+                    <button class="noprint renewbutton" title="Заменить задание на похожее">&#x27F3;</button>
+                </div>
+                <div class="grid-for-writing"></div>
+              </div>`,
+        ver: `<tr class="answer-container" data-task-id="${variantNumber}-${nazvzad}">
+                ${options.vanishVariants ? '' : `<td>${options.variantPrefix}${variantNumber}</td>`}
+                <td>${nazvzad}</td>
+                <td>${window.vopr.ver.join('; ')}</td>
+                ${options.solutionsIntoAnswers ? `<td>${window.vopr.rsh}</td>` : ''}
+              </tr>`,
+        rsh: `<div class="solution-container" data-task-id="${variantNumber}-${nazvzad}">
+                ${vopr.rsh ? `<h3>${options.vanishVariants ? '' : `Вариант №${options.variantPrefix}${variantNumber}, `}задача ${nazvzad}</h3><br/>${vopr.rsh}` : ''}
+              </div>`,
+        unq: [vopr.ver.join('; '), vopr.rsh, vopr.unq].join(' [:////:] '),
+    };
 }
 
-var unqDict = {};
+let unqDict = {};
 
+// Обновляет текущее задание
 function obnov() {
-	var nazvzad;
+    let nazvzad;
 
-	if (options.transitTaskNumbers) {
-		nazvzad = options.startTransitNumber + aZ.sum() - iZ.sum() - 1;
-	} else {
-		nazvzad =
-			dvig.getzadname(nZ) +
-			(aZ[nZ] == 1 ? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1));
-	}
-	var html = createHtmlForTask(nazvzad);
+    if (options.transitTaskNumbers) {
+        nazvzad = options.startTransitNumber + aZ.reduce((sum, val) => sum + val, 0) - iZ.reduce((sum, val) => sum + val, 0) - 1;
+    } else {
+        nazvzad = dvig.getzadname(nZ) + (aZ[nZ] === 1 ? '' : `-${aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1}`);
+    }
+    const html = createHtmlForTask(nazvzad);
 
-	if (options.uniqueAnswersAndSolutions && (html.unq in unqDict)) {
-		console.log('Deduplicating ' + nazvzad + '...');
-		dvig.zadan(obnov, nZ);
-		return;
-	}
+    if (options.uniqueAnswersAndSolutions && (html.unq in unqDict)) {
+        console.log(`Deduplicating ${nazvzad}...`);
+        dvig.zadan(obnov, nZ);
+        return;
+    }
 
-	unqDict[html.unq] = true;
+    unqDict[html.unq] = true;
 
-	strVopr += html.txt;
-	strOtv  += html.ver;
-	strResh += html.rsh;
+    strVopr += html.txt;
+    strOtv += html.ver;
+    strResh += html.rsh;
 
-	grabCurrentTask();
+    grabCurrentTask();
 
-	var sdel = aZ.sum() * (aV - nV + 1) - iZ.sum();
-	var w = sdel / kZ;
-	$('.tx').text((100 * w).toFixedLess(1).dopdo(' ', 4) + '%');
-	$('#pr1').width($('#pr0').width() * w);
-	var v = (vr1 + vr2) * (kZ - sdel) / 1000;
-	$('#vrem').text(sdel + ' из ' + kZ + ' ' + v.toDvoet());
-	zadan();
+    const sdel = aZ.reduce((sum, val) => sum + val, 0) * (aV - nV + 1) - iZ.reduce((sum, val) => sum + val, 0);
+    const w = sdel / kZ;
+    $('.tx').text((100 * w).toFixed(1).padEnd(4, ' ') + '%');
+    $('#pr1').width($('#pr0').width() * w);
+    const v = (vr1 + vr2) * (kZ - sdel) / 1000;
+    $('#vrem').text(`${sdel} из ${kZ} ${v.toFixed(2)}`);
+    zadan();
 }
 
+// Устанавливает ширину элементов с классом 'z'
 function shirprim() {
-	$('.z').css("width", $('#shir').val() + 'cm');
+    $('.z').css("width", $('#shir').val() + 'cm');
 }
 
-var ds;
-var selector1 = '.jqplot-target, .MathJax>nobr>span>span>span';
-var selector2 = 'canvas';
+let ds;
+const selector1 = '.jqplot-target, .MathJax>nobr>span>span>span';
+const selector2 = 'canvas';
 
+// Оптимизирует копирование
 function optimcopy() {
-	//{{Лютый, бешеный костыль, который нужен, чтобы html2canvas не обрезал знаменатели у MathJax-овских дробей
-	var MJspans = $(".MathJax nobr * span");
-	for (var i = 0; i < MJspans.length; i++) {
-		if (MJspans[i].style.clip) {
-			//И невозбранно возмножаем высоту на константу Чурова
-			MJspans[i].style.height = '' + 1.468 * MJspans[i].offsetHeight + 'px';
-		}
-	}
+    const MJspans = $(".MathJax nobr * span");
+    for (let i = 0; i < MJspans.length; i++) {
+        if (MJspans[i].style.clip) {
+            MJspans[i].style.height = `${1.468 * MJspans[i].offsetHeight}px`;
+        }
+    }
 
-	//}}
-	ds = $('.d');
-	$('#otv').hide();
-	optimcopyd(1);
+    ds = $('.d');
+    $('#otv').hide();
+    optimcopyd(1);
 }
 
+// Рекурсивно оптимизирует копирование
 function optimcopyd(n) {
-	if (n >= ds.length) {
-		$('.d').show();
-		$('#otv').show();
-		return;
-	}
-	var d = $(ds[n]);
-	ds.hide();
-	var sel1 = d.find(selector1);
-	var sel2 = d.find(selector2);
-	if (!(sel1.length + sel2.length)) {
-		setTimeout("optimcopyd(" + n + "+1);", 100);
-		return;
-	}
-	d.show();
-	sel1.each(function () {
-		innerHTMLtoImg(this);
-	});
-	sel2.each(function () {
-		replaceWithImg(this);
-	});
-	setTimeout("optimcopyd(" + n + "+1);", 100);
+    if (n >= ds.length) {
+        $('.d').show();
+        $('#otv').show();
+        return;
+    }
+    const d = $(ds[n]);
+    ds.hide();
+    const sel1 = d.find(selector1);
+    const sel2 = d.find(selector2);
+    if (!(sel1.length + sel2.length)) {
+        setTimeout(() => optimcopyd(n + 1), 100);
+        return;
+    }
+    d.show();
+    sel1.each(function () {
+        innerHTMLtoImg(this);
+    });
+    sel2.each(function () {
+        replaceWithImg(this);
+    });
+    setTimeout(() => optimcopyd(n + 1), 100);
 }
 
 var startShell = function () {
-	window.vopr.txt = '';
-	$('#zadaniya').html(sozdKolvoHtml('pech'));
-	$('#gotov').hide();
-	galkiKat('#galki_kat', 'pech');
+    window.vopr.txt = '';
+    $('#zadaniya').html(sozdKolvoHtml('pech'));
+    $('#gotov').hide();
+    galkiKat('#galki_kat', 'pech');
 }
 
-
+// Возвращает контейнер текста задания по его ID
 function getTaskTextContainerByTaskId(taskId) {
-	return $('div.d[data-task-id="' + taskId + '"]')[0];
+    return $(`div.d[data-task-id="${taskId}"]`)[0];
 }
 
-function grabCurrentTask(){
-	generatedTasks[vopr.taskId] = vopr.clone();
-	generatedTasks[vopr.taskId].address =
-		window.nabor.adres + dvig.getzadname(nZ) + '/' + window.nomer;
-
+// Захватывает текущее задание
+function grabCurrentTask() {
+    generatedTasks[vopr.taskId] = vopr.clone();
+    generatedTasks[vopr.taskId].address = `${window.nabor.adres}${dvig.getzadname(nZ)}/${window.nomer}`;
 }
 
+// Обновляет задание
 function renewTask() {
-	console.log(this);
-	var wrapper = $(this).parents('div.d');
-	var nazvzad = wrapper.children('div.b')[0].innerHTML;
-	console.log(wrapper);
-	var taskId = wrapper.attr('data-task-id');
-	var taskNumber = wrapper.attr('data-task-number');
-	variantNumber = wrapper.attr('data-variant-number');
-	var answerRow = $('tr.answer-container[data-task-id=' + taskId + ']');
-	var solution = $('div.solution-container[data-task-id=' + taskId + ']');
+    console.log(this);
+    const wrapper = $(this).parents('div.d');
+    const nazvzad = wrapper.children('div.b')[0].innerHTML;
+    console.log(wrapper);
+    const taskId = wrapper.attr('data-task-id');
+    const taskNumber = wrapper.attr('data-task-number');
+    variantNumber = wrapper.attr('data-variant-number');
+    const answerRow = $(`tr.answer-container[data-task-id=${taskId}]`);
+    const solution = $(`div.solution-container[data-task-id=${taskId}]`);
 
-	nZ = taskNumber;
-	dvig.zadan(function () {
-		console.log(wrapper);
-		var taskHtml = createHtmlForTask(nazvzad);
-		wrapper  .replaceWith(taskHtml.txt);
-		answerRow.replaceWith(taskHtml.ver);
-		solution .replaceWith(taskHtml.rsh);
-		window.vopr.dey();
-		convertCanvasToImagesIfNeeded();
-		grabCurrentTask();
-		if (options.prepareLaTeX) {
-			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
-			refreshLaTeXarchive();
-		}
-		MathJax.Hub.Typeset(taskHtml[0]);
-		$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
-	}, taskNumber);
+    nZ = taskNumber;
+    dvig.zadan(() => {
+        console.log(wrapper);
+        const taskHtml = createHtmlForTask(nazvzad);
+        wrapper.replaceWith(taskHtml.txt);
+        answerRow.replaceWith(taskHtml.ver);
+        solution.replaceWith(taskHtml.rsh);
+        window.vopr.dey();
+        convertCanvasToImagesIfNeeded();
+        grabCurrentTask();
+        if (options.prepareLaTeX) {
+            tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
+            refreshLaTeXarchive();
+        }
+        MathJax.Hub.Typeset(taskHtml[0]);
+        $('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
+    }, taskNumber);
 }
 
-
+// Вставляет поля сетки
 function insertGridFields() {
-	var fieldHeight = $('#grid-field-height').val();
-	$('#grid-svg-template')[0].style.minHeight = fieldHeight + 'cm';
+    const fieldHeight = $('#grid-field-height').val();
+    $('#grid-svg-template')[0].style.minHeight = `${fieldHeight}cm`;
 
-	var cellSize = $('#grid-cell-size').val();
-	$('#grid-pattern')[0].setAttribute('width' ,cellSize);
-	$('#grid-pattern')[0].setAttribute('height',cellSize);
+    const cellSize = $('#grid-cell-size').val();
+    $('#grid-pattern')[0].setAttribute('width', cellSize);
+    $('#grid-pattern')[0].setAttribute('height', cellSize);
 
-	$('#grid-pattern-line-1')[0].setAttribute('x1',cellSize/2);
-	$('#grid-pattern-line-1')[0].setAttribute('x2',cellSize/2);
-	$('#grid-pattern-line-1')[0].setAttribute('y2',cellSize  );
+    $('#grid-pattern-line-1')[0].setAttribute('x1', cellSize / 2);
+    $('#grid-pattern-line-1')[0].setAttribute('x2', cellSize / 2);
+    $('#grid-pattern-line-1')[0].setAttribute('y2', cellSize);
 
-	$('#grid-pattern-line-2')[0].setAttribute('y1',cellSize/2);
-	$('#grid-pattern-line-2')[0].setAttribute('y2',cellSize/2);
-	$('#grid-pattern-line-2')[0].setAttribute('x2',cellSize  );
+    $('#grid-pattern-line-2')[0].setAttribute('y1', cellSize / 2);
+    $('#grid-pattern-line-2')[0].setAttribute('y2', cellSize / 2);
+    $('#grid-pattern-line-2')[0].setAttribute('x2', cellSize);
 
+    const svg = $('#grid-svg-container').html();
+    const svgCode = window.btoa(svg);
 
-	var svg = $('#grid-svg-container').html();
-	var svgCode = window.btoa(svg);
+    $('#grid-style-placeholder').html(
+        `<style>
+            .grid-for-writing {
+                display: block;
+                min-height: ${fieldHeight}cm;
+                background-image: url(data:image/svg+xml;base64,${svgCode});
+            }
+        </style>`
+    );
 
-
-	$('#grid-style-placeholder').html(
-		'<style>'+
-			'.grid-for-writing { ' +
-				'display: block;' +
-				'min-height: ' + fieldHeight + 'cm;' +
-				'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
-			'}'+
-		'</style>'
-	);
-
-	$('#button-removeGridFields').show();
+    $('#button-removeGridFields').show();
 }
 
+// Удаляет поля сетки
 function removeGridFields() {
-	$('#grid-style-placeholder').html('');
-
-	$('#button-removeGridFields').hide();
+    $('#grid-style-placeholder').html('');
+    $('#button-removeGridFields').hide();
 }
 
-
+// Возвращает подтаблицу ответов в формате LaTeX
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = "\n\\\\\n\\hline\n";
-	return (
-		'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
-			'\n\\hline\n' +
-			answersParsedToTeX.join(hline) +
-			hline +
-		'\\end{tabular}' +
-		'\n\n\n'
-	);
+    const hline = "\n\\\\\n\\hline\n";
+    return (
+        `\\begin{tabular}{${new Array(cellsInFirstRow).fill('|l').join('')}|}` +
+        `\n\\hline\n${answersParsedToTeX.join(hline)}${hline}` +
+        '\\end{tabular}\n\n\n'
+    );
 }
 
+// Создает пакет ответов в формате LaTeX
 function createLaTeXbunchAnswers(variantN) {
-
-	var answerRows = $('table#pech-answers-table-variant-' + variantN + ' tr');
-
-	var answersParsedToTeX = [];
-	// The first row may be the caption, so...
-	var cellsInFirstRow = (answerRows[2] || answerRows[1] || answerRows[0]).getElementsByTagName('td').length;
-	for (var row of Array.from(answerRows)) {
-		var tdCells = row.getElementsByTagName('td');
-		if (tdCells.length) {
-			//TODO: reverse-decode LaTeX from MathJax
-			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & '));
-		}
-	}
-	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
+    const answerRows = $(`table#pech-answers-table-variant-${variantN} tr`);
+    const answersParsedToTeX = [];
+    const cellsInFirstRow = (answerRows[2] || answerRows[1] || answerRows[0]).getElementsByTagName('td').length;
+    for (const row of Array.from(answerRows)) {
+        const tdCells = row.getElementsByTagName('td');
+        if (tdCells.length) {
+            answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & '));
+        }
+    }
+    return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
 }
 
+// Заменяет canvas на изображения в задании
 function replaceCanvasWithImgInTask(element, text) {
-	if (!(/<canvas/i.test(text))) {
-		// Nothing to do
-		return text;
-	}
-	console.log(element);
-	var canvases = Array.from(element.getElementsByTagName('canvas'));
-	for (var i = 0; i < canvases.length; i++) {
-		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
-		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
-		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.4\\linewidth]{'+imageName+'}');
-	}
-	if (canvases.length) {
-		text =
-			'\\ifdefined\\OnBeforeIllustratedTask\\OnBeforeIllustratedTask\\fi\n' +
-			text.trim() +
-			'\n\\ifdefined\\OnAfterIllustratedTask\\OnAfterIllustratedTask\\fi' +
-		'';
-	}
+    if (!(/<canvas/i.test(text))) {
+        return text;
+    }
+    console.log(element);
+    const canvases = Array.from(element.getElementsByTagName('canvas'));
+    for (let i = 0; i < canvases.length; i++) {
+        const imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
+        preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,', '');
+        text = text.replace(/<canvas.*?<\/canvas>/, `\\addpictoright[0.4\\linewidth]{${imageName}}`);
+    }
+    if (canvases.length) {
+        text =
+            '\\ifdefined\\OnBeforeIllustratedTask\\OnBeforeIllustratedTask\\fi\n' +
+            text.trim() +
+            '\n\\ifdefined\\OnAfterIllustratedTask\\OnAfterIllustratedTask\\fi';
+    }
 
-	return text;
+    return text;
 }
 
+// Создает пакет заданий в формате LaTeX
 function createLaTeXbunchTasks(variantN) {
-	var bunchText = "";
-	for (var taskId in tasksInLaTeX) {
-		if (generatedTasks[taskId].variantNumber == variantN) {
-			bunchText +=
-				'\n' +
-				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
-					'% ' + generatedTasks[taskId].address + '\n' +
-					tasksInLaTeX[taskId] + '\n' +
-				'\\end{taskBN}' + '\n';
-		}
-
-	}
-	return bunchText;
+    let bunchText = "";
+    for (const taskId in tasksInLaTeX) {
+        if (generatedTasks[taskId].variantNumber === variantN) {
+            bunchText +=
+                `\n\\begin{taskBN}{${generatedTasks[taskId].taskCategory}}\n` +
+                `% ${generatedTasks[taskId].address}\n` +
+                `${tasksInLaTeX[taskId]}\n` +
+                '\\end{taskBN}\n';
+        }
+    }
+    return bunchText;
 }
 
-
+// Обновляет архив LaTeX
 function refreshLaTeXarchive() {
-	if (!options.prepareLaTeX) {
-		return;
-	}
-	var zip = new JSZip();
-	var bunchTasks = "";
-	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>10)?6:variantsGenerated.length)+"}";
+    if (!options.prepareLaTeX) {
+        return;
+    }
+    const zip = new JSZip();
+    let bunchTasks = "";
+    let answers = `\\begin{document}\n\n\\begin{multicols}{${variantsGenerated.length > 10 ? 6 : variantsGenerated.length}}`;
 
-	for(var variantN of variantsGenerated){
-		var head =
-			'\n\n' +
-			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
-			'\\def\\examvart{\\varianttitle ' + options.variantPrefix + variantN + '}\n' +
-			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
-			'\n\n';
-		var tail =
-			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
-		bunchTasks += head + createLaTeXbunchTasks(variantN) + tail;
-		answers += createLaTeXbunchAnswers(variantN);
-	}
+    for (const variantN of variantsGenerated) {
+        const head =
+            '\n\n' +
+            '\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
+            `\\def\\examvart{\\varianttitle ${options.variantPrefix}${variantN}}\n` +
+            '\\ifdefined\\OnStartVariant\\OnStartVariant\\fi\n\n';
+        const tail = '\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
+        bunchTasks += head + createLaTeXbunchTasks(variantN) + tail;
+        answers += createLaTeXbunchAnswers(variantN);
+    }
 
-	answers += "\n\n\\end{multicols}\n\n\\end{document}";
+    answers += "\n\n\\end{multicols}\n\n\\end{document}";
 
-	bunchTasks += "\n\n%Random seed:" + options.randomSeed;
+    bunchTasks += `\n\n%Random seed:${options.randomSeed}`;
 
-	zip.file("tasks.tex", bunchTasks);
-	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
+    zip.file("tasks.tex", bunchTasks);
+    zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
 
-	var img = zip.folder("images");
-	for (var i in preparedImages) {
-		img.file(i + ".png", preparedImages[i], { base64: true });
-	}
-	zip.generateAsync({ type: "base64" }).then(function (base64) {
-		$('#latex-archive-placeholder').show();
-		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
-	});
+    const img = zip.folder("images");
+    for (const i in preparedImages) {
+        img.file(`${i}.png`, preparedImages[i], { base64: true });
+    }
+    zip.generateAsync({ type: "base64" }).then(function (base64) {
+        $('#latex-archive-placeholder').show();
+        $('#latex-archive-placeholder')[0].href = `data:application/zip;base64,${base64}`;
+    });
 }
