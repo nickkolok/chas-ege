@@ -1,30 +1,36 @@
-dvig.dgn = 0; // Отключаем диагностический режим движка. Под корень.
+// Отключаем диагностический режим движка.
+dvig.dgn = 0;
 let flAce = 0;
 let editor;
 let flFullscreen = 0;
 
+/**
+ * Обновляет содержимое вопроса и ответов на странице.
+ */
 const updateQuestion = () => {
     $("#question").html(window.vopr.txt);
-    $("#resh").html(vopr.rsh);
+    $("#resh").html(window.vopr.rsh);
     window.vopr.dey();
     $("#answer").html(window.vopr.ver.join(";;"));
     $("#wrongAnswer").html(window.vopr.nev.join(";;"));
     MathJax.Hub.Typeset('typesettable-wrap');
 };
 
+/**
+ * Создает задание из файла, загруженного пользователем.
+ */
 const createFromFile = () => {
-    if (!checkJQuery("createFromFile()", "pole")) return;
-    if (!checkMathJax("createFromFile()", "pole")) return;
+    if (!checkJQuery("createFromFile()", "pole") || !checkMathJax("createFromFile()", "pole")) return;
 
     $("#question").html("Задание составляется, подождите...");
-    const v = $("#filepath").val();
-    if (!v.length) {
+    const filePath = $("#filepath").val();
+    if (!filePath.length) {
         $("#question").html("Нужно указать путь к загружаемому файлу!");
         return;
     }
-    $("#shabl").attr("src", v);
+    $("#shabl").attr("src", filePath);
     window.vopr.podg();
-    zagr(`${v}?${Math.random()}`);
+    zagr(`${filePath}?${Math.random()}`);
     dvig.flObn = 0;
     dvig.startxt = window.vopr.txt;
     dvig.obnov(updateQuestion);
@@ -34,28 +40,33 @@ const createFromFile = () => {
     VKI_attach(document.getElementById("answer-input"));
 };
 
+/**
+ * Проверяет правильность ответа пользователя.
+ */
 const checkAnswer = () => {
-    if (window.vopr.vrn($("#answer-input").val())) {
+    const userAnswer = $("#answer-input").val();
+    const correctAnswer = window.vopr.ver.join(" или ");
+    if (window.vopr.vrn(userAnswer)) {
         alert("Правильно!");
     } else {
-        alert(`Неправильно!\nПравильный ответ: ${window.vopr.ver.join(" или ")}`);
+        alert(`Неправильно!\nПравильный ответ: ${correctAnswer}`);
         $("#answer").show();
     }
     MathJax.Hub.Typeset('typesettable-wrap');
 };
 
+/**
+ * Создает задание из текста, введенного в текстовое поле.
+ */
 const createFromTextarea = () => {
     saveAce();
     $("#question").html("Если Вы видите эту надпись - задание не составлено, скорее всего, в программе ошибка.");
     const code = nabrano();
     try {
         if (isCppCode(code)) {
-            // Костыль, но положим, что это С++
-            // TODO: подумать, может, хоть переключатель сделать?
-            // TODO: ACE работает в режиме JS. Перевести в С++.
             chas2.task.setJscppTask(code);
         } else {
-            eval(code);
+            new Function(code)();
         }
     } catch (e) {
         $("#question").html(e.message.replace(/\n/g, '<br/>'));
@@ -65,16 +76,22 @@ const createFromTextarea = () => {
     updateQuestion();
 };
 
+/**
+ * Измеряет время выполнения кода, введенного пользователем.
+ */
 const tt = () => {
     saveAce();
-    const t1 = new Date().getTime();
+    const t1 = Date.now();
     const code = nabrano();
     const iter = Number($("#iter").val());
-    for (let i = iter; i; i--) eval(code);
-    const t2 = new Date().getTime();
+    for (let i = iter; i; i--) new Function(code)();
+    const t2 = Date.now();
     alert(`Примерно ${(t2 - t1) / iter} сек.`);
 };
 
+/**
+ * Включает редактор Ace и настраивает его параметры.
+ */
 const enableAce = () => {
     const aceSize = Number($("#ace-size").val());
     const aceRows = Number($("#ace-rows").val());
@@ -88,12 +105,10 @@ const enableAce = () => {
     editor = ace.edit("ace-script");
     editor.session.on("changeMode", (e, session) => {
         if ("ace/mode/javascript" === session.getMode().$id) {
-            if (session.$worker) {
-                session.$worker.send("setOptions", [{
-                    "esversion": 7, // ES7
-                    "esnext": false,
-                }]);
-            }
+            session.$worker?.send("setOptions", [{
+                "esversion": 7,
+                "esnext": false,
+            }]);
         }
     });
     editor.getSession().setUseSoftTabs(false);
@@ -103,13 +118,22 @@ const enableAce = () => {
     flAce = 1;
 };
 
+/**
+ * Возвращает текст, введенный пользователем в редакторе или текстовом поле.
+ */
 const nabrano = () => flAce ? editor.getValue() : $("#textarea-script").val();
 
+/**
+ * Сохраняет текущее состояние редактора Ace в текстовое поле.
+ */
 const saveAce = () => {
     if (flAce) $("#textarea-script").val(editor.getValue());
     chasStorage.domData.save();
 };
 
+/**
+ * Форматирует код в текстовом поле или редакторе Ace.
+ */
 const beautifyCode = () => {
     saveAce();
     const code = $("#textarea-script").val();
@@ -136,6 +160,9 @@ const beautifyCode = () => {
     }
 };
 
+/**
+ * Переключает редактор Ace в полноэкранный режим.
+ */
 const startFullscreen = () => {
     if (flFullscreen || !flAce) return;
     editor.beforeFullscreen = {
@@ -162,6 +189,9 @@ const startFullscreen = () => {
     flFullscreen = 1;
 };
 
+/**
+ * Выключает полноэкранный режим редактора Ace.
+ */
 const stopFullscreen = () => {
     if (!flFullscreen || !flAce) return;
     document.body.style.height = editor.beforeFullscreen.bodyHeight;
@@ -178,6 +208,9 @@ const stopFullscreen = () => {
     flFullscreen = 0;
 };
 
+/**
+ * Обрабатывает нажатия клавиш для управления полноэкранным режимом.
+ */
 document.onkeydown = (e) => {
     e = e || event;
     if (e.keyCode === 27) { // escape
@@ -189,17 +222,9 @@ document.onkeydown = (e) => {
     }
 };
 
-const templateTemplate = `(function() {
-    retryWhileError(function() {
-        NAinfo.requireApiVersion(${NAinfo.API_VERSION.major}, ${NAinfo.API_VERSION.minor});
-        NAtask.setTask({
-            text: '',
-            answers: 0,
-            analys: '',
-        });
-    });
-})();`;
-
+/**
+ * Инициализирует оболочку и загружает шаблон, если текстовое поле пустое.
+ */
 var startShell = function (){
     zagr("../ext/keyboard/keyboard.js");
     if ($("#textarea-script").val() === "") {
@@ -208,6 +233,9 @@ var startShell = function (){
     }
 };
 
+/**
+ * Экспортирует задание, заменяя холсты изображениями.
+ */
 const startExport = () => {
     vopr.template = $("#filepath").val().replace(/^(\.\.\/)+/, '');
     vopr.taskNumber = vopr.template.split("/").reverse()[1];
