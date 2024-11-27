@@ -4,7 +4,7 @@
 	let x=sl(1, 50 ,1);
 	let k=sl(5, 20, 1);
 	let a=slKrome(x, 1, 12);
-  let b=a+n+k/60+s/(x+a)+s/(x-a);
+        let b=a+n+k/60+s/(x+a)+s/(x-a);
 	genAssert(b>a,'Время отправления не должно быть больше времени прибытия');
 	genAssert(Number.isInteger(b),'Время не может быть дробным');
 	genAssert(b<23,'Время прибытия не может быть слишком большим');
