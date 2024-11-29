@@ -18,9 +18,11 @@
 			],
 			['улитка', 'приползёт', 'усами']
 		].iz();
+		
 		let difference = transport.pop();
 		let move = transport.pop();
 		transport = sklonlxkand(transport);
+		
 		let colors = sklonlxkand(['темно-бордовый', 'темно-красный', 'лососевый', 'томатный', 'коралловый',
 			'оранжево-красный',
 			'шоколадный', 'песочно-коричневый', 'темно-оранжевый', 'оранжевый', 'золотарниковый', 'оливковый',
@@ -37,12 +39,9 @@
 		genAssertZ1000(number / numberOfTransprt, "Кривая вероятность");
 		NAtask.setTask({
 			text: 'В фирме такси в наличии ' + numberOfTransprt + ' ' + transport[0].rm.replace('Конёк', 'Коньков').replace(
-					'ковёр', 'ковров') +
-				';' +
-				' ' + number + ' из них ' + colors[0].ve + ' цвета с ' + colors[1].tm + ' ' + difference + ', ' +
+				'ковёр', 'ковров') +'; ' + number + ' из них ' + colors[0].ve + ' цвета с ' + colors[1].tm + ' ' + difference + ', ' +
 				'остальные — ' + colors[2].ve + ' цвета с ' + colors[3].tm + ' ' + difference + '. Найдите вероятность того, ' +
-				'что на случайный вызов ' + move + ' ' + transport[0].ie + ' ' + colors[0 + dop].ve + ' цвета с ' + colors[1 +
-					dop].tm +
+				'что на случайный вызов ' + move + ' ' + transport[0].ie + ' ' + colors[0 + dop].ve + ' цвета с ' + colors[1 + dop].tm +
 				' ' + difference + '.',
 			answers: (number / numberOfTransprt).ts(),
 		});
