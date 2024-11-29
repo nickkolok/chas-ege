@@ -4,7 +4,7 @@
 	var b = sluchch(2, 10);
 
 	NAtask.setTask({
-		text: 'Найдите значение выражения $$ \\frac{'+a+'^\\sqrt{\\log_{'+a+'}{'+b+'}}}{'+b+'^\\sqrt{\\log_{'+b+'}{'+a+'}}} $$',
+		text: 'Найдите значение выражения $$ \\frac{'+a+'^{\\sqrt{\\log_{'+a+'}{'+b+'}}}}{'+b+'^{\\sqrt{\\log_{'+b+'}{'+a+'}}}} $$',
 		answers: 1,
 	},{
 		tags: {

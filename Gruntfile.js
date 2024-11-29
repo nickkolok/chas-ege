@@ -83,8 +83,13 @@ module.exports = function(grunt) {
 				files: [
 					{ expand: true, src: ['ext/**'], dest: 'dist/' },
 					{ expand: true, cwd: 'node_modules/ace-builds/src-min/', src: '**/*.js', dest: 'dist/ext/ace/' },
+					{ src: 'node_modules/mathjs/lib/browser/math.js', dest: 'ext/math.js' },
+					{ src: 'node_modules/nerdamer/all.min.js', dest: 'ext/nerdamer.js' },
 					{ src: 'node_modules/chas-storage/chasStorage.js', dest: 'dist/ext/chasStorage.js' },
+					{ src: 'node_modules/cubic-spline-browserified/cubic-spline-for-browser.js', dest: 'dist/ext/cubic-spline-for-browser.js' },
 					{ src: 'node_modules/html2canvas/dist/html2canvas.min.js', dest: 'dist/ext/html2canvas.js' },
+					{ src: 'node_modules/jszip/dist/jszip.min.js', dest: 'dist/ext/jszip.min.js' },
+					{ src: 'node_modules/seedrandom/seedrandom.min.js', dest: 'dist/ext/seedrandom.min.js' },
 				]
 			},
 			otherHtml: {
@@ -275,6 +280,13 @@ module.exports = function(grunt) {
 				],
 				tasks: ['process-lib']
 			},
+			libNoUglify: {
+				files: [
+					'lib/*', '!lib/head*',
+					'src/**',
+				],
+				tasks: ['process-lib-nouglify']
+			},
 			taskSets: {
 				files: [
 					'zdn/**',
@@ -386,6 +398,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('process-pages-js', ['newer:copy:pagesJs']);
 	grunt.registerTask('process-task-sets', ['concurrent:process-task-sets']);
 	grunt.registerTask('process-lib', ['concurrent:process-lib']);
+	grunt.registerTask('process-lib-nouglify', ['newer:copy:lib', 'concat:chasLib', 'concat:chasUijs', 'concat:init']);
 	grunt.registerTask('process-css', ['cssmin', 'newer:copy:css']);
 	grunt.registerTask('process-ext', ['newer:copy:externals']);
 	grunt.registerTask('process-unit-test', ['swigtemplates:unitTest', 'copy:unitTest']);
