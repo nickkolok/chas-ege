@@ -9,142 +9,36 @@
     'use strict';
     NAinfo.requireApiVersion(0, 0);
 
-    var sport = ['футбольного', 'волейбольного', 'баскетбольного', 'хоккейного', 'теннисного', 'бейсбольного'].iz();
-    var team_name = ['Физик', 'Химик', 'Сапфир', 'Труд', 'Геолог', 'Биолог', 'Квант', 'Изумруд', 'Рубин', 'Факел'].iz();
-    var vopr = ['начнёт игру с мячом', 'выиграет жребий'].iz();
-    var kolvo;
-    var answers = 0;
-    var kolvo_rush = sl(0, 3);			//число сыгранных игр   0-2игры 1-3игры 2-4игры 3-5игр
-    var games = ['два матча', 'три матча', 'четыре матча', 'пять матчей'][kolvo_rush];
-    var kolvo_rush = kolvo_rush + 2;
-    var first_times = sl(1, kolvo_rush);			//число выйгранных жребиев
-    var rovno_ili_bol = sluchch(0, 1);//ровно %количество побед% = 0, больше = 1
-    if (kolvo_rush == first_times){
-        rovno_ili_bol = 0
+    const sport = ['футбольного', 'волейбольного', 'баскетбольного', 'хоккейного', 'теннисного', 'бейсбольного'].iz();
+    const team_name = ['Физик', 'Химик', 'Сапфир', 'Труд', 'Геолог', 'Биолог', 'Квант', 'Изумруд', 'Рубин', 'Факел'].iz();
+    const vopr = ['начнёт игру с мячом', 'выиграет жребий'].iz();
+    
+    let kolvo_rush = sl(0, 3) + 2; // число сыгранных игр   0-2 игры 1-3 игры 2-4 игры 3-5 игр
+    const games = ['два матча', 'три матча', 'четыре матча', 'пять матчей'][kolvo_rush - 2];
+    const first_times = sl(1, kolvo_rush); // число выигранных жребиев
+    let rovno_ili_bol = sluchch(0, 1); // ровно %количество побед% = 0, больше = 1
+
+    if (kolvo_rush === first_times) {
+        rovno_ili_bol = 0;
     }
 
+    const kolvoOptions = [
+        ['ровно один раз', 'ровно два раза', 'ровно три раза', 'ровно четыре раза', 'ровно пять раз'],
+        ['болeе одного раза', 'болeе двух раз', 'болeе трёх раз', 'болeе четырёх раз', 'болeе пяти раз']
+    ];
 
+    const probabilityMatrix = {
+        2: [[0.5, 0.25], [0.25, 0]],
+        3: [[0.375, 0.375, 0.125], [0.5, 0.125, 0]],
+        4: [[0.25, 0.375, 0.25, 0.0625], [0.6875, 0.3125, 0.0625, 0]],
+        5: [[0.15625, 0.3125, 0.3125, 0.15625, 0.03125], [0.8125, 0.5, 0.1875, 0.03125, 0]]
+    };
 
-    if (rovno_ili_bol == 0){
-        kolvo = ['ровно один раз','ровно два раза' ,'ровно три раза' ,'ровно четыре раза' ,'ровно пять раз'][first_times - 1]
-        if (kolvo_rush  == 2){
-            if (first_times == 1){
-                answers = 0.5;
-            }else{
-                answers	= 0.25;
-            }
-        }
-
-        if (kolvo_rush == 3){
-            if (first_times == 1){
-                answers = 0.375;
-            }
-            if (first_times == 2){
-                answers	= 0.375;
-            }
-            if (first_times == 3){
-                answers	= 0.125;
-            }
-        }
-
-        if (kolvo_rush == 4){
-            if (first_times == 1){
-                answers = 0.25;
-            }
-            if (first_times == 2){
-                answers	= 0.375;
-            }
-            if (first_times == 3){
-                answers	= 0.25;
-            }
-            if (first_times == 4){
-                answers	= 0.0625;
-            }
-        }
-
-        if (kolvo_rush == 5){
-            if (first_times == 1){
-                answers = 0.15625;
-            }
-            if (first_times == 2){
-                answers	= 0.3125;
-            }
-            if (first_times == 3){
-                answers	= 0.3125;
-            }
-            if (first_times == 4){
-                answers	= 0.15625;
-            }
-            if (first_times == 5){
-                answers	= 0.03125;
-            }
-        }
-    }else{
-        kolvo = ['болeе одного раза','болeе двух раз' ,'болeе трёх раз' ,'болeе четырёх раз','болeе пяти раз'][first_times - 1]
-        answers = (first_times / kolvo_rush)
-
-        if (kolvo_rush == 2){
-            if (first_times == 1){
-                answers = 0.25;
-            }else{
-                answers	= 0;
-            }
-        }
-
-        if (kolvo_rush == 3){
-            if (first_times == 1){
-                answers = 0.5;
-            }
-            if (first_times == 2){
-                answers	= 0.125;
-            }
-            if (first_times == 3){
-                answers	= 0;
-            }
-        }
-
-        if (kolvo_rush == 4){
-            if (first_times == 1){
-                answers = 0.6875;
-            }
-            if (first_times == 2){
-                answers	= 0.3125;
-            }
-            if (first_times == 3){
-                answers	= 0.0625;
-            }
-            if (first_times == 4){
-                answers	= 0;
-            }
-        }
-
-        if (kolvo_rush == 5){
-            if (first_times == 1){
-                answers = 0.8125;
-            }
-            if (first_times == 2){
-                answers	= 0.5;
-            }
-            if (first_times == 3){
-                answers	= 0.1875;
-            }
-            if (first_times == 4){
-                answers	= 0.03125;
-            }
-            if (first_times == 5){
-                answers	= 0;
-            }
-        }
-    }
+    const kolvo = kolvoOptions[rovno_ili_bol][first_times - 1];
+    const answers = probabilityMatrix[kolvo_rush][rovno_ili_bol][first_times - 1];
 
     NAtask.setTask({
-
-        text: 'Перед началом ' + sport + ' матча судья бросает монетку, чтобы определить, ' +
-            'какая из команд начнёт игру с мячом. Команда «' + team_name + '» играет ' + games + ' ' +
-            'с разными командами. Найдите вероятность того, что в этих играх ' +
-            '«' + team_name + '» ' + vopr  + ' ' + kolvo + ' .',
-
-        answers,
-
+        text: `Перед началом ${sport} матча судья бросает монетку, чтобы определить, какая из команд начнёт игру с мячом. Команда «${team_name}» играет ${games} с разными командами. Найдите вероятность того, что в этих играх «${team_name}» ${vopr} ${kolvo}.`,
+        answers
     });
 })();
