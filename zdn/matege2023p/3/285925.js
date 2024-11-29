@@ -39,10 +39,11 @@
 		NAtask.setTask({
 			text: 'Перед началом первого тура чемпионата по ' + competition[0] + ' участников ' +
 				'разбивают на игровые пары случайным образом с помощью жребия. ' +
-				'Всего в чемпионате участвует ' + chislitlx(numberOfSportsmans, sportsman) + ', среди которых ' + chislitlx(
-					number, 'спортсмен') +
+				'Всего в чемпионате участвует ' + chislitlx(numberOfSportsmans, sportsman) + 
+				', среди которых ' + chislitlx(number, 'спортсмен') +
 				' из ' + country + ', ' +
-				'в том числе ' + name + '. Найдите вероятность того, что в первом ' +
+				'в том числе ' + name + 
+				'. Найдите вероятность того, что в первом ' +
 				'туре ' + name + ' будет играть с каким-либо ' + sportsman.te + no + ' из ' + country + '?',
 			answers: numerator / denomenator,
 		});
