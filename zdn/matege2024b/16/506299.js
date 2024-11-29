@@ -10,4 +10,4 @@
         answers: S,
     });
     NAtask.modifiers.allDecimalsToStandard(/*true*/);
-    }, 20000);})();
+    }, 20000);})(); 
