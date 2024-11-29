@@ -47,6 +47,16 @@ function generateHtmlForTask(kat,zdn,masdey){
 			'');
 
 		}
+		if(vopr.authors && vopr.authors.length){
+			rez+=(
+				'<br/>' +
+				'<div class="katalog-authors">' +
+						'Автор' + ('ы').esli(vopr.authors.length > 1) + ': &nbsp;' +
+						vopr.authors.join(', ') +
+				'</div>'+
+				'<br/>'+
+			'');
+		}
 	}catch(e){
 		console.log(e);
 	}
@@ -61,8 +71,9 @@ function generateKatalog(){
 	var br='<br/>';
 	for(var kat in nabor.upak){
 		window.comment='';
+		window.availableTaskNumbers = null;
 		try{
-				nabor.upak[kat].main()
+				nabor.upak[kat][nabor.scheduler]()
 		}catch(e){
 			console.log(e);
 		}
@@ -77,8 +88,10 @@ function generateKatalog(){
 			(kat+'. '+window.comment).vTag('a','href="#'+kat+'"')+
 			br+
 		'');
-		for(var zdn in nabor.upak[kat])
-			if(zdn!='main'){
+		var tasksToList = window.availableTaskNumbers || Object.keys(nabor.upak[kat]);
+
+		for(var zdn of tasksToList)
+			if(zdn!='main' && zdn!='fipi'){
 				rez += generateHtmlForTask(kat,zdn,masdey);
 			}
 			rez += '</div>';
