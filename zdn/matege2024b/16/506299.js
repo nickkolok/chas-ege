@@ -11,4 +11,3 @@
     });
     NAtask.modifiers.allDecimalsToStandard(/*true*/);
     }, 20000);})();
-
