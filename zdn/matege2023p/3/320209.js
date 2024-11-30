@@ -7,18 +7,16 @@
 		NAinfo.requireApiVersion(0, 0);
 		let delenie1 = sluchch(1, 12);
 		let razn = sl(1, 11);
-		let delenie2 = (delenie1 + razn) % 12;
-		if (!delenie2)
-			delenie2 = 12;
+		let delenie2 = ((delenie1 + razn) % 12)?(delenie1 + razn) % 12:12;
+
 		let answ = (razn / 12);
 		genAssertZ1000(answ, "Кривая вероятность");
 		NAtask.setTask({
-
 			text:'Механические часы с двенадцатичасовым циферблатом в какой-то момент сломались и перестали идти. ' +
 				'Найдите вероятность того, что часовая стрелка остановилась, достигнув отметки ' + delenie1 +
 				', но не дойдя до отметки ' + delenie2 + '.',
 
-			answers: answ.ts(),
+			answers: answ,
 		});
 	});
 })();
