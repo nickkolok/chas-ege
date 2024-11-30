@@ -1,3 +1,4 @@
+//ЭТОТ ШАБЛОН КРИВОЙ #1248
 (function(){'use strict';
 
 var q = sl(1,9);

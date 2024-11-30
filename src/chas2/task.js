@@ -66,6 +66,30 @@ chas2.task = {
 			o.answers = chaslib.toStringsArray('answers' in o ? o.answers : []);
 			o.wrongAnswers = chaslib.toStringsArray((('wrongAnswers' in o) && (o.wrongAnswers !== undefined)) ? o.wrongAnswers : []);
 			// Просто o.answers || [] нельзя - ноль не будет передаваться
+			o.authors = chaslib.toStringsArray(o.authors || o.author || []);
+		},
+
+
+		/** @function chas2.task._.unfoldTask
+		 * Развернуть вопросы в стандартный объект-задание,
+		 * а именно - обработать questions и postquestion
+		 */
+		unfoldTask : function(o) {
+			if (o.questions) {
+				let question = o.questions.iz();
+				if (! ('answer' in question) ){
+					question.answer = question.answers;
+				}
+				o.text += question.text;
+				o.answers = chaslib.toStringsArray(question.answer);
+				//TODO: черпать o.wrongAnswers из невостребованных вопросов?
+				if (question.analys) {
+					o.analys += question.analys;
+				}
+			}
+			if (o.postquestion) {
+				o.text += o.postquestion;
+			}
 		},
 
 
@@ -119,12 +143,14 @@ chas2.task = {
 	 * @param {String} analys текст разбора задания
 	 * @param {String|Number|String[]|Number[]} answers правильные ответы
 	 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
+	 * @param {String|String[]} authors авторы шаблона
 	 * @param {String[]} tags теги
 	 * @param {Function} checkAnswer функция проверки ответа
 	 * @param {Function} draw функция отрисовки
 	 */
 	setTask : function(o) {
 		chas2.task._.normalizeTask(o);
+		chas2.task._.unfoldTask(o);
 		chas2.task._.validateTask(o);
 
 		window.vopr.podg();
@@ -132,6 +158,7 @@ chas2.task = {
 		window.vopr.rsh = o.analys;
 		window.vopr.ver = o.answers;
 		window.vopr.nev = o.wrongAnswers;
+		window.vopr.authors = o.authors;
 		if (o.checkAnswer) {
 			window.vopr.vrn = o.checkAnswer;
 		}
@@ -159,6 +186,7 @@ chas2.task = {
 			checkAnswer : window.vopr.vrn,
 			draw : window.vopr.dey,
 			tags : {},
+			authors : window.vopr.authors,
 		};
 		chas2.task._.normalizeTask(o);
 		chas2.task._.validateTask(o);
@@ -442,6 +470,457 @@ chas2.task = {
 	},
 
 
+	/** @function NApi.task.setDilationTask
+	 * Составить задание о растяжении геометрической фигуры
+	 */
+	setDilationTask: function (o) {
+		let dilationCoefficient = o.dilationCoefficient || sl(2, 10);
+		let figureName = sklonlxkand(o.figureName);
+		let action = ['увелич', 'уменьш'].iz();
+
+		//перемешаем ещё разок! А то вдруг положили не перемешанный
+		if (!o.measurements[1].primary)
+			o.measurements = o.measurements.shuffle();
+
+		//подготовка к 3м переменным
+		o.measurements.forEach(element => element.name = sklonlxkand(element.name));
+
+		//Будет ли дополнение?
+		let PS = o.PS || undefined;
+		let figureInPS;
+
+		if (PS != undefined)
+			for (let i = 0; i < o.measurements.length; i++) {
+				if (o.measurements[i].wordToClarify) {
+					figureInPS = o.measurements[i];
+					o.measurements.splice(i, 1);
+					break;
+				}
+			}
+
+		let first = ['первого', 'первой', 'первого', 'первых'][figureName.rod];
+		let second = ['второго', 'второй', 'второго', 'вторых'][figureName.rod];
+		let bigger = ['больше', 'меньше'].iz(); // TODO: 'превосходит' ?
+
+		//TODO: разнонаправленное больше-меньше
+		let phrase1 =
+			'во сколько раз ' + o.measurements[0].name.ie + ' ' + first + ' ' + figureName.re + ' ' + bigger + ' ' +
+			o.measurements[0].name.re + ' ' + second + ' ' + figureName.re;
+		let phrase2 =
+			o.measurements[1].name.ie + ' ' + first + ' ' + figureName.re + ' в ' + chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v') + ' ' +
+			bigger + ', чем ' + o.measurements[1].name.ie + ' ' + second + ' ' + figureName.re;
+
+		let textOptions = [
+			phrase1.toZagl() + ', если ' + phrase2 + '?',
+			phrase2.toZagl() + '. ' + phrase1.toZagl() + '?',
+		];
+
+		if (o.measurements[1].primary) {
+			textOptions.push(
+				'Во сколько раз ' + action + 'ится ' + o.measurements[0].name.ie + ' ' +
+				figureName.re + ', если ' +
+				['его', 'её', 'его', 'их'][figureName.rod] + ' ' + o.measurements[1].name.ve + ' ' + action + 'ить в ' +
+				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v') + '?'
+			);
+		}
+		else {
+			textOptions.push(
+				'Во сколько раз ' + action + 'или ' + o.measurements[0].name.ve + ' ' +
+				figureName.re + ', если ' +
+				['его', 'её', 'его', 'их'][figureName.rod] + ' ' + o.measurements[1].name.ie + ' ' +
+				action + ['ился', 'илась', 'илось', 'ились'][o.measurements[1].name.rod] + ' в ' +
+				chislitlx(dilationCoefficient.pow(o.measurements[1].power), 'раз', 'v') + '?'
+			);
+		}
+
+		//выберем вариант задачи
+
+		let choosePhrase = (o.choosePhrase == undefined) ? sl(0, textOptions.length - 1) : o.choosePhrase;
+
+		let task = o.clone();
+		task.text = textOptions[choosePhrase];
+
+		if (figureInPS !== undefined) {
+
+			if (PS.verb.isArray)
+				PS.verb = PS.verb[figureInPS.name.rod];
+
+			let mass = [figureInPS.name.ie + ' ' + PS.verb,''];
+			for (let i = 0; i < PS.proposal.length; i++)
+				task.text += PS.proposal[i] + mass[i];
+		}
+
+		if (!o.forbidDirectReplacements) {
+			task.text = task.text.
+				replace(' его площадь поверхности ', ' площадь его поверхности ').
+				replace(' её площадь поверхности ', ' площадь её поверхности ');
+		}
+
+		task.answers = [dilationCoefficient.pow(o.measurements[0].power)];
+		NAtask.setTask(task);
+	},
+
+
+	/** @function NApi.task.setEvaluationTask
+	 * Составить задание о нахождении значения выражения
+	 * @param {String} o.expr выражение, значение которого нужно найти
+	 * @param {Array}  o.forbiddenAnswers (необязательно) массив значений, которые не должны получаться (например, 0)
+	 * @param {Object}  o.variables (необязательно) переменные, которые надлежит подставить
+	 */
+	setEvaluationTask: function (o) {
+		let task = o.clone();
+
+		let expr = math.parse(o.expr);
+		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
+
+		let answer = o.variables ? expr.evaluate(o.variables) : expr.evaluate();
+
+		o.forbiddenAnswers = o.forbiddenAnswers || [];
+		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
+
+		if(!o.askAboutFraction){
+			genAssertZ1000(answer, 'Ответ существенно нецелый');
+			genAssert(answer.ts().length < 7, 'Ответ слишком длинный');
+		}
+
+		//TODO: o.maxAnswer, o.minAnswer, o.maxAnswerLength, o.minAnswerLength
+		genAssert(answer <  1000000, 'Ответ слишком большой'  );
+		genAssert(answer > -1000000, 'Ответ слишком маленький');
+		genAssert(answer.abs() > 2/1024/1024 || answer === 0, 'Ответ слишком маленький (по модулю)');
+
+		let textAboutFraction = "";
+		if(o.askAboutFraction){
+			genAssert(!answer.isAlmostInteger(), 'Ответ должен быть дробью, а не целым числом');
+			answer = math.fraction(answer);
+			genAssert(answer.n < 1000000, 'Числитель дроби слишком большой (по модулю)');
+			genAssert(answer.d <= (o.maxDenominator || 20), 'Знаменатель дроби слишком большой');
+			genAssert(answer.d >= (o.minDenominator ||  2), 'Знаменатель дроби слишком маленький');
+1
+			// Вносим минус в числитель
+			answer.n *= answer.s;
+
+			textAboutFraction = " Представьте результат в виде несократимой обыкновенной дроби. ";
+			task.analys =
+				(task.analys || "") +
+				" Значение выражения в виде дроби: " +
+				answer.n.ts() + "/" + answer.d.ts();
+			if(sl1()){
+				answer = answer.n;
+				textAboutFraction += "В ответ запишите числитель этой дроби."
+			} else {
+				answer = answer.d;
+				textAboutFraction += "В ответ запишите знаменатель этой дроби."
+			}
+
+			genAssert(answer.ts().length < 7, 'Ответ слишком длинный - вероятна ложная точность');
+		}
+
+		if (o.simplifyConstant){
+			expr = math.simplifyConstant(expr);
+		}
+
+		if (!o.keepFractionsIrreduced){
+			expr = math.simplify(expr,mathjsRules.reduceFractions);
+			expr = math.simplify(expr,mathjsRules.reduceFractionsPi);
+		}
+
+		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
+		expr = math.simplify(expr, mathjsRules.omit1pi);
+		expr = math.simplify(expr, mathjsRules.omit1sqrt);
+		expr = math.simplify(expr, mathjsRules.trig2trigPow);
+
+
+		let tex = expr.toTex().allDecimalsToStandard(true);
+
+		let vars = '';
+		if (o.variables) {
+			vars = '<br/>при ';
+			for (let v in o.variables) {
+				vars += '$' + v + '=' + math.parse('' + o.variables[v]).toTex() + '$, ';
+			}
+			vars = vars.replace(/,\s$/, '.');
+		}
+
+		task.text =
+			"Найдите значение выражения:" +
+			"$$" + tex + "$$" +
+			vars +
+			textAboutFraction;
+		task.answers = answer;
+
+		NAtask.setTask(task);
+	},
+
+
+	/** @function NApi.task.setMinimaxFunctionTask
+	 * Составить задание о нахождении минимального/максимального значения функции на промежутке
+	 * @param {String}  o.expr mathjs-запись исследуемой функции
+	 * @param {String}  o.leftEnd mathjs-запись левого конца отрезка
+	 * @param {String}  o.rightEnd mathjs-запись правого конца отрезка
+	 * @param {Number}  o.primaryStep шаг первичного перебора значений x, по умолчанию 0.001
+	 * @param {Number}  o.secondaryStep шаг вторичного перебора значений x, по умолчанию o.primaryStep.sqr()
+	 * @param {Boolean}  o.forbidMinY запретить спрашивать минимум
+	 * @param {Boolean}  o.forbidMaxY запретить спрашивать максимум
+	 * @param {Boolean}  o.forbidAnalys запретить писать решение (если оно кривое)
+	 * @param {Boolean}  o.forbidOpenEnds запретить полуинтервалы и интервалы, спрашивать только про отрезок (в ФИПИ так)
+	 * @param {Array}   o.forbiddenAnswers (необязательно) массив значений, которые не должны получаться (например, 0)
+	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
+	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
+	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
+	 * @param {Boolean}  o.avoidTrivialSimplification избегать тривиальных упрощений - например, не превращать 1x в x
+	 */
+	setMinimaxFunctionTask: function (o) {
+		let expr = math.parse(o.expr);
+		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
+
+		let lEnd = math.parse(o.leftEnd).evaluate();
+		let rEnd = math.parse(o.rightEnd).evaluate();
+
+		let minY = expr.evaluate({x:rEnd});
+		let maxY = minY;
+		let minX = rEnd;
+		let maxX = rEnd;
+
+		o.epsilon = (o.epsilon || 1/1024/1024);
+		o.primaryStep = (o.primaryStep || 0.01);
+		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
+		o.forbiddenAnswers = o.forbiddenAnswers || [];
+		o.forbidOpenEnds = o.forbidOpenEnds || chas2.task.setMinimaxFunctionTask.forbidOpenEnds;
+
+		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
+
+		let compiledExpr = math.compile(expr.toString());
+
+		for (let x = lEnd; x <= rEnd + o.epsilon; x += o.primaryStep) {
+			let y = compiledExpr.evaluate({x});
+			if (y > maxY) {
+				maxX = x;
+				maxY = y;
+			} else if (y < minY) {
+				minX = x;
+				minY = y;
+			}
+		}
+
+		//Sharpen the values a bit...
+		minY += 0.5;
+		let xFrom = Math.max(minX - 3 * o.primaryStep, lEnd);
+		let xTo   = Math.min(minX + 3 * o.primaryStep, rEnd);
+		for (let x = xFrom; x <= xTo + o.epsilon; x += o.secondaryStep) {
+			let y = compiledExpr.evaluate({x});
+			if (y < minY) {
+				minX = x;
+				minY = y;
+			}
+		}
+
+		maxY -= 0.5;
+		xFrom = Math.max(maxX - 3 * o.primaryStep, lEnd);
+		xTo   = Math.min(maxX + 3 * o.primaryStep, rEnd);
+		for (let x = xFrom; x <= xTo + o.epsilon; x += o.secondaryStep) {
+			let y = compiledExpr.evaluate({x});
+			if (y > maxY) {
+				maxX = x;
+				maxY = y;
+			}
+		}
+
+
+		console.log('minX: ' + minX + " ; minY: " + minY + " ;   maxX: " + maxX + " ; maxY: " + maxY);
+
+		if (!(minY*1000).isAlmostInteger() || o.forbidMinY) {
+			minY = null;
+		}
+
+		if (!(maxY*1000).isAlmostInteger() || o.forbidMaxY) {
+			maxY = null;
+		}
+
+		genAssert(minY !== null || maxY !== null, 'Экстремальное значение запрещено или не удовлетворяет условиям');
+
+		var chooseMinMax;
+		let chosenX;
+		if (maxY === null || (minY !== null && sl1())) {
+			chooseMinMax = 'наименьшее';
+			o.answers = minY;
+			chosenX = minX;
+		} else {
+			chooseMinMax = 'наибольшее';
+			o.answers = maxY;
+			chosenX = maxX;
+		}
+
+		o.answers = o.answers.ts();
+		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
+		genAssert(!o.forbiddenAnswers.hasElem(o.answers), 'Ответ находится в списке запрещённых');
+
+		if (o.simplifyConstant){
+			expr = math.simplifyConstant(expr);
+		}
+
+		if (!o.keepFractionsIrreduced){
+			expr = math.simplify(expr,mathjsRules.reduceFractions);
+			expr = math.simplify(expr,mathjsRules.reduceFractionsPi);
+		}
+
+		if (!o.keepSumOrder){
+			expr = math.simplify(expr, mathjsRules.shuffleSums);
+		}
+
+		if (!o.avoidTrivialSimplification){
+			expr = math.simplify(expr, mathjsRules.safeTrivialSimplification);
+		}
+
+		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
+		expr = math.simplify(expr, mathjsRules.omit1pi);
+		expr = math.simplify(expr, mathjsRules.omit1sqrt);
+		expr = math.simplify(expr, [{l: 'n1+-c2*n3', r: 'n1-c2 n3'}]);
+		expr = math.simplify(expr, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+		expr = math.simplify(expr, [{l: 'n1+c2*-n3', r: 'n1-c2 n3'}]);
+		expr = math.simplify(expr, [{l: 'n1+n2*-c3', r: 'n1-c3 n2'}]);
+		expr = math.simplify(expr, [{l: 'n1+n2*-n3', r: 'n1-n2*n3'}]);
+
+
+		if (!o.forbidAnalys) {
+			// In case of Russian-style tg(x)
+			var expr2diff = math.simplify(expr, mathjsRules.rusTrig2eng);
+
+			//Don't simplify in order to prevent numerical evaluation
+			let derivative = math.derivative(expr2diff, 'x', {simplify: false});
+
+			//... but simplify something that is safe
+			derivative = math.simplify(derivative, mathjsRules.safeTrivialSimplification);
+			derivative = math.simplify(derivative, mathjsRules.trig2trigPow);
+			//TODO: a separate rule for this?
+			derivative = math.simplify(derivative, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+			derivative = math.simplify(derivative, [{l: 'n1+n2*-n3', r: 'n1-n2*n3'}]);
+
+			o.analys = "Производная функции: $y' = " +
+				derivative.toTex() + "$" +
+				(o.analys || '');
+		}
+
+		expr = math.simplify(expr, mathjsRules.trig2trigPow);
+		expr = math.simplify(expr, mathjsRules.engTrig2rus);
+		//TODO: tan^2 x -> tg^2 x
+		// Костылик для убирания лишних скобок вокруг логарифма от степени
+		expr = math.simplify(expr, [{ l: 'log(n1)', r: 'ln(n1)' }]);
+
+		let intervalName = 'отрезке';
+		let intervalEndL = '[';
+		let intervalEndR = ']';
+
+		if (!o.forbidOpenEnds) {
+			if (!sl(3) && (chosenX - lEnd).abs() > 2 * o.primaryStep && (chosenX - rEnd).abs() > 2 * o.primaryStep) {
+				intervalName = 'интервале';
+				intervalEndL = '(';
+				intervalEndR = ')';
+			} else if (!sl(2) && (chosenX - lEnd).abs() > 2 * o.primaryStep) {
+				intervalName = 'полуинтервале';
+				intervalEndL = '(';
+				intervalEndR = ']';
+			} else if (!sl(1) && (chosenX - rEnd).abs() > 2 * o.primaryStep) {
+				intervalName = 'полуинтервале';
+				intervalEndL = '[';
+				intervalEndR = ')';
+			}
+		}
+
+		let tex = expr.toTex().allDecimalsToStandard(true);
+		o.text =
+			'Найдите '+ chooseMinMax + ' значение функции $y=' + tex + '$ на ' + intervalName + ' ' +
+			'$\\left' + intervalEndL + math.parse(o.leftEnd).toTex() + ' ; ' +
+			math.parse(o.rightEnd).toTex() + '\\right' + intervalEndR + '$.'
+
+		chas2.task.setTask(o);
+	},
+
+
+	/** @function NApi.task.setLocalExtremumTask
+	 * Составить задание о нахождении минимального/максимального значения функции на промежутке
+	 * @param {String}  o.expr mathjs-запись исследуемой функции
+	 * @param {String}  o.leftEnd mathjs-запись левого конца отрезка
+	 * @param {String}  o.rightEnd mathjs-запись правого конца отрезка
+	 * @param {Number}  o.primaryStep шаг первичного перебора значений x, по умолчанию 0.001
+	 * @param {Number}  o.secondaryStep шаг вторичного перебора значений x, по умолчанию o.primaryStep.sqr()
+	 * @param {Boolean}  o.forbidMinY запретить спрашивать минимум
+	 * @param {Boolean}  o.forbidMaxY запретить спрашивать максимум
+	 * @param {Boolean}  o.forbidAnalys запретить писать решение (если оно кривое)
+	 * @param {Boolean}  o.forbidOpenEnds запретить полуинтервалы и интервалы, спрашивать только про отрезок (в ФИПИ так)
+	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
+	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
+	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
+	 */
+	setLocalExtremumTask: function (o) {
+		let expr = math.parse(o.expr);
+		//TODO: parse sl()
+		expr = math.simplify(expr, mathjsRules.safeTrivialSimplification);
+
+		if (!o.extremums) {
+			// We have to find them here...
+			let expr2 = math.simplify(expr, [{l:'ln(n1)', r:'log(n1)'}]);
+			expr2 = math.simplify(expr2, [{l:'log(n1,n2)', r:'(log(n1)/log(n2))'}]);
+			let derivative = math.derivative(expr2, 'x', {simplify: false});
+			derivative = math.simplify(derivative, mathjsRules.safeTrivialSimplification);
+
+			// Some trick to avoid problems with equations...
+			let eq = 'eq(' + derivative.toString() + ')';
+			eq = math.simplify(eq, [{l:'n1*n2 + n1*n3', r:'n1*(n2+n3)'}]);
+			eq = math.simplify(eq, [{l:'eq(n1*e^n2)', r:'eq(n1)'}]);
+			eq = eq.args[0];
+			console.log(eq.toString());
+			// Solve the equation eq using nerdamer
+
+			let roots = nerdamer.solve(eq.toString()+'=0', 'x').toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
+			console.log(roots);
+
+			o.extremums = [];
+			for (let root of roots) {
+				let stringRoot = root.toString();
+				genAssert(stringRoot.length < 7, 'Слишком кривой ноль производной');
+				o.extremums.push(stringRoot);
+			}
+
+			//o.extremums = roots.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
+		}
+
+
+		let sortedExtremums = {min:[], max:[], not:[]};
+
+		//sort extremums
+		for (let e of o.extremums) {
+			console.log(e);
+			sortedExtremums[
+				mathjs_helpers.testLocalExtremum(expr.toString(), ''+e, '1/100')
+			].push(e);
+		}
+
+		if (sortedExtremums.min.length !== 1) {
+			delete sortedExtremums.min;
+		}
+		if (sortedExtremums.max.length !== 1) {
+			delete sortedExtremums.max;
+		}
+		delete sortedExtremums.not;
+
+		let whatToFind = Object.keys(sortedExtremums).shuffle();
+		genAssertNonempty(whatToFind, 'Искать-то нечего!');
+		whatToFind = whatToFind[0];
+		let theExtremum = sortedExtremums[whatToFind][0];
+
+		theExtremum = eval(theExtremum);
+		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
+
+		let extremumName = {min: 'минимум', max: 'максимум'}[whatToFind];
+
+		let tex = expr.toTex({parenthesis: 'auto'}).allDecimalsToStandard(true);
+		o.text = 'Найдите точку '+ extremumName + 'а функции $y=' + tex + '$.'
+
+		o.answers = [theExtremum];
+
+		chas2.task.setTask(o);
+	},
+
 	/** @function NApi.task.setTwoStatementTask
 	 * Составить задание о двух утверждениях
 	 * @param {String|Object[]} stA первое утверждение (или массив утверждений)
@@ -553,18 +1032,74 @@ chas2.task = {
 		 */
 		variativeABC : (function() {
 			var alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-			return function() {
-				var alph2 = alph.slice().shuffle();
+			return function(variativeABCstrings, o) {
+				o = o || {};
+				var alph1 = alph.slice();
+				if (o.preserve) {
+					alph1 = alph1.filter(e => !o.preserve.includes(e));
+				}
+				var alph2 = alph1.slice().shuffle();
+				if (variativeABCstrings) {
+					for (let i = 0; i < variativeABCstrings.length; i++) {
+						variativeABCstrings[i] =
+							variativeABCstrings[i].cepZamena(alph1, alph2);
+					}
+				}
 				chas2.task.setTask(
 					mapRecursive(
 						chas2.task.getTask(),
 						function(str) {
-							return ('' + str).cepZamena(alph, alph2);
+							return ('' + str).cepZamena(alph1, alph2);
 						}
 					)
 				);
 			};
 		})(),
+
+		/** @function chas2.task.modifiers.multiplyAnswerBySqrt
+		 * Добавить фразу "Ответ умножьте на $\sqrt{..}$." и домножить сам ответ.
+		 * @param {Number} n Максимальное число, до которого можно домножать на корень
+		 * @param {Boolean} opts.useMultiples Можно ли умножать/делить на конструкции вида 2\sqrt{3}
+		 */
+		multiplyAnswerBySqrt : function(n, opts) {
+			var o = chas2.task.getTask();
+			if (o.answers.length != 1){
+				throw new TypeError('Fixme: cannot apply multiplyAnswerBySqrt() to multiple answers')
+			}
+			//Меняем запятую на точку для корректной работы Number
+			var ans = Number(o.answers[0].replace(',', '.'));
+
+			opts = opts || {};
+			opts.useMultiples = opts.useMultiples || false;
+
+			if ((ans*1000).isAlmostInteger()){
+				//Ответ и так хорош!
+				return;
+			}
+
+			var possibleMultipliers = [2,3];
+			for (var i = 5; i <= n; i++){
+				if(!i.isPolnKvadr()){
+					possibleMultipliers.push(i);
+				}
+			}
+			possibleMultipliers.shuffle();
+			console.log(possibleMultipliers);
+			for (var i of possibleMultipliers){
+				if(sl1() && (ans/i.sqrt()*1000).isAlmostInteger()){
+					o.text += ' Ответ разделите на $' + i.texsqrt(opts.useMultiples) + '$.';
+					o.answers = [(ans / i.sqrt()).okrugldo((10).pow(-6)).ts()]
+					chas2.task.setTask(o);
+					return;
+				} else if((ans*i.sqrt()*1000).isAlmostInteger()){
+					o.text += ' Ответ умножьте на $' + i.texsqrt(opts.useMultiples) + '$.';
+					o.answers = [(ans * i.sqrt()).okrugldo((10).pow(-6)).ts()]
+					chas2.task.setTask(o);
+					return;
+				}
+			}
+			throw new RangeError('multiplyAnswerBySqrt(): can find no appropriate square root');
+		},
 
 		/** @function chas2.task.modifiers.roundUpTo
 		 * Добавить фразу "Округлить до ..." и округлить сам ответ.
@@ -681,5 +1216,25 @@ chas2.task = {
 			chas2.task.setTask(currentTask);
 		},
 
+		/** @function NAtask.modifiers.allDecimalsToStandard
+		Применяет .ts() ко всем цифрам с излишней точностью в задании.
+		*/
+		allDecimalsToStandard : function(p1) {
+			var o = NAtask.getTask();
+			o.text = o.text.allDecimalsToStandard(p1);
+			o.analys = o.analys.allDecimalsToStandard(p1);
+			NAtask.setTask(o);
+		},
+
+		/** @function NAtask.modifiers.assertSaneDecimals
+		Вызывает ошибку при наличии слишком длинных десятичных дробей.
+		*/
+		assertSaneDecimals : function() {
+			let o = NAtask.getTask();
+			let insaneDecimal = /(\d|[.,]|\{[.,]\}){8}/;
+			genAssert(!insaneDecimal.test(o.text), 'Текст задания содержит слишком длинные десятичные дроби');
+			genAssert(!insaneDecimal.test(o.analys), 'Решение задания содержит слишком длинные десятичные дроби');
+			genAssert(!insaneDecimal.test(o.answers.join('__')), 'Один из ответов задания содержит слишком длинные десятичные дроби');
+		},
 	},
 };
