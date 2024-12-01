@@ -10,7 +10,7 @@
     let t1=['меньше','больше'];
     let v1=sluchch(1);
     NAtask.setTask({
-    	text: ('Прямая $y='+d.plusminus()+'x+'+f.plusminus()+'$ является касательной к графику функции $y='+a+'x^{2}+bx+'+c.plusminus()+'$. Найдите $b$, зная, что оно '+t1[v1]+' '+sluchch(m1[0]+1,m1[1]-1).plusminus()+'.').plusminus(),
+    	text: ('Прямая $y='+d.plusminus()+'x+'+f.plusminus()+'$ является касательной к графику функции $y='+a+'x^{2}+bx+'+c.plusminus()+'$. Найдите $b$, зная, что оно '+t1[v1]+' '+$sluchch(m1[0]+1,m1[1]-1).plusminus()$+'.').plusminus(),
     	answers: m1[v1],
     });
     NAtask.modifiers.allDecimalsToStandard(/*true*/);
