@@ -8,7 +8,7 @@
 		let arr2 = ['+', '-'];
 		let key = "77438";
 		let func = [arr1.iz() + 'x^3', arr1.iz() + a + 'x^2', arr1.iz() + b + 'x']
-		func = usePreference(key, [{
+		func = getListedPreference(key, [{
 			preference: 'cubic',
 			preferenceValue: [arr1.iz() + 'x^3', arr1.iz() + b + 'x'].shuffle(),
 		}, {
@@ -23,11 +23,11 @@
 			primaryStep: 1,
 			secondaryStep: 0.001,
 			authors: ['Алендарь Сергей'],
-			forbidMinY: usePreference(key, {
+			forbidMinY: getListedPreference(key, {
 				preference: 'maximum',
 				preferenceValue: true,
 			},false),
-			forbidMaxY: usePreference(key, {
+			forbidMaxY: getListedPreference(key, {
 				preference: 'minimum',
 				preferenceValue: true,
 			}, false),
