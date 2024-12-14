@@ -469,7 +469,7 @@ chas2.task = {
 		chas2.task.setEquationTask(o, taskOptions);
 	},
 
-	/** @function NApi.task.setTaskWithGraphOfFunctionDerivative
+	/** @function NApi.task.setGraphicFunctionDerivativeTask
  * На рисунке изображён график производной/функции
  * @param {String} type derivative or function
  * @param {Object} boundariesOfGraph {minX, maxX, minY, maxY}
@@ -479,245 +479,459 @@ chas2.task = {
  * @param {Boolean} extremumsIsInteger
  * @param {Boolean} rootsIsInteger 
  */
-	setTaskWithGraphOfFunctionDerivative: function (o) {
-		let { type, 
-			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1}, 
-			canvasSettings: { height = 400, width = 500, scale = 20 } = {}, 
-			questionsF: { main, variants, conditions},
-			minimumNumberOfExtremes = 1,
-			minimumDifferenceBetweenExtremes = 1, 
-			extremumsIsInteger = false, 
-			rootsIsInteger = false } = o;
-		conditions = conditions.iz();
+	setGraphicFunctionDerivativeTask: function (o) {
+		let { type,
+			definedOnInterval = true,
+			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1 },
+			canvasSettings: { step = 0.01, scale = 20, height = 400, width = 500, font = "14px liberation_sans", lineWidth = 0.1, lineDash = [4, 2], singleSegmentX = 1, singleSegmentY = 1, monotoneFunction = false,
+				markedPoints = { type: ['symbol', 'number'].iz(), step: 2, fontMarkedPoints: "16px liberation_sans", lineWidthMarkedPoints: 0.1, numberOfPoints: { min: 4, max: 10 }, } },
+			questionsF: { main, variants, conditions },
+			numberOfExtremes = { min: 0, max: 1000 },
+			numberOfRoots = { min: 0, max: 1000 },
+			minimumDifferenceBetweenExtremes = 1,
+			extremumsIsInteger = { int: 'no_matter', tolerance: 0.2 },
+			rootsIsInteger = { int: 'no_matter', tolerance: 0.2 }, } = o;
+
+		const conditionsArray = ['derivative_is_positive', 'derivative_is_negative', 'derivative_is_zero', 'extreme_points', 'minimum_points', 'maximum_points', 'function_is_positive', 'function_is_negative', 'value_on_the_segment', 'extreme_points_on_the_segment', 'minimum_points_on_the_segment', 'maximum_points_on_the_segment',
+		];
+
+		const variantsArray = ['sum', 'production', 'number', 'largest', 'smallest', 'minimum', 'maximum', 'smallest_value', 'largest_value', 'largest', 'smallest', 'minimum_point_on_the_segment', 'maximum_point_on_the_segment'];
+
+		conditions = conditions.iz() || conditionsArray.iz();
+		variants = variants.iz() || variantsArray.iz();
+		let answer;
 
 		let task = o.clone();
-		function createSpline({ type, minX, maxX,  minY, maxY, stepForX = 1, stepForY = 1, extremumsIsInteger = false, rootsIsInteger = false, minimumDifferenceBetweenExtremes = 1}) {
-			let X = [];
-			let Y = [];
-		
-			for (let i = minX; i <= maxX; i += stepForX) {
-				X.push(i);
-				Y.push(sl(minY+1, maxY-1, stepForY));
-			}
-			let spline = new Spline(X, Y);
-			let func = (x) => spline.at(x);
-			let painFunc;
-			switch (type) {
-				case 'derivative':
-					painFunc = (x) => 1000 * (spline.at(x + 0.001) - spline.at(x - 0.001));
-					break;
-				case 'function':
-				default:
-					painFunc = (x) => spline.at(x);
-					break;
-			}
-		
-			genAssert(painFunc(maxX) < maxY && painFunc(maxX) > minY, 'Функция вышла за пределы сетки с правого конца');
-			genAssert(painFunc(minX) < maxY && painFunc(minX) > minY, 'Функция вышла за пределы сетки с левого конца');
-		
-			let extX = extremumsX(painFunc, minX, maxX);
-			console.log('extX',extX, minimumNumberOfExtremes);
-			genAssert(extX.length > minimumNumberOfExtremes, 'Минимальное количество экстремумов '+minimumNumberOfExtremes);
-			console.log(extX);
-			extX.forEach((elem) => genAssert((elem - minX).abs() > 0.5, 'Экстремум слишком близко к левому концу'));
-			extX.forEach((elem) => genAssert((elem - maxX).abs() > 0.5, 'Экстремум слишком близко к правому концу'));
-		
-			let extY = extremumsY(painFunc, minX, maxX)
-			console.log(extY);
-			extY.forEach((elem) => genAssert(elem < maxY, 'Функция вышла за пределы сетки сверху'))
-			extY.forEach((elem) => genAssert(elem > minY, 'Функция вышла за пределы сетки снизу'))
-			extY.forEach((elem) => genAssert(elem.abs() > 0.5, 'Экстремум слишком близко к оси Ox'));
-			extY.forEach((elem, index) => {
-				if (index > 0) {
-					genAssert(Math.abs(elem - extY[index - 1]) >= minimumDifferenceBetweenExtremes, 'Разница между соседними экстремумами меньше, чем '+minimumDifferenceBetweenExtremes);
-				}
-			});
-		
-			genAssertGraphIntersectsPointWithNeighborhood(painFunc, 1.1, -0.3, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(painFunc, -0.5, 1.1, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(painFunc, -0.3, -0.3, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(painFunc, maxX, -0.3, 0.2);
-			genAssertGraphIntersectsPointWithNeighborhood(painFunc, minX, -0.3, 0.2);
-		
-			switch (extremumsIsInteger) {
-				case true:
-					extX.forEach((elem) => {
-						genAssert(isCloseToInteger(elem, 0.1), 'Значение экстремума отличается от целого числа более чем на 0.1');
-					});
-					break;
-				case false:
-					extX.forEach((elem) => {
-						genAssert(!isCloseToInteger(elem, 0.3), 'Значение экстремума отличается от целого числа менее чем на 0.3');
-					});
-					break;
-				default:
-					break;
-			}
-		
-			let rootFunc = roots(painFunc, minX, maxX);
-			switch (rootsIsInteger) {
-				case true:
-					rootFunc.forEach((root) => {
-						genAssert(isCloseToInteger(root, 0.1), 'Значение корня отличается от целого числа более чем на 0.1');
-					});
-					break;
-				case false:
-					rootFunc.forEach((root) => {
-						genAssert(!isCloseToInteger(root, 0.3), 'Значение корня отличается от целого числа менее чем на 0.3');
-					});
-					break;
-				default:
-					break;
-			}
-			return func;
-		};
 
-		function paintSpline(options) {
-			const {
-				func,
-				minX,
-				maxX,
-				scale = 20,
-				height = 400,
-				width = 500,
-				font = "12px liberation_sans",
-				lineWidth = 0.1
-			} = options;
-		
-			return function(ctx) {
-				ctx.drawCoordinatePlane(width, height, { hor: 1, ver: 1 }, { x1: '1', y1: '1', sh1: 13 }, scale);
-				ctx.font = font;
-				ctx.drawLine(scale * maxX, 5, scale * maxX, -5);
-				ctx.drawLine(scale * minX, 5, scale * minX, -5);
-				if (maxX != 0 && maxX != 1) ctx.fillText(maxX, scale * maxX, 15);
-				if (minX != 0 && minX != 1) ctx.fillText(minX, scale * minX - 13, 15);
-				ctx.scale(scale, -scale);
-				ctx.lineWidth = lineWidth;
-				graph9AdrawFunction(ctx, func, { minX: minX, maxX: maxX, minY: -9, maxY: 9, step: 0.01 });
-				graph9AmarkCircles(ctx, [ [maxX, func(maxX)], [minX, func(minX)] ], 2, 0.2);
-				ctx.fillStyle = "white";
-				graph9AmarkCircles(ctx, [ [maxX, func(maxX)], [minX, func(minX)] ], 2, 0.1);
-			};
+		let { func, paintFunc } = createSpline({
+			type,
+			minX,
+			maxX,
+			minY,
+			maxY,
+			extremumsIsInteger,
+			rootsIsInteger,
+			stepForX,
+			stepForY,
+			numberOfExtremes,
+			numberOfRoots,
+			minimumDifferenceBetweenExtremes,
+			monotoneFunction,
+		});
+
+		let points = [];
+		if (main === 'marked_points') {
+			const epsilon = sl(stepForX * 0.1, stepForX * 0.5, 0.1);
+			for (let x = minX + epsilon; x <= maxX - epsilon; x += markedPoints.step) {
+				if ((paintFunc(x) > 0 && Math.abs(x) > 2) || (paintFunc(x) < 0 && Math.abs(x) > 1) && !isCloseToInteger(x, 0.3)) {
+					points.push(x);
+				}
+
+			}
+			genAssert(points.length >= markedPoints.numberOfPoints.min, 'Минимальное количество отмеченных точек ' + markedPoints.numberOfPoints.min);
+			genAssert(points.length <= markedPoints.numberOfPoints.max, 'Максимальное количество отмеченных точек ' + markedPoints.numberOfPoints.max);
 		}
 
-		
-		let func = createSpline({
-			minX: minX,
-			maxX: maxX,
-			minY: minY,
-			maxY: maxY,
-			extremumsIsInteger: extremumsIsInteger,
-			rootsIsInteger: rootsIsInteger,
-			type: type,
-			stepForX: stepForX,
-			stepForY: stepForY,
-			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
-		});
+		let paint = paintSpline({func: paintFunc, minX, maxX, minY, maxY, scale, step, height, width, font, lineWidth, lineDash, singleSegmentX, singleSegmentY, points, markedPoints, definedOnInterval});
 
-		console.log(func);
-
-		let paint = paintSpline({
-			func: func,
-			minX: minX,
-			maxX: maxX,
-			scale: scale
-		});
-
-		//console.log('Экстремумы',findAllExtremumsOfFunctionSort(func, minX, maxX))
-
-		task.text = [];
-		task.text.push('На рисунке изображён график');
+		task.text = ['На рисунке изображён график'];
 		switch (type) {
 			case 'function':
-				task.text.push('функции $y=f(x)$,');
+				task.text.push('функции $y=f(x)$');
 				break;
 			case 'derivative':
-				task.text.push('$y=f\'(x)$ — производной функции,');
+				task.text.push('$y=f\'(x)$ — производной ' + functionsFx);
 				break;
 			default:
 				throw new Error('Не выбран тип задания. Укажите type.');
 		}
 
-		task.text.push('определённой на интервале $(' + minX + ';' + maxX + ')$. ' + ['Найдите', 'Определите'].iz());
+		if (definedOnInterval) {
+			task.text[task.text.length - 1] += ','
+			task.text.push('определённой на интервале $(' + minX + ';' + maxX + ')$');
+		}
+		task.text[task.text.length - 1] += '.';
+
+
+		switch (conditions) {
+			case 'value_on_the_segment':
+			case 'value_on_the_segment_with_ends':
+				switch (variants) {
+					case 'largest_value':
+					case 'smallest_value':
+						task.text.push('В какой точке отрезка');
+						break;
+				}
+				break;
+			default:
+				task.text.push(['Найдите', 'Определите'].iz());
+				break;
+		}
 
 		let find = '';
-		if (type == 'function')
+		let deriv;
+		const functionFx = 'функция $f(x)$';
+		const functionsFx = 'функции $f(x)$';
+		const derivativeOfFx = 'производная ' + functionsFx;
+		let subSegment = getRandomSubSegment(minX + 1, maxX - 1, stepForX);
+		switch (type) {
+			case 'function':
+				switch (conditions) {
+					case 'derivative_is_positive':
+						find = derivativeOfFx + 'положительна';
+						answer = findIncreasingIntervals(func, minX, maxX);
+						break;
+					case 'derivative_is_negative':
+						find = derivativeOfFx + 'отрицательна';
+						answer = findDecreasingIntervals(func, minX, maxX);
+						break;
+					case 'derivative_is_largest':
+						find = derivativeOfFx + 'принимает наибольшее значение';
+						deriv = points.map((x) => 1000 * (func(x + 0.001) - func(x - 0.001)));
+						genAssert(isDistinctByTolerance(deriv, 1), 'Значения производных в точках отличаются менее чем на ' + 0.5);
+						answer = points[deriv.max()];
+						break;
+					case 'derivative_is_smallest':
+						find = derivativeOfFx + 'принимает наименьшее значение';
+						deriv = points.map((x) => 1000 * (func(x + 0.001) - func(x - 0.001)));
+						genAssert(isDistinctByTolerance(deriv, 1), 'Значения производных в точках отличаются менее чем на ' + 0.5);
+						answer = points[deriv.min()];
+						break;
+					case 'tangent_to_graph_abscissa':
+						find = 'касательная к графику ' + functionsFx + ' параллельна оси абсцисс';
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'tangent_to_graph_const':
+						find = 'касательная к графику ' + functionsFx + ' параллельна графику функции $y=' + sl(-20, 20, 0.1) + '$ или совпадает с ней';
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'derivative_is_zero':
+						find = derivativeOfFx + 'равна нулю';
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'solutions_equation':
+						find = 'решений уравнения $f\'(x)=0$';
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'solution_equation':
+						find = 'решение уравнения $f\'(x)=0$';
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'extreme_points':
+						find = 'экстремума';
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'minimum_points':
+						find = 'минимума';
+						answer = minimumsX(func, minX, maxX);
+						break;
+					case 'maximum_points':
+						find = 'максимума';
+						answer = maximumsX(func, minX, maxX);
+						break;
+					case 'function_is_positive':
+						find = 'функция положительна';
+						answer = findPositiveIntervals(func, minX, maxX);
+						break;
+					case 'function_is_negative':
+						find = 'функция отрицательна';
+						answer = findNegativeIntervals(func, minX, maxX);
+						break;
+					case 'function_is_increasing':
+						find = functionFx + ' возрастает';
+						answer = findIncreasingIntervals(func, minX, maxX);
+						break;
+					case 'function_is_decreasing':
+						find = functionFx + ' убывает';
+						answer = findDecreasingIntervals(func, minX, maxX);
+						break;
+					case 'extreme_points_on_the_segment':
+						find = 'экстремума ' + functionsFx + ' на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						answer = extremumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						break;
+					case 'minimum_points_on_the_segment':
+						find = 'минимума ' + functionsFx + ' на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						answer = minimumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						break;
+					case 'maximum_points_on_the_segment':
+						find = 'максимума ' + functionsFx + ' на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						answer = maximumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						break;
+					case 'minimum_point_on_the_segment':
+						answer = answer.intIntervalsMinimums.iz();
+						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
+						find = 'минимума ' + functionsFx + ' на отрезке $[' + answer.leftEnd + ';' + answer.rightEnd + ']$';
+						answer = answer.ext.round();
+						break;
+					case 'maximum_point_on_the_segment':
+						answer = answer.intIntervalsMaximums.iz();
+						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
+						find = 'максимума ' + functionsFx + ' на отрезке $[' + answer.leftEnd + ';' + answer.rightEnd + ']$';
+						answer = answer.ext.round();
+						break;
+					case 'derivative_is_zero_on_the_segment':
+						answer = transformExtremumsToIntervals(func, minX, maxX, false);
+						answer = [answer.intIntervalsMinimums.iz(), answer.intIntervalsMaximums.iz()].iz();
+						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
+						find = derivativeOfFx + 'равна нулю на отрезке $[' + answer.leftEnd + ';' + answer.rightEnd + ']$';
+						answer = [answer.ext.round()];
+						break;
+					case 'solutions_equation_on_the_segment':
+						find = 'решений уравнения $f\'(x)=0$ на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						answer = extremumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						break;
+					case 'solution_equation_on_the_segment':
+						answer = transformExtremumsToIntervals(func, minX, maxX, true);
+						answer = [answer.intIntervalsMinimums.iz(), answer.intIntervalsMaximums.iz()].iz();
+						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
+						find = 'решение уравнения $f\'(x)=0$ на отрезке $[' + answer.leftEnd + ';' + answer.rightEnd + ']$';
+						answer = [answer.ext.round()];
+						break;
+					default:
+						throw new Error('conditions: ' + conditions + ' не найдено');
+				}
+				break;
+			case 'derivative':
+				switch (conditions) {
+					case 'value_on_the_segment':
+						answer = transformExtremumsToIntervals(func, minX, maxX);
+						break;
+					case 'value_on_the_segment_with_ends':
+						answer = findIntervalsOfIncreaseAndDecrease(func, minX, maxX);
+						break;
+					case 'extreme_points':
+						find = 'экстремума ' + functionsFx;
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'minimum_points':
+						find = 'минимума ' + functionsFx;
+						answer = minimumsX(func, minX, maxX);
+						break;
+					case 'maximum_points':
+						find = 'максимума ' + functionsFx;
+						answer = maximumsX(func, minX, maxX);
+						break;
+					case 'extreme_point':
+						find = 'экстремума ' + functionsFx;
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'minimum_point':
+						find = 'минимума ' + functionsFx;
+						answer = minimumsX(func, minX, maxX);
+						break;
+					case 'maximum_point':
+						find = 'максимума ' + functionsFx;
+						answer = maximumsX(func, minX, maxX);
+						break;
+					case 'extreme_points_on_the_segment':
+						find = 'экстремума ' + functionsFx + ' на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						answer = extremumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						break;
+					case 'minimum_points_on_the_segment':
+						find = 'минимума ' + functionsFx + ' на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						answer = minimumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						break;
+					case 'maximum_points_on_the_segment':
+						find = 'максимума ' + functionsFx + ' на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$';
+						answer = maximumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						break;
+					case 'extreme_point_on_the_segment':
+						answer = transformExtremumsToIntervals(func, minX, maxX, true)
+						answer = [answer.intIntervalsMinimums.iz(), answer.intIntervalsMaximums.iz()].iz();
+						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
+						find = 'экстремума ' + functionsFx + ' на отрезке $[' + answer.leftEnd + ';' + answer.rightEnd + ']$';
+						answer = [answer.ext.round()];
+						break;
+					case 'minimum_point_on_the_segment':
+						answer = transformExtremumsToIntervals(func, minX, maxX, true)
+						answer = answer.intIntervalsMinimums.iz();
+						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
+						find = 'минимума ' + functionsFx + ' на отрезке $[' + answer.leftEnd + ';' + answer.rightEnd + ']$';
+						answer = [answer.ext.round()];
+						break;
+					case 'maximum_point_on_the_segment':
+						answer = transformExtremumsToIntervals(func, minX, maxX, true)
+						answer = answer.intIntervalsMaximums.iz();
+						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
+						find = 'максимума ' + functionsFx + ' на отрезке $[' + answer.leftEnd + ';' + answer.rightEnd + ']$';
+						answer = [answer.ext.round()];
+						break;
+					case 'function_is_increasing':
+						find = functionFx + ' возрастает';
+						answer = findIncreasingIntervals(func, minX, maxX);
+						break;
+					case 'function_is_decreasing':
+						find = functionFx + ' убывает';
+						answer = findDecreasingIntervals(func, minX, maxX);
+						break;
+					case 'tangent_to_graph_const':
+						find = 'касательная к графику ' + functionsFx + ' параллельна графику функции $y=' + sl(-20, 20, 0.1) + '$ или совпадает с ней';
+						answer = extremumsX(func, minX, maxX);
+						break;
+					case 'tangent_to_graph_abscissa':
+						answer = extremumsX(func, minX, maxX);
+						find = 'касательная к графику ' + functionsFx + ' параллельна ';
+						find += 'оси абсцисс';
+						find += ' или совпадает с ней';
+						break;
+					case 'tangent_to_graph_equation':
+						answer = intPointsWithTolerance
+							(paintFunc, {
+								minX: minX + 1,
+								maxX: maxX - 1,
+								minY: minY,
+								maxY: maxY,
+								step: 1,
+								tolerance: 0.1,
+							});
+						answer = answer.iz()
+						genAssert(answer[1].round() != 0, '0x не подходит');
+						let extY = extremumsY(paintFunc, minX, maxX);
+						extY.forEach(elem => genAssert(Math.abs(elem - answer[1].round()) > 1), 'Точки пересечения невозможно понять');
+						find = 'касательная к графику ' + functionsFx + ' параллельна ';
+						find += 'графику функции $y=' + [+ sl(-20, 20, 0.1), answer[1].round() + 'x'].shuffleJoin('+').plusminus() + '$';
+						find += ' или совпадает с ней';
+						break;
+					default:
+						throw new Error('conditions: ' + conditions + ' не найдено');
+				}
+				break;
+			default:
+				throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: ' + main + '. conditions: ' + conditions);
+		}
+		if (Array.isArray(answer))
+			genAssertNonempty(answer, 'Ответ не образован на первом этапе');
+
+		if (main !== 'interval')
 			switch (conditions) {
 				case 'derivative_is_positive':
-					find = 'производная функции положительна'
-					answer = findIncreasingIntervals(func, minX, maxX)
-					break;
 				case 'derivative_is_negative':
-					find = 'производная функции отрицательна'
-					answer = findDecreasingIntervals(func, minX, maxX)
-					break;
-				case 'derivative_is_zero' && main == 'integer_points':
-					find = 'производная функции' + ['равна нулю', ', в которых касательная к графику функции $f(x)$ параллельна' + ['оси абсцисс', 'графику функции $y=' + sl(-20, 20, 0.1) + '$']].iz()
-					answer = findExtremumsOfFunctionSort(func, minX, maxX)
-					break;
-				case 'extreme_points' && main == 'integer_points':
-					find = 'находятся экстремумы функции $f(x)$'
-					answer = findExtremumsOfFunctionSort(func, minX, maxX)
-					break;
 				case 'function_is_positive':
-					find = 'функции положительна'
-					answer = findPositiveIntervals(func, minX, maxX)
-					break;
 				case 'function_is_negative':
-					find = 'функции отрицательна'
-					answer = findNegativeIntervals(func, minX, maxX)
+				case 'function_is_increasing':
+				case 'function_is_decreasing':
+					if (main == 'integer_points')
+						answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
+					if (main == 'marked_points') {
+						answer = answer.flatMap((elem) => findPointsInIntervals(points, elem));
+					}
 					break;
-				case 'points_on_the_segment':
-					find = 'на отрезке';
-					answer = transformExtremumsToIntervals(minX, maxX);
-				default:
-					throw new Error('Не получилось образовать вопрос. Попробуйте сменить main или conditions main: '+main+' conditions: '+conditions);
+				case 'extreme_points_on_the_segment':
+				case 'minimum_points_on_the_segment':
+				case 'maximum_points_on_the_segment':
+				case 'derivative_is_zero':
+				case 'derivative_is_zero_on_the_segment':
+				case 'extreme_points':
+				case 'minimum_points':
+				case 'maximum_points':
+				case 'extreme_point':
+				case 'minimum_point':
+				case 'maximum_point':
+				case 'tangent_to_graph_abscissa':
+				case 'tangent_to_graph_const':
+				case 'solutions_equation':
+				case 'solution_equation':
+				case 'solutions_equation_on_the_segment':
+					answer = answer.map((elem) => elem.round());
+					break;
+				case 'tangent_to_graph_equation':
+					if (main == 'integer_points') {
+						answer = findIntersectionPoints(paintFunc, answer[1].round(), minX, maxX);
+					}
+					if (main == 'point') {
+						answer = answer.map((elem) => elem.round());
+					}
+				case 'value_on_the_segment':
+				case 'solution_equation_on_the_segment':
+				case 'value_on_the_segment_with_ends':
+					break;
 			}
 		switch (main) {
 			case 'integer_points':
-				answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
-				genAssertNonempty(answer, 'Не нашлось ни одной целой точки');
-				switch (variants.iz()) {
+				switch (variants) {
 					case 'sum':
 						task.text.push('сумму');
-						answer = answer.sum()
+						answer = answer.sum();
 						break;
 					case 'production':
 						task.text.push('произведение');
-						answer = answer.production()
+						answer = answer.production();
 						break;
 					case 'number':
 						task.text.push('количество');
-						answer = answer.length
+						answer = answer.length;
 						break;
 					case 'largest':
 						task.text.push('наибольшую из');
-						answer = answer.maxE()
+						answer = answer.maxE();
 						break;
 					case 'smallest':
 						task.text.push('наименьшую из');
-						answer = answer.minE()
+						answer = answer.minE();
 						break;
+					default:
+						throw new Error('variants: ' + variants + ' не найдено');
 				};
-				task.text.push(' целых точек, в которых');
 				break;
-			case 'point'&& conditions!== 'points_on_the_segment':
-				switch (variants.iz()) {
-					case 'minimum':
-						find = 'точку минимума'
-						answer = [];
+			case 'point':
+				switch (variants) {
+					case 'smallest_value':
+						find = functionFx + ' принимает наименьшее значение';
+						if (conditions == 'value_on_the_segment') {
+							answer = answer.intIntervalsMinimums.iz();
+							genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
+							task.text.push('$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
+							answer = answer.ext.round();
+						}
+						if (conditions == 'value_on_the_segment_with_ends') {
+							if (sl1()) {
+								answer = answer.decreasingIntervals.iz();
+								task.text.push('$[' + (answer[0] + 1).floor() + ';' + (answer[1] - 1).ceil() + ']$');
+								genAssert((answer[0] + 1).floor() != (answer[1] - 1).ceil(), 'Начало и конец отрезка совпали');
+								answer = (answer[1] - 1).ceil()
+							} else {
+								answer = answer.increasingIntervals.iz();
+								genAssert((answer[0] + 1).floor() != (answer[1] - 1).ceil(), 'Начало и конец отрезка совпали');
+								task.text.push('$[' + (answer[0] + 1).floor() + ';' + (answer[1] - 1).ceil() + ']$');
+								answer = (answer[0] + 1).floor()
+							}
+						}
 						break;
-					case 'maximum':
-						find = 'точку максимума'
-						answer = [];
+					case 'largest_value':
+						find = functionFx + ' принимает наибольшее значение';
+						if (conditions == 'value_on_the_segment') {
+							answer = answer.intIntervalsMaximums.iz();
+							genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали')
+							task.text.push('$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
+							answer = answer.ext.round();
+						}
+						if (conditions == 'value_on_the_segment_with_ends') {
+							if (sl1()) {
+								answer = answer.decreasingIntervals.iz();
+								genAssert((answer[0] + 1).floor() != (answer[1] - 1).ceil(), 'Начало и конец отрезка совпали')
+								task.text.push('$[' + (answer[0] + 1).floor() + ';' + (answer[1] - 1).ceil() + ']$');
+								answer = (answer[0] + 1).floor()
+							} else {
+								answer = answer.increasingIntervals.iz();
+								genAssert((answer[0] + 1).floor() != (answer[1] - 1).ceil(), 'Начало и конец отрезка совпали')
+								task.text.push('$[' + (answer[0] + 1).floor() + ';' + (answer[1] - 1).ceil() + ']$');
+								answer = (answer[1] - 1).ceil()
+							}
+						}
 						break;
-					case 'extremum':
-						find = 'точку экстремума'
-						answer = [];
+					case 'abscissa':
+						task.text.push('абсциссу')
+						answer = answer.iz();
 						break;
+					case 'empty':
+						answer = answer.iz();
+						break;
+					default:
+						throw new Error('variants: ' + variants + ' не найдено');
 				}
-			case 'interval'&& conditions!== 'points_on_the_segment':
-				answer = answer.map((elem)=>elem[1]-elem[0]);
+				break;
+			case 'interval':
+				answer = answer.map((elem) => elem[1].round() - elem[0].round());
 				switch (variants) {
 					case 'largest':
 						task.text.push('наибольший');
@@ -728,16 +942,103 @@ chas2.task = {
 						answer = answer.minE()
 						break;
 				}
-				task.text.push(' интервал, на котором');
+				genAssert(answer !== 0, 'Интервал не может быть нулевой длины')
+				task.text.push('по длине интервал, на котором');
+				find += '. В ответ запишите длину этого интервала'
+				break;
+			case 'marked_points':
+				let description = 'На оси абсцисс отмечены ' + chislitlx(points.length, 'точка') + ': $';
+				if (markedPoints.type == 'symbol') {
+					if (points.length > 5) {
+						description += 'x_1, x_2, x_3, \\dots, x_' + points.length;
+					} else {
+						description += points.map((_, index) => 'x_' + (index + 1)).join(', ');
+					}
+				}
+				else {
+					description += points.map((point) => point).join('; ');
+				}
+				description += '$.';
+				task.text.splice(-1, 0, description);
+				switch (variants) {
+					case 'number':
+						task.text.push('количество');
+						answer = answer.length;
+						break;
+					case 'largest':
+						task.text.push('наибольшую из');
+						answer = answer.maxE();
+						break;
+					case 'smallest':
+						task.text.push('наименьшую из');
+						answer = answer.minE();
+						break;
+					default:
+						throw new Error('variants: ' + variants + ' не найдено');
+				};
 				break;
 			default:
 				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
 		}
-		//console.log('Готовый ответ', answer)
+
+		if (main != 'interval')
+			switch (conditions) {
+				case 'derivative_is_positive':
+				case 'derivative_is_negative':
+				case 'derivative_is_zero':
+				case 'function_is_positive':
+				case 'function_is_negative':
+				case 'function_is_increasing':
+				case 'function_is_decreasing':
+					if (main == 'integer_points')
+						task.text.push(' целых точек, в которых');
+					if (main == 'marked_points')
+						task.text.push('точек, в которых');
+					break;
+				case 'tangent_to_graph_const':
+				case 'tangent_to_graph_abscissa':
+				case 'tangent_to_graph_equation':
+					if (main == 'integer_points')
+						task.text.push('точек, в которых');
+					if (main == 'point')
+						task.text.push('точки, в которой');
+					break
+				case 'derivative_is_zero_on_the_segment':
+				case 'derivative_is_largest':
+				case 'derivative_is_smallest':
+					task.text.push('точку, в которой');
+					break;
+				case 'extreme_points':
+				case 'minimum_points':
+				case 'maximum_points':
+				case 'extreme_points_on_the_segment':
+				case 'minimum_points_on_the_segment':
+				case 'maximum_points_on_the_segment':
+				case 'extreme_points':
+				case 'minimum_points':
+				case 'maximum_points':
+				case 'extreme_points_on_the_segment':
+				case 'minimum_points_on_the_segment':
+				case 'maximum_points_on_the_segment':
+					task.text.push('точек');
+					break;
+				case 'minimum_point_on_the_segment':
+				case 'maximum_point_on_the_segment':
+				case 'extreme_point':
+				case 'minimum_point':
+				case 'maximum_point':
+				case 'extreme_point_on_the_segment':
+				case 'minimum_point_on_the_segment':
+				case 'maximum_point_on_the_segment':
+					task.text.push('точку');
+					break;
+				default:
+					break;
+			}
+
 		task.text.push(find + '.');
 		task.text = task.text.join(' ');
 		task.answers = answer;
-
 
 		NAtask.setTask(task);
 		NAtask.modifiers.addCanvasIllustration({
@@ -745,6 +1046,7 @@ chas2.task = {
 			height: height,
 			paint: paint,
 		});
+		NAtask.modifiers.allDecimalsToStandard();
 	},
 	/** @function NApi.task.setDilationTask
 	 * Составить задание о растяжении геометрической фигуры
@@ -871,7 +1173,7 @@ chas2.task = {
 			genAssert(answer.n < 1000000, 'Числитель дроби слишком большой (по модулю)');
 			genAssert(answer.d <= (o.maxDenominator || 20), 'Знаменатель дроби слишком большой');
 			genAssert(answer.d >= (o.minDenominator ||  2), 'Знаменатель дроби слишком маленький');
-1
+
 			// Вносим минус в числитель
 			answer.n *= answer.s;
 
