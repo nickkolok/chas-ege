@@ -911,19 +911,8 @@ chas2.task = {
 
 		let whatToFind = Object.keys(sortedExtremums).shuffle();
 		genAssertNonempty(whatToFind, 'Искать-то нечего!');
-
-		switch(true){
-			case o.forbidMinY:
-				whatToFind = 'max';
-				break;
-			case o.forbidMaxY:
-				whatToFind = 'min';
-				break;
-			default:
-				whatToFind = whatToFind.shuffle()[0];
-		}
-			
-		let theExtremum = sortedExtremums[whatToFind];
+		whatToFind = whatToFind[0];
+		let theExtremum = sortedExtremums[whatToFind][0];
 
 		theExtremum = eval(theExtremum);
 		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
