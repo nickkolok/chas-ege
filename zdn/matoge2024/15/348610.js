@@ -40,6 +40,9 @@
 
 		let points = autoScale(triangle.vertices);
 
+		let pointsAngle = points.slice(0, 3);
+		let pointCentralAngle = pointsAngle.splice(variant, 1)[0];
+
 		let paint1 = function(ctx) {
 			let h = 400;
 			let w = 400;
@@ -51,6 +54,14 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
+
+			ctx.strokeStyle = om.primaryBrandColors.iz();
+			ctx.arcBetweenSegments([pointsAngle[0].x, pointsAngle[0].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x,
+				points[3].y
+			], 30);
+			ctx.arcBetweenSegments([pointsAngle[1].x, pointsAngle[1].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x,
+				points[3].y
+			], 35);
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
