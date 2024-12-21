@@ -11,9 +11,6 @@
                 lengthBC: side,
                 lengthCA: side,
             },
-            supplementary: {
-                calculateMedians: true,
-            }
         });
         genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round()].hasDubl(),
             'Основание не должно быть равно боковой стороне');
