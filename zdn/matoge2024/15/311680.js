@@ -10,9 +10,6 @@
 				lengthBC: side,
 				lengthCA: side,
 			},
-			supplementary: {
-				calculateMedians: true,
-			}
 		});
 		genAssert(![triangle.lengthAB, triangle.lengthBC].hasDubl(), 'Основание не должно совпадать с боковой стороной');
 
