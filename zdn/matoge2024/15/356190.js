@@ -9,9 +9,6 @@
                 lengthBC: sl(5, 10),
                 lengthCA: sl(5, 10),
             },
-            supplementary: {
-                calculateMedians: true,
-            }
         });
         genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round(), triangle.lengthCA.round()].hasDubl(),
             'Все стороны треугольника должны быть разными');
