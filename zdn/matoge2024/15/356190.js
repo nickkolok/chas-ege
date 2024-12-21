@@ -1,6 +1,7 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
+        let letters = latbukv.slice(0, 3);
 
         let triangle = new Triangle({
             lengths: {
