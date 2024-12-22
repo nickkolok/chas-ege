@@ -19,7 +19,7 @@
             preference: 'find_side_from_bisector',
             preferenceValue: 4,
         }, {
-            preference: 'find_side_from__height',
+            preference: 'find_side_from_height',
             preferenceValue: 5,
         }], sl(0, 5));
 
