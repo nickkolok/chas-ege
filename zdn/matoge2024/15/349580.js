@@ -1,6 +1,7 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
+
         let key = "349580";
         let variant = getListedPreference(key, [{
             preference: 'AB',
@@ -12,14 +13,6 @@
             preference: 'CA',
             preferenceValue: 2,
         }], sl(0, 2));
-
-        let letters = latbukv.slice(0, 5);
-        let sidesMidle = letters.slice(0, 3);
-        sidesMidle.generatePairs();
-        sidesMidle = sidesMidle.map(side => side.shuffleJoin());
-        [sidesMidle[1], sidesMidle[2]] = [sidesMidle[2], sidesMidle[1]];
-
-        sidesMidle.splice(variant, 1)[0];
 
         let triangle = new Triangle({
             lengths: {
@@ -38,6 +31,13 @@
 
         triangle.addVertex([triangle.midlinePointsAB, triangle.midlinePointsBC, triangle.midlinePointsCA][variant], 'E');
         triangle.connectVertices([3, 4]);
+
+        let letters = latbukv.slice(0, 5);
+        let sidesMidle = letters.slice(0, 3);
+        sidesMidle.generatePairs();
+        sidesMidle = sidesMidle.map(side => side.shuffleJoin());
+        [sidesMidle[1], sidesMidle[2]] = [sidesMidle[2], sidesMidle[1]];
+        sidesMidle.splice(variant, 1)[0];
 
         let points = autoScale(triangle.vertices);
 
