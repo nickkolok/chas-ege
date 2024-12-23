@@ -1,8 +1,6 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let letters = latbukv.slice(0, 4);
-        let sideDano = letters.slice(0, 3);
 
         let key = "349100";
         let variant = getListedPreference(key, [{
@@ -16,8 +14,10 @@
             preferenceValue: 2,
         }], sl(0, 2));
 
+        let letters = latbukv.slice(0, 4);
+        let sideDano = letters.slice(0, 3);
         let centralPoint = sideDano.splice(variant, 1)[0];
-        let pointBiss = letters[3];
+        let pointMedian = letters[3];
 
         let triangle = new Triangle({
             lengths: {
@@ -29,16 +29,13 @@
                 calculateMedians: true,
             }
         });
-        genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round(), triangle.lengthCA.round()].hasDubl(),
-            'Все стороны треугольника должны быть разными');
+        genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(), 'Все стороны треугольника должны быть разными');
 
         let medianLength = [triangle.medianALength, triangle.medianBLength, triangle.medianCLength][variant];
         let valueDano = [triangle.lengthBC, triangle.lengthCA, triangle.lengthAB][variant];
         genAssertZ1000(medianLength / 10);
 
-        triangle.addVertex([triangle.medianEndPointA, triangle.medianEndPointB, triangle.medianEndPointC][variant], [
-            'A', 'B', 'C'
-        ][variant]);
+        triangle.addVertex([triangle.medianEndPointA, triangle.medianEndPointB, triangle.medianEndPointC][variant], ['A', 'B', 'C'][variant]);
 
         let points = autoScale(triangle.vertices);
 
@@ -68,10 +65,10 @@
 
         NAtask.setTask({
             text: `В треугольнике $ABC$ известно, что ${[
-                    `$${sideDano.shuffleJoin()}=${valueDano}$`,
-                    `$${[centralPoint, pointBiss].shuffleJoin()}$ – медиана`,
-                    ` $${[centralPoint, pointBiss].shuffleJoin()}=${medianLength.ts()}$`
-                ].shuffleJoin(', ')}. Найдите $${[sideDano.iz(), pointBiss].shuffleJoin()}$.`,
+                `$${sideDano.shuffleJoin()}=${valueDano}$`,
+                `$${[centralPoint, pointMedian].shuffleJoin()}$ – медиана`,
+                `$${[centralPoint, pointMedian].shuffleJoin()}=${medianLength.ts()}$`
+            ].shuffleJoin(', ')}. Найдите $${[sideDano.iz(), pointMedian].shuffleJoin()}$.`,
             answers: valueDano / 2,
             authors: ['Александра Суматохина'],
         });
