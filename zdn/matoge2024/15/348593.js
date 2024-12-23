@@ -1,8 +1,7 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let letters = latbukv.slice(0, 3);
-        
+
         let side = sl(5, 10);
 
         let triangle = new Triangle({
@@ -12,12 +11,12 @@
                 lengthCA: side,
             },
         });
-        genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round()].hasDubl(),
-            'Основание не должно быть равно боковой стороне');
+        genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round()].hasDubl(), 'Основание не должно быть равно боковой стороне');
         let angleC = triangle.angleCInDegrees.ceil();
-        genAssert(angleC!=90, 'B - прямой угол');
+        genAssert(angleC != 90, 'B - прямой угол');
 
         let points = autoScale(triangle.vertices);
+        let letters = latbukv.slice(0, 3);
 
         let paint1 = function (ctx) {
             let h = 400;
@@ -30,10 +29,10 @@
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, triangle.connectionMatrix);
-            
+
             ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[2].x, points[2].y, 10);
-			ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[2].x, points[2].y, 10);
+            ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[2].x, points[2].y, 10);
+            ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[2].x, points[2].y, 10);
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
@@ -43,10 +42,10 @@
         NAtask.setTask({
             text: `В треугольнике $ABC$ известно, что $AB=BC$, $\\angle ${letters.slice().permuteCyclic(-1).randomReverse().join('')} = ${angleC}^{\\circ}$. 
             Найдите угол $${[letters, letters.slice().permuteCyclic(1)].iz().randomReverse().join('')}$. Ответ дайте в градусах.`,
-            answers: (180 - angleC)/2,
+            answers: (180 - angleC) / 2,
             authors: ['Александра Суматохина'],
         });
-       NAtask.modifiers.variativeABC(letters);
+        NAtask.modifiers.variativeABC(letters);
 
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
