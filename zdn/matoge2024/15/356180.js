@@ -1,7 +1,6 @@
-(function() {
-	retryWhileError(function() {
+(function () {
+	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let letters = latbukv.slice(0, 4);
 
 		let key = "356180";
 		let variant = getListedPreference(key, [{
@@ -21,10 +20,11 @@
 		}, {
 			preference: 'right',
 			preferenceValue: 1,
-		}, ], sl1());
+		},], sl1());
 
 		const offset = leftOrRightAngle === 0 ? 1 : 2;
 
+		let letters = latbukv.slice(0, 4);
 		let angleDano = [
 			letters[variant],
 			letters[(variant + offset) % 3],
@@ -52,20 +52,17 @@
 		genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(),
 			'Все стороны треугольника должны быть разными');
 
-		[triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle <80, 
-            'Треугольник не остроугольный'));
+		[triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle < 80, 'Треугольник не остроугольный'));
 
 		let valueAngle = [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees][variant].ceil();
-		triangle.addVertex([triangle.heightEndPointA, triangle.heightEndPointB, triangle.heightEndPointC][variant], ['A',
-			'B', 'C'
-		][variant]);
+		triangle.addVertex([triangle.heightEndPointA, triangle.heightEndPointB, triangle.heightEndPointC][variant], ['A', 'B', 'C'][variant]);
 
 		let points = autoScale(triangle.vertices);
 
 		let pointsAngle = points.slice(0, 3);
 		let pointCentralAngle = pointsAngle.splice(variant, 1)[0];
 
-		let paint1 = function(ctx) {
+		let paint1 = function (ctx) {
 			let h = 400;
 			let w = 400;
 
@@ -78,9 +75,7 @@
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.arcBetweenSegments([pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y, pointsAngle[0].x,
-				pointsAngle[0].y
-			], 15, true);
+			ctx.arcBetweenSegments([pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y, pointsAngle[0].x, pointsAngle[0].y], 15, true);
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
@@ -88,7 +83,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В остроугольном треугольнике $ABC$ проведена высота $${centralAngle+letters[3]}$, 
+			text: `В остроугольном треугольнике $ABC$ проведена высота $${centralAngle + letters[3]}$, 
 			$\\angle ${angleDano.randomReverse().join('')} = ${valueAngle}^{\\circ}$. 
 			Найдите угол $${angleQuestion.randomReverse().join('')}$. Ответ дайте в градусах.`,
 			answers: 90 - valueAngle,
