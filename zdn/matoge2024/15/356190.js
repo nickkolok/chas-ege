@@ -1,7 +1,6 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let letters = latbukv.slice(0, 3);
 
         let triangle = new Triangle({
             lengths: {
@@ -17,6 +16,7 @@
 
         let points = autoScale(triangle.vertices);
         genAssert(160 - points[1].x > 20, 'Прямая из угла B не видна');
+        let letters = latbukv.slice(0, 3);
 
         let paint1 = function (ctx) {
             let h = 400;
