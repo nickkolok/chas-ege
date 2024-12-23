@@ -3,7 +3,7 @@
         NAinfo.requireApiVersion(0, 2);
         let letters = latbukv.slice(0, 3);
 
-        let key = "169853";
+        let key = "356079";
         let variant = getListedPreference(key, [{
             preference: 'sinA',
             preferenceValue: 0,
