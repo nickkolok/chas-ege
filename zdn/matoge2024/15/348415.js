@@ -1,18 +1,6 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let triangle = new Triangle({
-            lengths: {
-                lengthBC: sl(3, 20),
-                lengthCA: sl(3, 20),
-            },
-            angles: {
-                angle: Math.PI / 2,
-            },
-        });
-        genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(),
-            'Все стороны треугольника должны быть разными');
-        genAssertZ1000(triangle.lengthAB, 'Гипотенуза не целая');
 
         let key = "348415";
         let variant = getListedPreference(key, [{
@@ -22,6 +10,19 @@
             preference: 'catheter',
             preferenceValue: 1,
         },], sl1());
+
+        let triangle = new Triangle({
+            lengths: {
+                lengthBC: sl(3, 20),
+                lengthCA: sl(3, 20),
+            },
+            angles: {
+                angle: Math.PI / 2,
+            },
+        });
+
+        genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(), 'Все стороны треугольника должны быть разными');
+        genAssertZ1000(triangle.lengthAB, 'Гипотенуза не целая');
 
         let dano = [
             ['катеты', [triangle.lengthCA, triangle.lengthBC]],
