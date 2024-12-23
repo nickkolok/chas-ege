@@ -1,8 +1,6 @@
-(function() {
-	retryWhileError(function() {
+(function () {
+	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let letters = latbukv.slice(0, 4);
-		let angleDano = letters.slice(0, 3);
 
 		let key = "348610";
 		let variant = getListedPreference(key, [{
@@ -16,6 +14,8 @@
 			preferenceValue: 2,
 		}], sl(0, 2));
 
+		let letters = latbukv.slice(0, 4);
+		let angleDano = letters.slice(0, 3);
 		let centralAngle = angleDano.splice(variant, 1)[0];
 		angleDano.splice(1, 0, centralAngle);
 
@@ -32,8 +32,7 @@
 				calculateBisectors: true,
 			}
 		});
-		genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round(), triangle.lengthCA.round()].hasDubl(),
-			'Все стороны треугольника должны быть разными');
+		genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round(), triangle.lengthCA.round()].hasDubl(), 'Все стороны треугольника должны быть разными');
 
 		let valueAngle = [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees][variant];
 		triangle.addVertex([triangle.bisectorEndPointA, triangle.bisectorEndPointB, triangle.bisectorEndPointC][variant], ['A', 'B', 'C'][variant]);
@@ -43,7 +42,7 @@
 		let pointsAngle = points.slice(0, 3);
 		let pointCentralAngle = pointsAngle.splice(variant, 1)[0];
 
-		let paint1 = function(ctx) {
+		let paint1 = function (ctx) {
 			let h = 400;
 			let w = 400;
 
@@ -56,12 +55,8 @@
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.arcBetweenSegments([pointsAngle[0].x, pointsAngle[0].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x,
-				points[3].y
-			], 30);
-			ctx.arcBetweenSegments([pointsAngle[1].x, pointsAngle[1].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x,
-				points[3].y
-			], 35);
+			ctx.arcBetweenSegments([pointsAngle[0].x, pointsAngle[0].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y], 30);
+			ctx.arcBetweenSegments([pointsAngle[1].x, pointsAngle[1].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y], 35);
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
@@ -69,7 +64,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ известно, что $${angleDano.randomReverse().join('')} = ${valueAngle.ceil()}^{\\circ}$, $${centralAngle+letters[3]}$ – биссектриса. 
+			text: `В треугольнике $ABC$ известно, что $${angleDano.randomReverse().join('')} = ${valueAngle.ceil()}^{\\circ}$, $${centralAngle + letters[3]}$ – биссектриса. 
 			Найдите угол $${[letters.slice(1, 3).iz(), centralAngle, letters[3]].randomReverse().join('')}$. Ответ дайте в градусах.`,
 			answers: valueAngle.ceil() / 2,
 			authors: ['Александра Суматохина'],
