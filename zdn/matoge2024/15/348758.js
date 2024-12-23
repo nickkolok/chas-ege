@@ -1,7 +1,6 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let letters = latbukv.slice(0, 3);
 
 		let triangle = new Triangle({
 			lengths: {
@@ -19,6 +18,7 @@
 		let angle = [triangle.angleBInDegrees, triangle.angleAInDegrees].iz().ceil();
 
 		let points = autoScale(triangle.vertices);
+		let letters = latbukv.slice(0, 3);
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -31,8 +31,6 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
-
-			ctx.drawLine(points[1].x, points[1].y, 160, points[1].y);
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.arcBetweenSegments([points[0].x, points[0].y, points[2].x, points[2].y, points[1].x, points[1].y], 20);
