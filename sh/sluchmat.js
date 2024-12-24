@@ -10,7 +10,7 @@ var vremyaStart;
 function sozdGalki(){
 	var galki,g1='',g2='',g3='',g4='';
 	for(var i=1;i<=nabor.numberOfTasks;i++){
-		if(!nabor.vykl[i]){
+		if(!nabor.disabledItems[i]){
 			var title='';
 			window.comment='';
 			try{

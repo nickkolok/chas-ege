@@ -87,7 +87,7 @@ var initializeStatsTable = function() {
 	};
 
 	for (var i = 1; i <= nabor.numberOfTasks; i++) {
-		if (nabor.vykl[i]) {
+		if (nabor.disabledItems[i]) {
 			continue;
 		}
 
