@@ -419,7 +419,7 @@ chas2.task = {
 			case 'list':
 				taskOptions.answers = o.roots.join(';');
 				multipleRootsPhrase = 'перечислите их через точку с запятой (;) в любом порядке';
-				taskOptions.checkAnswer = vopr.vrn_list;
+				taskOptions.checkAnswer = vopr.compareListWithAnswers;
 			break;
 		}
 
