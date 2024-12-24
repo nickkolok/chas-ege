@@ -14,9 +14,9 @@ window.vopr.text=om.meltov.ie[t].toZagl()+' стоит '+a+' рублей. '+
 
 window.vopr.correctAnswers=[''+(b/(a*(1-0.01*n[v]))).floor()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 //Обзад 26618 26619 26620

@@ -12,9 +12,9 @@ window.vopr.text='Больному прописано лекарство, кот
 
 window.vopr.correctAnswers=[(a*b*c/d/f).ceil().ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 //Обзад 26624

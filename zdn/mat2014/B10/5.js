@@ -17,8 +17,8 @@ window.vopr.text='В правильной четырёхугольной при�
 		'Найдите '+n[v4]+'.';
 window.vopr.correctAnswers=[''+p[v4]];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

@@ -25,10 +25,10 @@ var f=svVel([
 window.vopr.correctAnswers=[''+f.splice(0,1)];
 window.vopr.text='Моторная лодка прошла против течения реки и вернулась в пункт отправления. '+f.shuffle().soed();
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 
 //Обзад 26585 26586

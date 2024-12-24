@@ -14,10 +14,10 @@ var m=[x,y];
 window.vopr.text=('Прямая $y='+d+'x+'+f+'$ параллельна касательной к графику функции $y='+a+'x^{2}+'+b+'x+'+c+'$. Найдите '+h[g]+' точки касания.').plusminus();
 window.vopr.correctAnswers=[''+m[g]];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=1;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=1;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 /*119974 121217 121715 513707 525017 525040 121219 121221 121223 121225 121227 
 121229 121231 121233 121235 121237 121239 121241 121243 121245 121247 121249 

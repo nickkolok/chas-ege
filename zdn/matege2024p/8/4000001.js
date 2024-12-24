@@ -17,10 +17,10 @@
 					).plusminus();
 	window.vopr.correctAnswers=[p.ts()];
 	
-	window.vopr.kat['log']=0;
-	window.vopr.kat['prz']=1;
-	window.vopr.kat['drs']=0;
-	window.vopr.kat['tri']=0;
+	window.vopr.categories['log']=0;
+	window.vopr.categories['prz']=1;
+	window.vopr.categories['drs']=0;
+	window.vopr.categories['tri']=0;
 	})();
 	/*119976 122715 122217 122219 122221 122223 122225 122227 122229 122231 122233 
 	122235 122237 122239 122241 122243 122245 122247 122249 122251 122253 122255 

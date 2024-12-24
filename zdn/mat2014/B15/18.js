@@ -37,7 +37,7 @@ var fn=fn_zadan({
 window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['prz']=1;
+window.vopr.categories['prz']=1;
 })();
 //Вроде даже НЕ обзад.
 

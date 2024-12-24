@@ -15,9 +15,9 @@ var n=' нужно долить, чтобы полностью наполнит�
 window.vopr.text=d+h+m+'$'+b.frac(a)+'$'+f+c+g+h+n;
 window.vopr.correctAnswers=[''+(c*(a*a*a/b/b/b-1))];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 

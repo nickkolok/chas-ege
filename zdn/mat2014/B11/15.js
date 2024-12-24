@@ -12,10 +12,10 @@ window.vopr.text=
 '}}'+Osn1
 .pow(L1)+')\\cdot ({{\\log }_{'+Osn2+'}}'+Osn2 .pow(L2)+')$.';
 window.vopr.correctAnswers=[ (L1*L2).ts() ];
-window.vopr.kat['log']=1;  //Логарифмы
-window.vopr.kat['prz']=0;  //Производная
-window.vopr.kat['drs']=0;  //Дробные (нецелые) степени
-window.vopr.kat['tri']=0;  //Тригонометрия
+window.vopr.categories['log']=1;  //Логарифмы
+window.vopr.categories['prz']=0;  //Производная
+window.vopr.categories['drs']=0;  //Дробные (нецелые) степени
+window.vopr.categories['tri']=0;  //Тригонометрия
 })();
 //Источник задания.  Открытый банк заданий № 26843
 //DjUsagi

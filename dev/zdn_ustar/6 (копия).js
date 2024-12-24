@@ -24,10 +24,10 @@ window.vopr.text=('Найдите '+t1[v1]+' значение функции $y 
 
 window.vopr.correctAnswers=[c.ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=1;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=1;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=1;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=1;
 })();
 
 //Обзад 26694 26695 26696 26697 

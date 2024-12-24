@@ -16,9 +16,9 @@ window.vopr.text='В сборнике билетов по '+m[0]+' всего '+
 				'не '.esli(v1)+'достанется вопрос по '+m[1]+'.';
 window.vopr.correctAnswers=[''+x.ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 //Обзад, 285926, 285927

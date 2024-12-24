@@ -8,8 +8,8 @@ var z=sluchch(1,4);
 window.vopr.text=('Найдите значение выражения $$\\frac{'+a.pow(b)+'^{'+(z+c).toFixedLess(5).toStandart()+'}}{'+a.pow(f)+'^{'+(z+c*b/f).toFixedLess(5).toStandart()+'}}$$').plusminus();
 window.vopr.correctAnswers=[''+a.pow(z)];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=1;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=1;
+window.vopr.categories['tri']=0;
 })();

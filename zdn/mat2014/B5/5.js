@@ -20,9 +20,9 @@ window.vopr.text='Найдите площадь треугольника, вер
 window.vopr.text+='';
 window.vopr.correctAnswers=[p.ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 
 })();

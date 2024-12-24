@@ -6,8 +6,8 @@ window.vopr.text='Найдите центральный угол сектора 
 	'}{\\sqrt{\\pi}}$, площадь которого равна '+(a*a)+'. Ответ дайте в градусах.';
 window.vopr.correctAnswers=[(360*a*a/r/r).ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

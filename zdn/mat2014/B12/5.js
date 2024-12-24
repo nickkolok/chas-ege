@@ -14,9 +14,9 @@ var c='Зависимость объёма спроса $q$ (единиц в м�
 window.vopr.text=c.plusminus();
 window.vopr.correctAnswers=[v1?p2:p1];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 

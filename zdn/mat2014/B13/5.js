@@ -41,8 +41,8 @@ window.vopr.text='В '+g2[v2]+' уровень '+h+' достигает '+(v1?c*
 					return str;
 				})()+' первого? Ответ выразите в сантиметрах.';
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

@@ -19,10 +19,10 @@ var fn=fn_zadan({
 window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=1;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=1;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=1;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=1;
 })();
 
 //Обзад 26692, но не весь, а 3401, 3411, 69997, 69999, 70005, 70007, 70013, 70021, 70031, 70035, 70043

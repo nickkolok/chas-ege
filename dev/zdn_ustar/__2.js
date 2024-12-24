@@ -67,8 +67,8 @@ window.vopr.text+='На рисунке жирными точками показ�
 				' соединены линией. Определите по рисунку, '+g[v]+'.';
 window.vopr.correctAnswers=[''+p[v]];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 //})();

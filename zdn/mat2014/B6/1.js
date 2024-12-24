@@ -16,8 +16,8 @@ var f=' Какова вероятность того, что '+c+' выпаде�
 window.vopr.text=d+f;
 window.vopr.correctAnswers=[''+(monet(a,b)/Math.pow(2,a)).ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

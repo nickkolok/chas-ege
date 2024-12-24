@@ -16,10 +16,10 @@ var fn=fn_zadan({
 window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['log']=1;
-window.vopr.kat['prz']=1;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=1;
+window.vopr.categories['prz']=1;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 
 //Демка 2014

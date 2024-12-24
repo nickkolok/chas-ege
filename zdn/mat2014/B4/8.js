@@ -18,8 +18,8 @@ window.vopr.text='Семья из '+chel+' человек планирует п�
 
 window.vopr.correctAnswers=[Math.min(chel*bilet,cena*rasst*rashod/100).ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

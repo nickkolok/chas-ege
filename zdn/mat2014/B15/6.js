@@ -20,10 +20,10 @@ var fn=fn_zadan({
 window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=1;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=1;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=1;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=1;
 })();
 
 //Обзад 26702 26703 26706 26707

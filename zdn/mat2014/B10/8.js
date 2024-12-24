@@ -33,9 +33,9 @@ mas=svVel(mas);
 window.vopr.correctAnswers=mas.splice(0,1);
 window.vopr.text='Основанием пирамиды является '+figur[vFigur]+'. '+mas.soed();
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 
 })();

@@ -30,9 +30,9 @@ do{
 window.vopr.text='Найдите площадь '+g.re+' с вершинами, имеющими координаты '+d.mt_join()+'.';
 window.vopr.correctAnswers=[d.mt_s4ug().ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 
 })();

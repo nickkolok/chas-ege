@@ -17,8 +17,8 @@ window.vopr.text='На семинар приехали '+
 				' окажется доклад учёного из '+t1[v1]+'.';
 window.vopr.correctAnswers=[''+(f[v1]/a).ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

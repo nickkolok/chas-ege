@@ -7,8 +7,8 @@ window.vopr.text='Радиусы трёх шаров равны $'+(b[0]*a).ts()
 	'Найдите радиус шара, объём которого равен сумме их объёмов.';
 window.vopr.correctAnswers=[''+(b[3]*a).ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=1;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=1;
+window.vopr.categories['tri']=0;
 })();

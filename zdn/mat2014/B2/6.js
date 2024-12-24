@@ -11,10 +11,10 @@ window.vopr.text='Магазин закупает '+om.meltov.im[t]+' по оп�
 
 window.vopr.correctAnswers=[''+(b/(a*(1+0.01*c))).floor()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 //Обзад 26621
 

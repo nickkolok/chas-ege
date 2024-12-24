@@ -30,8 +30,8 @@ var f=svVel(f1.concat(f2));
 window.vopr.correctAnswers=[''+f.splice(0,1)];
 window.vopr.text='В сосуд, имеющий форму '+['цилиндра','параллелепипеда','правильной '.esli(sl1())+['треугольной','четырёхугольной','пятиугодной','шестиугольной'].iz()+' призмы'].iz()+', наливают воду, замеряют её уровень, затем опускают деталь и замеряют новый уровень. '+f.shuffle().soed();
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

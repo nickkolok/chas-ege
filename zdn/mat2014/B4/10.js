@@ -24,8 +24,8 @@ window.vopr.text='Для строительства '+stroen.re+' можно и�
 	'если выбрать наиболее дешевый вариант?';
 window.vopr.correctAnswers=[Math.min(cena1*kolvo1+mesh1*cement,cena2*kolvo2+mesh2*cement).ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

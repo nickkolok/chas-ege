@@ -17,6 +17,6 @@ var fn=fn_zadan({
 window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['prz']=1;
+window.vopr.categories['prz']=1;
 })();
 //Обзад 77467 77468 77469 77470 77471 77472 77473 77474

@@ -16,9 +16,9 @@
 		'в том числе ' + name + '. Найдите вероятность того, что в первом туре ' + name +
 		' будет играть с какой-либо спортсменкой ' + is_rus + 'из ' + country + '.';
 	window.vopr.correctAnswers = [answ];
-	window.vopr.kat['log'] = 0;
-	window.vopr.kat['prz'] = 0;
-	window.vopr.kat['drs'] = 0;
-	window.vopr.kat['tri'] = 0;
+	window.vopr.categories['log'] = 0;
+	window.vopr.categories['prz'] = 0;
+	window.vopr.categories['drs'] = 0;
+	window.vopr.categories['tri'] = 0;
 })();
 //fixed by Aisse-258

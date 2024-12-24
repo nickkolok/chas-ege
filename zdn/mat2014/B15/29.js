@@ -12,7 +12,7 @@ var fn=fn_zadan({
 window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver.ts()];
 
-window.vopr.kat['prz']=1;
-window.vopr.kat['log']=1;
+window.vopr.categories['prz']=1;
+window.vopr.categories['log']=1;
 })();
 //Обзад 26725 26732

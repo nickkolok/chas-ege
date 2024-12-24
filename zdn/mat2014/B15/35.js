@@ -23,6 +23,6 @@ var fn=fn_zadan({
 window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['prz']=0;
+window.vopr.categories['prz']=0;
 })();
 //Обзад 245181 245182 245183 245184

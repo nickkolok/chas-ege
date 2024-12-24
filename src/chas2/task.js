@@ -166,7 +166,7 @@ chas2.task = {
 			window.vopr.dey = o.draw;
 		}
 
-		window.vopr.kat.importFrom(o.tags);
+		window.vopr.categories.importFrom(o.tags);
 
 		var voprcheck = dvig.validateVopr();
 		if (voprcheck) {
@@ -191,7 +191,7 @@ chas2.task = {
 		chas2.task._.normalizeTask(o);
 		chas2.task._.validateTask(o);
 
-		o.tags.importFrom(window.vopr.kat);
+		o.tags.importFrom(window.vopr.categories);
 
 		var voprcheck = dvig.validateVopr();
 		if (voprcheck) {

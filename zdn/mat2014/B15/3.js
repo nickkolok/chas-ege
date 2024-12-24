@@ -10,10 +10,10 @@ var h=[-b,-b,a,-a];
 window.vopr.text=('Найдите '+d[v]+' функции $y='+(f[v])+'\\sqrt{x^2+'+(2*b)+'x+'+(b*b+g[v])+'}$.').plusminus();
 window.vopr.correctAnswers=[''+(h[v])];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 
 

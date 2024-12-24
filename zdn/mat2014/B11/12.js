@@ -30,10 +30,10 @@ window.vopr.correctAnswers=[(p1/p2*f[1]).ts()];
 
 window.vopr.text=('Найдите значение выражения $$'+y+'$$').plusminus().ts();
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=1;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=1;
 })();
 //Обзад 26756
 //Николай Авдеев
