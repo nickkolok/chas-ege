@@ -74,14 +74,14 @@ switch(sl(2)){
 		window.vopr.text='В каком году начал'+'а'.esli(kto[3])+
 			' деятельность как фактический глава государства '+kto[2]+'?';
 		window.vopr.correctAnswers=[''+kto[0]];
-		window.vopr.vrn=window.vopr.vrn_ist;
+		window.vopr.vrn=window.vopr.checkStandardData;
 	}break;
 	case 2:{
 		var kto=pravit.iz();
 		window.vopr.text='В каком году окончил'+'а'.esli(kto[3])+
 			' деятельность как фактический глава государства '+kto[2]+'?';
 		window.vopr.correctAnswers=[''+kto[1]];
-		window.vopr.vrn=window.vopr.vrn_ist;
+		window.vopr.vrn=window.vopr.checkStandardData;
 	}break;
 }
 

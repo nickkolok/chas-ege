@@ -11,5 +11,5 @@ var m=[
 window.vopr.text='Назовите год, в котором произошло событие:<br/><br/>'+
 	m[1];
 window.vopr.correctAnswers=[m[0]];
-window.vopr.vrn=window.vopr.vrn_ist;
+window.vopr.vrn=window.vopr.checkStandardData;
 })();
