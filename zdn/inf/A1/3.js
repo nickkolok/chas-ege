@@ -30,7 +30,7 @@ for (var i = 2; i < 4; i++) {
 	wrongAnswers[i]=y;
 }
 window.vopr.incorrectAnswers=wrongAnswers;
-window.vopr.rsh='';
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

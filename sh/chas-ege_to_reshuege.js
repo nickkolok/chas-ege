@@ -10,7 +10,7 @@ var fillerTemplate = function(){
 
 		$('#editor_body').val('{{vopr.text}}');
 		$('input[name=editor_answer]').val('{{vopr.correctAnswers}}');
-		$('#editor_solution').val('{{vopr.rsh}}');
+		$('#editor_solution').val('{{vopr.solution}}');
 
 		// Create previews
 		$('#editor_body')[0].onkeyup();
@@ -48,7 +48,7 @@ function createFiller(vopr){
 	fillerCode = fillerCode.replace('{{vopr.correctAnswers}}', escapeText(''+vopr.correctAnswers));
 	fillerCode = fillerCode.replace('{{vopr.template}}', escapeText(''+vopr.template));
 	fillerCode = fillerCode.replace('{{vopr.taskNumber}}', escapeText(''+vopr.taskNumber));
-	fillerCode = fillerCode.replace('{{vopr.rsh}}', rearrangeFormulas(escapeText(vopr.rsh)));
+	fillerCode = fillerCode.replace('{{vopr.solution}}', rearrangeFormulas(escapeText(vopr.solution)));
 	return fillerCode;
 }
 

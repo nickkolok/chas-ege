@@ -9,7 +9,7 @@ let flFullscreen = 0;
  */
 const updateQuestion = () => {
     $("#question").html(window.vopr.text);
-    $("#resh").html(window.vopr.rsh);
+    $("#resh").html(window.vopr.solution);
     window.vopr.dey();
     $("#answer").html(window.vopr.correctAnswers.join(";;"));
     $("#wrongAnswer").html(window.vopr.incorrectAnswers.join(";;"));

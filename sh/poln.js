@@ -91,7 +91,7 @@ function obnov(){
 						'Правильный ответ: '+window.vopr.correctAnswers.join('или')+
 					'</div>'+
 				'</div>'+
-				('<br/>Решение:<br/><br/>'+vopr.rsh).vTag('div','class="resh-poln"').esli(vopr.rsh)+
+				('<br/>Решение:<br/><br/>'+vopr.solution).vTag('div','class="resh-poln"').esli(vopr.solution)+
 			'</div>';
 		//Копируем вопрос в массив
 		voprosy.push(vopr.clone());

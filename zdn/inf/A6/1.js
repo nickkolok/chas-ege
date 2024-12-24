@@ -63,7 +63,7 @@ for (var i=0; i<3; i++){
 	window.vopr.incorrectAnswers.push(slKrome(window.vopr.incorrectAnswers.concat(sum),k));
 }
 window.vopr.correctAnswers=[sum];
-window.vopr.rsh='';
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

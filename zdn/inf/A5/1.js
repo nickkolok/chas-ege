@@ -12,7 +12,7 @@ for (var i=0; i<3; i++) {
 	window.vopr.incorrectAnswers.push(t);
 }
 
-window.vopr.rsh='';
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

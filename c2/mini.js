@@ -63,8 +63,8 @@ function prover() {
 			statisticalResponse = 0;
 		}
 	}
-	if (vopr.rsh) {
-		txt += '<br/><br/>' + vopr.rsh;
+	if (vopr.solution) {
+		txt += '<br/><br/>' + vopr.solution;
 	}
 	$('#protv').html(txt);
 	MathJax.Hub.Typeset();

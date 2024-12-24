@@ -90,7 +90,7 @@ for (var i = wrongtimes.length-1; i < 4; i++) {
 	wrongAnswers[i]=d.makeTime();
 }
 window.vopr.incorrectAnswers=wrongAnswers;
-window.vopr.rsh='';
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

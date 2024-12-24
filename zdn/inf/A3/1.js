@@ -62,7 +62,7 @@ for (var i=0; i<4; i++)
 
 window.vopr.correctAnswers=f.splice(0,1);
 window.vopr.incorrectAnswers=f;
-window.vopr.rsh='';
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

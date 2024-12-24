@@ -7,7 +7,7 @@ window.vopr.incorrectAnswers=[];
 for (var i=0; i<3; i++)
 	window.vopr.incorrectAnswers.push(genWrongWordForMask(mask));
 window.vopr.correctAnswers=[genWordForMask(mask)];
-window.vopr.rsh='';
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

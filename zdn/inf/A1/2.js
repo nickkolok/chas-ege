@@ -22,7 +22,7 @@ for (var i = 0; i < 10; i++) {
 }
 wrongAnswers.splice(wrongAnswers.indexOf(answer), 1);
 window.vopr.incorrectAnswers=wrongAnswers;
-window.vopr.rsh='';
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

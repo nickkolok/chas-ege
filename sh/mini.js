@@ -55,8 +55,8 @@ function prover() {
     let txt = slvopr.vrn(kand) ? 'Правильно!' : `Неправильно! Правильный ответ: ${slvopr.ver.join(' или ')}`;
     statisticalResponse = slvopr.vrn(kand) ? 1 : 0;
 
-    if (vopr.rsh) {
-        txt += `<br/><br/>${vopr.rsh}`;
+    if (vopr.solution) {
+        txt += `<br/><br/>${vopr.solution}`;
     }
 
     $('#protv').html(txt);

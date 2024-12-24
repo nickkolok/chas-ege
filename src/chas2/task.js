@@ -155,7 +155,7 @@ chas2.task = {
 
 		window.vopr.podg();
 		window.vopr.text = o.text;
-		window.vopr.rsh = o.analys;
+		window.vopr.solution = o.analys;
 		window.vopr.correctAnswers = o.answers;
 		window.vopr.incorrectAnswers = o.wrongAnswers;
 		window.vopr.authors = o.authors;
@@ -180,7 +180,7 @@ chas2.task = {
 	getTask : function() {
 		var o = {
 			text : window.vopr.text,
-			analys : window.vopr.rsh,
+			analys : window.vopr.solution,
 			answers : window.vopr.correctAnswers,
 			wrongAnswers : window.vopr.incorrectAnswers,
 			checkAnswer : window.vopr.vrn,

@@ -27,7 +27,7 @@ window.vopr.correctAnswers=[
 	'\\right)$'
 ];
 
-window.vopr.rsh=
+window.vopr.solution=
 	'$B='+
 	'\\left('+
 		baz.matrixToTex().ts()+

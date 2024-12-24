@@ -189,8 +189,8 @@ function prover(){
 		umka.vremya[n]+=(new Date().getTime()-vremyaStart)/1000;
 		umka.kvoNaVremya[n]++;
 	}
-	if(vopr.rsh)
-		txt+='<br/><br/>'+vopr.rsh;
+	if(vopr.solution)
+		txt+='<br/><br/>'+vopr.solution;
 	$('#protv').html(txt);
 	MathJax.Hub.Typeset();
 	$('#prov').hide();

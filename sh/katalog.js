@@ -31,11 +31,11 @@ function generateHtmlForTask(kat, zdn, masdey) {
         `;
         masdey.push(vopr.dey);
 
-        if (vopr.rsh) {
-            rez += `
+        if (vopr.solution) {
+            htmlContent += `
                 <button class="spoiler-show">Показать решение</button>
                 <button class="spoiler-hide">Скрыть решение</button>
-                <div class="spoiler-body">Решение: <br/>${vopr.rsh}</div>
+                <div class="spoiler-body">Решение: <br/>${vopr.solution}</div>
             `;
         }
 
