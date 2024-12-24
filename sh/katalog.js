@@ -10,10 +10,10 @@
 function generateHtmlForTask(kat, zdn, masdey) {
     let rez = '';
     vopr.podg();
-    const currentTask = `${nabor.adres}${kat}/${zdn}.js`;
-    rez += `<div class="task-wrapper" data-category="${kat}" data-tasknumber="${zdn}">`;
-    rez += currentTask.vTag('h2');
-    console.log(currentTask);
+    const currentTaskPath = `${nabor.resourceAddress}${category}/${taskNumber}.js`;
+    htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
+    htmlContent += currentTaskPath.vTag('h2');
+    console.log(currentTaskPath);
 
     try {
         nabor.upak[kat][zdn]();

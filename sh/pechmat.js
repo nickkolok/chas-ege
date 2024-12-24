@@ -417,7 +417,7 @@ function getTaskTextContainerByTaskId(taskId) {
 // Захватывает текущее задание
 function grabCurrentTask() {
     generatedTasks[vopr.taskId] = vopr.clone();
-    generatedTasks[vopr.taskId].address = `${window.nabor.adres}${dvig.getzadname(nZ)}/${window.nomer}`;
+    generatedTasks[vopr.taskId].address = `${window.nabor.resourceAddress}${dvig.getzadname(nZ)}/${window.nomer}`;
 }
 
 // Обновляет задание
