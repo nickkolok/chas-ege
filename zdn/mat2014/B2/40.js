@@ -9,7 +9,7 @@ var What=sklonlxkand(['шкаф','диван','кресло','стол','сте�
 window.vopr.txt='В '+Where+' вся мебель продаётся в разобранном виде. '+Who+
 	' может заказать сборку мебели на дому, стоимость которой составляет '+Assembly+'% от стоимости купленной мебели. '+
 	What.ie.toZagl()+' стоит '+chislitlx(Price,'рубль')+' . Во сколько рублей обойдётся покупка '+What.re+' вместе со сборкой?';
-window.vopr.ver=[(Price*(1+Assembly/100)).ts()];
+window.vopr.correctAnswers=[(Price*(1+Assembly/100)).ts()];
 
 })();
 //Обзад 323515

@@ -60,7 +60,7 @@ window.vopr.txt='Дан фрагмент таблицы истинности в�
 for (var i=0; i<4; i++)
 	f[i]=printLogic(f[i]);
 
-window.vopr.ver=f.splice(0,1);
+window.vopr.correctAnswers=f.splice(0,1);
 window.vopr.nev=f;
 window.vopr.rsh='';
 

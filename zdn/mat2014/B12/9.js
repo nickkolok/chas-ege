@@ -21,7 +21,7 @@ window.vopr.txt=('Перед отправкой тепловоз издал гу
 				' скоростью приближался к платформе тепловоз, если человек '+t1[1]+' различить сигналы, а $c = '+c+'$ м/с. '+
 				'Ответ выразите в м/с.').plusminus();
 
-window.vopr.ver=[v];
+window.vopr.correctAnswers=[v];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

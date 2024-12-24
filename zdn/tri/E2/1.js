@@ -1,7 +1,7 @@
 (function(){'use strict';
 
 window.vopr.txt='$\\cos{2a} =$<br/>';
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	'$ \\cos^{2}{a}-sin^{2}{a}  $',
 	'$ 2 \\cos^{2}{a} -1 $',
 	'$  1-2 \\sin^{2}{a} $',

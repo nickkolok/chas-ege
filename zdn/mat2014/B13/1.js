@@ -13,7 +13,7 @@ var f=' высоты. Объём '+h+' равен ';
 var g=' л. Сколько литров ';
 var n=' нужно долить, чтобы полностью наполнить сосуд?';//<br/><br/><br/><br/>';
 window.vopr.txt=d+h+m+'$'+b.frac(a)+'$'+f+c+g+h+n;
-window.vopr.ver=[''+(c*(a*a*a/b/b/b-1))];
+window.vopr.correctAnswers=[''+(c*(a*a*a/b/b/b-1))];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

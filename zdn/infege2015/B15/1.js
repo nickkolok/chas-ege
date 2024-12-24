@@ -119,7 +119,7 @@ var q = 'На рисунке изображены города, некоторы
 
 /*Generate answer*/
 searchNode(nodePathArray, startNodeId, endNodeId);
-window.vopr.ver = ['' + wayCount];
+window.vopr.correctAnswers = ['' + wayCount];
 
 /*Drawing on canvas*/
 var slid=sl(1000000000);

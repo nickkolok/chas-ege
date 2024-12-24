@@ -88,7 +88,7 @@ function obnov(){
 					'</div>'+
 					'<div class="otv_nev" id="otv_nev'+(sdel-1)+'">'+
 						'Неправильно!<br/>'+
-						'Правильный ответ: '+window.vopr.ver.join('или')+
+						'Правильный ответ: '+window.vopr.correctAnswers.join('или')+
 					'</div>'+
 				'</div>'+
 				('<br/>Решение:<br/><br/>'+vopr.rsh).vTag('div','class="resh-poln"').esli(vopr.rsh)+

@@ -9,6 +9,6 @@ while(b.isPolnKvadr())
 vopr.txt="Вычислите значение выражения $$"+
 	["\\sqrt{"+[(a*a+b),""+(2*a)+"\\sqrt{"+b+"}"].slag()+"}",
 	"\\sqrt{"+[(c*c+b),""+(-2*c)+"\\sqrt{"+b+"}"].slag()+"}"].slag().plusminus()+"$$";
-vopr.ver=[(a+c).ts()];
+vopr.correctAnswers=[(a+c).ts()];
 
 })();

@@ -14,7 +14,7 @@ window.vopr.txt=
 	' '+mashina + ' информирует ' + pilot + ' о том, что полёт проходит на высоте '+
 	height +' футов. Выразите высоту полёта в метрах. Считайте, что 1 фут равен 30,5 см.';
 
-window.vopr.ver=[ ( (height*30.5)/100).ts() ];
+window.vopr.correctAnswers=[ ( (height*30.5)/100).ts() ];
 
 window.vopr.kat['log']=0;  //Логарифмы
 window.vopr.kat['prz']=0;  //Производная

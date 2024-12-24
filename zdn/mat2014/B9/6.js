@@ -12,6 +12,6 @@ binom=binom.mn_pervoobr();
 binom[0]=sl(-99,99);
 
 vopr.txt="Найдите абсциссу точки, в которой касательная к графику функции $y= "+binom.mn_txt('x')+"$ параллельна оси абсцисс.";
-vopr.ver=[(b/a).ts()];
+vopr.correctAnswers=[(b/a).ts()];
 
 })();

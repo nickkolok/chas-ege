@@ -42,7 +42,7 @@ window.vopr.dey=function(){
 
 window.vopr.txt='Найдите площадь '+((Ax-Bx==Ay-By)?'квадрата':'прямоугольника')+', изображенного на клетчатой бумаге с размером клетки 1 см $\\times$ 1 см (см. рис.). Ответ дайте в квадратных сантиметрах.';
 window.vopr.txt+='<canvas style="float:left;margin-right:1em;" width="480" height="480" id="ris'+slid+'" style="text-align:center"></canvas>';
-window.vopr.ver=[p];
+window.vopr.correctAnswers=[p];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

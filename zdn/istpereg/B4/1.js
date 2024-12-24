@@ -32,7 +32,7 @@ var m=[
 
 window.vopr.txt='Что соотносится с '+
 	m[0][0].istDataToStd()+'?<br/>';
-window.vopr.ver=[m[0][1]];
+window.vopr.correctAnswers=[m[0][1]];
 m.splice(0,1);
 window.vopr.nev=m.T()[1];
 AtoB();

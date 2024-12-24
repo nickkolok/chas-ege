@@ -8,7 +8,7 @@ var a=sluchch(2,20);
 var g=[a,a,a*a,a*a];
 var h=[-b,-b,a,-a];
 window.vopr.txt=('Найдите '+d[v]+' функции $y='+(f[v])+'\\sqrt{x^2+'+(2*b)+'x+'+(b*b+g[v])+'}$.').plusminus();
-window.vopr.ver=[''+(h[v])];
+window.vopr.correctAnswers=[''+(h[v])];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

@@ -22,7 +22,7 @@ var f=svVel([
 	{vel:'суммарное пройденное лодкой расстояние',zna:s*2,rod:2,nah:1,nmn:'км'},
 ]);
 
-window.vopr.ver=[''+f.splice(0,1)];
+window.vopr.correctAnswers=[''+f.splice(0,1)];
 window.vopr.txt='Моторная лодка прошла против течения реки и вернулась в пункт отправления. '+f.shuffle().soed();
 
 window.vopr.kat['log']=0;

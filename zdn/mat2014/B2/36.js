@@ -7,7 +7,7 @@ var Roll=sklonlxkand(['рулон','упаковка','пачка'].iz());
 
 window.vopr.txt=Roll.re.toZagl()+' обоев хватает для оклейки полосы от пола до потолка шириной '+One.ts()+' м. Сколько '+
 	Roll.rm+' обоев нужно купить для оклейки прямоугольной комнаты размерами '+Width.ts()+' м на '+Length.ts()+' м?';
-window.vopr.ver=[((Width+Length)*2/One).ceil().ts()];
+window.vopr.correctAnswers=[((Width+Length)*2/One).ceil().ts()];
 
 })();
 //Обзад 323514

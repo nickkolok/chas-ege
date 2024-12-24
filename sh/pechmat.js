@@ -308,13 +308,13 @@ function createHtmlForTask(nazvzad) {
         ver: `<tr class="answer-container" data-task-id="${variantNumber}-${nazvzad}">
                 ${options.vanishVariants ? '' : `<td>${options.variantPrefix}${variantNumber}</td>`}
                 <td>${nazvzad}</td>
-                <td>${window.vopr.ver.join('; ')}</td>
+                <td>${window.vopr.correctAnswers.join('; ')}</td>
                 ${options.solutionsIntoAnswers ? `<td>${solutionText}</td>` : ''}
               </tr>`,
         rsh: `<div class="solution-container" data-task-id="${variantNumber}-${nazvzad}">
                 ${vopr.rsh ? `<h3>${options.vanishVariants ? '' : `Вариант №${options.variantPrefix}${variantNumber}, `}задача ${nazvzad}</h3><br/>${vopr.rsh}` : ''}
               </div>`,
-        unq: [vopr.ver.join('; '), vopr.rsh, vopr.unq].join(' [:////:] '),
+        unq: [vopr.correctAnswers.join('; '), vopr.rsh, vopr.unq].join(' [:////:] '),
     };
 }
 

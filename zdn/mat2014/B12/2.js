@@ -13,7 +13,7 @@ var c='При температуре $0^\\circ {\\rm{C}}$ рельс имеет 
 'рельс удлинится на '+dl+' мм? Ответ выразите в градусах Цельсия.';
 
 window.vopr.txt=c;
-window.vopr.ver=[''+t];
+window.vopr.correctAnswers=[''+t];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

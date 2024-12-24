@@ -156,7 +156,7 @@ chas2.task = {
 		window.vopr.podg();
 		window.vopr.txt = o.text;
 		window.vopr.rsh = o.analys;
-		window.vopr.ver = o.answers;
+		window.vopr.correctAnswers = o.answers;
 		window.vopr.nev = o.wrongAnswers;
 		window.vopr.authors = o.authors;
 		if (o.checkAnswer) {
@@ -181,7 +181,7 @@ chas2.task = {
 		var o = {
 			text : window.vopr.txt,
 			analys : window.vopr.rsh,
-			answers : window.vopr.ver,
+			answers : window.vopr.correctAnswers,
 			wrongAnswers : window.vopr.nev,
 			checkAnswer : window.vopr.vrn,
 			draw : window.vopr.dey,

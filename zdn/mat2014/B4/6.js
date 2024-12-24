@@ -25,7 +25,7 @@ window.vopr.txt='Клиент хочет арендовать автомобил
 window.vopr.txt+=(y+z.shuffle().soed()).vTabl();
 window.vopr.txt+='Цена дизельного топлива — '+chislitlx(a[0],'рубль')+' за литр, бензина — '+chislitlx(a[1],'рубль')+
 				' за литр, газа — '+chislitlx(a[2],'рубль')+' за литр.';
-window.vopr.ver=[s.ts()];
+window.vopr.correctAnswers=[s.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

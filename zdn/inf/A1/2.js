@@ -13,7 +13,7 @@ else
 
 window.vopr.txt='Сколько '+usl+' в двоичной записи числа '+x+'?'+
 	'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	answer,
 ];
 var wrongAnswers = [''];

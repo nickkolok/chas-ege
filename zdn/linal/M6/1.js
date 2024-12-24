@@ -8,7 +8,7 @@ do{
 	det=mtr.det();
 }while(!det || !(100/det).isZ());
 
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	'$\\left('+	//Костыль!!! Нужна vrn_mtr
 	mtr.inv().matrixToTex().ts()+
 	'\\right)$'

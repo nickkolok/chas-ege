@@ -26,6 +26,6 @@ var m=[
 
 window.vopr.txt='Назовите год, в котором произошло событие:<br/><br/>'+
 	m[1];
-window.vopr.ver=[m[0]];
+window.vopr.correctAnswers=[m[0]];
 window.vopr.vrn=window.vopr.vrn_ist;
 })();

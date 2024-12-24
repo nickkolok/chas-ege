@@ -12,7 +12,7 @@
 		"После снижения цены она стала стоить " + chislitlx(newprice, "рубль") + ". " +
 		"На сколько процентов была снижена цена на " + clothes.ve + "?";
 
-	window.vopr.ver = [answer];
+	window.vopr.correctAnswers = [answer];
 })();
 
 //Обзад 26630

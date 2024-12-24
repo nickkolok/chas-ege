@@ -12,7 +12,7 @@
 		[(ch1/zn1).ts(),ch1.frac(zn1)].iz()+'+'+[(ch2/zn2).ts(),ch2.frac(zn2)].iz()+'+'+[(ch3/zn3).ts(),ch3.frac(zn3)].iz()
 	).plusminus()+'$$';
 
-	window.vopr.ver=[(ch1/zn1+ch2/zn2+ch3/zn3).ts()];
+	window.vopr.correctAnswers=[(ch1/zn1+ch2/zn2+ch3/zn3).ts()];
 })();
 
 //Проект базового уровня, №1, вариант 1.

@@ -12,7 +12,7 @@ window.vopr.txt=om.meltov.ie[t].toZagl()+' стоит '+a+' рублей. '+
 	'Какое наибольшее число '+om.meltov.rm[t]+' можно купить за '+b+
 	' рублей '+m[v]+' '+c+'%?';
 
-window.vopr.ver=[''+(b/(a*(1-0.01*n[v]))).floor()];
+window.vopr.correctAnswers=[''+(b/(a*(1-0.01*n[v]))).floor()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

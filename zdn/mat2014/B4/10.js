@@ -22,7 +22,7 @@ window.vopr.txt='Для строительства '+stroen.re+' можно ис
 	chislitlx(cena2,'рубль')+
 	' за '+mera2.ve+', а мешок цемента стоит '+chislitlx(cement,'рубль')+'. Сколько рублей будет стоить материал, '+
 	'если выбрать наиболее дешевый вариант?';
-window.vopr.ver=[Math.min(cena1*kolvo1+mesh1*cement,cena2*kolvo2+mesh2*cement).ts()];
+window.vopr.correctAnswers=[Math.min(cena1*kolvo1+mesh1*cement,cena2*kolvo2+mesh2*cement).ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

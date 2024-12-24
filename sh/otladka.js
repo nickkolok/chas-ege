@@ -11,7 +11,7 @@ const updateQuestion = () => {
     $("#question").html(window.vopr.txt);
     $("#resh").html(window.vopr.rsh);
     window.vopr.dey();
-    $("#answer").html(window.vopr.ver.join(";;"));
+    $("#answer").html(window.vopr.correctAnswers.join(";;"));
     $("#wrongAnswer").html(window.vopr.nev.join(";;"));
     MathJax.Hub.Typeset('typesettable-wrap');
 };
@@ -45,7 +45,7 @@ const createFromFile = () => {
  */
 const checkAnswer = () => {
     const userAnswer = $("#answer-input").val();
-    const correctAnswer = window.vopr.ver.join(" или ");
+    const correctAnswer = window.vopr.correctAnswers.join(" или ");
     if (window.vopr.vrn(userAnswer)) {
         alert("Правильно!");
     } else {

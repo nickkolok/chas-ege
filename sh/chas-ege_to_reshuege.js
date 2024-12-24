@@ -9,7 +9,7 @@ var fillerTemplate = function(){
 
 
 		$('#editor_body').val('{{vopr.txt}}');
-		$('input[name=editor_answer]').val('{{vopr.ver}}');
+		$('input[name=editor_answer]').val('{{vopr.correctAnswers}}');
 		$('#editor_solution').val('{{vopr.rsh}}');
 
 		// Create previews
@@ -45,7 +45,7 @@ var fillerTemplate = function(){
 function createFiller(vopr){
 	var fillerCode = (''+fillerTemplate).replace(/^function\(\)/, "");
 	fillerCode = fillerCode.replace('{{vopr.txt}}', rearrangeFormulas(escapeText(vopr.txt)));
-	fillerCode = fillerCode.replace('{{vopr.ver}}', escapeText(''+vopr.ver));
+	fillerCode = fillerCode.replace('{{vopr.correctAnswers}}', escapeText(''+vopr.correctAnswers));
 	fillerCode = fillerCode.replace('{{vopr.template}}', escapeText(''+vopr.template));
 	fillerCode = fillerCode.replace('{{vopr.taskNumber}}', escapeText(''+vopr.taskNumber));
 	fillerCode = fillerCode.replace('{{vopr.rsh}}', rearrangeFormulas(escapeText(vopr.rsh)));

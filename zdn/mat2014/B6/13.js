@@ -15,7 +15,7 @@ window.vopr.txt='Если гроссмейстер '+t1[0]+'. играет бе�
 		t1.iz()+'. '+['вы','про'].iz()+'играет ровно одну партию.',
 	][v1];
 
-window.vopr.ver=[[
+window.vopr.correctAnswers=[[
 	(vb*vc).ts(),
 	((1-vb)*(1-vc)).ts(),
 	(vb*(1-vc)+vc*(1-vb)).ts(),

@@ -24,7 +24,7 @@ var f=svVel([
 	{vel:'расстояние от пункта отправления до пункта назначения',zna:s,rod:2,nah:1,nmn:'км'},
 ]);
 
-window.vopr.ver=[''+f.splice(0,1)];
+window.vopr.correctAnswers=[''+f.splice(0,1)];
 window.vopr.txt='Теплоход проходит по течению реки до пункта назначения и после стоянки возвращается в пункт отправления. '+f.shuffle().soed();
 
 window.vopr.kat['log']=0;

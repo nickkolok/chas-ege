@@ -22,7 +22,7 @@ p.toStandart();
 y='1'+p.soed();
 y=y.replace('1\\cdot','');
 window.vopr.txt=('Найдите значение выражения $$'+y+'$$').plusminus();
-window.vopr.ver=[''+(a.pow(f-g)*c.pow(d-g))];
+window.vopr.correctAnswers=[''+(a.pow(f-g)*c.pow(d-g))];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

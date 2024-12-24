@@ -47,7 +47,7 @@ for(i=0;i<3;i++){
 	if(i<2){window.vopr.txt+=tr;};
 }
 window.vopr.txt+='</td></tr></table>';
-window.vopr.ver=[s.ts()];
+window.vopr.correctAnswers=[s.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

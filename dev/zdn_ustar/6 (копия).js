@@ -22,7 +22,7 @@ var t4=['0;'+g,'-'+g+';0'];
 var v4=1-(v1==v2);
 window.vopr.txt=('Найдите '+t1[v1]+' значение функции $y = '+h+'$ на отрезке $['+t4[v4]+']$').plusminus();
 
-window.vopr.ver=[c.ts()];
+window.vopr.correctAnswers=[c.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=1;

@@ -13,7 +13,7 @@ window.vopr.txt=v0?(
 		'Ребро куба, равновеликого данному параллелепипеду, равно '+(a*b)+'. '+
 		'Найдите третье ребро параллелепипеда, выходящее из той же вершины.'
 		);
-window.vopr.ver=[''+(v0?(a*b):m[0])];
+window.vopr.correctAnswers=[''+(v0?(a*b):m[0])];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

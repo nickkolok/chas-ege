@@ -33,7 +33,7 @@ window.vopr.txt=t3.toZagl()+' выехал с постоянной скорос�
 				t2[0]+' в '+t2[1]+'. Найдите '+t5[v5]+'. Ответ дайте в '+m5[v5]+'.';
 
 
-window.vopr.ver=[p5[v5]];
+window.vopr.correctAnswers=[p5[v5]];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

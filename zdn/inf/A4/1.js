@@ -6,7 +6,7 @@ window.vopr.txt='Для групповых операций с файлами и
 window.vopr.nev=[];
 for (var i=0; i<3; i++)
 	window.vopr.nev.push(genWrongWordForMask(mask));
-window.vopr.ver=[genWordForMask(mask)];
+window.vopr.correctAnswers=[genWordForMask(mask)];
 window.vopr.rsh='';
 
 AtoB();//Техническая функция, её удалять не надо

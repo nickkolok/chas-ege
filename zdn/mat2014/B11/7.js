@@ -9,7 +9,7 @@ var z=sluchch(1,4);
 var c=z*m-g;
 window.vopr.txt=('Найдите значение выражения $$'+a.pow(b)+'^{'+c.frac(b*m)+'}\\cdot'+
 	a.pow(f)+'^{'+g.frac(f*m)+'}$$').plusminus();
-window.vopr.ver=[''+a.pow(z)];
+window.vopr.correctAnswers=[''+a.pow(z)];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

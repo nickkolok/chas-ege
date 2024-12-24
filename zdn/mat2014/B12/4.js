@@ -9,7 +9,7 @@ window.vopr.txt='После дождя уровень воды в колодце
 	' с. На сколько должен подняться уровень воды после дождя, чтобы '+
 	'измеряемое время изменилось на '+a.ts()+' с? Ответ выразите в метрах.';
 
-window.vopr.ver=[(5*t*t-5*(t-a)*(t-a)).ts()];
+window.vopr.correctAnswers=[(5*t*t-5*(t-a)*(t-a)).ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

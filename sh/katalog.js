@@ -25,7 +25,7 @@ function generateHtmlForTask(kat, zdn, masdey) {
                 <button class="copybutton" style="float:right;" title="Экспорт в РешуЕГЭ" data-task="${encodeURIComponent(JSON.stringify(vopr))}">&#x2398;</button>
                 <button class="renewbutton" style="float:right; margin-right:1.46em;" title="Заменить задание на похожее">&#x27F3;</button>
                 <button class="addbutton" style="float:right; margin-right:1.46em;" title="Добавить похожее задание">+</button>
-                Ответ: ${vopr.ver.join('или')}
+                Ответ: ${vopr.correctAnswers.join('или')}
             </div>
             <br/>
         `;

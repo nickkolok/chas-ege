@@ -19,14 +19,14 @@
 				'Катеты прямоугольного треугольника равны ' +
 				cat_a + ' и ' + cat_b + '. ' +
 				'Найдите гипотенузу.');
-			window.vopr.ver=[Math.sqrt(cat_a * cat_a + cat_b * cat_b)];
+			window.vopr.correctAnswers=[Math.sqrt(cat_a * cat_a + cat_b * cat_b)];
 			break;
 		case 1:
 			window.vopr.txt=(
 				'Катеты прямоугольного треугольника равны ' +
 				cat_a + ' и ' + cat_b + '. ' +
 				'Найдите площадь этого треугольника.');
-			window.vopr.ver=[0.5 * cat_a * cat_b];
+			window.vopr.correctAnswers=[0.5 * cat_a * cat_b];
 			break;
 		case 2:
 			window.vopr.txt=(
@@ -39,7 +39,7 @@
 						? ' больше его. '
 						: ' меньше его. ')) +
 				'Найдите площадь треугольника.');
-			window.vopr.ver=[0.5 * cat_a * cat_b];
+			window.vopr.correctAnswers=[0.5 * cat_a * cat_b];
 			break;
 	}
 

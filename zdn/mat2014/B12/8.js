@@ -18,7 +18,7 @@ var c=	'Для получения на экране увеличенного и�
 		'Ответ выразите в сантиметрах.';
 
 window.vopr.txt=c.plusminus();
-window.vopr.ver=[d1.ts()];
+window.vopr.correctAnswers=[d1.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

@@ -12,6 +12,6 @@ gradus=[gradus,180-gradus].iz();
 
 window.vopr.txt='Найдите хорду, на которую опирается угол $'+gradus+'^\\circ$, вписанный в окружность '+
 	['радиуса $'+r,'диаметра $'+(2*r), 'длины $'+(2*r)+'\\pi'].iz()+rmnozh+'$.';
-window.vopr.ver=[ otv ];
+window.vopr.correctAnswers=[ otv ];
 })();
 //Гущин 27856 27862

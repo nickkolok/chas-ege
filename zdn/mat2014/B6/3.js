@@ -16,7 +16,7 @@ window.vopr.txt='В чемпионате по '+t2+' участвуют '+a+' с
 				'Найдите вероятность того, что спортсменка, выступающая '+
 				sluchiz(['первой','последней','предпоследней','второй','третьей',sluchch(4,a)+'-ой'])[0]+
 				', окажется из '+t1[v1]+'.';
-window.vopr.ver=[''+(f[v1]/a).ts()];
+window.vopr.correctAnswers=[''+(f[v1]/a).ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

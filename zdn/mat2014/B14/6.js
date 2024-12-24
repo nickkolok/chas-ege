@@ -21,7 +21,7 @@ window.vopr.txt='Два '+t3+' одновременно отправились �
 				t4+', пришедшего к финишу '+t5[v5]+'. Ответ дайте в км/ч.';
 
 
-window.vopr.ver=[p5[v5]];
+window.vopr.correctAnswers=[p5[v5]];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

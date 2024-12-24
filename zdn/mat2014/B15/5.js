@@ -32,7 +32,7 @@ do{
 }while(fn.ver.ts().length>8);
 
 window.vopr.txt=fn.txt;
-window.vopr.ver=[fn.ver];
+window.vopr.correctAnswers=[fn.ver];
 
 
 window.vopr.kat['log']=0;

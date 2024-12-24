@@ -34,7 +34,7 @@ for(var i=0;i<c;i++){
 //z.shuffle();
 
 window.vopr.txt+=(y+z.soed()).vTabl();
-window.vopr.ver=[s.ts()];
+window.vopr.correctAnswers=[s.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

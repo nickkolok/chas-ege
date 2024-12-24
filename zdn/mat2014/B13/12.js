@@ -11,6 +11,6 @@ var h=m*t[1];
 
 window.vopr.txt=om.otvnaydite.iz().toZagl()+' площадь поверхности правильной четырехугольной пирамиды, стороны основания '+
 	'которой равны '+a+' и высота равна '+h+'.';
-window.vopr.ver=[ a*(a+2*m*t[2]) ];
+window.vopr.correctAnswers=[ a*(a+2*m*t[2]) ];
 })();
 //Гущин 27155

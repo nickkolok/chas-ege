@@ -9,7 +9,7 @@ window.vopr.txt='Магазин закупает '+om.meltov.im[t]+' по опт
 	' рублей и продаёт с наценкой '+c+'%. '+
 	'Какое наибольшее число '+om.meltov.rm[t]+' можно купить за '+b+' рублей?';
 
-window.vopr.ver=[''+(b/(a*(1+0.01*c))).floor()];
+window.vopr.correctAnswers=[''+(b/(a*(1+0.01*c))).floor()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

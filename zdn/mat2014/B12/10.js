@@ -16,7 +16,7 @@
 		'короткого замыкания $I_{\\mbox{кз}}=\\frac{\\varepsilon}{r}$? (Ответ выразите в омах.)'
 	).plusminus();
 	
-	window.vopr.ver=[R.ts()];
+	window.vopr.correctAnswers=[R.ts()];
 	
 	window.vopr.kat['log']=0;
 	window.vopr.kat['prz']=0;

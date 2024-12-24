@@ -15,7 +15,7 @@ var p=(v1?-a:a)*4+c;
 //var p=a*4+c;
 window.vopr.txt=('Найдите '+t1[v1]+' значение функции $y = '+h+'$ на отрезке $['+(-1).pina(4)+';'+(1).pina(4)+']$').plusminus();
 
-window.vopr.ver=[p.ts()];
+window.vopr.correctAnswers=[p.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=1;

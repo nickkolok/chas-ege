@@ -27,7 +27,7 @@ var smsh=[//Список (на самом деле массив) предлож�
 ];//Лучше их располагать по алфавиту
 
 
-window.vopr.ver=v1?slit:razd;
+window.vopr.correctAnswers=v1?slit:razd;
 window.vopr.nev=(v1?razd:slit).concat(smsh);
 AtoB();
 

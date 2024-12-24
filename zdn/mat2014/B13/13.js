@@ -16,6 +16,6 @@ window.vopr.txt='В правильной шестиугольной призме
 		['D'+t[0],'F'+t[1]],
 		['F'+t[0],'B'+t[1]],
 	].iz().shuffle().join('$ и $')+'$.';
-window.vopr.ver=[ 2*a ];
+window.vopr.correctAnswers=[ 2*a ];
 })();
 //Гущин 503245

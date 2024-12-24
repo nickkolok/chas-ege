@@ -2,7 +2,7 @@
 
 window.vopr.txt='В каком предложении вместо слова ДОЖДЕВОЙ нужно употребить слово ДОЖДЛИВЫЙ?'+
 	'<br/>';
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	'День обещал быть ветреным и ДОЖДЕВЫМ.',
 ];
 window.vopr.nev=[

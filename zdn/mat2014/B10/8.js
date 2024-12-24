@@ -30,7 +30,7 @@ var mas=[
 ];
 
 mas=svVel(mas);
-window.vopr.ver=mas.splice(0,1);
+window.vopr.correctAnswers=mas.splice(0,1);
 window.vopr.txt='Основанием пирамиды является '+figur[vFigur]+'. '+mas.soed();
 
 window.vopr.kat['log']=0;

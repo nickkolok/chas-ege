@@ -24,7 +24,7 @@ var f=svVel([
 	].iz()
 ]);
 
-window.vopr.ver=[''+f.splice(0,1)];
+window.vopr.correctAnswers=[''+f.splice(0,1)];
 window.vopr.txt=''+f.shuffle().soed();
 
 window.vopr.kat['log']=0;

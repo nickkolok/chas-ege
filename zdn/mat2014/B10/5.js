@@ -15,7 +15,7 @@ var p=[h,(v1?(a*a):(a)),(v2?(a*h):(4*a*h)),a*a*h,4*a*h+2*a*a,2*a*a+h*h];
 var g=['равна','равна','равна','равен','равна','равен'];
 window.vopr.txt='В правильной четырёхугольной призме '+m[v0]+' '+g[v0]+' '+p[v0]+', при этом '+m[v3]+' '+g[v3]+' '+p[v3]+'. '+
 		'Найдите '+n[v4]+'.';
-window.vopr.ver=[''+p[v4]];
+window.vopr.correctAnswers=[''+p[v4]];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

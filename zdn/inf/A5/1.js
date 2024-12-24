@@ -3,7 +3,7 @@
 var myalg = genAlg();
 window.vopr.txt=algInText(myalg)+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
 window.vopr.nev=[];
-window.vopr.ver=[genWordForAlg(myalg)];
+window.vopr.correctAnswers=[genWordForAlg(myalg)];
 for (var i=0; i<3; i++) {
 	var t = '';
 	do {

@@ -23,7 +23,7 @@ window.vopr.txt='Из пункта '+t2[0]+' в пункт '+t2[1]+' однов�
 				t5[v3]+' '+om.transportm.te[t1]+'. Найдите скорость '+t4[v3]+' '+om.transportm.re[t1]+'. Ответ дайте в км/ч.';
 
 
-window.vopr.ver=[x.ts()];
+window.vopr.correctAnswers=[x.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

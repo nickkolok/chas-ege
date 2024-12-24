@@ -9,7 +9,7 @@ do{
 
 B=objUmn(A,X);
 
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	'$\\left('+
 		X.matrixToTex().ts()+
 	'\\right)$'

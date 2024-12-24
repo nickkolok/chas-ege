@@ -12,7 +12,7 @@ var c='Зависимость объёма спроса $q$ (единиц в м�
 	'Ответ приведите в тыс. руб.';
 
 window.vopr.txt=c.plusminus();
-window.vopr.ver=[v1?p2:p1];
+window.vopr.correctAnswers=[v1?p2:p1];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

@@ -6,7 +6,7 @@ var d=((c-1)?('наибольшее'):('наименьшее'));
 
 
 window.vopr.txt=('Найдите '+d+' значение функции $y='+((c==-1)?'-':'')+'(x+'+a+')e^{x+'+(a+1)+'}$ на отрезке $['+(-a-2)+'; '+(-a)+']$.').plusminus();
-window.vopr.ver=[''+(-c)];
+window.vopr.correctAnswers=[''+(-c)];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=1;

@@ -17,7 +17,7 @@ window.vopr.txt='Для приготовления '+frukt[1]+' варенья �
 	' кг сахара. Какое наименьшее количество килограммовых упаковок сахара нужно, чтобы сварить варенье из '+
 	kogo+' кг '+frukt[0]+'?';
 
-window.vopr.ver=[(kogo/(kaga*kg)).ceil()];
+window.vopr.correctAnswers=[(kogo/(kaga*kg)).ceil()];
 
 })();
 //Обзад 26642

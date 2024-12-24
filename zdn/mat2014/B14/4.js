@@ -18,7 +18,7 @@ window.vopr.txt='Из пункта A в пункт B, расстояние ме�
 				'. Определите скорость '+t4[0]+', если известно, что он прибыл в пункт B на '+t.toChMin('v')+
 				' '+(b-a>0?'позже':'раньше')+' '+t4[1]+'. Ответ дайте в км/ч.';
 
-window.vopr.ver=[a.ts()];
+window.vopr.correctAnswers=[a.ts()];
 
 chas2.task.modifiers.variativeABC();
 })();

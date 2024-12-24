@@ -20,7 +20,7 @@ var fn=fn_zadan({
 });
 
 window.vopr.txt=fn.txt;
-window.vopr.ver=[fn.ver];
+window.vopr.correctAnswers=[fn.ver];
 
 window.vopr.kat['log']=1;
 })();

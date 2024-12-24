@@ -1,7 +1,7 @@
 (function(){'use strict';
 
 window.vopr.txt='$\\cos(a-b) =$<br/>';
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	'$ \\cos{a} \\cos{b} + \\sin{a} \\sin{b} $',
 	'$ \\sin{b} \\sin{a} + \\cos{b} \\cos{a} $',
 	'$ \\cos{a} \\cos{b} + \\sin{b} \\sin{a} $',

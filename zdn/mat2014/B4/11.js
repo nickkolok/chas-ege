@@ -34,7 +34,7 @@ window.vopr.txt = people[0].name + ' загружает на свой компь
                   ' загружает файл размером ' + people[2].file_size+ ' Мб за ' + people[2].download_time + ' секунд.' +
                   'Сколько секунд будет загружаться файл размером ' + required_file_size + ' Мб на компьютер с наибольшей скоростью загрузки?';
 
-window.vopr.ver = [ required_file_size / speed ];
+window.vopr.correctAnswers = [ required_file_size / speed ];
 
 })();
 //Обзад 77363

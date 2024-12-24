@@ -29,6 +29,6 @@ var rez=[
 
 
 window.vopr.txt=rez[0];
-window.vopr.ver=[ rez[1] ];
+window.vopr.correctAnswers=[ rez[1] ];
 })();
 //Гущин 27647 27648 27649 27650 27652 27653 27654 27655

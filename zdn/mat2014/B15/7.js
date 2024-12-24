@@ -15,7 +15,7 @@ var p=(v1?-a:a)*4+c;
 
 window.vopr.txt=fn_txt(t1[v1],h,(-1).pina(4),(1).pina(4));
 
-window.vopr.ver=[p.ts()];
+window.vopr.correctAnswers=[p.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=1;

@@ -15,7 +15,7 @@ do{
 
 var novbaz=objUmn(baz,mtr);
 
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	'$T_{B \\to B\'}='+
 	'\\left('+
 		mtr.matrixToTex().ts()+

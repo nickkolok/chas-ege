@@ -28,7 +28,7 @@ do{
 );
 
 window.vopr.txt='Найдите площадь '+g.re+' с вершинами, имеющими координаты '+d.mt_join()+'.';
-window.vopr.ver=[d.mt_s4ug().ts()];
+window.vopr.correctAnswers=[d.mt_s4ug().ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

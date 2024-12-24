@@ -18,10 +18,10 @@ var vyr2=[
 var y;
 if(sl1()){
 	y='\\frac{'+b.ts()+'~'+vyr1+'}{'+c.ts()+'~'+vyr2+'}';
-	window.vopr.ver=[(b/(2*c)).ts()];
+	window.vopr.correctAnswers=[(b/(2*c)).ts()];
 }else{
 	y='\\frac{'+b.ts()+'~'+vyr2+'}{'+c.ts()+'~'+vyr1+'}';
-	window.vopr.ver=[(b*2/c).ts()];
+	window.vopr.correctAnswers=[(b*2/c).ts()];
 }
 
 window.vopr.txt=('Найдите значение выражения $$'+y+'$$').plusminus().ts();

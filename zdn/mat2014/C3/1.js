@@ -12,5 +12,5 @@ window.vopr.txt=('а) Решите систему неравенств:'+
 	''+b+'^{x^2}'+' \\leq '+b.pow(-x1*x2)+'\\cdot'+b+'^{'+(x1+x2)+'x}'+
 	'\\end{array}\\right.$$').plusminus();
 
-window.vopr.ver=['$['+x1+';0)\\cup(0;'+x2+']$'];
+window.vopr.correctAnswers=['$['+x1+';0)\\cup(0;'+x2+']$'];
 })();

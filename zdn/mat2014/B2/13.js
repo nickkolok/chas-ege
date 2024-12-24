@@ -8,7 +8,7 @@ window.vopr.txt='Цена на '+tovar.ve+' была '+(pro>0?'повышена'
 	'% и составила '+chislitlx(cena*(1+pro/100),'рубль')+'. Сколько рублей стоил '+
 	tovar.ie+' до '+(pro>0?'повышения':'понижения')+' цены?';
 
-window.vopr.ver=[cena.ts()];
+window.vopr.correctAnswers=[cena.ts()];
 
 })();
 //Обзад 26629

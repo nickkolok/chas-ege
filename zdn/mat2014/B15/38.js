@@ -41,7 +41,7 @@ if(findMax){
 var fn=fn_zadan(options);
 
 window.vopr.txt=fn.txt;
-window.vopr.ver=[fn.ver];
+window.vopr.correctAnswers=[fn.ver];
 
 
 window.vopr.kat['log']=0;

@@ -11,7 +11,7 @@ var f=svVel([
 	{vel:'среднее арифметическое длин рёбер параллелепипеда',zna:2*r,rod:2,nah:1}
 ].sluchiz(2));
 
-window.vopr.ver=[''+f.splice(0,1)];
+window.vopr.correctAnswers=[''+f.splice(0,1)];
 window.vopr.txt='Прямоугольный параллелепипед описан около сферы. '+f.shuffle().soed();
 
 window.vopr.kat['log']=0;

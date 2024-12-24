@@ -24,7 +24,7 @@ if(v1){		// c < 2a
 var fn=fn_zadan(params);
 
 window.vopr.txt=fn.txt;
-window.vopr.ver=[fn.ver];
+window.vopr.correctAnswers=[fn.ver];
 
 window.vopr.kat['prz']=1;
 window.vopr.kat['log']=1;

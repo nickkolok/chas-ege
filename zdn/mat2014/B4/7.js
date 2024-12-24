@@ -21,7 +21,7 @@ window.vopr.txt='Телефонная компания предоставляе�
 				'длительность разговоров в этом месяце действительно будет равна '+chislitlx(a,'минута','d')+'? Ответ дайте в рублях.';
 
 
-window.vopr.ver=[s.ts()];
+window.vopr.correctAnswers=[s.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

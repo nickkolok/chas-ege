@@ -25,7 +25,7 @@ window.vopr.txt='Два ребра прямоугольного параллел
 	'Известно, что '+m[v1]+' составляет '+n[v1]+'. '+
 	'Найдите '+m[v2]+' параллелепипеда.';
 
-window.vopr.ver=[''+n[v2]];
+window.vopr.correctAnswers=[''+n[v2]];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

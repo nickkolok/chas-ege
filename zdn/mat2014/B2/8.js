@@ -10,7 +10,7 @@ window.vopr.txt='Больному прописано лекарство, кот�
 	chislitlx(c,'день','r')+'. '+	'В одной упаковке '+d+' таблеток лекарства по '+f.ts()+
 	' г. Какого наименьшего количества упаковок хватит на весь курс лечения?';
 
-window.vopr.ver=[(a*b*c/d/f).ceil().ts()];
+window.vopr.correctAnswers=[(a*b*c/d/f).ceil().ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

@@ -15,7 +15,7 @@
 		', среди которых ' + chislitM(rus_sports, 'участница', 'участницы', 'участниц') + ' из ' + country + ', ' +
 		'в том числе ' + name + '. Найдите вероятность того, что в первом туре ' + name +
 		' будет играть с какой-либо спортсменкой ' + is_rus + 'из ' + country + '.';
-	window.vopr.ver = [answ];
+	window.vopr.correctAnswers = [answ];
 	window.vopr.kat['log'] = 0;
 	window.vopr.kat['prz'] = 0;
 	window.vopr.kat['drs'] = 0;

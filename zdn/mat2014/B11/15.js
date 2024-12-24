@@ -11,7 +11,7 @@ window.vopr.txt=
         'Найдите значение выражения $({{\\log }_{'+Osn1+
 '}}'+Osn1
 .pow(L1)+')\\cdot ({{\\log }_{'+Osn2+'}}'+Osn2 .pow(L2)+')$.';
-window.vopr.ver=[ (L1*L2).ts() ];
+window.vopr.correctAnswers=[ (L1*L2).ts() ];
 window.vopr.kat['log']=1;  //Логарифмы
 window.vopr.kat['prz']=0;  //Производная
 window.vopr.kat['drs']=0;  //Дробные (нецелые) степени

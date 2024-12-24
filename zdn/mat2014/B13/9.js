@@ -7,7 +7,7 @@ var f=svVel([
 	{vel:'объём меньшего конуса',zna:r,rod:0,nah:1,vin:1},
 ]);
 
-window.vopr.ver=[''+f.splice(0,1)];
+window.vopr.correctAnswers=[''+f.splice(0,1)];
 window.vopr.txt='Через середину высоты параллельно основанию конуса проведено сечение, которое является основанием меньшего конуса с той же вершиной. '+f.shuffle().soed();
 
 window.vopr.kat['log']=0;

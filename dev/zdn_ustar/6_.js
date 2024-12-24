@@ -23,7 +23,7 @@ var t5=['-'+g,'0'];
 var v4=0+(v1!=v2);
 window.vopr.txt=fn_txt(t1[v1],h,t4[v4],t5[v4]);
 
-window.vopr.ver=[c.ts()];
+window.vopr.correctAnswers=[c.ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=1;

@@ -38,7 +38,7 @@ window.vopr.txt=
 	' Найдите массу '+h[g]+' ' + bulk.re + '.' +
 	' Ответ дайте ' + massUnits[1] + '.';
 
-window.vopr.ver=[''+m[g].ts()];
+window.vopr.correctAnswers=[''+m[g].ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

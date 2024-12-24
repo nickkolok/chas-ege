@@ -29,7 +29,7 @@ window.vopr.txt='Из пункта '+t2[0]+' в пункт '+t2[1]+' однов�
 				', если известно, что она '+t7[v7]+' '+sluchch(x1+1,x2-1,0.1).ts()+'. Ответ дайте в км/ч.';
 
 
-window.vopr.ver=[m7[v7].ts()];
+window.vopr.correctAnswers=[m7[v7].ts()];
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

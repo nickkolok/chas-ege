@@ -44,6 +44,6 @@ for(var i = 0; i <sentences.length; i++){
 	answer+=(''+(i+1)).esli(sentences[i][1]);
 }
 
-window.vopr.ver = [answer];
+window.vopr.correctAnswers = [answer];
 
 })();
