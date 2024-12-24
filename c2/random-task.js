@@ -383,7 +383,7 @@ function strelkaDvig() {
 	spoiler();
 
 	$('#otv').keyup(function(event) {
-		if (nabor.mnogostrOtvet || flProv) {
+		if (nabor.allowMultilineAnswer || flProv) {
 			return true;
 		}
 		if (event.keyCode == 13) {
