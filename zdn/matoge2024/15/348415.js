@@ -7,9 +7,12 @@
             preference: 'hypotenuse',
             preferenceValue: 0,
         }, {
-            preference: 'catheter',
+            preference: 'area',
             preferenceValue: 1,
-        },], sl1());
+        },{
+            preference: 'catheter',
+            preferenceValue: 2,
+        }], sl(0,2));
 
         let triangle = new Triangle({
             lengths: {
@@ -27,7 +30,7 @@
         let dano = [
             ['катеты', [triangle.lengthCA, triangle.lengthBC]],
             ['катет и гипотенуза', [triangle.lengthCA, triangle.lengthAB]]
-        ][variant];
+        ][variant<2?0:1];
 
         let points = autoScale(triangle.vertices);
 
@@ -48,14 +51,17 @@
         };
 
         NAtask.setTask({
-            text: `${[`Катеты прямоугольного треугольника`, `В прямоугольном треугольнике`][variant]} 
-			${dano[0]} равны $${dano[1].join('$ и $')}$${` соответственно`.esli(variant)}.
+            text: `${[`Катеты прямоугольного треугольника`, `В прямоугольном треугольнике`][variant<2?0:1]} 
+			${dano[0]} равны $${dano[1].join('$ и $')}$${` соответственно`.esli(variant<2?0:1)}.
 			Найдите `,
             questions: [
                 [{
                     text: `гипотенузу`,
                     answer: triangle.lengthAB,
                 }, {
+                    text: `площадь`,
+                    answer: triangle.area,
+                },{
                     text: `другой катет`,
                     answer: triangle.lengthBC,
                 },][variant]
