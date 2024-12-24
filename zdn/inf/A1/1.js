@@ -8,7 +8,7 @@ var x = sluchch(10,1000);
 var y = intoAnotherSystem(x,10,m);
 var answer = intoAnotherSystem(x,10,n);
 
-window.vopr.txt='Как представлено число '+y+'<sub>'+m+'</sub> в '+n+'-ной системе счисления?'+
+window.vopr.text='Как представлено число '+y+'<sub>'+m+'</sub> в '+n+'-ной системе счисления?'+
 	'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
 window.vopr.correctAnswers=[
 	answer,

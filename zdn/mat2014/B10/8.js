@@ -31,7 +31,7 @@ var mas=[
 
 mas=svVel(mas);
 window.vopr.correctAnswers=mas.splice(0,1);
-window.vopr.txt='Основанием пирамиды является '+figur[vFigur]+'. '+mas.soed();
+window.vopr.text='Основанием пирамиды является '+figur[vFigur]+'. '+mas.soed();
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

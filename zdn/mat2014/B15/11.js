@@ -13,7 +13,7 @@ var fn=fn_zadan({
 	maxy: b.abs()==1 ? -2*(a+1) : undefined,
 });
 
-window.vopr.txt=fn.txt;
+window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
 window.vopr.kat['log']=1;

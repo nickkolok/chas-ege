@@ -30,7 +30,7 @@ var massUnits=[
 	['кг', 'в килограммах'],
 ].iz();
 
-window.vopr.txt=
+window.vopr.text=
 	('Имеется два ' + bulk.re + '. ').esli(sl1()) +
 	'Первый ' + bulk.ie + ' содержит '+a.ts()+'% ' + mixin.re + ', второй содержит '+b.ts()+'% ' + mixin.re + '.' +
 	' Масса второго ' + bulk.re + ' больше массы первого ' + bulk.re + ' на '+c.ts()+' ' + massUnits[0] + '.' +

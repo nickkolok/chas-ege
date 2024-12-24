@@ -64,21 +64,21 @@ switch(sl(2)){
 		pravit.shuffle();
 		var kto=pravit.splice(0,1)[0];
 		if(kto[1]-kto[0]>2){
-		window.vopr.txt='В '+sl(kto[0]+1,kto[1]-1)+' году руководитель государства - ';
+		window.vopr.text='В '+sl(kto[0]+1,kto[1]-1)+' году руководитель государства - ';
 		window.vopr.correctAnswers=[kto[2]];
 		window.vopr.incorrectAnswers=pravit.T()[2];
 		AtoB();
 	}break;
 	case 1:{
 		var kto=pravit.iz();
-		window.vopr.txt='В каком году начал'+'а'.esli(kto[3])+
+		window.vopr.text='В каком году начал'+'а'.esli(kto[3])+
 			' деятельность как фактический глава государства '+kto[2]+'?';
 		window.vopr.correctAnswers=[''+kto[0]];
 		window.vopr.vrn=window.vopr.vrn_ist;
 	}break;
 	case 2:{
 		var kto=pravit.iz();
-		window.vopr.txt='В каком году окончил'+'а'.esli(kto[3])+
+		window.vopr.text='В каком году окончил'+'а'.esli(kto[3])+
 			' деятельность как фактический глава государства '+kto[2]+'?';
 		window.vopr.correctAnswers=[''+kto[1]];
 		window.vopr.vrn=window.vopr.vrn_ist;

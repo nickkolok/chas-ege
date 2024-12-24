@@ -21,7 +21,7 @@ var h=[/*t3[v1]+*/t3[v2]+a+t2[v2],t3[v3]+b+'x',c].shuffle().join('+');
 
 var t4=['0;'+g,'-'+g+';0'];
 var v4=1-(v1==v3);
-window.vopr.txt=('Найдите '+t1[v1]+' значение функции $y = '+h+'$ на отрезке $['+t4[v4]+']$').plusminus();
+window.vopr.text=('Найдите '+t1[v1]+' значение функции $y = '+h+'$ на отрезке $['+t4[v4]+']$').plusminus();
 
 window.vopr.correctAnswers=[''+p[v2]];
 

@@ -1,6 +1,6 @@
 (function(){'use strict';
 
-window.vopr.txt='Укажите предложение, в котором нужно поставить одну и только одну запятую. (Знаки препинания не расставлены.)'+
+window.vopr.text='Укажите предложение, в котором нужно поставить одну и только одну запятую. (Знаки препинания не расставлены.)'+
         '<br/>';
 
 var right=[//Список (на самом деле массив) предложений, в которых одну
@@ -40,7 +40,7 @@ sentences.shuffle();
 var answer = '';
 
 for(var i = 0; i <sentences.length; i++){
-	window.vopr.txt+= '<br/>' + (i+1) + ') ' + sentences[i][0].replace(/,/g," ");
+	window.vopr.text+= '<br/>' + (i+1) + ') ' + sentences[i][0].replace(/,/g," ");
 	answer+=(''+(i+1)).esli(sentences[i][1]);
 }
 

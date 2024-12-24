@@ -5,7 +5,7 @@ var v1=sluchch(1);
 var b=['площадь сечения, проходящего через середины четырёх рёбер правильного тетраэдра','ребро правильного тетраэдра'];
 var c=[(a*a/4).ts(),a];
 var d=[', равна',' равно'];
-window.vopr.txt=b[v1].toZagl()+d[v1]+' '+c[v1]+'. Найдите '+b[1-v1]+'.';
+window.vopr.text=b[v1].toZagl()+d[v1]+' '+c[v1]+'. Найдите '+b[1-v1]+'.';
 window.vopr.correctAnswers=[c[1-v1]];
 
 window.vopr.kat['log']=0;

@@ -13,6 +13,6 @@ window.vopr.correctAnswers=[
 	mtr.inv().matrixToTex().ts()+
 	'\\right)$'
 ];
-window.vopr.txt='Найдите методом Гаусса обратную матрицу к матрице $A=\\left('+mtr.matrixToTex()+'\\right)$';
+window.vopr.text='Найдите методом Гаусса обратную матрицу к матрице $A=\\left('+mtr.matrixToTex()+'\\right)$';
 
 })();

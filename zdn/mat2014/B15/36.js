@@ -19,7 +19,7 @@ var fn=fn_zadan({
 	maxy:!minus || vt?undefined:pw,
 });
 
-window.vopr.txt=fn.txt;
+window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
 window.vopr.kat['log']=1;

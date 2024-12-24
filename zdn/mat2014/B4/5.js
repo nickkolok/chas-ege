@@ -9,7 +9,7 @@ var t2=sluchiz(om.rusbukv,c);
 var s=Infinity;
 var f;
 var v1;
-window.vopr.txt='Для изготовления книжных полок требуется заказать '+a+
+window.vopr.text='Для изготовления книжных полок требуется заказать '+a+
 	' '+chislit(a,'одинаковое стекло','одинаковых стекла','одинаковых стёкол')+' в одной из '+c+' фирм. '+
 	'Площадь каждого стекла '+b.ts()+' ${\\textrm{м}^{2}}$. В таблице приведены цены на стекло, '+
 		'а также на резку стекла и шлифовку края. Сколько рублей будет стоить самый дешёвый заказ?';
@@ -33,7 +33,7 @@ for(var i=0;i<c;i++){
 
 //z.shuffle();
 
-window.vopr.txt+=(y+z.soed()).vTabl();
+window.vopr.text+=(y+z.soed()).vTabl();
 window.vopr.correctAnswers=[s.ts()];
 
 window.vopr.kat['log']=0;

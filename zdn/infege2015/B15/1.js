@@ -171,7 +171,7 @@ window.vopr.dey = function(){
 	$('#ris').attr('id','');
 };
 
-window.vopr.txt ='<canvas style="float:left;margin-right:1em;" width="600" height="400" id="ris'+
+window.vopr.text ='<canvas style="float:left;margin-right:1em;" width="600" height="400" id="ris'+
 slid+'" style="text-align:center" opozn="' + Math.random()+'"></canvas>'+
 q +'';
 

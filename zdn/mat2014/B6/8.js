@@ -9,7 +9,7 @@
 	var name = om.imenaj.ie.iz();
 	var game = om.sportparn.pe.iz();
 	var country = om.strany.re.iz();
-	window.vopr.txt = 'Перед началом первого тура чемпионата по ' + game +
+	window.vopr.text = 'Перед началом первого тура чемпионата по ' + game +
 		' участниц разбивают на игровые пары случайным образом ' +
 		'с помощью жребия. Всего в чемпионате участвует ' + chislitM(all_sports, 'спортсменка', 'спортсменки', 'спортсменок') +
 		', среди которых ' + chislitM(rus_sports, 'участница', 'участницы', 'участниц') + ' из ' + country + ', ' +

@@ -16,7 +16,7 @@ var f=svVel([
 ]);
 
 window.vopr.correctAnswers=[''+f.splice(0,1)];
-window.vopr.txt='В основании прямой призмы лежит прямоугольный треугольник. '+f.shuffle().soed();
+window.vopr.text='В основании прямой призмы лежит прямоугольный треугольник. '+f.shuffle().soed();
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

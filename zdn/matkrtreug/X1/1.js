@@ -15,21 +15,21 @@
 	switch(task)
 	{
 		case 0:
-			window.vopr.txt=(
+			window.vopr.text=(
 				'Катеты прямоугольного треугольника равны ' +
 				cat_a + ' и ' + cat_b + '. ' +
 				'Найдите гипотенузу.');
 			window.vopr.correctAnswers=[Math.sqrt(cat_a * cat_a + cat_b * cat_b)];
 			break;
 		case 1:
-			window.vopr.txt=(
+			window.vopr.text=(
 				'Катеты прямоугольного треугольника равны ' +
 				cat_a + ' и ' + cat_b + '. ' +
 				'Найдите площадь этого треугольника.');
 			window.vopr.correctAnswers=[0.5 * cat_a * cat_b];
 			break;
 		case 2:
-			window.vopr.txt=(
+			window.vopr.text=(
 				'В прямоугольном треугольнике один катет равен равен ' +
 				cat_a + ', а другой ' +
 				(cat_a == cat_b			 // is equal

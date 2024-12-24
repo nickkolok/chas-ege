@@ -300,7 +300,7 @@ function createHtmlForTask(nazvzad) {
         txt: `<div class="d" data-task-id="${taskId}" data-task-number="${nZ}" data-variant-number="${variantNumber}">
                 <div class="b">${nazvzad}</div>
                 <div class="z">
-                    ${window.vopr.txt}
+                    ${window.vopr.text}
                     <button class="noprint renewbutton" title="Заменить задание на похожее">&#x27F3;</button>
                 </div>
                 <div class="grid-for-writing"></div>
@@ -403,7 +403,7 @@ function optimcopyd(n) {
 }
 
 var startShell = function () {
-    window.vopr.txt = '';
+    window.vopr.text = '';
     $('#zadaniya').html(sozdKolvoHtml('pech'));
     $('#gotov').hide();
     galkiKat('#galki_kat', 'pech');
@@ -443,7 +443,7 @@ function renewTask() {
         convertCanvasToImagesIfNeeded();
         grabCurrentTask();
         if (options.prepareLaTeX) {
-            tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
+            tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.text);
             refreshLaTeXarchive();
         }
         MathJax.Hub.Typeset(taskHtml[0]);

@@ -6,7 +6,7 @@ var b=sluchch(2,60);
 var c=sluchch(3,6);
 var t2=sluchiz(om.rusbukv,c);
 var s=1000000000;
-window.vopr.txt='Для транспортировки '+chislitM(a,'тонны','тонн','тонн')+' '+t1+' на '+(b*100)+
+window.vopr.text='Для транспортировки '+chislitM(a,'тонны','тонн','тонн')+' '+t1+' на '+(b*100)+
 				' км можно воспользоваться услугами одной из '+c+' '+
 				'фирм-перевозчиков. Стоимость перевозки и грузоподъемность автомобилей для каждого перевозчика '+
 				'указана в таблице. Сколько рублей придется заплатить за самую дешёвую перевозку?';
@@ -22,7 +22,7 @@ for(var i=0; i<c; i++){
 	s=Math.min((a/h[i]).ceil()*b*g[i],s);
 }
 
-window.vopr.txt+=(y+z.soed()).vTabl();
+window.vopr.text+=(y+z.soed()).vTabl();
 window.vopr.correctAnswers=[s.ts()];
 
 window.vopr.kat['log']=0;

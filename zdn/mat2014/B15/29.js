@@ -9,7 +9,7 @@ var fn=fn_zadan({
 	maxx:(1000*b/a).isZ()?(b/a):undefined,
 });
 
-window.vopr.txt=fn.txt;
+window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver.ts()];
 
 window.vopr.kat['prz']=1;

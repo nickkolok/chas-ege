@@ -14,7 +14,7 @@ var mesh2=sl(15,30);
 var kolvo1=sl(2,8);
 var kolvo2=sl(2,8);
 
-window.vopr.txt='Для строительства '+stroen.re+' можно использовать один из двух типов фундамента: из '+
+window.vopr.text='Для строительства '+stroen.re+' можно использовать один из двух типов фундамента: из '+
 	mat1.re+' или из '+mat2.re+'. Для фундамента из '+mat1.re+' необходимо '+chislitlx(kolvo1,mera1.ie)+' '+mat1.re+
 	' и '+chislitlx(mesh1,'мешок')+' цемента. Для фундамента из '+mat2.re+' необходимо '+chislitlx(kolvo2,mera2.ie)+
 	' '+mat2.re+' и '+chislitlx(mesh2,'мешок')+

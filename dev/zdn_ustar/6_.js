@@ -21,7 +21,7 @@ var h=[t3[v2]+a+tg,t3[1-v2]+a+'x',c].slag();
 var t4=['0',g];
 var t5=['-'+g,'0'];
 var v4=0+(v1!=v2);
-window.vopr.txt=fn_txt(t1[v1],h,t4[v4],t5[v4]);
+window.vopr.text=fn_txt(t1[v1],h,t4[v4],t5[v4]);
 
 window.vopr.correctAnswers=[c.ts()];
 

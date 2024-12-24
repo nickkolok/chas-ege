@@ -8,7 +8,7 @@ binom[0]=sl(-99,99);
 binom=binom.mn_pervoobr();
 binom[0]=sl(-99,99);
 
-vopr.txt="Найдите точку перегиба графика функции $y= "+binom.mn_txt('x')+"$.";
+vopr.text="Найдите точку перегиба графика функции $y= "+binom.mn_txt('x')+"$.";
 vopr.correctAnswers=[(b/a).ts()];
 
 })();

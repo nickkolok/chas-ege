@@ -5,7 +5,7 @@ var length=pif[1];
 var required=['длину разности','длину суммы','скалярное произведение','длину'];
 var reqIndex=sluchch(0,3);
 var vector= reqIndex==3 ?' вектора $\\overrightarrow{AC}$' : ' векторов $\\overrightarrow{AB}$ и $\\overrightarrow{AD}$';
-window.vopr.txt='Две стороны прямоугольника $ABCD$ равны '+width+' и '+length+'. '+
+window.vopr.text='Две стороны прямоугольника $ABCD$ равны '+width+' и '+length+'. '+
     'Найдите '+required[reqIndex]+' '+vector+'.';
 window.vopr.correctAnswers=[ reqIndex==2 ? (0).ts() : pif[2].ts() ];
 })();

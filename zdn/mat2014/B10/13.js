@@ -56,8 +56,8 @@
 	)
 	);
 	chas2.task.modifiers.variativeABC();
-	window.vopr.txt = window.vopr.txt.replace(/,,/g,',');
-	window.vopr.txt = window.vopr.txt.replace(/,\?/g,'?');
+	window.vopr.text = window.vopr.text.replace(/,,/g,',');
+	window.vopr.text = window.vopr.text.replace(/,\?/g,'?');
 })();
 //https://matematikalegko.ru/prizmi/parallelepiped-chast-5.html, Обзад 245335, 245336, 245337, 245338, 245339
 //Aisse-258

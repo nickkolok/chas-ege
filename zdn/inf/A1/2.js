@@ -11,7 +11,7 @@ if (usl == 'единиц')
 else
 	answer = String(y).split('0').length-1;
 
-window.vopr.txt='Сколько '+usl+' в двоичной записи числа '+x+'?'+
+window.vopr.text='Сколько '+usl+' в двоичной записи числа '+x+'?'+
 	'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
 window.vopr.correctAnswers=[
 	answer,

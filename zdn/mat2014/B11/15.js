@@ -7,7 +7,7 @@ var L1=sluchch(2,4);
 var L2=sluchch(2,4);
 var Osn1=sluchch(2,6);
 var Osn2=sluchch(2,6);
-window.vopr.txt=
+window.vopr.text=
         'Найдите значение выражения $({{\\log }_{'+Osn1+
 '}}'+Osn1
 .pow(L1)+')\\cdot ({{\\log }_{'+Osn2+'}}'+Osn2 .pow(L2)+')$.';

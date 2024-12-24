@@ -13,7 +13,7 @@ var fn=fn_zadan({
 	prkz:sl1() ? (3+sl(1,10)) .frac(c*a) : undefined,
 });
 
-window.vopr.txt=fn.txt;
+window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
 window.vopr.kat['prz']=1;

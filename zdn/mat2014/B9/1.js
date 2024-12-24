@@ -11,7 +11,7 @@ var y=a*x*x+b*x+c;
 var h=['абсциссу','ординату'];
 var m=[x,y];
 
-window.vopr.txt=('Прямая $y='+d+'x+'+f+'$ параллельна касательной к графику функции $y='+a+'x^{2}+'+b+'x+'+c+'$. Найдите '+h[g]+' точки касания.').plusminus();
+window.vopr.text=('Прямая $y='+d+'x+'+f+'$ параллельна касательной к графику функции $y='+a+'x^{2}+'+b+'x+'+c+'$. Найдите '+h[g]+' точки касания.').plusminus();
 window.vopr.correctAnswers=[''+m[g]];
 
 window.vopr.kat['log']=0;

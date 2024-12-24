@@ -24,7 +24,7 @@ function sozdat() {
 		$('#panel').hide();
 	}
 	dvig.flObn = 0;
-	dvig.startxt = window.vopr.txt;
+	dvig.startxt = window.vopr.text;
 	dvig.obnov(obnov);
 
 	if (!checkJQuery('sozdat()', 'pole')) {

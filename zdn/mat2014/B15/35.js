@@ -20,7 +20,7 @@ var fn=fn_zadan({
 	maxy:!minus || !(pw*10000).isZ()?undefined:pw,
 });
 
-window.vopr.txt=fn.txt;
+window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
 window.vopr.kat['prz']=0;

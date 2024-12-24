@@ -12,7 +12,7 @@ var f=svVel([
 ].sluchiz(2));
 
 window.vopr.correctAnswers=[''+f.splice(0,1)];
-window.vopr.txt='Прямоугольный параллелепипед описан около сферы. '+f.shuffle().soed();
+window.vopr.text='Прямоугольный параллелепипед описан около сферы. '+f.shuffle().soed();
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

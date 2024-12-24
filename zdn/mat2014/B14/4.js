@@ -11,7 +11,7 @@ var t1=[].N(om.transportm.ie.length-1).sluchiz(2);
 var t3=[om.transportm.ie[t1[0]],om.transportm.ie[t1[1]]];
 var t4=[om.transportm.re[t1[0]],om.transportm.re[t1[1]]];
 
-window.vopr.txt='Из пункта A в пункт B, расстояние между которыми '+s+' км, одновременно выехали '+
+window.vopr.text='Из пункта A в пункт B, расстояние между которыми '+s+' км, одновременно выехали '+
 				t3[0]+' и '+t3[1]+
 				'. Известно, что в час '+t3[0]+' проезжает на '+(b-a).abs()+' км '+
 				(b-a>0?'меньше':'больше')+', чем '+t3[1]+

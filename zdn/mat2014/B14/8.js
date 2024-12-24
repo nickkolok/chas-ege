@@ -25,7 +25,7 @@ var f=svVel([
 ]);
 
 window.vopr.correctAnswers=[''+f.splice(0,1)];
-window.vopr.txt='Теплоход проходит по течению реки до пункта назначения и после стоянки возвращается в пункт отправления. '+f.shuffle().soed();
+window.vopr.text='Теплоход проходит по течению реки до пункта назначения и после стоянки возвращается в пункт отправления. '+f.shuffle().soed();
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

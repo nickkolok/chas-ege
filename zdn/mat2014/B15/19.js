@@ -18,7 +18,7 @@ var fn=fn_zadan({
 	maxx:x1,
 });
 
-window.vopr.txt=fn.txt;
+window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
 window.vopr.kat['prz']=1;

@@ -40,7 +40,7 @@ if(findMax){
 
 var fn=fn_zadan(options);
 
-window.vopr.txt=fn.txt;
+window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
 

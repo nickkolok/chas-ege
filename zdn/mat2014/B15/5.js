@@ -31,7 +31,7 @@ do{
 	});
 }while(fn.ver.ts().length>8);
 
-window.vopr.txt=fn.txt;
+window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
 

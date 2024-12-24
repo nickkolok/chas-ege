@@ -7,7 +7,7 @@ var m=sluchch(1,9);
 var g=sluchch(1,9);
 var z=sluchch(1,4);
 var c=z*m-g;
-window.vopr.txt=('Найдите значение выражения $$'+a.pow(b)+'^{'+c.frac(b*m)+'}\\cdot'+
+window.vopr.text=('Найдите значение выражения $$'+a.pow(b)+'^{'+c.frac(b*m)+'}\\cdot'+
 	a.pow(f)+'^{'+g.frac(f*m)+'}$$').plusminus();
 window.vopr.correctAnswers=[''+a.pow(z)];
 

@@ -1,7 +1,7 @@
 (function(){'use strict';
 /**Для составления цепочек/слов/бус/чисел разрешается использовать бусины k типов, обозначаемых буквами*/
 var myalg = genAlg();
-window.vopr.txt=algInText(myalg)+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
+window.vopr.text=algInText(myalg)+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
 window.vopr.incorrectAnswers=[];
 window.vopr.correctAnswers=[genWordForAlg(myalg)];
 for (var i=0; i<3; i++) {

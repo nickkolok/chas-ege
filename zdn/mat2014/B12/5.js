@@ -11,7 +11,7 @@ var c='Зависимость объёма спроса $q$ (единиц в м�
 	' Определите '+(v1?'наибольшую':'наименьшую')+' цену $p$, при которой месячная выручка $r(p)$ составит не менее '+(a*p1*p2)+' тыс. руб. '+
 	'Ответ приведите в тыс. руб.';
 
-window.vopr.txt=c.plusminus();
+window.vopr.text=c.plusminus();
 window.vopr.correctAnswers=[v1?p2:p1];
 
 window.vopr.kat['log']=0;

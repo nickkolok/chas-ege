@@ -5,7 +5,7 @@ var b=sl(2,5);
 var x1=sl(-3,-1);
 var x2=slKrome(-x1,1,3);
 
-window.vopr.txt=('а) Решите систему неравенств:'+
+window.vopr.text=('а) Решите систему неравенств:'+
 	'$$\\left\\{\\begin{array}{l}'+
 	[''+a+'^x',['\\frac{1}{'+a+'^x}','\\left(\\frac{1}{'+a+'}\\right)^x'].iz()].shuffle().slag()+'>2'+
 	'\\\\'+

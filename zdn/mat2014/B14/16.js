@@ -77,9 +77,9 @@ chas2.task.setCountableTask(
 //TODO: открыток/поздравлений/приглашений/конвертов
 //TODO: нормальный механизм для последовательных замен
 
-window.vopr.txt = window.vopr.txt.replace('<replace1/>', name.ie);
-window.vopr.txt = window.vopr.txt.replace('<replace1/>', 'она');
-window.vopr.txt = window.vopr.txt.replace('<replace1/>', name.ie);
+window.vopr.text = window.vopr.text.replace('<replace1/>', name.ie);
+window.vopr.text = window.vopr.text.replace('<replace1/>', 'она');
+window.vopr.text = window.vopr.text.replace('<replace1/>', name.ie);
 
 })();
 // РешуЕГЭ https://math-ege.sdamgia.ru/problem?id=99585

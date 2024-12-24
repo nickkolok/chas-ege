@@ -16,8 +16,8 @@ for(;!p;){
 	p=d.mt_s3ug();
 }
 
-window.vopr.txt='Найдите площадь треугольника, вершины которого имеют координаты '+d.mt_join()+'.';
-window.vopr.txt+='';
+window.vopr.text='Найдите площадь треугольника, вершины которого имеют координаты '+d.mt_join()+'.';
+window.vopr.text+='';
 window.vopr.correctAnswers=[p.ts()];
 
 window.vopr.kat['log']=0;

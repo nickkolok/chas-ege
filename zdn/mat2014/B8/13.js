@@ -10,7 +10,7 @@ var rmnozh=['','','\\sqrt{3}','\\sqrt{2}'][v1];
 var gradus=[90,30,60,45][v1];
 gradus=[gradus,180-gradus].iz();
 
-window.vopr.txt='Найдите хорду, на которую опирается угол $'+gradus+'^\\circ$, вписанный в окружность '+
+window.vopr.text='Найдите хорду, на которую опирается угол $'+gradus+'^\\circ$, вписанный в окружность '+
 	['радиуса $'+r,'диаметра $'+(2*r), 'длины $'+(2*r)+'\\pi'].iz()+rmnozh+'$.';
 window.vopr.correctAnswers=[ otv ];
 })();

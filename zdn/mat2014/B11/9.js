@@ -21,7 +21,7 @@ p.shuffle();
 p.toStandart();
 y='1'+p.soed();
 y=y.replace('1\\cdot','');
-window.vopr.txt=('Найдите значение выражения $$'+y+'$$').plusminus();
+window.vopr.text=('Найдите значение выражения $$'+y+'$$').plusminus();
 window.vopr.correctAnswers=[''+(a.pow(f-g)*c.pow(d-g))];
 
 window.vopr.kat['log']=0;

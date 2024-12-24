@@ -19,6 +19,6 @@ var det=new Complex().sum(
 );
 
 window.vopr.correctAnswers=[det];
-window.vopr.txt='Вычислите: $$\\left|'+a.matrixToTex()+'\\right|$$';
+window.vopr.text='Вычислите: $$\\left|'+a.matrixToTex()+'\\right|$$';
 
 })();

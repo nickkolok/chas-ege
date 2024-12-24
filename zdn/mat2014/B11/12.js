@@ -28,7 +28,7 @@ var vyr2=c.ts()+'\\cos'+(2*a).ts()+'^\\circ';
 var y='\\frac{'+(v1?vyr1:vyr2)+'}{'+(v1?vyr2:vyr1)+'}';
 window.vopr.correctAnswers=[(p1/p2*f[1]).ts()];
 
-window.vopr.txt=('Найдите значение выражения $$'+y+'$$').plusminus().ts();
+window.vopr.text=('Найдите значение выражения $$'+y+'$$').plusminus().ts();
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

@@ -9,7 +9,7 @@ var fn=fn_zadan({
 	minx:a+1,
 });
 
-window.vopr.txt=fn.txt;
+window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
 window.vopr.kat['prz']=1;

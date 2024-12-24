@@ -7,7 +7,7 @@ do{
 }while(c==1);
 
 var x=(a*a*b/c).toFixedLess(5);
-window.vopr.txt=('Найдите значение выражения $$\\frac{\\left ({'+a+
+window.vopr.text=('Найдите значение выражения $$\\frac{\\left ({'+a+
 	'\\sqrt{'+b+'}}\\right )^{2}}{'+c+'}$$').plusminus();
 window.vopr.correctAnswers=[''+x];
 

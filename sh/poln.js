@@ -1,6 +1,6 @@
 'use strict';
 
-window.vopr.txt='';
+window.vopr.text='';
 var nV=1;
 var kategory=1;
 var aZ=[];
@@ -78,7 +78,7 @@ function obnov(){
 				'<div class="b">'+nazvzad+
 				'</div>'+
 				'<div class="z">'+
-				window.vopr.txt+
+				window.vopr.text+
 				'</div>'+
 				'<div class="r">'+
 					'Ответ:'+

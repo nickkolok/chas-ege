@@ -60,8 +60,8 @@ window.vopr.dey=function(){
 
 
 
-window.vopr.txt='<div id="ris'+slid+'" style="text-align:center;height:320px; width:600;" opozn="'+Math.random()+'"></div>';
-window.vopr.txt+='На рисунке жирными точками показано суточное количество осадков, выпадавших в '+om.goroda.pe.iz()+
+window.vopr.text='<div id="ris'+slid+'" style="text-align:center;height:320px; width:600;" opozn="'+Math.random()+'"></div>';
+window.vopr.text+='На рисунке жирными точками показано суточное количество осадков, выпадавших в '+om.goroda.pe.iz()+
 				' с '+d1+' по '+d2+' '+om.mesiacy.re.iz()+' '+sluchch(1950,2013)+' года. По горизонтали указываются числа месяца, по вертикали — количество '+
 				'осадков, выпавших в соответствующий день, в миллиметрах. Для наглядности жирные точки на рисунке'+
 				' соединены линией. Определите по рисунку, '+g[v]+'.';

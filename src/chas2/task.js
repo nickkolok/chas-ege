@@ -154,7 +154,7 @@ chas2.task = {
 		chas2.task._.validateTask(o);
 
 		window.vopr.podg();
-		window.vopr.txt = o.text;
+		window.vopr.text = o.text;
 		window.vopr.rsh = o.analys;
 		window.vopr.correctAnswers = o.answers;
 		window.vopr.incorrectAnswers = o.wrongAnswers;
@@ -179,7 +179,7 @@ chas2.task = {
 	 */
 	getTask : function() {
 		var o = {
-			text : window.vopr.txt,
+			text : window.vopr.text,
 			analys : window.vopr.rsh,
 			answers : window.vopr.correctAnswers,
 			wrongAnswers : window.vopr.incorrectAnswers,
@@ -984,7 +984,7 @@ chas2.task = {
 	 * @param {String|String[]} explanations пояснения
 	 */
 	replaceCodeInText : function(code, explanations) {
-		vopr.txt = vopr.txt.replaceCode(code, explanations[i]);
+		vopr.text = vopr.text.replaceCode(code, explanations[i]);
 	},
 
 

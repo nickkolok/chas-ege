@@ -1,6 +1,6 @@
 (function(){'use strict';
 
-window.vopr.txt='$ \\sin{(2\\pi-a)}=$<br/>';
+window.vopr.text='$ \\sin{(2\\pi-a)}=$<br/>';
 window.vopr.correctAnswers=[
 	'$ -\\sin{a}  $',
 ];

@@ -29,9 +29,9 @@ chas2.task.setCountableTask(
 	]).sluchiz(3)
 );
 
-window.vopr.txt = window.vopr.txt.replace('<replace1/>',' прямоугольника');
-window.vopr.txt = window.vopr.txt.replace(/([А-ЯЁа-яё]+)<replace1\/>/,'его $1');
-window.vopr.txt = window.vopr.txt.replace('<replace1/>','');
+window.vopr.text = window.vopr.text.replace('<replace1/>',' прямоугольника');
+window.vopr.text = window.vopr.text.replace(/([А-ЯЁа-яё]+)<replace1\/>/,'его $1');
+window.vopr.text = window.vopr.text.replace('<replace1/>','');
 
 })();
 // РешуЕГЭ https://ege.sdamgia.ru/problem?id=516248

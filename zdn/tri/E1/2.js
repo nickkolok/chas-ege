@@ -1,6 +1,6 @@
 (function(){'use strict';
 
-window.vopr.txt='$\\sin(a+b) =$<br/>';
+window.vopr.text='$\\sin(a+b) =$<br/>';
 window.vopr.correctAnswers=[
   '$ \\sin{a} \\cos{b} + \\cos{a} \\sin{b} $',
   '$ \\cos{a} \\sin{b} + \\sin{a} \\cos{b} $',

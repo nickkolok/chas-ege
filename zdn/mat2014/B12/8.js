@@ -17,7 +17,7 @@ var c=	'Для получения на экране увеличенного и�
 		''+t1[0]+' расстоянии от линзы можно поместить лампочку, чтобы еe изображение на экране было чeтким. '+
 		'Ответ выразите в сантиметрах.';
 
-window.vopr.txt=c.plusminus();
+window.vopr.text=c.plusminus();
 window.vopr.correctAnswers=[d1.ts()];
 
 window.vopr.kat['log']=0;

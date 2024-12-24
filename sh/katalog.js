@@ -16,11 +16,11 @@ function generateHtmlForTask(kat, zdn, masdey) {
     console.log(currentTaskPath);
 
     try {
-        nabor.upak[kat][zdn]();
-        vopr.template = currentTask.replace(/^(\.\.\/)+/, '');
-        vopr.taskNumber = kat;
-        rez += `<br/>${vopr.txt.vTag('div')}<br/>`;
-        rez += `
+        nabor.upak[category][taskNumber]();
+        vopr.template = currentTaskPath.replace(/^(\.\.\/)+/, '');
+        vopr.taskNumber = category;
+        htmlContent += `<br/>${vopr.text.vTag('div')}<br/>`;
+        htmlContent += `
             <div>
                 <button class="copybutton" style="float:right;" title="Экспорт в РешуЕГЭ" data-task="${encodeURIComponent(JSON.stringify(vopr))}">&#x2398;</button>
                 <button class="renewbutton" style="float:right; margin-right:1.46em;" title="Заменить задание на похожее">&#x27F3;</button>

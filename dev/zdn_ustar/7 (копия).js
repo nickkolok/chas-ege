@@ -13,7 +13,7 @@ var t3=['-',''];
 var h=[t3[v2]+(4*a)+tg,t3[1-v2]+(4*a)+'x',c,t3[0+((v2!=v1)==v2)]+a.pina(1)].shuffle().join('+');
 var p=(v1?-a:a)*4+c;
 //var p=a*4+c;
-window.vopr.txt=('Найдите '+t1[v1]+' значение функции $y = '+h+'$ на отрезке $['+(-1).pina(4)+';'+(1).pina(4)+']$').plusminus();
+window.vopr.text=('Найдите '+t1[v1]+' значение функции $y = '+h+'$ на отрезке $['+(-1).pina(4)+';'+(1).pina(4)+']$').plusminus();
 
 window.vopr.correctAnswers=[p.ts()];
 

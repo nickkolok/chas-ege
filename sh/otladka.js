@@ -8,7 +8,7 @@ let flFullscreen = 0;
  * Обновляет содержимое вопроса и ответов на странице.
  */
 const updateQuestion = () => {
-    $("#question").html(window.vopr.txt);
+    $("#question").html(window.vopr.text);
     $("#resh").html(window.vopr.rsh);
     window.vopr.dey();
     $("#answer").html(window.vopr.correctAnswers.join(";;"));
@@ -32,7 +32,7 @@ const createFromFile = () => {
     window.vopr.podg();
     zagr(`${filePath}?${Math.random()}`);
     dvig.flObn = 0;
-    dvig.startxt = window.vopr.txt;
+    dvig.startxt = window.vopr.text;
     dvig.obnov(updateQuestion);
     $("#answer-input").val("");
     $("#answer").hide();

@@ -23,7 +23,7 @@ var f=svVel([
 ]);
 
 window.vopr.correctAnswers=[''+f.splice(0,1)];
-window.vopr.txt='Моторная лодка прошла против течения реки и вернулась в пункт отправления. '+f.shuffle().soed();
+window.vopr.text='Моторная лодка прошла против течения реки и вернулась в пункт отправления. '+f.shuffle().soed();
 
 window.vopr.kat['log']=0;
 window.vopr.kat['prz']=0;

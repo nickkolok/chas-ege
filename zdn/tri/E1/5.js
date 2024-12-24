@@ -1,6 +1,6 @@
 (function(){'use strict';
 
-window.vopr.txt='$\\frac{\\mathrm{tg~}{a}-\\mathrm{tg~}{b}}{1+\\mathrm{tg~}{a} ~\\cdot~ \\mathrm{tg~}{b}} =$<br/>';
+window.vopr.text='$\\frac{\\mathrm{tg~}{a}-\\mathrm{tg~}{b}}{1+\\mathrm{tg~}{a} ~\\cdot~ \\mathrm{tg~}{b}} =$<br/>';
 window.vopr.correctAnswers=[
   '$  \\mathrm{tg~}{(a-b)}$',
 ];

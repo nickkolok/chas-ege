@@ -16,7 +16,7 @@ var fn=fn_zadan({
 	prkb: 0,
 });
 
-window.vopr.txt=fn.txt;
+window.vopr.text=fn.txt;
 window.vopr.correctAnswers=[fn.ver];
 
 window.vopr.kat['log']=0;
