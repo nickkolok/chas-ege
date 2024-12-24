@@ -2,7 +2,7 @@ if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
 	numberOfTasks:26,
-	adres:'../zdn/rus2014/',
+	resourceAddress:'../zdn/rus2014/',
 	name:'rus2014',
 	prefix:'A',
 	kat:[],

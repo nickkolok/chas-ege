@@ -2,7 +2,7 @@ if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
 	numberOfTasks:12,
-	adres:'../zdn/matege2024p/',
+	resourceAddress:'../zdn/matege2024p/',
 	name:'matege2024p_fipi',
 	prefix:'',
 	scheduler:'fipi',

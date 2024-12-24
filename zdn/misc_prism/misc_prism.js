@@ -2,6 +2,6 @@ if (!window.nabor)
 	window.nabor = {};
 window.nabor.importFrom({
 	numberOfTasks: 14,
- 	adres: '../zdn/misc_prism/',
+ 	resourceAddress: '../zdn/misc_prism/',
 	name: 'misc_prism',
 });

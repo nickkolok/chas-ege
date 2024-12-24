@@ -2,7 +2,7 @@ if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
 	numberOfTasks:10,
-	adres:'../zdn/linal/',
+	resourceAddress:'../zdn/linal/',
 	name:'linal',
 	kat:[],
 	prefix:"M",

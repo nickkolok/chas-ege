@@ -2,7 +2,7 @@ if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
 	numberOfTasks:7,
-	adres:'../zdn/angem20200901/',
+	resourceAddress:'../zdn/angem20200901/',
 	name:'angem20200901',
 	prefix:'M',
 });

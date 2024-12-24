@@ -2,7 +2,7 @@ if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
 	numberOfTasks:16,
-	adres:'../zdn/mat2014gia/',
+	resourceAddress:'../zdn/mat2014gia/',
 	name:'gia2014',
 	prefix:'B',
 });

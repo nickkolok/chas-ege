@@ -2,7 +2,7 @@ if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
 	numberOfTasks:5,
-	adres:'../zdn/istpereg/',
+	resourceAddress:'../zdn/istpereg/',
 	name:'istpereg',
 	kat:[],
 	prefix:"B",
