@@ -98,7 +98,7 @@ function zapusk() {
     readOptions();
 
     aV = nV = Number($(SELECTORS.cV).val());
-    for (let i = 1; i <= nabor.nZad; i++) {
+    for (let i = 1; i <= nabor.numberOfTasks; i++) {
         aZ[i] = Number($('#cB' + i).val());
     }
 
@@ -244,7 +244,7 @@ function endCurrentVariant() {
 
 // Обрабатывает задания
 function zadan() {
-    if (nZ === 1 + nabor.nZad) {
+    if (nZ === 1 + nabor.numberOfTasks) {
         endCurrentVariant();
         return;
     }

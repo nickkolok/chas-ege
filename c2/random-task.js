@@ -86,7 +86,7 @@ var initializeStatsTable = function() {
 			);
 	};
 
-	for (var i = 1; i <= nabor.nZad; i++) {
+	for (var i = 1; i <= nabor.numberOfTasks; i++) {
 		if (nabor.vykl[i]) {
 			continue;
 		}
@@ -120,7 +120,7 @@ var initializeStatsTable = function() {
 
 function veroyatn() {
 	var pr;
-	for (var i = 1; i <= nabor.nZad; i++) {
+	for (var i = 1; i <= nabor.numberOfTasks; i++) {
 		pr = umka.verno[i] / umka.vsego[i];
 		$('#r-B' + i).html(
 			umka.vsego[i] > 4 ?
@@ -178,11 +178,11 @@ function obnov(p1) {
 }
 
 function vybrZad() {
-	for (var i = 1; i <= nabor.nZad; i++) {
+	for (var i = 1; i <= nabor.numberOfTasks; i++) {
 		v[i] = ($('#checkbox-B' + i).is(':checked') ? 1 : 0);
 	}
 	var w = [];
-	for (var i = 1; i <= nabor.nZad; i++) {
+	for (var i = 1; i <= nabor.numberOfTasks; i++) {
 		if (v[i]) {
 			w.push(i);
 		}
@@ -201,12 +201,12 @@ function vybrZad() {
 	}
 	if ($('#radio-umka').prop('checked')) {
 		var masV = [];
-		for (var i = 1; i <= nabor.nZad; i++) {
+		for (var i = 1; i <= nabor.numberOfTasks; i++) {
 			if (v[i] && (umka.vsego[i] < 5)) {
 				return i;
 			}
 		}
-		for (var i = 1; i <= nabor.nZad; i++) {
+		for (var i = 1; i <= nabor.numberOfTasks; i++) {
 			if (v[i]) {
 				masV.push(1.1 - umka.verno[i] / umka.vsego[i]);
 			} else {
@@ -324,7 +324,7 @@ function uchetPrav(kat, prav, nom) {
 
 
 function vybrv() {
-	for (var i = 1; i <= nabor.nZad; i++) {
+	for (var i = 1; i <= nabor.numberOfTasks; i++) {
 		$('#checkbox-B' + i).not(':checked').click();
 	}
 }
@@ -349,7 +349,7 @@ function obrabPraviln() {
 
 
 function vybr0() {
-	for (var i = 1; i <= nabor.nZad; i++) {
+	for (var i = 1; i <= nabor.numberOfTasks; i++) {
 		$('#checkbox-B' + i).removeAttr('checked');
 	}
 }

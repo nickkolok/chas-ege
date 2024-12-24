@@ -21,7 +21,7 @@ function vse0(){
 
 function zapusk(){
 	chasStorage.domData.save()
-	for(var i=1;i<=nabor.nZad;i++)
+	for(var i=1;i<=nabor.numberOfTasks;i++)
 		aZ[i]=1*($('#cB'+i).val());
 	cacheKat();
 	kZ=aZ.sum();
@@ -57,7 +57,7 @@ function konecSozd(){
 }
 
 function zadan(){
-	if (kategory>nabor.nZad){
+	if (kategory>nabor.numberOfTasks){
 		konecSozd();
 		return;
 	}else if(iZ[kategory]==0){
