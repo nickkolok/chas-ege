@@ -9,10 +9,10 @@ window.nabor.importFrom({
 		prz:'Без производной'		,
 	}
 });
-nabor.altz=[];
-nabor.altz[16]='C1';
-nabor.altz[17]='C2';
-nabor.altz[18]='C3';
-nabor.altz[19]='C4';
-nabor.altz[20]='C5';
-nabor.altz[21]='C6';
+nabor.alternativeTasks=[];
+nabor.alternativeTasks[16]='C1';
+nabor.alternativeTasks[17]='C2';
+nabor.alternativeTasks[18]='C3';
+nabor.alternativeTasks[19]='C4';
+nabor.alternativeTasks[20]='C5';
+nabor.alternativeTasks[21]='C6';
