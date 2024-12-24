@@ -28,7 +28,7 @@ var smsh=[//Список (на самом деле массив) предлож�
 
 
 window.vopr.correctAnswers=v1?slit:razd;
-window.vopr.nev=(v1?razd:slit).concat(smsh);
+window.vopr.incorrectAnswers=(v1?razd:slit).concat(smsh);
 AtoB();
 
 })();

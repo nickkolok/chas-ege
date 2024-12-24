@@ -29,7 +29,7 @@ for (var i = 2; i < 4; i++) {
 	y = intoAnotherSystem(x,10,2);
 	wrongAnswers[i]=y;
 }
-window.vopr.nev=wrongAnswers;
+window.vopr.incorrectAnswers=wrongAnswers;
 window.vopr.rsh='';
 
 AtoB();//Техническая функция, её удалять не надо

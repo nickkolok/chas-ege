@@ -157,7 +157,7 @@ chas2.task = {
 		window.vopr.txt = o.text;
 		window.vopr.rsh = o.analys;
 		window.vopr.correctAnswers = o.answers;
-		window.vopr.nev = o.wrongAnswers;
+		window.vopr.incorrectAnswers = o.wrongAnswers;
 		window.vopr.authors = o.authors;
 		if (o.checkAnswer) {
 			window.vopr.vrn = o.checkAnswer;
@@ -182,7 +182,7 @@ chas2.task = {
 			text : window.vopr.txt,
 			analys : window.vopr.rsh,
 			answers : window.vopr.correctAnswers,
-			wrongAnswers : window.vopr.nev,
+			wrongAnswers : window.vopr.incorrectAnswers,
 			checkAnswer : window.vopr.vrn,
 			draw : window.vopr.dey,
 			tags : {},

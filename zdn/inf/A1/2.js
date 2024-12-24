@@ -21,7 +21,7 @@ for (var i = 0; i < 10; i++) {
 	wrongAnswers[i]=i;
 }
 wrongAnswers.splice(wrongAnswers.indexOf(answer), 1);
-window.vopr.nev=wrongAnswers;
+window.vopr.incorrectAnswers=wrongAnswers;
 window.vopr.rsh='';
 
 AtoB();//Техническая функция, её удалять не надо

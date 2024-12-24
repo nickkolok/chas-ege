@@ -4,7 +4,7 @@ window.vopr.txt='$\\frac{\\mathrm{tg~}{a}-\\mathrm{tg~}{b}}{1+\\mathrm{tg~}{a} ~
 window.vopr.correctAnswers=[
   '$  \\mathrm{tg~}{(a-b)}$',
 ];
-window.vopr.nev=[
+window.vopr.incorrectAnswers=[
   '$ \\mathrm{tg ~}{(a+b)} $',
   '$ \\mathrm{ctg~}{(a+b)}  $',
   '$ \\mathrm{ctg~}{(a-b)}  $',

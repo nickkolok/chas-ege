@@ -43,7 +43,7 @@ var wrongAnswers = [];
 for (var i = 0; i < 3; i++) {
 	wrongAnswers[i]=chisla[i]+'<sub>'+sys[i]+'</sub>';
 }
-window.vopr.nev=wrongAnswers;
+window.vopr.incorrectAnswers=wrongAnswers;
 window.vopr.rsh='';
 
 AtoB();//Техническая функция, её удалять не надо

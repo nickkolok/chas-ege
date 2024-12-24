@@ -89,7 +89,7 @@ for (var i = wrongtimes.length-1; i < 4; i++) {
 	var d =new Date(sluchch(0,60000000));
 	wrongAnswers[i]=d.makeTime();
 }
-window.vopr.nev=wrongAnswers;
+window.vopr.incorrectAnswers=wrongAnswers;
 window.vopr.rsh='';
 
 AtoB();//Техническая функция, её удалять не надо

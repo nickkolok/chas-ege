@@ -66,7 +66,7 @@ switch(sl(2)){
 		if(kto[1]-kto[0]>2){
 		window.vopr.txt='В '+sl(kto[0]+1,kto[1]-1)+' году руководитель государства - ';
 		window.vopr.correctAnswers=[kto[2]];
-		window.vopr.nev=pravit.T()[2];
+		window.vopr.incorrectAnswers=pravit.T()[2];
 		AtoB();
 	}break;
 	case 1:{

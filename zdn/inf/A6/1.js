@@ -58,9 +58,9 @@ for (var j=0; j<k; j++){
 }
 window.vopr.txt='Сколько записей в нижеследующем фрагменте турнирной таблицы удовлетворяют условию'+
 '<br/><b>'+usl+'</b><br/>'+table+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
-window.vopr.nev=[];
+window.vopr.incorrectAnswers=[];
 for (var i=0; i<3; i++){
-	window.vopr.nev.push(slKrome(window.vopr.nev.concat(sum),k));
+	window.vopr.incorrectAnswers.push(slKrome(window.vopr.incorrectAnswers.concat(sum),k));
 }
 window.vopr.correctAnswers=[sum];
 window.vopr.rsh='';

@@ -388,7 +388,7 @@ var slova=[//Список (на самом деле массив) слов
 window.vopr.correctAnswers=[slova.iz().iz().iz(3).join(', ')];
 for(var i=0;i<3;i++){
 	var para=slova.iz();
-	window.vopr.nev[i]=para[0].iz(2).concat(para[1].iz(2)).iz(3).join(', ');
+	window.vopr.incorrectAnswers[i]=para[0].iz(2).concat(para[1].iz(2)).iz(3).join(', ');
 }
 
 AtoB();

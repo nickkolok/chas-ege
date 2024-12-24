@@ -4,7 +4,7 @@ window.vopr.txt='$2 \\sin{\\frac{a+b}{2}}\\cdot\\cos{\\frac{a-b}{2}} =$<br/>';
 window.vopr.correctAnswers=[
 	'$ \\sin{a}+\\sin{b} $',
 ];
-window.vopr.nev=[
+window.vopr.incorrectAnswers=[
 	'$ \\sin{2a} $',
 	'$ \\cos{2a} $',
 	'$ \\sin{a}-\\sin{b} $',

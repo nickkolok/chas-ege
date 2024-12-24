@@ -12,7 +12,7 @@ const updateQuestion = () => {
     $("#resh").html(window.vopr.rsh);
     window.vopr.dey();
     $("#answer").html(window.vopr.correctAnswers.join(";;"));
-    $("#wrongAnswer").html(window.vopr.nev.join(";;"));
+    $("#wrongAnswer").html(window.vopr.incorrectAnswers.join(";;"));
     MathJax.Hub.Typeset('typesettable-wrap');
 };
 

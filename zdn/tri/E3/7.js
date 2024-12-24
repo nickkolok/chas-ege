@@ -4,7 +4,7 @@ window.vopr.txt='$ \\sin{(2\\pi-a)}=$<br/>';
 window.vopr.correctAnswers=[
 	'$ -\\sin{a}  $',
 ];
-window.vopr.nev=[
+window.vopr.incorrectAnswers=[
 	'$ \\cos{a}  $',
 	'$ -\\cos{a}  $',
 	'$ \\sin{a}  $',

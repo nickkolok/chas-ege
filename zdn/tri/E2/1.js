@@ -6,7 +6,7 @@ window.vopr.correctAnswers=[
 	'$ 2 \\cos^{2}{a} -1 $',
 	'$  1-2 \\sin^{2}{a} $',
 ];
-window.vopr.nev=[
+window.vopr.incorrectAnswers=[
 	'$ \\cos{a}\\cdot\\cos{b} + \\sin{a}\\cdot\\sin{b}  $',
 	'$ \\sin^{2}{a} +\\cos^{2}{a}  $',
 	'$ 2 \\sin{a}\\cdot\\cos{a}  $',

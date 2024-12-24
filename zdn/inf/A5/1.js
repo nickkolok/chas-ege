@@ -2,14 +2,14 @@
 /**Для составления цепочек/слов/бус/чисел разрешается использовать бусины k типов, обозначаемых буквами*/
 var myalg = genAlg();
 window.vopr.txt=algInText(myalg)+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
-window.vopr.nev=[];
+window.vopr.incorrectAnswers=[];
 window.vopr.correctAnswers=[genWordForAlg(myalg)];
 for (var i=0; i<3; i++) {
 	var t = '';
 	do {
 		t = genWrongWordForAlg(myalg);
-	} while (window.vopr.nev.hasElem(t));
-	window.vopr.nev.push(t);
+	} while (window.vopr.incorrectAnswers.hasElem(t));
+	window.vopr.incorrectAnswers.push(t);
 }
 
 window.vopr.rsh='';

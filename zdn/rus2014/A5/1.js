@@ -607,7 +607,7 @@ var nev=[//Список (на самом деле массив) неправил
 ];//Внимание: после последнего элемента тоже ставится запятая. Её можно и не ставить, но так удобнее.
 
 window.vopr.correctAnswers=nev;
-window.vopr.nev=ver;
+window.vopr.incorrectAnswers=ver;
 AtoB();
 
 })();
