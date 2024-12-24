@@ -14,7 +14,7 @@ fi
 result=${PWD##*/}
 result=${result:-/}
 touch $result.js
-printf "if (!window.nabor)\n\twindow.nabor = {};\nwindow.nabor.importFrom({\n\tnZad: "${#array[@]}",\n \tadres: '../zdn/"$result"/',\n" >> $result.js
+printf "if (!window.nabor)\n\twindow.nabor = {};\nwindow.nabor.importFrom({\n\tnumberOfTasks: "${#array[@]}",\n \tadres: '../zdn/"$result"/',\n" >> $result.js
 printf "\tname: '"$result"',\n});\n" >> $result.js
 
 cd "./"

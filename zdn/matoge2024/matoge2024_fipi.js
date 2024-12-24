@@ -1,0 +1,9 @@
+if(!window.nabor)
+	window.nabor={};
+window.nabor.importFrom({
+	numberOfTasks:19,
+	adres:'../zdn/matoge2024/',
+	name:'matoge2024_fipi',
+	prefix:'',
+	scheduler:'fipi',
+});

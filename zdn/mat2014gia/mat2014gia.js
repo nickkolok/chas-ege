@@ -1,7 +1,7 @@
 if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
-	nZad:16,
+	numberOfTasks:16,
 	adres:'../zdn/mat2014gia/',
 	name:'gia2014',
 	prefix:'B',
