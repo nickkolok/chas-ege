@@ -4,7 +4,7 @@ window.nabor.importFrom({
 	numberOfTasks:10,
 	resourceAddress:'../zdn/linal/',
 	name:'linal',
-	kat:[],
+	categories:[],
 	prefix:"M",
 	upak:undefined,
 });

@@ -5,5 +5,5 @@ window.nabor.importFrom({
 	resourceAddress:'../zdn/tri/',
 	name:'tri',
 	prefix:'E',
-	kat:[],
+	categories:[],
 });

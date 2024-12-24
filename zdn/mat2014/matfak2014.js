@@ -5,7 +5,7 @@ window.nabor.importFrom({
 	resourceAddress:'../zdn/mat2014/',
 	name:'ege2014',
 	prefix:'B',
-	kat:{
+	categories:{
 		prz:'Без производной'		,
 	}
 });

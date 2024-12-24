@@ -5,6 +5,6 @@ window.nabor.importFrom({
 	resourceAddress:'../zdn/inf/',
 	name:'inf2014',
 	prefix:'A',
-	kat:[],
+	categories:[],
 });
 

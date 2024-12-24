@@ -5,7 +5,7 @@ window.nabor.importFrom({
 	resourceAddress:'../zdn/rus2014/',
 	name:'rus2014',
 	prefix:'A',
-	kat:[],
+	categories:[],
 });
 window.nabor.disabledItems[ 7]=1;
 window.nabor.disabledItems[ 8]=1;

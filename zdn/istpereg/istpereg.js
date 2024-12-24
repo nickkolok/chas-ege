@@ -4,7 +4,7 @@ window.nabor.importFrom({
 	numberOfTasks:5,
 	resourceAddress:'../zdn/istpereg/',
 	name:'istpereg',
-	kat:[],
+	categories:[],
 	prefix:"B",
 });
 
