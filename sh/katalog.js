@@ -7,9 +7,9 @@
  * @param {Array} masdey - Массив действий.
  * @returns {string} - HTML-код задания.
  */
-function generateHtmlForTask(kat, zdn, masdey) {
-    let rez = '';
-    vopr.podg();
+function generateHtmlForTask(category, taskNumber, actionsArray) {
+    let htmlContent = '';
+    vopr.initializeQuestion();
     const currentTaskPath = `${nabor.resourceAddress}${category}/${taskNumber}.js`;
     htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
     htmlContent += currentTaskPath.vTag('h2');

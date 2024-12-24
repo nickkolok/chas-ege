@@ -153,7 +153,7 @@ chas2.task = {
 		chas2.task._.unfoldTask(o);
 		chas2.task._.validateTask(o);
 
-		window.vopr.podg();
+		window.vopr.initializeQuestion();
 		window.vopr.text = o.text;
 		window.vopr.solution = o.analys;
 		window.vopr.correctAnswers = o.answers;

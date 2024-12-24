@@ -29,7 +29,7 @@ const createFromFile = () => {
         return;
     }
     $("#shabl").attr("src", filePath);
-    window.vopr.podg();
+    window.vopr.initializeQuestion();
     zagr(`${filePath}?${Math.random()}`);
     dvig.flObn = 0;
     dvig.startxt = window.vopr.text;
