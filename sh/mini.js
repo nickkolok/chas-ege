@@ -7,7 +7,7 @@ let currentZdn = '';
  */
 function obnov(p1) {
     slvopr = p1;
-    $('#pole').html(slvopr.txt);
+    $('#pole').html(slvopr.text);
     slvopr.trd();
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
@@ -52,14 +52,14 @@ function prover() {
     }
 
     $('#protv').show();
-    let txt = slvopr.vrn(kand) ? 'Правильно!' : `Неправильно! Правильный ответ: ${slvopr.ver.join(' или ')}`;
+    let text = slvopr.vrn(kand) ? 'Правильно!' : `Неправильно! Правильный ответ: ${slvopr.ver.join(' или ')}`;
     statisticalResponse = slvopr.vrn(kand) ? 1 : 0;
 
     if (vopr.solution) {
-        txt += `<br/><br/>${vopr.solution}`;
+        text += `<br/><br/>${vopr.solution}`;
     }
 
-    $('#protv').html(txt);
+    $('#protv').html(text);
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     $('#prov').hide();
     $('#sozd').show();

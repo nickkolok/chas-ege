@@ -3,7 +3,7 @@
 var slvopr;
 function obnov(p1) {
 	slvopr = p1;
-	$('#pole').html(slvopr.txt);
+	$('#pole').html(slvopr.text);
 	slvopr.trd();
 	MathJax.Hub.Typeset();
 	setTimeout(function() {
@@ -53,20 +53,20 @@ function prover() {
 		statisticalResponse = 'N'
 	}
 	$('#protv').show();
-	var txt = '';
+	var text = '';
 	if (slvopr.vrn(kand)) {
-		txt = 'Правильно!';
+		text = 'Правильно!';
 		statisticalResponse = 1;
 	} else {
-		txt = 'Неправильно! Правильный ответ: ' + slvopr.ver.join(' или ');
+		text = 'Неправильно! Правильный ответ: ' + slvopr.ver.join(' или ');
 		if(statisticalResponse == ''){
 			statisticalResponse = 0;
 		}
 	}
 	if (vopr.solution) {
-		txt += '<br/><br/>' + vopr.solution;
+		text += '<br/><br/>' + vopr.solution;
 	}
-	$('#protv').html(txt);
+	$('#protv').html(text);
 	MathJax.Hub.Typeset();
 	$('#prov').hide();
 	$('#sozd').show();

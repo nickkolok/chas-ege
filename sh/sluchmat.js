@@ -81,7 +81,7 @@ function veroyatn(){
 var slvopr;
 function obnov(p1){
 	slvopr=p1;
-	$('#pole').html(slvopr.txt);
+	$('#pole').html(slvopr.text);
 	slvopr.trd();
 	MathJax.Hub.Typeset();
 	$('#otvet').html(slvopr.ver.join(';;'));
@@ -171,16 +171,16 @@ function prover(){
 	if(checkPraviln){
 		umka.vsego[n]++;
 	}
-	var txt='';
+	var text='';
 
 	if(slvopr.vrn(kand)){
 		if(checkPraviln){
 			umka.verno[n]++;
 		}
-		txt='Правильно!';
+		text='Правильно!';
 		uchetPrav(n,1);
 	}else{
-		txt='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
+		text='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
 		if(!flUchetPrav)
 			uchetPrav(n,0);
 	}
@@ -190,7 +190,7 @@ function prover(){
 		umka.kvoNaVremya[n]++;
 	}
 	if(vopr.solution)
-		txt+='<br/><br/>'+vopr.solution;
+		text+='<br/><br/>'+vopr.solution;
 	$('#protv').html(txt);
 	MathJax.Hub.Typeset();
 	$('#prov').hide();

@@ -155,7 +155,7 @@ function konecSozd() {
         for (let id in generatedTasks) {
             tasksInLaTeX[id] = replaceCanvasWithImgInTask(
                 getTaskTextContainerByTaskId(id),
-                generatedTasks[id].txt
+                generatedTasks[id].text
             )
             .replace(/\\?%/g, '\\%')
             .replace(/<br>/g, '\\\\')
@@ -297,7 +297,7 @@ function createHtmlForTask(nazvzad) {
     const solutionText = vopr.solution ? vopr.solution : ' '; // Вставляем пробел, если решение пустое
 
     return {
-        txt: `<div class="d" data-task-id="${taskId}" data-task-number="${nZ}" data-variant-number="${variantNumber}">
+        text: `<div class="d" data-task-id="${taskId}" data-task-number="${nZ}" data-variant-number="${variantNumber}">
                 <div class="b">${nazvzad}</div>
                 <div class="z">
                     ${window.vopr.text}
@@ -339,7 +339,7 @@ function obnov() {
 
     unqDict[html.unq] = true;
 
-    strVopr += html.txt;
+    strVopr += html.text;
     strOtv += html.ver;
     strResh += html.rsh;
 
@@ -436,7 +436,7 @@ function renewTask() {
     dvig.zadan(() => {
         console.log(wrapper);
         const taskHtml = createHtmlForTask(nazvzad);
-        wrapper.replaceWith(taskHtml.txt);
+        wrapper.replaceWith(taskHtml.text);
         answerRow.replaceWith(taskHtml.ver);
         solution.replaceWith(taskHtml.rsh);
         window.vopr.dey();

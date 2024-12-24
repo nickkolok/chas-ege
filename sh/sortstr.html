@@ -27,22 +27,22 @@
 	</textarea>
 	<script>
 		function sortstr(){
-			var txt=$('#ish').val()
+			var text=$('#ish').val()
 				.replace(/\r/g,'\n')
 				.replace(/\n+/g,'\n')
 			;
 			if($('#vydmail').is(':checked')){
-				txt=txt.match(
+				text=text.match(
 					/[\-._a-z0-9A-Z]+@(?:[a-z0-9A-Z][\-a-z0-9A-Z]+\.)+[a-zA-Z]{2,6}/g
 				);
 			}else{
-				txt=txt.split('\n')
+				text=text.split('\n')
 			}
-			txt=txt
+			text=text
 				.sortDelDubl()
 				.join($('#vyvzap').is(':checked')?',':'\r\n')
 			;
-			$('#rez').val(txt);
+			$('#rez').val(text);
 		}
 	</script>
 {% endblock %}
