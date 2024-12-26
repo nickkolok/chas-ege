@@ -37,7 +37,7 @@
 			letters[3]
 		];
 
-		let centralAngle = angleDano.slice().splice(variant, 1)[0];
+		let centralAngle = angleDano.slice().splice(0, 1)[0];
 
 		let triangle = new Triangle({
 			lengths: {
@@ -83,7 +83,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В остроугольном треугольнике $ABC$ проведена высота $${centralAngle + letters[3]}$, 
+			text: `В остроугольном треугольнике $ABC$ проведена высота $${[centralAngle, letters[3]].shuffleJoin()}$, 
 			$\\angle ${angleDano.randomReverse().join('')} = ${valueAngle}^{\\circ}$. 
 			Найдите угол $${angleQuestion.randomReverse().join('')}$. Ответ дайте в градусах.`,
 			answers: 90 - valueAngle,
