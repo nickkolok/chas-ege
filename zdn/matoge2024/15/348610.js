@@ -13,12 +13,13 @@
 			preference: 'C',
 			preferenceValue: 2,
 		}], sl(0, 2));
-
+		
 		let letters = latbukv.slice(0, 4);
 		let angleDano = letters.slice(0, 3);
 		let centralAngle = angleDano.splice(variant, 1)[0];
+		let angleFind = [angleDano.iz(), centralAngle, letters[3]].randomReverse().join('');
 		angleDano.splice(1, 0, centralAngle);
-
+		
 		let triangle = new Triangle({
 			lengths: {
 				lengthAB: sl(5, 10),
@@ -65,7 +66,7 @@
 
 		NAtask.setTask({
 			text: `В треугольнике $ABC$ известно, что $${angleDano.randomReverse().join('')} = ${valueAngle.ceil()}^{\\circ}$, $${centralAngle + letters[3]}$ – биссектриса. 
-			Найдите угол $${[letters.slice(1, 3).iz(), centralAngle, letters[3]].randomReverse().join('')}$. Ответ дайте в градусах.`,
+			Найдите угол $${angleFind}$. Ответ дайте в градусах.`,
 			answers: valueAngle.ceil() / 2,
 			authors: ['Александра Суматохина'],
 		});
