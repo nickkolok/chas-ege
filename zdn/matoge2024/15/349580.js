@@ -38,6 +38,10 @@
         sidesMidle = sidesMidle.map(side => side.shuffleJoin());
         [sidesMidle[1], sidesMidle[2]] = [sidesMidle[2], sidesMidle[1]];
         sidesMidle.splice(variant, 1)[0];
+        
+        if(variant == 1){
+        	sidesMidle = sidesMidle.reverse();
+        }
 
         let points = autoScale(triangle.vertices);
 
@@ -71,7 +75,7 @@
         };
 
         NAtask.setTask({
-            text: ` Точки $D$ и $F$ являются серединами сторон $${sidesMidle.shuffleJoin('$ и $')}$ треугольника $ABC$, 
+            text: ` Точки $D$ и $F$ являются серединами сторон $${sidesMidle.join('$ и $')}$ треугольника $ABC$, 
 			${[
                     `сторона $AB$ равна $${triangle.lengthAB}$`,
                     `сторона $BC$ равна $${triangle.lengthBC}$`,
