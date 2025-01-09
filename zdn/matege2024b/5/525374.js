@@ -4,7 +4,7 @@
 		'use strict';
 
 		let people = sklonlxkand(['дедушка', 'мама', 'папа', 'бабушка', 'племянница', 'внучка', 'сын', 'племянник',	'внук'].iz());
-		let dishes = sklonlxkand(['чашка', 'кружка', 'пиала', 'стакан', 'филижанка'].iz());
+		let dishes = sklonlxkand(['чашка', 'кружка', 'пиала', 'стакан'].iz());
 		let color = om.trickyColors.iz(2);
 		color = color.map(elem => elem.replace('ый','ыми').replace('ой','ыми'));
 		let decor = ['цветами', 'крапинками', 'треугольниками', 'узорами', 'полосками'].iz();
