@@ -5,14 +5,15 @@
 		let b = sl(1, 25);
 		let sign = ['+', '-'];
 		let triangleSideRatios = ['sin', 'cos', 'tg', 'ctg'].iz();
-		let start = ['-2pi', '-pi', '-pi/2', '-pi/3', '-pi/4', '0'].iz();
-		let end = ['2pi', 'pi', 'pi/2', 'pi/3', 'pi/4', '0'].iz();
+		let start = ['-2pi', '-pi', '-pi/2', '-pi/3', '-pi/4', '-pi/6', '0'].iz();
+		let end = ['2pi', 'pi', 'pi/2', 'pi/3', 'pi/4', 'pi/6', '0'].iz();
 		if (triangleSideRatios == 'tg') {
-			start = ['-2pi', '-pi', '-pi/3', '-pi/4', '0'].iz();
-			end = ['2pi', 'pi', 'pi/3', 'pi/4', '0'].iz();
+			start = ['-pi/3', '-pi/4', '-pi/6','0'].iz();
+			end = ['pi/3', 'pi/4','pi/6', '0'].iz();
 		} else if (triangleSideRatios == 'ctg') {
-			start = ['-pi/2', '-pi/3', '-pi/4'].iz();
-			end = ['pi/2', 'pi/3', 'pi/4'].iz();
+			let signForInterval = ['', '-'].iz();
+			start = signForInterval + ['pi/2', 'pi/3', 'pi/4', 'pi/6'].iz();
+			end = signForInterval + ['pi/2', 'pi/3', 'pi/4', 'pi/6'].iz();
 		}
 		NAtask.setMinimaxFunctionTask({
 			expr: '1/((' + triangleSideRatios + '(x))^2' + sign.iz() +
