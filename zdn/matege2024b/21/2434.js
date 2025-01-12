@@ -13,7 +13,7 @@
                 tapeColor[0] + 'ая' + ' и ' + tapeColor[1] + 'ая' + '. Если разрезать ' + tapeName.ve + ' по ' + tapeColor[1] + 'ой' + ' полоске, то одна часть' +
                 ' будет на ' + chislitlx(secondTapeLength, unitsOfLength, '$') + ' длиннее другой. Если разрезать ' + tapeName.ve + ' по ' + tapeColor[0] + 'ой' + ' полоске, ' +
                 ' то одна часть будет на ' + chislitlx(firstTapeLength, unitsOfLength, '$') + ' длиннее другой.' +
-                ' Найдите расстояние в ' + unitsOfLength.pm + ' между ' + tapeColor[1] + 'ой' + ' и ' + tapeColor[0] + 'ой' + ' полосками.',
+                ' Найдите расстояние ( в ' + unitsOfLength.pm + ' ) между ' + tapeColor[1] + 'ой' + ' и ' + tapeColor[0] + 'ой' + ' полосками.',
             answers: (secondTapeLength + firstTapeLength) / 2,
         });
     });
