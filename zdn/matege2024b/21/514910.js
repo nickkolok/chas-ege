@@ -3,7 +3,7 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let numberOfCut = sluchch(3, 200, 1);
+        let numberOfCut = sluchch(3, 199, 1);
         let numberPiecesOfWood = sluchch(numberOfCut + 1, 200, 1);
         let begginingAdverbs = ['изначально', 'в начале', 'сначала', ' '].iz(2);
         let verbTakeVariants = ['взяли', 'было', 'имелось'].iz(2);
