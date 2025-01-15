@@ -111,6 +111,15 @@ function getCode(){
 		return $("#textarea-script").val();
 }
 
+function setCode(code){
+	if(flAce) {
+		editor.setValue(code,1);
+	}
+	else {
+		$("#textarea-script").val(code);
+	}
+}
+
 function saveAce(){
 	if(flAce)
 		$("#textarea-script").val(editor.getValue());
@@ -135,12 +144,7 @@ function beautifyCode(){
 			alert("Обратите внимание: код шаблона не соответствует соглашениям, принятым в проекте."+
 				"В редактор помещена скорректированная версия.");
 		}
-		if(flAce) {
-			editor.setValue(beautifiedCode,1);
-		}
-		else {
-			$("#textarea-script").val(beautifiedCode);
-		}
+		setCode(beautifiedCode);
 	}
 }
 
@@ -154,12 +158,7 @@ function makeTemplate(){
 
 	generatedCode += '\n\n\n' + oldCode;
 
-	if(flAce) {
-		editor.setValue(generatedCode,1);
-	}
-	else {
-		$("#textarea-script").val(generatedCode);
-	}
+	setCode(generatedCode);
 }
 
 function startFullscreen(){
