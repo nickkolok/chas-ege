@@ -3,19 +3,17 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let apartamentNumber = sluchch(1, 100, 1);
-        let numberOfApartamentPerFloor = sluchch(5, 12, 1);
-        let nameOfPerson = ['Александра', 'Алёна', 'Алина', 'Алиса', 'Алла', 'Анастасия', 'Ангелина', 'Анна', 'Валентина', 'Валерия', 'Вера', 'Виктория', 'Галина',
-            'Дарья', 'Евгения', 'Екатерина', 'Елена', 'Елизавета', 'Жанна', 'Зинаида', 'Зоя', 'Ирина', 'Карина', 'Кира', 'Ксения', 'Лариса', 'Лидия', 'Любовь', 'Людмила',
-            'Маргарита', 'Марина', 'Мария', 'Надежда', 'Наталья', 'Нина', 'Оксана', 'Ольга', 'Полина', 'Раиса', 'Светлана', 'София', 'Тамара', 'Татьяна', 'Ульяна',
-            'Юлия', 'Яна', 'Александр', 'Алексей', 'Анатолий', 'Андрей', 'Антон', 'Аркадий', 'Артём', 'Борис', 'Вадим', 'Валентин', 'Валерий', 'Василий', 'Виктор', 'Виталий',
-            'Владимир', 'Владислав', 'Вячеслав', 'Геннадий', 'Георгий', 'Григорий', 'Даниил', 'Денис', 'Дмитрий', 'Евгений', 'Егор', 'Иван', 'Игорь', 'Илья', 'Кирилл',
-            'Константин', 'Леонид', 'Максим', 'Михаил', 'Никита', 'Николай', 'Олег', 'Павел', 'Пётр', 'Роман', 'Сергей', 'Станислав', 'Степан', 'Тимофей', 'Фёдор',
-            'Юрий', 'Ярослав'].iz();
+        let apartamentNumber, numberOfApartamentPerFloor;
+        do {
+            apartamentNumber = sluchch(1, 100, 1);
+            numberOfApartamentPerFloor = sluchch(5, 12, 1);
+        } while (apartamentNumber % numberOfApartamentPerFloor === 0);
+
+        let nameOfPerson = Math.random() < 0.5 ? om.maleNames.iz() : om.femaleNames.iz();
 
         NAtask.setTask({
             text: 'В доме, в котором живет ' + nameOfPerson + ', один подъезд. На каждом этаже находится по ' + '$' + numberOfApartamentPerFloor + '$' +
-                ' квартир. ' + nameOfPerson + ' живет в квартире №' + '$' + apartamentNumber + '$' + '. На каком этаже живет ' + nameOfPerson + ' ? ',
+                ' квартир. ' + nameOfPerson + ' живет в квартире №' + '$' + apartamentNumber + '$' + '. На каком этаже живет ' + nameOfPerson + '? ',
             answers: '$' + (apartamentNumber / numberOfApartamentPerFloor).ceil() + '$',
         });
     });
