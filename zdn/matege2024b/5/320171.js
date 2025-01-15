@@ -19,6 +19,7 @@
 			'$' + probabilityA.ts() + '+' + probabilityB.ts() + '=' + (probabilityA + probabilityB).ts() + '$.',
             authors: ['Суматохина Александра'],
         });
+        NAtask.modifiers.allDecimalsToStandard(true)
     }, 100);
 })();
 
