@@ -48,7 +48,7 @@ function checkAnswer(){
 function createFromTextarea(){
 	saveAce();
 	$("#question").html("Если Вы видите эту надпись - задание не составлено, скорее всего, в программе ошибка.");
-	var code=nabrano();
+	var code=getCode();
 	try {
 		if(isCppCode(code)){
 			//Костыль, но положим, что это С++
@@ -69,7 +69,7 @@ function createFromTextarea(){
 function tt(){
 	saveAce();
 	var t1=new Date().getTime();
-	var code=nabrano();
+	var code=getCode();
 	var iter=1*$("#iter").val();
 	for(var i=iter;i;i--)
 		eval(code);
@@ -104,7 +104,7 @@ function enableAce(){
 	flAce=1;
 }
 
-function nabrano(){
+function getCode(){
 	if(flAce)
 		return editor.getValue();
 	else
