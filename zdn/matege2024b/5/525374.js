@@ -16,7 +16,7 @@
 		NAtask.setTask({
 			text: `У ${people.re} ${chislitlx(numberOfDishesAll, dishes.ie, '$')}: $${numberOfDishesFirst}$ с${`о`.esli(color[0][0]=='с')} ${color[0]} ${decor}, остальные с${`о`.esli(color[1][0]=='с')} ${color[1]}. 
 			${people.ie.toZagl()} наливает чай в случайно выбранн${['ый','ую','ое'][dishes.rod]} ${dishes.ve}. 
-			Найдите вероятность того, что это будет ${dishes.ie} с ${color[1]} ${decor}.`,
+			Найдите вероятность того, что это будет ${dishes.ie} с${`о`.esli(color[1][0]=='с')} ${color[1]} ${decor}.`,
 			answers: (numberOfDishesAll - numberOfDishesFirst)/numberOfDishesAll,
 			authors: ['Суматохина Александра'],
 		});
