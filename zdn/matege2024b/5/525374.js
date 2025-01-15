@@ -14,7 +14,7 @@
 		genAssertZ1000((numberOfDishesAll - numberOfDishesFirst)/numberOfDishesAll);
 
 		NAtask.setTask({
-			text: `У ${people.re} ${chislitlx(numberOfDishesAll, dishes.ie, '$')}: $${numberOfDishesFirst}$ с ${color[0]} ${decor}, остальные с ${color[1]}. 
+			text: `У ${people.re} ${chislitlx(numberOfDishesAll, dishes.ie, '$')}: $${numberOfDishesFirst}$ с${`о`.esli(color[0][0]=='с')} ${color[0]} ${decor}, остальные с${`о`.esli(color[1][0]=='с')} ${color[1]}. 
 			${people.ie.toZagl()} наливает чай в случайно выбранн${['ый','ую','ое'][dishes.rod]} ${dishes.ve}. 
 			Найдите вероятность того, что это будет ${dishes.ie} с ${color[1]} ${decor}.`,
 			answers: (numberOfDishesAll - numberOfDishesFirst)/numberOfDishesAll,
