@@ -14,7 +14,7 @@
 			Вероятность того, что в качестве комплимента принесут ${compliment[1]}, равна $${probabilityB.ts()}$. 
 			Найдите вероятность того, что в качестве комплимента от заведения посетителю ${rusbukv.iz()}.
 			${[`принесут`, `подадут`].iz()} одно из двух: ${compliment.shuffleJoin(' или ')}.`,
-            answers: 0,
+            answers: probabilityA + probabilityB,
             analys: 'Вероятность одного из несовместных событий равна сумме вероятностей этих событий: ' +
 			'$' + probabilityA.ts() + '+' + probabilityB.ts() + '=' + (probabilityA + probabilityB).ts() + '$.',
             authors: ['Суматохина Александра'],
