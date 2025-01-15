@@ -144,6 +144,24 @@ function beautifyCode(){
 	}
 }
 
+function makeTemplate(){
+	saveAce();
+	let oldCode=$("#textarea-script").val();
+	oldCode = ('/*\n\n' + oldCode + '\n*/').replace('\n*/\n*/','\n*/');
+
+	let taskText = prompt('Введите текст задачи:');
+	let generatedCode = makeTemplateFromPlainText(taskText);
+
+	generatedCode += '\n\n\n' + oldCode;
+
+	if(flAce) {
+		editor.setValue(generatedCode,1);
+	}
+	else {
+		$("#textarea-script").val(generatedCode);
+	}
+}
+
 function startFullscreen(){
 	if(flFullscreen || !flAce)
 		return;
