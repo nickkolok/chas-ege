@@ -13,7 +13,7 @@
 
         NAtask.setTask({
             text: 'В магазине квас на разлив можно купить в бутылках, причём стоимость кваса в бутылке складывается из стоимости самой бутылки и кваса, налитого в неё.' +
-                'Цена бутылки не зависит от её объёма. Бутылка кваса объёмом $1$ литр стоит ' + chislitlx(priceFor1LiterOfKvass, 'рубль', '$') +
+                ' Цена бутылки не зависит от её объёма. Бутылка кваса объёмом $1$ литр стоит ' + chislitlx(priceFor1LiterOfKvass, 'рубль', '$') +
                 ', объёмом ' + chislitlx(numberLitersOfKvass, 'литр', '$') + ' —  ' + chislitlx(priceOfSeveralLitersOfKvass, 'рубль', '$') +
                 '. Сколько рублей будет стоить бутылка кваса объёмом ' + chislitlx(numberLitersOfKvassNeedToFind, 'литр', '$') + '?',
             answers: bottlePrice + priceOfKvass * numberLitersOfKvassNeedToFind,
