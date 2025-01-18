@@ -1,5 +1,5 @@
-(function() {
-	retryWhileError(function() {
+(function () {
+	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 		let letters = latbukv.slice(0, 3);
 
@@ -46,28 +46,28 @@
 		let sides;
 
 		switch (true) {
-		case [0, 5].includes(variant):
-			sides = ['CA', 'BC'];
-			break;
-		case [1, 4].includes(variant):
-			sides = ['CA', 'AB'];
-			break;
-		case [2, 6].includes(variant):
-			sides = ['AB', 'BC'];
-			break;
-		case [3, 7].includes(variant):
-			sides = ['BC', 'AB'];
-			break;
+			case [0, 5].includes(variant):
+				sides = ['CA', 'BC'];
+				break;
+			case [1, 4].includes(variant):
+				sides = ['CA', 'AB'];
+				break;
+			case [2, 6].includes(variant):
+				sides = ['AB', 'BC'];
+				break;
+			case [3, 7].includes(variant):
+				sides = ['BC', 'AB'];
+				break;
 		}
 
 		sides = sides.map(side => {
 			switch (side) {
-			case 'AB':
-				return [triangle.lengthAB, side];
-			case 'BC':
-				return [triangle.lengthBC, side];
-			case 'CA':
-				return [triangle.lengthCA, side];
+				case 'AB':
+					return [triangle.lengthAB, side];
+				case 'BC':
+					return [triangle.lengthBC, side];
+				case 'CA':
+					return [triangle.lengthCA, side];
 			}
 		});
 
@@ -76,7 +76,7 @@
 
 		let points = autoScale(triangle.vertices);
 
-		let paint1 = function(ctx) {
+		let paint1 = function (ctx) {
 			let h = 400;
 			let w = 400;
 
@@ -103,6 +103,7 @@
 		});
 		NAtask.modifiers.variativeABC(letters);
 
+		NAtask.modifiers.allDecimalsToStandard(/*true*/);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
