@@ -29,8 +29,8 @@
         [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle < 80,
             'Треугольник не остроугольный'));
 
-        triangle.addVertex([triangle.midlinePointsAB, triangle.midlinePointsBC, triangle.midlinePointsCA][variant], 'E');
-        triangle.connectVertices([3, 4]);
+        triangle.addVertexToConnectionMatrix([triangle.midlineABPoints, triangle.midlineBCPoints, triangle.midlineCAPoints][variant], 'E');
+        triangle.connectVerticesInConnectionMatrix([3, 4]);
 
         let letters = latbukv.slice(0, 5);
         let sidesMidle = letters.slice(0, 3);
@@ -38,9 +38,9 @@
         sidesMidle = sidesMidle.map(side => side.shuffleJoin());
         [sidesMidle[1], sidesMidle[2]] = [sidesMidle[2], sidesMidle[1]];
         sidesMidle.splice(variant, 1)[0];
-        
-        if(variant == 1){
-        	sidesMidle = sidesMidle.reverse();
+
+        if (variant == 1) {
+            sidesMidle = sidesMidle.reverse();
         }
 
         let points = autoScale(triangle.vertices);
@@ -87,6 +87,7 @@
         });
         NAtask.modifiers.variativeABC(letters);
 
+        NAtask.modifiers.allDecimalsToStandard(/*true*/);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
