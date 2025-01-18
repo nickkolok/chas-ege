@@ -1,6 +1,6 @@
 (function () {
-    retryWhileError(function () {
-        NAinfo.requireApiVersion(0, 2);
+	retryWhileError(function () {
+		NAinfo.requireApiVersion(0, 2);
 
         let key = "169853";
         let variant = getListedPreference(key, [{
@@ -59,18 +59,18 @@
         NAtask.setTask({
             text: `Сторона треугольника равна $${side}$, 
 			а высота, проведённая к этой стороне, равна 
-			$${height.ts()}$. Найдите площадь этого треугольника.`,
-            answers: height * side / 2,
-            authors: ['Александра Суматохина'],
-        });
-
-        NAtask.modifiers.addCanvasIllustration({
-            width: 400,
-            height: 400,
-            paint: paint1,
-        });
-    }, 2000);
-
+			$${height}$. Найдите площадь этого треугольника.`,
+			answers: triangle.area(),
+			authors: ['Александра Суматохина'],
+		});
+		NAtask.modifiers.allDecimalsToStandard(/*true*/);
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
+			paint: paint1,
+		});
+	}, 2000);
+	NAtask.modifiers.allDecimalsToStandard(true);
 })();
 //169853 349889 349907 350059 350178 350704 350773 350912 351364 351999 352436 436856 193883 193913 193943 193973 402020 402032 402133 402221 402596 402644 402734 403003 403372 403645
 
