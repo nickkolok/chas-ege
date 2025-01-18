@@ -13,13 +13,13 @@
 			preference: 'C',
 			preferenceValue: 2,
 		}], sl(0, 2));
-		
+
 		let letters = latbukv.slice(0, 4);
 		let angleDano = letters.slice(0, 3);
 		let centralAngle = angleDano.splice(variant, 1)[0];
 		let angleFind = [angleDano.iz(), centralAngle, letters[3]].randomReverse().join('');
 		angleDano.splice(1, 0, centralAngle);
-		
+
 		let triangle = new Triangle({
 			lengths: {
 				lengthAB: sl(5, 10),
@@ -36,7 +36,7 @@
 		genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round(), triangle.lengthCA.round()].hasDubl(), 'Все стороны треугольника должны быть разными');
 
 		let valueAngle = [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees][variant];
-		triangle.addVertex([triangle.bisectorEndPointA, triangle.bisectorEndPointB, triangle.bisectorEndPointC][variant], ['A', 'B', 'C'][variant]);
+		triangle.addVertexToConnectionMatrix([triangle.bisectorAEndPoint, triangle.bisectorBEndPoint, triangle.bisectorCEndPoint][variant], ['A', 'B', 'C'][variant]);
 
 		let points = autoScale(triangle.vertices);
 
@@ -72,6 +72,7 @@
 		});
 		NAtask.modifiers.variativeABC(letters);
 
+		NAtask.modifiers.allDecimalsToStandard(/*true*/);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
