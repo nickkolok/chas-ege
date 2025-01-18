@@ -44,14 +44,15 @@
             text: `В треугольнике $ABC$ известно, что 
 			${[`$AB=${triangle.lengthAB}$`,
                 `$BC=${triangle.lengthBC}$`,
-                `угол $B$ равен $90^{\\circ}$`
-            ].shuffleJoin(`, `)}. 
+                    `угол $B$ равен $90^{\\circ}$`
+                ].shuffleJoin(`, `)}. 
 			Найдите радиус описанной окружности этого треугольника.`,
             answers: radius,
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.variativeABC(letters);
 
+        NAtask.modifiers.allDecimalsToStandard(/*true*/);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
