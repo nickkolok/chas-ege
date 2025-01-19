@@ -7,7 +7,7 @@
         let numberOfApartamentPerFloor = sluchch(5, 12, 1);
         genAssert(!apartamentNumber.kratno(numberOfApartamentPerFloor, "Количество квартир на этаже кратно номеру квартиры"));
 
-        let nameOfPerson = sl1() === 0 ? om.maleNames.iz() : om.femaleNames.iz();
+        let nameOfPerson = sl1() ? om.maleNames.iz() : om.femaleNames.iz();
 
         NAtask.setTask({
             text: 'В доме, в котором живет ' + nameOfPerson + ', один подъезд. На каждом этаже находится по ' + '$' + numberOfApartamentPerFloor + '$' +
