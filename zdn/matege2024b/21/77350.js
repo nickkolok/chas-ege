@@ -14,7 +14,7 @@
                 ' квартир. ' + nameOfPerson + ' живет в квартире №' + '$' + apartamentNumber + '$' + '. На каком этаже живет ' + nameOfPerson + '? ',
             answers: '$' + (apartamentNumber / numberOfApartamentPerFloor).ceil() + '$',
         });
-    });
+    }, 100);
 })();
 //https://ege.sdamgia.ru/test?likes=77350
 //zer00player
