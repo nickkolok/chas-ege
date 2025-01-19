@@ -22,13 +22,13 @@ var f=svVel([
 	{vel:'суммарное пройденное лодкой расстояние',zna:s*2,rod:2,nah:1,nmn:'км'},
 ]);
 
-window.vopr.ver=[''+f.splice(0,1)];
-window.vopr.txt='Моторная лодка прошла против течения реки и вернулась в пункт отправления. '+f.shuffle().soed();
+window.vopr.correctAnswers=[''+f.splice(0,1)];
+window.vopr.text='Моторная лодка прошла против течения реки и вернулась в пункт отправления. '+f.shuffle().soed();
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 
 //Обзад 26585 26586

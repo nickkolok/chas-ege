@@ -23,10 +23,10 @@ if(v1){		// c < 2a
 
 var fn=fn_zadan(params);
 
-window.vopr.txt=fn.txt;
-window.vopr.ver=[fn.ver];
+window.vopr.text=fn.txt;
+window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['prz']=1;
-window.vopr.kat['log']=1;
+window.vopr.categories['prz']=1;
+window.vopr.categories['log']=1;
 //})();
 //Обзад 26720 26721

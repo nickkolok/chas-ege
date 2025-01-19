@@ -10,7 +10,7 @@ var s=Infinity;
 var f;
 var v1;
 var t1;
-window.vopr.txt='Строительной фирме нужно приобрести '+chislitlx(zakaz,edizm.ie)+' '+tovar.re+' у одного из '+c+' поставщиков. '+
+window.vopr.text='Строительной фирме нужно приобрести '+chislitlx(zakaz,edizm.ie)+' '+tovar.re+' у одного из '+c+' поставщиков. '+
 	'Цены и условия доставки приведены в таблице. Сколько рублей придется заплатить за самую дешевую покупку с доставкой?';
 var y=['Фирма','Стоимость '+tovar.re+' (руб. за 1 '+edizm.ve+')','Стоимость доставки','Дополнительные условия'].tr('th');
 var cena=[].zapslch(0,c,2000,4000,50);
@@ -38,11 +38,11 @@ for(var i=0;i<c;i++){
 	s=Math.min(f,s);
 }
 
-window.vopr.txt+=(y+z.soed()).vTabl();
-window.vopr.ver=[s.ts()];
+window.vopr.text+=(y+z.soed()).vTabl();
+window.vopr.correctAnswers=[s.ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

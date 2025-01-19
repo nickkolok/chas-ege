@@ -13,9 +13,9 @@ var a = intoAnotherSystem(a10,10,m);
 var b = intoAnotherSystem(b10,10,n);
 var C = intoAnotherSystem(c10,10,2);
 
-window.vopr.txt='Дано: a='+a+'<sub>'+m+'</sub>, b='+b+'<sub>'+n+'</sub>. Какое из чисел С, записанных в двоичной системе счисления, удовлетворяет неравенству a &lt; C &lt; b?'+
+window.vopr.text='Дано: a='+a+'<sub>'+m+'</sub>, b='+b+'<sub>'+n+'</sub>. Какое из чисел С, записанных в двоичной системе счисления, удовлетворяет неравенству a &lt; C &lt; b?'+
 	'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	C,
 ];
 var wrongAnswers = [];
@@ -29,8 +29,8 @@ for (var i = 2; i < 4; i++) {
 	y = intoAnotherSystem(x,10,2);
 	wrongAnswers[i]=y;
 }
-window.vopr.nev=wrongAnswers;
-window.vopr.rsh='';
+window.vopr.incorrectAnswers=wrongAnswers;
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

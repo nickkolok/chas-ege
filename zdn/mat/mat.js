@@ -1,8 +1,8 @@
 if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
-	nZad:14,
-	adres:'../zdn/mat/',
+	numberOfTasks:14,
+	resourceAddress:'../zdn/mat/',
 	name:'',
 	prefix:'B',
 });

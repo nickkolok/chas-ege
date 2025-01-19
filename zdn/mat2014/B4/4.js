@@ -6,7 +6,7 @@ var b=sluchch(0.1,0.5,0.01);
 var c=sluchch(3,6);
 var t2=sluchiz(om.rusbukv,c);
 var s=1000000000;
-window.vopr.txt='Для изготовления книжных полок требуется заказать '+a+' одинаковых '+chislit(a,'стекло','стекла','стёкол')+' в одной из '+c+' фирм. '+
+window.vopr.text='Для изготовления книжных полок требуется заказать '+a+' одинаковых '+chislit(a,'стекло','стекла','стёкол')+' в одной из '+c+' фирм. '+
 				'Площадь каждого стекла '+b.ts()+' ${\\textrm{м}^{2}}$. В таблице приведены цены на стекло, '+
 				'а также на резку стекла и шлифовку края. Сколько рублей будет стоить самый дешёвый заказ?';
 var y=['Фирма','Цена стекла (руб. за 1 ${\\textrm{м}^{2}}$)','Резка и шлифовка (руб. за одно стекло)'].tr('th');
@@ -21,11 +21,11 @@ for(var i=0;i<c;i++){
 	s=Math.min(a*(h[i]+b*g[i]),s);
 }
 
-window.vopr.txt+=(y+z.soed()).vTabl();
-window.vopr.ver=[s.ts()];
+window.vopr.text+=(y+z.soed()).vTabl();
+window.vopr.correctAnswers=[s.ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

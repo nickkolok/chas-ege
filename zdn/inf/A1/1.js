@@ -8,9 +8,9 @@ var x = sluchch(10,1000);
 var y = intoAnotherSystem(x,10,m);
 var answer = intoAnotherSystem(x,10,n);
 
-window.vopr.txt='Как представлено число '+y+'<sub>'+m+'</sub> в '+n+'-ной системе счисления?'+
+window.vopr.text='Как представлено число '+y+'<sub>'+m+'</sub> в '+n+'-ной системе счисления?'+
 	'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	answer,
 ];
 var wrongAnswers = [];
@@ -19,8 +19,8 @@ for (var i = 0; i < 3; i++) {
 	y = intoAnotherSystem(x,10,n);
 	wrongAnswers[i]=y;
 }
-window.vopr.nev=wrongAnswers;
-window.vopr.rsh='';
+window.vopr.incorrectAnswers=wrongAnswers;
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

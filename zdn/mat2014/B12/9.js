@@ -10,7 +10,7 @@ f0=c*a/v-a;
 
 var t1=[['максимальной','не смог'],['минимальной','смог']].iz();
 
-window.vopr.txt=('Перед отправкой тепловоз издал гудок с частотой $f_0 = '+f0.ts()+
+window.vopr.text=('Перед отправкой тепловоз издал гудок с частотой $f_0 = '+f0.ts()+
 				'$ Гц. Чуть позже издал гудок подъезжающий к платформе '+
 				'тепловоз. Из-за эффекта Доплера частота второго гудка $f$ больше первого: '+
 				'она зависит от скорости тепловоза по '+
@@ -21,11 +21,11 @@ window.vopr.txt=('Перед отправкой тепловоз издал гу
 				' скоростью приближался к платформе тепловоз, если человек '+t1[1]+' различить сигналы, а $c = '+c+'$ м/с. '+
 				'Ответ выразите в м/с.').plusminus();
 
-window.vopr.ver=[v];
+window.vopr.correctAnswers=[v];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 

@@ -26,14 +26,14 @@ var vyr1=f[0];
 var vyr2=c.ts()+'\\cos'+(2*a).ts()+'^\\circ';
 
 var y='\\frac{'+(v1?vyr1:vyr2)+'}{'+(v1?vyr2:vyr1)+'}';
-window.vopr.ver=[(p1/p2*f[1]).ts()];
+window.vopr.correctAnswers=[(p1/p2*f[1]).ts()];
 
-window.vopr.txt=('Найдите значение выражения $$'+y+'$$').plusminus().ts();
+window.vopr.text=('Найдите значение выражения $$'+y+'$$').plusminus().ts();
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=1;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=1;
 })();
 //Обзад 26756
 //Николай Авдеев

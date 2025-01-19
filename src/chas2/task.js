@@ -153,11 +153,11 @@ chas2.task = {
 		chas2.task._.unfoldTask(o);
 		chas2.task._.validateTask(o);
 
-		window.vopr.podg();
-		window.vopr.txt = o.text;
-		window.vopr.rsh = o.analys;
-		window.vopr.ver = o.answers;
-		window.vopr.nev = o.wrongAnswers;
+		window.vopr.initializeQuestion();
+		window.vopr.text = o.text;
+		window.vopr.solution = o.analys;
+		window.vopr.correctAnswers = o.answers;
+		window.vopr.incorrectAnswers = o.wrongAnswers;
 		window.vopr.authors = o.authors;
 		if (o.checkAnswer) {
 			window.vopr.vrn = o.checkAnswer;
@@ -166,7 +166,7 @@ chas2.task = {
 			window.vopr.dey = o.draw;
 		}
 
-		window.vopr.kat.importFrom(o.tags);
+		window.vopr.categories.importFrom(o.tags);
 
 		var voprcheck = dvig.validateVopr();
 		if (voprcheck) {
@@ -179,10 +179,10 @@ chas2.task = {
 	 */
 	getTask : function() {
 		var o = {
-			text : window.vopr.txt,
-			analys : window.vopr.rsh,
-			answers : window.vopr.ver,
-			wrongAnswers : window.vopr.nev,
+			text : window.vopr.text,
+			analys : window.vopr.solution,
+			answers : window.vopr.correctAnswers,
+			wrongAnswers : window.vopr.incorrectAnswers,
 			checkAnswer : window.vopr.vrn,
 			draw : window.vopr.dey,
 			tags : {},
@@ -191,7 +191,7 @@ chas2.task = {
 		chas2.task._.normalizeTask(o);
 		chas2.task._.validateTask(o);
 
-		o.tags.importFrom(window.vopr.kat);
+		o.tags.importFrom(window.vopr.categories);
 
 		var voprcheck = dvig.validateVopr();
 		if (voprcheck) {
@@ -419,7 +419,7 @@ chas2.task = {
 			case 'list':
 				taskOptions.answers = o.roots.join(';');
 				multipleRootsPhrase = 'перечислите их через точку с запятой (;) в любом порядке';
-				taskOptions.checkAnswer = vopr.vrn_list;
+				taskOptions.checkAnswer = vopr.compareListWithAnswers;
 			break;
 		}
 
@@ -984,7 +984,7 @@ chas2.task = {
 	 * @param {String|String[]} explanations пояснения
 	 */
 	replaceCodeInText : function(code, explanations) {
-		vopr.txt = vopr.txt.replaceCode(code, explanations[i]);
+		vopr.text = vopr.text.replaceCode(code, explanations[i]);
 	},
 
 

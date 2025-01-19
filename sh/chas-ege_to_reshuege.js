@@ -8,9 +8,9 @@ var fillerTemplate = function(){
 
 
 
-		$('#editor_body').val('{{vopr.txt}}');
-		$('input[name=editor_answer]').val('{{vopr.ver}}');
-		$('#editor_solution').val('{{vopr.rsh}}');
+		$('#editor_body').val('{{vopr.text}}');
+		$('input[name=editor_answer]').val('{{vopr.correctAnswers}}');
+		$('#editor_solution').val('{{vopr.solution}}');
 
 		// Create previews
 		$('#editor_body')[0].onkeyup();
@@ -44,11 +44,11 @@ var fillerTemplate = function(){
 
 function createFiller(vopr){
 	var fillerCode = (''+fillerTemplate).replace(/^function\(\)/, "");
-	fillerCode = fillerCode.replace('{{vopr.txt}}', rearrangeFormulas(escapeText(vopr.txt)));
-	fillerCode = fillerCode.replace('{{vopr.ver}}', escapeText(''+vopr.ver));
+	fillerCode = fillerCode.replace('{{vopr.text}}', rearrangeFormulas(escapeText(vopr.text)));
+	fillerCode = fillerCode.replace('{{vopr.correctAnswers}}', escapeText(''+vopr.correctAnswers));
 	fillerCode = fillerCode.replace('{{vopr.template}}', escapeText(''+vopr.template));
 	fillerCode = fillerCode.replace('{{vopr.taskNumber}}', escapeText(''+vopr.taskNumber));
-	fillerCode = fillerCode.replace('{{vopr.rsh}}', rearrangeFormulas(escapeText(vopr.rsh)));
+	fillerCode = fillerCode.replace('{{vopr.solution}}', rearrangeFormulas(escapeText(vopr.solution)));
 	return fillerCode;
 }
 
@@ -101,7 +101,7 @@ function copyToClipboard(text) {
 
 
 function replaceCanvasWithImgInTaskAndHTML(element, vopr, callback){
-	if(!(/<canvas/i.test(vopr.txt))){
+	if(!(/<canvas/i.test(vopr.text))){
 		// Nothing to do
 		callback();
 		return;
@@ -110,7 +110,7 @@ function replaceCanvasWithImgInTaskAndHTML(element, vopr, callback){
 	console.log(canvases);
 	for(var i = 0; i < canvases.length; i++){
 		var img = createImgFromCanvas(canvases[i]);
-		vopr.txt = vopr.txt.replace(/<canvas.*?<\/canvas>/, img.outerHTML);
+		vopr.text = vopr.text.replace(/<canvas.*?<\/canvas>/, img.outerHTML);
 	}
 	callback();
 }

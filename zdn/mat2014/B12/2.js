@@ -12,12 +12,12 @@ var c='При температуре $0^\\circ {\\rm{C}}$ рельс имеет 
 'теплового расширения, $t^\\circ$  — температура (в градусах Цельсия). При какой температуре '+
 'рельс удлинится на '+dl+' мм? Ответ выразите в градусах Цельсия.';
 
-window.vopr.txt=c;
-window.vopr.ver=[''+t];
+window.vopr.text=c;
+window.vopr.correctAnswers=[''+t];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 

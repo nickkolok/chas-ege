@@ -1,12 +1,12 @@
 (function(){'use strict';
 
-window.vopr.txt='$\\cos{2a} =$<br/>';
-window.vopr.ver=[
+window.vopr.text='$\\cos{2a} =$<br/>';
+window.vopr.correctAnswers=[
 	'$ \\cos^{2}{a}-sin^{2}{a}  $',
 	'$ 2 \\cos^{2}{a} -1 $',
 	'$  1-2 \\sin^{2}{a} $',
 ];
-window.vopr.nev=[
+window.vopr.incorrectAnswers=[
 	'$ \\cos{a}\\cdot\\cos{b} + \\sin{a}\\cdot\\sin{b}  $',
 	'$ \\sin^{2}{a} +\\cos^{2}{a}  $',
 	'$ 2 \\sin{a}\\cdot\\cos{a}  $',

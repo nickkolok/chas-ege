@@ -12,8 +12,8 @@ var g1=['цилиндрический сосуд,','сосуд, имеющий '
 var g2=['цилиндрическом сосуде','сосуде, имеющем '+m];
 var h=om.zhidkost.re.iz();
 
-window.vopr.ver=[''+(!v1?c*b*b:c)];
-window.vopr.txt='В '+g2[v2]+' уровень '+h+' достигает '+(v1?c*b*b:c)+' см. На какой высоте будет находиться уровень '+
+window.vopr.correctAnswers=[''+(!v1?c*b*b:c)];
+window.vopr.text='В '+g2[v2]+' уровень '+h+' достигает '+(v1?c*b*b:c)+' см. На какой высоте будет находиться уровень '+
 				h+', если перелить содержимое первого сосуда во второй '+g1[v2]+' '+
 				(function(){
 					var str = '';
@@ -41,8 +41,8 @@ window.vopr.txt='В '+g2[v2]+' уровень '+h+' достигает '+(v1?c*b
 					return str;
 				})()+' первого? Ответ выразите в сантиметрах.';
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

@@ -14,7 +14,7 @@ var mesh2=sl(15,30);
 var kolvo1=sl(2,8);
 var kolvo2=sl(2,8);
 
-window.vopr.txt='Для строительства '+stroen.re+' можно использовать один из двух типов фундамента: из '+
+window.vopr.text='Для строительства '+stroen.re+' можно использовать один из двух типов фундамента: из '+
 	mat1.re+' или из '+mat2.re+'. Для фундамента из '+mat1.re+' необходимо '+chislitlx(kolvo1,mera1.ie)+' '+mat1.re+
 	' и '+chislitlx(mesh1,'мешок')+' цемента. Для фундамента из '+mat2.re+' необходимо '+chislitlx(kolvo2,mera2.ie)+
 	' '+mat2.re+' и '+chislitlx(mesh2,'мешок')+
@@ -22,10 +22,10 @@ window.vopr.txt='Для строительства '+stroen.re+' можно ис
 	chislitlx(cena2,'рубль')+
 	' за '+mera2.ve+', а мешок цемента стоит '+chislitlx(cement,'рубль')+'. Сколько рублей будет стоить материал, '+
 	'если выбрать наиболее дешевый вариант?';
-window.vopr.ver=[Math.min(cena1*kolvo1+mesh1*cement,cena2*kolvo2+mesh2*cement).ts()];
+window.vopr.correctAnswers=[Math.min(cena1*kolvo1+mesh1*cement,cena2*kolvo2+mesh2*cement).ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

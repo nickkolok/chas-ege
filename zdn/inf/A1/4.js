@@ -29,10 +29,10 @@ else if (usl1 == 'наибольшее количество')
 else
 	answer = chisla[kx.min()+1];
 
-window.vopr.txt='Даны 4 числа, они записаны с использованием различных систем счисления. Укажите среди этих чисел то, в двоичной записи которого содержится '+usl1+' '+usl2+'. Если таких чисел несколько, укажите наибольшее из них.'+
+window.vopr.text='Даны 4 числа, они записаны с использованием различных систем счисления. Укажите среди этих чисел то, в двоичной записи которого содержится '+usl1+' '+usl2+'. Если таких чисел несколько, укажите наибольшее из них.'+
 	'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
 
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	answer+'<sub>'+sys[chisla.indexOf(answer)]+'</sub>'
 ];
 
@@ -43,8 +43,8 @@ var wrongAnswers = [];
 for (var i = 0; i < 3; i++) {
 	wrongAnswers[i]=chisla[i]+'<sub>'+sys[i]+'</sub>';
 }
-window.vopr.nev=wrongAnswers;
-window.vopr.rsh='';
+window.vopr.incorrectAnswers=wrongAnswers;
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

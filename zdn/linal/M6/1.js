@@ -8,11 +8,11 @@ do{
 	det=mtr.det();
 }while(!det || !(100/det).isZ());
 
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	'$\\left('+	//Костыль!!! Нужна vrn_mtr
 	mtr.inv().matrixToTex().ts()+
 	'\\right)$'
 ];
-window.vopr.txt='Найдите методом Гаусса обратную матрицу к матрице $A=\\left('+mtr.matrixToTex()+'\\right)$';
+window.vopr.text='Найдите методом Гаусса обратную матрицу к матрице $A=\\left('+mtr.matrixToTex()+'\\right)$';
 
 })();

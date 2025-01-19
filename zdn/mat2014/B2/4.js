@@ -8,15 +8,15 @@ var v=sluchch(0,3);
 var m=['после повышения цены на','после понижения цены на','во время распродажи, когда скидка составляет','с дисконтной картой, дающей право на скидку'];
 var n=[-c,c,c,c];
 
-window.vopr.txt=om.meltov.ie[t].toZagl()+' стоит '+a+' рублей. '+
+window.vopr.text=om.meltov.ie[t].toZagl()+' стоит '+a+' рублей. '+
 	'Какое наибольшее число '+om.meltov.rm[t]+' можно купить за '+b+
 	' рублей '+m[v]+' '+c+'%?';
 
-window.vopr.ver=[''+(b/(a*(1-0.01*n[v]))).floor()];
+window.vopr.correctAnswers=[''+(b/(a*(1-0.01*n[v]))).floor()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 //Обзад 26618 26619 26620

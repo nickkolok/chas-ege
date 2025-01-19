@@ -15,18 +15,18 @@ var t5=['первым','вторым'];
 var p5=[x+a,x];
 var v5=sl1();
 
-window.vopr.txt='Два '+t3+' одновременно отправились в '+(x*t)+'-километровый пробег. Первый ехал со скоростью, на '+
+window.vopr.text='Два '+t3+' одновременно отправились в '+(x*t)+'-километровый пробег. Первый ехал со скоростью, на '+
 				a+' км/ч большей, чем скорость второго, и прибыл к финишу на '+chislitM(b,'час','часа','часов')+
 				' раньше второго. Найти скорость '+
 				t4+', пришедшего к финишу '+t5[v5]+'. Ответ дайте в км/ч.';
 
 
-window.vopr.ver=[p5[v5]];
+window.vopr.correctAnswers=[p5[v5]];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();
 
 //Обзад 26583б 26584

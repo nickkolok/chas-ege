@@ -9,18 +9,18 @@
 		R=(100-a)*r/a;
 	}
 	
-	window.vopr.txt=(
+	window.vopr.text=(
 		'По закону Ома для полной цепи сила тока, измеряемая в амперах, равна $I=\\frac{\\varepsilon}{R+r}$'+
 		', где $\\varepsilon$ — ЭДС источника (в вольтах), $r='+r.ts(1)+'$ Ом — его внутреннее сопротивление, $R$ — сопротивление цепи '+
 		'(в омах). При каком наименьшем сопротивлении цепи сила тока будет составлять не более $'+a+'\\%$ от силы тока '+
 		'короткого замыкания $I_{\\mbox{кз}}=\\frac{\\varepsilon}{r}$? (Ответ выразите в омах.)'
 	).plusminus();
 	
-	window.vopr.ver=[R.ts()];
+	window.vopr.correctAnswers=[R.ts()];
 	
-	window.vopr.kat['log']=0;
-	window.vopr.kat['prz']=0;
-	window.vopr.kat['drs']=0;
-	window.vopr.kat['tri']=0;
+	window.vopr.categories['log']=0;
+	window.vopr.categories['prz']=0;
+	window.vopr.categories['drs']=0;
+	window.vopr.categories['tri']=0;
 	})();
 	

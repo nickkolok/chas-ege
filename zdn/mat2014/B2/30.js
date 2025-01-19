@@ -13,11 +13,11 @@ var kg = sluchch(1,3);
 var kaga = sluchch(1,2);
 var kogo = sluchch(20,30);
 
-window.vopr.txt='Для приготовления '+frukt[1]+' варенья на '+kg+' кг '+frukt[0]+' нужно '+kaga+
+window.vopr.text='Для приготовления '+frukt[1]+' варенья на '+kg+' кг '+frukt[0]+' нужно '+kaga+
 	' кг сахара. Какое наименьшее количество килограммовых упаковок сахара нужно, чтобы сварить варенье из '+
 	kogo+' кг '+frukt[0]+'?';
 
-window.vopr.ver=[(kogo/(kaga*kg)).ceil()];
+window.vopr.correctAnswers=[(kogo/(kaga*kg)).ceil()];
 
 })();
 //Обзад 26642

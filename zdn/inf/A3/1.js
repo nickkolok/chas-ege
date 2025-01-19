@@ -54,15 +54,15 @@ for (var j=0; j<3; j++){
 }
 table = table.vTag('table','border="1"');
 
-window.vopr.txt='Дан фрагмент таблицы истинности выражения F (см. таблицу). Какое выражение соответствует F?'+
+window.vopr.text='Дан фрагмент таблицы истинности выражения F (см. таблицу). Какое выражение соответствует F?'+
 	'<br/>'+table+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
 
 for (var i=0; i<4; i++)
 	f[i]=printLogic(f[i]);
 
-window.vopr.ver=f.splice(0,1);
-window.vopr.nev=f;
-window.vopr.rsh='';
+window.vopr.correctAnswers=f.splice(0,1);
+window.vopr.incorrectAnswers=f;
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

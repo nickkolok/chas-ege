@@ -1,9 +1,9 @@
 if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
-	nZad:7,
-	adres:'../zdn/tri/',
+	numberOfTasks:7,
+	resourceAddress:'../zdn/tri/',
 	name:'tri',
 	prefix:'E',
-	kat:[],
+	categories:[],
 });

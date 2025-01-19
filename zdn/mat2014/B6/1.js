@@ -13,11 +13,11 @@ var c=sluchiz(window.moneta,1)[0];
 
 var d='В случайном эксперименте симметричную монету бросают '+a+' раза.';
 var f=' Какова вероятность того, что '+c+' выпадет '+window.razy[b]+'?';
-window.vopr.txt=d+f;
-window.vopr.ver=[''+(monet(a,b)/Math.pow(2,a)).ts()];
+window.vopr.text=d+f;
+window.vopr.correctAnswers=[''+(monet(a,b)/Math.pow(2,a)).ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

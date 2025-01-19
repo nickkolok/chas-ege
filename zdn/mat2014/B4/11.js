@@ -28,13 +28,13 @@ for (i = 0; i < people.length; i++) {
 		speed = people[i].get_download_speed();
 }
 
-window.vopr.txt = people[0].name + ' загружает на свой компьютер из Интернета файл размером ' + people[0].file_size +
+window.vopr.text = people[0].name + ' загружает на свой компьютер из Интернета файл размером ' + people[0].file_size +
                   ' Мб за ' + people[0].download_time + ' секунд. ' + people[1].name + ' загружает файл размером ' +
                   people[1].file_size + ' Мб за ' + people[1].download_time + ' секунд, а ' + people[2].name +
                   ' загружает файл размером ' + people[2].file_size+ ' Мб за ' + people[2].download_time + ' секунд.' +
                   'Сколько секунд будет загружаться файл размером ' + required_file_size + ' Мб на компьютер с наибольшей скоростью загрузки?';
 
-window.vopr.ver = [ required_file_size / speed ];
+window.vopr.correctAnswers = [ required_file_size / speed ];
 
 })();
 //Обзад 77363

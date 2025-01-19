@@ -18,17 +18,17 @@ for(var i=0;i<3;i++){
 	z[i]=[t2[i],t1[i],r[i].ts(),b[i].ts()].tr();
 	s=s.min(c*b[i]+a[i]*r[i]*f/100);
 }
-window.vopr.txt='Клиент хочет арендовать автомобиль на '+sut+' для поездки протяженностью '+f+' км. В таблице '+
+window.vopr.text='Клиент хочет арендовать автомобиль на '+sut+' для поездки протяженностью '+f+' км. В таблице '+
 	'приведены характеристики трех автомобилей и стоимость их аренды. Помимо аренды клиент обязан оплатить топливо для '+
 	'автомобиля на всю поездку. Какую сумму в рублях заплатит клиент за аренду и топливо, если выберет самый дешевый вариант?';
 
-window.vopr.txt+=(y+z.shuffle().soed()).vTabl();
-window.vopr.txt+='Цена дизельного топлива — '+chislitlx(a[0],'рубль')+' за литр, бензина — '+chislitlx(a[1],'рубль')+
+window.vopr.text+=(y+z.shuffle().soed()).vTabl();
+window.vopr.text+='Цена дизельного топлива — '+chislitlx(a[0],'рубль')+' за литр, бензина — '+chislitlx(a[1],'рубль')+
 				' за литр, газа — '+chislitlx(a[2],'рубль')+' за литр.';
-window.vopr.ver=[s.ts()];
+window.vopr.correctAnswers=[s.ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

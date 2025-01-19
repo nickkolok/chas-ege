@@ -2,7 +2,7 @@
 
 var v1=sl1();//Если 1, то cлитно
 
-window.vopr.txt='В каком предложении оба выделенных слова пишутся '+
+window.vopr.text='В каком предложении оба выделенных слова пишутся '+
 	(v1?
 		'слитно?':
 		'раздельно?'
@@ -27,8 +27,8 @@ var smsh=[//Список (на самом деле массив) предлож�
 ];//Лучше их располагать по алфавиту
 
 
-window.vopr.ver=v1?slit:razd;
-window.vopr.nev=(v1?razd:slit).concat(smsh);
+window.vopr.correctAnswers=v1?slit:razd;
+window.vopr.incorrectAnswers=(v1?razd:slit).concat(smsh);
 AtoB();
 
 })();

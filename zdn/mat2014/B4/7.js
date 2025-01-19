@@ -14,17 +14,17 @@ for(var i=0;i<3;i++){
 	z[i]=[nazv[i],h[i],m[i]].tr();
 	s=s.min(ab[i]+(a-g[i]).polozh()*zamin[i]);
 }
-window.vopr.txt='Телефонная компания предоставляет на выбор три тарифных плана.'+
+window.vopr.text='Телефонная компания предоставляет на выбор три тарифных плана.'+
 				(y+z.shuffle().soed()).vTabl()+
 				'Абонент выбрал наиболее дешевый тарифный план исходя из предположения, что общая длительность телефонных '+
 				'разговоров составляет '+chislitlx(a,'минута')+' в месяц. Какую сумму он должен заплатить за месяц, если общая '+
 				'длительность разговоров в этом месяце действительно будет равна '+chislitlx(a,'минута','d')+'? Ответ дайте в рублях.';
 
 
-window.vopr.ver=[s.ts()];
+window.vopr.correctAnswers=[s.ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

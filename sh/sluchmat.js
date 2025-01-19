@@ -9,8 +9,8 @@ var vremyaStart;
 
 function sozdGalki(){
 	var galki,g1='',g2='',g3='',g4='';
-	for(var i=1;i<=nabor.nZad;i++){
-		if(!nabor.vykl[i]){
+	for(var i=1;i<=nabor.numberOfTasks;i++){
+		if(!nabor.disabledItems[i]){
 			var title='';
 			window.comment='';
 			try{
@@ -33,7 +33,7 @@ function sozdGalki(){
 
 function veroyatn(){
 	var pr;
-	for(var i=1;i<=nabor.nZad;i++){
+	for(var i=1;i<=nabor.numberOfTasks;i++){
 		pr=umka.verno[i]/umka.vsego[i];
 		$('#pB'+i).html(
 			umka.vsego[i]>4?
@@ -81,7 +81,7 @@ function veroyatn(){
 var slvopr;
 function obnov(p1){
 	slvopr=p1;
-	$('#pole').html(slvopr.txt);
+	$('#pole').html(slvopr.text);
 	slvopr.trd();
 	MathJax.Hub.Typeset();
 	$('#otvet').html(slvopr.ver.join(';;'));
@@ -90,10 +90,10 @@ function obnov(p1){
 }
 
 function vybrZad(){
-	for(var i=1;i<=nabor.nZad;i++)
+	for(var i=1;i<=nabor.numberOfTasks;i++)
 		v[i]=($('#cB'+i).is(':checked')?1:0);
 	var w=[];
-	for(var i=1;i<=nabor.nZad;i++)
+	for(var i=1;i<=nabor.numberOfTasks;i++)
 		if(v[i])
 			w.push(i);
 	if(!w.length){
@@ -109,10 +109,10 @@ function vybrZad(){
 	}
 	if($("#radio-umka" ).prop("checked")){
 		var masV=[];
-		for(var i=1;i<=nabor.nZad;i++)
+		for(var i=1;i<=nabor.numberOfTasks;i++)
 			if(v[i] && (umka.vsego[i]<5))
 				return i;
-		for(var i=1;i<=nabor.nZad;i++)
+		for(var i=1;i<=nabor.numberOfTasks;i++)
 			if(v[i])
 				masV.push(1.1-umka.verno[i]/umka.vsego[i])
 			else
@@ -171,16 +171,16 @@ function prover(){
 	if(checkPraviln){
 		umka.vsego[n]++;
 	}
-	var txt='';
+	var text='';
 
 	if(slvopr.vrn(kand)){
 		if(checkPraviln){
 			umka.verno[n]++;
 		}
-		txt='Правильно!';
+		text='Правильно!';
 		uchetPrav(n,1);
 	}else{
-		txt='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
+		text='Неправильно! Правильный ответ: '+slvopr.ver.join(' или ');
 		if(!flUchetPrav)
 			uchetPrav(n,0);
 	}
@@ -189,8 +189,8 @@ function prover(){
 		umka.vremya[n]+=(new Date().getTime()-vremyaStart)/1000;
 		umka.kvoNaVremya[n]++;
 	}
-	if(vopr.rsh)
-		txt+='<br/><br/>'+vopr.rsh;
+	if(vopr.solution)
+		text+='<br/><br/>'+vopr.solution;
 	$('#protv').html(txt);
 	MathJax.Hub.Typeset();
 	$('#prov').hide();
@@ -216,7 +216,7 @@ function uchetPrav(kat,prav,nom){
 var v=[];
 
 function vybrv(){
-	for(var i=1;i<=nabor.nZad;i++){
+	for(var i=1;i<=nabor.numberOfTasks;i++){
 		$('#cB'+i).not(':checked').click();
 	}
 }
@@ -238,7 +238,7 @@ function obrabPraviln(){
 }
 
 function vybr0(){
-	for(var i=1;i<=nabor.nZad;i++){
+	for(var i=1;i<=nabor.numberOfTasks;i++){
 		$('#cB'+i).removeAttr('checked');
 	}
 }
@@ -273,7 +273,7 @@ var startShell = function (){
 	spoiler();
 
 	$("#otv").keyup(function(event) {
-		if(nabor.mnogostrOtvet || flProv)
+		if(nabor.allowMultilineAnswer || flProv)
 			return true;
 		if(event.keyCode==13){
 			prover();

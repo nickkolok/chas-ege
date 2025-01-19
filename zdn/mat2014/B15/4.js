@@ -21,14 +21,14 @@ var h=[/*t3[v1]+*/t3[v2]+a+t2[v2],t3[v3]+b+'x',c].shuffle().join('+');
 
 var t4=['0;'+g,'-'+g+';0'];
 var v4=1-(v1==v3);
-window.vopr.txt=('Найдите '+t1[v1]+' значение функции $y = '+h+'$ на отрезке $['+t4[v4]+']$').plusminus();
+window.vopr.text=('Найдите '+t1[v1]+' значение функции $y = '+h+'$ на отрезке $['+t4[v4]+']$').plusminus();
 
-window.vopr.ver=[''+p[v2]];
+window.vopr.correctAnswers=[''+p[v2]];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=1;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=1;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=1;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=1;
 })();
 
 //Обзад 26694 26695 26696 26697

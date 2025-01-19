@@ -20,9 +20,9 @@ var fn=fn_zadan({
 	maxy:!minus || !(pw*10000).isZ()?undefined:pw,
 });
 
-window.vopr.txt=fn.txt;
-window.vopr.ver=[fn.ver];
+window.vopr.text=fn.txt;
+window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['prz']=0;
+window.vopr.categories['prz']=0;
 })();
 //Обзад 245181 245182 245183 245184

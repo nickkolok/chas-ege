@@ -1,6 +1,6 @@
 (function(){'use strict';
 
-window.vopr.txt='В каком ряду во всех словах пропущена безударная проверяемая гласная корня?'+
+window.vopr.text='В каком ряду во всех словах пропущена безударная проверяемая гласная корня?'+
         '<br/>';
 
 var ver=[//Список (на самом деле массив) слов, в которых
@@ -485,9 +485,9 @@ var nev=[//Список (на самом деле массив) слов, в к�
 	'эт…кетка',
 ];//Внимание: после последнего элемента тоже ставится запятая. Её можно и не ставить, но так удобнее.
 
-window.vopr.ver=[ver.iz(3).join(', ')];
+window.vopr.correctAnswers=[ver.iz(3).join(', ')];
 for(var i=0;i<3;i++)
-        window.vopr.nev[i]=nev.concat(ver.iz(2)).iz(3).join(', ');
+        window.vopr.incorrectAnswers[i]=nev.concat(ver.iz(2)).iz(3).join(', ');
 
 AtoB();
 })();

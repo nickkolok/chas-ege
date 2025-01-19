@@ -861,10 +861,10 @@ var comb=[
 	],
 ].iz();
 
-window.vopr.txt='Укажите грамматически правильное продолжение предложения.<br/><br/><b>'+comb[0].iz()+'</b><br/>';
+window.vopr.text='Укажите грамматически правильное продолжение предложения.<br/><br/><b>'+comb[0].iz()+'</b><br/>';
 
-window.vopr.ver=comb[1];
-window.vopr.nev=comb[2];
+window.vopr.correctAnswers=comb[1];
+window.vopr.incorrectAnswers=comb[2];
 AtoB();
 
 })();

@@ -15,10 +15,10 @@ var fn=fn_zadan({
 	nech:v1,
 });
 
-window.vopr.txt=fn.txt;
-window.vopr.ver=[fn.ver];
+window.vopr.text=fn.txt;
+window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['prz']=1;
-window.vopr.kat['tri']=1;
+window.vopr.categories['prz']=1;
+window.vopr.categories['tri']=1;
 })();
 //Обзад 26730 26731

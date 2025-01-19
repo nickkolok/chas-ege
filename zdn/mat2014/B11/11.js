@@ -18,18 +18,18 @@ var vyr2=[
 var y;
 if(sl1()){
 	y='\\frac{'+b.ts()+'~'+vyr1+'}{'+c.ts()+'~'+vyr2+'}';
-	window.vopr.ver=[(b/(2*c)).ts()];
+	window.vopr.correctAnswers=[(b/(2*c)).ts()];
 }else{
 	y='\\frac{'+b.ts()+'~'+vyr2+'}{'+c.ts()+'~'+vyr1+'}';
-	window.vopr.ver=[(b*2/c).ts()];
+	window.vopr.correctAnswers=[(b*2/c).ts()];
 }
 
-window.vopr.txt=('Найдите значение выражения $$'+y+'$$').plusminus().ts();
+window.vopr.text=('Найдите значение выражения $$'+y+'$$').plusminus().ts();
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=1;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=1;
 })();
 //Обзад 26755
 //Николай Авдеев

@@ -1,6 +1,6 @@
 'use strict';
 
-window.vopr.txt='';
+window.vopr.text='';
 var nV=1;
 var kategory=1;
 var aZ=[];
@@ -21,7 +21,7 @@ function vse0(){
 
 function zapusk(){
 	chasStorage.domData.save()
-	for(var i=1;i<=nabor.nZad;i++)
+	for(var i=1;i<=nabor.numberOfTasks;i++)
 		aZ[i]=1*($('#cB'+i).val());
 	cacheKat();
 	kZ=aZ.sum();
@@ -57,7 +57,7 @@ function konecSozd(){
 }
 
 function zadan(){
-	if (kategory>nabor.nZad){
+	if (kategory>nabor.numberOfTasks){
 		konecSozd();
 		return;
 	}else if(iZ[kategory]==0){
@@ -78,7 +78,7 @@ function obnov(){
 				'<div class="b">'+nazvzad+
 				'</div>'+
 				'<div class="z">'+
-				window.vopr.txt+
+				window.vopr.text+
 				'</div>'+
 				'<div class="r">'+
 					'Ответ:'+
@@ -88,10 +88,10 @@ function obnov(){
 					'</div>'+
 					'<div class="otv_nev" id="otv_nev'+(sdel-1)+'">'+
 						'Неправильно!<br/>'+
-						'Правильный ответ: '+window.vopr.ver.join('или')+
+						'Правильный ответ: '+window.vopr.correctAnswers.join('или')+
 					'</div>'+
 				'</div>'+
-				('<br/>Решение:<br/><br/>'+vopr.rsh).vTag('div','class="resh-poln"').esli(vopr.rsh)+
+				('<br/>Решение:<br/><br/>'+vopr.solution).vTag('div','class="resh-poln"').esli(vopr.solution)+
 			'</div>';
 		//Копируем вопрос в массив
 		voprosy.push(vopr.clone());

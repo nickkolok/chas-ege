@@ -30,12 +30,12 @@ var mas=[
 ];
 
 mas=svVel(mas);
-window.vopr.ver=mas.splice(0,1);
-window.vopr.txt='Основанием пирамиды является '+figur[vFigur]+'. '+mas.soed();
+window.vopr.correctAnswers=mas.splice(0,1);
+window.vopr.text='Основанием пирамиды является '+figur[vFigur]+'. '+mas.soed();
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 
 })();

@@ -11,9 +11,9 @@ if (usl == 'единиц')
 else
 	answer = String(y).split('0').length-1;
 
-window.vopr.txt='Сколько '+usl+' в двоичной записи числа '+x+'?'+
+window.vopr.text='Сколько '+usl+' в двоичной записи числа '+x+'?'+
 	'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	answer,
 ];
 var wrongAnswers = [''];
@@ -21,8 +21,8 @@ for (var i = 0; i < 10; i++) {
 	wrongAnswers[i]=i;
 }
 wrongAnswers.splice(wrongAnswers.indexOf(answer), 1);
-window.vopr.nev=wrongAnswers;
-window.vopr.rsh='';
+window.vopr.incorrectAnswers=wrongAnswers;
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

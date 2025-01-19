@@ -16,16 +16,16 @@ for(var i=1; i<c; i++){
 	z[i]=['План "'+g[i]+'"',h[i].ts()+' руб. за '+g[i].ts()+' трафика в месяц',m[i].ts()+' руб. за 1 Мб сверх '+g[i].ts()+' Мб'].tr();
 	s=Math.min(h[i]+(a-g[i]).polozh()*m[i],s);
 }
-window.vopr.txt='У пользователя есть возможность подключиться к интернету на один из следующих тарифов:'+
+window.vopr.text='У пользователя есть возможность подключиться к интернету на один из следующих тарифов:'+
 				(y+z.soed()).vTabl()+'<br/><br/>'+
 				'Пользователь рассчитал, что его трафик составит приблизительно '+a+' Мб в месяц, и исходя из этого '+
 				'выбирает наиболее дешёвый тарифный план. Сколько рублей заплатит пользователь за месяц, '+
 				'если его трафик действительно будет равен '+a+' Мб?';
 
-window.vopr.ver=[s.ts()];
+window.vopr.correctAnswers=[s.ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

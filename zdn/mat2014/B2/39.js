@@ -7,12 +7,12 @@ var EduInst=sklonlxkand(['школа','интернат','лицей','гимн�
 var Pupil=sklonlxkand(['ученик','учащийся'].iz());
 var Lang=['немецкий','французский','итальянский','английский','испанский'].iz();
 
-window.vopr.txt='В '+EduInst.pe+' '+KidsCount+' '+Pupil.rm+', из них '+JuniorCount+'%  — '+Pupil.im+
+window.vopr.text='В '+EduInst.pe+' '+KidsCount+' '+Pupil.rm+', из них '+JuniorCount+'%  — '+Pupil.im+
 	' начальной школы. Среди '+Pupil.rm+' средней и старшей'+
 	' школы '+LearningGer+'% изучают '+Lang+' язык. Сколько '+Pupil.rm+' в '+EduInst.pe+' изучают'+
 	' '+Lang+' язык, если в начальной школе '+Lang+' язык не изучается?';
 
-window.vopr.ver=[(KidsCount*(1-JuniorCount/100)*LearningGer/100).ts()];
+window.vopr.correctAnswers=[(KidsCount*(1-JuniorCount/100)*LearningGer/100).ts()];
 
 })();
 //Обзад 77347

@@ -23,7 +23,7 @@ chas2.test = {
 		var warnFunc = p.warnFunc || chas2.Lwarn;
 		var errFunc  = p.errFunc || chas2.Lerr;
 
-		infoFunc('Проверка шаблонов в наборе "' + nabor.adres + '"');
+		infoFunc('Проверка шаблонов в наборе "' + nabor.resourceAddress + '"');
 
 		var errCount = 0;
 		for (var category in nabor.upak) {
@@ -50,6 +50,6 @@ chas2.test = {
 			}
 			infoFunc('\tПроверка категории ' + category + ' закончена c ' + errCountPerCat + ' ошибками');
 		}
-		infoFunc('Проверка шаблонов в наборе "' + nabor.adres + '" закончена с ' + errCount + ' ошибками');
+		infoFunc('Проверка шаблонов в наборе "' + nabor.resourceAddress + '" закончена с ' + errCount + ' ошибками');
 	}
 };

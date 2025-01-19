@@ -36,11 +36,11 @@ var fn=fn_zadan({
 	prkz:zprk,
 });
 
-window.vopr.txt=fn.txt;
-window.vopr.ver=[fn.ver];
+window.vopr.text=fn.txt;
+window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['prz']=1;
-window.vopr.kat['drs']=1;
+window.vopr.categories['prz']=1;
+window.vopr.categories['drs']=1;
 })();
 /*Обзад
  * 26751 26752 26753 26754

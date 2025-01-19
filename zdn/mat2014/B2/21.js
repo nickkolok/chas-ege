@@ -9,17 +9,17 @@ var height=sluchch(10000,50000,1000);
 var mashina=[ 'самолёта','вертолёта','аэроплана','дирижабля','воздушного шара','аэростата'].iz();
 var pilot=[ 'пилота','пассажира','пассажиров'].iz();
 
-window.vopr.txt=
+window.vopr.text=
 	'Встроенная система навигации на базе GNU/Linux '+['Debian','Ubuntu','Gentoo','Mint'].iz()+
 	' '+mashina + ' информирует ' + pilot + ' о том, что полёт проходит на высоте '+
 	height +' футов. Выразите высоту полёта в метрах. Считайте, что 1 фут равен 30,5 см.';
 
-window.vopr.ver=[ ( (height*30.5)/100).ts() ];
+window.vopr.correctAnswers=[ ( (height*30.5)/100).ts() ];
 
-window.vopr.kat['log']=0;  //Логарифмы
-window.vopr.kat['prz']=0;  //Производная
-window.vopr.kat['drs']=0;  //Дробные (нецелые) степени
-window.vopr.kat['tri']=0;  //Тригонометрия
+window.vopr.categories['log']=0;  //Логарифмы
+window.vopr.categories['prz']=0;  //Производная
+window.vopr.categories['drs']=0;  //Дробные (нецелые) степени
+window.vopr.categories['tri']=0;  //Тригонометрия
 
 })();
 //Открытый банк заданий, № 318583

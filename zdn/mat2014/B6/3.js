@@ -10,16 +10,16 @@ var t1=sluchiz(om.strany.re,3);
 var v1=sluchch(2);
 var t2=sluchiz(om.sport.pe)[0];
 
-window.vopr.txt='В чемпионате по '+t2+' участвуют '+a+' спортсменок: '+
+window.vopr.text='В чемпионате по '+t2+' участвуют '+a+' спортсменок: '+
 				b+' из '+t1[0]+', '+c+' из '+t1[1]+', остальные — из '+t1[2]+'. '+
 				'Порядок, в котором выступают спортсменки, определяется жребием. '+
 				'Найдите вероятность того, что спортсменка, выступающая '+
 				sluchiz(['первой','последней','предпоследней','второй','третьей',sluchch(4,a)+'-ой'])[0]+
 				', окажется из '+t1[v1]+'.';
-window.vopr.ver=[''+(f[v1]/a).ts()];
+window.vopr.correctAnswers=[''+(f[v1]/a).ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

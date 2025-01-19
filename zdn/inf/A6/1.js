@@ -56,14 +56,14 @@ var sum = 0;
 for (var j=0; j<k; j++){
 	sum+=func(content[j]);
 }
-window.vopr.txt='Сколько записей в нижеследующем фрагменте турнирной таблицы удовлетворяют условию'+
+window.vopr.text='Сколько записей в нижеследующем фрагменте турнирной таблицы удовлетворяют условию'+
 '<br/><b>'+usl+'</b><br/>'+table+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
-window.vopr.nev=[];
+window.vopr.incorrectAnswers=[];
 for (var i=0; i<3; i++){
-	window.vopr.nev.push(slKrome(window.vopr.nev.concat(sum),k));
+	window.vopr.incorrectAnswers.push(slKrome(window.vopr.incorrectAnswers.concat(sum),k));
 }
-window.vopr.ver=[sum];
-window.vopr.rsh='';
+window.vopr.correctAnswers=[sum];
+window.vopr.solution='';
 
 AtoB();//Техническая функция, её удалять не надо
 

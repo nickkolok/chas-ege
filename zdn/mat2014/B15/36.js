@@ -19,9 +19,9 @@ var fn=fn_zadan({
 	maxy:!minus || vt?undefined:pw,
 });
 
-window.vopr.txt=fn.txt;
-window.vopr.ver=[fn.ver];
+window.vopr.text=fn.txt;
+window.vopr.correctAnswers=[fn.ver];
 
-window.vopr.kat['log']=1;
+window.vopr.categories['log']=1;
 })();
 //Обзад 245177 245178 245179 245180

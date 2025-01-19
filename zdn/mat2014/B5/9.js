@@ -8,11 +8,11 @@ var c=['угол между ними','один из углов'].iz()+' '+
 		['в 5 раз ','на 120 градусов '].iz()+['больше','меньше'].iz()+' другого угла'
 	].iz();
 
-window.vopr.txt='Найдите площадь параллелограмма, если две его стороны равны '+a+' и '+b+', а '+c+'.';
-window.vopr.ver=[(a*b/2).ts()];
+window.vopr.text='Найдите площадь параллелограмма, если две его стороны равны '+a+' и '+b+', а '+c+'.';
+window.vopr.correctAnswers=[(a*b/2).ts()];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

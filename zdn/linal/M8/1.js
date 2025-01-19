@@ -15,7 +15,7 @@ do{
 
 var novbaz=objUmn(baz,mtr);
 
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	'$T_{B \\to B\'}='+
 	'\\left('+
 		mtr.matrixToTex().ts()+
@@ -27,7 +27,7 @@ window.vopr.ver=[
 	'\\right)$'
 ];
 
-window.vopr.rsh=
+window.vopr.solution=
 	'$B='+
 	'\\left('+
 		baz.matrixToTex().ts()+
@@ -41,7 +41,7 @@ window.vopr.rsh=
 
 '';
 
-window.vopr.txt='Даны два базиса $B=(e_1~,~e_2)$ и $B\'=(e_1\'~,~e_2\')$, где '+
+window.vopr.text='Даны два базиса $B=(e_1~,~e_2)$ и $B\'=(e_1\'~,~e_2\')$, где '+
 	'$~~e_1=('+baz.T()[0]+')$,'+
 	'$~~e_2=('+baz.T()[1]+')$,'+
 	'$~~e_1\'=('+novbaz.T()[0]+')$,'+

@@ -18,7 +18,7 @@ var det=new Complex().sum(
 	a[1][1].umn(a[2][0],a[0][2]).minus()
 );
 
-window.vopr.ver=[det];
-window.vopr.txt='Вычислите: $$\\left|'+a.matrixToTex()+'\\right|$$';
+window.vopr.correctAnswers=[det];
+window.vopr.text='Вычислите: $$\\left|'+a.matrixToTex()+'\\right|$$';
 
 })();

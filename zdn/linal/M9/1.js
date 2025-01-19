@@ -9,13 +9,13 @@ do{
 
 B=objUmn(A,X);
 
-window.vopr.ver=[
+window.vopr.correctAnswers=[
 	'$\\left('+
 		X.matrixToTex().ts()+
 	'\\right)$'
 ];
 
-window.vopr.txt='Решить систему методом Гаусса и записать общее решение в виде суммы частного '+
+window.vopr.text='Решить систему методом Гаусса и записать общее решение в виде суммы частного '+
 	'решения неоднородной и общего решения однородной системы:'+
 	'$$\\left('+A.matrixToTex().ts()+'\\left|'+B.matrixToTex().ts()+'\\right.\\right)$$'+
 	'';

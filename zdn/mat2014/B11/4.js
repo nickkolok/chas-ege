@@ -7,12 +7,12 @@ do{
 }while(c==1);
 
 var x=(a*a*b/c).toFixedLess(5);
-window.vopr.txt=('Найдите значение выражения $$\\frac{\\left ({'+a+
+window.vopr.text=('Найдите значение выражения $$\\frac{\\left ({'+a+
 	'\\sqrt{'+b+'}}\\right )^{2}}{'+c+'}$$').plusminus();
-window.vopr.ver=[''+x];
+window.vopr.correctAnswers=[''+x];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=0;
+window.vopr.categories['tri']=0;
 })();

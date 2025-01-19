@@ -9,16 +9,16 @@
 	var name = om.imenaj.ie.iz();
 	var game = om.sportparn.pe.iz();
 	var country = om.strany.re.iz();
-	window.vopr.txt = 'Перед началом первого тура чемпионата по ' + game +
+	window.vopr.text = 'Перед началом первого тура чемпионата по ' + game +
 		' участниц разбивают на игровые пары случайным образом ' +
 		'с помощью жребия. Всего в чемпионате участвует ' + chislitM(all_sports, 'спортсменка', 'спортсменки', 'спортсменок') +
 		', среди которых ' + chislitM(rus_sports, 'участница', 'участницы', 'участниц') + ' из ' + country + ', ' +
 		'в том числе ' + name + '. Найдите вероятность того, что в первом туре ' + name +
 		' будет играть с какой-либо спортсменкой ' + is_rus + 'из ' + country + '.';
-	window.vopr.ver = [answ];
-	window.vopr.kat['log'] = 0;
-	window.vopr.kat['prz'] = 0;
-	window.vopr.kat['drs'] = 0;
-	window.vopr.kat['tri'] = 0;
+	window.vopr.correctAnswers = [answ];
+	window.vopr.categories['log'] = 0;
+	window.vopr.categories['prz'] = 0;
+	window.vopr.categories['drs'] = 0;
+	window.vopr.categories['tri'] = 0;
 })();
 //fixed by Aisse-258

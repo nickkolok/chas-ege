@@ -7,12 +7,12 @@ var m=sluchch(1,9);
 var g=sluchch(1,9);
 var z=sluchch(1,4);
 var c=z*m-g;
-window.vopr.txt=('Найдите значение выражения $$'+a.pow(b)+'^{'+c.frac(b*m)+'}\\cdot'+
+window.vopr.text=('Найдите значение выражения $$'+a.pow(b)+'^{'+c.frac(b*m)+'}\\cdot'+
 	a.pow(f)+'^{'+g.frac(f*m)+'}$$').plusminus();
-window.vopr.ver=[''+a.pow(z)];
+window.vopr.correctAnswers=[''+a.pow(z)];
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=1;
-window.vopr.kat['tri']=0;
+window.vopr.categories['log']=0;
+window.vopr.categories['prz']=0;
+window.vopr.categories['drs']=1;
+window.vopr.categories['tri']=0;
 })();
