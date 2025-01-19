@@ -6,7 +6,7 @@
         let floorNumber = sluchch(5, 20, 1);
         let apartamentNumber = sluchch(1, 230, 1);
         let numberOfApartamentPerFloor = sluchch(3, 12, 1);
-        let nameOfPerson = Math.random() < 0.5 ? om.maleNames.iz() : om.femaleNames.iz();
+        let nameOfPerson = sl1() === 0 ? om.maleNames.iz() : om.femaleNames.iz();
 
         NAtask.setTask({
             text: 'В доме, в котором живет ' + nameOfPerson + ', ' + '$' + floorNumber + '$' + ' этажей и несколько подъездов. На каждом этаже находится по ' +
