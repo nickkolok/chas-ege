@@ -3,13 +3,11 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let apartamentNumber, numberOfApartamentPerFloor;
-        do {
-            apartamentNumber = sluchch(1, 100, 1);
-            numberOfApartamentPerFloor = sluchch(5, 12, 1);
-        } while (apartamentNumber % numberOfApartamentPerFloor === 0);
+        let apartamentNumber = sluchch(1, 100, 1);
+        let numberOfApartamentPerFloor = sluchch(5, 12, 1);
+        genAssert(!apartamentNumber.kratno(numberOfApartamentPerFloor, "Количество квартир на этаже кратно номеру квартиры"));
 
-        let nameOfPerson = Math.random() < 0.5 ? om.maleNames.iz() : om.femaleNames.iz();
+        let nameOfPerson = sl1() === 0 ? om.maleNames.iz() : om.femaleNames.iz();
 
         NAtask.setTask({
             text: 'В доме, в котором живет ' + nameOfPerson + ', один подъезд. На каждом этаже находится по ' + '$' + numberOfApartamentPerFloor + '$' +
