@@ -1,52 +1,52 @@
-let index1 = [0, 1, 2, 3];
-let index2 = [0, 1, 2, 3];
-index1.shuffle();
-index2.shuffle();
-let weight = 'масса';
-let a;
-let b;
-let c;
-let d;
-let verysmall = ['таблетки лекарства', 'комара', 'мухи', 'божьей коровки', 'капли воды', 'иголки', 'пуговицы'];
-let small = ['монеты', 'малины', 'клубники', 'вилки', 'яйца', 'ножниц', 'птицы', 'компьютерной мыши', 'картофеля'];
-let medium = ['коляски', 'собаки', 'кресла', 'холодильника', 'человека', 'шкафа'];
-let big = ['машины', 'морского ската', 'бегемота', 'носорога', 'индийского слона', 'касатки', 'грузовика',
+let indexObject = [0, 1, 2, 3];
+let indexMass = [0, 1, 2, 3];
+indexObject.shuffle();
+indexMass.shuffle();
+let massWord = 'масса';
+let massMg;
+let massG;
+let massKg;
+let massT;
+let verySmallObject = ['таблетки лекарства', 'комара', 'мухи', 'божьей коровки', 'капли воды', 'иголки', 'пуговицы'];
+let smallObject = ['монеты', 'малины', 'клубники', 'вилки', 'яйца', 'ножниц', 'птицы', 'компьютерной мыши', 'картофеля'];
+let mediumObject = ['коляски', 'собаки', 'кресла', 'холодильника', 'человека', 'шкафа'];
+let bigObject = ['машины', 'морского ската', 'бегемота', 'носорога', 'индийского слона', 'касатки', 'грузовика',
 	'африканского слона', 'автобуса'
 ];
-let array1 = [];;
-let v = sluchch(0, verysmall.length - 1);
-let s = sluchch(0, small.length - 1);
-let me = sluchch(0, medium.length - 1);
-let bi = sluchch(0, big.length - 1);
 
-a = (v + 1) * sluchch(10, 20);
-b = Math.pow(s + 2, 2) + sluchch(1, 5);
-c = (me + 1) * sluchch(10, 15);
-d = (bi + 1) + (sluchch(0, 0.5, 0.1));
+let sluchIndexVerySmallObject = sluchch(0, verySmallObject.length - 1);
+let sluchIndexSmallObject = sluchch(0, smallObject.length - 1);
+let sluchIndexMediumObject = sluchch(0, mediumObject.length - 1);
+let sluchIndexBigObject = sluchch(0, bigObject.length - 1);
 
-let array3 = [verysmall[v], small[s], medium[me], big[bi]];
-array1 = index2.map(index => array3[index]);
+massMg = (sluchIndexVerySmallObject + 1) * sluchch(10, 20);
+massG = Math.pow(sluchIndexSmallObject + 2, 2) + sluchch(1, 9);
+massKg = (sluchIndexMediumObject + 1) * sluchch(10, 15);
+massT = (sluchIndexBigObject + 1) + (sluchch(0, 0.9, 0.1));
 
-let ans = [];
+let arrayObjects = [verySmallObject[sluchIndexVerySmallObject], smallObject[sluchIndexSmallObject], mediumObject[sluchIndexMediumObject], bigObject[sluchIndexBigObject]];
+let arraySluchObjects = indexMass.map(index => arrayObjects[index]);
+
+let arrayAnswer = [];
 for (let i = 0; i < 4; i++) {
 	for (let j = 0; j < 4; j++) {
-		if (index2[i] == index1[j]) {
-			ans[i] = j;
+		if (indexMass[i] == indexObject[j]) {
+			arrayAnswer[i] = j;
 		}
 	}
 }
 
-ans = ans.map(value => value + 1);
+arrayAnswer = arrayAnswer.map(value => value + 1);
 
-let array = [a + ' мг', b + ' г', c + ' кг', d + ' т'];
+let arrayMass = [massMg + ' мг', massG + ' г', massKg + ' кг', massT + ' т'];
 
-let answer = 'A) ' + ans[0] + ' B) ' + ans[1] + ' C) ' + ans[2] + ' D) ' + ans[3]
+let answer = 'A) ' + arrayAnswer[0] + ' B) ' + arrayAnswer[1] + ' C) ' + arrayAnswer[2] + ' D) ' + arrayAnswer[3]
 
 NAtask.setTask({
-	text: ' ' + ' A) ' + weight + ' ' + array1[0] + ' B) ' + weight + ' ' + array1[1] + ' C) ' + weight + ' ' + array1[2] +
-		' D) ' + weight + ' ' + array1[3] + '$$ $$' +
-		'1) ' + ' ' + array[index1[0]] + ' 2) ' + ' ' + array[index1[1]] + ' 3) ' + ' ' + array[index1[2]] + ' 4) ' + ' ' +
-		array[index1[3]],
+	text: ' ' + ' A) ' + massWord + ' ' + arraySluchObjects[0] + ' B) ' + massWord + ' ' + arraySluchObjects[1] + ' C) ' + massWord + ' ' + arraySluchObjects[2] +
+		' D) ' + massWord + ' ' +arraySluchObjects[3] + '$$ $$' +
+		'1) ' + ' ' + arrayMass[indexObject[0]] + ' 2) ' + ' ' + arrayMass[indexObject[1]] + ' 3) ' + 
+		' ' + arrayMass[indexObject[2]] + ' 4) ' + ' ' + arrayMass[indexObject[3]],
 	answers: answer,
 });
 
