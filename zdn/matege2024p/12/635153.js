@@ -11,6 +11,7 @@
 			rightEnd: 'pi',
 			primaryStep: 0.1,
 			secondaryStep: 0.0001,
+			forbidAnalys: true,
 			authors: ['Алендарь Сергей'],
 		});
 	}, 1000);
