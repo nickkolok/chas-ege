@@ -4,8 +4,9 @@
 		let a = sl(1, 9);
 		let b = sl(1, 9);
 		let arr1 = ['+', '-'];
+		lett sincos = ['sin','cos'].iz();
 		NAtask.setMinimaxFunctionTask({
-			expr: '1/((cos(x))^2' + arr1.iz() + a + 'cos(x)' + arr1.iz() + b + ')',
+			expr: '1/((' + sincos + '(x))^2' + arr1.iz() + a + sincos + '(x)' + arr1.iz() + b + ')',
 			leftEnd: '-pi',
 			rightEnd: 'pi',
 			primaryStep: 0.1,
