@@ -9,7 +9,7 @@
         let whoLiveHere = [' мужском ', ' женском ', ' '].iz();
         let educationPlace = [' института ', ' колледжа ', ' ВУЗа ', ' '].iz();
         
-        genAssert(!numberOfPeople.kratno(placeToSleepInOneRoom, "Количество мест для сна кратко количеству людей"));
+        genAssert(!numberOfPeople.kratno(placeToSleepInOneRoom), "Количество мест для сна кратко количеству людей");
 
         NAtask.setTask({
             text:
