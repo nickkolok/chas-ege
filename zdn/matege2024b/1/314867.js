@@ -4,8 +4,8 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let firstMonthConsumption = sl(12, 1000, 1);
-        let secondMonthConsumption = firstMonthConsumption + sl(5, 120, 1);
+        let firstMonthConsumption = sl(100, 1200, 1);
+        let secondMonthConsumption = firstMonthConsumption + sl(1.5, 15, 0.1);
 
         let dopPriceInKopeki = sl(10, 90, 10);
         let priceInRuble = sl(50, 150, 1);
