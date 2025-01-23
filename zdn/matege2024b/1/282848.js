@@ -34,7 +34,7 @@
             text:
                 'На автозаправке «' + gasStationName + '» ' + nameOfPerson + ' отдал кассиру ' + chislitlx(personPayment, 'рубль', '$') +
                 ' и попросил залить бензин до полного бака. ' +
-                'Цена бензина ' + '$' + priceInRuble + '$' + ' руб. ' + dopPriceInKopeiki + ' коп. за литр. ' +
+                'Цена бензина ' + '$' + priceInRuble + '$' + ' руб. ' + '$' + dopPriceInKopeiki + '$' + ' коп. за литр. ' +
                 changeText + ' ' + 'Сколько литров бензина было залито в бак?',
             answers: numberOfLiters,
         });
