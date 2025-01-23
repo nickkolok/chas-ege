@@ -12,7 +12,7 @@
 
         NAtask.setTask({
             text:
-                'В ' + educationPlace + ' есть ' + placeToSleepInOneTent + '-x местные туристические палатки. ' +
+                'В ' + educationPlace + ' есть ' + '$' + placeToSleepInOneTent + '$' + '-x местные туристические палатки. ' +
                 'Какое наименьшее число палаток нужно взять в поход, ' +
                 'в котором участвует ' + chislitlx(numberOfPeople, 'человек', '$') + '?',
             answers: (numberOfPeople / placeToSleepInOneTent).ceil(),
