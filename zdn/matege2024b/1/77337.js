@@ -6,13 +6,13 @@
 
         let numberOfPeople = sl(9, 30, 1);
         let placeToSleepInOneTent = sl(2, 6, 1);
-        let educationPlace = ['В школе', 'В университете', ' в училище', 'В лицее', 'В колледже', 'В ВУЗе', 'В подготовительном классе'].iz();
+        let educationPlace = ['школе', 'университете', 'училище', 'лицее', 'колледже', 'ВУЗе', 'подготовительном классе'].iz();
 
         genAssert(!numberOfPeople.kratno(placeToSleepInOneTent, "Количество мест для сна кратко количеству людей"));
 
         NAtask.setTask({
             text:
-                educationPlace + ' есть ' + placeToSleepInOneTent + '-x местные туристические палатки. ' +
+                'В ' + educationPlace + ' есть ' + placeToSleepInOneTent + '-x местные туристические палатки. ' +
                 'Какое наименьшее число палаток нужно взять в поход, ' +
                 'в котором участвует ' + chislitlx(numberOfPeople, 'человек', '$') + '?',
             answers: (numberOfPeople / placeToSleepInOneTent).ceil(),
