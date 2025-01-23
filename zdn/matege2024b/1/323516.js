@@ -10,10 +10,7 @@
         let numberOfLiters = sl(20, 70, 1);
         let drinkPrice = sl(20, 200, 1);
 
-        let pricePerLiter = (priceInRuble + dopPriceInPennies / 100).toFixed(1);
-        pricePerLiter = parseFloat(pricePerLiter);
-
-        let paymentForPurchase = pricePerLiter * numberOfLiters + drinkPrice;
+        let paymentForPurchase = (priceInRuble + dopPriceInPennies / 100) * numberOfLiters + drinkPrice;
         genAssert(personPayment > paymentForPurchase, "У клиента должно хватать денег на оплату");
         let change = personPayment - paymentForPurchase;
 
