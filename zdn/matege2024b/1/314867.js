@@ -30,11 +30,11 @@
         NAtask.setTask({
             text:
                 'В квартире, ' + 'где проживает ' + nameOfPerson +
-                ', установлен прибор учёта расхода ' + typeOfWater + ' воды(счётчик). ' + chislitlx(1, firstMonth, 'r$') +
-                ' счётчик показывал расход ' + firstMonthConsumption + ' куб.м воды, ' +
-                'а ' + chislitlx(1, secondMonth, 'r$') + ' — ' + secondMonthConsumption + ' куб.м. ' +
+                ', установлен прибор учёта расхода ' + typeOfWater + ' воды (счётчик). ' + chislitlx(1, firstMonth, 'r$') +
+                ' счётчик показывал расход ' + '$' + firstMonthConsumption + '$' + ' куб.м воды, ' +
+                'а ' + chislitlx(1, secondMonth, 'r$') + ' — ' + '$' + secondMonthConsumption + '$' + ' куб.м. ' +
                 'Какую сумму должен заплатить ' + nameOfPerson + ' за ' + firstMonth + ', ' +
-                'если цена  1 куб.м. ' + typeOfWater + ' воды составляет ' + priceInRuble + 'руб. и ' + dopPriceInKopeki + 'коп. ? Ответ дайте в рублях.',
+                'если цена одного куб.м. ' + typeOfWater + ' воды составляет ' + '$' + priceInRuble + '$' + ' руб. и ' + '$' + dopPriceInKopeki + '$' + ' коп.? Ответ дайте в рублях.',
             answers: paymentForPurchase,
         });
 
