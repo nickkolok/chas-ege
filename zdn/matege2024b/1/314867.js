@@ -17,10 +17,10 @@
         }
         let [firstMonth, secondMonth] = getSequentialMonths();
 
-        let dopPriceInPennies = sl(10, 90, 10);
+        let dopPriceInKopeki = sl(10, 90, 10);
         let priceInRuble = sl(50, 150, 1);
 
-        let pricePerLiter = (priceInRuble + dopPriceInPennies / 100).toFixed(1);
+        let pricePerLiter = (priceInRuble + dopPriceInKopeki / 100).toFixed(1);
         pricePerLiter = parseFloat(pricePerLiter);
         let paymentForPurchase = pricePerLiter * numberOfLiters;
 
@@ -34,7 +34,7 @@
                 ' счётчик показывал расход ' + firstMonthConsumption + ' куб.м воды, ' +
                 'а ' + chislitlx(1, secondMonth, 'r$') + ' — ' + secondMonthConsumption + ' куб.м. ' +
                 'Какую сумму должен заплатить ' + nameOfPerson + ' за ' + firstMonth + ', ' +
-                'если цена  1 куб.м. ' + typeOfWater + ' воды составляет ' + priceInRuble + 'руб. и ' + dopPriceInPennies + 'коп. ? Ответ дайте в рублях.',
+                'если цена  1 куб.м. ' + typeOfWater + ' воды составляет ' + priceInRuble + 'руб. и ' + dopPriceInKopeki + 'коп. ? Ответ дайте в рублях.',
             answers: paymentForPurchase,
         });
 
