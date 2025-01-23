@@ -3,8 +3,9 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let theVehicle = sklonlxkand(['автомобиль', 'мотоцикл', 'велосипед', 'электросамокат', 'гироскутер', 'мотоциклист', 'велосипедист', 'гонщик', 'грузовик', 'автомобилист'].iz());
-        let speedInterval = window.adequateSpeed.vehicle[theVehicle.ie];
+        let vehicleKeys = Object.keys(window.adequateSpeed.vehicle);
+        let driver = vehicleKeys.iz();
+        let speedInterval = window.adequateSpeed.vehicle[driver];
         let speed = sluchch(speedInterval[0], speedInterval[1], 1);
 
         let firstTimePass = sl(15, 40, 1);
@@ -13,10 +14,10 @@
 
         NAtask.setTask({
             text:
-                theVehicle.ie.toZagl() + ' проехал ' + chislitlx(firstDistance, 'километр', '$') + ' за ' + chislitlx(firstTimePass, 'минута', 'v$') + '. ' +
+                driver.toZagl() + ' проехал ' + chislitlx(firstDistance, 'километр', '$') + ' за ' + chislitlx(firstTimePass, 'минута', 'v$') + '. ' +
                 'Сколько километров он проедет за ' + chislitlx(secondTimePass, 'минута', 'v$') + ', ' +
                 'если будет ехать с той же скоростью?',
-            answers: '$' + (secondTimePass * firstDistance) / firstTimePass + '$',
+            answers: (secondTimePass * firstDistance) / firstTimePass,
         });
 
     }, 10);
