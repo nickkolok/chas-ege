@@ -8,7 +8,7 @@
         let placeToSleepInOneTent = sl(2, 6, 1);
         let educationPlace = ['школе', 'университете', 'училище', 'лицее', 'колледже', 'ВУЗе', 'подготовительном классе'].iz();
 
-        genAssert(!numberOfPeople.kratno(placeToSleepInOneTent, "Количество мест для сна кратко количеству людей"));
+        genAssert(!numberOfPeople.kratno(placeToSleepInOneTent), "Количество мест для сна кратко количеству людей");
 
         NAtask.setTask({
             text:
