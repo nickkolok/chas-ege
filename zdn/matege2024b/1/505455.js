@@ -19,7 +19,7 @@
                 'За полгода ' + nameOfPerson.ie + ' купила ' + chislitlx(numberOfPurchases, 'номер', '$') + ' журнала. ' +
                 'На сколько рублей меньше она бы потратила, ' +
                 'если бы подписалась на журнал?',
-            answers: '$' + (purchasePrice * numberOfPurchases - subscriptionPrice) + '$',
+            answers: purchasePrice * numberOfPurchases - subscriptionPrice,
         });
 
     }, 100);
