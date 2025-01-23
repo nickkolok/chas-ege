@@ -5,10 +5,13 @@
         NAinfo.requireApiVersion(0, 2);
 
         let personPayment = sl(1000, 5000, 1000);
+        let dopPriceInPennies = sl(10, 90, 10);
         let priceInRuble = sl(25, 70, 1);
         let numberOfLiters = sl(20, 70, 1);
 
-        let paymentForPurchase = priceInRuble * numberOfLiters;
+        let pricePerLiter = (priceInRuble + dopPriceInPennies / 100).toFixed(1);
+        pricePerLiter = parseFloat(pricePerLiter);
+        let paymentForPurchase = pricePerLiter * numberOfLiters;
         genAssert(personPayment > paymentForPurchase, "У клиента должно хватать денег на оплату");
 
         let nameOfPerson = om.maleNames.iz();
@@ -19,9 +22,9 @@
             text:
                 'На автозаправке «' + gasStationName + '» ' + nameOfPerson + ' отдал кассиру ' + chislitlx(personPayment, 'рубль', '$') +
                 ' и залил в бак ' + chislitlx(numberOfLiters, 'литр', '$') +
-                ' бензина по цене ' + priceInRuble + ' руб. за литр. ' +
+                ' бензина по цене ' + priceInRuble + ' руб. и ' + dopPriceInPennies + 'коп. за литр. ' +
                 'Сколько рублей сдачи он должен получить у кассира?',
-            answers: '$' + (personPayment - paymentForPurchase) + '$',
+            answers: (personPayment - paymentForPurchase),
         });
 
     }, 100);
