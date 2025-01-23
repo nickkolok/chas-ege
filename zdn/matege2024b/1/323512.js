@@ -20,7 +20,7 @@
                 'Сегодня утром у ' + nameOfPerson.re + ' на счету было ' + moneyThatHaveGirl + ' руб. ' +
                 'Сколько дней(включая сегодняшний) она сможет пользоваться телефоном, ' +
                 'не пополняя счёт?',
-            answers: '$' + (moneyThatHaveGirl / tariffPlan).ceil() - 1 + '$',
+            answers: (moneyThatHaveGirl / tariffPlan).ceil() - 1,
         });
 
     }, 100);
