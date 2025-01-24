@@ -15,7 +15,7 @@
 		text:
 			'' + the_activeFloatingVehicle.ie.toZagl() +' в ' + a + ':00 вышла из ' + the_humanSettlementDestination.re + 
 			' A в '+ the_humanSettlementDestination.ie +' B, расположенный в ' + s +
-			' км от A. Пробыв в ' + the_humanSettlementDestination.pe +' B ' + chislitlx(n, 'час') +' '+ chislitlx(k, 'минут', 'v') + ', ' + 
+			' км от A. Пробыв в ' + the_humanSettlementDestination.pe +' B ' + chislitlx(n, 'час') +' '+ chislitlx(k, 'минута') + ', ' + 
 			the_activeFloatingVehicle.ie +' отправилась назад и вернулась в ' + the_humanSettlementDestination.ie +
 			' А в ' + b + ':00 того же дня. ' + the_orderToFind.toZagl() +
 			' (в км/ч) скорость течения реки, если известно, что собственная скорость ' + the_activeFloatingVehicle.re +
