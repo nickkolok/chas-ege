@@ -1,7 +1,7 @@
 (function() { 'use strict'; retryWhileError(function() {
 	let s=sl(20, 400, 1);
 	let n=sl(1, 7, 1);
-	let x=sl(1, 30, 1);
+	let x=sl(1, 10, 1);
 	let k=sl(5, 20, 1);
 	let a=slKrome(x, 0, 23);
         let b=a+n+k/60+s/(a+x)+s/(a-x);
