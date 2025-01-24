@@ -1,7 +1,7 @@
 (function() { 'use strict'; retryWhileError(function() {
 	let b=sl(2, 30);
 	let c=slKrome(b, 2, 30);
-	let e=slKrome(c, 2, 30);
+	let e=slKrome([b,c], 2, 30);
 	let a=b*c*e;
 	let x=(b+1)*(c+1)*(e+1);
 	genAssert(b.isPrime(), 'Проверка на простое число');
