@@ -3,7 +3,7 @@
 	let n=sl(1, 7, 1);
 	let k=sl(5, 20, 1);
 	let v=sl(5, 60, 1);
-        let x=sl(1, [10, v].minE(), 1);
+        let x=sl(1, [10, v-1].minE(), 1);
 	let a=slKrome(x, 0, 23);
         let b=a+n+k/60+s/(v+x)+s/(v-x);
 	genAssert(b.isAlmostInteger(),'Время не может быть дробным');
