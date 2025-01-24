@@ -3,7 +3,7 @@
 	let n=sl(1, 7, 1);
 	let x=sl(1, 30, 1);
 	let k=sl(5, 20, 1);
-	let a=slKrome(x, 1, 50);
+	let a=slKrome(x, 0, 23);
         let b=a+n+k/60+s/(a+x)+s/(a-x);
 	genAssert(b>a,'Время отправления не должно быть больше времени прибытия');
 	genAssert(Number.isInteger(b),'Время не может быть дробным');
@@ -15,7 +15,7 @@
 		text:
 			'' + the_activeFloatingVehicle.ie.toZagl() +' в ' + a + ':00 вышла из ' + the_humanSettlementDestination.re + 
 			' A в '+ the_humanSettlementDestination.ie +' B, расположенный в ' + s +
-			' км от A. Пробыв в ' + the_humanSettlementDestination.pe +' B ' + chislitlx(n, 'час') +' '+ k + ' минут, ' + 
+			' км от A. Пробыв в ' + the_humanSettlementDestination.pe +' B ' + chislitlx(n, 'час') +' '+ chislitlx(k, 'минут') +', ' + 
 			the_activeFloatingVehicle.ie +' отправилась назад и вернулась в ' + the_humanSettlementDestination.ie +
 			' А в ' + b + ':00 того же дня. ' + the_orderToFind.toZagl() +
 			' (в км/ч) скорость течения реки, если известно, что собственная скорость ' + the_activeFloatingVehicle.re +
