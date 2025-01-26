@@ -7,11 +7,13 @@
 		let b2 = sl(1, 19);
 		let c = sl(1, 3);
 		let d = sl(1, 99);
-		let plusminus = ['+', '-'];
+		let sign = ['+', '-'];
 		let sincos = ['sin', 'cos'];
+		genAssert(!c.isPolnKvadr(), 'Корень извлекается');
+		genAssert(!a2.isPolnKvadr(), 'Корень извлекается');
 		NAtask.setMinimaxFunctionTask({
-			expr: [a1, a1 + 'sqrt(' + a2 + ')'].iz() + sincos.iz() + '(x)' + plusminus.iz() + [a1, b1 + 'sqrt(' + c + ')'].iz() +
-				'x' + plusminus.iz() + [a1 + 'pi/' + b2, 'sqrt(' + c + ')' + 'pi'].iz() + plusminus.iz() + d,
+			expr: [a1, a1 + 'sqrt(' + a2 + ')'].iz() + sincos.iz() + '(x)' + sign.iz() + [a1, b1 + 'sqrt(' + c + ')'].iz() +
+				'x' + sign.iz() + [a1 + 'pi/' + b2, 'sqrt(' + c + ')' + 'pi'].iz() + sign.iz() + d,
 			leftEnd: '0',
 			rightEnd: 'pi/2',
 			primaryStep: 0.1,
@@ -20,6 +22,7 @@
 		});
 	}, 1000);
 })();
+
 //77498
 //77499
 
