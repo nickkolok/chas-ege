@@ -1,11 +1,11 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-		let a1 = sl(1, 9).pm();
-		let a2 = sl(1, 3);
+		let a1 = sl(1, 50).pm();
+		let a2 = sl(1, 19);
 		let b1 = sl(1, 50);
 		let b2 = sl(1, 19);
-		let c = sl(1, 3);
+		let c = sl(1, 19);
 		let d = sl(1, 99);
 		let sign = ['+', '-'];
 		let sincos = ['sin', 'cos'];
