@@ -150,10 +150,12 @@ function beautifyCode(){
 
 function makeTemplate(){
 	saveAce();
+	chasStorage.domData.save();
+
 	let oldCode=$("#textarea-script").val();
 	oldCode = ('/*\n\n' + oldCode + '\n*/').replace('\n*/\n*/','\n*/');
 
-	let taskText = prompt('Введите текст задачи:');
+	let taskText = $("#textarea-task-text").val();
 	let generatedCode = makeTemplateFromPlainText(taskText);
 
 	generatedCode += '\n\n\n' + oldCode;
