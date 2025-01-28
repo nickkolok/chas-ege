@@ -152,14 +152,17 @@ function makeTemplate(){
 	saveAce();
 	chasStorage.domData.save();
 
-	let oldCode=$("#textarea-script").val();
-	oldCode = ('/*\n\n' + oldCode + '\n*/').replace('\n*/\n*/','\n*/');
+	let oldCode =
+		$("#textarea-script").val()+
+		"\n\n"+
+		"//////////////////////////////////////"+
+		"\n\n"+
+		$("#textarea-previous-code").val();
+
+	$("#textarea-previous-code").val(oldCode);
 
 	let taskText = $("#textarea-task-text").val();
 	let generatedCode = makeTemplateFromPlainText(taskText);
-
-	generatedCode += '\n\n\n' + oldCode;
-
 	setCode(generatedCode);
 }
 
