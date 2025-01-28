@@ -8,7 +8,7 @@
         let drive = vehicleKeys.iz();
         let speedInterval = window.adequateSpeed.vehicle[drive];
         let speed = sluchch(speedInterval[0], speedInterval[1], 1);
-        let driver = sklonlxkand(vehicleKeys.iz());
+        let driver = sklonlxkand(drive);
         let result = speed / 1.6;
 
         NAtask.setTask({
