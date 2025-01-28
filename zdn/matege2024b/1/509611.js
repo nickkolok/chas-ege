@@ -13,19 +13,6 @@
             b = a % b;
             a = temp;
         }
-        let gcdSecondsAnd60 = a;
-
-        a = secondsPerPage;
-        b = workMinutes;
-        while (b !== 0) {
-            let temp = b;
-            b = a % b;
-            a = temp;
-        }
-        let gcdSecondsAndMinutes = a;
-
-        genAssert(gcdSecondsAnd60 > 1, "Время печати страницы должно иметь общий делитель с 60");
-        genAssert(gcdSecondsAndMinutes > 1, "Время печати страницы должно иметь общий делитель с временем работы принтера в минутах");
 
         let pagesPrinted = Math.floor(workSeconds / secondsPerPage);
 
