@@ -3,16 +3,14 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        
+
         let the_railwayTrainGeneric = sklonlxkand(decor.railwayTrainGeneric.iz());
 
         let city = om.goroda.iz(2);
 
         let departureHours = sl(1, 23, 1);
         let minutes = sl(1, 59, 1);
-        let arrivalHours = sl(1, 23, 1);
-
-        genAssert(departureHours != arrivalHours, "Час отбытия не совпадает с часов прибытия");
+        let arrivalHours = slKrome([departureHours], 1, 23, 1);
 
         let totalHours = 24 - departureHours + arrivalHours;
 
