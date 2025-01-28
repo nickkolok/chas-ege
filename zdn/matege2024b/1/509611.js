@@ -7,12 +7,7 @@
         let workMinutes = sl(5, 15, 1);
         let workSeconds = workMinutes * 60;
 
-        let a = secondsPerPage, b = 60;
-        while (b !== 0) {
-            let temp = b;
-            b = a % b;
-            a = temp;
-        }
+        genAssert((workSeconds % secondsPerPage) === 0, "Время печати страницы должно делиться на общее время работы принтера");
 
         let pagesPrinted = Math.floor(workSeconds / secondsPerPage);
 
