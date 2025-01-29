@@ -358,6 +358,10 @@ function replaceDecorationsMultipleWords(lexemArray, form2word, array2word, word
 }
 
 
-
-module.exports = {makeTemplateFromPlainText, splitTextToLexems, variateOtherNumbers, joinVariableList };
+try{
+	module.exports = {makeTemplateFromPlainText, splitTextToLexems, variateOtherNumbers, joinVariableList };
+}catch(e){
+	// Не нода, а в браузере.
+	// Что ж теперь, с ошибкой падать?
+}
 //}}
