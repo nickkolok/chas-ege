@@ -12,12 +12,11 @@
 	chas2.task.setTask({
 		text: ('Найдите значение выражения $$'+a.pow(b)+'^{'+c.frac(b*m)+'}\\cdot'+
 				a.pow(f)+'^{'+g.frac(f*m)+'}$$').plusminus(),
-		answers: [''+a.pow(z),
-		],
+		answers: a.pow(z),
 		tags: {
 			'log': 0,
 			'prz': 0,
-			'drs': 0,
+			'drs': 1,
 			'tri': 0,
 		},
 	});
