@@ -7,7 +7,7 @@
 		c = 2 .pow(sl(-2, 4)) * 5 .pow(sl(-2, 4)) .pm(),
 		f = [
 				['\\sin','\\cos'],
-				['\\mathrm{tg~}', '\\cos^2'],
+				['\\tg', '\\cos^2'],
 				['\\sin^2', '\\mathrm{ctg~}']
 		].iz().shuffle(),
 
@@ -19,11 +19,11 @@
 	if(sl1()){
 		y = '\\frac{' + b.ts() + '~' + vyr1 +
 			'}{' + c.ts() + '~' + vyr2 + '}';
-		answer = [(b / (2 * c)).ts()];
+		answer = b / (2 * c);
 	}else{
 		y = '\\frac{' + b.ts() + '~' + vyr2 + '}{' +
 			c.ts() + '~' + vyr1 + '}';
-		answer = [(b * 2 / c).ts()];
+		answer = b * 2 / c;
 	}
 
 	chas2.task.setTask({
