@@ -16,17 +16,15 @@
 					a.pow(d).toFixedLess(5).toStandart(),
 					f.toFixedLess(5).toStandart()
 				],
-		].shuffle(),
-		x = (a * a * b / c).toFixedLess(5);
+		].shuffle();
 
 	chas2.task.setTask({
 		text: ('Найдите значение выражения $$'+m[0][0]+'^{'+m[0][1]+'}\\cdot'+m[1][0]+'^{'+m[1][1]+'}$$').plusminus(),
-		answers: [''+a.pow(z),
-		],
+		answers: a.pow(z),
 		tags: {
 			'log': 0,
 			'prz': 0,
-			'drs': 0,
+			'drs': 1,
 			'tri': 0,
 		},
 	});
