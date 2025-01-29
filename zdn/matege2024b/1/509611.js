@@ -9,13 +9,11 @@
 
         genAssert((workSeconds % secondsPerPage) === 0, "Время печати страницы должно делиться на общее время работы принтера");
 
-        let pagesPrinted = Math.floor(workSeconds / secondsPerPage);
-
         NAtask.setTask({
             text:
                 'Принтер печатает одну страницу за ' + '$' + secondsPerPage + '$' + ' секунд. ' +
                 'Какое наибольшее количество страниц можно напечатать на этом принтере за ' + chislitlx(workMinutes, 'минута', '$') + '?',
-            answers: pagesPrinted,
+            answers: workSeconds / secondsPerPage,
         });
     }, 100);
 })();
