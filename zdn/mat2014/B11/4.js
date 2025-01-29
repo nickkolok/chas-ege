@@ -14,13 +14,6 @@
 	chas2.task.setTask({
 		text: ('Найдите значение выражения $$\\frac{\\left ({'+a+
 	'\\sqrt{'+b+'}}\\right )^{2}}{'+c+'}$$').plusminus(),
-		answers: [''+x,
-		],
-		tags: {
-			'log': 0,
-			'prz': 0,
-			'drs': 0,
-			'tri': 0,
-		},
+		answers: x,
 	});
 })();
