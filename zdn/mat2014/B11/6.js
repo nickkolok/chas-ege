@@ -9,8 +9,7 @@
 
 	chas2.task.setTask({
 		text: ('Найдите значение выражения $$\\frac{'+a.pow(b)+'^{'+(z+c).toFixedLess(5).toStandart()+'}}{'+a.pow(f)+'^{'+(z+c*b/f).toFixedLess(5).toStandart()+'}}$$').plusminus(),
-		answers: [''+a.pow(z),
-		],
+		answers: a.pow(z),
 		tags: {
 			'log': 0,
 			'prz': 0,
