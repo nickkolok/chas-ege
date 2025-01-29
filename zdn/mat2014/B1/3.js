@@ -1,6 +1,5 @@
 (function(){
-
-	var t=sluchch(0,chaslib.sets.ships.length-1);
+	
 	var c=sluchch(10,100);
 	var a=sluchch(100,999);
 	var b=sluchch(10,100);
