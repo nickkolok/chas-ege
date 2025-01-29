@@ -18,11 +18,11 @@
 
 		NAtask.setTask({
 			text:
-				'Расстояние между ' + the_berthForFloatingVehicle.tm + ' A и B равно ' + distanceBetweenPoints + 
+				'Расстояние между ' + the_berthForFloatingVehicle.tm + ' ' + ['A', 'B'].shuffleJoin(' и ') + ' равно ' + distanceBetweenPoints + 
 				' км. Из A в B по течению реки отправился плот, ' +
 				'а через ' + chislitlx(timeAfter, 'час') + ' ' +
 				['вслед', 'вдогонку', 'следом'].iz() + ' за ним отправил' + ['ся', 'ась', 'ось'][the_activeFloatingVehicle.rod] + ' ' + the_activeFloatingVehicle.ie + 
-				', котор'+['ый', 'ая', 'ое'][the_activeFloatingVehicle.rod]+', прибыв в ' + the_humanSettlementDestination.ie +
+				', котор'+['ый', 'ая', 'ое'][the_activeFloatingVehicle.rod]+', прибыв в ' + the_humanSettlementDestination.ve +
 				' B, тотчас повернул'+ ['', 'а', 'о'][the_activeFloatingVehicle.rod] +
 				' обратно и возвратил' + ['ся', 'ась', 'ось'][the_activeFloatingVehicle.rod] + ' в A. К этому времени плот прошёл ' + distanceRaft + ' км. ' + the_orderToFind.toZagl() + ' скорость ' + the_activeFloatingVehicle.re + ' в неподвижной воде, ' +
 				'если скорость течения реки равна ' + speedRiver + ' км/ч. ' +
