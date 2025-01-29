@@ -10,12 +10,8 @@
 
 	chas2.task.setTask({
 		text: ('Найдите значение выражения $$\\frac{'+a+g[0]+' '+b+'^\\circ}{'+g[1]+' '+(90+c*180-b)+'^\\circ}+'+d+'$$').plusminus(),
-		answers: [''+(a*f+d),
-			],
+		answers: a*f+d,
 		tags: {
-			'log': 0,
-			'prz': 0,
-			'drs': 0,
 			'tri': 1,
 		},
 	});
