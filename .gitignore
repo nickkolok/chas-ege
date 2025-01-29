@@ -8,6 +8,10 @@
 *.BACKUP.*
 *.BASE.*
 *.REMOTE.*
+*_LOCAL_*
+*_BACKUP_*
+*_BASE_*
+*_REMOTE_*
 *.cache
 *.bak
 
@@ -16,6 +20,8 @@ dist
 build
 temp
 
+package-lock.json
+
 #Упакованные наборы заданий
 zdn/*/upak.js
 
@@ -23,3 +29,6 @@ zdn/*/upak.js
 lib/head.min.js
 #lib/chas-uijs.js
 
+#Библиотеки
+math.js
+nerdamer.js
