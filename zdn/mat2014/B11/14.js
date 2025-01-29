@@ -15,8 +15,10 @@
 	chas2.task.setTask({
 		text: 'Найдите значение выражения $$\\frac{\\sqrt ['+degree+']{'+num1+'}\\cdot \\sqrt ['+degree+']{'+num2+
 	'}}{\\sqrt ['+degree+']{'+num3+'}}$$',
-		answers: [num,
-		],
+		answers: num,
+		tags: {	
+			'drs': 1, //Дробные (нецелые) степени
+		},
 	});
 
 })();
