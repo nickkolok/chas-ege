@@ -1,15 +1,15 @@
 (function() { 'use strict'; retryWhileError(function() {
-	/* Расстояние между пристанями А и В равно 135 км. Из А в В по течению реки отправился плот, а через 2 часа вслед за ним отправилась яхта, которая, прибыв в пункт В, тотчас повернула обратно и возвратиласьв А. К этому времени плот прошел 80 км. Найдите скорость яхты в неподвижной воде, если скорость течения реки равна 4 км/ч. Ответ дайте вкм/ч. */
+	/* Расстояние между пристанями А и В равно 135 км. Из А в В потечению реки отправился плот, а через 2 часа вслед за ним отправилась яхта, которая, прибыв в пункт В, тотчас повернула обратно и возвратилась в А. К этому времени плот прошел 80 км. Найдите скорость яхты в неподвижной воде, если скорость течения реки равна 4 км/ч. Ответ дайте в км/ч. */
 
-	let distanceBetweenPoints=sl(1, 135, 1);
+	let distanceBetweenPoints=sl(50, 200);
 	let speedRiver=sl(1, 10);
 	let speedTransport=sl(20, 80);
 	let timeAfter=sl(1, 5);
 	
 	let distanceRaft=speedRiver*(2*distanceBetweenPoints*speedTransport/(speedTransport.pow(2)-speedRiver.pow(2))+timeAfter);
-	genAssert(distanceRaft<distanceBetweenPoints);
-	genAssertZ1000(distanceRaft/10);
-
+	genAssert(distanceRaft<distanceBetweenPoints, 'Плот не может проплыть дальше пункта В');
+	genAssertZ1000(distanceRaft/10, 'Расстояние, которое прошёл плот, слишком дробное');
+	
 	let the_berthForFloatingVehicle = sklonlxkand(decor.berthForFloatingVehicle.iz()); // ["пристань","причал"]
 	let the_humanSettlementDestination = sklonlxkand(decor.humanSettlementDestination.iz()); // ["пункт","город","село","деревня"]
 	let the_orderToFind = decor.orderToFind.iz(); // ["найдите","определите","вычислите"]
@@ -18,8 +18,8 @@
 	NAtask.setTask({
 		text:
 			'Расстояние между ' + the_berthForFloatingVehicle.tm +' А и В равно ' + distanceBetweenPoints + ' км. '+
-			'Из А в В по течению реки отправился плот, '+
-			'а через ' + chislitlx(timeAfter, 'час') + ' вслед за ним отправилась яхта, которая, прибыв в ' + the_humanSettlementDestination.ie +
+			'Из А в В потечению реки отправился плот, '+
+			'а через ' + chislitlx(timeAfter, 'час') + ' вслед за ним отправилась '+ the_activeFloatingVehicle.ie +', которая, прибыв в ' + the_humanSettlementDestination.ie +
 			' В, тотчас повернула обратно и возвратилась в А. К этому времени плот прошел ' + distanceRaft + ' км. ' + the_orderToFind.toZagl() +' скорость ' + the_activeFloatingVehicle.re +' в неподвижной воде, '+
 			'если скорость течения реки равна ' + speedRiver + ' км/ч. '+
 			'Ответ дайте в км/ч.',
