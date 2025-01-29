@@ -18,7 +18,7 @@
 	NAtask.setTask({
 		text:
 			'Расстояние между ' + the_berthForFloatingVehicle.tm +' А и В равно ' + distanceBetweenPoints + ' км. '+
-			'Из А в В потечению реки отправился плот, '+
+			'Из А в В по течению реки отправился плот, '+
 			'а через ' + chislitlx(timeAfter, 'час') + ' вслед за ним отправилась '+ the_activeFloatingVehicle.ie +', которая, прибыв в ' + the_humanSettlementDestination.ie +
 			' В, тотчас повернула обратно и возвратилась в А. К этому времени плот прошел ' + distanceRaft + ' км. ' + the_orderToFind.toZagl() +' скорость ' + the_activeFloatingVehicle.re +' в неподвижной воде, '+
 			'если скорость течения реки равна ' + speedRiver + ' км/ч. '+
