@@ -31,13 +31,12 @@
 	chas2.task.setTask({
 		text: ('Найдите значение выражения $$'+
 			   y+'$$').plusminus().ts(),
-		answers: [(p1 / p2).ts(),
-		],
+		answers: (p1 / p2),
 		tags: {
 			'log': 0,
 			'prz': 0,
 			'drs': 0,
-			'tri': 0,
+			'tri': 1,
 		},
 	});
 
