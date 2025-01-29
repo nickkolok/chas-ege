@@ -9,13 +9,13 @@
         let dataUnits = ['Гбайт', 'Мбайт', 'Мбайт'];
         let firstTimeFunction = [sl(5, 30, 1), sl(5, 30, 1), sl(30, 120, 1)];
         let secondTimeFunction = [sl(10, 60, 1), sl(10, 60, 1), sl(50, 300, 1)];
-        let ratioFunction = [parseFloat((Math.random() * (0.5 - 0.1) + 0.1).toFixed(1)), sl(20, 750, 1), sl(2, 12, 1)];
+        let ratioFunction = [sl(0.1, 0.5, 0.1), sl(20, 750, 1), sl(2, 12, 1)];
 
         let firstTime = firstTimeFunction[rand];
         let secondTime = secondTimeFunction[rand];
         let ratio = ratioFunction[rand];
-        let firstData = parseFloat((firstTime * ratio).toFixed(1));
-        let secondData = parseFloat((secondTime * ratio).toFixed(1));
+        let firstData = firstTime * ratio;
+        let secondData = secondTime * ratio;
 
         genAssert(firstTime !== secondTime, "Время скачивания не должно совпадать");
 
