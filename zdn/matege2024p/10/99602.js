@@ -24,7 +24,7 @@
 				['вслед', 'вдогонку', 'следом'].iz() + ' за ним отправил' + ['ся', 'ась', 'ось'][the_activeFloatingVehicle.rod] + ' ' + the_activeFloatingVehicle.ie + 
 				', котор'+['ый', 'ая', 'ое'][the_activeFloatingVehicle.rod]+', прибыв в ' + the_humanSettlementDestination.ie +
 				' B, тотчас повернул'+ ['', 'а', 'о'][the_activeFloatingVehicle.rod] +
-				' обратно и возвратил' + ['лся', 'ась', 'ось'][the_activeFloatingVehicle.rod] + ' в A. К этому времени плот прошёл ' + distanceRaft + ' км. ' + the_orderToFind.toZagl() + ' скорость ' + the_activeFloatingVehicle.re + ' в неподвижной воде, ' +
+				' обратно и возвратил' + ['ся', 'ась', 'ось'][the_activeFloatingVehicle.rod] + ' в A. К этому времени плот прошёл ' + distanceRaft + ' км. ' + the_orderToFind.toZagl() + ' скорость ' + the_activeFloatingVehicle.re + ' в неподвижной воде, ' +
 				'если скорость течения реки равна ' + speedRiver + ' км/ч. ' +
 				'Ответ дайте в км/ч.',
 			answers: speedTransport,
