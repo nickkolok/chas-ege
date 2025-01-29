@@ -6,7 +6,7 @@
 		b = slKrome(isZ, 0.1, 4.9, 0.1),
 		f = sluchch(1, 4),
 		d = slKrome(f, 1, 4),
-		g = sluchch(1, [f, d][[f, d].min()] - 1),
+		g = sluchch(1, [f, d].minE() - 1),
 		m,
 		n,
 		p,
@@ -30,8 +30,7 @@
 
 	chas2.task.setTask({
 		text: ('Найдите значение выражения $$'+y+'$$').plusminus(),
-		answers: [''+(a.pow(f-g)*c.pow(d-g)),
-		],
+		answers: a.pow(f-g)*c.pow(d-g),
 		tags: {
 			'log': 0,
 			'prz': 0,
