@@ -1,4 +1,5 @@
-(function() {retryWhileError(function() {
+(function() {
+	retryWhileError(function() {
 		'use strict';
 
 		let angle1 = slKrome([15, 30, 45, 60, 75], 2, 89);
