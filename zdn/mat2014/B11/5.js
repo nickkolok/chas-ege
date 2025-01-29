@@ -7,7 +7,7 @@
 		d = sluchch(1, 2),
 		z = sluchch(1, 4),
 		f = (z - b * c) / d,
-		m =[
+		m = [
 				[
 					a.pow(b).toFixedLess(5).toStandart(),
 					c.toFixedLess(5).toStandart()
