@@ -3,16 +3,7 @@
         NAinfo.requireApiVersion(0, 2);
         'use strict';
         let key = "510114";
-
-        let variant = getListedPreference(key, [{
-            preference: 'pen',
-            preferenceValue: 0,
-        }, {
-            preference: 'device',
-            preferenceValue: 1,
-
-        },], sl1());
-
+	    
         let probability = sl(0.4, 0.8, 0.01);
 
         let pen = sklonlxkand(['ручка', 'маркер', 'фломастер', 'линер'].iz());
