@@ -24,15 +24,16 @@
                 calculateHeights: true,
             }
         });
-        genAssert(![triangle.lengthBC, triangle.lengthCA].hasDubl(), 'Две стороны треугольника должны быть разными');
 
-        [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle < 80, 'Треугольник не остроугольный'));
+        let sides = Object.values(triangle.lengths);
+        genAssert(!sides[1].isAlmostEqual(sides[2]), 'Две стороны треугольника должны быть разными');
 
-        triangle.addVertex([triangle.heightEndPointA, triangle.heightEndPointB, triangle.heightEndPointC][variant], ['A', 'B', 'C'][variant]);
+        [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle < 80, 'Треугольник недостаточно остроугольный'));
 
-        let height = [triangle.heightALength, triangle.heightBLength, triangle.heightCLength][variant];
+        triangle.addVertexToConnectionMatrix(Object.values(triangle.heightEndPoints)[variant], ['A', 'B', 'C'][variant]);
+
+        let height = Object.values(triangle.heightLengths).permuteCyclic(1)[variant];
         genAssertZ1000(height);
-        let side = [triangle.lengthBC, triangle.lengthCA, triangle.lengthAB][variant];
 
         let points = autoScale(triangle.vertices);
         let pointsAngle = points.slice(0, 3);
@@ -51,13 +52,11 @@
             ctx.drawFigure(points, triangle.connectionMatrix);
 
             ctx.strokeStyle = om.primaryBrandColors.iz();
-            ctx.arcBetweenSegments([pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y, pointsAngle[0].x,
-            pointsAngle[0].y
-            ], 15, true);
+            ctx.arcBetweenSegments([pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y, pointsAngle[0].x, pointsAngle[0].y], 15, true);
         };
 
         NAtask.setTask({
-            text: `Сторона треугольника равна $${side}$, 
+            text: `Сторона треугольника равна $${sides[variant]}$, 
 			а высота, проведённая к этой стороне, равна 
 			$${height}$. Найдите площадь этого треугольника.`,
 			answers: triangle.area(),
@@ -70,7 +69,6 @@
 			paint: paint1,
 		});
 	}, 2000);
-	NAtask.modifiers.allDecimalsToStandard(true);
 })();
 //169853 349889 349907 350059 350178 350704 350773 350912 351364 351999 352436 436856 193883 193913 193943 193973 402020 402032 402133 402221 402596 402644 402734 403003 403372 403645
 
