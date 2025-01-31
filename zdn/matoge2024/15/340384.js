@@ -1,7 +1,7 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let letters = latbukv.slice(0, 3);
+        let letters = om.latbukv.slice(0, 3);
 
         let triangle = new Triangle({
             lengths: {
@@ -12,8 +12,7 @@
                 angle: Math.PI / 2,
             },
         });
-        genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(),
-            'Все стороны треугольника должны быть разными');
+        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
 
         let radius = triangle.radiusOfCircumscribedCircle;
         genAssertZ1000(radius / 100);
@@ -42,11 +41,11 @@
 
         NAtask.setTask({
             text: `В треугольнике $ABC$ известно, что 
-			${[`$AB=${triangle.lengthAB}$`,
-                `$BC=${triangle.lengthBC}$`,
-                    `угол $B$ равен $90^{\\circ}$`
+				${[`$AB=${triangle.lengthAB}$`,
+                	`$BC=${triangle.lengthBC}$`,
+                	`угол $B$ равен $90^{\\circ}$`
                 ].shuffleJoin(`, `)}. 
-			Найдите радиус описанной окружности этого треугольника.`,
+				Найдите радиус описанной окружности этого треугольника.`,
             answers: radius,
             authors: ['Александра Суматохина'],
         });
