@@ -7,13 +7,9 @@
         let rand = sl(0, 2);
         let timeUnits = sklonlxkand(['минута', 'минута', 'секунда']);
         let dataUnits = ['Гбайт', 'Мбайт', 'Мбайт'];
-        let firstTimeFunction = [sl(5, 30, 1), sl(5, 30, 1), sl(30, 120, 1)];
-        let secondTimeFunction = [sl(10, 60, 1), sl(10, 60, 1), sl(50, 300, 1)];
-        let ratioFunction = [sl(0.1, 0.5, 0.1), sl(20, 750, 1), sl(2, 12, 1)];
-
-        let firstTime = firstTimeFunction[rand];
-        let secondTime = secondTimeFunction[rand];
-        let ratio = ratioFunction[rand];
+        let firstTime = [sl(5, 30, 1), sl(5, 30, 1), sl(30, 120, 1)][rand];;
+        let secondTime = [sl(10, 60, 1), sl(10, 60, 1), sl(50, 300, 1)][rand];
+        let ratio = [sl(0.1, 0.5, 0.1), sl(20, 750, 1), sl(2, 12, 1)][rand];
         let firstData = firstTime * ratio;
         let secondData = secondTime * ratio;
 
