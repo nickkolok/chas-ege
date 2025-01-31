@@ -49,13 +49,13 @@
 				calculateHeights: true,
 			}
 		});
-		genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(),
-			'Все стороны треугольника должны быть разными');
+		
+		genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
 
 		[triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle < 80, 'Треугольник не остроугольный'));
 
-		let valueAngle = [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees][variant].ceil();
-		triangle.addVertexToConnectionMatrix([triangle.heightAEndPoint, triangle.heightBEndPoint, triangle.heightCEndPoint][variant], ['A', 'B', 'C'][variant]);
+		let valueAngle = triangle['angle' + angleDano[1] + 'InDegrees'].ceil();
+		triangle.addVertexToConnectionMatrix(Object.values(triangle.heightEndPoints)[variant], ['A', 'B', 'C'][variant]);
 
 		let points = autoScale(triangle.vertices);
 
