@@ -1,7 +1,7 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let letters = latbukv.slice(0, 3);
+        let letters = om.latbukv.slice(0, 3);
 
         let key = "356079";
         let variant = getListedPreference(key, [{
@@ -39,33 +39,30 @@
                 angle: Math.PI / 2,
             },
         });
-        genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(),
-            'Все стороны треугольника должны быть разными');
+        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
 
         let find = ['sin', 'cos', 'tg', 'ctg'][variant % 4] + ' ' + ['A', 'C'][variant < 4 ? 0 : 1];
         let sides;
 
-        switch (true) {
-            case [0, 5].includes(variant):
+        switch (variant) {
+            case 0:
+			case 5:
                 sides = ['BC', 'CA'];
                 break;
-            case [1, 4].includes(variant):
+            case 1:
+			case 4:
                 sides = ['AB', 'CA'];
                 break;
-            case [2, 3, 6, 7].includes(variant):
+            case 2:
+            case 3:
+			case 6:
+			case 7:
                 sides = ['AB', 'BC'];
                 break;
         }
 
         sides = sides.map(side => {
-            switch (side) {
-                case 'AB':
-                    return `$${side}=${triangle.lengthAB}$`;
-                case 'BC':
-                    return `$${side}=${triangle.lengthBC}$`;
-                case 'CA':
-                    return `$${side}=${triangle.lengthCA}$`;
-            }
+            return `$${side}=${triangle['length'+side]}$`;
         });
 
         let answer = [triangle.sinA, triangle.cosA, triangle.tgA, triangle.ctgA, triangle.sinC, triangle.cosC, triangle.tgC, triangle.ctgC][variant];
