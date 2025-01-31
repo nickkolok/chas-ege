@@ -38,9 +38,9 @@
 
         let randomLine = sl(0, 2);
 
-        triangle.addVertexToConnectionMatrix([triangle.heightAEndPoint, triangle.heightBEndPoint, triangle.heightCEndPoint][randomLine], ['A', 'B', 'C'][randomLine]);
+        triangle.addVertexToConnectionMatrix(Object.values(triangle.heightEndPoints)[randomLine], ['A', 'B', 'C'][randomLine]);
 
-        let height = [triangle.heightALength, triangle.heightBLength, triangle.heightCLength][randomLine];
+        let height = Object.values(triangle.heightLengths)[randomLine];
         genAssertZ1000(height.pow(2) / 100);
 
         let points = autoScale(triangle.vertices);
