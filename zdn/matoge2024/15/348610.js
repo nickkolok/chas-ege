@@ -14,7 +14,7 @@
 			preferenceValue: 2,
 		}], sl(0, 2));
 
-		let letters = latbukv.slice(0, 4);
+		let letters = om.latbukv.slice(0, 4);
 		let angleDano = letters.slice(0, 3);
 		let centralAngle = angleDano.splice(variant, 1)[0];
 		let angleFind = [angleDano.iz(), centralAngle, letters[3]].randomReverse().join('');
@@ -33,10 +33,10 @@
 				calculateBisectors: true,
 			}
 		});
-		genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round(), triangle.lengthCA.round()].hasDubl(), 'Все стороны треугольника должны быть разными');
+		genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
 
-		let valueAngle = [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees][variant];
-		triangle.addVertexToConnectionMatrix([triangle.bisectorAEndPoint, triangle.bisectorBEndPoint, triangle.bisectorCEndPoint][variant], ['A', 'B', 'C'][variant]);
+		let valueAngle = [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees][variant].ceil();
+		triangle.addVertexToConnectionMatrix(Object.values(triangle.bisectorEndPoints)[variant], ['A', 'B', 'C'][variant]);
 
 		let points = autoScale(triangle.vertices);
 
@@ -65,9 +65,9 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ известно, что $${angleDano.randomReverse().join('')} = ${valueAngle.ceil()}^{\\circ}$, $${centralAngle + letters[3]}$ – биссектриса. 
+			text: `В треугольнике $ABC$ известно, что $${angleDano.randomReverse().join('')} = ${valueAngle}^{\\circ}$, $${centralAngle + letters[3]}$ – биссектриса. 
 			Найдите угол $${angleFind}$. Ответ дайте в градусах.`,
-			answers: valueAngle.ceil() / 2,
+			answers: valueAngle / 2,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.variativeABC(letters);
