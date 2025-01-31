@@ -12,13 +12,12 @@
 				angleInDegree: true
 			},
 		});
-		genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(),
-			'Все стороны треугольника должны быть разными');
+		genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
 
 		let angle = [triangle.angleBInDegrees, triangle.angleAInDegrees].iz().ceil();
 
 		let points = autoScale(triangle.vertices);
-		let letters = latbukv.slice(0, 3);
+		let letters = om.latbukv.slice(0, 3);
 
 		let paint1 = function (ctx) {
 			let h = 400;
