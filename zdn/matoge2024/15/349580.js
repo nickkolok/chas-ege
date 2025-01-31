@@ -24,15 +24,14 @@
                 calculateMidlines: true,
             }
         });
-        genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(),
-            'Все стороны треугольника должны быть разными');
+        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
         [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle < 80,
-            'Треугольник не остроугольный'));
+            'Треугольник недостаточно остроугольный'));
 
         triangle.addVertexToConnectionMatrix([triangle.midlineABPoints, triangle.midlineBCPoints, triangle.midlineCAPoints][variant], 'E');
         triangle.connectVerticesInConnectionMatrix([3, 4]);
 
-        let letters = latbukv.slice(0, 5);
+        let letters = om.latbukv.slice(0, 5);
         let sidesMidle = letters.slice(0, 3);
         sidesMidle.generatePairs();
         sidesMidle = sidesMidle.map(side => side.shuffleJoin());
