@@ -3,9 +3,9 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let vehicleKeys = Object.keys(window.adequateSpeed.vehicle);
+        let vehicleKeys = Object.keys(om.adequateSpeed.vehicle);
         let driver = vehicleKeys.iz();
-        let speedInterval = window.adequateSpeed.vehicle[driver];
+        let speedInterval = om.adequateSpeed.vehicle[driver];
         let speed = sluchch(speedInterval[0], speedInterval[1], 1);
 
         let firstTimePass = sl(15, 40, 1);
