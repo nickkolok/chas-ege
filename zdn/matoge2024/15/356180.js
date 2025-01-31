@@ -24,7 +24,7 @@
 
 		const offset = leftOrRightAngle === 0 ? 1 : 2;
 
-		let letters = latbukv.slice(0, 4);
+		let letters = om.latbukv.slice(0, 4);
 		let angleDano = [
 			letters[variant],
 			letters[(variant + offset) % 3],
