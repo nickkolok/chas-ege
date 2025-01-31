@@ -39,36 +39,32 @@
 				angle: Math.PI / 2,
 			},
 		});
-		genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(),
-			'Все стороны треугольника должны быть разными');
+		genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
 
 		let funcDano = ['sin', 'cos', 'tg', 'ctg'][variant % 4] + ' ' + ['A', 'C'][variant < 4 ? 0 : 1];
 		let sides;
 
-		switch (true) {
-			case [0, 5].includes(variant):
+		switch (variant) {
+			case 0:
+			case 5:
 				sides = ['CA', 'BC'];
 				break;
-			case [1, 4].includes(variant):
+			case 1:
+			case 4:
 				sides = ['CA', 'AB'];
 				break;
-			case [2, 6].includes(variant):
+			case 2:
+			case 6:
 				sides = ['AB', 'BC'];
 				break;
-			case [3, 7].includes(variant):
+			case 3:
+			case 7:
 				sides = ['BC', 'AB'];
 				break;
 		}
 
 		sides = sides.map(side => {
-			switch (side) {
-				case 'AB':
-					return [triangle.lengthAB, side];
-				case 'BC':
-					return [triangle.lengthBC, side];
-				case 'CA':
-					return [triangle.lengthCA, side];
-			}
+			return [ triangle['length'+side], side];
 		});
 
 		let funcValue = [triangle.sinA, triangle.cosA, triangle.tgA, triangle.ctgA, triangle.sinC, triangle.cosC, triangle.tgC, triangle.ctgC][variant];
