@@ -14,7 +14,7 @@
             preferenceValue: 2,
         }], sl(0, 2));
 
-        let letters = latbukv.slice(0, 4);
+        let letters = om.latbukv.slice(0, 4);
         let sideDano = letters.slice(0, 3);
         let centralPoint = sideDano.splice(variant, 1)[0];
         let pointMedian = letters[3];
@@ -29,13 +29,16 @@
                 calculateMedians: true,
             }
         });
-        genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(), 'Все стороны треугольника должны быть разными');
+        
+        let sides = Object.values(triangle.lengths);
+        genAssert(!sides.hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
 
-        let medianLength = [triangle.medianALength, triangle.medianBLength, triangle.medianCLength][variant];
-        let valueDano = [triangle.lengthBC, triangle.lengthCA, triangle.lengthAB][variant];
+        let medianLength = Object.values(triangle.medianLengths)[variant];
         genAssertZ1000(medianLength / 10);
-
-        triangle.addVertexToConnectionMatrix([triangle.medianAEndPoint, triangle.medianBEndPoint, triangle.medianCEndPoint][variant], ['A', 'B', 'C'][variant]);
+        
+        let valueDano = sides.permuteCyclic(-1)[variant];
+        
+        triangle.addVertexToConnectionMatrix(Object.values(triangle.medianEndPoints)[variant], ['A', 'B', 'C'][variant]);
 
         let points = autoScale(triangle.vertices);
 
