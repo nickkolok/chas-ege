@@ -11,12 +11,12 @@
                 lengthCA: side,
             },
         });
-        genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round()].hasDubl(), 'Основание не должно быть равно боковой стороне');
+        genAssert(!triangle.lengthAB.isAlmostEqual(triangle.lengthBC), 'Основание не должно быть равно боковой стороне');
         let angleC = triangle.angleCInDegrees.ceil();
         genAssert(angleC != 90, 'B - прямой угол');
 
         let points = autoScale(triangle.vertices);
-        let letters = latbukv.slice(0, 3);
+        let letters = om.latbukv.slice(0, 3);
 
         let paint1 = function (ctx) {
             let h = 400;
