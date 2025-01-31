@@ -24,7 +24,7 @@
             },
         });
 
-        genAssert(![triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].hasDubl(), 'Все стороны треугольника должны быть разными');
+        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
         genAssertZ1000(triangle.lengthAB, 'Гипотенуза не целая');
 
         let dano = [
