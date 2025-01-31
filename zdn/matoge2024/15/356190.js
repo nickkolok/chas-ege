@@ -9,11 +9,11 @@
                 lengthCA: sl(5, 10),
             },
         });
-        genAssert(![triangle.lengthAB.round(), triangle.lengthBC.round(), triangle.lengthCA.round()].hasDubl(),
-            'Все стороны треугольника должны быть разными');
+        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
         let angleB = triangle.angleBInDegrees.ceil();
+        genAssert(angleB.mzhd(70, 100), 'Угол B слишком большой, рисунок слишком маленький');
         genAssert(angleB!=90, 'B - прямой угол');
-
+        
         let points = autoScale(triangle.vertices);
         genAssert(160 - points[1].x > 20, 'Прямая из угла B не видна');
         let letters = latbukv.slice(0, 3);
