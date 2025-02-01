@@ -1,13 +1,17 @@
 (function(){'use strict';
+NAinfo.requireApiVersion(0, 0);
 
-var mtr,
-	det;
+var mtr,det;
 do{
 	mtr=generateMatrix(3,3,-9,9);
 	det=mtr.det();
+
 }while(!det || det.abs()>100);
 
-window.vopr.ver=[det];
-window.vopr.txt='Вычислите: $$\\left|'+mtr.matrixToTex()+'\\right|$$';
+NAtask.setTask({
 
+	text: 'Вычислите: $$\\left|'+mtr.matrixToTex()+'\\right|$$',
+	answers:det,
+
+});
 })();

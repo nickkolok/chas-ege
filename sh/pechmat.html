@@ -26,7 +26,7 @@
 			<div id="t1" class="tx">
 			</div>
 		</div>
-		<div id="vrem">		
+		<div id="vrem">
 		</div>
 	</div>
 	<div id="panel">
@@ -49,6 +49,10 @@
 				Редактируемый текст
 			</label>
 			<br/>
+			<input type="checkbox" id="largeFont" data-chasstorage-id="pech-largeFont"/><label for="largeFont">
+				Увеличить шрифт
+			</label>
+			<br/>
 			<input type="checkbox" id="htmlcss" data-chasstorage-id="pech-htmlcss"/><label for="htmlcss">
 				Отрисовывать формулы не в SVG, а в HTML+CSS (не рекомендуется в большинстве случаев)
 			</label>
@@ -57,22 +61,70 @@
 				Не разрывать страницу между вариантами
 			</label>
 			<br/>
+			<input type="checkbox" id="compact-answers" data-chasstorage-id="pech-compact-answers"/><label for="compact-answers">
+				Компактные таблицы ответов
+			</label>
+			<br/>
+			<input type="checkbox" id="solutions-into-answers" data-chasstorage-id="pech-solutions-into-answers"/><label for="solutions-into-answers">
+				Решения в таблицах ответов
+			</label>
+			<br/>
+			<input type="checkbox" id="splitAnswerTables" data-chasstorage-id="pech-splitAnswerTables"/><label for="splitAnswerTables">
+				Разделять таблицы ответов при достижении количества заданий:
+			</label><input value="32" id="split-answers-number" data-chasstorage-id="split-answers-number"/>
+			<br/>
 			<input type="checkbox" id="nobackground" data-chasstorage-id="pech-nobackground"/><label for="nobackground">
-				Не преобразовывать графики в фоновые изображения (рекомендуется при использовании 
+				Не преобразовывать графики в фоновые изображения (рекомендуется при использовании
 				<a href="https://torproject.org">Tor Browser</a>)
 			</label>
 			<br/>
 			<input type="checkbox" id="customNumber" data-chasstorage-id="pech-customNumber"/><label for="customNumber">
 				Начать нумерацию вариантов с
 			</label><input value="1" id="start-number" data-chasstorage-id="pech-start-number"/>
+			<br/>
+			Префикс номера варианта:
+			<input value="" id="variantPrefix" data-chasstorage-id="pech-variantPrefix"/>
+			<br/>
+			<input type="checkbox" id="vanishVariants" data-chasstorage-id="pech-vanishVariants"/><label for="vanishVariants">
+				Не указывать данные вариантов (вероятно, вы этого <b>не</b> хотите!)
+			<br/>
+			<input type="checkbox" id="forceIntegers" data-chasstorage-id="pech-forceIntegers"/><label for="forceIntegers">
+				Генерировать преимущественно натуральные числа
+			</label>
+			<br/>
+			<input type="checkbox" id="uniqueAnswersAndSolutions" data-chasstorage-id="pech-uniqueAnswersAndSolutions"/><label for="uniqueAnswersAndSolutions">
+				Требовать уникальных ответов, решений или сигнатур (осторожно, ответов может не хватить!)
+			</label>
+			<input type="checkbox" id="uniqueAnswersOnlyInOneVariant" data-chasstorage-id="pech-uniqueAnswersOnlyInOneVariant"/><label for="uniqueAnswersOnlyInOneVariant">
+				только в пределах одного варианта
+			</label>
+			<br/>
+			<input type="checkbox" id="transitTaskNumbers" data-chasstorage-id="pech-transittaskNumbers"/><label for="transitTaskNumbers">
+				Сквозная нумерация заданий, начиная с
+			</label><input value="1" id="start-transit-number" data-chasstorage-id="pech-start-transit-number"/>
+			<br/>
+			Начинать нумерацию однотипных заданий с
+			<input value="1" id="first-task-number" data-chasstorage-id="pech-first-task-number"/>
+			<br/>
+			<input type="checkbox" id="prepareLaTeX" data-chasstorage-id="pech-prepareLaTeX"/><label for="prepareLaTeX">
+				Возможность выгрузки в $\LaTeX$ (замедляет генерацию)
+			</label>
+			<br/>
+			Зерно ГПСЧ (random seed):
+			<input value="" id="randomSeed" data-chasstorage-id="pech-randomSeed"/>
+			<br/>
 		</div>
 	</div>
 	<div class="otstup pagewidth">
 		<div id="rez">
 		</div>
-		<button class="spoiler-show noprint" hidden>Показать ответы</button>	
-		<button class="spoiler-hide noprint" hidden>Скрыть ответы</button>	
-		<div id="otv" class="d spoiler-body" style="padding-left:0">	
+		<button class="spoiler-show noprint" hidden>Показать ответы</button>
+		<button class="spoiler-hide noprint" hidden>Скрыть ответы</button>
+		<div id="otv" class="d spoiler-body" style="padding-left:0">
+		</div>
+		<button class="spoiler-show noprint" hidden>Показать решения</button>
+		<button class="spoiler-hide noprint" hidden>Скрыть решения</button>
+		<div id="rsh" class="d spoiler-body" style="padding-left:0">
 		</div>
 		<div id="dopoln" class="noprint">
 			<h2>Дополнительные параметры (beta)</h2>
@@ -80,8 +132,39 @@
 			<input id="shir"/>cm
 			<button onclick="shirprim()">Применить</button>
 			<button onclick="optimcopy()" id="optimcopy">Преобразовать в текст и изображения (для копирования)</button>
-		</div>	
+			<br/>
+			<hr>
+			<button onclick="insertGridFields()">Добавить/изменить сетки-поля</button>
+			&nbsp;&nbsp;&nbsp;
+			Размер клетки:
+			<input id="grid-cell-size" value="24" data-chasstorage-id="pech-grid-cell-size" style="width:1.8em"/>
+			&nbsp;&nbsp;&nbsp;
+			Высота поля:
+			<input id="grid-field-height" value="10" data-chasstorage-id="pech-grid-field-height" style="width:1.8em"/>
+			cm
+			&nbsp;&nbsp;&nbsp;
+			<button onclick="removeGridFields()" style="display:none;" id="button-removeGridFields">Убрать сетки-поля</button>
+			<br/>
+			<a id="latex-archive-placeholder" style="display:none;">Скачать $\LaTeX$-файл и иллюстрации в архиве</a>
+		</div>
 	</div>
+	<script src='../ext/jszip.min.js'></script>
 	<script src='pechmat.js'></script>
+	<div id="grid-style-placeholder" style="display:none;">
+	</div>
+	<div id="grid-svg-container" style="display:none;">
+		<svg xmlns="http://www.w3.org/2000/svg" id="grid-svg-template" width="100%" height="100%" style="min-height: 10cm;">
+			<style type="text/css">
+				line { stroke: #aaa; stroke-width: 2.2;}
+			</style>
+			<defs>
+				<pattern id="grid-pattern" patternUnits="userSpaceOnUse" width="30" height="30">
+					<line x1="15" y1="0" x2="15" y2="30" id="grid-pattern-line-1"></line>
+					<line x1="0" y1="15" x2="30" y2="15" id="grid-pattern-line-2"></line>
+				</pattern>
+			</defs>
+			<rect width="100%" height="100%" fill="url(#grid-pattern)"></rect>
+		</svg>
+	</div>
 {% endblock %}
 
