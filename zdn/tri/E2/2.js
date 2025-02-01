@@ -1,7 +1,6 @@
 (function() {
 	'use strict';
 
-
 	chas2.task.setTask({
 		text: '$2 \\sin{\\frac{a+b}{2}}\\cdot\\cos{\\frac{a-b}{2}} =$<br/>',
 		answers: [
