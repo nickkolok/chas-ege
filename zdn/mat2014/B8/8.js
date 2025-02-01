@@ -27,7 +27,6 @@ chas2.task.setCountableTask(
 );
 chas2.task.modifiers.variativeABC();
 })();
-
-//Обзад 
+//Обзад
 //Николай Авдеев
 

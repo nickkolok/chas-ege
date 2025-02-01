@@ -1,7 +1,7 @@
 (function() {
 
 var troyka=om.pifagtr.iz();
-var u=sluchch(1,10)
+var u=sluchch(1,10);
 var a=troyka[0]*u;
 var b=troyka[1]*u;
 var c=troyka[2]*u;
