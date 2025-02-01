@@ -1,19 +1,18 @@
 (function(){
+	
+	var c=sluchch(10,100);
+	var a=sluchch(100,999);
+	var b=sluchch(10,100);
+	
+	var ship = sklonlxkand(chaslib.sets.ships.iz());
 
-var t=sluchch(0,om.korabli.ie.length-1);
-var c=sluchch(10,100);
-var a=sluchch(100,999);
-var b=sluchch(10,100);
-
-window.vopr.txt=om.korabli.ie[t].toZagl()+' перевозит '+a+' пассажиров и '+b+' членов экипажа. '+
-	'В целях безопасности на '+om.korabli.pe[t]+
-	' размещены спасательные шлюпки, каждая из которых вмещает '+c+' человек. '+
-	'Какое наименьшее количество шлюпок должно быть на '+om.korabli.pe[t]+'?'
-window.vopr.ver=[''+((a+b)/c).ceil()];
-
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+	NAtask.setTask({
+		text : ship.ie.toZagl()+' перевозит '+a+' пассажиров и '+b+' членов экипажа. '+
+		'В целях безопасности на '+ship.pe+
+		' размещены спасательные шлюпки, каждая из которых вмещает '+c+' человек. '+
+		'Какое наименьшее количество шлюпок должно быть на '+ship.pe+'?',
+		answers : ((a+b)/c).ceil(),
+		authors: ['Николай Авдеев', 'dev-null', 'Суматохина Александра'],
+	});
 })();
 //Обзад 26617

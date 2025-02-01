@@ -1,6 +1,6 @@
 (function(){'use strict';
 
-var a=[20,25,40,50].iz()
+var a=[20,25,40,50].iz();
 var b=sluchch(2,a-1);
 var v1=sluchch(1);
 var x=(v1?(a-b):b)/a;
