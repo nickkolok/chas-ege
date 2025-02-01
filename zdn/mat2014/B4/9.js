@@ -3,7 +3,7 @@
 var c=sluchch(3,6);
 var tovar=lx[om.stroymat.iz()];
 var t2=om.rusbukv.iz(c);
-var edizm=lx[om.izmergruz.iz()]
+var edizm=lx[om.izmergruz.iz()];
 var dost=[].zapslch(0,c,1000,10000,100);
 var zakaz=sl(10,200);
 var s=Infinity;

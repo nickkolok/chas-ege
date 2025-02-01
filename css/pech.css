@@ -6,7 +6,10 @@ input,body,button{
 	font-family:'liberation_serif',serif;
 }
 .b{
-	width:3em;
+	min-width:3em;
+	overflow:hidden;
+	padding-left: 0.1em;
+	padding-right: 0.1em;
 	font-weight:700;
 	margin-bottom:3px;
 	margin-left:3px;
@@ -25,10 +28,14 @@ input,body,button{
 	margin-bottom:1em;
 }
 .z{
-	padding-left:4em;
+	padding-left:0.4em;
+	overflow: hidden;
 }
 .z>*{
 	float:none !important;
+}
+.z>canvas{
+	float:right !important;
 }
 div.d{
 	page-break-inside:avoid;
@@ -125,6 +132,7 @@ em{
 .tablpech{
 	float:left;
 	margin:1em;
+	page-break-inside:avoid;
 }
 
 #prov_knopki{
@@ -155,6 +163,10 @@ em{
 	margin-left:auto;
 	margin-right:auto;
 }
+#otv{
+	width: 100%;
+	padding-right: 0;
+}
 .resh-poln{
 	display:none;
 }
@@ -164,4 +176,31 @@ em{
 h2{
 	float:none;
 	clear:both;
+}
+
+button.renewbutton{
+	display:block;
+	right:0;
+}
+
+.grid-for-writing {
+	/*
+	background:
+		repeating-linear-gradient( 0deg, transparent 0 0.5cm, gray 0.5cm 0.52cm),
+		repeating-linear-gradient(90deg, transparent 0 0.5cm, gray 0.5cm 0.52cm);
+	*/
+	width: 100%;
+	min-height: 10cm;
+	border: 2px solid gray;
+	border-radius:14.68px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	display: none;
+}
+
+@media print{
+	.otstup{
+		/* Otherwise there is extra space on the first page */
+		padding-top:0;
+	}
 }

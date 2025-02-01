@@ -7,7 +7,7 @@ do{
 	a=sl(1,9);
 	b=sl(-99,99);
 	c=sl(0,99);
-}while(b*b-4*a*c>0)
+}while(b*b-4*a*c>0);
 
 var f=[c,b,a].mn_pervoobr();
 

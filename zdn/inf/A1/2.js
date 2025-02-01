@@ -8,13 +8,13 @@ var answer;
 
 if (usl == 'единиц')
 	answer = String(y).split('1').length-1;
-else 
- 	answer = String(y).split('0').length-1;
+else
+	answer = String(y).split('0').length-1;
 
-window.vopr.txt='Сколько '+usl+' в двоичной записи числа '+x+'?'
-	+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
+window.vopr.txt='Сколько '+usl+' в двоичной записи числа '+x+'?'+
+	'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
 window.vopr.ver=[
-  	answer,
+	answer,
 ];
 var wrongAnswers = [''];
 for (var i = 0; i < 10; i++) {

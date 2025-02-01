@@ -5,11 +5,11 @@ var flFullscreen=0;
 
 function updateQuestion(){
 	$("#question").html(window.vopr.txt);
-	$("#resh").html("");
+	$("#resh").html(vopr.rsh);
 	window.vopr.dey();
 	$("#answer").html(window.vopr.ver.join(";;"));
 	$("#wrongAnswer").html(window.vopr.nev.join(";;"));
-	MathJax.Hub.Typeset();
+	MathJax.Hub.Typeset('typesettable-wrap');
 }
 
 function createFromFile(){
@@ -42,14 +42,13 @@ function checkAnswer(){
 		alert("Неправильно!\nПравильный ответ: " + window.vopr.ver.join(" или "));
 		$("#answer").show();
 	}
-	$("#resh").html(vopr.rsh);
-	MathJax.Hub.Typeset();
+	MathJax.Hub.Typeset('typesettable-wrap');
 }
 
 function createFromTextarea(){
 	saveAce();
 	$("#question").html("Если Вы видите эту надпись - задание не составлено, скорее всего, в программе ошибка.");
-	var code=nabrano();
+	var code=getCode();
 	try {
 		if(isCppCode(code)){
 			//Костыль, но положим, что это С++
@@ -60,7 +59,7 @@ function createFromTextarea(){
 				eval(code);
 		}
 	} catch (e) {
-		$("#question").html(e+'<br/>'+e.name + " : " + e.message);
+		$("#question").html(e.message.replace(/\n/g,'<br/>'));
 		console.error(e);
 		return;
 	}
@@ -70,7 +69,7 @@ function createFromTextarea(){
 function tt(){
 	saveAce();
 	var t1=new Date().getTime();
-	var code=nabrano();
+	var code=getCode();
 	var iter=1*$("#iter").val();
 	for(var i=iter;i;i--)
 		eval(code);
@@ -88,17 +87,37 @@ function enableAce(){
 	$("#ace-script").html($("#textarea-script").val().replace(/</g,"&lt;").replace(/>/g,"&gt;"));
 	$("#textarea-script").hide();
 	editor = ace.edit("ace-script");
+	editor.session.on("changeMode", function(e, session){
+		if ("ace/mode/javascript" === session.getMode().$id) {
+			if (!!session.$worker) {
+				session.$worker.send("setOptions", [{
+					"esversion": 7, //ES7
+					"esnext": false,
+				}]);
+			}
+		}
+	});
+	editor.getSession().setUseSoftTabs(false);
 	editor.getSession().setMode("ace/mode/javascript");
 	editor.setFontSize(aceSize);
 	$("#vklpodsv").hide();
 	flAce=1;
 }
 
-function nabrano(){
+function getCode(){
 	if(flAce)
 		return editor.getValue();
 	else
 		return $("#textarea-script").val();
+}
+
+function setCode(code){
+	if(flAce) {
+		editor.setValue(code,1);
+	}
+	else {
+		$("#textarea-script").val(code);
+	}
 }
 
 function saveAce(){
@@ -107,26 +126,44 @@ function saveAce(){
 	chasStorage.domData.save();
 }
 
-function pastebin(){
+function beautifyCode(){
 	saveAce();
 	var code=$("#textarea-script").val();
-    if(isCppCode(code)){
-		$("#textarea-paste").val(code);
+	if(isCppCode(code)){
+		$("#textarea-script").val(code);
 	} else {
 		var beautifiedCode=js_beautify(code, {
-		  'indent_size': 1,
-		  'indent_char': '\t',
-		  'end_with_newline':true,
-		  'wrap_line_length':120,
-		  'jslint_happy':true,
-		  'opt.space_after_anon_function':false,
+			'indent_size': 1,
+			'indent_char': '\t',
+			'end_with_newline':true,
+			'wrap_line_length':120,
+			'jslint_happy':true,
+			'opt.space_after_anon_function':false,
 		});
 		if(code!=beautifiedCode){
 			alert("Обратите внимание: код шаблона не соответствует соглашениям, принятым в проекте."+
-				"На pastebin отправлена скорректированная версия.");
+				"В редактор помещена скорректированная версия.");
 		}
-		$("#textarea-paste").val(beautifiedCode);
+		setCode(beautifiedCode);
 	}
+}
+
+function makeTemplate(){
+	saveAce();
+	chasStorage.domData.save();
+
+	let oldCode =
+		$("#textarea-script").val()+
+		"\n\n"+
+		"//////////////////////////////////////"+
+		"\n\n"+
+		$("#textarea-previous-code").val();
+
+	$("#textarea-previous-code").val(oldCode);
+
+	let taskText = $("#textarea-task-text").val();
+	let generatedCode = makeTemplateFromPlainText(taskText);
+	setCode(generatedCode);
 }
 
 function startFullscreen(){
@@ -185,9 +222,10 @@ document.onkeydown = function(e) {
     }
 }
 
-var templateTemplate = "(function() {\n\tNAinfo.requireApiVersion(" + NAinfo.API_VERSION.major + ", " + NAinfo.API_VERSION.minor + ");\n\n})();\n";
+var templateTemplate = "(function() {\n \tretryWhileError(function() {\n\t\tNAinfo.requireApiVersion(" + NAinfo.API_VERSION.major + ", " + NAinfo.API_VERSION.minor + "); \n\t\tNAtask.setTask({\n\t\t\ttext: '',\n\t\t\tanswers: 0,\n\t\t\tanalys: '',\n\t\t});\n\t});\n})();";
 
 var startShell = function (){
+	spoiler();
 	zagr("../ext/keyboard/keyboard.js");
 	if ($("#textarea-script").val() == "") {
 		$("#textarea-script").val(templateTemplate);
@@ -195,3 +233,14 @@ var startShell = function (){
 	}
 }
 
+
+
+function startExport(){
+	vopr.template = $("#filepath").val().replace(/^(\.\.\/)+/,'');
+	vopr.taskNumber = vopr.template.split("/").reverse()[1];
+
+	replaceCanvasWithImgInTaskAndHTML($('#question')[0], vopr, function(){
+		var fillerCode = createFiller(vopr);
+		copyToClipboard(fillerCode)
+	});
+}
