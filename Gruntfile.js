@@ -82,11 +82,18 @@ module.exports = function(grunt) {
 			externals: {
 				files: [
 					{ expand: true, src: ['ext/**'], dest: 'dist/' },
+					{ expand: true, cwd: 'node_modules/ace-builds/src-min/', src: '**/*.js', dest: 'dist/ext/ace/' },
+					{ src: 'node_modules/mathjs/lib/browser/math.js', dest: 'ext/math.js' },
+					{ src: 'node_modules/nerdamer/all.min.js', dest: 'ext/nerdamer.js' },
 					{ src: 'node_modules/chas-storage/chasStorage.js', dest: 'dist/ext/chasStorage.js' },
+					{ src: 'node_modules/cubic-spline-browserified/cubic-spline-for-browser.js', dest: 'dist/ext/cubic-spline-for-browser.js' },
+					{ src: 'node_modules/flatten-shape-geometry/dist/bundle.js', dest: 'dist/ext/flatten-shape-geometry.js' },
 					{ src: 'node_modules/html2canvas/dist/html2canvas.min.js', dest: 'dist/ext/html2canvas.js' },
+					{ src: 'node_modules/jszip/dist/jszip.min.js', dest: 'dist/ext/jszip.min.js' },
+					{ src: 'node_modules/seedrandom/seedrandom.min.js', dest: 'dist/ext/seedrandom.min.js' },
 				]
 			},
-			other: {
+			otherHtml: {
 				files: [
 					{ expand: true, src: ['index.html'], dest: 'dist/' },
 				]
@@ -274,6 +281,13 @@ module.exports = function(grunt) {
 				],
 				tasks: ['process-lib']
 			},
+			libNoUglify: {
+				files: [
+					'lib/*', '!lib/head*',
+					'src/**',
+				],
+				tasks: ['process-lib-nouglify']
+			},
 			taskSets: {
 				files: [
 					'zdn/**',
@@ -295,20 +309,37 @@ module.exports = function(grunt) {
 		},
 
 		eslint: {
-			options: {
-				configFile: 'eslint.json'
-			},
-			target: [
-				'src/*/*.js',
-				'c2/*.js',
-				'test/*.js',
-				'Gruntfile.js'
+			strictLinting: {
+				options: {
+					configFile: 'eslint.json'
+				},
+				src: [
+					'src/*/*.js',
+					'c2/*.js',
+					'test/*.js',
+					'Gruntfile.js',
 
-				// Всё равно никто исправлять их не будет
-				// ,'sh/*.js',
-				// 'lib/*.js',
-				// 'zdn/*/*/*.js'
-			]
+					// Всё равно никто исправлять их не будет
+					// ,'sh/*.js',
+					// 'lib/*.js',
+					// 'zdn/*/*/*.js'
+				],
+			},
+			tasksLinting: {
+				options: {
+					configFile: 'eslint-tasks.json',
+					quiet: true,
+				},
+				src: [
+					'zdn/*/*/*.js',
+					'lib/autointegr.js',
+
+					// Всё равно никто исправлять их не будет
+					// ,'sh/*.js',
+					// 'lib/*.js',
+					// 'zdn/*/*/*.js'
+				],
+			},
 		},
 
 		qunit: {
@@ -329,7 +360,19 @@ module.exports = function(grunt) {
 		clean: {
 			build: ['build/'],
 			dist: ['dist/']
-		}
+		},
+
+		concurrent: {
+			'build-except-ext': [
+				'concurrent:process-lib',
+				'process-html',
+				'process-pages-js',
+				'concurrent:process-task-sets',
+				'process-css',
+			],
+			'process-lib': ['newer:copy:lib', 'make-chas-lib', ['make-chas-uijs', 'make-init']],
+			'process-task-sets': [['newer:copy:taskSets', 'packTasks', 'uglify:tasksPacks']],
+		},
 	});
 
 	require('time-grunt')(grunt);
@@ -352,15 +395,17 @@ module.exports = function(grunt) {
 	grunt.registerTask('make-chas-lib', ['concat:chasLib', 'uglify:chasLib']);
 	grunt.registerTask('make-chas-uijs', ['concat:chasUijs', /*'unify-use-strict-chas-uijs', 'uglify:chasUijs',*/]);
 
-	grunt.registerTask('process-html', ['make-head', 'swigtemplates', 'htmlmin' ]);
+	grunt.registerTask('process-html', ['make-head', 'swigtemplates', 'htmlmin', 'newer:copy:otherHtml']);
 	grunt.registerTask('process-pages-js', ['newer:copy:pagesJs']);
-	grunt.registerTask('process-task-sets', ['newer:copy:taskSets', 'packTasks', 'uglify:tasksPacks']);
-	grunt.registerTask('process-lib', ['newer:copy:lib', 'make-chas-lib', 'make-chas-uijs', 'make-init']);
+	grunt.registerTask('process-task-sets', ['concurrent:process-task-sets']);
+	grunt.registerTask('process-lib', ['concurrent:process-lib']);
+	grunt.registerTask('process-lib-nouglify', ['newer:copy:lib', 'concat:chasLib', 'concat:chasUijs', 'concat:init']);
 	grunt.registerTask('process-css', ['cssmin', 'newer:copy:css']);
+	grunt.registerTask('process-ext', ['newer:copy:externals']);
 	grunt.registerTask('process-unit-test', ['swigtemplates:unitTest', 'copy:unitTest']);
 
 	grunt.registerTask('check-urls', ['checkPages:dev']);
 
-	grunt.registerTask('build-except-ext', ['process-html', 'process-pages-js', 'process-task-sets', 'process-lib', 'process-css']);
-	grunt.registerTask('default', ['build-except-ext', 'swigtemplates', 'copy', 'concat', 'uglify']);
+	grunt.registerTask('build-except-ext', ['concurrent:build-except-ext']);
+	grunt.registerTask('default', ['build-except-ext', 'process-ext', 'process-unit-test']);
 };
