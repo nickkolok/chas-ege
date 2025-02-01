@@ -67,20 +67,20 @@ switch(sl(2)){
 		window.vopr.txt='В '+sl(kto[0]+1,kto[1]-1)+' году руководитель государства - ';
 		window.vopr.ver=[kto[2]];
 		window.vopr.nev=pravit.T()[2];
-		AtoB();		
-	break;}
+		AtoB();
+	}break;
 	case 1:{
 		var kto=pravit.iz();
 		window.vopr.txt='В каком году начал'+'а'.esli(kto[3])+
 			' деятельность как фактический глава государства '+kto[2]+'?';
-		window.vopr.ver=[''+kto[0]];		
+		window.vopr.ver=[''+kto[0]];
 		window.vopr.vrn=window.vopr.vrn_ist;
 	}break;
 	case 2:{
 		var kto=pravit.iz();
 		window.vopr.txt='В каком году окончил'+'а'.esli(kto[3])+
 			' деятельность как фактический глава государства '+kto[2]+'?';
-		window.vopr.ver=[''+kto[1]];		
+		window.vopr.ver=[''+kto[1]];
 		window.vopr.vrn=window.vopr.vrn_ist;
 	}break;
 }

@@ -38,7 +38,7 @@ window.vopr.rsh=
 	'\\left('+
 		novbaz.matrixToTex().ts()+
 	'\\right)$'+
-	
+
 '';
 
 window.vopr.txt='Даны два базиса $B=(e_1~,~e_2)$ и $B\'=(e_1\'~,~e_2\')$, где '+

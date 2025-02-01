@@ -13,10 +13,10 @@ var a = intoAnotherSystem(a10,10,m);
 var b = intoAnotherSystem(b10,10,n);
 var C = intoAnotherSystem(c10,10,2);
 
-window.vopr.txt='Дано: a='+a+'<sub>'+m+'</sub>, b='+b+'<sub>'+n+'</sub>. Какое из чисел С, записанных в двоичной системе счисления, удовлетворяет неравенству a &lt; C &lt; b?'
-	+'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
+window.vopr.txt='Дано: a='+a+'<sub>'+m+'</sub>, b='+b+'<sub>'+n+'</sub>. Какое из чисел С, записанных в двоичной системе счисления, удовлетворяет неравенству a &lt; C &lt; b?'+
+	'<br/>';//Добавляем пустую строку между вопросом и вариантами ответа
 window.vopr.ver=[
-  	C,
+	C,
 ];
 var wrongAnswers = [];
 for (var i = 0; i < 2; i++) {
