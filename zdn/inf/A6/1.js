@@ -3,7 +3,7 @@ function printLogicRus(exp,ar) {
 	exp=exp.replace(/\&\&/g,' И ');
 	exp=exp.replace(/\!/g,' НЕ ');
 	var re = /c\[(\d)\]/g;
-	exp = exp.replace(re, function(str,a) { return ar[Number(a)] });
+	exp = exp.replace(re, function(str,a) { return ar[Number(a)]; });
 	return exp;
 }
 

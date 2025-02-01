@@ -1,5 +1,5 @@
 'use strict';
-
+module('Basic Tests');
 
 test('sl1', function(assert) {
 	expect([0, 1]).to.contain(sl1());
@@ -47,13 +47,35 @@ test('Number.prototype.texfrac', function() {
 	expect((2).texfrac('4', 'x')).to.be.equal('\\frac{2x}{4}');
 });
 
+test('String.prototype.beautifyAlgebraicNotation', function() {
+	expect(
+		'Найдите наименьший неотрицательный корень уравнения $$\\ctg\\frac{\\pi(-2x +8)}{4}=-0$$'.
+			beautifyAlgebraicNotation()).to.be.equal(
+		'Найдите наименьший неотрицательный корень уравнения $$\\ctg\\frac{\\pi(-2x +8)}{4}=0$$'
+	);
+	expect(
+		'Найдите корень уравнения $$\\log_{69}{(0+7x)}=\\log_{69}{(27-2x)}$$'.
+			beautifyAlgebraicNotation()).to.be.equal(
+		'Найдите корень уравнения $$\\log_{69}{(7x)}=\\log_{69}{(27-2x)}$$'
+	);
+});
+
+
 test('String.prototype.texfrac', function() {
 	expect('2'.texfrac(3)).to.be.equal('\\frac{2}{3}');
 	expect('2'.texfrac('3')).to.be.equal('\\frac{2}{3}');
+	expect('a'.texfrac('b')).to.be.equal('\\frac{a}{b}');
+	expect('3'.texfrac('2')).to.be.equal('\\frac{3}{2}');
 });
 
 test('Number.prototype.texfracpi', function() {
 	expect((2).texfracpi(4)).to.be.equal('\\frac{\\pi}{2}');
+});
+
+test('Number.prototype.texsqrtfrac', function() {
+	expect((16 * 15).texsqrtfrac(64)).to.be.equal('\\frac{\\sqrt{15}}{2}');
+	expect((60).texsqrtfrac(8)).to.be.equal('\\frac{\\sqrt{30}}{2}');
+	expect((0).texsqrtfrac(8)).to.be.equal('0');
 });
 
 test('String.prototype.isNumeric', function() {
@@ -111,4 +133,36 @@ test('isCppCode', function() {
 	expect(isCppCode('#include <iostream>\n#include <cstdlib>\n#include <ctime>\nusing namespace std;\nint main()\n{\nsrand(time(0));\nunsigned int grad = rand()% 179 +1;\ncout << "Задание:" <<endl<< "Угол A четырехугольника ABCD, вписанного в окружность, равен " << \ngrad << "°. Найдите угол "<< endl\n<< "C этого четырехугольника. Ответ дайте в градусах."<<endl;\nint answer = 180 - grad;\ncout <<"Ответ: " << endl << answer << endl;\n\nreturn 0;\n}')).to.eql(true);
 	expect(isCppCode('#include <iostream>\n#include <cstdlib>\n#include <ctime>\nusing namespace std;\nint main ()\n{\nsrand(time(0));\nunsigned int grad = rand()% 179 +1;\ncout << "Задание:" <<endl<< "Угол A четырехугольника ABCD, вписанного в окружность, равен " << \ngrad << "°. Найдите угол "<< endl\n<< "C этого четырехугольника. Ответ дайте в градусах."<<endl;\nint answer = 180 - grad;\ncout <<"Ответ: " << endl << answer << endl;\n\nreturn 0;\n}')).to.eql(true);
 	expect(isCppCode('#include <iostream>\n#include <cstdlib>\n#include <ctime>\nusing namespace std;\n\n{\nsrand(time(0));\nunsigned int grad = rand()% 179 +1;\ncout << "Задание:" <<endl<< "Угол A четырехугольника ABCD, вписанного в окружность, равен " << \ngrad << "°. Найдите угол "<< endl\n<< "C этого четырехугольника. Ответ дайте в градусах."<<endl;\nint answer = 180 - grad;\ncout <<"Ответ: " << endl << answer << endl;\n\nreturn 0;\n}')).to.eql(false);
+});
+
+test('Object.clone', function() {
+	var oldObject = { a:1, b:{ c:2, d:3, e:[4, 5] } };
+	var newObject = oldObject.clone();
+	oldObject.a = 6;
+	oldObject.b.c = 7;
+	oldObject.b.e[0] = 8;
+
+	expect(newObject.a).to.be.equal(1);
+	expect(newObject.b.c).to.eql(2);
+	expect(newObject.b.e[0]).to.eql(4);
+});
+
+test('clone', function() {
+	var oldObject = { a:1, b:{ c:2, d:3, e:[4, 5] } };
+	var newObject = clone(oldObject);
+	oldObject.a = 6;
+	oldObject.b.c = 7;
+	oldObject.b.e[0] = 8;
+
+	expect(newObject.a).to.eql(1);
+	expect(newObject.b.c).to.eql(2);
+	expect(newObject.b.e[0]).to.eql(4);
+	expect(clone(1)).to.eql(1);
+	expect(clone('2')).to.eql('2');
+	expect(clone([1])).to.eql([1]);
+
+	var oldArray = [1, 2];
+	var newArray = clone(oldArray);
+	oldArray[0] = 3;
+	expect(newArray[0]).to.eql(1);
 });

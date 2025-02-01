@@ -9,14 +9,12 @@ var chel=sl(2,5);
 var t2=om.rusbukv.iz(2);
 var bilet=sl(300,1000);
 
-window.vopr.txt='Семья из '+chel+' человек планирует поехать из '+lx[om.naspunkt.iz()].re+' '
-	+t2[0]+' в '+lx[om.naspunkt.iz()].ve+' '+t2[1]+'. Можно ехать '+trans.te+
+window.vopr.txt='Семья из '+chel+' человек планирует поехать из '+lx[om.naspunkt.iz()].re+
+	' '+t2[0]+' в '+lx[om.naspunkt.iz()].ve+' '+t2[1]+'. Можно ехать '+trans.te+
 	', а можно — на своей машине. Билет на '+trans.ve+' на одного человека стоит '+chislitlx(bilet,'рубль')+
 	'. Автомобиль расходует '+chislitlx(rashod,'литр')+' '+topl.re+' на 100 километров пути, расстояние по шоссе равно '+
 	rasst+' км, а цена '+topl.re+' равна '+chislitlx(cena,'рубль')+' за литр. Сколько рублей придется заплатить '+
 	'за наиболее дешевую поездку на '+chel+' человек?';
-
-
 
 window.vopr.ver=[Math.min(chel*bilet,cena*rasst*rashod/100).ts()];
 

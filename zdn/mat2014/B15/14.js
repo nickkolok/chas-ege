@@ -10,7 +10,7 @@ var fn=fn_zadan({
 		(-a).pina(4),
 	],
 	maxy: a,
-	prnz: v1==1 ? 1 .pina(4) : [sl(-4,0).pina(4),sl(-2,0).pina(3),sl(-7,1).pina(6),sl(-5,1).pina(5),1 .pm() .pina (sl(5,12))].iz(),
+	prnz: v1==1 ? 1 .pina(4) : [sl(-4,0).pina(4),sl(-2,0).pina(3),sl(-7,1).pina(6),sl(-5,1).pina(5),1 .pm().pina(sl(5,12))].iz(),
 	prnb: v1==1 ? 0 : sl(1),
 	prkz: v1==2 ? 1 .pina(4) : [1 .pina(2), sl(1,2).pina(3), 3 .pina(5)].iz(),
 	prkb: v1==2 ? 0 : sl(1),
