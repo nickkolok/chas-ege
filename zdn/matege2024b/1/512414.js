@@ -20,9 +20,11 @@
             text:
                 walkerOrDriver.toZagl() + ' ' + walkOrRide + ' ' + chislitlx(firstDistance, 'километр', '$') + ' за ' + chislitlx(firstTimePass, 'минута', 'v$') + '. ' +
                 'Сколько километров он преодолеет за ' + chislitlx(secondTimePass, 'минута', 'v$') + ', ' +
-                'если будет с той же скоростью?',
+                'если будет двигаться с той же скоростью?',
             answers: (secondTimePass * firstDistance) / firstTimePass,
         });
 
     }, 100);
+    //https://mathb-ege.sdamgia.ru/test?likes=512414
+    //zer00player
 })();
