@@ -1,4 +1,19 @@
 (function() {
+	let key = "7";
+	let variant = getListedPreference(key, [{
+		preference: 'river_speed',
+		preferenceValue: 0,
+	}, {
+		preference: 'boat_speed',
+		preferenceValue: 1,
+	}, {
+		preference: 'time_difference',
+		preferenceValue: 2,
+	}, {
+		preference: 'total_distance',
+		preferenceValue: 3,
+	}], sl(0, 3));
+	
 	var b = 0.5, x, a, s;
 	for (; !(b.isZ() && b > 0);) {
 		x = sluchch(5, 20);
@@ -18,24 +33,24 @@
 		vel: 'скорость течения',
 		zna: a,
 		rod: 1,
-		nah: 1,
+		nah: (variant == 0),
 		nmn: 'км/ч',
 	}, {
 		vel: 'скорость лодки в неподвижной воде',
 		zna: x,
 		rod: 1,
-		nah: 1,
+		nah: (variant == 1),
 		nmn: 'км/ч'
 	}, {
 		utv: 'лодка затратила на обратный путь на ' + chislitM(b, 'час', 'часа', 'часов') + ' меньше',
 		vpr: 'насколько меньше времени затратила лодка на обратный путь',
 		zna: b,
-		nah: 1
+		nah: (variant == 2)
 	}, {
 		vel: 'суммарное пройденное лодкой расстояние',
 		zna: s * 2,
 		rod: 2,
-		nah: 1,
+		nah: (variant == 3),
 		nmn: 'км'
 	}, ], {
 		preambula: 'Моторная лодка прошла против течения реки и вернулась в пункт отправления. ',
