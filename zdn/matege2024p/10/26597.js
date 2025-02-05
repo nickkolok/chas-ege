@@ -1,6 +1,15 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
+		
+		let key = "26597";
+		let v2=getListedPreference(key, [{
+			preference: 'first_hose',
+			preferenceValue: 0,
+		}, {
+			preference: 'second_hose',
+			preferenceValue: 1,
+		}], sl1());
 
 		let A = sl(30,900);//объем резервуара (базовый)
 		let b = sl(1,[A/30,29].minE(),0.01);//объем (разница)
@@ -14,7 +23,7 @@
 		let rez = sklonlxkand(['резервуар','бассейн','бак','цистерна','бойлер','ёмкость'].iz());
 		let v1=sl1();
 		let tub_num=['перв'+['ый','ая','ое','ые'][tub_naz.rod],'втор'+['ой','ая','ое','ые'][tub_naz.rod]];
-		let v2=sl1();
+
 		let dol=[[['медленнее','дольше'].iz(),'меньше'],['быстрее','больше']];
 		let esli=[', если известно, что ',', если '].iz();
 
