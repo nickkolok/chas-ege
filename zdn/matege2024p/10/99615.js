@@ -11,9 +11,9 @@
 		genAssert(answer.isZ(), "Ответ не целый");
 
 		NAtask.setTask({
-			text: 'Первый насос наполняет бак за ' + timeFirst.toChMin() + ', ' +
-				'второй — за ' + timeSecond.toChMin() + ', ' +
-				'а третий — за ' + timeThird.toChMin() + '. ' +
+			text: 'Первый насос наполняет бак за ' + timeFirst.randToChMin() + ', ' +
+				'второй — за ' + timeSecond.randToChMin() + ', ' +
+				'а третий — за ' + timeThird.randToChMin() + '. ' +
 				'За сколько минут наполнят бак три насоса, ' +
 				'работая одновременно?',
 			answers: answer,
