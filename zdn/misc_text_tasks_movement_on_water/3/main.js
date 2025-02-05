@@ -3,4 +3,4 @@ window.nomer=[
 ].iz()
 window.comment='7 суммарное расстояние';
 window.nabor.preferences['7'] = ['total_distance'];
-chas2.task.setMinimaxFunctionTask.forbidOpenEnds = true;
+

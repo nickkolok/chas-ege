@@ -3,4 +3,4 @@ window.nomer=[
 ].iz()
 window.comment='7 скорость течения';
 window.nabor.preferences['7'] = ['river_speed'];
-chas2.task.setMinimaxFunctionTask.forbidOpenEnds = true;
+
