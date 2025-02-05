@@ -23,6 +23,7 @@
 			authors: ['Aisse-258']
 		});
 		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.assertSaneDecimals();
 	}, 2000000);
 })();
 
