@@ -1,6 +1,15 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
+		
+		let key = "26595";
+		let v=getListedPreference(key, [{
+			preference: 'first_worker',
+			preferenceValue: 0,
+		}, {
+			preference: 'second_worker',
+			preferenceValue: 1,
+		}], sl1());
 
 		let A = sl(10,600);//кол-во деталей1
 		let B = sl([A/2,10].maxE(),[1.5*A,600].minE());//кол-во деталей2
@@ -13,7 +22,7 @@
 
 		let detail = sklonlxkand(['деталь','заготовка','продукт','предмет','горшок','беляш','пирожок','бутерброд','кувшин','молоток','инструмент','игрушка'].iz());
 		let rab = sklonlxkand(['рабочий','сотрудник','работник','мастер'].iz());
-		let v=sl1();
+
 		let rab_num=['первый','второй'];
 		let izgot=['изготовление','производство'].iz();
 
