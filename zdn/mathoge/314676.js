@@ -1,72 +1,61 @@
-retryWhileError(function() {
+retryWhileError(function () {
     NAinfo.requireApiVersion(0, 2);
 
-    function interval(f, x0) {
-        if (f ^ a < 0)
+    function interval(choose) {
+        if ((a > 0) == choose)
             return '[' + x0 + '; \\infty)';
         else
             return '(-\\infty;' + x0 + ']';
     }
 
-    function pol() {
-        if (a < 0)
-            return 1;
-        else
-            return 0;
-    }
-
-
-    function f(x) {
+    function func(x) {
         return x * x / a + b * x + c;
     }
 
     let a = sluchch(2, 10, 0.5).pm();
     let b = sl(-10, 10, 0.5);
     let c = sl(-10, 10, 0.5);
-    let points = intPoints(f, {
+    let points = intPoints(func, {
         minX: -5,
         maxX: 6,
         minY: -5.5,
         maxY: 5.5
     });
 
-    genAssert(points.length > 3);
+    genAssert(points.length > 3, 'Количество целых точек меньше трёх');
 
     let x0 = -b * a / 2;
 
-    genAssert(x0.isZ());
-    genAssert(x0.abs() < 6);
+    genAssert(x0.abs() < 6, 'Абсцисса вершины не видна на рисунке');
+    genAssert(x0.isZ(), 'Абсцисса вершины не целая');
 
-    let y0 = f(x0);
 
-    genAssert(y0.abs() < 6);
-    genAssert(y0.isZ());
+    let y0 = func(x0);
+
+    genAssert(y0.abs() < 6, 'Ордината вершины не видна на рисунке');
+    genAssert(y0.isZ(), 'Ордината вершины не целая');
 
     let point = points[0];
 
     let question = [
         ['Абсцисса вершины равна', x0],
-        ['Ордината вершины равна', f(x0)],
+        ['Ордината вершины равна', func(x0)],
         [
             ['Функция убывает на промежутке', interval(false, x0)],
             ['Функция возрастает на промежутке', interval(true, x0)]
         ].iz(), [
-            ['Наименьшее значение функции равно ', f(x0)],
-            ['Наибольшее значение функции равно ', f(x0)]
-        ][pol()],
+            ['Наименьшее значение функции равно ', func(x0)],
+            ['Наибольшее значение функции равно ', func(x0)]
+        ][(a < 0) ? 1 : 0],
         ['$f(' + point[0] + ')=$', point[1]],
     ];
 
     let answers = question.T()[1];
     question = question.T()[0];
-    
-    console.log(answers);
-    console.log(question);
 
-
-    let rightOrWrong = sl1();//1 много неправильных, один правильный, 0 наоборот
+    let rightOrWrong = sl1(); //1 много неправильных, один правильный, 0 наоборот
     let answ = question[0];
-    
+
     if (rightOrWrong) {
         answ += ' $' + answers[0] + '$';
     } else {
@@ -96,7 +85,7 @@ retryWhileError(function() {
         }
     }
 
-    let paint1 = function(ct) {
+    let paint1 = function (ct) {
         let h = 300;
         let w = 300;
         //Оси координат
@@ -106,7 +95,7 @@ retryWhileError(function() {
         ct.translate(h / 2, h / 2);
         ct.scale(20, -20);
         //График
-        graph9AdrawFunction(ct, f, {
+        graph9AdrawFunction(ct, func, {
             minX: -6.5,
             maxX: 6.5,
             minY: -7,
@@ -121,12 +110,12 @@ retryWhileError(function() {
         answers: answ,
         wrongAnswers: wrongAnsw,
     });
-    chas2.task.modifiers.addCanvasIllustration({
+    NAtask.modifiers.addCanvasIllustration({
         width: 300,
         height: 300,
         paint: paint1,
     });
-},
-100000);
-AtoB(4);
+    AtoB(4);
+}, 10000);
+
 //314676 314703 314704 314670 314681 314684 314706 314707 314709 314711 314712 314718 314746 314747 314748 314750 314751 314753
