@@ -56,16 +56,24 @@
         #regenerateButton:hover {
             background-color: #45a049;
         }
+
+        #turnCounter {
+            position: fixed;
+            top: 60px;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <button id="regenerateButton">Создать новую дорогу</button>
+    <div id="turnCounter">Количество поворотов: 0</div>
     <div class="grid" id="grid"></div>
 
     <script>
         const grid = document.getElementById('grid');
         const gridSize = 20;
         const MIN_STRAIGHT_PATH = 3; // Минимальное количество клеток в одном направлении
+        const MAX_TURNS = 3; // Максимальное количество поворотов
         
         function createGrid() {
             grid.innerHTML = '';
@@ -85,29 +93,37 @@
             let currentY = 0;
             const roadPath = [{x: currentX, y: currentY}];
             
-            // Отслеживаем количество шагов в текущем направлении
             let straightSteps = 0;
             let lastDirection = 'down';
+            let turnsCount = 0;
             
             while (currentY < gridSize - 1) {
                 const directions = [];
                 
                 // Проверяем возможность движения в каждом направлении
                 if (currentY < gridSize - 1) {
-                    if (lastDirection === 'down' || straightSteps >= MIN_STRAIGHT_PATH) {
+                    if (lastDirection === 'down' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
                         directions.push('down');
                     }
                 }
                 
                 if (currentX < gridSize - 2) {
-                    if (lastDirection === 'right' || straightSteps >= MIN_STRAIGHT_PATH) {
+                    if (lastDirection === 'right' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
                         directions.push('right');
                     }
                 }
                 
                 if (currentX > 1) {
-                    if (lastDirection === 'left' || straightSteps >= MIN_STRAIGHT_PATH) {
+                    if (lastDirection === 'left' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
                         directions.push('left');
+                    }
+                }
+                
+                // Если достигнут лимит поворотов, двигаемся только вниз
+                if (turnsCount >= MAX_TURNS) {
+                    directions.length = 0;
+                    if (currentY < gridSize - 1) {
+                        directions.push('down');
                     }
                 }
                 
@@ -118,11 +134,12 @@
                 
                 const direction = directions[Math.floor(Math.random() * directions.length)];
                 
-                // Обновляем счетчик прямых шагов
+                // Обновляем счетчик прямых шагов и поворотов
                 if (direction === lastDirection) {
                     straightSteps++;
                 } else {
                     straightSteps = 1;
+                    turnsCount++;
                 }
                 
                 // Обновляем позицию
@@ -142,12 +159,15 @@
                 roadPath.push({x: currentX, y: currentY});
             }
             
-            return roadPath;
+            return { roadPath, turnsCount };
         }
 
         function drawRoad() {
             createGrid();
-            const roadPath = generateRandomRoad();
+            const { roadPath, turnsCount } = generateRandomRoad();
+            
+            // Обновляем счетчик поворотов на странице
+            document.getElementById('turnCounter').textContent = `Количество поворотов: ${turnsCount}`;
             
             const cells = document.querySelectorAll('.cell');
             cells.forEach(cell => {
