@@ -42,6 +42,10 @@
             background-color: #2196F3;
         }
 
+        .boundary {
+            border: 1px solid #ff6b6b;
+        }
+
         #regenerateButton {
             position: fixed;
             top: 20px;
@@ -81,19 +85,27 @@
                 for (let j = 0; j < gridSize; j++) {
                     const cell = document.createElement('div');
                     cell.className = 'cell';
-                    // Вычисляем натуральный номер клетки
                     const cellNumber = i * gridSize + j + 1;
                     cell.textContent = cellNumber;
-                    // Сохраняем координаты в data-атрибутах для использования в drawRoad
                     cell.dataset.x = i;
                     cell.dataset.y = j;
+                    if (i === 0 || i === gridSize-1 || j === 0 || j === gridSize-1) {
+                        cell.classList.add('boundary');
+                    }
                     grid.appendChild(cell);
                 }
             }
         }
 
+        function isValidPosition(x, y, isFirstCell = false) {
+            if (isFirstCell) {
+                return y === 0 && x > 0 && x < gridSize - 1;
+            }
+            return x > 1 && x < gridSize - 2 && y > 0 && y < gridSize - 1;
+        }
+
         function generateRandomRoad() {
-            const startX = Math.floor(Math.random() * (gridSize - 2)) + 1;
+            const startX = Math.floor(Math.random() * (gridSize - 4)) + 2; // Начинаем с безопасной позиции
             let currentX = startX;
             let currentY = 0;
             const roadPath = [{x: currentX, y: currentY}];
@@ -102,22 +114,22 @@
             let lastDirection = 'down';
             let turnsCount = 0;
             
-            while (currentY < gridSize - 1) {
+            while (currentY < gridSize - 2) { // Останавливаемся на одну клетку раньше от границы
                 const directions = [];
                 
-                if (currentY < gridSize - 1) {
+                if (currentY < gridSize - 2) {
                     if (lastDirection === 'down' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
                         directions.push('down');
                     }
                 }
                 
-                if (currentX < gridSize - 2) {
+                if (currentX < gridSize - 3) { // Оставляем запас в одну клетку справа
                     if (lastDirection === 'right' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
                         directions.push('right');
                     }
                 }
                 
-                if (currentX > 1) {
+                if (currentX > 2) { // Оставляем запас в одну клетку слева
                     if (lastDirection === 'left' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
                         directions.push('left');
                     }
@@ -125,7 +137,7 @@
                 
                 if (turnsCount >= MAX_TURNS) {
                     directions.length = 0;
-                    if (currentY < gridSize - 1) {
+                    if (currentY < gridSize - 2) {
                         directions.push('down');
                     }
                 }
@@ -153,6 +165,10 @@
                     case 'left':
                         currentX--;
                         break;
+                }
+                
+                if (!isValidPosition(currentX, currentY)) {
+                    continue;
                 }
                 
                 lastDirection = direction;
