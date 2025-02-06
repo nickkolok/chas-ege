@@ -8,7 +8,7 @@
 		let timeThird = slKrome([timeFirst, timeSecond], 30, 250, 2);
 		let answer = timeFirst * timeSecond * timeThird / (timeFirst * timeSecond + timeFirst * timeThird + timeSecond * timeThird);
 
-		genAssert(answer.isZ(), "Ответ не целый");
+		genAssert(answer.isAlmostInteger(), "Ответ не целый");
 
 		NAtask.setTask({
 			text: 'Первый насос наполняет бак за ' + timeFirst.randToChMin() + ', ' +
