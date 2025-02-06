@@ -1,10 +1,4 @@
-#переходим в общую папку набора
-#заполняем переменную array названиями шаблонов
-#array=(8 3 23 11 76)
-#или 
-#array=("8 < comment> <prefernece...>" "3 < comment> <prefernece...>" 23 11 76)
-#относительный путь до скрипта и до обрабатываемой папки
-#../fast_set.sh ../../matege2023p/4
+find . -mindepth 1 ! -name "$(basename "$0")" -exec rm -rf {} +
 
 array=()
 
@@ -18,6 +12,9 @@ result=${result:-/}
 touch $result.js
 printf "if (!window.nabor)\n\twindow.nabor = {};\nwindow.nabor.importFrom({\n\tnZad: "${#array[@]}",\n \tadres: '../zdn/"$result"/',\n" >> $result.js
 printf "\tname: '"$result"',\n});\n" >> $result.js
+
+read -p "Add 'setMinimaxFunctionTask.forbidOpenEnds' to all main.js files? (y/N): " add_forbidOpenEnds
+read -p "Add 'setTask.assertSaneDecimalsStrong' to all main.js files? (y/N): " add_assertSaneDecimalsStrong
 
 cd "./"
 i=1;
@@ -48,6 +45,14 @@ for element in "${array[@]}"; do
     else
         printf "window.nabor.preferences['%s'] = [%s];\n" "$type" "$descriptions" >> main.js;
     fi
-    printf "chas2.task.setMinimaxFunctionTask.forbidOpenEnds = true;\n" >> main.js;
+
+    if [[ "$add_forbidOpenEnds" =~ ^[Yy]$ ]]; then
+        printf "chas2.task.setMinimaxFunctionTask.forbidOpenEnds = true;\n" >> main.js;
+    fi
+
+    if [[ "$add_assertSaneDecimalsStrong" =~ ^[Yy]$ ]]; then
+        printf "chas2.task.setTask.assertSaneDecimalsStrong = true;\n" >> main.js;
+    fi
+
     cd ..;
 done
