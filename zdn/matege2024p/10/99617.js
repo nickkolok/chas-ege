@@ -14,8 +14,8 @@
 		NAtask.setTask({
 			text:names.shuffleJoin(' и ')+', '+
 			'работая вместе, '+
-			'пропалывают грядку за ' + timeAll.randToChMin()  + ', '+
-			'а '+one+' '+names[0]+' - за ' + timeFirst.randToChMin() + '. '+
+			'пропалывают грядку за ' + timeAll.randToChMin('v')  + ', '+
+			'а '+one+' '+names[0]+' - за ' + timeFirst.randToChMin('v') + '. '+
 			'За сколько минут пропалывает грядку '+one+' '+names[1]+'?',
 			answers: timeSecond,
 			authors: ['Александра Суматохина'],
