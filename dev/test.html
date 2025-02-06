@@ -65,6 +65,7 @@
     <script>
         const grid = document.getElementById('grid');
         const gridSize = 20;
+        const MIN_STRAIGHT_PATH = 3; // Минимальное количество клеток в одном направлении
         
         function createGrid() {
             grid.innerHTML = '';
@@ -79,35 +80,52 @@
         }
 
         function generateRandomRoad() {
-            // Начальная точка всегда сверху, случайная позиция по X
             const startX = Math.floor(Math.random() * (gridSize - 2)) + 1;
             let currentX = startX;
             let currentY = 0;
             const roadPath = [{x: currentX, y: currentY}];
             
-            // Генерируем путь до нижней границы
+            // Отслеживаем количество шагов в текущем направлении
+            let straightSteps = 0;
+            let lastDirection = 'down';
+            
             while (currentY < gridSize - 1) {
-                // Определяем возможные направления движения
                 const directions = [];
                 
-                // Вниз всегда возможно, если мы не у нижней границы
-                if (currentY < gridSize - 1) directions.push('down');
-                
-                // Вправо возможно, если есть место и нет поворота в предыдущих 2 шагах
-                if (currentX < gridSize - 2 && 
-                    roadPath.slice(-2).every(point => point.x === currentX)) {
-                    directions.push('right');
+                // Проверяем возможность движения в каждом направлении
+                if (currentY < gridSize - 1) {
+                    if (lastDirection === 'down' || straightSteps >= MIN_STRAIGHT_PATH) {
+                        directions.push('down');
+                    }
                 }
                 
-                // Влево возможно, если есть место и нет поворота в предыдущих 2 шагах
-                if (currentX > 1 && 
-                    roadPath.slice(-2).every(point => point.x === currentX)) {
-                    directions.push('left');
+                if (currentX < gridSize - 2) {
+                    if (lastDirection === 'right' || straightSteps >= MIN_STRAIGHT_PATH) {
+                        directions.push('right');
+                    }
                 }
                 
-                // Выбираем случайное направление
+                if (currentX > 1) {
+                    if (lastDirection === 'left' || straightSteps >= MIN_STRAIGHT_PATH) {
+                        directions.push('left');
+                    }
+                }
+                
+                // Если нет доступных направлений, продолжаем в текущем направлении
+                if (directions.length === 0) {
+                    directions.push(lastDirection);
+                }
+                
                 const direction = directions[Math.floor(Math.random() * directions.length)];
                 
+                // Обновляем счетчик прямых шагов
+                if (direction === lastDirection) {
+                    straightSteps++;
+                } else {
+                    straightSteps = 1;
+                }
+                
+                // Обновляем позицию
                 switch(direction) {
                     case 'down':
                         currentY++;
@@ -120,6 +138,7 @@
                         break;
                 }
                 
+                lastDirection = direction;
                 roadPath.push({x: currentX, y: currentY});
             }
             
@@ -130,7 +149,6 @@
             createGrid();
             const roadPath = generateRandomRoad();
             
-            // Применяем стили дороги
             const cells = document.querySelectorAll('.cell');
             cells.forEach(cell => {
                 const [x, y] = cell.textContent.split(',').map(Number);
@@ -138,7 +156,6 @@
                 if (roadPath.some(point => point.x === x && point.y === y)) {
                     cell.classList.add('road');
                     
-                    // Определяем повороты
                     const index = roadPath.findIndex(point => point.x === x && point.y === y);
                     if (index > 0 && index < roadPath.length - 1) {
                         const prev = roadPath[index - 1];
@@ -151,7 +168,6 @@
             });
         }
 
-        // Инициализация и обработчик кнопки
         document.getElementById('regenerateButton').addEventListener('click', drawRoad);
         drawRoad();
     </script>
