@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Grid Road Visualization</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1e1e1e, #2d2d2d);
+            font-family: Arial, sans-serif;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            gap: 1px;
+            background-color: #333;
+            border-radius: 10px;
+            border: 2px solid #444;
+        }
+
+        .cell {
+            width: 20px;
+            height: 20px;
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .road {
+            background-color: #4CAF50;
+        }
+
+        .turn {
+            background-color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid" id="grid"></div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const gridSize = 20;
+        
+        // Create grid cells
+        for (let i = 0; i < gridSize; i++) {
+            for (let j = 0; j < gridSize; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.textContent = `${i},${j}`;
+                grid.appendChild(cell);
+            }
+        }
+
+        // Define road path
+        const roadPath = [
+            // First vertical segment
+            ...Array.from({ length: 10 }, (_, i) => ({ x: 5, y: i })),
+            // First horizontal segment
+            ...Array.from({ length: 10 }, (_, i) => ({ x: 5 + i, y: 10 })),
+            // Second vertical segment
+            ...Array.from({ length: 10 }, (_, i) => ({ x: 15, y: 10 + i })),
+        ];
+
+        // Apply road styling
+        const cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            const [x, y] = cell.textContent.split(',').map(Number);
+            
+            if (roadPath.some(point => point.x === x && point.y === y)) {
+                cell.classList.add('road');
+                
+                // Add turns
+                if ((x === 5 && y === 10) || (x === 15 && y === 10)) {
+                    cell.classList.add('turn');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
