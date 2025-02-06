@@ -92,6 +92,15 @@
         const MIN_PATH_LENGTH = 10;
         const BUILDINGS_COUNT = 4;
         
+        // Массив цветов для зданий
+        const buildingColors = [
+            '#FF9800',  // оранжевый
+            '#E91E63',  // розовый
+            '#9C27B0',  // фиолетовый
+            '#673AB7'   // темно-фиолетовый
+        ];
+
+        // Остальные вспомогательные функции остаются без изменений
         function createGrid() {
             grid.innerHTML = '';
             for (let i = 0; i < gridSize; i++) {
@@ -263,11 +272,18 @@
                     const x = Math.floor(Math.random() * (gridSize - width));
                     const y = Math.floor(Math.random() * (gridSize - height));
                     
-                    const building = { x, y, width, height };
+                    // Добавляем цвет к объекту здания
+                    const building = {
+                        x,
+                        y,
+                        width,
+                        height,
+                        color: buildingColors[i] // Каждому зданию свой цвет из массива
+                    };
                     
                     if (isWithinGrid(building) && 
                         touchesRoad(building, roadPath) &&
-                        !intersectsRoad(building, roadPath) && // Добавлена проверка пересечения с дорогой
+                        !intersectsRoad(building, roadPath) &&
                         !buildings.some(b => buildingsIntersect(building, b))) {
                         buildings.push(building);
                         validBuilding = true;
@@ -306,10 +322,11 @@
                     }
                 }
                 
+                // Отрисовка зданий с их уникальными цветами
                 for (const building of buildings) {
                     if (x >= building.x && x < building.x + building.width &&
                         y >= building.y && y < building.y + building.height) {
-                        cell.classList.add('building');
+                        cell.style.backgroundColor = building.color;
                     }
                 }
             });
