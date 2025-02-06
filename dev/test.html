@@ -92,7 +92,6 @@
         const MIN_PATH_LENGTH = 10;
         const BUILDINGS_COUNT = 4;
         
-        // Функция для создания сетки
         function createGrid() {
             grid.innerHTML = '';
             for (let i = 0; i < gridSize; i++) {
@@ -111,7 +110,6 @@
             }
         }
 
-        // Проверка валидности позиции
         function isValidPosition(x, y, isFirstCell = false) {
             if (isFirstCell) {
                 return y === 0 && x > 0 && x < gridSize - 1;
@@ -119,7 +117,6 @@
             return x > 1 && x < gridSize - 2 && y > 0 && y < gridSize - 1;
         }
 
-        // Генерация случайной дороги
         function generateRandomRoad() {
             const startX = Math.floor(Math.random() * (gridSize - 4)) + 2;
             let currentX = startX;
@@ -208,7 +205,6 @@
             return { roadPath, turnsCount };
         }
 
-        // Проверка пересечения зданий
         function buildingsIntersect(building1, building2) {
             return !(building1.x + building1.width <= building2.x ||
                     building2.x + building2.width <= building1.x ||
@@ -216,16 +212,18 @@
                     building2.y + building2.height <= building1.y);
         }
 
-        // Проверка касания дороги
         function touchesRoad(building, roadPath) {
             for (let x = building.x; x < building.x + building.width; x++) {
                 for (let y = building.y; y < building.y + building.height; y++) {
                     // Проверяем каждую клетку здания
                     for (const roadCell of roadPath) {
-                        // Проверяем соседние клетки
+                        // Проверяем соседние клетки (но не саму клетку дороги)
                         if ((Math.abs(x - roadCell.x) === 1 && y === roadCell.y) ||
                             (Math.abs(y - roadCell.y) === 1 && x === roadCell.x)) {
-                            return true;
+                            // Проверяем, что здание не находится на дороге
+                            if (x !== roadCell.x || y !== roadCell.y) {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -233,7 +231,17 @@
             return false;
         }
 
-        // Проверка выхода за пределы сетки
+        function intersectsRoad(building, roadPath) {
+            for (let x = building.x; x < building.x + building.width; x++) {
+                for (let y = building.y; y < building.y + building.height; y++) {
+                    if (roadPath.some(cell => cell.x === x && cell.y === y)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         function isWithinGrid(building) {
             return building.x >= 0 && 
                    building.x + building.width <= gridSize &&
@@ -241,7 +249,6 @@
                    building.y + building.height <= gridSize;
         }
 
-        // Генерация зданий
         function generateBuildings(roadPath) {
             const buildings = [];
             const maxAttempts = 100;
@@ -251,16 +258,16 @@
                 let validBuilding = false;
                 
                 while (!validBuilding && attempts < maxAttempts) {
-                    const width = Math.floor(Math.random() * 3) + 2; // Ширина 2-4
-                    const height = Math.floor(Math.random() * 3) + 2; // Высота 2-4
+                    const width = Math.floor(Math.random() * 3) + 2;
+                    const height = Math.floor(Math.random() * 3) + 2;
                     const x = Math.floor(Math.random() * (gridSize - width));
                     const y = Math.floor(Math.random() * (gridSize - height));
                     
                     const building = { x, y, width, height };
                     
-                    // Проверяем все условия
                     if (isWithinGrid(building) && 
                         touchesRoad(building, roadPath) &&
+                        !intersectsRoad(building, roadPath) && // Добавлена проверка пересечения с дорогой
                         !buildings.some(b => buildingsIntersect(building, b))) {
                         buildings.push(building);
                         validBuilding = true;
@@ -273,7 +280,6 @@
             return buildings;
         }
 
-        // Отрисовка всего
         function drawRoad() {
             createGrid();
             const { roadPath, turnsCount } = generateRandomRoad();
@@ -287,7 +293,6 @@
                 const x = parseInt(cell.dataset.x);
                 const y = parseInt(cell.dataset.y);
                 
-                // Отрисовка дороги
                 if (roadPath.some(point => point.x === x && point.y === y)) {
                     cell.classList.add('road');
                     
@@ -301,7 +306,6 @@
                     }
                 }
                 
-                // Отрисовка зданий
                 for (const building of buildings) {
                     if (x >= building.x && x < building.x + building.width &&
                         y >= building.y && y < building.y + building.height) {
