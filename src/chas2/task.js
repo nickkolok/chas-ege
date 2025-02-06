@@ -166,6 +166,14 @@ chas2.task = {
 			window.vopr.dey = o.draw;
 		}
 
+		o.assertSaneDecimalsStrong = false || chas2.task.setTask.assertSaneDecimalsStrong;
+
+		if(o.assertSaneDecimalsStrong){
+			let insaneDecimal = /\d+[.,]\d+/g;
+			genAssert(!insaneDecimal.test(o.text), 'Текст задания содержит десятичные лроби');
+			genAssert(!insaneDecimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные лроби');
+		}
+
 		window.vopr.kat.importFrom(o.tags);
 
 		var voprcheck = dvig.validateVopr();
