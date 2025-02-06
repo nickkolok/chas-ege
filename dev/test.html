@@ -66,11 +66,18 @@
             top: 60px;
             color: white;
         }
+
+        #pathLength {
+            position: fixed;
+            top: 90px;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <button id="regenerateButton">Создать новую дорогу</button>
     <div id="turnCounter">Количество поворотов: 0</div>
+    <div id="pathLength">Длина пути: 0</div>
     <div class="grid" id="grid"></div>
 
     <script>
@@ -78,6 +85,7 @@
         const gridSize = 20;
         const MIN_STRAIGHT_PATH = 3;
         const MAX_TURNS = 3;
+        const MIN_PATH_LENGTH = 10;
         
         function createGrid() {
             grid.innerHTML = '';
@@ -105,7 +113,7 @@
         }
 
         function generateRandomRoad() {
-            const startX = Math.floor(Math.random() * (gridSize - 4)) + 2; // Начинаем с безопасной позиции
+            const startX = Math.floor(Math.random() * (gridSize - 4)) + 2;
             let currentX = startX;
             let currentY = 0;
             const roadPath = [{x: currentX, y: currentY}];
@@ -114,8 +122,21 @@
             let lastDirection = 'down';
             let turnsCount = 0;
             
-            while (currentY < gridSize - 2) { // Останавливаемся на одну клетку раньше от границы
+            // Функция для проверки минимальной длины пути
+            function canReachMinLength(currentLength, remainingSteps) {
+                return currentLength + remainingSteps >= MIN_PATH_LENGTH;
+            }
+            
+            while (currentY < gridSize - 2) {
                 const directions = [];
+                
+                // Проверяем возможность достижения минимальной длины
+                const currentLength = roadPath.length;
+                const minRemainingSteps = gridSize - 1 - currentY;
+                
+                if (!canReachMinLength(currentLength, minRemainingSteps)) {
+                    return generateRandomRoad();
+                }
                 
                 if (currentY < gridSize - 2) {
                     if (lastDirection === 'down' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
@@ -123,13 +144,13 @@
                     }
                 }
                 
-                if (currentX < gridSize - 3) { // Оставляем запас в одну клетку справа
+                if (currentX < gridSize - 3) {
                     if (lastDirection === 'right' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
                         directions.push('right');
                     }
                 }
                 
-                if (currentX > 2) { // Оставляем запас в одну клетку слева
+                if (currentX > 2) {
                     if (lastDirection === 'left' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
                         directions.push('left');
                     }
@@ -143,7 +164,7 @@
                 }
                 
                 if (directions.length === 0) {
-                    directions.push(lastDirection);
+                    return generateRandomRoad();
                 }
                 
                 const direction = directions[Math.floor(Math.random() * directions.length)];
@@ -175,6 +196,11 @@
                 roadPath.push({x: currentX, y: currentY});
             }
             
+            // Проверяем минимальную длину пути
+            if (roadPath.length < MIN_PATH_LENGTH) {
+                return generateRandomRoad();
+            }
+            
             return { roadPath, turnsCount };
         }
 
@@ -183,6 +209,7 @@
             const { roadPath, turnsCount } = generateRandomRoad();
             
             document.getElementById('turnCounter').textContent = `Количество поворотов: ${turnsCount}`;
+            document.getElementById('pathLength').textContent = `Длина пути: ${roadPath.length}`;
             
             const cells = document.querySelectorAll('.cell');
             cells.forEach(cell => {
