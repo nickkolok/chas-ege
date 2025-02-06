@@ -9,13 +9,13 @@
 		let timeSecond = slKrome(timeFirst, 15, 80);
 		let timeAll = timeFirst * timeSecond/ (timeFirst + timeSecond);
 
-		genAssert(timeAll.isZ(), "Общее время не целое");
+		genAssert(timeAll.isAlmostInteger(), "Общее время не целое");
 
 		NAtask.setTask({
 			text:names.shuffleJoin(' и ')+', '+
 			'работая вместе, '+
-			'пропалывают грядку за ' + timeAll.toChMin()  + ', '+
-			'а '+one+' '+names[0]+' - за ' + timeFirst.toChMin() + '. '+
+			'пропалывают грядку за ' + timeAll.randToChMin()  + ', '+
+			'а '+one+' '+names[0]+' - за ' + timeFirst.randToChMin() + '. '+
 			'За сколько минут пропалывает грядку '+one+' '+names[1]+'?',
 			answers: timeSecond,
 			authors: ['Александра Суматохина'],
