@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Grid Road Visualization</title>
+    <title>Random Grid Road Visualization</title>
     <style>
         body {
             display: flex;
@@ -41,49 +41,119 @@
         .turn {
             background-color: #2196F3;
         }
+
+        #regenerateButton {
+            position: fixed;
+            top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #regenerateButton:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
+    <button id="regenerateButton">Создать новую дорогу</button>
     <div class="grid" id="grid"></div>
 
     <script>
         const grid = document.getElementById('grid');
         const gridSize = 20;
         
-        // Create grid cells
-        for (let i = 0; i < gridSize; i++) {
-            for (let j = 0; j < gridSize; j++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                cell.textContent = `${i},${j}`;
-                grid.appendChild(cell);
+        function createGrid() {
+            grid.innerHTML = '';
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.textContent = `${i},${j}`;
+                    grid.appendChild(cell);
+                }
             }
         }
 
-        // Define road path
-        const roadPath = [
-            // First vertical segment
-            ...Array.from({ length: 10 }, (_, i) => ({ x: 5, y: i })),
-            // First horizontal segment
-            ...Array.from({ length: 10 }, (_, i) => ({ x: 5 + i, y: 10 })),
-            // Second vertical segment
-            ...Array.from({ length: 10 }, (_, i) => ({ x: 15, y: 10 + i })),
-        ];
-
-        // Apply road styling
-        const cells = document.querySelectorAll('.cell');
-        cells.forEach(cell => {
-            const [x, y] = cell.textContent.split(',').map(Number);
+        function generateRandomRoad() {
+            // Начальная точка всегда сверху, случайная позиция по X
+            const startX = Math.floor(Math.random() * (gridSize - 2)) + 1;
+            let currentX = startX;
+            let currentY = 0;
+            const roadPath = [{x: currentX, y: currentY}];
             
-            if (roadPath.some(point => point.x === x && point.y === y)) {
-                cell.classList.add('road');
+            // Генерируем путь до нижней границы
+            while (currentY < gridSize - 1) {
+                // Определяем возможные направления движения
+                const directions = [];
                 
-                // Add turns
-                if ((x === 5 && y === 10) || (x === 15 && y === 10)) {
-                    cell.classList.add('turn');
+                // Вниз всегда возможно, если мы не у нижней границы
+                if (currentY < gridSize - 1) directions.push('down');
+                
+                // Вправо возможно, если есть место и нет поворота в предыдущих 2 шагах
+                if (currentX < gridSize - 2 && 
+                    roadPath.slice(-2).every(point => point.x === currentX)) {
+                    directions.push('right');
                 }
+                
+                // Влево возможно, если есть место и нет поворота в предыдущих 2 шагах
+                if (currentX > 1 && 
+                    roadPath.slice(-2).every(point => point.x === currentX)) {
+                    directions.push('left');
+                }
+                
+                // Выбираем случайное направление
+                const direction = directions[Math.floor(Math.random() * directions.length)];
+                
+                switch(direction) {
+                    case 'down':
+                        currentY++;
+                        break;
+                    case 'right':
+                        currentX++;
+                        break;
+                    case 'left':
+                        currentX--;
+                        break;
+                }
+                
+                roadPath.push({x: currentX, y: currentY});
             }
-        });
+            
+            return roadPath;
+        }
+
+        function drawRoad() {
+            createGrid();
+            const roadPath = generateRandomRoad();
+            
+            // Применяем стили дороги
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                const [x, y] = cell.textContent.split(',').map(Number);
+                
+                if (roadPath.some(point => point.x === x && point.y === y)) {
+                    cell.classList.add('road');
+                    
+                    // Определяем повороты
+                    const index = roadPath.findIndex(point => point.x === x && point.y === y);
+                    if (index > 0 && index < roadPath.length - 1) {
+                        const prev = roadPath[index - 1];
+                        const next = roadPath[index + 1];
+                        if (prev.x !== next.x && prev.y !== next.y) {
+                            cell.classList.add('turn');
+                        }
+                    }
+                }
+            });
+        }
+
+        // Инициализация и обработчик кнопки
+        document.getElementById('regenerateButton').addEventListener('click', drawRoad);
+        drawRoad();
     </script>
 </body>
 </html>
