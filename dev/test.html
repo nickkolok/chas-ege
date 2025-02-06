@@ -72,8 +72,8 @@
     <script>
         const grid = document.getElementById('grid');
         const gridSize = 20;
-        const MIN_STRAIGHT_PATH = 3; // Минимальное количество клеток в одном направлении
-        const MAX_TURNS = 3; // Максимальное количество поворотов
+        const MIN_STRAIGHT_PATH = 3;
+        const MAX_TURNS = 3;
         
         function createGrid() {
             grid.innerHTML = '';
@@ -81,7 +81,12 @@
                 for (let j = 0; j < gridSize; j++) {
                     const cell = document.createElement('div');
                     cell.className = 'cell';
-                    cell.textContent = `${i},${j}`;
+                    // Вычисляем натуральный номер клетки
+                    const cellNumber = i * gridSize + j + 1;
+                    cell.textContent = cellNumber;
+                    // Сохраняем координаты в data-атрибутах для использования в drawRoad
+                    cell.dataset.x = i;
+                    cell.dataset.y = j;
                     grid.appendChild(cell);
                 }
             }
@@ -100,7 +105,6 @@
             while (currentY < gridSize - 1) {
                 const directions = [];
                 
-                // Проверяем возможность движения в каждом направлении
                 if (currentY < gridSize - 1) {
                     if (lastDirection === 'down' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
                         directions.push('down');
@@ -119,7 +123,6 @@
                     }
                 }
                 
-                // Если достигнут лимит поворотов, двигаемся только вниз
                 if (turnsCount >= MAX_TURNS) {
                     directions.length = 0;
                     if (currentY < gridSize - 1) {
@@ -127,14 +130,12 @@
                     }
                 }
                 
-                // Если нет доступных направлений, продолжаем в текущем направлении
                 if (directions.length === 0) {
                     directions.push(lastDirection);
                 }
                 
                 const direction = directions[Math.floor(Math.random() * directions.length)];
                 
-                // Обновляем счетчик прямых шагов и поворотов
                 if (direction === lastDirection) {
                     straightSteps++;
                 } else {
@@ -142,7 +143,6 @@
                     turnsCount++;
                 }
                 
-                // Обновляем позицию
                 switch(direction) {
                     case 'down':
                         currentY++;
@@ -166,12 +166,12 @@
             createGrid();
             const { roadPath, turnsCount } = generateRandomRoad();
             
-            // Обновляем счетчик поворотов на странице
             document.getElementById('turnCounter').textContent = `Количество поворотов: ${turnsCount}`;
             
             const cells = document.querySelectorAll('.cell');
             cells.forEach(cell => {
-                const [x, y] = cell.textContent.split(',').map(Number);
+                const x = parseInt(cell.dataset.x);
+                const y = parseInt(cell.dataset.y);
                 
                 if (roadPath.some(point => point.x === x && point.y === y)) {
                     cell.classList.add('road');
