@@ -170,8 +170,8 @@ chas2.task = {
 
 		if(o.assertSaneDecimalsStrong){
 			let insaneDecimal = /\d+[.,]\d+/g;
-			genAssert(!insaneDecimal.test(o.text), 'Текст задания содержит десятичные лроби');
-			genAssert(!insaneDecimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные лроби');
+			genAssert(!insaneDecimal.test(o.text), 'Текст задания содержит десятичные дроби');
+			genAssert(!insaneDecimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные дроби');
 		}
 
 		window.vopr.kat.importFrom(o.tags);
