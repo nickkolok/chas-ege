@@ -166,9 +166,9 @@ chas2.task = {
 			window.vopr.dey = o.draw;
 		}
 
-		o.assertSaneDecimalsStrong = false || chas2.task.setTask.assertSaneDecimalsStrong;
+		o.forbidDecimalFractions = false || chas2.task.setTask.forbidDecimalFractions;
 
-		if(o.assertSaneDecimalsStrong){
+		if(o.forbidDecimalFractions){
 			let insaneDecimal = /\d+[.,]\d+/g;
 			genAssert(!insaneDecimal.test(o.text), 'Текст задания содержит десятичные дроби');
 			genAssert(!insaneDecimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные дроби');
