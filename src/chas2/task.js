@@ -595,7 +595,7 @@ chas2.task = {
 			genAssert(answer.n < 1000000, 'Числитель дроби слишком большой (по модулю)');
 			genAssert(answer.d <= (o.maxDenominator || 20), 'Знаменатель дроби слишком большой');
 			genAssert(answer.d >= (o.minDenominator ||  2), 'Знаменатель дроби слишком маленький');
-1
+
 			// Вносим минус в числитель
 			answer.n *= answer.s;
 
