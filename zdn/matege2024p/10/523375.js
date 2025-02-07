@@ -1,7 +1,7 @@
 (function() { 'use strict'; retryWhileError(function() {
 	let s=sl(20, 200, 1);
 	let k=sl(1, 15, 1);
-	let b=sl(1, 24, 1);
+	let b=sl(1, 23, 1);
 	let n=sl(1, 5, 1);
 	let x=sl([5, k+1].maxE(), 50);
 	let a=b-n-s/(x+k)-s/(x-k);
