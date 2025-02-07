@@ -1,3 +1,10 @@
+#переходим в общую папку набора
+#заполняем переменную array названиями шаблонов
+#array=(8 3 23 11 76)
+#или 
+#array=("8 < comment> <prefernece...>" "3 < comment> <prefernece...>" 23 11 76)
+#относительный путь до скрипта и до обрабатываемой папки
+#../fast_set.sh ../../matege2023p/4
 find . -mindepth 1 ! -name "$(basename "$0")" -exec rm -rf {} +
 
 array=()
