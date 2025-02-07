@@ -51,6 +51,7 @@ function readOptions() {
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
 	options.forceIntegers = $('#forceIntegers').is(':checked');
+	options.onlyIntegers = $('#onlyIntegers').is(':checked');
 	options.randomSeed = $('#randomSeed').val();
 	if (options.randomSeed === '') {
 		options.randomSeed = Date.now();
@@ -61,6 +62,7 @@ function readOptions() {
 	}
 
 	sluchch.forceIntegers = (options.forceIntegers) ? true : false;
+	sluchch.onlyIntegers = (options.onlyIntegers) ? true : false;
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
