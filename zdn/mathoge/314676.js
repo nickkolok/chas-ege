@@ -109,6 +109,7 @@ retryWhileError(function () {
             'Какое из следующих утверждений о данной функции ' + 'не'.esli(!rightOrWrong) + 'верно?',
         answers: answ,
         wrongAnswers: wrongAnsw,
+        analys: ('$y=\\frac{x^2}{'+a+'}+'+b+'x+'+c+'$').plusminus(),
     });
     NAtask.modifiers.addCanvasIllustration({
         width: 300,
