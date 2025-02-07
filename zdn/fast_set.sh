@@ -21,7 +21,7 @@ printf "if (!window.nabor)\n\twindow.nabor = {};\nwindow.nabor.importFrom({\n\tn
 printf "\tname: '"$result"',\n});\n" >> $result.js
 
 read -p "Add 'setMinimaxFunctionTask.forbidOpenEnds' to all main.js files? (y/N): " add_forbidOpenEnds
-read -p "Add 'setTask.assertSaneDecimalsStrong' to all main.js files? (y/N): " add_assertSaneDecimalsStrong
+read -p "Add 'setTask.forbidDecimalFractions' to all main.js files? (y/N): " add_forbidDecimalFractions
 
 cd "./"
 i=1;
@@ -57,8 +57,8 @@ for element in "${array[@]}"; do
         printf "chas2.task.setMinimaxFunctionTask.forbidOpenEnds = true;\n" >> main.js;
     fi
 
-    if [[ "$add_assertSaneDecimalsStrong" =~ ^[Yy]$ ]]; then
-        printf "chas2.task.setTask.assertSaneDecimalsStrong = true;\n" >> main.js;
+    if [[ "$add_forbidDecimalFractions" =~ ^[Yy]$ ]]; then
+        printf "chas2.task.setTask.forbidDecimalFractions = true;\n" >> main.js;
     fi
 
     cd ..;
