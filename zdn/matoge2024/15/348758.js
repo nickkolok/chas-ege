@@ -12,7 +12,6 @@
 				angleInDegree: true
 			},
 		});
-		genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
 
 		let angle = [triangle.angleBInDegrees, triangle.angleAInDegrees].iz().ceil();
 
