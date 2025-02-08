@@ -7,14 +7,15 @@
 		let timeSecond = slKrome(timeFirst, 30, 250, 2);
 		let timeThird = slKrome([timeFirst, timeSecond], 30, 250, 2);
 		let answer = timeFirst * timeSecond * timeThird / (timeFirst * timeSecond + timeFirst * timeThird + timeSecond * timeThird);
+		let container = sklonlxkand(decor.objectsFilledWithLiquid.iz());
 
 		genAssert(answer.isAlmostInteger(), "Ответ не целый");
 
 		NAtask.setTask({
-			text: 'Первый насос наполняет бак за ' + timeFirst.randToChMin('v') + ', ' +
+			text: 'Первый насос наполняет '+container.ve+' за ' + timeFirst.randToChMin('v') + ', ' +
 				'второй — за ' + timeSecond.randToChMin('v') + ', ' +
 				'а третий — за ' + timeThird.randToChMin('v') + '. ' +
-				'За сколько минут наполнят бак три насоса, ' +
+				'За сколько минут наполнят '+container.ve+' три насоса, ' +
 				'работая одновременно?',
 			answers: answer,
 			authors: ['Александра Суматохина'],
