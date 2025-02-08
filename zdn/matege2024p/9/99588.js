@@ -1,6 +1,6 @@
-(function() {
+(function () {
 	'use strict';
-	retryWhileError(function() {
+	retryWhileError(function () {
 		/* Из двух городов, расстояние между которыми равно 560 км, навстречу друг другу одновременно выехали два автомобиля. Через сколько часов автомобили встретятся, если их скорости равны 65 км/ч и 75 км/ч? */
 
 		let the_humanSettlementDestination = sklonlxkand(decor.humanSettlementDestination.iz()); // ["пункт","город","село","деревня"]
@@ -17,13 +17,13 @@
 		NAtask.setTask({
 			text: 'Из двух ' + the_humanSettlementDestination.rm + ', ' +
 				'расстояние между которыми равно ' + distance + ' км, ' +
-				'навстречу друг другу одновременно выехали два ' + the_vehicleRacingOnRoad.re + '. ' +
+				'навстречу друг другу одновременно выехали ' + ['два', 'две'][the_vehicleRacingOnRoad.rod] + ' ' + the_vehicleRacingOnRoad.re + '. ' +
 				'Через сколько часов ' + the_vehicleRacingOnRoad.im + ' встретятся, ' +
 				'если их скорости равны ' + speed1 + ' км/ч и ' + speed2 + ' км/ч?',
 			answers: answer,
 			authors: ['Александра Суматохина'],
 		});
-		NAtask.modifiers.allDecimalsToStandard( /*true*/ );
+		NAtask.modifiers.allDecimalsToStandard( /*true*/);
 	}, 2000);
 })();
 // РешуЕГЭ: 
