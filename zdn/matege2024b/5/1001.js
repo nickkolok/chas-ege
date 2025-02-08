@@ -1,8 +1,8 @@
 (function () {
+    'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        'use strict';
-
+        
         let key = "1001";
 
         let variant = getListedPreference(key, [{
@@ -29,11 +29,11 @@
         genAssertZ1000(answers);
         
         let nameQuestion = sklonlxkand(['билет', 'вопрос'].iz());
-        let event = ['экзамене', ['проверочной работе', 'контрольной работе', 'тестировании', 'тесте'].iz()][Number(nameQuestion.ie == 'экзамен')];
+        let event = ['экзамене', ['проверочной работе', 'контрольной работе', 'тестировании', 'тесте'].iz()][Number(nameQuestion.ie == 'вопрос')];
 
         NAtask.setTask({
             text: `На ${event} будет ${chislitlx(numberOfQuestions, nameQuestion.ie, '$')}, ${om.maleNames.iz()} ${`не`.esli(variant > 1)} выучил $${numberlearnedOrNotlearnedQuestions}$ из них. 
-			Найдите вероятность того, что ему попадётся ${`не`.esli(variant % 2)} выученный ${nameQuestion.ve}.`,
+			Найдите вероятность того, что ему попадётся ${`не`.esli(variant % 2)}выученный ${nameQuestion.ve}.`,
             answers: answers,
             authors: ['Суматохина Александра'],
         });
