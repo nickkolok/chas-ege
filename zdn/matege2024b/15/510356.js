@@ -16,5 +16,5 @@
         });
     }, 100);
 })();
-//https://mathb-ege.sdamgia.ru/test?likes=510356
+//https://mathb-ege.sdamgia.ru/test?likes=509768
 //zer00player
