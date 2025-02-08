@@ -32,14 +32,14 @@
         triangle.connectVerticesInConnectionMatrix([3, 4]);
 
         let letters = om.latbukv.slice(0, 5);
-        let sidesMidle = letters.slice(0, 3);
-        sidesMidle.generatePairs();
-        sidesMidle = sidesMidle.map(side => side.shuffleJoin());
-        [sidesMidle[1], sidesMidle[2]] = [sidesMidle[2], sidesMidle[1]];
-        sidesMidle.splice(variant, 1)[0];
+        let sidesMiddle = letters.slice(0, 3);
+        sidesMiddle.generatePairs();
+        sidesMiddle = sidesMiddle.map(side => side.shuffleJoin());
+        [sidesMiddle[1], sidesMiddle[2]] = [sidesMiddle[2], sidesMiddle[1]];
+        sidesMiddle.splice(variant, 1)[0];
 
         if (variant == 1) {
-            sidesMidle = sidesMidle.reverse();
+            sidesMiddle = sidesMiddle.reverse();
         }
 
         let points = autoScale(triangle.vertices);
@@ -74,7 +74,7 @@
         };
 
         NAtask.setTask({
-            text: ` Точки $D$ и $F$ являются серединами сторон $${sidesMidle.join('$ и $')}$ треугольника $ABC$, 
+            text: ` Точки $D$ и $F$ являются серединами сторон $${sidesMiddle.join('$ и $')}$ треугольника $ABC$, 
 			${[
                     `сторона $AB$ равна $${triangle.lengthAB}$`,
                     `сторона $BC$ равна $${triangle.lengthBC}$`,
