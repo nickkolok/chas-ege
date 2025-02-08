@@ -8,14 +8,15 @@
 		let timeThird = slKrome([timeFirst, timeSecond], 30, 250, 2);
 		let answer = timeFirst * timeSecond * timeThird / (timeFirst * timeSecond + timeFirst * timeThird + timeSecond * timeThird);
 		let container = sklonlxkand(decor.objectsFilledWithLiquid.iz());
+		let pump = sklonlxkand(decor.objectsTransportingLiquids.iz());
 
 		genAssert(answer.isAlmostInteger(), "Ответ не целый");
 
 		NAtask.setTask({
-			text: 'Первый насос наполняет '+container.ve+' за ' + timeFirst.randToChMin('v') + ', ' +
-				'второй — за ' + timeSecond.randToChMin('v') + ', ' +
-				'а третий — за ' + timeThird.randToChMin('v') + '. ' +
-				'За сколько минут наполнят '+container.ve+' три насоса, ' +
+			text: 'Перв'+['ый','ая','ое'][pump.rod]+ ' '+ pump.ie+' наполняет '+container.ve+' за ' + timeFirst.randToChMin('v') + ', ' +
+				'втор'+['ой','ая','ое'][pump.rod]+' — за ' + timeSecond.randToChMin('v') + ', ' +
+				'а трет'+['ий','ья','ье'][pump.rod]+' — за ' + timeThird.randToChMin('v') + '. ' +
+				'За сколько минут наполнят '+container.ve+' три '+ pump.re+', ' +
 				'работая одновременно?',
 			answers: answer,
 			authors: ['Александра Суматохина'],
