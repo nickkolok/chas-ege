@@ -166,12 +166,13 @@ chas2.task = {
 			window.vopr.dey = o.draw;
 		}
 
-		o.forbidDecimalFractions = false || chas2.task.setTask.forbidDecimalFractions;
+		chas2.task.setTask.forbidDecimalFractions = chas2.task.setTask.forbidDecimalFractions || false;
+		o.forbidDecimalFractions = o.forbidDecimalFractions || chas2.task.setTask.forbidDecimalFractions;
 
 		if(o.forbidDecimalFractions){
-			let insaneDecimal = /\d+[.,]\d+/g;
-			genAssert(!insaneDecimal.test(o.text), 'Текст задания содержит десятичные дроби');
-			genAssert(!insaneDecimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные дроби');
+			let decimal = /\d+[.,]\d+/g;
+			genAssert(!decimal.test(o.text), 'Текст задания содержит десятичные дроби');
+			genAssert(!decimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные дроби');
 		}
 
 		window.vopr.kat.importFrom(o.tags);
