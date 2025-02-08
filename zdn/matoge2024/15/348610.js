@@ -15,10 +15,10 @@
 		}], sl(0, 2));
 
 		let letters = om.latbukv.slice(0, 4);
-		let angleDano = letters.slice(0, 3);
-		let centralAngle = angleDano.splice(variant, 1)[0];
-		let angleFind = [angleDano.iz(), centralAngle, letters[3]].randomReverse().join('');
-		angleDano.splice(1, 0, centralAngle);
+		let angleGiven = letters.slice(0, 3);
+		let centralAngle = angleGiven.splice(variant, 1)[0];
+		let angleFind = [angleGiven.iz(), centralAngle, letters[3]].randomReverse().join('');
+		angleGiven.splice(1, 0, centralAngle);
 
 		let triangle = new Triangle({
 			lengths: {
@@ -65,7 +65,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ известно, что $${angleDano.randomReverse().join('')} = ${valueAngle}^{\\circ}$, $${centralAngle + letters[3]}$ – биссектриса. 
+			text: `В треугольнике $ABC$ известно, что $${angleGiven.randomReverse().join('')} = ${valueAngle}^{\\circ}$, $${centralAngle + letters[3]}$ – биссектриса. 
 			Найдите угол $${angleFind}$. Ответ дайте в градусах.`,
 			answers: valueAngle / 2,
 			authors: ['Александра Суматохина'],
