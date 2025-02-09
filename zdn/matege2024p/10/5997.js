@@ -6,7 +6,7 @@
 		let v = sl(x + 1, 40);
 		let a = sl(1, 12, 1);
 		let b = a + n + s / (v + x) + s / (v - x);
-		genAssert(Number.isAlmostInteger(b), 'Время не может быть дробным');
+		genAssert(b.isAlmostInteger(), 'Время не может быть дробным');
 		genAssert(b < 24, 'Время отправления не может быть слишком большим');
 		let the_activeFloatingVehicle = sklonlxkand(["лодка", "байдарка", "баржа", "яхта", "моторная лодка"].iz());
 		let the_humanSettlementDestination = sklonlxkand(["пункт", "город", "село"].iz());
