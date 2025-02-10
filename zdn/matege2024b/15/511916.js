@@ -3,17 +3,30 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
+        let rand = sl(0, 1);
+        let randOfSickness = sl(0, 1);
 
-        let rand = sl(0, 6);
-        let whereTheyGetSick = ['школе', 'университете', 'ВУЗе', 'детском садике', 'стационаре'].iz();
-        let typeOfSickness = ['гриппом', 'корью', 'туберкулёзом', 'гепатитом В', 'ОРВИ', 'бронхитом', 'COVID-19', 'гриппом', 'ангиной'].iz();
-        let decreasedByHowMuch = [2, 4, 5, 10, 20, 25, 50][rand];
+        let theGetSickAtSchool = ['школе', 'университете', 'ВУЗе', 'детском садике'].iz();
+        let theySickinHospital = ['больнице', 'клинике', 'лечебнице', 'госпитале', 'стационаре', 'лазарете'].iz();
+        let whereTheyGetSick = [theGetSickAtSchool, theySickinHospital][randOfSickness];
+
+        let illnessInSchool = ['гриппом', 'корью', 'ОРВИ', 'гриппом', 'ангиной', 'гепатитом А', 'простудой', 'дифтерией', 'простудой'].iz();
+        let illnessesInTheHospital = ['туберкулёзом', 'гепатитом В', 'бронхитом', 'COVID-19', 'золотистым стафилококком'].iz();
+        let typeOfSickness = [illnessInSchool, illnessesInTheHospital][randOfSickness];
+
+        let decreasedByHowMuchGet = [2, 4, 5, 10, 20, 25, 50].iz();
+        let increasedByHowMuchGet = sl(2, 5, 0.1);
+
+        let increasedOrDecreased = ['увеличилось', 'уменьшилось'][rand];
+        let ByHowMuchGet = [increasedByHowMuchGet, decreasedByHowMuchGet][rand];
+
+        let result = [100 * increasedByHowMuchGet - 100, 100 - 100 / decreasedByHowMuchGet][rand];
 
         NAtask.setTask({
             text:
-                'Число больных ' + typeOfSickness + ' в ' + whereTheyGetSick + ' уменьшилось за месяц в ' + chislitlx(decreasedByHowMuch, 'раз', '$') + '.' +
-                ' На сколько процентов уменьшилось число больных ' + typeOfSickness + '?',
-            answers: 100 - (100 / decreasedByHowMuch),
+                'Число больных ' + typeOfSickness + ' в ' + whereTheyGetSick + ' ' + increasedOrDecreased + ' за месяц в ' + chislitlx(ByHowMuchGet, 'раз', '$') + '.' +
+                ' На сколько процентов ' + increasedOrDecreased + ' число больных ' + typeOfSickness + '?',
+            answers: result,
         });
     }, 100);
 })();
