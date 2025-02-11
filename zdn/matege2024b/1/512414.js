@@ -3,9 +3,13 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
+        let rand = sl(0, 1);
+        let walkOrRide = ['прошёл', 'проехал'][rand];
         let vehicleKeys = Object.keys(om.adequateSpeed.vehicle);
-        let driver = vehicleKeys.iz();
-        let speedInterval = om.adequateSpeed.vehicle[driver];
+        let walkingRouteKeys = Object.keys(om.adequateSpeed.walkingRoute);
+
+        let walkerOrDriver = [walkingRouteKeys.iz(), vehicleKeys.iz()][rand];
+        let speedInterval = [om.adequateSpeed.walkingRoute[walkerOrDriver], om.adequateSpeed.vehicle[walkerOrDriver]][rand];
         let speed = sluchch(speedInterval[0], speedInterval[1], 1);
 
         let firstTimePass = sl(15, 40, 1);
@@ -14,13 +18,13 @@
 
         NAtask.setTask({
             text:
-                driver.toZagl() + ' проехал ' + chislitlx(firstDistance, 'километр', '$') + ' за ' + chislitlx(firstTimePass, 'минута', 'v$') + '. ' +
-                'Сколько километров он проедет за ' + chislitlx(secondTimePass, 'минута', 'v$') + ', ' +
-                'если будет ехать с той же скоростью?',
+                walkerOrDriver.toZagl() + ' ' + walkOrRide + ' ' + chislitlx(firstDistance, 'километр', '$') + ' за ' + chislitlx(firstTimePass, 'минута', 'v$') + '. ' +
+                'Сколько километров он преодолеет за ' + chislitlx(secondTimePass, 'минута', 'v$') + ', ' +
+                'если будет двигаться с той же скоростью?',
             answers: (secondTimePass * firstDistance) / firstTimePass,
         });
 
-    }, 10);
+    }, 100);
+    //https://mathb-ege.sdamgia.ru/test?likes=512414
+    //zer00player
 })();
-//https://mathb-ege.sdamgia.ru/test?likes=512414
-//zer00player

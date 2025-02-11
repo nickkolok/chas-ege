@@ -19,10 +19,10 @@
 		let esli=[', если известно, что ',', если '].iz();
 
 		NAtask.setTask({
-			text: tub_num[v2].toZagl()+' '+tub_naz.ie+' '+prop+' на '+chislitlx(b, 'литр','r')+' в минуту '+dol[v2][1]+', чем '+tub_num[1-v2]+'. '+
+			text: tub_num[v2].toZagl()+' '+tub_naz.ie+' '+prop+' на '+chislitlx(b, 'литр','v')+' в минуту '+dol[v2][1]+', чем '+tub_num[1-v2]+'. '+
 				'Сколько литров '+liquid.re+' в минуту '+prop+' '+tub_num[1-v1]+' '+tub_naz.ie+esli+rez.ve+' объёмом '+chislitlx(A, 'литр','r')+
-				[' она '+['заполняет','опустошает'].iz()+' на '+chislitlx(n, 'минута','r')+' '+dol[1-v1][0]+', чем '+tub_num[v1]+' '+tub_naz.ie+'?',
-				 ' '+tub_num[v1]+' '+tub_naz.ie+' '+['заполняет','опустошает'].iz()+' на '+chislitlx(n, 'минута','r')+' '+dol[v1][0]+'?'].iz(),
+				[' она '+['заполняет','опустошает'].iz()+' на '+chislitlx(n, 'минута','v')+' '+dol[1-v1][0]+', чем '+tub_num[v1]+' '+tub_naz.ie+'?',
+				 ' '+tub_num[v1]+' '+tub_naz.ie+' '+['заполняет','опустошает'].iz()+' на '+chislitlx(n, 'минута','v')+' '+dol[v1][0]+'?'].iz(),
 			answers: v1==1 ? x : x+b,
 			authors: ['Aisse-258']
 		});
