@@ -7,16 +7,16 @@
 		let timeSecond = slKrome(timeFirst, 30, 250, 2);
 		let timeThird = slKrome([timeFirst, timeSecond], 30, 250, 2);
 		let answer = timeFirst * timeSecond * timeThird / (timeFirst * timeSecond + timeFirst * timeThird + timeSecond * timeThird);
+		genAssert(answer.isAlmostInteger(), "Ответ не целый");
+
 		let container = sklonlxkand(decor.objectsFilledWithLiquid.iz());
 		let pump = sklonlxkand(decor.objectsTransportingLiquids.iz());
 
-		genAssert(answer.isAlmostInteger(), "Ответ не целый");
-
 		NAtask.setTask({
-			text: 'Перв'+['ый','ая','ое'][pump.rod]+ ' '+ pump.ie+' наполняет '+container.ve+' за ' + timeFirst.randToChMin('v') + ', ' +
-				'втор'+['ой','ая','ое'][pump.rod]+' — за ' + timeSecond.randToChMin('v') + ', ' +
-				'а трет'+['ий','ья','ье'][pump.rod]+' — за ' + timeThird.randToChMin('v') + '. ' +
-				'За сколько минут наполнят '+container.ve+' три '+ pump.re+', ' +
+			text: om.porchisl[1].i[pump.rod].toZagl() + ' ' + pump.ie + ' наполняет ' + container.ve + ' за ' + timeFirst.randToChMin('v') + ', ' +
+				om.porchisl[2].i[pump.rod] + ' — за ' + timeSecond.randToChMin('v') + ', ' +
+				'а ' + om.porchisl[3].i[pump.rod] + ' — за ' + timeThird.randToChMin('v') + '. ' +
+				'За сколько минут наполнят ' + container.ve + ' три ' + pump.re + ', ' +
 				'работая одновременно?',
 			answers: answer,
 			authors: ['Александра Суматохина'],
