@@ -166,7 +166,6 @@ chas2.task = {
 			window.vopr.dey = o.draw;
 		}
 
-		chas2.task.setTask.forbidDecimalFractions = chas2.task.setTask.forbidDecimalFractions || false;
 		o.forbidDecimalFractions = o.forbidDecimalFractions || chas2.task.setTask.forbidDecimalFractions;
 
 		if(o.forbidDecimalFractions){
