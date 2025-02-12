@@ -10,7 +10,7 @@
         let secondCulture = slKrome([firstCulture], 1, 10, 1);
         let howManyHectares = (firstCulture + secondCulture) * sl(2, 200, 1);
 
-        genAssert(firstCulture.nod(secondCulture) == 1, 'части отношения у первого посева и второго посева имеют общие множители по мимо 1');
+        genAssertIrreducible(firstCulture, secondCulture, 'части отношения у первого посева и второго посева имеют общие множители по мимо 1');
 
         NAtask.setTask({
             text:
@@ -18,7 +18,7 @@
                 'составляет ' + howManyHectares + ' га и распределена между ' + nameOfCulture[0].te + ' и ' + nameOfCulture[1].te +
                 '  в отношении ' + firstCulture + ':' + secondCulture + ' соответственно.' +
                 ' Сколько гектаров занимает ' + nameOfCulture[1].ie + '?',
-            answers: howManyHectares / (firstCulture + secondCulture) * [secondCulture, firstCulture][rand],
+            answers: howManyHectares / (firstCulture + secondCulture) * [firstCulture, secondCulture][rand],
         });
     }, 100);
 })();
