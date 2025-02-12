@@ -6,9 +6,9 @@
         let rand = sl(0, 1);
         let randOfSickness = sl(0, 1);
 
-        let theGetSickAtSchool = ['школе', 'университете', 'ВУЗе', 'детском садике'].iz();
-        let theyGetSickInHospital = ['больнице', 'клинике', 'лечебнице', 'госпитале', 'стационаре', 'лазарете'].iz();
-        let whereTheyGetSick = [theGetSickAtSchool, theyGetSickInHospital][randOfSickness];
+        let getSickAtSchool = ['школе', 'университете', 'ВУЗе', 'детском садике'].iz();
+        let getSickInHospital = ['больнице', 'клинике', 'лечебнице', 'госпитале', 'стационаре', 'лазарете'].iz();
+        let whereTheyGetSick = [getSickAtSchool, getSickInHospital][randOfSickness];
 
         let illnessInSchool = ['гриппом', 'корью', 'ОРВИ', 'ангиной', 'гепатитом А', 'простудой', 'дифтерией',].iz();
         let illnessInTheHospital = ['туберкулёзом', 'гепатитом В', 'бронхитом', 'COVID-19', 'золотистым стафилококком'].iz();
