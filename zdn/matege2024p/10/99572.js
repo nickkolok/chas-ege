@@ -7,7 +7,7 @@
         let secondProcent = slKrome(firstProcent, 10, 90);
         let finalProcent = 0.5 * (firstProcent + secondProcent);
 
-        let rand = 1;
+        let rand = sl1();
 
         let t = [firstProcent + '−процентного', secondProcent + '−процентного'];
 
