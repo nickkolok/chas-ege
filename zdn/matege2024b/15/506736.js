@@ -8,12 +8,13 @@
 
         let rand = sl(0, 1);
         let randUpgrade = sl(0, 1);
-        
-        let winOrLose = ['победитель', 'проигравший'][rand];
-        let numberOfParticipants = sl(70, 120, 1);
-        let loserRatio = sl(1, 4, 1);
-        let winnerRatio = loserRatio + sl(1, 5, 1);
 
+        let winOrLose = ['победитель', 'проигравший'][rand];
+        let numberOfParticipants = sl(70, 200, 1);
+        let loserRatio = sl(1, 10, 1);
+        let winnerRatio = loserRatio + sl(1, 10, 1);
+
+        genAssertIrreducible(winnerRatio, loserRatio, 'победитель и проигравший имеют общие множители по мимо 1 ');
         genAssert(numberOfParticipants.kratno(loserRatio + winnerRatio), 'количество участников не кратко сумме отношения');
 
         let numberOfVotesInOnePart = numberOfParticipants / (loserRatio + winnerRatio);
@@ -21,8 +22,8 @@
 
         NAtask.setTask({
             text:
-                'На пост ' + post + ' ' + educationPlace + ' совета претендовали два кандидата. В голосовании приняли участие ' + chislitlx([numberOfParticipants, 'n'][randUpgrade], 'выборщик', 'v$') +
-                '. Голоса между кандидатами распределились в отношении ' + loserRatio + ':' + winnerRatio + ['. Сколько голосов получил ' + winOrLose + '?', '. Сколько голосов, было изначально, если ' + winOrLose + ' получил ' + chislitlx(numberOfPeopleWhoVotedThatWeNeed, 'голос', '$') + '?'][randUpgrade],
+                'На пост ' + post + ' ' + educationPlace + ' совета претендовали два кандидата.' + [' В голосовании приняли участие ' + chislitlx(numberOfParticipants, 'выборщик', 'v$') + '.', ''][randUpgrade] +
+                ' Голоса между кандидатами распределились в отношении ' + loserRatio + ':' + winnerRatio + ['. Сколько голосов получил ' + winOrLose + '?', '. Сколько голосов, было изначально, если ' + winOrLose + ' получил ' + chislitlx(numberOfPeopleWhoVotedThatWeNeed, 'голос', '$') + '?'][randUpgrade],
             answers: [numberOfPeopleWhoVotedThatWeNeed, numberOfParticipants][randUpgrade],
         });
     }, 100);
