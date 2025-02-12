@@ -10,7 +10,7 @@
         let privateSharehorders = slKrome([government], 1, 10, 1);
         let companyProfit = (government + privateSharehorders) * sl(2, 200, 1);
 
-        genAssert(government.nod(privateSharehorders) == 1, 'части отношения у государства и частных акционеров имеют общие множители по мимо 1');
+        genAssertIrreducible(government, privateSharehorders, 'части отношения у государства и частных акционеров имеют общие множители по мимо 1');
 
         NAtask.setTask({
             text:
