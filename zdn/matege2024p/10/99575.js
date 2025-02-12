@@ -39,8 +39,8 @@
 		mixin = sklonlxkand(mixin);
 
 		let massUnits = [
-			['г', 'в граммах'],
-			['кг', 'в килограммах'],
+			['г', 'в граммах', 'грамм'],
+			['кг', 'в килограммах', 'килограмм'],
 		].iz();
 
 		let name = ['второго', 'первого'];
@@ -59,8 +59,7 @@
 			text: `Имеется два ${bulk.re}. Первый ${bulk.ie} содержит ${percentFirst}% ${mixin.re}, 
             второй содержит ${percentSecond}% ${mixin.re}. 
             Из этих двух ${bulk.rm} получили третий ${bulk.ve} массой ${massTrird} ${massUnits[0]}, содержащий ${percentThird}% ${mixin.re}.
-            На сколько килограммов масса ${name[0]} сплава была ${moreLess[0]} массы ${name[1]}?
-            Ответ дайте ${massUnits[1]}.`,
+            На сколько ${massUnits[2]} масса ${name[0]} сплава была ${moreLess[0]} массы ${name[1]}?`,
 			answers: massDifference.abs(),
 			authors: ['Николай Авдеев', 'Александра Суматохина'],
 		});
