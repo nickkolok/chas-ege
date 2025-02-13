@@ -2,7 +2,7 @@
     'use strict';
     retryWhileError(function () {
         /* В сосуд, содержащий 5 литров 12−процентного водного раствора некоторого вещества, добавили 7 литров воды. Сколько процентов составляет концентрация получившегося раствора? */
-		let key = '99572';
+		let key = '99571';
         let rand = getListedPreference(key, [{
 			preference: 'final_concentration',
 			preferenceValue: 0,
