@@ -37,10 +37,10 @@
                 answers: secondMass,
             }, {
                 text: 'Сколько килограммов ' + mixin.re + ' было в ' + firstProcent + '-процентном растворе',
-                answers: firstMass,
+                answers: firstMass * firstProcent / 100,
             }, {
                 text: 'Сколько килограммов ' + mixin.re + ' было в ' + secondProcent + '-процентном растворе',
-                answers: secondMass,
+                answers: secondMass * secondProcent / 100,
             },
             ][rand]],
             postquestion: '?',
