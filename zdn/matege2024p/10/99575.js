@@ -2,7 +2,7 @@
 	'use strict';
 
 	retryWhileError(function() {
-		let key = '1';
+		let key = '99575';
 		let largestMass = getListedPreference(key, [{
 			preference: 'second_largest',
 			preferenceValue: 0,
