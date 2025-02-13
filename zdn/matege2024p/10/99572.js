@@ -2,12 +2,18 @@
     'use strict';
     retryWhileError(function () {
         /* Смешали некоторое количество 15−процентного раствора некоторого вещества с таким же количеством 19−процентного раствора этого вещества. Сколько процентов составляет концентрация получившегося раствора? */
+		let key = '99572';
+        let rand = getListedPreference(key, [{
+			preference: 'final_concentration',
+			preferenceValue: 0,
+		}, {
+			preference: 'first_concentration',
+			preferenceValue: 1,
+		}], sl1());
 
         let firstProcent = sl(10, 90);
         let secondProcent = slKrome(firstProcent, 10, 90);
         let finalProcent = 0.5 * (firstProcent + secondProcent);
-
-        let rand = sl1();
 
         let t = [firstProcent + '−процентного', secondProcent + '−процентного'];
 
