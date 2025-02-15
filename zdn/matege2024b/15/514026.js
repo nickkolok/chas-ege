@@ -3,7 +3,7 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
         let rand = sl(0, 2);
-        let typesOfCitizens = sklonlxkand(['пенсионер', 'взрослый', 'женщина', 'мужчина', 'школьник', 'подросток', 'младенец', 'малыш', 'робот', 'демон', 'кот', 'собака', 'попугай',].iz());
+        let typesOfCitizens = sklonlxkand(['пенсионер', 'взрослый', 'женщина', 'мужчина', 'школьник', 'подросток', 'студент', 'работник', 'старик', 'бабушка', 'дедушка', 'девушка', 'робот', 'демон'].iz());
         let numberOfInhabitants = sl(70000, 1000000, 10000);
         let percentageOfResidents = sl(10, 90, 1);
 
