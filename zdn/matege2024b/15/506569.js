@@ -10,7 +10,7 @@
         let clubName = ['Любители сериалов', 'Тарологи', 'Шамбала', 'Адская кухня', 'Астрономы', 'Настольщики',
             'Исповедь сценариста', 'СПГС', 'Спортивный центр', 'Юный физик', 'Шабаш тимлида', 'Фото-охота', 'Бета-тестеры', 'Любители чтения', 'Музыкант', 'Юный химик', 'Во все тяжкие'].iz();
 
-        let rand = sl(0, 1);
+        let rand = sl1();
         let randPartOf100 = sl(0, 5);
 
         let winOrLose = ['победитель', 'проигравший'][rand];
@@ -20,13 +20,13 @@
 
         genAssertIrreducible(winnerRatio, loserRatio, 'части отношения у победителя и проигравшего имеют общие множители по мимо 1');
 
-        let percent = (([winnerRatio, loserRatio][rand] / (loserRatio + winnerRatio)) * 100).ceil();
+        let percent = (([winnerRatio, loserRatio][rand] / (loserRatio + winnerRatio)) * 100).ts();
 
         NAtask.setTask({
             text:
                 'В выборах на пост ' + post + ' ' + educationPlace + ' клуба "' + clubName + '" претендовали два кандидата. ' +
-                'Голоса избирателей распредилилсь между ними в отношении ' + '$'
-                + loserRatio + ':' + winnerRatio + '$' + '. Сколько голосов получил ' + winOrLose + ' в процентах?',
+                'Голоса избирателей распредилилсь между ними в отношении ' + '$' +
+                loserRatio + ':' + winnerRatio + '$' + '. Сколько голосов получил ' + winOrLose + ' в процентах?',
 
             answers: percent,
         });
