@@ -12,15 +12,14 @@
         let howManyHectares = (firstCulture + secondCulture) * sl(2, 200, 1);
 
         genAssertIrreducible(firstCulture, secondCulture, 'части отношения у первого посева и второго посева имеют общие множители по мимо 1');
-        let result = (howManyHectares / (firstCulture + secondCulture)) * secondCulture;
-
+        let result = (howManyHectares / (firstCulture + secondCulture)) * [firstCulture, secondCulture][rand];
         NAtask.setTask({
             text:
                 'Площадь земель фермерского хозяйства "' + nameOfCompany + '", отведённых под посадку сельскохозяйственных культур, ' +
                 ['составляет ' + howManyHectares + ' га и ', ''][randUpgrade] + 'распределена между ' + nameOfCulture[0].te + ' и ' + nameOfCulture[1].te +
                 '  в отношении ' + firstCulture + ':' + secondCulture + ' соответственно.' +
-                [' Сколько гектаров занимает ' + nameOfCulture[1].ie + '?', ' Сколько гектаров занимает поле, если площадь земель, отведённых под посадку '
-                    + nameOfCulture[1].re + ', составляет ' + result + ' га?'][randUpgrade],
+                [' Сколько гектаров занимает ' + [nameOfCulture[0].ie, nameOfCulture[1].ie][rand] + '?', ' Сколько гектаров занимает поле, если площадь земель, отведённых под посадку '
+                    + [nameOfCulture[0].re, nameOfCulture[1].re][rand] + ', составляет ' + result + ' га?'][randUpgrade],
             answers: [result, howManyHectares][randUpgrade],
         });
     }, 100);
