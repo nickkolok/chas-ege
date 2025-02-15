@@ -12,13 +12,13 @@
         let secondMeat = meat - firstMeat;
 
         genAssertIrreducible(firstMeat, secondMeat, 'части отношения у первого типа мяса и второго имеют общие множители по мимо 1');
-        let percent = ([secondMeat, firstMeat][rand] / (secondMeat + firstMeat)) * 100;
+        let percent = ([firstMeat, secondMeat][rand] / (secondMeat + firstMeat)) * 100;
 
         NAtask.setTask({
             text:
                 'Для приготовления фарша взяли ' + coniferousOrDeciduous[0].ve + ' и ' + coniferousOrDeciduous[1].ve +
                 ' в отношении ' + firstMeat + ':' + secondMeat + '.' +
-                ' Какой процент в фарше составляет ' + coniferousOrDeciduous[1].ie + '?',
+                ' Какой процент в фарше составляет ' + [coniferousOrDeciduous[0].ie, coniferousOrDeciduous[1].ie][rand] + '?',
             answers: percent,
         });
     }, 100);
