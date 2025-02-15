@@ -18,7 +18,7 @@
             text:
                 'Для приготовления фарша взяли ' + coniferousOrDeciduous[0].ve + ' и ' + coniferousOrDeciduous[1].ve +
                 ' в отношении ' + firstMeat + ':' + secondMeat + '.' +
-                ' Какой процент в фарше составляет ' + [coniferousOrDeciduous[0].ie, coniferousOrDeciduous[1].ie][rand] + '?',
+                ' Какой процент в фарше составляет ' + [coniferousOrDeciduous[0], coniferousOrDeciduous[1]][rand].ie + '?',
             answers: percent,
         });
     }, 100);
