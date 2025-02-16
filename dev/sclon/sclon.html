@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Русское склонение</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input {
+            padding: 8px;
+            margin: 10px;
+            width: 300px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Русское склонение</h1>
+        <input type="text" id="wordInput" placeholder="Введите слово">
+        <button onclick="processWord()">Склонить</button>
+        <div id="result"></div>
+    </div>
+    <script type="text/javascript">
+        var pyodide;
+        async function main() {
+            pyodide = await loadPyodide();
+            await pyodide.loadPackage("micropip");
+            const micropip = pyodide.pyimport("micropip");
+            await micropip.install("pymorphy2");
+            await pyodide.runPython(`import pymorphy2
+                                morph = pymorphy2.MorphAnalyzer()
+
+                                def sklonlxkand(slovo):
+                                    parsed_word = morph.parse(slovo)[0]
+
+                                    # Singular forms
+                                    singular = {
+                                        'ie': parsed_word.inflect({'nomn'}).word,  # именительный
+                                        're': parsed_word.inflect({'gent'}).word,  # родительный
+                                        'de': parsed_word.inflect({'datv'}).word,  # дательный
+                                        've': parsed_word.inflect({'accs'}).word,  # винительный
+                                        'te': parsed_word.inflect({'ablt'}).word,  # творительный
+                                        'pe': parsed_word.inflect({'loct'}).word,  # предложный
+                                    }
+
+                                    # Plural forms
+                                    plural = {
+                                        'im': parsed_word.inflect({'nomn', 'plur'}).word,  # именительный
+                                        'rm': parsed_word.inflect({'gent', 'plur'}).word,  # родительный
+                                        'dm': parsed_word.inflect({'datv', 'plur'}).word,  # дательный
+                                        'vm': parsed_word.inflect({'accs', 'plur'}).word,  # винительный
+                                        'tm': parsed_word.inflect({'ablt', 'plur'}).word,  # творительный
+                                        'pm': parsed_word.inflect({'loct', 'plur'}).word,  # предложный
+                                    }
+
+                                    # Gender (rod)
+                                    gender_map = {
+                                        'masc': 0,  # мужской
+                                        'femn': 1,  # женский
+                                        'neut': 2,  # средний
+                                        'plur': 3,  # только множественное число
+                                    }
+                                    gender_tag = parsed_word.tag.gender
+                                    if gender_tag is None and 'plur' in parsed_word.tag: gender_tag = 'plur'
+                                    rod = gender_map.get(gender_tag, 3)  # Default to plural if gender is not found
+
+                                    # Animacy (odu)
+                                    odu = 1 if 'anim' in parsed_word.tag else 0  # 1: одушевлённое, 0: неодушевлённое
+
+                                    return {
+                                        **singular,
+                                        **plural,
+                                        'rod': rod,
+                                        'odu': odu,
+                                    }`);
+        }
+
+        main();
+
+        async function processWord() {
+            const word = document.getElementById('wordInput').value;
+            if (!word) {
+                alert('Пожалуйста, введите слово');
+                return;
+            }
+
+            try {
+                // Вызов Python-функции через Pyodide
+                const result = await pyodide.runPythonAsync(`sklonlxkand("${word}")`);
+                console.log(result);
+
+                // Преобразование результата в удобный формат
+                const resultObj = JSON.parse(result);
+
+                // Формирование HTML для отображения результата
+                const resultHtml = `
+            <h3>Результат склонения:</h3>
+            <p><strong>Именительный падеж (единственное число):</strong> ${resultObj.ie}</p>
+            <p><strong>Родительный падеж (единственное число):</strong> ${resultObj.re}</p>
+            <p><strong>Дательный падеж (единственное число):</strong> ${resultObj.de}</p>
+            <p><strong>Винительный падеж (единственное число):</strong> ${resultObj.ve}</p>
+            <p><strong>Творительный падеж (единственное число):</strong> ${resultObj.te}</p>
+            <p><strong>Предложный падеж (единственное число):</strong> ${resultObj.pe}</p>
+            <p><strong>Именительный падеж (множественное число):</strong> ${resultObj.im}</p>
+            <p><strong>Родительный падеж (множественное число):</strong> ${resultObj.rm}</p>
+            <p><strong>Дательный падеж (множественное число):</strong> ${resultObj.dm}</p>
+            <p><strong>Винительный падеж (множественное число):</strong> ${resultObj.vm}</p>
+            <p><strong>Творительный падеж (множественное число):</strong> ${resultObj.tm}</p>
+            <p><strong>Предложный падеж (множественное число):</strong> ${resultObj.pm}</p>
+            <p><strong>Род:</strong> ${resultObj.rod}</p>
+            <p><strong>Одушевлённость:</strong> ${resultObj.odu === 1 ? 'Одушевлённое' : 'Неодушевлённое'}</p>
+        `;
+
+                // Отображение результата на странице
+                document.getElementById('result').innerHTML = resultHtml;
+            } catch (error) {
+                console.error('Ошибка:', error);
+                document.getElementById('result').innerHTML = '<p>Произошла ошибка при обработке слова.</p>';
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+<!-- async function processWord() {
+    const word = document.getElementById('wordInput').value;
+    if (!word) {
+        alert('Введите слово');
+        return;
+    }
+
+    try {
+        let result = await pyodide.runPythonAsync(`sklonlxkand("${word}")`)
+        displayResult(result);
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ошибка обработки слова. Проверьте корректность ввода.');
+    }
+
+    function displayResult(result) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `
+        <h3>Результат:</h3>
+        <p>Именительный ед.: ${result.ie}</p>
+        <p>Родительный ед.: ${result.re}</p>
+        <p>Дательный ед.: ${result.de}</p>
+        <p>Винительный ед.: ${result.ve}</p>
+        <p>Творительный ед.: ${result.te}</p>
+        <p>Предложный ед.: ${result.pe}</p>
+        
+        <p>Именительный мн.: ${result.im}</p>
+        <p>Родительный мн.: ${result.rm}</p>
+        <p>Дательный мн.: ${result.dm}</p>
+        <p>Винительный мн.: ${result.vm}</p>
+        <p>Творительный мн.: ${result.tm}</p>
+        <p>Предложный мн.: ${result.pm}</p>
+        
+        <p>Род: ${result.rod}</p>
+        <p>Одушевленность: ${result.odu}</p>
+    `;
+}
+} -->

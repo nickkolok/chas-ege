@@ -1,5 +1,4 @@
 import pymorphy2
-from types import SimpleNamespace
 
 morph = pymorphy2.MorphAnalyzer()
 
@@ -40,12 +39,9 @@ def sklonlxkand(slovo):
     # Animacy (odu)
     odu = 1 if 'anim' in parsed_word.tag else 0  # 1: одушевлённое, 0: неодушевлённое
 
-    # Combine all results into a SimpleNamespace object
     return {
         **singular,
         **plural,
         'rod': rod,
         'odu': odu,
     }
-
-
