@@ -46,7 +46,3 @@ def sklonlxkand(slovo):
         'rod': rod,
         'odu': odu,
     }
-
-result = sklonlxkand('яблоко')
-
-print(result)

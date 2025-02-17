@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Склонение слов</title>
+</head>
+<body>
+    <h1>Склонение русских слов</h1>
+    
+    <div class="input-group">
+        <input type="text" id="wordInput" placeholder="Введите слово">
+        <button onclick="getSklon()">Склонять</button>
+    </div>
+    
+    <div id="resultContainer" class="result" style="display: none;">
+        <h3>Результаты:</h3>
+        <div id="output"></div>
+    </div>
+    
+    <div id="errorMessage" class="error"></div>
+
+    <script>
+        async function getSklon() {
+            const word = document.getElementById('wordInput').value.trim();
+            const output = document.getElementById('output');
+            const resultContainer = document.getElementById('resultContainer');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (!word) {
+                errorMessage.textContent = 'Пожалуйста, введите слово';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/sklon?word=${encodeURIComponent(word)}`);
+                if (!response.ok) throw new Error(await response.text());
+                
+                const data = await response.json();
+                errorMessage.textContent = '';
+                resultContainer.style.display = 'block';
+                
+                output.innerHTML = `
+                    <h4>Единственное число:</h4>
+                    <p>Именительный: ${data.ie}</p>
+                    <p>Родительный: ${data.re}</p>
+                    <p>Дательный: ${data.de}</p>
+                    <p>Винительный: ${data.ve}</p>
+                    <p>Творительный: ${data.te}</p>
+                    <p>Предложный: ${data.pe}</p>
+
+                    <h4>Множественное число:</h4>
+                    <p>Именительный: ${data.im}</p>
+                    <p>Родительный: ${data.rm}</p>
+                    <p>Дательный: ${data.dm}</p>
+                    <p>Винительный: ${data.vm}</p>
+                    <p>Творительный: ${data.tm}</p>
+                    <p>Предложный: ${data.pm}</p>
+                `;
+            } catch (err) {
+                resultContainer.style.display = 'none';
+                errorMessage.textContent = `Ошибка: ${err.message}`;
+            }
+        }
+
+        // Обработка нажатия Enter
+        document.getElementById('wordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') getSklon();
+        });
+    </script>
+</body>
+</html>
