@@ -4,6 +4,7 @@ morph = pymorphy2.MorphAnalyzer()
 
 def sklonlxkand(slovo):
     parsed_word = morph.parse(slovo)[0]
+    print(parsed_word)
     
     # Singular forms
     singular = {
@@ -45,3 +46,7 @@ def sklonlxkand(slovo):
         'rod': rod,
         'odu': odu,
     }
+
+result = sklonlxkand('яблоко')
+
+print(result)
