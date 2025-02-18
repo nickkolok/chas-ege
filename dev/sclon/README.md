@@ -7,6 +7,24 @@
 • Установленный Node.js (версия 12 или выше).
 
 • Установленный Python (версия 3.6 или выше).
+• Установить пакет на Python `pymorphy2`
+
+```bash
+#через pip
+pip install pymorphy2
+#через yay
+yay -S python-pymorphy2
+```
+
+• Рекомендуется установить пакет на Python `pymorphy2-dicts-ru` и переодически обновлять
+
+```bash
+#через pip
+pip install pymorphy2-dicts-ru
+pip install -U pymorphy2-dicts-ru
+#через yay
+yay -S python-pymorphy2-dicts-ru 
+```
 
 • Доступ к файлу `sklonlxkand.py`, который должен находиться в той же директории, что и этот скрипт.
 
