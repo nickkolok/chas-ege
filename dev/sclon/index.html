@@ -1,71 +1,96 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Склонение слов</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyodide Example</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js"></script>
 </head>
+
 <body>
-    <h1>Склонение русских слов</h1>
-    
-    <div class="input-group">
-        <input type="text" id="wordInput" placeholder="Введите слово">
-        <button onclick="getSklon()">Склонять</button>
-    </div>
-    
-    <div id="resultContainer" class="result" style="display: none;">
-        <h3>Результаты:</h3>
-        <div id="output"></div>
-    </div>
-    
-    <div id="errorMessage" class="error"></div>
+    <h1>Склонение слов с Pyodide</h1>
+    <input type="text" id="word-input" placeholder="Введите слово" />
+    <button id="run-button">Склонять</button>
+    <pre id="output"></pre>
 
     <script>
-        async function getSklon() {
-            const word = document.getElementById('wordInput').value.trim();
-            const output = document.getElementById('output');
-            const resultContainer = document.getElementById('resultContainer');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            if (!word) {
-                errorMessage.textContent = 'Пожалуйста, введите слово';
-                return;
-            }
+        // Инициализация Pyodide
+        async function initPyodide() {
+            let pyodide = await loadPyodide();
+            await pyodide.loadPackage('pymorphy2'); // Загрузка pymorphy2
+            return pyodide;
+        }
+
+        // Функция для выполнения Python-кода
+        async function runPythonCode(pyodide, word) {
+            const code = `
+import pymorphy2
+morph = pymorphy2.MorphAnalyzer()
+
+def sklonlxkand(slovo):
+    parsed_word = morph.parse(slovo)[0]
+
+    # Singular forms
+    singular = {
+        'ie': parsed_word.inflect({'nomn'}).word,  # именительный
+        're': parsed_word.inflect({'gent'}).word,  # родительный
+        'de': parsed_word.inflect({'datv'}).word,  # дательный
+        've': parsed_word.inflect({'accs'}).word,  # винительный
+        'te': parsed_word.inflect({'ablt'}).word,  # творительный
+        'pe': parsed_word.inflect({'loct'}).word,  # предложный
+    }
+
+    # Plural forms
+    plural = {
+        'im': parsed_word.inflect({'nomn', 'plur'}).word,  # именительный
+        'rm': parsed_word.inflect({'gent', 'plur'}).word,  # родительный
+        'dm': parsed_word.inflect({'datv', 'plur'}).word,  # дательный
+        'vm': parsed_word.inflect({'accs', 'plur'}).word,  # винительный
+        'tm': parsed_word.inflect({'ablt', 'plur'}).word,  # творительный
+        'pm': parsed_word.inflect({'loct', 'plur'}).word,  # предложный
+    }
+
+    # Gender (rod)
+    gender_map = {
+        'masc': 0,  # мужской
+        'femn': 1,  # женский
+        'neut': 2,  # средний
+        'plur': 3,  # только множественное число
+    }
+    gender_tag = parsed_word.tag.gender
+    if gender_tag is None and 'plur' in parsed_word.tag: gender_tag = 'plur'
+    rod = gender_map.get(gender_tag, 3)  # Default to plural if gender is not found
+
+    # Animacy (odu)
+    odu = 1 if 'anim' in parsed_word.tag else 0  # 1: одушевлённое, 0: неодушевлённое
+
+    return {
+        **singular,
+        **plural,
+        'rod': rod,
+        'odu': odu,
+    }
+sklonlxkand('${word}')
+            `;
 
             try {
-                const response = await fetch(`http://localhost:5000/api/sklon?word=${encodeURIComponent(word)}`);
-                if (!response.ok) throw new Error(await response.text());
-                
-                const data = await response.json();
-                errorMessage.textContent = '';
-                resultContainer.style.display = 'block';
-                
-                output.innerHTML = `
-                    <h4>Единственное число:</h4>
-                    <p>Именительный: ${data.ie}</p>
-                    <p>Родительный: ${data.re}</p>
-                    <p>Дательный: ${data.de}</p>
-                    <p>Винительный: ${data.ve}</p>
-                    <p>Творительный: ${data.te}</p>
-                    <p>Предложный: ${data.pe}</p>
-
-                    <h4>Множественное число:</h4>
-                    <p>Именительный: ${data.im}</p>
-                    <p>Родительный: ${data.rm}</p>
-                    <p>Дательный: ${data.dm}</p>
-                    <p>Винительный: ${data.vm}</p>
-                    <p>Творительный: ${data.tm}</p>
-                    <p>Предложный: ${data.pm}</p>
-                `;
+                let result = await pyodide.runPythonAsync(code);
+                document.getElementById('output').textContent = JSON.stringify(result, null, 2);
             } catch (err) {
-                resultContainer.style.display = 'none';
-                errorMessage.textContent = `Ошибка: ${err.message}`;
+                document.getElementById('output').textContent = `Ошибка: ${err}`;
             }
         }
 
-        // Обработка нажатия Enter
-        document.getElementById('wordInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') getSklon();
-        });
+        // Основная логика
+        (async function () {
+            const pyodide = await initPyodide();
+            document.getElementById('run-button').addEventListener('click', async () => {
+                const word = document.getElementById('word-input').value;
+                await runPythonCode(pyodide, word);
+            });
+        })();
     </script>
 </body>
+
 </html>
