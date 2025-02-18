@@ -1,4 +1,6 @@
 import pymorphy2
+import sys
+import json
 
 morph = pymorphy2.MorphAnalyzer()
 
@@ -39,12 +41,17 @@ def sklonlxkand(slovo):
     # Animacy (odu)
     odu = 1 if 'anim' in parsed_word.tag else 0  # 1: одушевлённое, 0: неодушевлённое
 
-    # Combine all results into a SimpleNamespace object
+    # Combine all results into a dictionary
     result = {
         **singular,
         **plural,
-        'rod':rod,
-        'odu':odu
+        'rod': rod,
+        'odu': odu
     }
 
     return result
+
+if __name__ == "__main__":
+    word = sys.argv[1]
+    result = sklonlxkand(word)
+    print(json.dumps(result, ensure_ascii=False))
