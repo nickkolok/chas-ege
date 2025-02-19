@@ -9,22 +9,22 @@ def sklonlxkand(slovo):
 
     # Singular forms
     singular = {
-        'ie': parsed_word.inflect({'nomn'}).word,  # именительный
-        're': parsed_word.inflect({'gent'}).word,  # родительный
-        'de': parsed_word.inflect({'datv'}).word,  # дательный
-        've': parsed_word.inflect({'accs'}).word,  # винительный
-        'te': parsed_word.inflect({'ablt'}).word,  # творительный
-        'pe': parsed_word.inflect({'loct'}).word,  # предложный
+        'ie': parsed_word.inflect({'nomn'}).word if parsed_word.inflect({'nomn'}) else "",  # именительный
+        're': parsed_word.inflect({'gent'}).word if parsed_word.inflect({'gent'}) else "",  # родительный
+        'de': parsed_word.inflect({'datv'}).word if parsed_word.inflect({'datv'}) else "",  # дательный
+        've': parsed_word.inflect({'accs'}).word if parsed_word.inflect({'accs'}) else "",  # винительный
+        'te': parsed_word.inflect({'ablt'}).word if parsed_word.inflect({'ablt'}) else "",  # творительный
+        'pe': parsed_word.inflect({'loct'}).word if parsed_word.inflect({'loct'}) else "",  # предложный
     }
 
     # Plural forms
     plural = {
-        'im': parsed_word.inflect({'nomn', 'plur'}).word,  # именительный
-        'rm': parsed_word.inflect({'gent', 'plur'}).word,  # родительный
-        'dm': parsed_word.inflect({'datv', 'plur'}).word,  # дательный
-        'vm': parsed_word.inflect({'accs', 'plur'}).word,  # винительный
-        'tm': parsed_word.inflect({'ablt', 'plur'}).word,  # творительный
-        'pm': parsed_word.inflect({'loct', 'plur'}).word,  # предложный
+        'im': parsed_word.inflect({'nomn', 'plur'}).word if parsed_word.inflect({'nomn', 'plur'}) else "",  # именительный
+        'rm': parsed_word.inflect({'gent', 'plur'}).word if parsed_word.inflect({'gent', 'plur'}) else "",  # родительный
+        'dm': parsed_word.inflect({'datv', 'plur'}).word if parsed_word.inflect({'datv', 'plur'}) else "",  # дательный
+        'vm': parsed_word.inflect({'accs', 'plur'}).word if parsed_word.inflect({'accs', 'plur'}) else "",  # винительный
+        'tm': parsed_word.inflect({'ablt', 'plur'}).word if parsed_word.inflect({'ablt', 'plur'}) else "",  # творительный
+        'pm': parsed_word.inflect({'loct', 'plur'}).word if parsed_word.inflect({'loct', 'plur'}) else "",  # предложный
     }
 
     # Gender (rod)
