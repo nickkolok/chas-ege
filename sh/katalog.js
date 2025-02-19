@@ -1,17 +1,17 @@
 'use strict';
 
 
-function generateHtmlForTask(kat,zdn,masdey){
+function generateHtmlForTask(category,zdn,masdey){
 	var rez='';
 	vopr.podg();
-	var currentTask = nabor.adres+kat+'/'+zdn+'.js';
-	rez+='<div class="task-wrapper" data-category="'+kat+'" data-tasknumber="'+zdn+'">';
+	var currentTask = nabor.adres+category+'/'+zdn+'.js';
+	rez+='<div class="task-wrapper" data-category="'+category+'" data-tasknumber="'+zdn+'">';
 	rez+=currentTask.vTag('h2');
 	console.log(currentTask);
 	try{
-		nabor.upak[kat][zdn]();
+		nabor.upak[category][zdn]();
 		vopr.template = currentTask.replace(/^(\.\.\/)+/,'');
-		vopr.taskNumber = kat;
+		vopr.taskNumber = category;
 		rez+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
 		rez+=(
 			(
