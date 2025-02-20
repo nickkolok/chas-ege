@@ -1,7 +1,7 @@
 'use strict';
 
 
-function generateHtmlForTask(category,taskNumber,masdey){
+function generateHtmlForTask(category,taskNumber,actionsArray){
 	var rez='';
 	vopr.podg();
 	var currentTask = nabor.adres+category+'/'+taskNumber+'.js';
@@ -35,7 +35,7 @@ function generateHtmlForTask(category,taskNumber,masdey){
 			).vTag('div') +
 			'<br/>'
 		);
-		masdey.push(vopr.dey);
+		actionsArray.push(vopr.dey);
 		if(vopr.rsh){
 			rez+=(
 				('Показать решение ').vTag('button','class="spoiler-show"')+
