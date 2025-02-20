@@ -24,7 +24,7 @@
                 {
                     text: 'Из ' + '$' + students + '$' + ' ' + gender + ' ' + educationInstitution + ' города ' + '$' + persent + '$' +
                         '% ' + сorrectIncorrect + ' решили задачу №' + '$' + taskNumber + '$' + '. Сколько из ' + gender +
-                        ' города ' + checkForCorrect + ' решили задачу №' + '$' + taskNumber + '$',
+                        ' ' + checkForCorrect + ' решили задачу №' + '$' + taskNumber + '$',
                     answers: answer,
                 },
                 {
