@@ -5,11 +5,22 @@
 
         let rand = sl1();
         let randMoreOrLess = sl1();
-        let studentBoy = sklonlxkand(['мальчик', 'юноша', 'парень', 'ученик', 'студент'].iz());
-        let studentGirl = sklonlxkand(['девочка', 'девушка', 'ученица', 'студентка'].iz());
+        let randClass = sl1();
+
+        let universityBoy = sklonlxkand(['юноша', 'парень', 'студент'].iz());
+        let universityGirl = sklonlxkand(['девушка', 'студентка', 'девица'].iz());
+        let schoolBoy = sklonlxkand(['мальчик', 'младшеклассник', 'старшеклассник', 'ученик'].iz());
+        let schoolGirl = sklonlxkand(['девочка', 'младшеклассница', 'ученица', 'старшеклассница'].iz());
+        let academic = sklonlxkand(['академия', 'колледж', 'университет', 'институт', 'ВУЗ', 'техникум', 'училище'].iz());
+        let school = sklonlxkand(['школа', 'лицей', 'гимназия',].iz());
+        
+        let studentBoy = [schoolBoy, universityBoy][randClass];
+        let studentGirl = [schoolGirl, universityGirl][randClass];
+        let educationInstitution = [school, academic][randClass];
+
         let boyOrGirl = [studentBoy, studentGirl][rand];
         let girlOrBoy = [studentBoy, studentGirl][1 - rand];
-        let educationInstitution = sklonlxkand(['школа', 'колледж', 'университет', 'ВУЗ', 'техникум', 'лицей'].iz());
+
         let firstHalfOfStudent = 100 - sl(20, 49, 1);
         let differenceInNumberOfStudent = sl(4, 100, 1);
 
