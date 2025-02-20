@@ -2,18 +2,18 @@
 
 
 function generateHtmlForTask(category,taskNumber,actionsArray){
-	var rez='';
+	var htmlContent='';
 	vopr.podg();
 	var currentTask = nabor.adres+category+'/'+taskNumber+'.js';
-	rez+='<div class="task-wrapper" data-category="'+category+'" data-tasknumber="'+taskNumber+'">';
-	rez+=currentTask.vTag('h2');
+	htmlContent+='<div class="task-wrapper" data-category="'+category+'" data-tasknumber="'+taskNumber+'">';
+	htmlContent+=currentTask.vTag('h2');
 	console.log(currentTask);
 	try{
 		nabor.upak[category][taskNumber]();
 		vopr.template = currentTask.replace(/^(\.\.\/)+/,'');
 		vopr.taskNumber = category;
-		rez+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
-		rez+=(
+		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
+		htmlContent+=(
 			(
 				'<button class="copybutton" style="display:block; float:right;" title="Экспорт в РешуЕГЭ"'+
 				'data-task="' + encodeURIComponent(JSON.stringify(vopr)) + '"' +
@@ -37,7 +37,7 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 		);
 		actionsArray.push(vopr.dey);
 		if(vopr.rsh){
-			rez+=(
+			htmlContent+=(
 				('Показать решение ').vTag('button','class="spoiler-show"')+
 				('Скрыть   решение ').vTag('button','class="spoiler-hide"')+
 				'<div class="spoiler-body">'+
@@ -48,7 +48,7 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 
 		}
 		if(vopr.authors && vopr.authors.length){
-			rez+=(
+			htmlContent+=(
 				'<br/>' +
 				'<div class="katalog-authors">' +
 						'Автор' + ('ы').esli(vopr.authors.length > 1) + ': &nbsp;' +
@@ -60,8 +60,8 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 	}catch(e){
 		console.log(e);
 	}
-	rez += '</div>';
-	return rez;
+	htmlContent += '</div>';
+	return htmlContent;
 }
 
 function generateKatalog(){
