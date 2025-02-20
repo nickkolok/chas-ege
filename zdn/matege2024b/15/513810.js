@@ -8,7 +8,7 @@
         let randClass = sl1();
 
         let universityBoy = sklonlxkand(['юноша', 'парень', 'студент'].iz());
-        let universityGirl = sklonlxkand(['девушка', 'студентка', 'девица'].iz());
+        let universityGirl = sklonlxkand(['девушка', 'студентка'].iz());
         let schoolBoy = sklonlxkand(['мальчик', 'младшеклассник', 'старшеклассник', 'ученик'].iz());
         let schoolGirl = sklonlxkand(['девочка', 'младшеклассница', 'ученица', 'старшеклассница'].iz());
         let academic = sklonlxkand(['академия', 'колледж', 'университет', 'институт', 'ВУЗ', 'техникум', 'училище'].iz());
