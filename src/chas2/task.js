@@ -67,6 +67,7 @@ chas2.task = {
 			o.wrongAnswers = chaslib.toStringsArray((('wrongAnswers' in o) && (o.wrongAnswers !== undefined)) ? o.wrongAnswers : []);
 			// Просто o.answers || [] нельзя - ноль не будет передаваться
 			o.authors = chaslib.toStringsArray(o.authors || o.author || []);
+			o.preference = o.preference || [];
 		},
 
 
@@ -159,6 +160,7 @@ chas2.task = {
 		window.vopr.ver = o.answers;
 		window.vopr.nev = o.wrongAnswers;
 		window.vopr.authors = o.authors;
+		window.vopr.preference = o.preference;
 		if (o.checkAnswer) {
 			window.vopr.vrn = o.checkAnswer;
 		}
@@ -187,6 +189,7 @@ chas2.task = {
 			draw : window.vopr.dey,
 			tags : {},
 			authors : window.vopr.authors,
+			preference : window.vopr.preference,
 		};
 		chas2.task._.normalizeTask(o);
 		chas2.task._.validateTask(o);
