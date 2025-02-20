@@ -30,24 +30,71 @@ function sklonlxkand(slovo) {
     });
 }
 
-// Функция для записи данных в файл lx.js
+function parseLxFile(filePath) {
+    const content = fs.readFileSync(filePath, 'utf8');
+    const regex = /lx\['([^']+)'\]\s*=\s*({[^}]+});/g;
+    const entries = [];
+    
+    let match;
+    while ((match = regex.exec(content)) !== null) {
+        const word = match[1];
+        let objStr = match[2].replace(/'/g, '"');
+        
+        // Add missing quotes around property names if needed
+        objStr = objStr.replace(/(\w+):/g, '"$1":');
+        
+        try {
+            const obj = JSON.parse(objStr);
+            entries.push({ word, obj });
+        } catch (e) {
+            console.error(`Ошибка при разборе объекта для слова "${word}":`, e.message);
+            continue;
+        }
+    }
+    
+    return entries;
+}
+
 function writeToFile(slovo, data) {
     const filePath = 'lx.js';
+    const existingEntries = parseLxFile(filePath);
+    const existingEntry = existingEntries.find(entry => entry.word === slovo);
 
-    // Читаем текущее содержимое файла
-    let fileContent = '';
-    if (fs.existsSync(filePath)) {
-        fileContent = fs.readFileSync(filePath, 'utf8');
-    }
-
-    // Проверяем, есть ли уже запись для данного слова
-    const regex = new RegExp(`${slovo}`, 'g');
-    if (regex.test(fileContent)) {
+    if (existingEntry) {
         console.log(`Слово "${slovo}" уже существует в файле lx.js.`);
-        return; // Выходим из функции, если слово уже есть
+        
+        // Сравниваем объекты
+        const existingObj = existingEntry.obj;
+        const newEntries = Object.entries(data).sort();
+        const existingEntries = Object.entries(existingObj).sort();
+        
+        if (JSON.stringify(newEntries) === JSON.stringify(existingEntries)) {
+            console.log('Объекты совпадают. Нет необходимости обновлять.');
+            return;
+        } else {
+            console.log('Объекты не совпадают:');
+            console.log('Существующий объект:');
+            console.log(JSON.stringify(existingObj, null, 2));
+            console.log('Новый объект:');
+            console.log(JSON.stringify(data, null, 2));
+            
+            rl.question('Хотите заменить существующий объект? (y/n): ', (answer) => {
+                if (answer.toLowerCase() === 'y') {
+                    // Обновляем объект
+                    const fileContent = fs.readFileSync(filePath, 'utf8');
+                    const updatedContent = fileContent.replace(
+                        new RegExp(`lx\\['${slovo}'\\][^;]+;`, 'g'),
+                        `lx['${slovo}']=${JSON.stringify(data, null, 2).replace(/"/g, "'")};`
+                    );
+                    fs.writeFileSync(filePath, updatedContent, 'utf8');
+                    console.log('Объект обновлен.');
+                }
+                askForWord();
+            });
+            return;
+        }
     }
 
-    // Формируем новую запись
     const newEntry = `\nlx['${slovo}']={\n` +
         Object.entries(data)
             .map(([key, value]) => `  ${key}:${JSON.stringify(value).replaceAll('"', "'")}`)
@@ -55,7 +102,7 @@ function writeToFile(slovo, data) {
         '\n};\n';
 
     // Добавляем новую запись в файл
-    fs.writeFileSync(filePath, fileContent + newEntry, 'utf8');
+    fs.writeFileSync(filePath, fs.readFileSync(filePath, 'utf8') + newEntry, 'utf8');
     console.log(`Данные для слова "${slovo}" записаны в файл lx.js`);
 }
 
