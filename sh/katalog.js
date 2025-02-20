@@ -4,13 +4,13 @@
 function generateHtmlForTask(category,taskNumber,actionsArray){
 	var htmlContent='';
 	vopr.podg();
-	var currentTask = nabor.adres+category+'/'+taskNumber+'.js';
+	var currentTaskPath = nabor.adres+category+'/'+taskNumber+'.js';
 	htmlContent+='<div class="task-wrapper" data-category="'+category+'" data-tasknumber="'+taskNumber+'">';
-	htmlContent+=currentTask.vTag('h2');
-	console.log(currentTask);
+	htmlContent+=currentTaskPath.vTag('h2');
+	console.log(currentTaskPath);
 	try{
 		nabor.upak[category][taskNumber]();
-		vopr.template = currentTask.replace(/^(\.\.\/)+/,'');
+		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
 		vopr.taskNumber = category;
 		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
 		htmlContent+=(
