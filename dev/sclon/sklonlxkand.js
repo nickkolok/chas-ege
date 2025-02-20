@@ -40,7 +40,7 @@ function parseLxFile(filePath) {
         const word = match[1];
         let objStr = match[2].replace(/'/g, '"');
         
-        // Add missing quotes around property names if needed
+        // При необходимости добавьте пропущенные кавычки вокруг названий свойств
         objStr = objStr.replace(/(\w+):/g, '"$1":');
         
         try {
@@ -95,14 +95,35 @@ function writeToFile(slovo, data) {
         }
     }
 
-    const newEntry = `\nlx['${slovo}']={\n` +
+    // Сортируем существующие записи
+    const sortedEntries = [...entries].sort((a, b) => a.word.localeCompare(b.word));
+    
+    // Находим позицию для вставки нового слова
+    const insertIndex = sortedEntries.findIndex(entry => 
+        slovo.localeCompare(entry.word) < 0
+    );
+    
+    // Формируем новую запись
+    const newEntry = `lx['${slovo}']={\n` +
         Object.entries(data)
             .map(([key, value]) => `  ${key}:${JSON.stringify(value).replaceAll('"', "'")}`)
             .join(',\n') +
         '\n};\n';
 
-    // Добавляем новую запись в файл
-    fs.writeFileSync(filePath, fs.readFileSync(filePath, 'utf8') + newEntry, 'utf8');
+    // Читаем текущее содержимое файла
+    let fileContent = fs.readFileSync(filePath, 'utf8');
+    
+    // Если позиция для вставки найдена, вставляем перед найденной записью
+    if (insertIndex > -1) {
+        const targetWord = sortedEntries[insertIndex].word;
+        const targetRegex = new RegExp(`lx\\['${targetWord}'\\][^;]+;`, 'g');
+        fileContent = fileContent.replace(targetRegex, newEntry + `lx['${targetWord}']=${JSON.stringify(sortedEntries[insertIndex].obj, null, 2).replace(/"/g, "'")};`);
+    } else {
+        // Иначе добавляем в конец файла
+        fileContent += newEntry;
+    }
+
+    fs.writeFileSync(filePath, fileContent, 'utf8');
     console.log(`Данные для слова "${slovo}" записаны в файл lx.js`);
 }
 
