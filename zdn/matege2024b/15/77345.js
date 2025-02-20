@@ -41,6 +41,12 @@
                         '% от всех решивших' + '. Сколько ' + gender + ' ' + educationInstitution + '  решили задачу №' + '$' + taskNumber + '$' + ' ' + IncorrectCorrect,
                     answers: [students - result, result][randUpgrade],
                 },
+                {
+                    text: 'Только ' + '$' + persent + '$' + '% из ' + '$' + students + '$' + ' ' + gender + ' ' +
+                        educationInstitution + ' города ' + ' ' + сorrectIncorrect + ' решили задачу №' + '$' + taskNumber + '$' +
+                        '. Сколько ' + gender + ' ' + educationInstitution + '  решили задачу №' + '$' + taskNumber + '$' + ' ' + [сorrectIncorrect, IncorrectCorrect][randUpgrade],
+                    answers: [result, students - result][randUpgrade],
+                },
             ],
             postquestion: '?',
         });
