@@ -1,15 +1,15 @@
 'use strict';
 
 
-function generateHtmlForTask(category,zdn,masdey){
+function generateHtmlForTask(category,taskNumber,masdey){
 	var rez='';
 	vopr.podg();
-	var currentTask = nabor.adres+category+'/'+zdn+'.js';
-	rez+='<div class="task-wrapper" data-category="'+category+'" data-tasknumber="'+zdn+'">';
+	var currentTask = nabor.adres+category+'/'+taskNumber+'.js';
+	rez+='<div class="task-wrapper" data-category="'+category+'" data-tasknumber="'+taskNumber+'">';
 	rez+=currentTask.vTag('h2');
 	console.log(currentTask);
 	try{
-		nabor.upak[category][zdn]();
+		nabor.upak[category][taskNumber]();
 		vopr.template = currentTask.replace(/^(\.\.\/)+/,'');
 		vopr.taskNumber = category;
 		rez+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
