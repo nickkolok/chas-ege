@@ -50,7 +50,7 @@ function writeToFile(slovo, data) {
     // Формируем новую запись
     const newEntry = `\nlx['${slovo}']={\n` +
         Object.entries(data)
-            .map(([key, value]) => `  ${key}:${JSON.stringify(value)}`)
+            .map(([key, value]) => `  ${key}:${JSON.stringify(value).replaceAll('"', "'")}`)
             .join(',\n') +
         '\n};\n';
 
