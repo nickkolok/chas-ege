@@ -70,7 +70,7 @@
 		Какова вероятность того, что ${window.moneta.iz()} выпадет ${outcomeDescription}?`.replace(/выпадет ни разу/, 'ни разу не выпадет'),
 			answers: probability,
 			authors: ['Авдеев Николай', 'Суматохина Александра'],
-			preference: [],
+			preference: [preference1, preference2],
 		});
 	}, 1000);
 })();
