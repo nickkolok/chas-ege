@@ -11,27 +11,26 @@
 		let v1 = s2/((s1-s2)/v2+n);
 		
 		let r1 = sl1();
-		genAssert(v1>20,''); //Заготовочка!
-		genAssertZ1000(v1); //Заготовочка!
+		genAssert(v1>20,'Скорость меньше 20');
+		genAssertZ1000(v1);
 
 		let the_humanSettlementDestination = sklonlxkand(decor.humanSettlementDestination.iz()); // ["пункт","город","село","деревня"]
 		let the_vehicleRacingOnRoad = sklonlxkand(decor.vehicleRacingOnRoad.iz()); // ["автомобиль","мотоцикл","велосипед","электросамокат","гироскутер","мотоциклист","велосипедист","машина","гонщик","грузовик","автомобилист"]
 		let the_orderToFind = decor.orderToFind.iz(); // ["найдите","определите","вычислите"]
 
-		genAssert(the_vehicleRacingOnRoad.rod==0,''); //Заготовочка!
-		//let   = sklonlxkand([].iz()); // Заготовочка!
+		genAssert(the_vehicleRacingOnRoad.rod==0,'');
 
 		NAtask.setTask({
 			text: 'Расстояние между ' + the_humanSettlementDestination.tm + ' $A$ и $B$ равно $' + s1 + '$ км. ' +
 				'Из ' + the_humanSettlementDestination.re + ' $A$ в ' + the_humanSettlementDestination.ve + ' выехал первый ' +
 				the_vehicleRacingOnRoad.ie + ', ' +
-				'а через '+[chislitlx(n, 'час'),(n*60).toChMin()].iz()+' после этого навстречу ему из города $B$ выехал со скоростью $' + v2 + '$ км/ч второй ' +
+				'а через '+[chislitlx(n, 'час'),(n*60).toChMin()].iz()+' после этого навстречу ему из '+the_humanSettlementDestination.re+' $B$ выехал со скоростью $' + v2 + '$ км/ч второй ' +
 				the_vehicleRacingOnRoad.ie + '. ' + the_orderToFind.toZagl() + ' скорость первого ' + the_vehicleRacingOnRoad.re +
 				', ' +
 				'если ' + the_vehicleRacingOnRoad.im + ' встретились на расстоянии $' + [s2,s1-s2][r1] + '$ км от ' +
 				the_humanSettlementDestination.re + ' $'+['A','B'][r1]+'$. Ответ дайте в км/ч.',
 			answers: v1,
-			authors: [''],
+			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.allDecimalsToStandard( /*true*/ );
 		NAtask.modifiers.variativeABC();
