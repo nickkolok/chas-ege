@@ -7,19 +7,36 @@
         let randMoreOrLess = sl1();
         let randClass = sl1();
 
-        let universityBoy = sklonlxkand(['юноша', 'парень', 'студент'].iz());
-        let universityGirl = sklonlxkand(['девушка', 'студентка'].iz());
-        let schoolBoy = sklonlxkand(['мальчик', 'младшеклассник', 'старшеклассник', 'ученик'].iz());
-        let schoolGirl = sklonlxkand(['девочка', 'младшеклассница', 'ученица', 'старшеклассница'].iz());
+        let universityPairs = [
+            ['парень', 'девушка'],
+            ['студент', 'студентка']
+        ];
+        let schoolPairs = [
+            ['мальчик', 'девочка'],
+            ['младшеклассник', 'младшеклассница'],
+            ['старшеклассник', 'старшеклассница'],
+            ['ученик', 'ученица']
+        ];
+        let universityIndex = sl(0, universityPairs.length - 1);
+        let schoolIndex = sl(0, schoolPairs.length - 1);
+
+        let universityBoy = sklonlxkand(universityPairs[universityIndex][0]);
+        let universityGirl = sklonlxkand(universityPairs[universityIndex][1]);
+        let schoolBoy = sklonlxkand(schoolPairs[schoolIndex][0]);
+        let schoolGirl = sklonlxkand(schoolPairs[schoolIndex][1]);
+
         let academic = sklonlxkand(['академия', 'колледж', 'университет', 'институт', 'ВУЗ', 'техникум', 'училище'].iz());
         let school = sklonlxkand(['школа', 'лицей', 'гимназия',].iz());
-        
+
         let studentBoy = [schoolBoy, universityBoy][randClass];
         let studentGirl = [schoolGirl, universityGirl][randClass];
         let educationInstitution = [school, academic][randClass];
 
-        let boyOrGirl = [studentBoy, studentGirl][rand];
-        let girlOrBoy = [studentBoy, studentGirl][1 - rand];
+        let students = [studentBoy, studentGirl]
+        let boyOrGirl = students[rand];
+        let girlOrBoy = students[1 - rand];
+
+        let gender = [boyOrGirl, girlOrBoy];
 
         let firstHalfOfStudent = 100 - sl(20, 49, 1);
         let differenceInNumberOfStudent = sl(4, 100, 1);
@@ -47,9 +64,9 @@
                     answers: result * (100 - firstHalfOfStudent),
                 },
             ],
-            postquestion: ' в ' + educationInstitution.pe + ', если ' + [boyOrGirl, girlOrBoy][randMoreOrLess].rm +
+            postquestion: ' в ' + educationInstitution.pe + ', если ' + gender[1 - randMoreOrLess].rm +
                 ' там на ' + differenceInNumberOfStudent + ' учащихся ' + ['больше', 'меньше'][randMoreOrLess] + ', чем ' +
-                [girlOrBoy, boyOrGirl][randMoreOrLess].rm + '?',
+                gender[randMoreOrLess].rm + '?',
         });
     }, 100);
 })();
