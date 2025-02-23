@@ -36,13 +36,13 @@
                 {
                     text: '$' + answer + '$' + ' ' + gender + ' ' + educationInstitution + ' города ' +
                         ' ' + сorrectIncorrect + ' решили задачу №' + '$' + taskNumber + '$' + '. Что составило ' + '$' + typeOfPersent + '$' +
-                        '% от всех решивших' + '. Сколько всего ' + gender + ' ' + educationInstitution + ' попробовали решить задачу №' + '$' + taskNumber + '$',
+                        '% от всех приступивших к решению задачи' + '. Сколько всего ' + gender + ' ' + educationInstitution + ' попробовали решить задачу №' + '$' + taskNumber + '$',
                     answers: students,
                 },
                 {
                     text: '$' + answer + '$' + ' ' + gender + ' ' + educationInstitution + ' города ' +
                         ' ' + сorrectIncorrect + ' решили задачу №' + '$' + taskNumber + '$' + '. Что составило ' + '$' + typeOfPersent + '$' +
-                        '% от всех решивших' + '. Сколько ' + gender + ' ' + educationInstitution + '  решили задачу №' + '$' + taskNumber + '$' + ' ' + incorrectCorrect,
+                        '% от всех приступивших к решению задачи' + '. Сколько ' + gender + ' ' + educationInstitution + '  решили задачу №' + '$' + taskNumber + '$' + ' ' + incorrectCorrect,
                     answers: [students - result, result][randUpgrade],
                 },
                 {
