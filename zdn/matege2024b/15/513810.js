@@ -13,8 +13,6 @@
         ];
         let schoolPairs = [
             ['мальчик', 'девочка'],
-            ['младшеклассник', 'младшеклассница'],
-            ['старшеклассник', 'старшеклассница'],
             ['ученик', 'ученица']
         ];
         let universityIndex = sl(0, universityPairs.length - 1);
@@ -56,7 +54,7 @@
                     answers: result * 100,
                 },
                 {
-                    text: boyOrGirl.rm,
+                    text: boyOrGirl.rm + ' среди учащихся',
                     answers: result * firstHalfOfStudent,
                 },
                 {
