@@ -14,30 +14,33 @@
         let answer = [persent, 100 - persent];
 
         NAtask.setTask({
-            text: govOrPriShare[0].toZagl() + ' принадлежит ' + persent + '% акций предприятия "' + nameOfCompany + '", ' +
-                'остальные акции принадлежат ' + govOrPriShare[1] + '. ',
+            text: govOrPriShare[0].toZagl() + ' принадлежит ',
             questions: [
                 {
-                    text:
+                    text: persent + '% акций предприятия "' + nameOfCompany + '", ' +
+                        'остальные акции принадлежат ' + govOrPriShare[1] + '. ' +
                         'Общая прибыль предприятия после уплаты налогов за год составила ' + companyProfit + ' млн. р. ' +
                         'Какая сумма в рублях из этой прибыли должна пойти на выплату ' + whoReceivedShares[rand],
                     answers: result,
                 },
                 {
-                    text:
+                    text: persent + '% акций предприятия "' + nameOfCompany + '", ' +
+                        'остальные акции принадлежат ' + govOrPriShare[1] + '. ' +
                         'Прибыль, которая досталась ' + whoReceivedShares[rand] + ' составляет ' +
                         result + ' рублей. Чему была равна общая прибыль предприятия в млн. р.',
                     answers: companyProfit,
                 },
                 {
-                    text:
+                    text: 'часть акций предприятия "' + nameOfCompany + '", ' +
+                        'остальные акции принадлежат ' + govOrPriShare[1] + '. ' +
                         'Общая прибыль предприятия после уплаты налогов за год составила ' + companyProfit + ' млн. р. ' +
                         'Прибыль, которая досталась ' + whoReceivedShares[rand] + ' составляет ' +
                         result + ' рублей. Чему равен процент прибыли предприятия переданный ' + whoReceivedShares[rand],
                     answers: answer[rand],
                 },
                 {
-                    text:
+                    text: 'часть акций предприятия "' + nameOfCompany + '", ' +
+                        'остальные акции принадлежат ' + govOrPriShare[1] + '. ' +
                         'Общая прибыль предприятия после уплаты налогов за год составила ' + companyProfit + ' млн. р. ' +
                         'Прибыль, которая досталась ' + whoReceivedShares[rand] + ' составляет ' +
                         result + ' рублей. Чему равен процент прибыли предприятия переданный ' + whoReceivedShares[1 - rand],
