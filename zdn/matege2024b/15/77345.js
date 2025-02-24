@@ -12,7 +12,7 @@
         let educationInstitution = ['школ', 'лицеев', 'гимназий', '', 'вечерних школ'].iz();
         let сorrectIncorrect = ['правильно', 'неправильно'][rand];
         let incorrectCorrect = ['правильно', 'неправильно'][1 - rand];
-        let tryToSolve = ['приступивших к решению задачи', 'решавших эту задачу', 'попытавшихся решить задачу'].iz();
+        let tryToSolve = [', приступивших к решению задачи', ' решавших эту задачу', ' попытавшихся решить задачу'].iz();
 
         let result = students * persent / 100;
         let answer = [result, students - result][randUpgrade];
@@ -36,14 +36,14 @@
                 },
                 {
                     text: '$' + answer + '$' + ' ' + gender + ' ' + educationInstitution + ' города ' +
-                        ' ' + сorrectIncorrect + ' решили задачу №' + '$' + taskNumber + '$' + '. Что составило ' + '$' + typeOfPersent + '$' +
-                        '% от всех ' + tryToSolve + '. Сколько всего ' + gender + ' ' + educationInstitution + ' попробовали решить задачу №' + '$' + taskNumber + '$',
+                        ' ' + сorrectIncorrect + ' решили задачу №' + '$' + taskNumber + '$' + ', что составило ' + '$' + typeOfPersent + '$' +
+                        '% от всех' + tryToSolve + '. Сколько всего ' + gender + ' ' + educationInstitution + ' попробовали решить задачу №' + '$' + taskNumber + '$',
                     answers: students,
                 },
                 {
                     text: '$' + answer + '$' + ' ' + gender + ' ' + educationInstitution + ' города ' +
-                        ' ' + сorrectIncorrect + ' решили задачу №' + '$' + taskNumber + '$' + '. Что составило ' + '$' + typeOfPersent + '$' +
-                        '% от всех ' + tryToSolve + '. Сколько ' + gender + ' ' + educationInstitution + '  решили задачу №' + '$' + taskNumber + '$' + ' ' + incorrectCorrect,
+                        ' ' + сorrectIncorrect + ' решили задачу №' + '$' + taskNumber + '$' + ', что составило ' + '$' + typeOfPersent + '$' +
+                        '% от всех' + tryToSolve + '. Сколько ' + gender + ' ' + educationInstitution + '  решили задачу №' + '$' + taskNumber + '$' + ' ' + incorrectCorrect,
                     answers: [students - result, result][randUpgrade],
                 },
                 {
