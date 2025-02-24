@@ -33,7 +33,6 @@
         let students = [studentBoy, studentGirl]
         let boyOrGirl = students[rand];
         let girlOrBoy = students[1 - rand];
-
         let gender = [boyOrGirl, girlOrBoy];
 
         let firstHalfOfStudent = 100 - sl(20, 49, 1);
@@ -58,7 +57,7 @@
                     answers: result * firstHalfOfStudent,
                 },
                 {
-                    text: girlOrBoy.rm,
+                    text: girlOrBoy.rm + ' среди учащихся',
                     answers: result * (100 - firstHalfOfStudent),
                 },
             ],
