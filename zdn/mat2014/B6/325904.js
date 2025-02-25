@@ -22,7 +22,7 @@
 		genAssert(answers1.mzhd(0, 1), 'Ответ вне интервала (0; 1)');
 
 		NAtask.setTask({
-			text: `За круглый стол на ${chislitM(kolvomest, 'стул', 'стулья', 'стульев')} в случайном порядке рассаживаются ${kolvopeople1} ${people1} и 2 ${people2}. Найдите вероятность того, что ${mest} ${people2} ${nayti} сидеть рядом.`,
+			text: `За круглый стол на ${chislitlx(kolvomest, 'стул')} в случайном порядке рассаживаются ${kolvopeople1} ${people1} и 2 ${people2}. Найдите вероятность того, что ${mest} ${people2} ${nayti} сидеть рядом.`,
 			answers: nayti === 'будут' ? answers1 : 1 - answers1,
 		});
 	}, 100);
