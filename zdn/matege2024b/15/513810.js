@@ -62,7 +62,7 @@
                 },
             ],
             postquestion: ' в ' + educationInstitution.pe + ', если ' + gender[1 - randMoreOrLess].rm +
-                ' там на ' + differenceInNumberOfStudent + ' учащихся ' + ['больше', 'меньше'][randMoreOrLess] + ', чем ' +
+                ' там на ' + differenceInNumberOfStudent + ['больше', 'меньше'][randMoreOrLess] + ', чем ' +
                 gender[randMoreOrLess].rm + '?',
         });
     }, 100);
