@@ -16,7 +16,7 @@
 		let v2=sl1();
 		let dol=[[['медленнее','дольше'].iz(),'меньше'],['быстрее','больше']];
 		let esli=[', если известно, что ',', если '].iz();
-		let ono=['он'+['','а','и'][tub_naz.rod]];
+		let ono=['он'+['','а','о','и'][tub_naz.rod]];
 
 		NAtask.setTask({
 			text: tub_num[v2].toZagl()+' '+tub_naz.ie+' '+prop+' на '+chislitlx(b, 'литр','v')+' в минуту '+dol[v2][1]+', чем '+tub_num[1-v2]+'. '+
