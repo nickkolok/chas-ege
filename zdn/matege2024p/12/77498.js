@@ -12,14 +12,9 @@
 		genAssert(!c.isPolnKvadr(), 'Корень извлекается');
 		genAssert(!a2.isPolnKvadr(), 'Корень извлекается');
 		NAtask.setMinimaxFunctionTask({
-<<<<<<< HEAD
 			expr: [a1, a2 * sl(2, 3) + ['sqrt(' + a3 + ')', ''].iz()].iz() + sincos.iz() + 
 				'(x)' + sign.iz() + [a2, a2 + ['sqrt(' + c + ')', ''].iz()].iz() + 
 				'x' + sign.iz() + a1 + ['sqrt(' + c + ')', ''].iz() + 'pi' + [sign.iz() + d, ''].iz(),
-=======
-			expr: [a1, a1 + 'sqrt(' + a2 + ')'].iz() + sincos.iz() + '(x)' + sign.iz() + [a1, b1 + 'sqrt(' + c + ')'].iz() +
-				'x' + sign.iz() + [a1 + 'pi/' + b2, 'sqrt(' + c + ')' + 'pi'].iz() + sign.iz() + d,
->>>>>>> 369f33997482ea3e62407c02ec1ac8d86d627a89
 			leftEnd: '0',
 			rightEnd: 'pi/2',
 			primaryStep: 0.1,
