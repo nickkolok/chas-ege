@@ -19,7 +19,7 @@
 
             questions: [
                 {
-                    text: ' было ' + students + ' учащихся, ' +
+                    text: ' было ' + studentsFirst + ' учащихся, ' +
                         'а к концу года их стало ' + studentsSecond + '. ' +
                         'На сколько процентов увеличилось за учебный год число учащихся',
                     answers: result,
