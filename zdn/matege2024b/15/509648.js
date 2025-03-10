@@ -8,8 +8,9 @@
         let studentsArrived = sl(20, 200, 10);
         let studentsSecond = studentsFirst + studentsArrived;
 
+        genAssert(studentsArrived.kratno(studentsFirst/100),"попытка не пытка");
         let result = studentsArrived / studentsFirst * 100;
-        genAssertZ1000(result, "слишком много знаков после запятой");
+       
 
         let educationInstitution = sklonlxkand(['школа', 'лицей', 'гимназия', 'академия', 'колледж', 'университет', 'институт', 'ВУЗ', 'техникум', 'училище'].iz());
 
