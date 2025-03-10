@@ -4,15 +4,13 @@
         NAinfo.requireApiVersion(0, 2);
 
         let rand = sl1();
-        let ratio = sl(2,50,1);
-        let subscribersFirst = sl(500, 10000, 10);
-        let subscribersArrived = (subscribersFirst * ratio) / 100;
+        let subscribersFirst = sl(200, 1000, 10);
+        let subscribersArrived = sl(20, 190, 10);
+        genAssert(subscribersArrived.kratno(subscribersFirst / 100), "количество прибывших кратко 1% от нынешних");
 
         let subscribersSecond = subscribersFirst + subscribersArrived;
+        let result = (subscribersArrived / subscribersFirst) * 100;
 
-        let result = Math.round((subscribersArrived / subscribersFirst) * 100 * 1000) / 1000;
-        
-        genAssertZ1000(result, "слишком много знаков после запятой");
 
         let company = ['Юг', 'Восток', 'Запад', 'Север', 'Ветер', 'Роза ветров', 'Штиль', 'Шторм', 'Ураган', 'Морзе'].iz();
 
@@ -40,7 +38,7 @@
                     answers: subscribersFirst,
                 },
             ],
-            postquestion: '?'+' Ответ округлять до тысячных.',
+            postquestion: '?',
         });
     }, 100);
 })();
