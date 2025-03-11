@@ -16,18 +16,18 @@
                 'В ' + educationInstitution.pe + ' ',
             questions: [
                 {
-                    text: result + ' учащихся изучали ' + subject + ' язык, что составляет ' + percent + '% от числа всех учащихся. ' +
+                    text: result + ' учащихся изучают ' + subject + ' язык, что составляет ' + percent + '% от числа всех учащихся. ' +
                         'Сколько учащихся обучаются в ' + educationInstitution.pe,
                     answers: students,
                 },
                 {
-                    text: percent + '% учащихся изучали ' + subject + ' язык. Всего в заведении ' + students + ' учащихся. ' +
+                    text: percent + '% учащихся изучает ' + subject + ' язык. Всего в заведении ' + students + ' учащихся. ' +
                         'Сколько учащихся изучают ' + subject + ' язык',
                     answers: result,
                 },
                 {
-                    text: result + ' учащихся изучали ' + subject + ' язык. Всего в заведении ' + students + ' учащихся. ' +
-                        'Какой процент учащихся изучают ' + subject + ' язык',
+                    text: result + ' учащихся изучают ' + subject + ' язык. Всего в заведении ' + students + ' учащихся. ' +
+                        'Какой процент учащихся изучает ' + subject + ' язык',
                     answers: percent,
                 },
             ],
