@@ -8,7 +8,7 @@
         let studentsArrived = sl(20, 200, 10);
         let studentsSecond = studentsFirst + studentsArrived;
 
-        genAssert(studentsArrived.kratno(studentsFirst/100),"попытка не пытка");
+        genAssert(studentsArrived.kratno(studentsFirst/100),"количество прибывших учащихся не кратко 1% от изначального количества обущающихся");
         let result = studentsArrived / studentsFirst * 100;
        
 
@@ -40,7 +40,7 @@
             ],
             postquestion: '?',
         });
-    }, 100);
+    }, 2000);
 })();
 //https://mathb-ege.sdamgia.ru/test?likes=509648
 //zer00player
