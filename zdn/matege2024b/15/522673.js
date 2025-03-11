@@ -56,7 +56,7 @@
                         countOfClother + '$' + endPrilag + ' ' + clothers.ve + ' ' + '$' + percent + '$' + '%. ' +
                         'Покупатель оплатил покупку ' + '$' + countOfClother + '$' + '-x ' + clothers.rm +
                         ' в период действия акции, что стоило ему ' + '$' + result + '$' + 'р. ' +
-                        'Сколько стоит ' + oneItem + ' ' + clothers.ie,
+                        'Сколько стоит ' + oneItem + ' ' + clothers.ie + ' без акции',
                     answers: prise,
                 },
                 {
@@ -73,7 +73,7 @@
                         ' — скидка на кажд' + anotherEndPrilagFirst + ' втор' + anotherEndPrilagSecond + ' составляет ' + '$' + percent + '$' + '%. ' +
                         'Покупатель оплатил покупку ' + '$' + anotherCountOfClother + '$' + '-' + endChislit + ' ' + clothers.rm +
                         ' в период действия акции, что стоило ему ' + '$' + anotherResult + '$' + 'р. ' +
-                        'Сколько стоит ' + oneItem + ' ' + clothers.ie,
+                        'Сколько стоит ' + oneItem + ' ' + clothers.ie + ' без акции',
                     answers: prise,
                 },
             ],
