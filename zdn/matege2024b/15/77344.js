@@ -7,30 +7,30 @@
         let place = ['городской', 'областной', 'школьной',].iz();
 
         let students = sl(200, 10000, 5);
-        let percent = sl(5, 20, 1);
+        let percent = sl(2, 25, 1);
         genAssert(students.kratno(100 / percent), "количество учащихся не кратко 100/процент");
         let result = percent / 100 * students;
 
         NAtask.setTask({
             text:
-                'Призерами ' + place + ' олимпиады по ' + subject.pe + ' стало ',
+                'Призерами ' + place + ' олимпиады по ' + subject.pe,
             questions: [
                 {
-                    text: chislitlx(result, 'ученик') + ', ' +
+                    text: ' стали ' + chislitlx(result, 'ученик') + ', ' +
                         'что составило ' + percent + '% от числа участников. ' +
                         'Сколько учеников участвовало в олимпиаде',
                     answers: students,
                 },
                 {
-                    text: chislitlx(result, 'ученик') + '. ' +
-                        'Всего на олимпиаде присутсвовало ' + chislitlx(students, 'ученик') + '. ' +
-                        'Какой процент учащихся победил в олимпиаде',
+                    text: ' стали ' + chislitlx(result, 'ученик') + '. ' +
+                        'Всего на олимпиаде присутствовало ' + chislitlx(students, 'ученик') + '. ' +
+                        'Какой процент учащихся стал призёрами в олимпиаде',
                     answers: percent,
                 },
                 {
-                    text: percent + '% от числа участников. ' +
+                    text: ' стало ' + percent + '% от числа участников. ' +
                         'Всего на олимпиаде присутсвовало ' + chislitlx(students, 'ученик') + '. ' +
-                        'Сколько человек победили в олимпиаде',
+                        'Сколько человек стали призёрами в олимпиаде',
                     answers: result,
                 },
             ],
