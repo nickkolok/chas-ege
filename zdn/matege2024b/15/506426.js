@@ -20,10 +20,10 @@
 
         NAtask.setTask({
             text:
-                clothers.ve.toZagl() + ' на распродаже уценили ',
+                clothers.ve.toZagl() + ' на распродаже уценили',
             questions: [
                 {
-                    text: 'на ' + '$' + percent + '$' + '%, при этом он' + mw + ' ' + hasBecome + ' стоить ' + '$' + result + '$' + ' р. ' +
+                    text: ' на ' + '$' + percent + '$' + '%, при этом он' + mw + ' ' + hasBecome + ' стоить ' + '$' + result + '$' + ' р. ' +
                         'Сколько рублей ' + cost + ' ' + clothers.ie + ' до распродажи',
                     answers: prise,
                 },
@@ -33,7 +33,7 @@
                     answers: percent,
                 },
                 {
-                    text: 'на ' + '$' + percent + '$' + '%.' + ' До распродажи ' + clothers.ie + ' ' + cost + ' ' + '$' + prise + '$' +
+                    text: ' на ' + '$' + percent + '$' + '%.' + ' До распродажи ' + clothers.ie + ' ' + cost + ' ' + '$' + prise + '$' +
                         ' р. Сколько рублей стоит ' + clothers.ie + ' во время распродажи',
                     answers: result,
                 },
