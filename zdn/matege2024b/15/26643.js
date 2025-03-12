@@ -9,7 +9,7 @@
         let name = sklonlxkand([om.maleNames.iz(), om.femaleNames.iz()][rand]);
         let mw = ['', 'а'][rand];
         let inRublesText = (counrtyRand === 0) ? '' : ', в переводе в рубли,';
-        let RussianVariant = (counrtyRand === 0) ? ' р' : ''
+        let russianVariant = (counrtyRand === 0) ? ' р' : ''
 
         let percent = [13, 20.5, 29.5, 14, 32, 11.75, 48.5, 22.5, 39.65, 22, 25][counrtyRand];
         let prise = sl(20000, 1000000, 1000);
@@ -22,20 +22,20 @@
             questions: [
                 {
                     text: 'Налог на доходы в этой стране составляет ' + percent + '% от заработной платы. ' +
-                        'Заработная плата ' + name.re + inRublesText + ' равна ' + prise + RussianVariant + '. ' +
+                        'Заработная плата ' + name.re + inRublesText + ' равна ' + prise + russianVariant + '. ' +
                         'Какую сумму он' + mw + ' получит после вычета налога на доходы?  Ответ дайте в рублях.',
                     answers: result,
                 },
                 {
                     text: 'Налог на доходы в этой стране составляет ' + percent + '% от заработной платы. ' +
-                        'Заработная плата ' + name.re + inRublesText + ' после наловогово вычета равна ' + result + RussianVariant + '. ' +
-                        'Какую сумму он' + mw + ' получает до налога на доходы? Ответ дайте в рублях.',
+                        'Заработная плата ' + name.re + inRublesText + ' после наловогово вычета равна ' + result + russianVariant + '. ' +
+                        'Какую сумму он' + mw + ' получает до вычета налога на доходы? Ответ дайте в рублях.',
                     answers: prise,
                 },
                 {
-                    text: 'Заработная плата ' + name.re + inRublesText + ' равна ' + prise + RussianVariant + '. ' +
+                    text: 'Заработная плата ' + name.re + inRublesText + ' равна ' + prise + russianVariant + '. ' +
                         'После наловогово вычета сумма равна ' + result + ' р. ' +
-                        'Какой процент на доходы действует в этом государстве?',
+                        'Сколько процентов составляет налог на доходы в этом государстве?',
                     answers: percent,
                 },
             ],
