@@ -22,10 +22,10 @@
         let prise = sl(100, 2000, 10);
         let percentSecondMonth = sl(10, 90, 1);
         let percentThirdMonth = sl(10, 90, 1);
-        let middlePrise = [prise * (1 + 0.01 * percentSecondMonth), prise * (1 - 0.01 * percentSecondMonth)][randFirst];
-        let finalePrise = [middlePrise * (1 + 0.01 * percentThirdMonth), middlePrise * (1 - 0.01 * percentThirdMonth)][randSecond];
+        let middlePrise = prise * (randFirst ? (1 - 0.01 * percentSecondMonth) : (1 + 0.01 * percentSecondMonth));
+        let finalePrise = middlePrise * (randSecond ? (1 - 0.01 * percentThirdMonth) : (1 + 0.01 * percentThirdMonth));
 
-        genAssert((100 * finalePrise).isAlmostInteger(), 'Число имеет более 2 знаков после запятой');
+        genAssertZ1000(finalePrise / 10, 'Число имеет более 2 знаков после запятой');
 
 
 
@@ -34,7 +34,7 @@
                 'В ' + firstMonth.pe,
             questions: [
                 {
-                    text:  ' один килограмм ' + food.re + ' стоил ' + prise + ' р., ' +
+                    text: ' один килограмм ' + food.re + ' стоил ' + prise + ' р., ' +
                         'в ' + secondMonth.pe + ' ' + food.ie + ' стала ' + moreOrLessSecondMonth + ' на ' + percentSecondMonth + '%, а в ' + thirdMonth.pe +
                         ' — ' + moreOrLessThirdMonth + ' на ' + percentThirdMonth +
                         '%. Сколько рублей стоил 1 кг ' + food.re + ' после того как стал ' + moreOrLessThirdMonth + ' в ' + thirdMonth.pe,
@@ -46,7 +46,6 @@
                         ' в ' + thirdMonth.pe + ' стала составлять ' + finalePrise + ' p. Сколько рублей стоил 1 кг ' + food.re + ' в ' + firstMonth.pe,
                     answers: prise,
                 },
-                
             ],
             postquestion: '?',
         });
