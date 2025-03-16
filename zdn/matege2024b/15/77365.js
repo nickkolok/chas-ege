@@ -3,12 +3,16 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
+        let rand = sl1();
+        let priseExpensive = sl(800, 3000, 10);
+        let priseCheap = sl(100, 700, 10);
+        let prise = [priseExpensive, priseCheap][rand];
+        let percent = sl(10, 90, 1);
+        let itemCheap = sklonlxkand(['словарь', 'открытка', 'календарь'].iz());
+        let itemExpensive = sklonlxkand(['дневник', 'журнал', 'книга'].iz());
+        let item = [itemExpensive, itemCheap][rand];
 
-        let prise = sl(100, 3000, 10);
-        let percent = sl(10, 50, 1);
-        let item = sklonlxkand(['словарь', 'дневник', 'журнал', 'открытка', 'календарь', 'книга'].iz());
-
-        let result = prise - percent * 0.01 * prise;
+        let result = prise * (1 - percent * 0.01);
 
         NAtask.setTask({
             text: 'Держатели дисконтной карты книжного магазина получают при покупке скидку',
