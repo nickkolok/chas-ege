@@ -16,7 +16,7 @@
         let countNotebooksBeforeDsicount = sl(10, 100, 10);
         let numberOfNotebooks = countNotebooksBeforeDsicount + sl(10, 200, 5);
 
-        let result = prise * (numberOfNotebooks - perсent * 0.01 * numberOfNotebooks);
+        let result = prise * numberOfNotebooks * (1 - perсent * 0.01);
 
         NAtask.setTask({
             text: '',
