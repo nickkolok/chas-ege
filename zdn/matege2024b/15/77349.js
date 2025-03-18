@@ -22,8 +22,8 @@
         let prise = sl(100, 2000, 10);
         let percentSecondMonth = sl(10, 90, 1);
         let percentThirdMonth = sl(10, 90, 1);
-        let middlePrise = prise * (randFirst ? (1 - 0.01 * percentSecondMonth) : (1 + 0.01 * percentSecondMonth));
-        let finalePrise = middlePrise * (randSecond ? (1 - 0.01 * percentThirdMonth) : (1 + 0.01 * percentThirdMonth));
+        let middlePrise = prise * (1 + [1, -1][randFirst] * 0.01 * percentSecondMonth);
+        let finalePrise = middlePrise * (1 + [1, -1][randSecond] * 0.01 * percentThirdMonth);
 
         genAssertZ1000(finalePrise / 10, 'Число имеет более 2 знаков после запятой');
 
