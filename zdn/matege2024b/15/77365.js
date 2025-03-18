@@ -7,7 +7,7 @@
         let priseExpensive = sl(800, 3000, 10);
         let priseCheap = sl(100, 700, 10);
         let prise = [priseExpensive, priseCheap][rand];
-        let percent = sl(10, 90, 1);
+        let percent = sl(10, 40, 1);
         let itemCheap = sklonlxkand(['словарь', 'открытка', 'календарь'].iz());
         let itemExpensive = sklonlxkand(['дневник', 'журнал', 'книга'].iz());
         let item = [itemExpensive, itemCheap][rand];
