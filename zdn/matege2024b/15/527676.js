@@ -15,10 +15,10 @@
         let moreOrLessSecond = ['дороже', 'дешевле'][randSecond];
 
         let prise = sl(1000, 5000, 100);
-        let percentFirst = sl(10, 90, 1);
-        let percentSecond = sl(10, 90, 1);
-        let middlePrise = prise * (randFirst ? (1 - 0.01 * percentFirst) : (1 + 0.01 * percentFirst));
-        let finalePrise = middlePrise * (randSecond ? (1 - 0.01 * percentSecond) : (1 + 0.01 * percentSecond));
+        let percentFirst = sl(10, 50, 1);
+        let percentSecond = sl(10, 50, 1);
+        let middlePrise = prise * (1 + [1, -1][randFirst] * 0.01 * percentFirst);
+        let finalePrise = middlePrise * (1 + [1, -1][randSecond] * 0.01 * percentSecond);
 
         genAssertZ1000(finalePrise / 10, 'Число имеет более 2 знаков после запятой');
 
