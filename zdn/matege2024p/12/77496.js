@@ -1,7 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-		let a = sl(1, 49).pm();
+		let a = sl(1, 49);
 		let b = Math.abs(a) + sl(1, 49);
 		let c = sl(1, 99);
 		let sluchSign = sl1();
