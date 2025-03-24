@@ -61,8 +61,8 @@ function readOptions() {
 		variantNumber = $('#start-number').val() - 1;
 	}
 
-	sluchch.forceIntegers = (options.forceIntegers) ? true : false;
-	sluchch.onlyIntegers = (options.onlyIntegers) ? true : false;
+	sluchch.forceIntegers = !!options.forceIntegers;
+	sluchch.onlyIntegers = !!options.onlyIntegers;
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
