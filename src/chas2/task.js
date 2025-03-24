@@ -166,6 +166,14 @@ chas2.task = {
 			window.vopr.dey = o.draw;
 		}
 
+		o.forbidDecimalFractions = o.forbidDecimalFractions || chas2.task.setTask.forbidDecimalFractions;
+
+		if(o.forbidDecimalFractions){
+			let decimal = /\d+[.,]\d+/g;
+			genAssert(!decimal.test(o.text), 'Текст задания содержит десятичные дроби');
+			genAssert(!decimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные дроби');
+		}
+
 		window.vopr.kat.importFrom(o.tags);
 
 		var voprcheck = dvig.validateVopr();
