@@ -2,8 +2,8 @@
 	let a=sl(10, 150, 1);
 	let b=slKrome(a, 10, 150);
 	let c=slKrome(b, 10, 150);
-    let v=3*a*b*c/(a*b+b*c+a*c);
-    let d=['пути', 'трассы'].iz();
+        let v=3*a*b*c/(a*b+b*c+a*c);
+        let d=['пути', 'трассы'].iz();
 	genAssert(v.isAlmostInteger(),'Скорость не может быть дробной');
 	genAssert(a!=c, 'Скорости не могут равняться')
 	NAtask.setTask({
