@@ -1,0 +1,18 @@
+(function() {
+	retryWhileError(function() {
+		'use strict';
+		let a = sl(2, 99);
+		let sign = ['+', '-'];
+		NAtask.setMinimaxFunctionTask({
+			expr: '(x - ' + [a, a + 2].iz() + ')^2*e^(x-' + a + ')',
+			leftEnd: (a - sl(0.5, 3, 0.5)) + '',
+			rightEnd: (a + sl(0.5, 3, 0.5)) + '',
+			primaryStep: 0.01,
+			secondaryStep: 0.0001,
+			authors: ['Алендарь Сергей'],
+		});
+	}, 10000);
+})();
+
+//77482 
+//77483
