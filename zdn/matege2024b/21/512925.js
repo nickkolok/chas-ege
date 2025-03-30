@@ -9,7 +9,7 @@
 
         NAtask.setTask({
             text: chislitlx(countPillars, 'столб', 'v$') + ' соединены между собой проводами так, ' +
-                'что от каждого столба отходит ровно ' + chislitlx(countWires, 'провод', 'r$') + '. ' +
+                'что от каждого столба отходит ровно ' + chislitlx(countWires, 'провод', 're$') + '. ' +
                 'Сколько всего проводов протянуто между этими столбами?',
             answers: (countWires * countPillars) / 2,
         });
