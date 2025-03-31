@@ -1,7 +1,7 @@
 (function () {
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let letter = om.smallLatinLetters.iz(3);
+		let letter = window.smallLatinLetters.iz(3);
 
 		let coordVectorA = generateMatrix(1, 4, 1, 13).iz();
 		let coordVectorB = generateMatrix(1, 4, 1, 13).iz();
