@@ -17,13 +17,13 @@
         let waterMass = sl(1, 50);
         let firstFinalProcent = (firstProcent * firstMass + secondProcent * secondMass) / (firstMass + secondMass + waterMass);
 
-        genAssertZ1000(firstFinalProcent, '');
+        genAssertZ1000(firstFinalProcent);
 
         let mixinMass = sl(1, 50);
         let mixinProcent = slKrome([firstProcent, secondProcent], 1, 50);
 
         let secondFinalProcent = (firstProcent * firstMass + secondProcent * secondMass + mixinProcent * mixinMass) / (firstMass + secondMass + mixinMass);
-        genAssertZ1000(secondFinalProcent, '');
+        genAssertZ1000(secondFinalProcent);
 
         let mixin = sklonlxkand(['соль', 'щёлочь', 'кислота'].iz());
 
@@ -49,7 +49,7 @@
             },
             ][rand]],
             postquestion: '?',
-            authors: [''],
+            authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.allDecimalsToStandard(/*true*/);
     }, 2000);
