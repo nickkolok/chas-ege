@@ -1,7 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-		let a = sl(2, 99);
+		let a = sl(0, 97);
 		let sign = ['+', '-'];
 		NAtask.setMinimaxFunctionTask({
 			expr: '(x - ' + [a, a + 2].iz() + ')^2*e^(x-' + a + ')',
