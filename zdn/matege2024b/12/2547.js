@@ -11,14 +11,13 @@
         });
         
         let answ = rhombus.lengthDiagonalBD;
-        //genAssert(answ.isZ());
 
 		NAtask.setTask({
 				text: `В параллелограмме $ABCD$ диагонали перпендикулярны. Сумма углов ${[`$A$ и $C$ равна $120^\\circ$`, `$B$ и $D$ равна $240^\\circ$`].iz()}, $${['AB', 'BC', 'CD', 'DA'].iz()}=${rhombus.lengthAB}$. Найдите $BD$.`,
 			answers: answ,
 			authors: ['Александра Суматохина'],
 		});
-		//NAtask.modifiers.variativeABC();
+		NAtask.modifiers.variativeABC();
 		NAtask.modifiers.allDecimalsToStandard(true);
 
 	}, 2000);
