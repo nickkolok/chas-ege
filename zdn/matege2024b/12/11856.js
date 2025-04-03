@@ -2,8 +2,6 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let letters = latbukv.slice(0, 4).concat('E');
-
 		const rect = new Rectangle({
 			lengths: {
 				lengthAB: sl(1,50),
