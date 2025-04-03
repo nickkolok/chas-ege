@@ -22,13 +22,13 @@
 
 		NAtask.setTask({
 			text: `В параллелограмме $ABCD$ диагонали диагонали являются биссектрисами его углов`,
-			questions: [{
+			questions: [[{
 				text: `, $AB=${rhombus.lengthAB}$, $AC=${(rhombus.lengthDiagonalAC).pow(2).texsqrt(1)}$. Найдите $BD$.`,
 				answers: rhombus.lengthDiagonalBD,
 			}, {
 				text: ` и равны $${(rhombus.lengthDiagonalAC).pow(2).texsqrt(1)}$ и $${rhombus.lengthDiagonalBD}$. Найдите периметр параллелограмма $ABCD$.`,
 				answers: rhombus.perimeter,
-			}],
+			}][rand]],
 			authors: ['Александра Суматохина'],
 			preference:preference,
 		});
