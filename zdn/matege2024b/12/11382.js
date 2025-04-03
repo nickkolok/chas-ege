@@ -10,8 +10,6 @@
 			preferenceValue: index
 		})), sl(preference.length - 1));
 
-		rand = 1;
-
 		let side = sl(3, 15);
 
 		let triangle = new Triangle({
