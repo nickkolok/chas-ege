@@ -49,6 +49,7 @@
 			],
 			postquestion: ` ромба.`,
 			authors: ['Александра Суматохина'],
+			preference: preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
 
