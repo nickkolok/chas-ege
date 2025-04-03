@@ -17,7 +17,7 @@
 		}, 'E');
 
 		let ED = [rect.vertices[1], rect.vertices[4]].mt_rasst();
-		genAssert(ED, 'ED не целая');
+		genAssert(ED.isAlmostInteger(), 'ED не целая');
 
 		console.log(ED);
 
@@ -51,7 +51,7 @@
 
 		NAtask.setTask({
 			text: `На стороне $DC$ прямоугольника $ABCD$, у которого $AB=${rect.lengthAB}$ и $AD = ${rect.lengthDA}$ , отмечена точка $E$ так, что треугольник $ADE$ равнобедренный. Найдите $EB$.`,
-			answers: 0,
+			answers: ED,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.variativeABC(letters);
