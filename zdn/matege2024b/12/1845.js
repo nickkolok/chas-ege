@@ -19,8 +19,6 @@
 		let ED = [rect.vertices[1], rect.vertices[4]].mt_rasst();
 		genAssert(ED.isAlmostInteger(), 'ED не целая');
 
-		console.log(ED);
-
 		rect.connectVerticesInConnectionMatrix(
 			[
 				[0, 4],
