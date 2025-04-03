@@ -1,6 +1,14 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
+		
+		let key = "513740";
+		
+		let preference = ['diagonal', 'perimeter'];
+		let rand = getListedPreference(key, preference.map((pref, index) => ({
+			preference: pref,
+			preferenceValue: index
+		})), sl(preference.length - 1));
 
 		let rhombus = new Rhombus({
 			length: sl(1, 50),
@@ -22,6 +30,7 @@
 				answers: rhombus.perimeter,
 			}],
 			authors: ['Александра Суматохина'],
+			preference:preference,
 		});
 		NAtask.modifiers.variativeABC();
 		NAtask.modifiers.allDecimalsToStandard(true);
