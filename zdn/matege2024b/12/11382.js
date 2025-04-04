@@ -4,12 +4,13 @@
 
 		let key = "11382";
 		let letters = latbukv.slice(0, 3).concat('M');
-		let preference = ['length_AB', 'median'];
+		let preference = ['length_BC_by_median_and_base', 'median', 'length_BC_by_median_and_area'];
 		let rand = getListedPreference(key, preference.map((pref, index) => ({
 			preference: pref,
 			preferenceValue: index
 		})), sl(preference.length - 1));
 
+rand = 0;
 		let side = sl(3, 15);
 
 		let triangle = new Triangle({
@@ -67,9 +68,13 @@
 				}, {
 					text: `известно, что $BC=CA=${triangle.lengthBC}$, $AB = ${triangle.lengthAB}$. Найдите длину медианы $CM$.`,
 					answers: triangle.medianCLength,
+				}, {
+					text: `известно, что $BC=CA=${triangle.lengthBC}$, медиана $CM$ равна $${triangle.medianCLength}$. Площадь треугольника $ABC$ равна $${triangle.area()}$. Найдите длину стороны $BC$.`,
+					answers: triangle.lengthBC ,
 				}][rand]
 			],
 			authors: ['Александра Суматохина'],
+			preference: preference,
 		});
 		NAtask.modifiers.variativeABC(letters);
 
@@ -83,3 +88,4 @@
 })();
 // https://base.mathege.ru/clones/?position=16&parent=11382
 // https://base.mathege.ru/clones/?position=16&parent=6583
+// https://base.mathege.ru/clones/?position=&parent=6693
