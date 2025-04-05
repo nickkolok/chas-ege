@@ -60,13 +60,13 @@
 
 		NAtask.setTask({
 			text: ``,
-			questions: [{
+			questions: [[{
 				text: `В равнобедренном треугольнике $ABC$ медиана $CM$, проведённая к основанию, равна $${triangle.medianCLength.pow(2).texsqrt(1)}$, а $\\tg A = ${triangle.tgA.pow(2).texsqrtfrac(1)}$. Найдите длину боковой стороны треугольника $ABC$.`,
 				answers: triangle.lengthCA,
 			}, {
 				text: `В треугольнике $ABC$ известно, что $CA=BC$ , $AB=${triangle.lengthAB}$, $tg\\angle BAC = ${triangle.tgA.pow(2).texsqrtfrac(1)}$. Найдите длину стороны $AC$.`,
 				answers: triangle.lengthCA,
-			}],
+			}][rand]],
 			authors: ['Александра Суматохина'],
 			preference: preference,
 		});
