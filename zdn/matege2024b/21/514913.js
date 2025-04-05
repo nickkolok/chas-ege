@@ -18,7 +18,7 @@
         let firstOtherCountriesWord = lx[previousNumberWords[firstCountries - 3]].t;
         let secondOtherCountriesWord = lx[previousNumberWords[secondCountries - 3]].t;
 
-        let contract = ['о дружбе', 'о избежании двойного налогообложения', 'о безвизовом режиме', 'об экологической среде', 'по гуманитарным вопросам',
+        let contract = ['о дружбе', 'во избежание двойного налогообложения', 'о безвизовом режиме', 'об экологической среде', 'по гуманитарным вопросам',
             'по вопросам безопасности'].iz();
 
         let result = firstCountries * otherCountriesSecond + secondCountries * otherCountriesFirst;
