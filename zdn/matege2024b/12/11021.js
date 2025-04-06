@@ -9,8 +9,6 @@
 			preferenceValue: index
 		})), sl(preference.length - 1));
 
-		rand = 2;
-
 		let letters = latbukv.slice(0, 3).concat('H');
 
 		let a = sl(5, 25);
@@ -29,8 +27,6 @@
 			['\\sin A', triangle.sinA],
 			['\\cos A', triangle.cosA]
 		][rand];
-
-		console.log(triangle.cosA);
 
 		func[1] = func[1].pow(2);
 
