@@ -39,7 +39,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ угол $C$ равен $90^\\circ$, $BC=${triangle.lengthBC}$. Площадь треугольника равна $${triangle.area()}$. Найдите $tgC$.`,
+			text: `В треугольнике $ABC$ угол $B$ равен $90^\\circ$, $BC=${triangle.lengthBC}$. Площадь треугольника равна $${triangle.area()}$. Найдите $tgC$.`,
 			answers: triangle.tgC,
 			authors: ['Александра Суматохина'],
 		});
