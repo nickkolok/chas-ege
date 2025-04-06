@@ -9,7 +9,7 @@
 			preferenceValue: index
 		})), sl(preference.length - 1));
 
-		let letters = latbukv.slice(0, 3).concat('H');
+		let letters = latbukv.slice(0, 3);
 
 		let a = sl(1, 25);
 		let triangle = new Triangle({
