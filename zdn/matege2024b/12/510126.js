@@ -41,7 +41,7 @@
 		};
 
 		NAtask.setTask({
-			text: `B трапеции $ABCD$ известно, что $DA=BC$, $\\angle DBA=${angleDBA}^{\\circ}$ и $\\angle DBC = ${angleDBC}^{\\circ}$. Найдите угол $ADB$. Отсвет дайте в градусах.`,
+			text: `B трапеции $ABCD$ известно, что $DA=BC$, $\\angle DBA=${angleDBA}^{\\circ}$ и $\\angle DBC = ${angleDBC}^{\\circ}$. Найдите угол $ADB$. Ответ дайте в градусах.`,
 			answers: 180 - 2 * angleDBA - angleDBC,
 			authors: ['Александра Суматохина'],
 		});
