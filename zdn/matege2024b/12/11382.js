@@ -63,7 +63,7 @@
 			text: `В треугольнике $ABC$ `,
 			questions: [
 				[{
-					text: `медиана $CM$ перпендикулярна $BC$. Найдите $BC$, если $CM=${triangle.medianCLength}$, $AB = ${triangle.lengthAB}$.`,
+					text: `медиана $CM$ перпендикулярна $AB$. Найдите $BC$, если $CM=${triangle.medianCLength}$, $AB = ${triangle.lengthAB}$.`,
 					answers: triangle.lengthBC,
 				}, {
 					text: `известно, что $BC=CA=${triangle.lengthBC}$, $AB = ${triangle.lengthAB}$. Найдите длину медианы $CM$.`,
