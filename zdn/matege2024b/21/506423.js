@@ -12,19 +12,16 @@
         let secondMultiplier = firstMultiplier + sl(1, 5, 1);
         let thirdMultiplier = secondMultiplier + sl(2, 5, 1);
 
-        let coins = firstMultiplier < 5 ? "монеты" : "монет";
-
         let copperCoinMultiplier = sl(4, 20, 1);
         let copperCoin = (secondMultiplier + firstMultiplier) * copperCoinMultiplier;
 
         genAssert(thirdMultiplier * firstMultiplier - secondMultiplier * secondMultiplier > 0, "Серебряных монет должно было стать меньше, а не больше или остаться ровно столько же.");
-        
+
         let result = copperCoinMultiplier * (thirdMultiplier * firstMultiplier - secondMultiplier * secondMultiplier);
 
-
         NAtask.setTask({
-            text: 'В  обменном пункте можно совершить одну из двух операций: 1) за ' + firstMultiplier + ' золотых ' + coins + ' получить ' + secondMultiplier +
-                ' серебряных и одну медную; 2) за ' + thirdMultiplier + ' серебряных монет получить ' + secondMultiplier + ' золотых и одну медную.У ' + nameOfPerson.re +
+            text: 'В  обменном пункте можно совершить одну из двух операций: 1) за ' + chislitlx(firstMultiplier, 'монета', '', ' золотых ') + ' получить ' + secondMultiplier +
+                ' серебряных и одну медную; 2) за ' + thirdMultiplier + ' серебряных монет получить ' + secondMultiplier + ' золотых и одну медную. У ' + nameOfPerson.re +
                 ' были только серебряные монеты. ' +
                 'После нескольких посещений обменного пункта серебряных монет у ' + pronoun + ' стало меньше, ' +
                 'золотых не появилось, ' +
