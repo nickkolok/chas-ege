@@ -18,7 +18,7 @@
         let t = [firstProcent + '−процентного', secondProcent + '−процентного'];
 
         if (rand) {
-            t = t.randomReverse();
+            t = t.reverse();
             t[1] = '';
         }
 
