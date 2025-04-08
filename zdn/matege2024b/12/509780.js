@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let key = '10777';
+		let key = '509780';
 		let preference = ['area', 'side', 'angle'];
 
 		let rand = getListedPreference(key, preference.map((pref, index) => ({
@@ -50,7 +50,7 @@
 					text: `Основания трапеции равны $${[trp.lengthAB, trp.lengthCD].shuffleJoin('$ и $')}$, площадь трапеции равна $${trp.area()}$. Найдите боковую сторону, которая образует с одним из оснований трапеции угол $150^\\circ$.`,
 					answers: trp.lengthDA,
 				}, {
-					text: `Одно из оснований трапеции равно $${trp.lengthAB}$, боковая сторона, равная $${trp.lengthDA}$ образует с одним из оснований трапеции угол $150^\\circ$, площадь трапеции равна $${trp.area()}$. Найдите второе основание`,
+					text: `Одно из оснований трапеции равно $${trp.lengthAB}$, боковая сторона, равная $${trp.lengthDA}$ образует с одним из оснований трапеции угол $150^\\circ$, площадь трапеции равна $${trp.area()}$. Найдите второе основание.`,
 					answers: trp.lengthCD,
 				}][rand]
 			],
