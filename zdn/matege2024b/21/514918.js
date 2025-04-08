@@ -10,7 +10,8 @@
         let difference = sl(2, 20, 1);
         let minAngle = (360 / (2 * difference + 1));
         let maxAngle = (360 / (difference + 2));
-        let result = maxAngle % 1 == 0 || minAngle % 1 == 0 ? maxAngle.floor() - minAngle.floor() - 1 : maxAngle.floor() - minAngle.floor();
+        let preResult = maxAngle.floor() - minAngle.floor();
+        let result = maxAngle % 1 == 0 || minAngle % 1 == 0 ? preResult - 1 : preResult;
 
         NAtask.setTask({
             text: 'Три луча, выходящие из одной точки, разбивают плоскость на 3 разных угла, измеряемых целым числом градусов. Наи' + moreOrLess + 'ьший угол в ' +
