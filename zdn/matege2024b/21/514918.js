@@ -5,7 +5,7 @@
         let rand = sl1();
         let moreOrLess = ['бол', 'мен'][rand];
         let lessOrMore = ['бол', 'мен'][1 - rand];
-        let moreThanLessThan = ['больше', 'меньше'][rand]
+        let moreThanLessThan = ['больше', 'меньше'][rand];
 
         let difference = sl(2, 20, 1);
         let minAngle = (360 / (2 * difference + 1));
@@ -14,8 +14,10 @@
         let result = maxAngle.floor() - minAngle.floor() - Number(maxAngle % 1 == 0 || minAngle % 1 == 0);
 
         NAtask.setTask({
-            text: 'Три луча, выходящие из одной точки, разбивают плоскость на 3 разных угла, измеряемых целым числом градусов. Наи' + moreOrLess + 'ьший угол в ' +
-                chislitlx(difference, 'раз', 'v$') + ' ' + moreThanLessThan + ' наи' + lessOrMore + 'ьшего. Сколько значений может принимать величина среднего угла?',
+            text: 'Три луча, выходящие из одной точки, разбивают плоскость на ' + $ + '3' + $ +
+                'разных угла, измеряемых целым числом градусов. Наи' + moreOrLess + 'ьший угол в ' +
+                chislitlx(difference, 'раз', 'v$') + ' ' + moreThanLessThan +
+                ' наи' + lessOrMore + 'ьшего. Сколько значений может принимать величина среднего угла?',
             answers: result,
         });
         NAtask.modifiers.allDecimalsToStandard();
