@@ -69,7 +69,7 @@
 					text: `известно, что $BC=CA=${triangle.lengthBC}$, $AB = ${triangle.lengthAB}$. Найдите длину медианы $CM$.`,
 					answers: triangle.medianCLength,
 				}, {
-					text: `известно, что $BC=CA=${triangle.lengthBC}$, медиана $CM$ равна $${triangle.medianCLength}$. Площадь треугольника $ABC$ равна $${triangle.area()}$. Найдите длину стороны $BC$.`,
+					text: `известно, что $BC=CA$, медиана $CM$ равна $${triangle.medianCLength}$. Площадь треугольника $ABC$ равна $${triangle.area()}$. Найдите длину стороны $BC$.`,
 					answers: triangle.lengthBC ,
 				}][rand]
 			],
