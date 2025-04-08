@@ -4,31 +4,11 @@
         let letters = om.latbukv.slice(0, 3);
 
         let key = "356079";
-        let variant = getListedPreference(key, [{
-            preference: 'sinA',
-            preferenceValue: 0,
-        }, {
-            preference: 'cosA',
-            preferenceValue: 1,
-        }, {
-            preference: 'tgA',
-            preferenceValue: 2,
-        }, {
-            preference: 'ctgA',
-            preferenceValue: 3,
-        }, {
-            preference: 'sinC',
-            preferenceValue: 4,
-        }, {
-            preference: 'cosC',
-            preferenceValue: 5,
-        }, {
-            preference: 'tgC',
-            preferenceValue: 6,
-        }, {
-            preference: 'ctgC',
-            preferenceValue: 7,
-        }], sl(0, 7));
+        let preference = ['sinA', 'cosA', 'tgA', 'ctgA', 'sinC', 'cosC', 'tgC', 'ctgC'];
+        let variant = getListedPreference(key, preference.map((pref, index) => ({
+            preference: pref,
+            preferenceValue: index
+        })), sl(preference.length - 1));
 
         let triangle = new Triangle({
             lengths: {
@@ -94,6 +74,7 @@
             text: `В треугольнике $ABC$ угол $B$ равен $90^{\\circ}$, ${sides.shuffleJoin(', ')}. Найдите $\\${find}$.`,
             answers: answer,
             authors: ['Александра Суматохина'],
+            preference: preference,
         });
         NAtask.modifiers.variativeABC(letters);
 
