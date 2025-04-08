@@ -4,31 +4,11 @@
 		let letters = om.latbukv.slice(0, 3);
 
 		let key = "356109";
-		let variant = getListedPreference(key, [{
-			preference: 'side_from_sinA',
-			preferenceValue: 0,
-		}, {
-			preference: 'side_from_cosA',
-			preferenceValue: 1,
-		}, {
-			preference: 'side_from_tgA',
-			preferenceValue: 2,
-		}, {
-			preference: 'side_from_ctgA',
-			preferenceValue: 3,
-		}, {
-			preference: 'side_from_sinC',
-			preferenceValue: 4,
-		}, {
-			preference: 'side_from_cosC',
-			preferenceValue: 5,
-		}, {
-			preference: 'side_from_tgC',
-			preferenceValue: 6,
-		}, {
-			preference: 'side_from_ctgC',
-			preferenceValue: 7,
-		}], sl(0, 7));
+		let preference = ['side_from_sinA', 'side_from_cosA', 'side_from_tgA', 'side_from_ctgA', 'side_from_sinC', 'side_from_cosC', 'side_from_tgC', 'side_from_ctgC'];
+		let variant = getListedPreference(key, preference.map((pref, index) => ({
+            preference: pref,
+            preferenceValue: index
+        })), sl(preference.length - 1));
 
 		let triangle = new Triangle({
 			lengths: {
@@ -96,6 +76,7 @@
 			text: `В треугольнике $ABC$ угол $B$ равен $90^{\\circ}$, $${sides[0][1]}=${sides[0][0]}$, $\\${funcDano}=${funcValue.texrndfrac(1)}$. Найдите $${sides[1][1]}$.`,
 			answers: sides[1][0],
 			authors: ['Александра Суматохина'],
+			preference: preference,
 		});
 		NAtask.modifiers.variativeABC(letters);
 
