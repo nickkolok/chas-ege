@@ -18,7 +18,7 @@
 
 		genAssertZ1000(triangle.area());
 		genAssertZ1000(triangle.tgA * 1000);
-
+		
 		triangle.addVertexToConnectionMatrix([triangle.heightC.pe], 'C');
 
 		let points = autoScale(triangle.vertices);
@@ -48,7 +48,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В равнобедренном треугольнике $ABC$ высота $CM$, проведённая к основанию, равна $${triangle.heightCLength.texsqrt(1)}$, а $\\tg A = ${triangle.tgA.texsqrtfrac(1)}$. Найдите площадь треугольника.`,
+			text: `В равнобедренном треугольнике $ABC$ высота $CM$, проведённая к основанию, равна $${triangle.heightCLength.pow(2).texsqrt(1)}$, а $\\tg A = ${triangle.tgA.pow(2).texsqrtfrac(1)}$. Найдите площадь треугольника.`,
 			answers: triangle.area(),
 			authors: ['Александра Суматохина'],
 		});
