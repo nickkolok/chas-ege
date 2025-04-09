@@ -1076,9 +1076,6 @@ chas2.task = {
 						return ('' + str).cepZamena(alph1, alph2);
 					}
 				);
-				
-				mappedTask.preference = originalPreference;
-				mappedTask.authors = originalAuthors;
 
 				if (variativeABCstrings) {
 					for (let i = 0; i < variativeABCstrings.length; i++) {
@@ -1087,11 +1084,11 @@ chas2.task = {
 					}
 				}
 				
-				if (mappedTask.preference.length) {
+				if (originalPreference.length) {
 					mappedTask.preference = task.preference;
 				}
 
-				if (mappedTask.authors.length) {
+				if (originalAuthors.length) {
 					mappedTask.authors = task.authors;
 				}
 				
