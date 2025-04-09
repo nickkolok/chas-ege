@@ -21,7 +21,7 @@
 		});
 
 		NAtask.setTask({
-			text: `В параллелограмме $ABCD$ диагонали диагонали являются биссектрисами его углов`,
+			text: `В параллелограмме $ABCD$ диагонали являются биссектрисами его углов`,
 			questions: [[{
 				text: `, $AB=${rhombus.lengthAB}$, $AC=${(rhombus.lengthDiagonalAC).pow(2).texsqrt(1)}$. Найдите $BD$.`,
 				answers: rhombus.lengthDiagonalBD,
