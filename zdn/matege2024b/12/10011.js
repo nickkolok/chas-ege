@@ -3,6 +3,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let letters = latbukv.slice(0, 3).concat(['M', 'K']);
+		let rand = sl1();
 
 		let triangle = new Triangle({
 			lengths: {
@@ -55,7 +56,7 @@
 
 		NAtask.setTask({
 			text: `В треугольнике $ABC$ на сторонах $AC$ и $BC$ отмечены точки $M$ и $K$ соответственно так, 
-			что $CM:AC=${relation1[1]}:${relation1.sum()}$, а $CK:BC=${relation2[1]}:${relation2.sum()}$. 
+			что $${[`A`, `C`][rand]}M:AC=${relation1[rand]}:${relation1.sum()}$, а $${[`B`, `C`][rand]}K:BC=${relation2[rand]}:${relation2.sum()}$. 
 			Во сколько раз площадь треугольника $ABC$ больше площади треугольника $MCK$?`,
 			answers: answ,
 			authors: ['Александра Суматохина'],
