@@ -1,13 +1,6 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let key = "11232";
-
-		let preference = ['area', 'side'];
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
 
 		let letters = latbukv.slice(0, 3).concat(['M', 'K']);
 
@@ -17,10 +10,6 @@
 				lengthBC: sl(2, 10),
 				lengthCA: sl(2, 10),
 			},
-			supplementary: {
-				calculateHeights: true,
-				calculateMidlines: true
-			}
 		});
 
 		let relation1 = [sl(1, 5), sl(6, 10)].shuffle();
@@ -70,7 +59,6 @@
 			Во сколько раз площадь треугольника $ABC$ больше площади треугольника $MCK$?`,
 			answers: answ,
 			authors: ['Александра Суматохина'],
-			preference: preference,
 		});
 		NAtask.modifiers.variativeABC(letters);
 		NAtask.modifiers.allDecimalsToStandard(true);
