@@ -20,17 +20,17 @@
 
 		let relation = [sl(1, 5), sl(6, 10)].shuffle();
 
-		let pointM = [triangle.pointA[0], triangle.pointC[0]].mt_segmentDivisionPoint(relation[0], relation[1]);
-		genAssert((pointM.y - triangle.pointA[0].y).abs() > 1, 'Точки M и A слились');
-		genAssert((pointM.y - triangle.pointC[0].y).abs() > 1, 'Точки M и C слились');
+		let pointK = [triangle.pointA[0], triangle.pointC[0]].mt_segmentDivisionPoint(relation[0], relation[1]);
+		genAssert((pointK.y - triangle.pointA[0].y).abs() > 1, 'Точки M и A слились');
+		genAssert((pointK.y - triangle.pointC[0].y).abs() > 1, 'Точки M и C слились');
 
 		let triangleSmall = new Triangle({
-			points: [pointM, triangle.medianCEndPoint, triangle.pointC[0]]
+			points: [pointK, triangle.medianCEndPoint, triangle.pointA[0]]
 		});
 		
 		genAssertZ1000(triangleSmall.area());
 
-		triangle.addVertexToConnectionMatrix([pointM, triangle.medianCEndPoint], ['E', 'C']);
+		triangle.addVertexToConnectionMatrix([pointK, triangle.medianCEndPoint], ['E', 'C']);
 		triangle.connectVerticesInConnectionMatrix([3, 4]);
 
 		let points = autoScale(triangle.vertices);
