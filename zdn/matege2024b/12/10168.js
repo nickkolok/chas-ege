@@ -58,7 +58,7 @@
 
 		NAtask.setTask({
 			text: `В треугольнике $ABC$ проведена медиана $CM$, на стороне $AC$ взята точка $K$ так, что $${[`A`,`C`][rand]}K = ${relation[rand].texfrac(relation.sum())} AC$.
-			Площадь треугольника $AMK$ равна $${triangleSmall.area()}$. Найдите площадь треугольника $ABC$?`,
+			Площадь треугольника $AMK$ равна $${triangleSmall.area()}$. Найдите площадь треугольника $ABC$`,
 			answers: triangle.area(),
 			authors: ['Александра Суматохина'],
 		});
