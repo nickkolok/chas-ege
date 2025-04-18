@@ -1,11 +1,16 @@
-(function() {
-	retryWhileError(function() {
+(function () {
+	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
 		let letters = latbukv.slice(0, 3);
-		let rand = sl1();
+		let key = "11182";
+		let preference = ['sin', 'cos'];
+		let rand = getListedPreference(key, preference.map((pref, index) => ({
+			preference: pref,
+			preferenceValue: index
+		})), sl(preference.length - 1));
 
-		let circle = new Circle(new Point(0, 0), sl(2, 50)*sl(1,3).sqrt());
+		let circle = new Circle(new Point(0, 0), sl(2, 50) * sl(1, 3).sqrt());
 
 		let PA = circle.pointOnCircle(180, {
 			angleInDegrees: true
@@ -18,7 +23,7 @@
 		let PC = circle.pointOnCircle((0.5 * (sl(1, (2 * circle.r).pow(2) - 1).sqrt() / circle.r)).asin());
 
 		let AC = PA.distanceTo(PC)[0];
-		genAssertZ1000(AC/(2*circle.r));
+		genAssertZ1000(AC / (2 * circle.r));
 
 		let connectionMatrix = [
 			[1],
@@ -28,7 +33,7 @@
 		let points = [PA.vertices[0], PB.vertices[0], PC.vertices[0]];
 		points = autoScale(points);
 
-		let paint1 = function(ctx) {
+		let paint1 = function (ctx) {
 			let h = 400;
 			let w = 400;
 
@@ -48,7 +53,7 @@
 
 		NAtask.setTask({
 			text: `На окружности радиуса $${circle.r.pow(2).texsqrt(1)}$ отмечена точка $C$. Отрезок $AB$ – диаметр окружности, $AC = ${AC.pow(2).texsqrt(1)}$. Найдите $\\${[`sin`, `cos`][rand]} \\angle ${[`ABC`, `BAC`][rand]}$.`,
-			answers: AC/(2*circle.r),
+			answers: AC / (2 * circle.r),
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.variativeABC(letters);
