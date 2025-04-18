@@ -55,6 +55,7 @@
 			text: `На окружности радиуса $${circle.r.pow(2).texsqrt(1)}$ отмечена точка $C$. Отрезок $AB$ – диаметр окружности, $AC = ${AC.pow(2).texsqrt(1)}$. Найдите $\\${[`sin`, `cos`][rand]} \\angle ${[`ABC`, `BAC`][rand]}$.`,
 			answers: AC / (2 * circle.r),
 			authors: ['Александра Суматохина'],
+			preference,
 		});
 		NAtask.modifiers.variativeABC(letters);
 		NAtask.modifiers.allDecimalsToStandard(true);
