@@ -4,7 +4,7 @@
 
 		let key = '99578';
 		let decorRand = sl1();	//0 - концентрация в %, 1 - процентный раствор
-		let preference = ['mass_of_mixin_in_first', 'mass_of_mixin_in_second', 'procent_of_mixin_in_second'];
+		let preference = ['mass_of_mixin_in_first', 'mass_of_mixin_in_second', 'procent_of_mixin_in_first', 'procent_of_mixin_in_second'];
 		let rand = getListedPreference(key, preference.map((pref, index) => ({
 			preference: pref,
 			preferenceValue: index
