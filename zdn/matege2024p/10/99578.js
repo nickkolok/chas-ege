@@ -27,7 +27,7 @@
 		let firstFinalProcent = (firstMass * firstProcent + secondMass * secondProcent) / finalMass;
 		let secondFinalProcent = (firstProcent + secondProcent) / 2;
 
-		let mixin = sklonlxkand(['соль', 'щёлочь', 'кислота'].iz());
+		let mixin = sklonlxkand(om.substance.iz());
 
 		genAssertZ1000(firstFinalProcent, 'Процент концентрации при смешении обоих растворов слишком дробный');
 		genAssertZ1000(secondFinalProcent, 'Процент концентрации при смешении обоих растворов при равной массе слишком дробный');
