@@ -4,19 +4,11 @@
 
 		let key = '99578';
 		let decorRand = sl1();	//0 - концентрация в %, 1 - процентный раствор
-		let rand = getListedPreference(key, [{
-			preference: 'mass_of_mixin_in_first',
-			preferenceValue: 0,
-		}, {
-			preference: 'mass_of_mixin_in_second',
-			preferenceValue: 1,
-		}, {
-			preference: 'procent_of_mixin_in_first',
-			preferenceValue: 2,
-		}, {
-			preference: 'procent_of_mixin_in_second',
-			preferenceValue: 3,
-		}], sl(0, 3));
+		let preference = ['mass_of_mixin_in_first', 'mass_of_mixin_in_second', 'procent_of_mixin_in_second'];
+		let rand = getListedPreference(key, preference.map((pref, index) => ({
+			preference: pref,
+			preferenceValue: index
+		})), sl(preference.length - 1));
 
 		let firstMass = sl(1, 50);
 		let secondMass = slKrome(firstMass, 1, 50);
@@ -55,6 +47,7 @@
 				answers: secondProcent,
 			}][rand]],
 			authors: ['Александра Суматохина'],
+			preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard(/*true*/);
 	}, 2000);
