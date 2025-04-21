@@ -3,7 +3,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		
 		let vertices = latbukv.slice(0, 4);
-		let rand = 0;
+		let rand = sl1();
 
 		let rhombus = new Rhombus({ 
             length: sl(1,50), 
@@ -17,9 +17,8 @@
 			[[0, 2], [1, 3]][rand],
 		]);
         
-        let angleQ = [[[`ACD`, `BAC`].iz(), rhombus.angleAInDegrees/2],[[`ACB`, `DAC`].iz(), rhombus.angleBAInDegrees/2]].iz();
-        
-        angleQ[0]=sl1()?angleQ[0]:angleQ[0].split("").reverse().join("");
+        let angleQ = [[[`A`,`C`].shuffleJoin()+[ `B`, `D`,].iz(), rhombus.angleAInDegrees/2],[[ `B`, `D`,].shuffleJoin() + [ `A`, `C`,].iz(), rhombus.angleBInDegrees/2]][rand];
+        angleQ[0]=sl1()?angleQ[0]:angleQ[0].split(``).reverse().join(``);
 		
 		let points = autoScale(rhombus.rotate(rhombus.angleAInRadians / 2).vertices);
 
