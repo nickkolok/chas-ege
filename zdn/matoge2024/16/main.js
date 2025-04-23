@@ -1,4 +1,4 @@
 window.nomer=[
 	311956
 ].iz();
-window.comment = 'Четырехугольники';
+window.comment = 'Окружность, круг и их элементы';
