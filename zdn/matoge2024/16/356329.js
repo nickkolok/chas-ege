@@ -2,7 +2,6 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let letters = latbukv.slice(0, 3).concat('M');
 		let a = sl(5, 15);
 		let b = slKrome(a, 5, 15);
 
@@ -44,7 +43,6 @@
 			answers: triangle.area(),
 			authors: ['Александра Суматохина'],
 		});
-		NAtask.modifiers.variativeABC(letters);
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
