@@ -15,8 +15,6 @@
             preferenceValue: 2,
         }], sl(0, 2));
 
-        variant = 0;
-
         let triangle = new Triangle({
             lengths: {
                 lengthAB: sl(5, 20),
