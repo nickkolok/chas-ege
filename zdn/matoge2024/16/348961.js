@@ -17,9 +17,9 @@
         let PC = circle.pointOnCircle((0.5 * (sl(1, (2 * circle.r).pow(2) - 1).sqrt() / circle.r)).asin());
 
         let BC = PB.distanceTo(PC)[0];
-        genAssertZ1000(BC.pow(2));
+        genAssertZ1000(BC.pow(2), 'Квадрат стороны BC слишком дробный');
         let AC = PA.distanceTo(PC)[0];
-        genAssertZ1000(AC);
+        genAssertZ1000(AC, 'Сторона AC слишком дробная');
 
         let connectionMatrix = [
             [1],
