@@ -1,15 +1,13 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let rand = sl1();
 
 		let letters = latbukv.slice(0, 4).concat([``, ``, `O`]);
 
 		let circle = new Circle(new Point(0, 0), sl(10, 50));
+		let angle = (2/(5).sqrt()).asin();
 
-		let AB = circle.chordByAngles(60, 120, {
-			angleInDegrees: true
-		});
+		let AB = circle.chordByAngles(angle, Math.PI - angle);
 
 		let diam = circle.diameter(0);
 
