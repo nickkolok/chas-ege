@@ -1,3 +1,21 @@
+function drawMarkPoint(ct, coord, text, markForm, textPosition) {
+
+	if (markForm) {
+		ct.lineWidth = 1.5;
+		ct.drawLine(coord, -6, coord, 6);
+	} else {
+		ct.drawFilledCircle(coord, 0, 4);
+	}
+
+	ct.fillStyle = om.secondaryBrandColors[0];
+	ct.font = "16px liberation_sans";
+	if (textPosition) {
+		ct.fillText(text, coord - 4, -10);
+	} else {
+		ct.fillText(text, coord - 4, 20);;
+	}
+};
+
 (function () {
 	'use strict';
 	retryWhileError(function () {
@@ -21,22 +39,11 @@
 
 			// Засечка 0 и подпись
 			ct.lineWidth = 1.5;
-			ct.drawLine(mid, -6, mid, 6);
+			drawMarkPoint(ct, mid, "0", 1, 0);
 
-			ct.fillStyle = om.secondaryBrandColors[0];
-			ct.font = "16px liberation_sans";
-			ct.fillText("0", mid - 4, 20);
+			drawMarkPoint(ct, mid + x * scale, "x", 0, 1);
+			drawMarkPoint(ct, mid + y * scale, "y", 0, 1);
 
-			// Точки x и y и подпись
-			let xCoord = mid + x * scale;
-			let yCoord = mid + y * scale;
-			ct.drawFilledCircle(xCoord, 0, 4);
-			ct.drawFilledCircle(yCoord, 0, 4);
-
-			ct.fillStyle = om.secondaryBrandColors[0];
-			ct.font = "16px liberation_sans";
-			ct.fillText("x", xCoord - 4, -10);
-			ct.fillText("y", yCoord - 4, -10);
 		};
 
 		// строки + логическая проверка
