@@ -1,4 +1,4 @@
-function drawMarkPoint(ct, coord, text, markForm, textPosition) {
+function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
 
 	if (markForm) {
 		ct.lineWidth = 1.5;
@@ -38,9 +38,9 @@ function drawMarkPoint(ct, coord, text, markForm, textPosition) {
 			ct.drawArrow(10, 0, w - 10, 0);
 
 			// Засечка 0 и подпись
-			drawMarkPoint(ct, mid, "0", 1, 0);
-			drawMarkPoint(ct, mid + x * scale, "x", 0, 1);
-			drawMarkPoint(ct, mid + y * scale, "y", 0, 1);
+			coordAxis_drawMarkPoint(ct, mid, "0", 1, 0);
+			coordAxis_drawMarkPoint(ct, mid + x * scale, "x", 0, 1);
+			coordAxis_drawMarkPoint(ct, mid + y * scale, "y", 0, 1);
 
 		};
 
@@ -71,13 +71,11 @@ function drawMarkPoint(ct, coord, text, markForm, textPosition) {
 
 		let correct = trueExprs.iz();
 		let wrong = falseExprs.iz();
-		let wrongForCorrect = falseExprs.filter(e => e !== correct);
-		let correctForWrong = trueExprs.filter(e => e !== wrong);
 
 		NAtask.setTask({
 			text: 'На координатной прямой отмечены числа. Какое из приведённых утверждений для этих чисел ' + correctOrNot + '?',
 			answers: [correct[0], wrong[0]][rand],
-			wrongAnswers: [wrongForCorrect.map(x => x[0]), correctForWrong.map(x => x[0])][rand]
+			wrongAnswers: [falseExprs.map(x => x[0]), trueExprs.map(x => x[0])][rand]
 		});
 		AtoB(3);
 
