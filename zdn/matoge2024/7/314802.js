@@ -17,16 +17,14 @@
 			// Прямая и стрелка
 			ct.strokeStyle = om.primaryBrandColors[0];
 			ct.lineWidth = 2;
-			ct.drawLine(10, 0, w - 10, 0);
-
-			ct.drawArrow(w - 20, 0, w - 5, 0);
+			ct.drawArrow(10, 0, w - 10, 0);
 
 			// Засечка 0 и подпись
 			ct.lineWidth = 1.5;
 			ct.drawLine(mid, -6, mid, 6);
 
 			ct.fillStyle = om.secondaryBrandColors[0];
-			ct.font = "14px liberation_sans";
+			ct.font = "16px liberation_sans";
 			ct.fillText("0", mid - 4, 20);
 
 			// Точки x и y и подпись
