@@ -38,9 +38,7 @@ function drawMarkPoint(ct, coord, text, markForm, textPosition) {
 			ct.drawArrow(10, 0, w - 10, 0);
 
 			// Засечка 0 и подпись
-			ct.lineWidth = 1.5;
 			drawMarkPoint(ct, mid, "0", 1, 0);
-
 			drawMarkPoint(ct, mid + x * scale, "x", 0, 1);
 			drawMarkPoint(ct, mid + y * scale, "y", 0, 1);
 
@@ -48,33 +46,33 @@ function drawMarkPoint(ct, coord, text, markForm, textPosition) {
 
 		// строки + логическая проверка
 		let forms = [
-			["x + y > 0", () => x + y > 0],
-			["x + y < 0", () => x + y < 0],
-			["x - y > 0", () => x - y > 0],
-			["x - y < 0", () => x - y < 0],
-			["y - x > 0", () => y - x > 0],
-			["y - x < 0", () => y - x < 0],
-			["x * y > 0", () => x * y > 0],
-			["x * y < 0", () => x * y < 0],
-			["x^2 * y > 0", () => (x ** 2) * y > 0],
-			["x^2 * y < 0", () => (x ** 2) * y < 0],
-			["y^2 * x > 0", () => (y ** 2) * x > 0],
-			["y^2 * x < 0", () => (y ** 2) * x < 0]
+			["x + y > 0", x + y > 0],
+			["x + y < 0", x + y < 0],
+			["x - y > 0", x - y > 0],
+			["x - y < 0", x - y < 0],
+			["y - x > 0", y - x > 0],
+			["y - x < 0", y - x < 0],
+			["x * y > 0", x * y > 0],
+			["x * y < 0", x * y < 0],
+			["x^2 * y > 0", (x ** 2) * y > 0],
+			["x^2 * y < 0", (x ** 2) * y < 0],
+			["y^2 * x > 0", (y ** 2) * x > 0],
+			["y^2 * x < 0", (y ** 2) * x < 0]
 		];
 
 		let rand = sl1();
 		let correctOrNot = ['верно', 'неверно'][rand];
 
-		let trueExprs = forms.filter(f => f[1]());
-		let falseExprs = forms.filter(f => !f[1]());
+		let trueExprs = forms.filter(f => f[1]);
+		let falseExprs = forms.filter(f => !f[1]);
 
 		genAssert(trueExprs.length >= 3, "Мало истинных выражений");
 		genAssert(falseExprs.length >= 3, "Мало ложных выражений");
 
 		let correct = trueExprs.iz();
 		let wrong = falseExprs.iz();
-		let wrongForCorrect = falseExprs.filter(e => e !== correct).slice(0, 3);
-		let correctForWrong = trueExprs.filter(e => e !== wrong).slice(0, 3);
+		let wrongForCorrect = falseExprs.filter(e => e !== correct);
+		let correctForWrong = trueExprs.filter(e => e !== wrong);
 
 		NAtask.setTask({
 			text: 'На координатной прямой отмечены числа. Какое из приведённых утверждений для этих чисел ' + correctOrNot + '?',
