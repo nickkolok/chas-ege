@@ -10,87 +10,59 @@
             const h = 100;
             ct.translate(0, h / 2);
 
-            // Прямая
-            ct.strokeStyle = om.primaryBrandColors[0];
+            //прямая и стрелочка с "х"
             ct.lineWidth = 2;
-            ct.drawLine(10, 0, w - 10, 0);
-
-
-            // Засечки и подписи
             ct.strokeStyle = om.primaryBrandColors[0];
-            ct.fillStyle = om.secondaryBrandColors[0];
-            ct.lineWidth = 2;
-            ct.font = "14px Arial";
+            ct.drawArrow(10, 0, w + 10, 0);
+            coordAxis_drawMarkPoint(ct, w, "x", "nothing", "onAxis");
+
+            // Засечки от 0 до 20 (без подписей, кроме 0 и 1)
             for (let i = 0; i <= 20; i++) {
                 let x = 10 + (w - 20) * (i / 20);
-                ct.drawLine(x, -5, x, 5);
-                if (i <= 1) {
-                    ct.fillText(i, x - 7, 20);
-                }
+                let label = (i === 0 || i === 1) ? i.toString() : "";
+                coordAxis_drawMarkPoint(ct, x, label, "line", "underAxis");
             }
-
-            // Стрелка вправо и "x"
-            let xArrowStart = 10 + (w - 20);
-            ct.strokeStyle = om.primaryBrandColors[0];
-            ct.drawArrow(xArrowStart, 0, xArrowStart + 15, 0);
-            ct.fillStyle = om.secondaryBrandColors[0];
-            ct.font = "14px Arial";
-            ct.fillText("x", xArrowStart + 18, 5);
-
-            // Точка a и её подпись
-            let aX = 10 + (w - 20) * (a / 20);
-            ct.fillStyle = om.secondaryBrandColors[0];
-            ct.drawFilledCircle(aX, 0, 4);
-            ct.fillStyle = om.secondaryBrandColors[0];
-            ct.fillText("a", aX - 5, -10);
+            // Точка a
+            coordAxis_drawMarkPoint(ct, 10 + (w - 20) * (a / 20), "a", "dot", "overAxis");
         };
 
-        // Генерация утверждений
-        function generateStatements(a, wrongCount) {
+        // Генерация верных и ложных выражений
+        function generateExpressionPairs(a, count) {
             let used = new Set();
-            let wrAns = [];  
-            //ложные
-            while (wrAns.length < wrongCount) {
+            let pairs = [];
+
+            while (pairs.length < count) {
                 let n = sluchch(1, 20, 1);
                 if (Math.abs(n - a) < 1 || used.has(n)) continue;
                 used.add(n);
-                let useAfirst = Math.random() < 0.5;
-                let exprValue = useAfirst ? a - n : n - a;
-                if (exprValue === 0) continue;
 
-                let wrongExpr = useAfirst
-                    ? `a-${n}${exprValue > 0 ? "<0" : ">0"}`
-                    : `${n}-a${exprValue > 0 ? "<0" : ">0"}`;
+                let useAfirst = sl1();
+                let val = useAfirst ? a - n : n - a;
+                if (val === 0) continue;
 
-                wrAns.push(wrongExpr);
-            }
-            //верные
-            let correct;
-            while (true) {
-                let n = sluchch(1, 20, 1);
-                if (Math.abs(n - a) < 1 || used.has(n)) continue;
-                used.add(n);
-                let useAfirst = Math.random() < 0.5;
-                let exprValue = useAfirst ? a - n : n - a;
-                if (exprValue === 0) continue;
+                let exprTrue = useAfirst
+                    ? `a-${n}${val > 0 ? ">0" : "<0"}`
+                    : `${n}-a${val > 0 ? ">0" : "<0"}`;
+                let exprFalse = useAfirst
+                    ? `a-${n}${val > 0 ? "<0" : ">0"}`
+                    : `${n}-a${val > 0 ? "<0" : ">0"}`;
 
-                correct = useAfirst
-                    ? `a-${n}${exprValue > 0 ? ">0" : "<0"}`
-                    : `${n}-a${exprValue > 0 ? ">0" : "<0"}`;
-                break;
+                pairs.push([exprTrue, exprFalse]);
             }
 
-            return { correct, wrAns };
+            return pairs;
         }
-
-        let { correct, wrAns } = generateStatements(a, 3);
+        let rand = sl1();
+        let correctOrNot = ['', 'не'][rand];
+        let pairs = generateExpressionPairs(a, 3);
+        let correct = pairs.map(p => p[0]);
+        let wrong = pairs.map(p => p[1]);
 
         NAtask.setTask({
-            text: 'На координатной прямой отмечено число $a$. Какое из утверждений для этого числа является верным?',
-            answers: correct,
-            wrongAnswers: wrAns
+            text: 'На координатной прямой отмечено число $a$. Какое из утверждений для этого числа является ' + correctOrNot + 'верным?',
+            answers: [correct.iz(), wrong.iz()][rand],
+            wrongAnswers: [wrong, correct][rand]
         });
-
         AtoB(3);
 
         chas2.task.modifiers.addCanvasIllustration({
