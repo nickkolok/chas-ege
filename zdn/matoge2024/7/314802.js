@@ -1,20 +1,32 @@
 function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
-
-	if (markForm) {
-		ct.lineWidth = 1.5;
-		ct.drawLine(coord, -6, coord, 6);
-	} else {
-		ct.drawFilledCircle(coord, 0, 4);
+	switch (markForm) {
+		case "dot": // точка
+			ct.drawFilledCircle(coord, 0, 4);
+			break;
+		case "line": // засечка
+			ct.lineWidth = 1.5;
+			ct.drawLine(coord, -6, coord, 6);
+			break;
+		case "nothing": // «невидимая точка» — ничего не рисуем
+			break;
 	}
 
 	ct.fillStyle = om.secondaryBrandColors[0];
 	ct.font = "16px liberation_sans";
-	if (textPosition) {
-		ct.fillText(text, coord - 4, -10);
-	} else {
-		ct.fillText(text, coord - 4, 20);;
+
+	switch (textPosition) {
+		case "underAxis": // под осью
+			ct.fillText(text, coord - 4, 20);
+			break;
+		case "overAxis": // над осью
+			ct.fillText(text, coord - 4, -10);
+			break;
+		case "onAxis": // по центру, справа от оси 
+			ct.fillText(text, coord + 15, 5);
+			break;
 	}
 };
+
 
 (function () {
 	'use strict';
@@ -29,7 +41,6 @@ function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
 			const h = 100;
 			const mid = w / 2;
 			const scale = 15;
-
 			ct.translate(0, h / 2);
 
 			// Прямая и стрелка
@@ -37,10 +48,10 @@ function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
 			ct.lineWidth = 2;
 			ct.drawArrow(10, 0, w - 10, 0);
 
-			// Засечка 0 и подпись
-			coordAxis_drawMarkPoint(ct, mid, "0", 1, 0);
-			coordAxis_drawMarkPoint(ct, mid + x * scale, "x", 0, 1);
-			coordAxis_drawMarkPoint(ct, mid + y * scale, "y", 0, 1);
+			// Засечка 0, точки x,y и подписи
+			coordAxis_drawMarkPoint(ct, mid, "0", "line", "underAxis");
+			coordAxis_drawMarkPoint(ct, mid + x * scale, "x", "dot", "overAxis");
+			coordAxis_drawMarkPoint(ct, mid + y * scale, "y", "dot", "overAxis");
 
 		};
 
