@@ -1,8 +1,6 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let rand = sl1();
-
 		let a = sl(5, 20);
 
 		let triangle = new Triangle({
@@ -18,9 +16,9 @@
 			}
 		});
 
-		genAssert(triangle.midlineCALength.isAlmostInteger(), 'Гипотенуза не целая');
+		genAssert(triangle.lengthCA.isAlmostInteger(), 'Гипотенуза не целая');
 
-		triangle.addVertexToConnectionMatrix([triangle.midlinePointsAB, triangle.midlinePointsBC][1 - rand], 'E');
+		triangle.addVertexToConnectionMatrix([triangle.midlinePointsAB, triangle.midlinePointsBC].iz(), 'E');
 		triangle.connectVerticesInConnectionMatrix([3, 4]);
 
 		let points = autoScale(triangle.vertices);
@@ -42,8 +40,8 @@
 		};
 
 		NAtask.setTask({
-			text: `Катет прямоугольного треугольника равен $${[triangle.lengthAB,triangle.lengthBC][rand]}$, одна из средних линий равна $${[triangle.midlineABLength, triangle.midlineBCLength][1-rand]}$. Найдите гипотенузу этого треугольника.`,
-			answers: triangle.midlineCALength,
+			text: `Катет прямоугольного треугольника равен $${[triangle.lengthAB,triangle.lengthBC].maxE()}$, одна из средних линий равна $${[triangle.midlineABLength, triangle.midlineBCLength].minE()}$. Найдите гипотенузу этого треугольника.`,
+			answers: triangle.lengthCA,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
