@@ -36,16 +36,12 @@
                 if (Math.abs(n - a) < 1 || used.has(n)) continue;
                 used.add(n);
 
-                let useAfirst = sl1();
+                let useAfirst = [true, false].iz();
                 let val = useAfirst ? a - n : n - a;
-                if (val === 0) continue;
 
-                let exprTrue = useAfirst
-                    ? `a-${n}${val > 0 ? ">0" : "<0"}`
-                    : `${n}-a${val > 0 ? ">0" : "<0"}`;
-                let exprFalse = useAfirst
-                    ? `a-${n}${val > 0 ? "<0" : ">0"}`
-                    : `${n}-a${val > 0 ? "<0" : ">0"}`;
+                let [znak, znakOpp] = val > 0 ? [">0", "<0"] : ["<0", ">0"];
+                let exprTrue = useAfirst ? `a-${n}${znak}` : `${n}-a${znak}`;
+                let exprFalse = useAfirst ? `a-${n}${znakOpp}` : `${n}-a${znakOpp}`;
 
                 pairs.push([exprTrue, exprFalse]);
             }
@@ -60,7 +56,7 @@
 
         NAtask.setTask({
             text: 'На координатной прямой отмечено число $a$. Какое из утверждений для этого числа является ' + correctOrNot + 'верным?',
-            answers: [correct.iz(), wrong.iz()][rand],
+            answers: [correct, wrong][rand],
             wrongAnswers: [wrong, correct][rand]
         });
         AtoB(3);
