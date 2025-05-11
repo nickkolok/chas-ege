@@ -12,20 +12,14 @@
 		genAssert(Math.abs(Math.round(a * 10) / 10 - a) > epsilon, "точка A не должна стоять на засечке");
 
 		let paint1 = function (ct) {
-			const w = 400;
-			const h = 100;
-			ct.translate(0, h / 2);
 
-			//линия со стрелкой и "х"
-			ct.lineWidth = 2;
-			ct.strokeStyle = om.primaryBrandColors[0];
-			ct.drawArrow(10, 0, w + 10, 0);
-			coordAxis_drawMarkPoint(ct, w, "x", "nothing", "onAxis");
+			coordAxis_prepare(ct);
+            const w = ct.__coordAxisW;
 
 			//Засечки от 0 до 1 с шагом 0.1
 			for (let i = 0; i <= 10; i++) {
 				let frac = i / 10;
-				let label = (frac === 0 || frac === 1) ? frac.toString() : frac.toFixed(1);
+				let label = (frac === 0 || frac === 1) ? frac.toString() : frac.toFixedLess(1);
 				coordAxis_drawMarkPoint(ct, 10 + (w - 20) * frac, label, "line", "underAxis");
 			}
 			// Точка A
