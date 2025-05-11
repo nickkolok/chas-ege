@@ -6,15 +6,9 @@
         let a = sl(4.5, 19.5, 0.5);
 
         let paint1 = function (ct) {
-            const w = 400;
-            const h = 100;
-            ct.translate(0, h / 2);
 
-            //прямая и стрелочка с "х"
-            ct.lineWidth = 2;
-            ct.strokeStyle = om.primaryBrandColors[0];
-            ct.drawArrow(10, 0, w + 10, 0);
-            coordAxis_drawMarkPoint(ct, w, "x", "nothing", "onAxis");
+            coordAxis_prepare(ct);
+            const w = ct.__coordAxisW;
 
             // Засечки от 0 до 20 (без подписей, кроме 0 и 1)
             for (let i = 0; i <= 20; i++) {
