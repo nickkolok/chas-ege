@@ -6,23 +6,16 @@
 
 		let denominatorA = sl(10, 40);
 		const epsilon = 1e-6;
-		let targetA = slKrome(function (x) { return Math.abs(Math.round(x) - x) > epsilon; }, 12, 95) / 10;
+		let targetA = slKrome(x => (x.round() - x).abs() > epsilon, 12, 95) / 10;
 
 		let numeratorA = Math.round(targetA * denominatorA);
 		let a = numeratorA / denominatorA;
 
-		genAssert((a > 1 + epsilon && a < 9.8 - epsilon && Math.abs(Math.round(a) - a) > epsilon), "точка А должна быть в границах от 1 до 9,8 и не целой!");
-
+		genAssert((a > 1 + epsilon && a < 9.8 - epsilon && (a.round() - a).abs() > epsilon), "точка А должна быть в границах от 1 до 9,8 и не целой!");
 		let paint1 = function (ct) {
-			const w = 400;
-			const h = 100;
-			ct.translate(0, h / 2);
 
-			//линия со стрелкой и "х"
-			ct.lineWidth = 2;
-			ct.strokeStyle = om.primaryBrandColors[0];
-			ct.drawArrow(10, 0, w + 10, 0);
-			coordAxis_drawMarkPoint(ct, w, "x", "nothing", "onAxis");
+			coordAxis_prepare(ct);
+			const w = ct.__coordAxisW;
 
 			//Засечки где подписаны лишь 0 и 1
 			for (let i = 0; i <= 10; i++) {
