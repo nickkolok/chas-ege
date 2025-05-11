@@ -26,7 +26,16 @@ function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
 			break;
 	}
 };
+function coordAxis_prepare(ct, width = 400, height = 100) {
+	ct.__coordAxisW = width;
+	ct.__coordAxisH = height;
 
+	ct.translate(0, height / 2);
+
+	ct.strokeStyle = om.primaryBrandColors[0];
+	ct.lineWidth = 2;
+	ct.drawArrow(10, 0, width - 10, 0);
+};
 
 (function () {
 	'use strict';
@@ -37,18 +46,11 @@ function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
 		let y = slKrome(x.abs(), 1, 9).pm();
 
 		let paint1 = function (ct) {
-			const w = 400;
-			const h = 100;
+			coordAxis_prepare(ct);
+			const w = ct.__coordAxisW;
 			const mid = w / 2;
 			const scale = 15;
-			ct.translate(0, h / 2);
 
-			// Прямая и стрелка
-			ct.strokeStyle = om.primaryBrandColors[0];
-			ct.lineWidth = 2;
-			ct.drawArrow(10, 0, w - 10, 0);
-
-			// Засечка 0, точки x,y и подписи
 			coordAxis_drawMarkPoint(ct, mid, "0", "line", "underAxis");
 			coordAxis_drawMarkPoint(ct, mid + x * scale, "x", "dot", "overAxis");
 			coordAxis_drawMarkPoint(ct, mid + y * scale, "y", "dot", "overAxis");
@@ -91,7 +93,7 @@ function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
 		AtoB(3);
 
 		chas2.task.modifiers.addCanvasIllustration({
-			width: 400,
+			width: 450,
 			height: 100,
 			paint: paint1,
 		});
