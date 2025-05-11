@@ -25,7 +25,7 @@ function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
 			ct.fillText(text, coord + 15, 5);
 			break;
 	}
-};
+}
 function coordAxis_prepare(ct, width = 400, height = 100) {
 	ct.__coordAxisW = width;
 	ct.__coordAxisH = height;
@@ -35,7 +35,7 @@ function coordAxis_prepare(ct, width = 400, height = 100) {
 	ct.strokeStyle = om.primaryBrandColors[0];
 	ct.lineWidth = 2;
 	ct.drawArrow(10, 0, width + 10, 0);
-};
+}
 
 (function () {
 	'use strict';
@@ -45,6 +45,10 @@ function coordAxis_prepare(ct, width = 400, height = 100) {
 		let x = sl(1, 9).pm();
 		let y = slKrome(x.abs(), 1, 9).pm();
 
+		let randAlfabel = sl1();
+			let label1 = ['x', 'a'][randAlfabel];
+			let label2 = ['y', 'b'][randAlfabel];
+
 		let paint1 = function (ct) {
 			coordAxis_prepare(ct);
 			const w = ct.__coordAxisW;
@@ -52,25 +56,24 @@ function coordAxis_prepare(ct, width = 400, height = 100) {
 			const scale = 15;
 
 			coordAxis_drawMarkPoint(ct, mid, "0", "line", "underAxis");
-			coordAxis_drawMarkPoint(ct, mid + x * scale, "x", "dot", "overAxis");
-			coordAxis_drawMarkPoint(ct, mid + y * scale, "y", "dot", "overAxis");
-
+			coordAxis_drawMarkPoint(ct, mid + x * scale, label1, "dot", "overAxis");
+			coordAxis_drawMarkPoint(ct, mid + y * scale, label2, "dot", "overAxis");
 		};
 
 		// строки + логическая проверка
 		let forms = [
-			["x + y > 0", x + y > 0],
-			["x + y < 0", x + y < 0],
-			["x - y > 0", x - y > 0],
-			["x - y < 0", x - y < 0],
-			["y - x > 0", y - x > 0],
-			["y - x < 0", y - x < 0],
-			["x * y > 0", x * y > 0],
-			["x * y < 0", x * y < 0],
-			["x^2 * y > 0", (x ** 2) * y > 0],
-			["x^2 * y < 0", (x ** 2) * y < 0],
-			["y^2 * x > 0", (y ** 2) * x > 0],
-			["y^2 * x < 0", (y ** 2) * x < 0]
+			[label1 + " + " + label2 + " > 0", x + y > 0],
+			[label1 + " + " + label2 + " < 0", x + y < 0],
+			[label1 + " - " + label2 + " > 0", x - y > 0],
+			[label1 + " - " + label2 + " < 0", x - y < 0],
+			[label2+ " - " + label1 + " > 0", y - x > 0],
+			[label2 + " - " + label1 + " < 0", y - x < 0],
+			[label1 + " * " + label2 + " > 0", x * y > 0],
+			[label1 + " * " + label2 + " < 0", x * y < 0],
+			[label1 + "^2 * " + label2 + " > 0", (x ** 2) * y > 0],
+			[label1 + "^2 * " + label2 + " < 0", (x ** 2) * y < 0],
+			[label2 + "^2 * " + label1 + " > 0", (y ** 2) * x > 0],
+			[label2 + "^2 * " + label1 + " < 0", (y ** 2) * x < 0]
 		];
 
 		let rand = sl1();
