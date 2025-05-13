@@ -12,7 +12,7 @@
 		let pointA = Math.random() * [(left - outsideLeft), (outsideRight - right)][randPointA] + [outsideLeft, right][randPointA];
 
 		let paint1 = function (ct) {
-			coordAxis_prepare(ct);
+			coordAxis_prepare(ct, { width: 450, height: 100 });
 			let w = ct.__coordAxisW;
 			let mid = w / 2;
 
