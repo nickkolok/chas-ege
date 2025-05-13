@@ -26,16 +26,16 @@ function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
 			break;
 	}
 }
-function coordAxis_prepare(ct, width = 400, height = 100) {
+function coordAxis_prepare(ct, { width = 450, height = 100 } = {}) {
 	ct.__coordAxisW = width;
 	ct.__coordAxisH = height;
-
+   
 	ct.translate(0, height / 2);
-
+   
 	ct.strokeStyle = om.primaryBrandColors[0];
 	ct.lineWidth = 2;
-	ct.drawArrow(10, 0, width + 10, 0);
-}
+	ct.drawArrow(10, 0, width - 10, 0);
+   }
 
 (function () {
 	'use strict';
@@ -50,7 +50,7 @@ function coordAxis_prepare(ct, width = 400, height = 100) {
 			let label2 = ['y', 'b'][randAlfabel];
 
 		let paint1 = function (ct) {
-			coordAxis_prepare(ct);
+			coordAxis_prepare(ct, { width: 450, height: 100 });
 			const w = ct.__coordAxisW;
 			const mid = w / 2;
 			const scale = 15;
