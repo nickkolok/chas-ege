@@ -14,12 +14,12 @@
 		genAssert((a > 1 + epsilon && a < 9.8 - epsilon && (a.round() - a).abs() > epsilon), "точка А должна быть в границах от 1 до 9,8 и не целой!");
 		let paint1 = function (ct) {
 
-			coordAxis_prepare(ct);
+			coordAxis_prepare(ct, { width: 450, height: 100 });
 			const w = ct.__coordAxisW;
 
 			//Засечки где подписаны лишь 0 и 1
 			for (let i = 0; i <= 10; i++) {
-				let x = 10 + (w - 20) * (i / 10);
+				let x = 10 + (w - 40) * (i / 10);
 				let label = (i === 0 || i === 1) ? i.toString() : "";
 				coordAxis_drawMarkPoint(ct, x, label, "line", "underAxis");
 			}
