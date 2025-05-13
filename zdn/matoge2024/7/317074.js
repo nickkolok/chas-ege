@@ -5,7 +5,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let numeratorA = sl(1, 50, 1);
-		let denominatorA = numeratorA + slKrome(function (x) { return x.kratno(numeratorA) }, 3, 40);
+		let denominatorA = numeratorA + slKrome(x => x.kratno(numeratorA), 3, 40);
 
 		let a = numeratorA / denominatorA;
 		const epsilon = 1e-6;
@@ -13,14 +13,14 @@
 
 		let paint1 = function (ct) {
 
-			coordAxis_prepare(ct);
-            const w = ct.__coordAxisW;
+			coordAxis_prepare(ct, { width: 450, height: 100 });
+			const w = ct.__coordAxisW;
 
 			//Засечки от 0 до 1 с шагом 0.1
 			for (let i = 0; i <= 10; i++) {
 				let frac = i / 10;
 				let label = (frac === 0 || frac === 1) ? frac.toString() : frac.toFixedLess(1);
-				coordAxis_drawMarkPoint(ct, 10 + (w - 20) * frac, label, "line", "underAxis");
+				coordAxis_drawMarkPoint(ct, 10 + (w - 40) * frac, label, "line", "underAxis");
 			}
 			// Точка A
 			coordAxis_drawMarkPoint(ct, 10 + (w - 20) * a, "A", "dot", "overAxis");
