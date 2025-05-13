@@ -7,12 +7,12 @@
 
         let paint1 = function (ct) {
 
-            coordAxis_prepare(ct);
+            coordAxis_prepare(ct, { width: 450, height: 100 });
             const w = ct.__coordAxisW;
 
             // Засечки от 0 до 20 (без подписей, кроме 0 и 1)
             for (let i = 0; i <= 20; i++) {
-                let x = 10 + (w - 20) * (i / 20);
+                let x = 10 + (w - 40) * (i / 20);
                 let label = (i === 0 || i === 1) ? i.toString() : "";
                 coordAxis_drawMarkPoint(ct, x, label, "line", "underAxis");
             }
