@@ -50,7 +50,7 @@ function coordAxis_prepare(ct, { width = 450, height = 100 } = {}) {
 		let label2 = ['y', 'b'][randAlfabel];
 
 		let paint1 = function (ct) {
-			coordAxis_prepare(ct, { width: 450, height: 100 });
+			coordAxis_prepare(ct, { width: 400, height: 100 });
 			const w = ct.__coordAxisW;
 			const mid = w / 2;
 			const scale = 15;
@@ -96,7 +96,7 @@ function coordAxis_prepare(ct, { width = 450, height = 100 } = {}) {
 		AtoB(3);
 
 		chas2.task.modifiers.addCanvasIllustration({
-			width: 450,
+			width: 400,
 			height: 100,
 			paint: paint1,
 		});
