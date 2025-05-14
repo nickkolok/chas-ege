@@ -9,11 +9,11 @@
 
 		let a = numeratorA / denominatorA;
 		const epsilon = 1e-6;
-		genAssert(Math.abs(Math.round(a * 10) / 10 - a) > epsilon, "точка A не должна стоять на засечке");
+		genAssert(((a * 10).round() / 10 - a).abs() > epsilon, "точка A не должна стоять на засечке");
 
 		let paint1 = function (ct) {
 
-			coordAxis_prepare(ct, { width: 450, height: 100 });
+			coordAxis_prepare(ct, { width: 400, height: 100 });
 			const w = ct.__coordAxisW;
 
 			//Засечки от 0 до 1 с шагом 0.1
@@ -50,7 +50,7 @@
 		AtoB(3);
 
 		chas2.task.modifiers.addCanvasIllustration({
-			width: 450,
+			width: 400,
 			height: 100,
 			paint: paint1,
 		});
