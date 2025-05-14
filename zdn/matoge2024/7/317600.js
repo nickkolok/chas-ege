@@ -6,20 +6,13 @@
 		let borders = [0, 1];
 		let [left, right] = borders;
 
+		let a = [(Math.random() * 0.6 - 0.7), (Math.random() * 0.6 + 1.1)].iz().toFixed(2);
+		let b = [(Math.random() * 0.6 - 0.7), (Math.random() * 0.6 + 1.1)].iz().toFixed(2);
 
-		let a = sl1()
-			? +(Math.random() * 0.6 - 0.7).toFixed(2)
-			: +(Math.random() * 0.6 + 1.1).toFixed(2);
-
-		let b;
-		do {
-			b = sl1()
-				? +(Math.random() * 0.6 - 0.7).toFixed(2)
-				: +(Math.random() * 0.6 + 1.1).toFixed(2);
-		} while (Math.abs(a - b) < 0.05);
+		genAssert((a - b).abs() > 0.05,"Точки не должны распологаться слишком близко");
 
 
-		let labels = [['a', 'b'], ['x', 'y'], ['c', 'd']][sl(0, 2)];
+		let labels = [['a', 'b'], ['x', 'y'], ['c', 'd']].iz();
 		let [labelA, labelB] = labels;
 
 		let paint1 = function (ct) {
@@ -54,7 +47,7 @@
 		let valid = values.every(x => Number.isFinite(x[1])) &&
 			new Set(values.map(x => +x[1].toFixed(4))).size === 3;
 
-		if (!valid) throw "Bad values — retry";
+		genAssert(valid,"Не подходящие значения");
 
 		let isAscending = sl1();
 		let sorted = values.slice().sort((x, y) =>
@@ -65,7 +58,7 @@
 
 		let wrongAnswers = new Set();
 		while (wrongAnswers.size < 3) {
-			let perm = values.slice().sort(() => Math.random() - 0.5);
+			let perm = values.shuffle();
 			let variant = perm.map(x => x[0]).join(", ");
 			if (variant !== correct) wrongAnswers.add(variant);
 		}
