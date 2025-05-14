@@ -1,20 +1,18 @@
-
 (function () {
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let denominatorA = sl(10, 40);
-		const epsilon = 1e-6;
-		let targetA = slKrome(x => (x.round() - x).abs() > epsilon, 12, 95) / 10;
+		let epsilon = 1e-6;
+		let denominatorA = sl(10, 90);
+		let numeratorA = sl(1, denominatorA - 1, 1);
+		let a = sl(1, 9, 1) + numeratorA / denominatorA;
+		
+		genAssert(a > 1 + epsilon && a < 9.8 - epsilon, "точка А должна быть в границах от 1 до 9,8");
 
-		let numeratorA = Math.round(targetA * denominatorA);
-		let a = numeratorA / denominatorA;
-
-		genAssert((a > 1 + epsilon && a < 9.8 - epsilon && (a.round() - a).abs() > epsilon), "точка А должна быть в границах от 1 до 9,8 и не целой!");
 		let paint1 = function (ct) {
 
-			coordAxis_prepare(ct, { width: 450, height: 100 });
+			coordAxis_prepare(ct, { width: 400, height: 100 });
 			const w = ct.__coordAxisW;
 
 			//Засечки где подписаны лишь 0 и 1
@@ -39,7 +37,7 @@
 					x.kratno(denominatorA) ||// исключаем кратные
 					usedNumerators.includes(x) ||// дубликаты
 					testVal <= 1 + epsilon || testVal >= 10 - epsilon || // вне допустимого диапазона
-					Math.abs(Math.round(testVal) - testVal) < epsilon // попадает на целое
+					(testVal.round() - testVal).abs() < epsilon // попадает на целое
 				);
 			}, 1, 150);
 
@@ -55,7 +53,7 @@
 		AtoB(3);
 
 		chas2.task.modifiers.addCanvasIllustration({
-			width: 450,
+			width: 400,
 			height: 100,
 			paint: paint1,
 		});
