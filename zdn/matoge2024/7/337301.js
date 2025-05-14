@@ -9,10 +9,10 @@
 		let outsideLeft = left - 0.5;
 		let outsideRight = right + 0.5;
 		let randPointA = sl1();
-		let pointA = Math.random() * [(left - outsideLeft), (outsideRight - right)][randPointA] + [outsideLeft, right][randPointA];
+		let pointA = sl(0.01, 0.99, 0.01) * [(left - outsideLeft), (outsideRight - right)][randPointA] + [outsideLeft, right][randPointA];
 
 		let paint1 = function (ct) {
-			coordAxis_prepare(ct, { width: 450, height: 100 });
+			coordAxis_prepare(ct, { width: 400, height: 100 });
 			let w = ct.__coordAxisW;
 			let mid = w / 2;
 
@@ -21,8 +21,8 @@
 			let x2 = mid + 75;
 			let ratio = (x2 - x1) / (borders[1] - borders[0]);
 
-			coordAxis_drawMarkPoint(ct, x1, borders[0].toString(), "line", "underAxis");
-			coordAxis_drawMarkPoint(ct, x2, borders[1].toString(), "line", "underAxis");
+			coordAxis_drawMarkPoint(ct, x1, borders[0], "line", "underAxis");
+			coordAxis_drawMarkPoint(ct, x2, borders[1], "line", "underAxis");
 
 			let pointA_coord = x1 + (pointA - borders[0]) * ratio;
 			coordAxis_drawMarkPoint(ct, pointA_coord, "a", "dot", "overAxis");
@@ -36,14 +36,14 @@
 		let options = [[["a", pointA], ["a^2", pointA2], ["a^3", pointA3]], [["a^2", pointA2], ["a^3", pointA3], ["a^4", pointA4]]][randA];
 
 		let isMaxTaskOrMin = sl1();
-		let targetValue = [Math.max(...options.map(x => x[1])), Math.min(...options.map(x => x[1]))][isMaxTaskOrMin];
+		let targetValue = [options.T(x => x[1])[1].maxE(), options.T(x => x[1])[1].minE()][isMaxTaskOrMin];
 		let maxOrMin = ['бол', 'мен'][isMaxTaskOrMin];
 
 		let correctOptions = options.filter(x => x[1] === targetValue);
 		let correct = correctOptions.length === 1 ? correctOptions[0][0] : "нет данных";
 
 		let allLabels = options.map(x => x[0]);
-		if (!allLabels.includes("нет данных")) allLabels.push("нет данных");
+		allLabels.pushIf("нет данных", !allLabels.includes("нет данных"));
 
 		NAtask.setTask({
 			text: "На координатной прямой отмечены числа. Какое из перечисленных чисел наи" + maxOrMin + "ьшее?",
@@ -54,7 +54,7 @@
 		AtoB(3, allLabels.indexOf(correct));
 
 		chas2.task.modifiers.addCanvasIllustration({
-			width: 450,
+			width: 400,
 			height: 100,
 			paint: paint1,
 		});
