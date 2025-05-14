@@ -3,17 +3,17 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let a = sl(4.5, 19.5, 0.5);
+        let a = sl(3.5, 19.5, 0.5);
 
         let paint1 = function (ct) {
 
-            coordAxis_prepare(ct, { width: 450, height: 100 });
+            coordAxis_prepare(ct, { width: 400, height: 100 });
             const w = ct.__coordAxisW;
 
             // Засечки от 0 до 20 (без подписей, кроме 0 и 1)
             for (let i = 0; i <= 20; i++) {
                 let x = 10 + (w - 40) * (i / 20);
-                let label = (i === 0 || i === 1) ? i.toString() : "";
+                let label = (i === 0 || i === 1) ? i.toString() : ("" + i).esli(i <= 1);
                 coordAxis_drawMarkPoint(ct, x, label, "line", "underAxis");
             }
             // Точка a
@@ -27,7 +27,9 @@
 
             while (pairs.length < count) {
                 let n = sluchch(1, 20, 1);
-                if (Math.abs(n - a) < 1 || used.has(n)) continue;
+                if (Math.abs(n - a) < 1 || used.has(n)) {
+                    continue
+                };
                 used.add(n);
 
                 let useAfirst = [true, false].iz();
@@ -39,14 +41,13 @@
 
                 pairs.push([exprTrue, exprFalse]);
             }
-
             return pairs;
         }
         let rand = sl1();
         let correctOrNot = ['', 'не'][rand];
         let pairs = generateExpressionPairs(a, 3);
-        let correct = pairs.map(p => p[0]);
-        let wrong = pairs.map(p => p[1]);
+        let correct = pairs.T()[0];
+        let wrong = pairs.T()[1];
 
         NAtask.setTask({
             text: 'На координатной прямой отмечено число $a$. Какое из утверждений для этого числа является ' + correctOrNot + 'верным?',
@@ -56,7 +57,7 @@
         AtoB(3);
 
         chas2.task.modifiers.addCanvasIllustration({
-            width: 450,
+            width: 400,
             height: 100,
             paint: paint1,
         });
