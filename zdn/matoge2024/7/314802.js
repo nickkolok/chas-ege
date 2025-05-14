@@ -1,4 +1,6 @@
 function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
+
+	ct.fillStyle = om.secondaryBrandColors[0];
 	switch (markForm) {
 		case "dot": // точка
 			ct.drawFilledCircle(coord, 0, 4);
@@ -10,8 +12,6 @@ function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
 		case "nothing": // «невидимая точка» — ничего не рисуем
 			break;
 	}
-
-	ct.fillStyle = om.secondaryBrandColors[0];
 	ct.font = "16px liberation_sans";
 
 	switch (textPosition) {
@@ -29,13 +29,13 @@ function coordAxis_drawMarkPoint(ct, coord, text, markForm, textPosition) {
 function coordAxis_prepare(ct, { width = 450, height = 100 } = {}) {
 	ct.__coordAxisW = width;
 	ct.__coordAxisH = height;
-   
+
 	ct.translate(0, height / 2);
-   
+
 	ct.strokeStyle = om.primaryBrandColors[0];
 	ct.lineWidth = 2;
 	ct.drawArrow(10, 0, width - 10, 0);
-   }
+}
 
 (function () {
 	'use strict';
@@ -46,8 +46,8 @@ function coordAxis_prepare(ct, { width = 450, height = 100 } = {}) {
 		let y = slKrome(x.abs(), 1, 9).pm();
 
 		let randAlfabel = sl1();
-			let label1 = ['x', 'a'][randAlfabel];
-			let label2 = ['y', 'b'][randAlfabel];
+		let label1 = ['x', 'a'][randAlfabel];
+		let label2 = ['y', 'b'][randAlfabel];
 
 		let paint1 = function (ct) {
 			coordAxis_prepare(ct, { width: 450, height: 100 });
@@ -66,7 +66,7 @@ function coordAxis_prepare(ct, { width = 450, height = 100 } = {}) {
 			[label1 + " + " + label2 + " < 0", x + y < 0],
 			[label1 + " - " + label2 + " > 0", x - y > 0],
 			[label1 + " - " + label2 + " < 0", x - y < 0],
-			[label2+ " - " + label1 + " > 0", y - x > 0],
+			[label2 + " - " + label1 + " > 0", y - x > 0],
 			[label2 + " - " + label1 + " < 0", y - x < 0],
 			[label1 + " * " + label2 + " > 0", x * y > 0],
 			[label1 + " * " + label2 + " < 0", x * y < 0],
