@@ -2,20 +2,21 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		
-		let leftEdge = sl(1, 8); // Левая граница, от 1 до 8
+
+		let leftEdge = sl(1, 8);
 		let start = leftEdge * leftEdge;
 		let end = (leftEdge + 2) * (leftEdge + 2) - 1;
 		let numForRoot = sl(start, end);
+		genAssert(!numForRoot.isPolnKvadr(), "число не должно быть полным квадратом")
 		let root = Math.sqrt(numForRoot);
 
-		// Делим отрезок [n, n+2] на 5 равных частей — точки A–D между засечками
+		//Делим отрезок на 5 равных частей — точки A–D между засечками
 		let positions = [];
 		for (let i = 1; i <= 4; i++) {
 			positions.push(leftEdge + (2 * i) / 5);
 		}
 
-		// Найдём, какая точка ближе всего к корню
+		//какая точка ближе всего к корню
 		let closestIndex = 0;
 		let minDiff = Infinity;
 		for (let i = 0; i < positions.length; i++) {
@@ -39,7 +40,7 @@
 			// Чёрточки 
 			for (let i = 0; i <= 2; i++) {
 				let x = x0 + i * scale;
-				coordAxis_drawMarkPoint(ct, x, (leftEdge + i).toString(), "line", "underAxis");
+				coordAxis_drawMarkPoint(ct, x, (leftEdge + i), "line", "underAxis");
 			}
 
 			// Точки A–D
@@ -51,7 +52,7 @@
 		};
 
 		NAtask.setTask({
-			text: 'На координатной прямой отмечены точки A, B, C, D. Одна из них соответствует числу $\\sqrt{'+numForRoot+'}$. Какая это точка?',
+			text: 'На координатной прямой отмечены точки A, B, C, D. Одна из них соответствует числу $\\sqrt{' + numForRoot + '}$. Какая это точка?',
 			answers: correctLetter,
 			wrongAnswers: ['A', 'B', 'C', 'D'].filter(l => l !== correctLetter)
 		});
