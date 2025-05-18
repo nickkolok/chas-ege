@@ -10,7 +10,7 @@
 			preferenceValue: index
 		})), sl(preference.length - 1));
 		
-		let danoOrFind = [[`AOD`, `BOC`].iz(), [`ACD`,`BDC`].iz()];
+		let danoOrFind = [[`COD`, `BOA`].iz(), [`ACD`,`BDC`].iz()];
 
 		let circle = new Circle(new Point(0, 0), 180);
 
@@ -29,6 +29,8 @@
 		];
 
 		let points = [AC.pe, BD.ps, AC.ps, BD.pe, circle.pc];
+		
+		let angles = [180 - 2*angle, angle];
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -50,10 +52,11 @@
 
 		NAtask.setTask({
 			text: `В окружности с центром $O$ отрезки $AC $ и $BD$ – диаметры. 
-			${[`Центральный`, `Вписанный`][rand]} угол $${danoOrFind[rand]}$ равен $${[2*angle, angle][rand]}^\\circ$. 
+			${[`Центральный`, `Вписанный`][rand]} угол $${danoOrFind[rand]}$ равен $${angles[rand]}^\\circ$. 
 			Найдите угол $${danoOrFind[1-rand]}$. Ответ дайте в градусах.`,
-			answers: [2*angle, angle][1-rand],
+			answers: angles[1-rand],
 			authors: ['Александра Суматохина'],
+			preference
 		});
 		NAtask.modifiers.variativeABC(letters);
 		NAtask.modifiers.allDecimalsToStandard(true);
