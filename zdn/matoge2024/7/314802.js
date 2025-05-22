@@ -46,6 +46,9 @@
 		genAssert(trueExprs.length >= 3, "Мало истинных выражений");
 		genAssert(falseExprs.length >= 3, "Мало ложных выражений");
 
+		trueExprs = trueExprs.map(f => [`$${f[0]}$`, f[1]]);
+		falseExprs = falseExprs.map(f => [`$${f[0]}$`, f[1]]);
+
 		let correct = trueExprs.iz();
 		let wrong = falseExprs.iz();
 
