@@ -7,7 +7,7 @@
 		let start = leftEdge * leftEdge;
 		let end = (leftEdge + 2) * (leftEdge + 2) - 1;
 		let numForRoot = sl(start, end);
-		genAssert(!numForRoot.isPolnKvadr(), "число не должно быть полным квадратом")
+		genAssert(!numForRoot.isPolnKvadr(), "число не должно быть полным квадратом");
 		let root = Math.sqrt(numForRoot);
 
 		//Делим отрезок на 5 равных частей — точки A–D между засечками
