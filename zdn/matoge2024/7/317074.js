@@ -17,10 +17,9 @@
 			const w = ct.__coordAxisW;
 
 			//Засечки от 0 до 1 с шагом 0.1
-			for (let i = 0; i <= 10; i++) {
-				let frac = i / 10;
-				let label = (frac === 0 || frac === 1) ? frac.toString() : frac.toFixedLess(1);
-				coordAxis_drawMarkPoint(ct, 10 + (w - 40) * frac, label, "line", "underAxis");
+			for (let i = 0; i <= 1; i+=0.1) {
+				let label = (i === 0 || i === 1) ? i.toString() : i.toFixedLess(1);
+				coordAxis_drawMarkPoint(ct, 10 + (w - 40) * i, label, "line", "underAxis");
 			}
 			// Точка A
 			coordAxis_drawMarkPoint(ct, 10 + (w - 20) * a, "A", "dot", "overAxis");
