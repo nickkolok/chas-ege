@@ -22,7 +22,7 @@
 				coordAxis_drawMarkPoint(ct, 10 + (w - 40) * i, label, "line", "underAxis");
 			}
 			// Точка A
-			coordAxis_drawMarkPoint(ct, 10 + (w - 20) * a, "A", "dot", "overAxis");
+			coordAxis_drawMarkPoint(ct, 10 + (w - 40) * a, "A", "dot", "overAxis");
 		};
 
 		// Генерация ответа
