@@ -4,7 +4,9 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let x = sl(1, 9).pm();
-		let y = slKrome(x.abs(), 1, 9).pm();
+		// Абсолютные величины x и y должны не совпадать
+		// и быть различимы визуально без труда
+		let y = slKrome([x.abs(),(x+1).abs(),(x-1).abs()], 1, 9).pm();
 
 		let randAlfabel = sl1();
 		let label1 = ['x', 'a'][randAlfabel];
