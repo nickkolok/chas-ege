@@ -29,12 +29,12 @@
 			[label1 + " - " + label2 + " < 0", x - y < 0],
 			[label2 + " - " + label1 + " > 0", y - x > 0],
 			[label2 + " - " + label1 + " < 0", y - x < 0],
-			[label1 + " * " + label2 + " > 0", x * y > 0],
-			[label1 + " * " + label2 + " < 0", x * y < 0],
-			[label1 + "^2 * " + label2 + " > 0", (x ** 2) * y > 0],
-			[label1 + "^2 * " + label2 + " < 0", (x ** 2) * y < 0],
-			[label2 + "^2 * " + label1 + " > 0", (y ** 2) * x > 0],
-			[label2 + "^2 * " + label1 + " < 0", (y ** 2) * x < 0]
+			[label1 + " \\cdot " + label2 + " > 0", x * y > 0],
+			[label1 + " \\cdot " + label2 + " < 0", x * y < 0],
+			[label1 + "^2 \\cdot " + label2 + " > 0", (x ** 2) * y > 0],
+			[label1 + "^2 \\cdot " + label2 + " < 0", (x ** 2) * y < 0],
+			[label2 + "^2 \\cdot " + label1 + " > 0", (y ** 2) * x > 0],
+			[label2 + "^2 \\cdot " + label1 + " < 0", (y ** 2) * x < 0]
 		];
 
 		let rand = sl1();
