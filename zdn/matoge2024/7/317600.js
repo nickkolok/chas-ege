@@ -24,8 +24,8 @@
 				{ value: 1*a, mark: "dot",   label: labelA, labelPos: "overAxis"  },
 				{ value: 1*b, mark: "dot",   label: labelB, labelPos: "overAxis"  },
 				// И немного разбавляем края для вариативности
-				{ value: - sl(0.1,1.5,0.01), mark: "nothing" },
-				{ value: + sl(0.1,1.5,0.01), mark: "nothing" },
+				{ value: -0.8, mark: "nothing" },
+				{ value: +1.8, mark: "nothing" },
 			] });
 		};
 
