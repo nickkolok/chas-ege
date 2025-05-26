@@ -4,21 +4,26 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let x = sl(1, 9).pm();
-		let y = slKrome(x.abs(), 1, 9).pm();
+		// Абсолютные величины x и y должны не совпадать
+		// и быть различимы визуально без труда
+		let y = slKrome([x.abs(),(x+1).abs(),(x-1).abs()], 1, 9).pm();
 
 		let randAlfabel = sl1();
 		let label1 = ['x', 'a'][randAlfabel];
 		let label2 = ['y', 'b'][randAlfabel];
 
 		let paint1 = function (ct) {
-			coordAxis_prepare(ct, { width: 400, height: 100 });
-			const w = ct.__coordAxisW;
-			const mid = w / 2;
-			const scale = 15;
-
-			coordAxis_drawMarkPoint(ct, mid, "0", "line", "underAxis");
-			coordAxis_drawMarkPoint(ct, mid + x * scale, label1, "dot", "overAxis");
-			coordAxis_drawMarkPoint(ct, mid + y * scale, label2, "dot", "overAxis");
+			coordAxis_drawAuto(ct, { points: [
+				// Выставляем правый край насильно, чтобы при авторасчёте масштаба не терялась вариативность
+				{ value:  10, mark: "nothing" },
+				// Левый тоже
+				{ value: -10, mark: "nothing" },
+				// Нолик с чёрточкой!
+				{ value:   0, mark: "line",  label:    "0", labelPos: "underAxis" },
+				// Сами точки
+				{ value:   x, mark: "dot",   label: label1, labelPos: "overAxis"  },
+				{ value:   y, mark: "dot",   label: label2, labelPos: "overAxis"  },
+			] });
 		};
 
 		// строки + логическая проверка
@@ -29,12 +34,12 @@
 			[label1 + " - " + label2 + " < 0", x - y < 0],
 			[label2 + " - " + label1 + " > 0", y - x > 0],
 			[label2 + " - " + label1 + " < 0", y - x < 0],
-			[label1 + " * " + label2 + " > 0", x * y > 0],
-			[label1 + " * " + label2 + " < 0", x * y < 0],
-			[label1 + "^2 * " + label2 + " > 0", (x ** 2) * y > 0],
-			[label1 + "^2 * " + label2 + " < 0", (x ** 2) * y < 0],
-			[label2 + "^2 * " + label1 + " > 0", (y ** 2) * x > 0],
-			[label2 + "^2 * " + label1 + " < 0", (y ** 2) * x < 0]
+			[label1 + " \\cdot " + label2 + " > 0", x * y > 0],
+			[label1 + " \\cdot " + label2 + " < 0", x * y < 0],
+			[label1 + "^2 \\cdot " + label2 + " > 0", (x ** 2) * y > 0],
+			[label1 + "^2 \\cdot " + label2 + " < 0", (x ** 2) * y < 0],
+			[label2 + "^2 \\cdot " + label1 + " > 0", (y ** 2) * x > 0],
+			[label2 + "^2 \\cdot " + label1 + " < 0", (y ** 2) * x < 0]
 		];
 
 		let rand = sl1();
