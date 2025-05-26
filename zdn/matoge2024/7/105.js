@@ -29,26 +29,28 @@
 		let correctLetter = ['A', 'B', 'C', 'D'][closestIndex];
 
 		let paint = function (ct) {
-			coordAxis_prepare(ct, { width: 400, height: 100 });
+			let points = [];
 
-			let w = ct.__coordAxisW;
-			let margin = 40;
-			let x0 = margin;
-			let x1 = w - margin;
-			let scale = (x1 - x0) / 2;
-
-			// Чёрточки 
 			for (let i = 0; i <= 2; i++) {
-				let x = x0 + i * scale;
-				coordAxis_drawMarkPoint(ct, x, (leftEdge + i), "line", "underAxis");
+				points.push({
+					value: leftEdge + i,
+					label: leftEdge + i,
+					mark: 'line',
+					labelPos: 'underAxis'
+				});
 			}
 
 			// Точки A–D
 			for (let i = 0; i < 4; i++) {
-				let val = positions[i];
-				let x = x0 + (val - leftEdge) * scale;
-				coordAxis_drawMarkPoint(ct, x, ['A', 'B', 'C', 'D'][i], "dot", "overAxis");
+				points.push({
+					value: positions[i],
+					label: ['A', 'B', 'C', 'D'][i],
+					mark: 'dot',
+					labelPos: 'overAxis'
+				});
 			}
+
+			coordAxis_drawAuto(ct, { points });
 		};
 
 		NAtask.setTask({
