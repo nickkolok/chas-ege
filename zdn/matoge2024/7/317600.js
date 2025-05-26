@@ -9,7 +9,7 @@
 		let a = [(Math.random() * 0.6 - 0.7), (Math.random() * 0.6 + 1.1)].iz().toFixed(2);
 		let b = [(Math.random() * 0.6 - 0.7), (Math.random() * 0.6 + 1.1)].iz().toFixed(2);
 
-		genAssert((a - b).abs() > 0.05,"Точки не должны распологаться слишком близко");
+		genAssert((a - b).abs() > 0.05,"Точки не должны располагаться слишком близко");
 
 
 		let labels = [['a', 'b'], ['x', 'y'], ['c', 'd']].iz();
