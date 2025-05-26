@@ -2,6 +2,7 @@
 	let moreless = sl1();
 	let procent = sluchch(0.5, 0.95, 0.01);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (moreless) {
 		procent = 2 - procent;
 	}
@@ -35,6 +36,25 @@
 		[' ноутбук', sluchch(20000, 100000, 500)],
 		[' компьютер', sluchch(25000, 150000, 500)]
 >>>>>>> d8e59e7cd27f80ca65e084169778be13efa33b20
+=======
+	if (moreless) {
+		procent = 2 - procent;
+	}
+	let products = [
+		['телефон', sluchch(2000, 40000, 500)],
+		['телевизор', sluchch(10000, 90000, 500)],
+		['миксер', sluchch(1500, 8000, 100)],
+		['фен', sluchch(1000, 20000, 100)],
+		['утюг', sluchch(1500, 10000, 100)],
+		['пылесос', sluchch(3000, 25000, 500)],
+		['холодильник', sluchch(15000, 80000, 100)],
+		['чайник', sluchch(1000, 6000, 100)],
+		['планшет', sluchch(3000, 30000, 500)],
+		['обогреватель', sluchch(2000, 20000, 500)],
+		['кондиционер', sluchch(10000, 50000, 500)],
+		['ноутбук', sluchch(20000, 100000, 500)],
+		['компьютер', sluchch(25000, 150000, 500)]
+>>>>>>> 6af47b89a6d68c0c4faf232575f2305059204141
 	];
 	let sluchProductNumber = sluchch(0, products.length - 1);
 	let productName = products[sluchProductNumber][0];
@@ -43,6 +63,7 @@
 	let answer = Math.abs(1 - procent) * 100;
 	let slTime1 = sluchch(0, 11);
 	let slTime2 = (slTime1 + sluchch(1, 6)) % 12;
+<<<<<<< HEAD
 <<<<<<< HEAD
 	let month = om.months;
 	let sklonMonthTime1 = sklonlxkand(month[slTime1]);
@@ -61,16 +82,20 @@
 	let mounth = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
 	let sklonMounthTime1 = sklonlxkand(mounth[slTime1]);
 	let sklonMounthTime2 = sklonlxkand(mounth[slTime2]);
+=======
+	let month = om.months;
+	let sklonMonthTime1 = sklonlxkand(month[slTime1]);
+	let sklonMonthTime2 = sklonlxkand(month[slTime2]);
+>>>>>>> 6af47b89a6d68c0c4faf232575f2305059204141
 	let difference = ['снизилась', 'увеличилась'];
 	NAtask.setTask({
-		text: 'Поступивший в продажу в ' + sklonMounthTime1.pe + productName + ' стоил ' + firstPrice +
-			' рублей. В ' + sklonMounthTime2.pe + ' он стал стоить ' + secondPrice.ts() +
+		text: 'Поступивший в продажу в ' + sklonMonthTime1.pe + ' ' + productName + ' стоил ' + firstPrice +
+			' рублей. В ' + sklonMonthTime2.pe + ' он стал стоить ' + secondPrice.ts() +
 			' рублей. На сколько процентов ' + difference[moreless] + ' цена ' + sklonlxkand(productName).re +
-			' в период с ' + sklonMounthTime1.re + ' по ' + sklonMounthTime2.ie + '?',
+			' в период с ' + sklonMonthTime1.re + ' по ' + sklonMonthTime2.ie + '?',
 		answers: answer,
 	});
 })();
-
 //530340
 
 >>>>>>> d8e59e7cd27f80ca65e084169778be13efa33b20
