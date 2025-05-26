@@ -3,41 +3,51 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let epsilon = 1e-6;
 		let denominatorA = sl(10, 90);
 		let numeratorA = sl(1, denominatorA - 1, 1);
-		let a = sl(1, 9, 1) + numeratorA / denominatorA;
-		
-		genAssert(a > 1 + epsilon && a < 9.8 - epsilon, "точка А должна быть в границах от 1 до 9,8");
+		let sum = sl(1, 9, 1);
+		let a = sum + numeratorA / denominatorA;
+
+		genAssert(!(a <= 1.1 || a >= 9.8 || (a - a.round()).abs() < 0.05), "точка А должна быть в границах от 1,1 до 9,8 и не целое");
 
 		let paint1 = function (ct) {
 
-			coordAxis_prepare(ct, { width: 400, height: 100 });
-			const w = ct.__coordAxisW;
+			let points = [];
 
-			//Засечки где подписаны лишь 0 и 1
 			for (let i = 0; i <= 10; i++) {
-				let x = 10 + (w - 40) * (i / 10);
-				let label = (i === 0 || i === 1) ? i.toString() : "";
-				coordAxis_drawMarkPoint(ct, x, label, "line", "underAxis");
+				points.push({
+					value: i,
+					mark: 'line',
+					label: (i === 0 || i === 1) ? i.toString() : '',
+					labelPos: 'underAxis'
+				});
 			}
+
 			// Точка A
-			coordAxis_drawMarkPoint(ct, 10 + (w - 20) * (a / 10), "A", "dot", "overAxis");
+			points.push({
+				value: a,
+				mark: 'dot',
+				label: 'A',
+				labelPos: 'overAxis'
+			});
+
+			coordAxis_drawAuto(ct, { points });
 		};
 
 		// Генерация ответа
-		let correct = numeratorA.texfrac(denominatorA);
+		let correct = (numeratorA + sum * denominatorA).texfrac(denominatorA);
 		let wrAns = [];
 		let usedNumerators = [numeratorA];
 
 		while (wrAns.length < 3) {
 			let wrongNumerator = slKrome(function (x) {
-				let testVal = x / denominatorA;
+				let num = (1, 9, 1);
+				let val = (num * denominatorA + x) / denominatorA;
 				return (
-					x.kratno(denominatorA) ||// исключаем кратные
-					usedNumerators.includes(x) ||// дубликаты
-					testVal <= 1 + epsilon || testVal >= 10 - epsilon || // вне допустимого диапазона
-					(testVal.round() - testVal).abs() < epsilon // попадает на целое
+					x.kratno(denominatorA) ||                     // исключаем целые
+					usedNumerators.includes(x) ||                // дубликаты
+					val <= 1.05 || val >= 9.75 ||                // вне границ
+					(val - val.round()).abs() < 0.06       // близко к целому
 				);
 			}, 1, 150);
 
@@ -62,5 +72,4 @@
 })();
 //zer00player
 //https://oge.sdamgia.ru/test?likes=311392
-
 
