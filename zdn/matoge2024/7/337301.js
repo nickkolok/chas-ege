@@ -9,23 +9,19 @@
 		let outsideLeft = left - 0.5;
 		let outsideRight = right + 0.5;
 		let randPointA = sl1();
-		let pointA = sl(0.01, 0.99, 0.01) * [(left - outsideLeft), (outsideRight - right)][randPointA] + [outsideLeft, right][randPointA];
+		let pointA = slKrome((x) => (x-x.round()).abs() < 0.1, outsideLeft, outsideRight, 0.01);
 
 		let paint1 = function (ct) {
-			coordAxis_prepare(ct, { width: 400, height: 100 });
-			let w = ct.__coordAxisW;
-			let mid = w / 2;
-
-			// Засечки
-			let x1 = mid - 75;
-			let x2 = mid + 75;
-			let ratio = (x2 - x1) / (borders[1] - borders[0]);
-
-			coordAxis_drawMarkPoint(ct, x1, borders[0], "line", "underAxis");
-			coordAxis_drawMarkPoint(ct, x2, borders[1], "line", "underAxis");
-
-			let pointA_coord = x1 + (pointA - borders[0]) * ratio;
-			coordAxis_drawMarkPoint(ct, pointA_coord, "a", "dot", "overAxis");
+			coordAxis_drawAuto(ct, { points: [
+				// Нолик и плюс-минус единичка с чёрточками!
+				{ value: borders[0], mark: "line", labelPos: "underAxis",  label: borders[0] },
+				{ value: borders[1], mark: "line", labelPos: "underAxis",  label: borders[1] },
+				// Сама точка a
+				{ value: pointA, mark: "dot", labelPos: "overAxis",   label: "a"  },
+				// И немного разбавляем края для вариативности
+				{ value: borders[0] - sl(0.1,0.5,0.01), mark: "nothing" },
+				{ value: borders[1] + sl(0.1,0.5,0.01), mark: "nothing" },
+			] });
 		};
 
 		let pointA2 = pointA ** 2;
@@ -33,7 +29,7 @@
 		let pointA4 = pointA ** 4;
 
 		let randA = sl1();
-		let options = [[["a", pointA], ["a^2", pointA2], ["a^3", pointA3]], [["a^2", pointA2], ["a^3", pointA3], ["a^4", pointA4]]][randA];
+		let options = [[["$a$", pointA], ["$a^2$", pointA2], ["$a^3$", pointA3]], [["$a^2$", pointA2], ["$a^3$", pointA3], ["$a^4$", pointA4]]][randA];
 
 		let isMaxTaskOrMin = sl1();
 		let targetValue = [options.T(x => x[1])[1].maxE(), options.T(x => x[1])[1].minE()][isMaxTaskOrMin];
@@ -62,5 +58,3 @@
 })();
 //zer00player
 //https://oge.sdamgia.ru/test?likes=337301
-
-
