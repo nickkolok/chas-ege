@@ -9,29 +9,24 @@
 		let a = [(Math.random() * 0.6 - 0.7), (Math.random() * 0.6 + 1.1)].iz().toFixed(2);
 		let b = [(Math.random() * 0.6 - 0.7), (Math.random() * 0.6 + 1.1)].iz().toFixed(2);
 
-		genAssert((a - b).abs() > 0.05,"Точки не должны распологаться слишком близко");
+		genAssert((a - b).abs() > 0.1,"Точки не должны располагаться слишком близко");
 
 
 		let labels = [['a', 'b'], ['x', 'y'], ['c', 'd']].iz();
 		let [labelA, labelB] = labels;
 
 		let paint1 = function (ct) {
-			coordAxis_prepare(ct, { width: 450, height: 100 });
-			let w = ct.__coordAxisW;
-			let mid = w / 2;
-
-			let x1 = mid - 75;
-			let x2 = mid + 75;
-			let scale = (x2 - x1) / (right - left);
-
-			coordAxis_drawMarkPoint(ct, x1, "0", "line", "underAxis");
-			coordAxis_drawMarkPoint(ct, x2, "1", "line", "underAxis");
-
-			let a_coord = x1 + (a - left) * scale;
-			let b_coord = x1 + (b - left) * scale;
-
-			coordAxis_drawMarkPoint(ct, a_coord, labelA, "dot", "overAxis");
-			coordAxis_drawMarkPoint(ct, b_coord, labelB, "dot", "overAxis");
+			coordAxis_drawAuto(ct, { points: [
+				// Нолик и плюс-минус единичка с чёрточками!
+				{ value: 0, mark: "line", labelPos: "underAxis",  label: 0 },
+				{ value: 1, mark: "line", labelPos: "underAxis",  label: 1 },
+				// Сами точки
+				{ value: 1*a, mark: "dot",   label: labelA, labelPos: "overAxis"  },
+				{ value: 1*b, mark: "dot",   label: labelB, labelPos: "overAxis"  },
+				// И немного разбавляем края для вариативности
+				{ value: -0.8, mark: "nothing" },
+				{ value: +1.8, mark: "nothing" },
+			] });
 		};
 
 		let invA = 1 / a;
