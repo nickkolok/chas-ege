@@ -29,7 +29,7 @@
 		let pointA4 = pointA ** 4;
 
 		let randA = sl1();
-		let options = [[["a", pointA], ["a^2", pointA2], ["a^3", pointA3]], [["a^2", pointA2], ["a^3", pointA3], ["a^4", pointA4]]][randA];
+		let options = [[["$a$", pointA], ["$a^2$", pointA2], ["$a^3$", pointA3]], [["$a^2$", pointA2], ["$a^3$", pointA3], ["$a^4$", pointA4]]][randA];
 
 		let isMaxTaskOrMin = sl1();
 		let targetValue = [options.T(x => x[1])[1].maxE(), options.T(x => x[1])[1].minE()][isMaxTaskOrMin];
