@@ -4,21 +4,22 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let x = sl(1, 10).pm();
-		let y = slKrome(x.abs(), 1, 10).pm();
+		let y = slKrome([x.abs(), (x + 1).abs(), (x - 1).abs()], 1, 9).pm();
 
 		let randAlfabel = sl1();
 		let label1 = ['x', 'a'][randAlfabel];
 		let label2 = ['y', 'b'][randAlfabel];
 
 		let paint1 = function (ct) {
-			coordAxis_prepare(ct, { width: 400, height: 100 });
-			let w = ct.__coordAxisW;
-			let mid = w / 2;
-			let scale = 15;
-
-			coordAxis_drawMarkPoint(ct, mid, "0", "line", "underAxis");
-			coordAxis_drawMarkPoint(ct, mid + x * scale, label1, "dot", "overAxis");
-			coordAxis_drawMarkPoint(ct, mid + y * scale, label2, "dot", "overAxis");
+			coordAxis_drawAuto(ct, {
+				points: [
+					{ value: 10, mark: "nothing" },
+					{ value: -10, mark: "nothing" },
+					{ value: 0, mark: "line", label: "0", labelPos: "underAxis" },
+					{ value: x, mark: "dot", label: label1, labelPos: "overAxis" },
+					{ value: y, mark: "dot", label: label2, labelPos: "overAxis" },
+				]
+			});
 		};
 
 		// Генерация всех утверждений
