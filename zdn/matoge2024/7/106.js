@@ -4,14 +4,11 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let leftEdge = sl(1, 6);
-		let scale = 140; 
-		let x0 = 60;
-
 		let positions = [
-			leftEdge + 0.1, // A — ближе к началу
-			leftEdge + 0.85, // B — симметрия
-			leftEdge + 1.15, // C — симметрия
-			leftEdge + 1.9  // D — ближе к концу
+			leftEdge + 0.1,
+			leftEdge + 0.85,
+			leftEdge + 1.15,
+			leftEdge + 1.9
 		];
 
 		let idx = sl(0, 3);
@@ -25,18 +22,28 @@
 		let correctLetter = ['A', 'B', 'C', 'D'][idx];
 
 		let paint = function (ct) {
-			coordAxis_prepare(ct, { width: 400, height: 100 });
-			
+			let points = [];
+
 			for (let i = 0; i <= 2; i++) {
-				let x = x0 + i * scale;
-				coordAxis_drawMarkPoint(ct, x, (leftEdge + i), "line", "underAxis");
+				points.push({
+					value: leftEdge + i,
+					label: leftEdge + i,
+					mark: 'line',
+					labelPos: 'underAxis'
+				});
 			}
 
+			// Точки A–D
 			for (let i = 0; i < 4; i++) {
-				let v = positions[i];
-				let x = x0 + (v - leftEdge) * scale;
-				coordAxis_drawMarkPoint(ct, x, ['A', 'B', 'C', 'D'][i], "dot", "overAxis");
+				points.push({
+					value: positions[i],
+					label: ['A', 'B', 'C', 'D'][i],
+					mark: 'dot',
+					labelPos: 'overAxis'
+				});
 			}
+
+			coordAxis_drawAuto(ct, { points });
 		};
 
 		NAtask.setTask({
