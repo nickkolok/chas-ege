@@ -8,7 +8,6 @@
 
 		let outsideLeft = left - 0.5;
 		let outsideRight = right + 0.5;
-		let randPointA = sl1();
 		let pointA = slKrome((x) => (x-x.round()).abs() < 0.1, outsideLeft, outsideRight, 0.01);
 
 		let paint1 = function (ct) {
