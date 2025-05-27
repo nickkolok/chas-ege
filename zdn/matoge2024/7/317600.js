@@ -3,46 +3,45 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let borders = [0, 1];
-		let [left, right] = borders;
+		let a = slKrome([0], -0.7, 1.7, 0.03);
+		let b = slKrome([a], -0.7, 1.7, 0.03);
 
-		let a = [(Math.random() * 0.6 - 0.7), (Math.random() * 0.6 + 1.1)].iz().toFixed(2);
-		let b = [(Math.random() * 0.6 - 0.7), (Math.random() * 0.6 + 1.1)].iz().toFixed(2);
-
-		genAssert((a - b).abs() > 0.1,"Точки не должны располагаться слишком близко");
+		genAssert((a - b).abs() > 0.1, "Точки не должны располагаться слишком близко");
 
 
-		let labels = [['a', 'b'], ['x', 'y'], ['c', 'd']].iz();
-		let [labelA, labelB] = labels;
+		let labels = window.smallLatinLetters.iz(2);
+		let labelA = labels[0];
+		let labelB = labels[1];
 
 		let paint1 = function (ct) {
-			coordAxis_drawAuto(ct, { points: [
-				// Нолик и плюс-минус единичка с чёрточками!
-				{ value: 0, mark: "line", labelPos: "underAxis",  label: 0 },
-				{ value: 1, mark: "line", labelPos: "underAxis",  label: 1 },
-				// Сами точки
-				{ value: 1*a, mark: "dot",   label: labelA, labelPos: "overAxis"  },
-				{ value: 1*b, mark: "dot",   label: labelB, labelPos: "overAxis"  },
-				// И немного разбавляем края для вариативности
-				{ value: -0.8, mark: "nothing" },
-				{ value: +1.8, mark: "nothing" },
-			] });
+			coordAxis_drawAuto(ct, {
+				points: [
+					// Нолик и плюс-минус единичка с чёрточками!
+					{ value: 0, mark: "line", labelPos: "underAxis", label: 0 },
+					{ value: 1, mark: "line", labelPos: "underAxis", label: 1 },
+					// Сами точки
+					{ value: 1 * a, mark: "dot", label: labelA, labelPos: "overAxis" },
+					{ value: 1 * b, mark: "dot", label: labelB, labelPos: "overAxis" },
+					// И немного разбавляем края для вариативности
+					{ value: -0.8, mark: "nothing" },
+					{ value: +1.8, mark: "nothing" },
+				]
+			});
 		};
 
 		let invA = 1 / a;
 		let invB = 1 / b;
-
 		let values = [
-			[`1/${labelA}`, invA],
-			[`1/${labelB}`, invB],
-			["1", 1]
+			[`$\\frac{1}{${labelA}}$`, invA],
+			[`$\\frac{1}{${labelB}}$`, invB],
+			[`$1$`, 1]
 		];
 
 		// Проверка на корректность
 		let valid = values.every(x => Number.isFinite(x[1])) &&
 			new Set(values.map(x => +x[1].toFixed(4))).size === 3;
 
-		genAssert(valid,"Не подходящие значения");
+		genAssert(valid, "Не подходящие значения");
 
 		let isAscending = sl1();
 		let sorted = values.slice().sort((x, y) =>
