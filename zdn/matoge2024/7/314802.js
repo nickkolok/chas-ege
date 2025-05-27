@@ -8,9 +8,9 @@
 		// и быть различимы визуально без труда
 		let y = slKrome([x.abs(),(x+1).abs(),(x-1).abs()], 1, 9).pm();
 
-		let randAlfabel = sl1();
-		let label1 = ['x', 'a'][randAlfabel];
-		let label2 = ['y', 'b'][randAlfabel];
+		let labels = window.smallLatinLetters.iz(2);
+		let label1 = labels[0];
+		let label2 = labels[1];
 
 		let paint1 = function (ct) {
 			coordAxis_drawAuto(ct, { points: [
