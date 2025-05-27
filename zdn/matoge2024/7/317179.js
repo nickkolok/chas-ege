@@ -6,9 +6,9 @@
 		let x = sl(1, 10).pm();
 		let y = slKrome([x.abs(), (x + 1).abs(), (x - 1).abs()], 1, 9).pm();
 
-		let randAlfabel = sl1();
-		let label1 = ['x', 'a'][randAlfabel];
-		let label2 = ['y', 'b'][randAlfabel];
+		let randAlphabet = window.smallLatinLetters.iz(2);
+		let label1 = randAlphabet[0];
+		let label2 = randAlphabet[1];
 
 		let paint1 = function (ct) {
 			coordAxis_drawAuto(ct, {
