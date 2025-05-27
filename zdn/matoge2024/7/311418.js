@@ -3,21 +3,30 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let a = sl(3.5, 19.5, 0.5);
+        let numRand = sl(0.1, 0.7, 0.05);
+        let a = sl(3, 19, 1) + numRand;
 
         let paint1 = function (ct) {
+            let points = [];
 
-            coordAxis_prepare(ct, { width: 400, height: 100 });
-            const w = ct.__coordAxisW;
-
-            // Засечки от 0 до 20 (без подписей, кроме 0 и 1)
             for (let i = 0; i <= 20; i++) {
-                let x = 10 + (w - 40) * (i / 20);
-                let label = (i === 0 || i === 1) ? i.toString() : ("" + i).esli(i <= 1);
-                coordAxis_drawMarkPoint(ct, x, label, "line", "underAxis");
+                points.push({
+                    value: i,
+                    mark: 'line',
+                    label: (i === 0 || i === 1) ? i.toString() : ("" + i).esli(i <= 1),
+                    labelPos: 'underAxis'
+                });
             }
-            // Точка a
-            coordAxis_drawMarkPoint(ct, 10 + (w - 20) * (a / 20), "a", "dot", "overAxis");
+
+            points.push({
+                value: a,
+                mark: 'dot',
+                label: 'a',
+                labelPos: 'overAxis'
+            });
+
+            coordAxis_drawAuto(ct, { points });
+
         };
 
         // Генерация верных и ложных выражений
