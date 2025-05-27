@@ -4,25 +4,40 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let numeratorA = sl(1, 50, 1);
-		let denominatorA = numeratorA + slKrome(x => x.kratno(numeratorA), 3, 40);
+		let denominatorA = sl(5, 50, 1);
+		let numeratorA = sl(1, denominatorA - 1, 1);
 
 		let a = numeratorA / denominatorA;
 		const epsilon = 1e-6;
 		genAssert(((a * 10).round() / 10 - a).abs() > epsilon, "точка A не должна стоять на засечке");
 
 		let paint1 = function (ct) {
+			let points = [];
 
-			coordAxis_prepare(ct, { width: 400, height: 100 });
-			const w = ct.__coordAxisW;
-
-			//Засечки от 0 до 1 с шагом 0.1
-			for (let i = 0; i <= 1; i+=0.1) {
-				let label = (i === 0 || i === 1) ? i.toString() : i.toFixedLess(1);
-				coordAxis_drawMarkPoint(ct, 10 + (w - 40) * i, label, "line", "underAxis");
+			// Засечки от 0 до 1 с шагом 0.1, подписываем 0 и 1
+			for (let i = 0; i <= 10; i++) {
+				let val = i / 10;
+				points.push({
+					value: val,
+					mark: 'line',
+					label: (i === 0 || i === 10) ? val.toString() : '',
+					labelPos: 'underAxis'
+				});
 			}
+
 			// Точка A
-			coordAxis_drawMarkPoint(ct, 10 + (w - 40) * a, "A", "dot", "overAxis");
+			points.push({
+				value: a,
+				mark: 'dot',
+				label: 'A',
+				labelPos: 'overAxis'
+			});
+
+			// Фиктивные точки для ограничения диапазона и сдвига
+			points.push({ value: -0.05, mark: 'nothing' });
+			points.push({ value: 1.05, mark: 'nothing' });
+
+			coordAxis_drawAuto(ct, { points });
 		};
 
 		// Генерация ответа
