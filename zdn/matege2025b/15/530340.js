@@ -34,7 +34,7 @@
 	NAtask.setTask({
 		text: 'Поступивший в продажу в ' + sklonMonthTime1.pe + ' ' + productName + ' стоил ' + firstPrice +
 			' рублей. В ' + sklonMonthTime2.pe + ' он стал стоить ' +
-			chislitlx(secondPrice.ts(),'рубль') + '. На сколько процентов ' + difference[moreless] + ' цена ' + sklonlxkand(productName).re +
+			chislitlx(secondPrice,'рубль') + '. На сколько процентов ' + difference[moreless] + ' цена ' + sklonlxkand(productName).re +
 			' в период с ' + sklonMonthTime1.re + ' по ' + sklonMonthTime2.ie + '?',
 		answers: answer,
 	});
