@@ -18,10 +18,10 @@
 		['кондиционер', sluchch(10000, 50000, 500)],
 		['ноутбук', sluchch(20000, 100000, 500)],
 		['компьютер', sluchch(25000, 150000, 500)]
-	];
-	let sluchProductNumber = sluchch(0, products.length - 1);
-	let productName = products[sluchProductNumber][0];
-	let firstPrice = products[sluchProductNumber][1];
+	].iz();
+	
+	let productName = products[0];
+	let firstPrice = products[1];
 	let secondPrice = firstPrice * procent;
 	let answer = Math.abs(1 - procent) * 100;
 	let slTime1 = sluchch(0, 11);
@@ -30,6 +30,7 @@
 	let sklonMonthTime1 = sklonlxkand(month[slTime1]);
 	let sklonMonthTime2 = sklonlxkand(month[slTime2]);
 	let difference = ['снизилась', 'увеличилась'];
+	
 	NAtask.setTask({
 		text: 'Поступивший в продажу в ' + sklonMonthTime1.pe + ' ' + productName + ' стоил ' + firstPrice +
 			' рублей. В ' + sklonMonthTime2.pe + ' он стал стоить ' +
