@@ -166,6 +166,14 @@ chas2.task = {
 			window.vopr.dey = o.draw;
 		}
 
+		o.forbidDecimalFractions = o.forbidDecimalFractions || chas2.task.setTask.forbidDecimalFractions;
+
+		if(o.forbidDecimalFractions){
+			let decimal = /\d+[.,]\d+/g;
+			genAssert(!decimal.test(o.text), 'Текст задания содержит десятичные дроби');
+			genAssert(!decimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные дроби');
+		}
+
 		window.vopr.kat.importFrom(o.tags);
 
 		var voprcheck = dvig.validateVopr();
@@ -595,7 +603,7 @@ chas2.task = {
 			genAssert(answer.n < 1000000, 'Числитель дроби слишком большой (по модулю)');
 			genAssert(answer.d <= (o.maxDenominator || 20), 'Знаменатель дроби слишком большой');
 			genAssert(answer.d >= (o.minDenominator ||  2), 'Знаменатель дроби слишком маленький');
-1
+
 			// Вносим минус в числитель
 			answer.n *= answer.s;
 
@@ -685,6 +693,7 @@ chas2.task = {
 		o.primaryStep = (o.primaryStep || 0.01);
 		o.secondaryStep = (o.secondaryStep || o.primaryStep.sqr());
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
+		o.forbidOpenEnds = o.forbidOpenEnds || chas2.task.setMinimaxFunctionTask.forbidOpenEnds;
 
 		genAssert((lEnd - rEnd).abs() > o.primaryStep, "Отрезок очень мал. Необходимо уменьшить primaryStep");
 
@@ -737,17 +746,23 @@ chas2.task = {
 
 		genAssert(minY !== null || maxY !== null, 'Экстремальное значение запрещено или не удовлетворяет условиям');
 
-		var chooseMinMax;
+		let whatToFind = ['min', 'max'];
 		let chosenX;
-		if (maxY === null || (minY !== null && sl1())) {
-			chooseMinMax = 'наименьшее';
-			o.answers = minY;
-			chosenX = minX;
-		} else {
-			chooseMinMax = 'наибольшее';
-			o.answers = maxY;
-			chosenX = maxX;
+		let chooseMinMax;
+		switch(true){
+			case o.forbidMinY && maxY !== null:
+				whatToFind = 'max';
+				break;
+			case o.forbidMaxY && minY !== null:
+				whatToFind = 'min';
+				break;
+			default:
+				whatToFind = whatToFind.shuffle().iz()			
 		}
+
+		o.answers = {min: minY, max: maxY}[whatToFind];
+		chosenX = {min: minX, max: maxX}[whatToFind];
+		chooseMinMax = {min: 'наименьшее', max: 'наибольшее'}[whatToFind];
 
 		o.answers = o.answers.ts();
 		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
@@ -773,20 +788,26 @@ chas2.task = {
 		expr = math.simplify(expr, mathjsRules.clearFracAsPower);
 		expr = math.simplify(expr, mathjsRules.omit1pi);
 		expr = math.simplify(expr, mathjsRules.omit1sqrt);
+		expr = math.simplify(expr, [{l: 'n1+-c2*n3', r: 'n1-c2 n3'}]);
+		expr = math.simplify(expr, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+		expr = math.simplify(expr, [{l: 'n1+c2*-n3', r: 'n1-c2 n3'}]);
+		expr = math.simplify(expr, [{l: 'n1+n2*-c3', r: 'n1-c3 n2'}]);
+		expr = math.simplify(expr, [{l: 'n1+n2*-n3', r: 'n1-n2*n3'}]);
 
 
 		if (!o.forbidAnalys) {
 			// In case of Russian-style tg(x)
-			expr = math.simplify(expr, mathjsRules.rusTrig2eng);
+			var expr2diff = math.simplify(expr, mathjsRules.rusTrig2eng);
 
 			//Don't simplify in order to prevent numerical evaluation
-			let derivative = math.derivative(expr, 'x', {simplify: false});
+			let derivative = math.derivative(expr2diff, 'x', {simplify: false});
 
 			//... but simplify something that is safe
 			derivative = math.simplify(derivative, mathjsRules.safeTrivialSimplification);
 			derivative = math.simplify(derivative, mathjsRules.trig2trigPow);
 			//TODO: a separate rule for this?
-			//derivative = math.simplify(derivative, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+			derivative = math.simplify(derivative, [{l: 'n1+-n2*n3', r: 'n1-n2*n3'}]);
+			derivative = math.simplify(derivative, [{l: 'n1+n2*-n3', r: 'n1-n2*n3'}]);
 
 			o.analys = "Производная функции: $y' = " +
 				derivative.toTex() + "$" +
@@ -796,21 +817,23 @@ chas2.task = {
 		expr = math.simplify(expr, mathjsRules.trig2trigPow);
 		expr = math.simplify(expr, mathjsRules.engTrig2rus);
 		//TODO: tan^2 x -> tg^2 x
+		// Костылик для убирания лишних скобок вокруг логарифма от степени
+		expr = math.simplify(expr, [{ l: 'log(n1)', r: 'ln(n1)' }]);
 
 		let intervalName = 'отрезке';
 		let intervalEndL = '[';
 		let intervalEndR = ']';
 
 		if (!o.forbidOpenEnds) {
-			if (!sl(3) && (chosenX - lEnd).abs() > o.primaryStep && (chosenX - rEnd).abs() > o.primaryStep) {
+			if (!sl(3) && (chosenX - lEnd).abs() > 2 * o.primaryStep && (chosenX - rEnd).abs() > 2 * o.primaryStep) {
 				intervalName = 'интервале';
 				intervalEndL = '(';
 				intervalEndR = ')';
-			} else if (!sl(2) && (chosenX - lEnd).abs() > o.primaryStep) {
+			} else if (!sl(2) && (chosenX - lEnd).abs() > 2 * o.primaryStep) {
 				intervalName = 'полуинтервале';
 				intervalEndL = '(';
 				intervalEndR = ']';
-			} else if (!sl(1) && (chosenX - rEnd).abs() > o.primaryStep) {
+			} else if (!sl(1) && (chosenX - rEnd).abs() > 2 * o.primaryStep) {
 				intervalName = 'полуинтервале';
 				intervalEndL = '[';
 				intervalEndR = ')';
@@ -896,8 +919,19 @@ chas2.task = {
 
 		let whatToFind = Object.keys(sortedExtremums).shuffle();
 		genAssertNonempty(whatToFind, 'Искать-то нечего!');
-		whatToFind = whatToFind[0];
-		let theExtremum = sortedExtremums[whatToFind][0];
+
+		switch(true){
+			case o.forbidMinY:
+				whatToFind = 'max';
+				break;
+			case o.forbidMaxY:
+				whatToFind = 'min';
+				break;
+			default:
+				whatToFind = whatToFind.shuffle()[0];
+		}
+			
+		let theExtremum = sortedExtremums[whatToFind];
 
 		theExtremum = eval(theExtremum);
 		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
@@ -1023,19 +1057,24 @@ chas2.task = {
 		 */
 		variativeABC : (function() {
 			var alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-			return function(variativeABCstrings) {
-				var alph2 = alph.slice().shuffle();
+			return function(variativeABCstrings, o) {
+				o = o || {};
+				var alph1 = alph.slice();
+				if (o.preserve) {
+					alph1 = alph1.filter(e => !o.preserve.includes(e));
+				}
+				var alph2 = alph1.slice().shuffle();
 				if (variativeABCstrings) {
 					for (let i = 0; i < variativeABCstrings.length; i++) {
 						variativeABCstrings[i] =
-							variativeABCstrings[i].cepZamena(alph, alph2);
+							variativeABCstrings[i].cepZamena(alph1, alph2);
 					}
 				}
 				chas2.task.setTask(
 					mapRecursive(
 						chas2.task.getTask(),
 						function(str) {
-							return ('' + str).cepZamena(alph, alph2);
+							return ('' + str).cepZamena(alph1, alph2);
 						}
 					)
 				);
