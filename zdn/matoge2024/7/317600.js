@@ -3,11 +3,18 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let a = slKrome([0], -0.7, 1.7, 0.03);
-		let b = slKrome([a], -0.7, 1.7, 0.03);
+		let intervals = [].concat(
+			sl(-0.7, -0.1, 0.03),
+			sl(0.1, 0.9, 0.03),
+			sl(1.1, 1.7, 0.03)
+		);
 
-		genAssert((a - b).abs() > 0.1, "Точки не должны располагаться слишком близко");
+		let a = intervals.iz();
+		let b = slKrome([a] - 0.7, 1.7, 0.03);
 
+		genAssert((a - b).abs() > 0.1, "Точки не должны быть слишком близко друг к другу");
+		genAssert(intervals.includes(a), "a вне допустимого интервала");
+		
 
 		let labels = window.smallLatinLetters.iz(2);
 		let labelA = labels[0];
