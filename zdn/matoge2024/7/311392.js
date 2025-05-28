@@ -3,12 +3,14 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let denominatorA = sl(10, 90);
+		let denominatorA = sl(10, 90, 1);
 		let numeratorA = sl(1, denominatorA - 1, 1);
 		let sum = sl(1, 9, 1);
 		let a = sum + numeratorA / denominatorA;
 
-		genAssert(!(a <= 1.1 || a >= 9.8 || (a - a.round()).abs() < 0.05), "точка А должна быть в границах от 1,1 до 9,8 и не целое");
+		genAssert(!a <= 1.1, "точка А должна быть в границах от 1,1");
+		genAssert(!a <= 9.8, "точка А должна быть в границах до 9,8 ");
+		genAssert((a - a.round()).abs() < 0.05, "точка А не целое");
 
 		let paint1 = function (ct) {
 
@@ -18,7 +20,7 @@
 				points.push({
 					value: i,
 					mark: 'line',
-					label: (i === 0 || i === 1) ? i.toString() : '',
+					label: i.toString().esli(i === 0 || i === 1),
 					labelPos: 'underAxis'
 				});
 			}
