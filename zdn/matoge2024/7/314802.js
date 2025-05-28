@@ -51,9 +51,6 @@
 		genAssert(trueExprs.length >= 3, "Мало истинных выражений");
 		genAssert(falseExprs.length >= 3, "Мало ложных выражений");
 
-		trueExprs = trueExprs.map(f => [`$${f[0]}$`, f[1]]);
-		falseExprs = falseExprs.map(f => [`$${f[0]}$`, f[1]]);
-
 		let correct = trueExprs.iz();
 		let wrong = falseExprs.iz();
 
@@ -62,7 +59,7 @@
 			answers: [correct[0], wrong[0]][rand],
 			wrongAnswers: [falseExprs.map(x => x[0]), trueExprs.map(x => x[0])][rand]
 		});
-		AtoB(3);
+		AtoB(3, {autoLaTeX: true});
 
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 400,
