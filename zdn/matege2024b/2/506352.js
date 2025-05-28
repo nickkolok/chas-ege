@@ -98,7 +98,7 @@ let arrayWeight = [
 	weightMg + ' мг',
 	weightG + ' г',
 	weightKg + ' кг',
-	parseFloat((weightT).toFixed(1)) + ' т'
+	weightT.ts() + ' т'
 ];
 
 let answer = arrayAnswer[0] + '' + arrayAnswer[1] + '' + arrayAnswer[2] + '' + arrayAnswer[3];
