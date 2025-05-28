@@ -15,12 +15,12 @@
 			let points = [];
 
 			// Засечки от 0 до 1 с шагом 0.1, подписываем 0 и 1
-			for (let i = 0; i <= 10; i++) {
-				let val = i / 10;
+			for (let i = 0; i <= 1; i += 0.1) {
+
 				points.push({
-					value: val,
+					value: i,
 					mark: 'line',
-					label: (i === 0 || i === 10) ? val.toString() : '',
+					label: i.toFixedLess(1),
 					labelPos: 'underAxis'
 				});
 			}
