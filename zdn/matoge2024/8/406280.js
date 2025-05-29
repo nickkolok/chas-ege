@@ -1,5 +1,4 @@
-﻿
-(function() {
+﻿(function() {
 	retryWhileError(function() {
 		'use strict';
 		let a = sl(2, 19);
