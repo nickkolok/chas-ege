@@ -9,6 +9,7 @@
 			rightEnd: (a + sl(0.5, 3, 0.5)) + '',
 			primaryStep: 0.01,
 			secondaryStep: 0.0001,
+			forbiddenAnswers: [0,'-0'],
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10000);
