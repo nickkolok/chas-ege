@@ -9,7 +9,10 @@
 			rightEnd: (a + sl(0.5, 3, 0.5)) + '',
 			primaryStep: 0.01,
 			secondaryStep: 0.0001,
+<<<<<<< HEAD
 			forbiddenAnswers: [0,'-0'],
+=======
+>>>>>>> d8d23216370783cbcd499e38b1c979b38ee90e71
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10000);
