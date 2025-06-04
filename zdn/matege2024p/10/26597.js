@@ -7,7 +7,6 @@
 		let x = sl(b+1,100,0.01);//объем (ответ)
 		let n = (A*b)/(x*(x+b));//время заполнения (разница)
 		genAssertZ1000(n,'Время слишком дробное: '+n);
-
 		let liquid = sklonlxkand(['вода','жидкость'].iz());
 		let tub_naz = sklonlxkand(['труба','шланг'].iz());
 		let prop = ['пропускает','прокачивает'].iz();
@@ -17,11 +16,12 @@
 		let v2=sl1();
 		let dol=[[['медленнее','дольше'].iz(),'меньше'],['быстрее','больше']];
 		let esli=[', если известно, что ',', если '].iz();
+		let ono=['он'+['','а','о','и'][tub_naz.rod]];
 
 		NAtask.setTask({
 			text: tub_num[v2].toZagl()+' '+tub_naz.ie+' '+prop+' на '+chislitlx(b, 'литр','v')+' в минуту '+dol[v2][1]+', чем '+tub_num[1-v2]+'. '+
-				'Сколько литров '+liquid.re+' в минуту '+prop+' '+tub_num[1-v1]+' '+tub_naz.ie+esli+rez.ve+' объёмом '+chislitlx(A, 'литр','r')+
-				[' она '+['заполняет','опустошает'].iz()+' на '+chislitlx(n, 'минута','v')+' '+dol[1-v1][0]+', чем '+tub_num[v1]+' '+tub_naz.ie+'?',
+				'Сколько литров '+liquid.re+' в минуту '+prop+' '+tub_num[1-v1]+' '+tub_naz.ie+esli+rez.ve+' объёмом '+chislitlx(A, 'литр','r')+' '+
+				[ono+' '+['заполняет','опустошает'].iz()+' на '+chislitlx(n, 'минута','v')+' '+dol[1-v1][0]+', чем '+tub_num[v1]+' '+tub_naz.ie+'?',
 				 ' '+tub_num[v1]+' '+tub_naz.ie+' '+['заполняет','опустошает'].iz()+' на '+chislitlx(n, 'минута','v')+' '+dol[v1][0]+'?'].iz(),
 			answers: v1==1 ? x : x+b,
 			authors: ['Aisse-258']

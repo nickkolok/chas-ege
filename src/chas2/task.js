@@ -166,6 +166,14 @@ chas2.task = {
 			window.vopr.dey = o.draw;
 		}
 
+		o.forbidDecimalFractions = o.forbidDecimalFractions || chas2.task.setTask.forbidDecimalFractions;
+
+		if(o.forbidDecimalFractions){
+			let decimal = /\d+[.,]\d+/g;
+			genAssert(!decimal.test(o.text), 'Текст задания содержит десятичные дроби');
+			genAssert(!decimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные дроби');
+		}
+
 		window.vopr.kat.importFrom(o.tags);
 
 		var voprcheck = dvig.validateVopr();
@@ -738,17 +746,23 @@ chas2.task = {
 
 		genAssert(minY !== null || maxY !== null, 'Экстремальное значение запрещено или не удовлетворяет условиям');
 
-		var chooseMinMax;
+		let whatToFind = ['min', 'max'];
 		let chosenX;
-		if (maxY === null || (minY !== null && sl1())) {
-			chooseMinMax = 'наименьшее';
-			o.answers = minY;
-			chosenX = minX;
-		} else {
-			chooseMinMax = 'наибольшее';
-			o.answers = maxY;
-			chosenX = maxX;
+		let chooseMinMax;
+		switch(true){
+			case o.forbidMinY && maxY !== null:
+				whatToFind = 'max';
+				break;
+			case o.forbidMaxY && minY !== null:
+				whatToFind = 'min';
+				break;
+			default:
+				whatToFind = whatToFind.shuffle().iz()			
 		}
+
+		o.answers = {min: minY, max: maxY}[whatToFind];
+		chosenX = {min: minX, max: maxX}[whatToFind];
+		chooseMinMax = {min: 'наименьшее', max: 'наибольшее'}[whatToFind];
 
 		o.answers = o.answers.ts();
 		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
@@ -905,8 +919,19 @@ chas2.task = {
 
 		let whatToFind = Object.keys(sortedExtremums).shuffle();
 		genAssertNonempty(whatToFind, 'Искать-то нечего!');
-		whatToFind = whatToFind[0];
-		let theExtremum = sortedExtremums[whatToFind][0];
+
+		switch(true){
+			case o.forbidMinY:
+				whatToFind = 'max';
+				break;
+			case o.forbidMaxY:
+				whatToFind = 'min';
+				break;
+			default:
+				whatToFind = whatToFind.shuffle()[0];
+		}
+			
+		let theExtremum = sortedExtremums[whatToFind];
 
 		theExtremum = eval(theExtremum);
 		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
