@@ -3,9 +3,9 @@
 		'use strict';
 		let a = sl(1, 99).pm();
 		let b = a + sl(1, 5);
-		let sign = ['+', '-'];
+		let sign = ['+', '-'].iz();
 		NAtask.setMinimaxFunctionTask({
-			expr: '(x + ' + b + ')^2*e^(-' + a + '-x)',
+			expr: sign + '(x + ' + b + ')^2*e^(' + a + '-x)',
 			leftEnd: (-a - sl(0.5, 2, 0.5)) + '',
 			rightEnd: (-a + sl(0.5, 2, 0.5)) + '',
 			primaryStep: 0.01,
