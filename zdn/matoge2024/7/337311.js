@@ -3,14 +3,15 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 		let rand = sl1();
+		let randMinus = sl1();
 
 		let countDrob = sl(3, 12, 1);
 		let denominator = sl(2, 25, 1);
 		let numerator = sl(1, denominator - 1, 1);
 
 		let numDrob = countDrob * denominator + numerator;
-		let valueDrob = numDrob / denominator;
-		let exprStrDrob = numDrob.texfrac(denominator);
+		let valueDrob = (numDrob / denominator) * [-1, 1][randMinus];
+		let exprStrDrob = ['-', ''][randMinus] + numDrob.texfrac(denominator);
 
 		let countSqrt = sl(5, 25, 1);
 		let numSqrt = countSqrt * countSqrt + denominator;
@@ -31,10 +32,8 @@
 			usedOffsets.add(offset);
 
 			let start = floor + offset;
-			if (start >= 0) {
-				let variant = `${start} и ${start + 1}`;
-				wrongAnswers.add(variant);
-			}
+			let variant = `${start} и ${start + 1}`;
+			wrongAnswers.add(variant);
 		}
 
 		NAtask.setTask({
