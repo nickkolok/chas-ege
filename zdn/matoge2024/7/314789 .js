@@ -22,29 +22,29 @@
 
 		if (variant === 0) {
 			correctForms = [
-				`${labelA} - ${minus} < ${labelB} - ${minus}`,
-				`${labelA} + ${plus} < ${labelB} + ${plus}`,
-				'${' + labelA.texfrac(denominatorPlus) + '}$ < ${' + labelB.texfrac(denominatorPlus) + '}$',
+				labelA + ' - ' + minus + ' < ' + labelB + ' - ' + minus,
+				labelA + ' + ' + plus + ' < ' + labelB + ' + ' + plus,
+				labelA.texfrac(denominatorPlus) + ' < ' + labelB.texfrac(denominatorPlus),
 			];
-			wrongForm = '${ -' + labelA.texfrac(denominatorMinus) + '}$ < ${ -' + labelB.texfrac(denominatorMinus) + '}$'; 
+			wrongForm = '-' + labelA.texfrac(denominatorMinus) + ' < -' + labelB.texfrac(denominatorMinus);
 		}
 
 		if (variant === 1) {
 			correctForms = [
-				`${labelA} - ${minus} > ${labelB} - ${minus}`,
-				`${labelA} + ${plus} > ${labelB} + ${plus}`,
-				'${' + labelA.texfrac(denominatorPlus) + '}$ < ${' + labelB.texfrac(denominatorPlus) + '}$',
+				labelA + ' - ' + minus + ' > ' + labelB + ' - ' + minus,
+				labelA + ' + ' + plus + ' > ' + labelB + ' + ' + plus,
+				labelA.texfrac(denominatorPlus) + ' > ' + labelB.texfrac(denominatorPlus),
 			];
-			wrongForm = '${ -' + labelA.texfrac(denominatorMinus) + '}$ > ${ -' + labelB.texfrac(denominatorMinus) + '}$'; 
+			wrongForm = '-' + labelA.texfrac(denominatorMinus) + ' > -' + labelB.texfrac(denominatorMinus);
 		}
 
 		NAtask.setTask({
-			text: 'Какое из данных утверждений неверно, если ' + conditionText + '?',
+			text: 'Какое из данных утверждений неверно, если $' + conditionText + '$?',
 			answers: wrongForm,
 			wrongAnswers: correctForms
 		});
 
-		AtoB(3);
+		AtoB(3, { autoLaTeX: true });
 	}, 1000);
 })();
 
