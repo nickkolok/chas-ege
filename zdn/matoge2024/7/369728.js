@@ -10,16 +10,15 @@
             preferenceValue: index
         })), sl(preference.length - 1));
 
-        let randMinus = sl1();
+        let randMinus = [-1, 1].iz();
         let section = ['отрезку', 'промежутку'].iz();
 
         let countDrob = sl(3, 12, 1);
         let denominator = sl(2, 25, 1);
         let numerator = sl(1, denominator - 1, 1);
         let numDrob = countDrob * denominator + numerator;
-        let valueDrob = (numDrob / denominator) * [-1, 1][randMinus];
-        let correctDrob = ['-', ''][randMinus] + numDrob.texfrac(denominator);
-        let isNegative = randMinus === 0;
+        let valueDrob = (numDrob / denominator) * randMinus;
+        let correctDrob = (randMinus * numDrob).texfrac(denominator);
 
         let countSqrt = sl(5, 25, 1);
         let numSqrt = countSqrt * countSqrt + denominator;
@@ -49,10 +48,10 @@
                 usedNumerators.push(fakeNumerator);
 
                 let val = fakeNumerator / denominator;
-                if (isNegative) val *= -1;
+                if (randMinus === -1) val *= -1;
                 if (val >= floor && val <= floor + 1) continue;
 
-                let fakeExpr = (isNegative ? '-' : '') + fakeNumerator.texfrac(denominator);
+                let fakeExpr = (randMinus * fakeNumerator).texfrac(denominator);
                 wrongAnswers.push(`$${fakeExpr}$`);
             }
         } else { // корни
