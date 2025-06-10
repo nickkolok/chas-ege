@@ -2,7 +2,13 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let rand = sl1();
+
+		let key = "317132";
+		let preference = ['frac', 'square'];
+		let rand = getListedPreference(key, preference.map((pref, index) => ({
+			preference: pref,
+			preferenceValue: index
+		})), sl(preference.length - 1));
 
 		let countDrob = sl(1, 5, 1);
 		let denominator = sl(2, 25, 1);
@@ -15,22 +21,19 @@
 		let countSqrt = sl(5, 25, 1);
 		let numSqrt = countSqrt * countSqrt + denominator;
 		let valueSqrt = numSqrt.sqrt();
-		genAssert(valueSqrt != valueSqrt.round(), "корень не должен быть простым для расчёта ");
+
+		genAssert(!valueSqrt.isPolnKvadr(), "корень не должен быть полным квадратом");
 
 		let value = [valueDrob, valueSqrt][rand];
 		let step = [0.1, 1][rand];
-		let format = rand === 0
-			? x => (Math.round(x * 10) / 10).toFixed(1).replace('.', ',')
-			: x => `${x}`;
+		let format = rand === 0 ? x => ((x * 10).round() / 10).ts() : x => `${x}`;
 
-		
 		let start = Math.floor(value / step) * step;
 		let end = start + step;
 		let correct = `[${format(start)}; ${format(end)}]`;
 
-		
 		let wrongAnswers = new Set();
-		wrongAnswers.add(correct); 
+		wrongAnswers.add(correct);
 
 		let tries = 0;
 		while (wrongAnswers.size < 4 && tries < 50) {
@@ -47,8 +50,9 @@
 
 		NAtask.setTask({
 			text: 'Какому из данных промежутков принадлежит число $' + [exprStrDrob, '\\sqrt{' + numSqrt + '}'][rand] + '$?',
-			answers: correct,
-			wrongAnswers: Array.from(wrongAnswers)
+			answers: '$' + correct + '$',
+			wrongAnswers: Array.from(wrongAnswers).map(ans => '$' + ans + '$'),
+			preference: preference,
 		});
 
 		AtoB(3);
