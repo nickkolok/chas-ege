@@ -17,7 +17,9 @@
         let countSqrt = sl(5, 25, 1);
         let numSqrt = countSqrt * countSqrt + denominator;
         let valueSqrt = numSqrt.sqrt();
-        genAssert(valueSqrt != valueSqrt.round(), "корень не должен быть простым для расчёта ");
+        
+        genAssert(!valueSqrt.isPolnKvadr() , "корень не должен быть полным квадратом ");
+
         let correctSqrt = '\\sqrt{' + numSqrt + '}';
 
         let value = [valueDrob, valueSqrt][rand];
