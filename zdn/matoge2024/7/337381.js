@@ -27,7 +27,7 @@
 			`невозможно определить`
 		].filter(ans => ans !== correct);
 		NAtask.setTask({
-			text: 'Сравните числа, если ' + labelA + ', ' + labelB + ' – ' + word + ' числа и ' + aSign + ':',
+			text: 'Сравните числа, если $' + labelA + '$, $' + labelB + '$ – ' + word + ' числа и $' + aSign + '$:',
 			answers: correct,
 			wrongAnswers: wrong
 		});
