@@ -20,7 +20,7 @@
 
 		let countSqrt = sl(5, 25, 1);
 		let numSqrt = countSqrt * countSqrt + denominator;
-		let valueSqrt = c.sqrt();
+		let valueSqrt = numSqrt.sqrt();
 
 		genAssert(!numSqrt.isPolnKvadr(), "корень не должен быть полным квадратом");
 
@@ -50,12 +50,12 @@
 
 		NAtask.setTask({
 			text: 'Какому из данных промежутков принадлежит число $' + [exprStrDrob, '\\sqrt{' + numSqrt + '}'][rand] + '$?',
-			answers: '$' + correct + '$',
-			wrongAnswers: Array.from(wrongAnswers).map(ans => '$' + ans + '$'),
+			answers: correct,
+			wrongAnswers: Array.from(wrongAnswers),
 			preference: preference,
 		});
 
-		AtoB(3);
+		AtoB(3, { autoLaTeX: true });
 	}, 1000);
 })();
 //zer00player
