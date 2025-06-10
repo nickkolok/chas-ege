@@ -28,7 +28,7 @@
 		let value = [valueDrob, valueSqrt][rand];
 
 		let floor = Math.floor(value);
-		let correct = `${floor}` + '$' + ' и ' + '$' + `${floor + 1}`;
+		let correct = `${floor}` + '\\mbox{ и }' + `${floor + 1}`;
 
 		let wrongAnswers = new Set();
 		let usedOffsets = new Set([0]);
@@ -39,18 +39,18 @@
 			usedOffsets.add(offset);
 
 			let start = floor + offset;
-			let variant = `${start}` + '$' + ' и ' + '$' + `${start + 1}`;
-			wrongAnswers.add(`$${variant}$`);
+			let variant = `${start}` + '\\mbox{ и }' + `${start + 1}`;
+			wrongAnswers.add(variant);
 		}
 
 		NAtask.setTask({
 			text: 'Между какими целыми числами заключено число $' + [exprStrDrob, '\\sqrt{' + numSqrt + '}'][rand] + '$?',
-			answers: '$' + correct + '$',
+			answers: correct,
 			wrongAnswers: Array.from(wrongAnswers),
 			preference: preference,
 		});
 
-		AtoB(3);
+		AtoB(3, { autoLaTeX: true });
 	}, 1000);
 })();
 //zer00player
