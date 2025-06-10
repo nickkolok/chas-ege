@@ -32,7 +32,7 @@
 
 			if (candidate <= 0 || candidate > frac1 && candidate < frac2 || candidate === +correctVal.toFixed(1)) continue;
 
-			wrong.add(candidate.toFixed(1).replace('.', ','));
+			wrong.add(candidate.ts());
 		}
 
 		NAtask.setTask({
@@ -41,7 +41,7 @@
 			wrongAnswers: Array.from(wrong)
 		});
 
-		AtoB(3);
+		AtoB(3, { autoLaTeX: true });
 	}, 1000);
 })();
 
