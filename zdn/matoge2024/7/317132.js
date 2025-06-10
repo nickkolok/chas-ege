@@ -20,9 +20,9 @@
 
 		let countSqrt = sl(5, 25, 1);
 		let numSqrt = countSqrt * countSqrt + denominator;
-		let valueSqrt = numSqrt.sqrt();
+		let valueSqrt = c.sqrt();
 
-		genAssert(!valueSqrt.isPolnKvadr(), "корень не должен быть полным квадратом");
+		genAssert(!numSqrt.isPolnKvadr(), "корень не должен быть полным квадратом");
 
 		let value = [valueDrob, valueSqrt][rand];
 		let step = [0.1, 1][rand];
