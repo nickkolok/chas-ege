@@ -24,7 +24,7 @@
         let numSqrt = countSqrt * countSqrt + denominator;
         let valueSqrt = numSqrt.sqrt();
 
-        genAssert(!valueSqrt.isPolnKvadr(), "корень не должен быть полным квадратом ");
+        genAssert(!numSqrt.isPolnKvadr(), "корень не должен быть полным квадратом ");
 
         let correctSqrt = '\\sqrt{' + numSqrt + '}';
 
