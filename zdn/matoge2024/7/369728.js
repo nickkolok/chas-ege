@@ -67,18 +67,18 @@
                 if (val >= floor && val <= floor + 1) continue;
 
                 usedSqrts.push(fakeRoot);
-                wrongAnswers.push(`$\\sqrt{${fakeRoot}}$`);
+                wrongAnswers.push(`\\sqrt{${fakeRoot}}`);
             }
         }
 
         NAtask.setTask({
             text: 'Какое из данных чисел принадлежит ' + section + ' ${' + intervalText + '}$?',
-            answers: '$' + correctExpr + '$',
+            answers: correctExpr,
             wrongAnswers: wrongAnswers,
             preference: preference,
         });
 
-        AtoB(3);
+        AtoB(3, { autoLaTeX: true });
     }, 1000);
 })();
 //zer00player
