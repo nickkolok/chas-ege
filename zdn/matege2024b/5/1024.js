@@ -20,7 +20,7 @@
         NAtask.setTask({
             text: `На тарелке лежат одинаковые на вид ${bakeryProducts.im}: 
 			${bakeryProductsWithFilling.joinLast(' и ')}. ${name} наугад выбирает ${['один', 'одну'][bakeryProducts.rod]} ${bakeryProducts.ve}. 
-			Найдите вероятность того, что этот ${bakeryProducts.ie} окажется с ${fillingForBaking[selectedProduct]}.`,
+			Найдите вероятность того, что ${[`этот`, `эта`][bakeryProducts.rod]} ${bakeryProducts.ie} окажется с ${fillingForBaking[selectedProduct]}.`,
             answers: bakeryArray[selectedProduct] / numberOfBakeryProducts,
             authors: ['Суматохина Александра'],
         });
