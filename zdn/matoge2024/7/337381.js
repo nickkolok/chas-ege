@@ -15,23 +15,24 @@
 		let aSign = [labelA + ' > ' + labelB, labelA + ' < ' + labelB][isALessThanB];
 
 		let numerator = sl(1, 9, 1);
-		let exprA = '${' + numerator.texfrac(labelA) + '}$';
-		let exprB = '${' + numerator.texfrac(labelB) + '}$';
+		let exprA = numerator.texfrac(labelA);
+		let exprB = numerator.texfrac(labelB);
 
-		let correct = plusOrMinus === 0 ? [`${exprA} < ${exprB}`, `${exprA} > ${exprB}`][isALessThanB] : [`${exprA} > ${exprB}`, `${exprA} < ${exprB}`][isALessThanB];
+		let correct = plusOrMinus === 0 ? [exprA + ' < ' + exprB, exprA + ' > ' + exprB][isALessThanB] : [exprA + ' > ' + exprB, exprA + ' < ' + exprB][isALessThanB];
 
 		let wrong = [
-			`${exprA} < ${exprB}`,
-			`${exprA} > ${exprB}`,
-			`${exprA} = ${exprB}`,
-			`невозможно определить`
+			exprA + ' < ' + exprB,
+			exprA + ' > ' + exprB,
+			exprA + ' = ' + exprB,
+			'\\mbox{невозможно определить}'
 		].filter(ans => ans !== correct);
+
 		NAtask.setTask({
 			text: 'Сравните числа, если $' + labelA + '$, $' + labelB + '$ – ' + word + ' числа и $' + aSign + '$:',
 			answers: correct,
 			wrongAnswers: wrong
 		});
-		AtoB(3);
+		AtoB(3, { autoLaTeX: true });
 
 	}, 1000);
 })();
