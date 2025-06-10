@@ -17,8 +17,8 @@
         let countSqrt = sl(5, 25, 1);
         let numSqrt = countSqrt * countSqrt + denominator;
         let valueSqrt = numSqrt.sqrt();
-        
-        genAssert(!valueSqrt.isPolnKvadr() , "корень не должен быть полным квадратом ");
+
+        genAssert(!valueSqrt.isPolnKvadr(), "корень не должен быть полным квадратом ");
 
         let correctSqrt = '\\sqrt{' + numSqrt + '}';
 
@@ -32,7 +32,7 @@
         if (rand === 0) { //дробь
             let usedNumerators = [numDrob];
             while (wrongAnswers.length < 3) {
-                let delta = slKrome([], -4, 4, 1);
+                let delta = sl(-4, 4, 1);
                 if (delta === 0) continue;
                 let newCount = countDrob + delta;
                 if (newCount < 1) continue;
@@ -43,7 +43,7 @@
 
                 let val = fakeNumerator / denominator;
                 if (isNegative) val *= -1;
-                if (val >= floor && val <= floor + 1) continue; 
+                if (val >= floor && val <= floor + 1) continue;
 
                 let fakeExpr = (isNegative ? '-' : '') + fakeNumerator.texfrac(denominator);
                 wrongAnswers.push(`$${fakeExpr}$`);
@@ -51,7 +51,7 @@
         } else { // корни
             let usedSqrts = [numSqrt];
             while (wrongAnswers.length < 3) {
-                let offset = slKrome([], -10, 10, 1);
+                let offset = sl(-10, 10, 1);
                 if (offset === 0) continue;
 
                 let fakeRoot = (countSqrt + offset) * (countSqrt + offset) + sl(1, 10);
