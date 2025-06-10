@@ -2,7 +2,14 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let rand = sl1();
+
+        let key = "369728";
+        let preference = ['frac', 'square'];
+        let rand = getListedPreference(key, preference.map((pref, index) => ({
+            preference: pref,
+            preferenceValue: index
+        })), sl(preference.length - 1));
+
         let randMinus = sl1();
         let section = ['отрезку', 'промежутку'].iz();
 
@@ -68,7 +75,8 @@
         NAtask.setTask({
             text: 'Какое из данных чисел принадлежит ' + section + ' ${' + intervalText + '}$?',
             answers: '$' + correctExpr + '$',
-            wrongAnswers: wrongAnswers
+            wrongAnswers: wrongAnswers,
+            preference: preference,
         });
 
         AtoB(3);
