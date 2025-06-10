@@ -2,26 +2,33 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let rand = sl1();
-		let randMinus = sl1();
+
+		let key = "337311";
+		let preference = ['frac', 'square'];
+		let rand = getListedPreference(key, preference.map((pref, index) => ({
+			preference: pref,
+			preferenceValue: index
+		})), sl(preference.length - 1));
+		let randMinus = [-1, 1].iz();
 
 		let countDrob = sl(3, 12, 1);
 		let denominator = sl(2, 25, 1);
 		let numerator = sl(1, denominator - 1, 1);
 
 		let numDrob = countDrob * denominator + numerator;
-		let valueDrob = (numDrob / denominator) * [-1, 1][randMinus];
-		let exprStrDrob = ['-', ''][randMinus] + numDrob.texfrac(denominator);
+		let valueDrob = (numDrob / denominator) * randMinus;
+		let exprStrDrob = (randMinus * numDrob).texfrac(denominator);
 
 		let countSqrt = sl(5, 25, 1);
 		let numSqrt = countSqrt * countSqrt + denominator;
 		let valueSqrt = numSqrt.sqrt();
-		genAssert(valueSqrt != valueSqrt.round(), "корень не должен быть простым для расчёта ");
+
+		genAssert(!valueSqrt.isPolnKvadr(), "корень не должен быть полным квадратом");
 
 		let value = [valueDrob, valueSqrt][rand];
 
 		let floor = Math.floor(value);
-		let correct = `${floor} и ${floor + 1}`;
+		let correct = `${floor}` + '$' + ' и ' + '$' + `${floor + 1}`;
 
 		let wrongAnswers = new Set();
 		let usedOffsets = new Set([0]);
@@ -32,14 +39,15 @@
 			usedOffsets.add(offset);
 
 			let start = floor + offset;
-			let variant = `${start} и ${start + 1}`;
-			wrongAnswers.add(variant);
+			let variant = `${start}` + '$' + ' и ' + '$' + `${start + 1}`;
+			wrongAnswers.add(`$${variant}$`);
 		}
 
 		NAtask.setTask({
 			text: 'Между какими целыми числами заключено число $' + [exprStrDrob, '\\sqrt{' + numSqrt + '}'][rand] + '$?',
-			answers: correct,
-			wrongAnswers: Array.from(wrongAnswers)
+			answers: '$' + correct + '$',
+			wrongAnswers: Array.from(wrongAnswers),
+			preference: preference,
 		});
 
 		AtoB(3);
