@@ -10,8 +10,8 @@
 			preferenceValue: index
 		})), sl(preference.length - 1));
 
-		let countDrob = sl(1, 5, 1);
-		let denominator = sl(2, 25, 1);
+		let countDrob = sl(1, 5);
+		let denominator = sl(2, 25);
 		let numerator = sl(1, denominator - 1, 1);
 
 		let numDrob = countDrob * denominator + numerator;
@@ -26,7 +26,7 @@
 
 		let value = [valueDrob, valueSqrt][rand];
 		let step = [0.1, 1][rand];
-		let format = rand === 0 ? x => ((x * 10).round() / 10).ts() : x => `${x}`;
+		let format = rand === 0 ? x => ((x * 10).round() / 10).ts() : x => x;
 
 		let start = Math.floor(value / step) * step;
 		let end = start + step;
