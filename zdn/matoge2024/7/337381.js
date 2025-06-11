@@ -28,7 +28,7 @@
 		].filter(ans => ans !== correct);
 
 		NAtask.setTask({
-			text: 'Сравните числа, если $' + labelA + '$, $' + labelB + '$ – ' + word + ' числа и $' + aSign + '$:',
+			text: 'Сравните числа, если $' + labelA + '$, $' + labelB + '$ – ' + word + ' числа и $' + aSign + '$. В ответе укажите номер правильного варианта.',
 			answers: correct,
 			wrongAnswers: wrong
 		});
