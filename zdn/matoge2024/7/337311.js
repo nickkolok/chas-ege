@@ -21,9 +21,10 @@
 
 		let countSqrt = sl(5, 25);
 		let numSqrt = countSqrt * countSqrt + denominator;
-		let valueSqrt = numSqrt.sqrt();
-
+		
 		genAssert(!numSqrt.isPolnKvadr(), "корень не должен быть полным квадратом");
+
+		let valueSqrt = numSqrt.sqrt();
 
 		let value = [valueDrob, valueSqrt][rand];
 
@@ -34,7 +35,7 @@
 		let usedOffsets = new Set([0]);
 
 		while (wrongAnswers.size < 3) {
-			let offset = slKrome([0], -3, 3, 1);
+			let offset = slKrome([0], -3, 3);
 			if (usedOffsets.has(offset)) continue;
 			usedOffsets.add(offset);
 
