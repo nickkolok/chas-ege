@@ -13,7 +13,7 @@
 
 		let countDrob = sl(3, 12);
 		let denominator = sl(2, 25);
-		let numerator = sl(1, denominator - 1, 1);
+		let numerator = sl(1, denominator - 1);
 
 		let numDrob = countDrob * denominator + numerator;
 		let valueDrob = (numDrob / denominator) * randMinus;
@@ -44,7 +44,7 @@
 		}
 
 		NAtask.setTask({
-			text: 'Между какими целыми числами заключено число $' + [exprStrDrob, '\\sqrt{' + numSqrt + '}'][rand] + '$?',
+			text: 'Между какими целыми числами заключено число $' + [exprStrDrob, '\\sqrt{' + numSqrt + '}'][rand] + '$? В ответе укажите номер правильного варианта.',
 			answers: correct,
 			wrongAnswers: Array.from(wrongAnswers),
 			preference: preference,
