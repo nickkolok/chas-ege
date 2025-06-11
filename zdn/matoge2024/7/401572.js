@@ -5,12 +5,12 @@
 
 		let rand = sl1();
 
-		let numberSqrtFisrt = slKrome([4, 9, 16], 2, 20, 1);
-		let numberSqrtSecond = numberSqrtFisrt * slKrome([numberSqrtFisrt, 4, 9, 16, 25], 2, 35, 1);
+		let numberSqrtFisrt = slKrome([4, 9, 16], 2, 20);
+		let numberSqrtSecond = numberSqrtFisrt * slKrome([numberSqrtFisrt, 4, 9, 16, 25], 2, 35);
 
 		genAssert(!numberSqrtSecond.isPolnKvadr(), "корень не должен быть полным квадратом");
 
-		let numberSqrtWithRatio = slKrome([4, 9, 16, numberSqrtFisrt], 2, 20, 1);
+		let numberSqrtWithRatio = slKrome([4, 9, 16, numberSqrtFisrt], 2, 20);
 
 		let val1 = [numberSqrtFisrt.sqrt(), numberSqrtWithRatio * numberSqrtFisrt.sqrt()][rand];
 		let val2 = [numberSqrtSecond.sqrt(), numberSqrtFisrt * numberSqrtWithRatio.sqrt()][rand];
