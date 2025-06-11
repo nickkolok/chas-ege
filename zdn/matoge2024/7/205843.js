@@ -36,4 +36,4 @@
 })();
 
 //zer00player
-//https://oge.sdamgia.ru/test?likes=314789 
+//https://oge.sdamgia.ru/problem?id=205843
