@@ -3,10 +3,10 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let count = sl(0, 3, 1);
+		let count = sl(0, 3);
 
-		let denominatorFirst = sl(2, 25, 1);
-		let denominatorSecond = slKrome([denominatorFirst], 2, 25, 1);
+		let denominatorFirst = sl(2, 25);
+		let denominatorSecond = slKrome([denominatorFirst], 2, 25);
 		let numeratorFirst = sl(1, denominatorFirst - 1) + count * denominatorFirst;
 		let numeratorSecond = sl(1, denominatorSecond - 1) + count * denominatorSecond;
 
@@ -32,13 +32,15 @@
 			let candidate = +(correctVal + noise).toFixed(1);
 
 
-			if (candidate <= 0 || candidate > frac1 && candidate < frac2 || candidate === +correctVal.toFixed(1)) continue;
+			if (candidate <= 0 || candidate > frac1 && candidate < frac2 || candidate === +correctVal.toFixed(1)) {
+				continue
+			};
 
 			wrong.add(candidate.ts());
 		}
 
 		NAtask.setTask({
-			text: 'Какое из следующих чисел заключено между числами ${' + text1 + '}$ и ${' + text2 + '}$?',
+			text: 'Какое из следующих чисел заключено между числами ${' + text1 + '}$ и ${' + text2 + '}$? В ответе укажите номер правильного варианта.',
 			answers: correct,
 			wrongAnswers: Array.from(wrong)
 		});
