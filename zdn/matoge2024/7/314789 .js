@@ -8,38 +8,25 @@
 		let labelB = labels[1];
 
 		let variant = sl1();
-		let rand = [variant, variant - 1].iz();
+		let rand = [variant, 1 - variant].iz();
 		let conditionText = labelA + [' < ', ' > '][variant] + labelB;
-		let reverseconditionText = labelA + [' < ', ' > '][variant - 1] + labelB;
+		let reverseconditionText = labelA + [' < ', ' > '][1 - variant] + labelB;
 
-		let minus = sl(1, 99, 1);
-		let plus = slKrome([minus], 1, 99, 1);
-		let denominatorMinus = slKrome([minus, plus], 1, 99, 1);
-		let denominatorPlus = slKrome([minus, plus, denominatorMinus], 1, 99, 1);
+		let minus = sl(1, 99);
+		let plus = slKrome([minus], 1, 99);
+		let denominatorMinus = slKrome([minus, plus], 1, 99);
+		let denominatorPlus = slKrome([minus, plus, denominatorMinus], 1, 99);
 
-		let correctForms = [];
 		let wrongForm = '';
-
-		if (variant === 0) {
-			correctForms = [
-				labelA + ' - ' + minus + ' < ' + labelB + ' - ' + minus,
-				labelA + ' + ' + plus + ' < ' + labelB + ' + ' + plus,
-				labelA.texfrac(denominatorPlus) + ' < ' + labelB.texfrac(denominatorPlus),
-			];
-			wrongForm = '-' + labelA.texfrac(denominatorMinus) + ' < -' + labelB.texfrac(denominatorMinus);
-		}
-
-		if (variant === 1) {
-			correctForms = [
-				labelA + ' - ' + minus + ' > ' + labelB + ' - ' + minus,
-				labelA + ' + ' + plus + ' > ' + labelB + ' + ' + plus,
-				labelA.texfrac(denominatorPlus) + ' > ' + labelB.texfrac(denominatorPlus),
-			];
-			wrongForm = '-' + labelA.texfrac(denominatorMinus) + ' > -' + labelB.texfrac(denominatorMinus);
-		}
+		let correctForms = [
+			labelA + ' - ' + minus + [' < ', ' > '][variant] + labelB + ' - ' + minus,
+			labelA + ' + ' + plus + [' < ', ' > '][variant] + labelB + ' + ' + plus,
+			labelA.texfrac(denominatorPlus) + [' < ', ' > '][variant] + labelB.texfrac(denominatorPlus),
+		];
+		wrongForm = '-' + labelA.texfrac(denominatorMinus) + [' < -', ' > -'][variant] + labelB.texfrac(denominatorMinus);
 
 		NAtask.setTask({
-			text: 'Какое из данных утверждений ' + ['не', ''][rand] + 'верно, если $' + [conditionText, reverseconditionText][rand] + '$?',
+			text: 'Какое из данных утверждений ' + ['не', ''][rand] + 'верно, если $' + [conditionText, reverseconditionText][rand] + '$? В ответе укажите номер правильного варианта. ',
 			answers: wrongForm,
 			wrongAnswers: correctForms
 		});
