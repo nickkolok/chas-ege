@@ -15,7 +15,7 @@
 
         let countDrob = sl(3, 12);
         let denominator = sl(2, 25);
-        let numerator = sl(1, denominator - 1, 1);
+        let numerator = sl(1, denominator - 1);
         let numDrob = countDrob * denominator + numerator;
         let valueDrob = (numDrob / denominator) * randMinus;
         let correctDrob = (randMinus * numDrob).texfrac(denominator);
@@ -38,7 +38,7 @@
         if (rand === 0) { //дробь
             let usedNumerators = [numDrob];
             while (wrongAnswers.length < 3) {
-                let delta = sl(-4, 4, 1);
+                let delta = sl(-4, 4);
                 if (delta === 0) {
                     continue
                 };
@@ -62,12 +62,12 @@
                 };
 
                 let fakeExpr = (randMinus * fakeNumerator).texfrac(denominator);
-                wrongAnswers.push(`$${fakeExpr}$`);
+                wrongAnswers.push(fakeExpr);
             }
         } else { // корни
             let usedSqrts = [numSqrt];
             while (wrongAnswers.length < 3) {
-                let offset = sl(-10, 10, 1);
+                let offset = sl(-10, 10);
                 if (offset === 0) {
                     continue
                 };
@@ -88,7 +88,7 @@
         }
 
         NAtask.setTask({
-            text: 'Какое из данных чисел принадлежит ' + section + ' ${' + intervalText + '}$?',
+            text: 'Какое из данных чисел принадлежит ' + section + ' ${' + intervalText + '}$? В ответе укажите номер правильного варианта.',
             answers: correctExpr,
             wrongAnswers: wrongAnswers,
             preference: preference,
