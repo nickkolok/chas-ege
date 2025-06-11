@@ -7,10 +7,10 @@
 		let labelA = labels[0];
 		let labelB = labels[1];
 
-		// случаи: 0 — a < b (положительные), 1 — a > b (положительные)
 		let variant = sl1();
-
-		let conditionText = [labelA + ' < ' + labelB, labelA + ' > ' + labelB][variant]
+		let rand = [variant, variant - 1].iz();
+		let conditionText = [labelA + ' < ' + labelB, labelA + ' > ' + labelB][variant];
+		let reverseconditionText = [labelA + ' < ' + labelB, labelA + ' > ' + labelB][variant - 1];
 
 		let minus = sl(1, 99, 1);
 		let plus = slKrome([minus], 1, 99, 1);
@@ -39,7 +39,7 @@
 		}
 
 		NAtask.setTask({
-			text: 'Какое из данных утверждений неверно, если $' + conditionText + '$?',
+			text: 'Какое из данных утверждений ' + ['не', ''][rand] + 'верно, если $' + [conditionText, reverseconditionText][rand] + '$?',
 			answers: wrongForm,
 			wrongAnswers: correctForms
 		});
