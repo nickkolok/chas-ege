@@ -11,15 +11,15 @@
 		})), sl(preference.length - 1));
 		let randMinus = [-1, 1].iz();
 
-		let countDrob = sl(3, 12, 1);
-		let denominator = sl(2, 25, 1);
+		let countDrob = sl(3, 12);
+		let denominator = sl(2, 25);
 		let numerator = sl(1, denominator - 1, 1);
 
 		let numDrob = countDrob * denominator + numerator;
 		let valueDrob = (numDrob / denominator) * randMinus;
 		let exprStrDrob = (randMinus * numDrob).texfrac(denominator);
 
-		let countSqrt = sl(5, 25, 1);
+		let countSqrt = sl(5, 25);
 		let numSqrt = countSqrt * countSqrt + denominator;
 		let valueSqrt = numSqrt.sqrt();
 
