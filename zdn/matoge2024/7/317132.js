@@ -12,17 +12,18 @@
 
 		let countDrob = sl(1, 5);
 		let denominator = sl(2, 25);
-		let numerator = sl(1, denominator - 1, 1);
+		let numerator = sl(1, denominator - 1);
 
 		let numDrob = countDrob * denominator + numerator;
 		let valueDrob = numDrob / denominator;
 		let exprStrDrob = numDrob.texfrac(denominator);
 
-		let countSqrt = sl(5, 25, 1);
+		let countSqrt = sl(5, 25);
 		let numSqrt = countSqrt * countSqrt + denominator;
-		let valueSqrt = numSqrt.sqrt();
-
+	
 		genAssert(!numSqrt.isPolnKvadr(), "корень не должен быть полным квадратом");
+
+		let valueSqrt = numSqrt.sqrt();
 
 		let value = [valueDrob, valueSqrt][rand];
 		let step = [0.1, 1][rand];
@@ -37,7 +38,7 @@
 
 		let tries = 0;
 		while (wrongAnswers.size < 4 && tries < 50) {
-			let offset = slKrome([0], -3, 3, 1);
+			let offset = slKrome([0], -3, 3);
 			let fakeStart = start + offset * step;
 			let fakeEnd = fakeStart + step;
 			if (fakeStart < 0) continue;
@@ -49,7 +50,7 @@
 		wrongAnswers.delete(correct);
 
 		NAtask.setTask({
-			text: 'Какому из данных промежутков принадлежит число $' + [exprStrDrob, '\\sqrt{' + numSqrt + '}'][rand] + '$?',
+			text: 'Какому из данных промежутков принадлежит число $' + [exprStrDrob, '\\sqrt{' + numSqrt + '}'][rand] + '$? В ответе укажите номер правильного варианта.',
 			answers: correct,
 			wrongAnswers: Array.from(wrongAnswers),
 			preference: preference,
