@@ -14,7 +14,7 @@
 
 		let aSign = labelA + [' > ', ' < '][isALessThanB] + labelB;
 
-		let numerator = sl(1, 9, 1);
+		let numerator = sl(1, 9);
 		let exprA = numerator.texfrac(labelA);
 		let exprB = numerator.texfrac(labelB);
 
