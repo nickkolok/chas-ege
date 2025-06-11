@@ -13,6 +13,8 @@
 		let frac1 = numeratorFirst / denominatorFirst;
 		let frac2 = numeratorSecond / denominatorSecond;
 
+		genAssert((frac1 - frac2).abs() >= 0.1, "разница между двумя значениями должна составлять 0,1");
+
 		let text1 = numeratorFirst.texfrac(denominatorFirst);
 		let text2 = numeratorSecond.texfrac(denominatorSecond);
 
@@ -21,7 +23,7 @@
 			[text1, text2] = [text2, text1];
 		}
 		let correctVal = ((frac1 + frac2) / 2);
-		let correct = correctVal.toFixed(1).replace('.', ',');
+		let correct = correctVal.toFixed(1).ts();
 
 
 		let wrong = new Set();
