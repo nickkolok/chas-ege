@@ -9,8 +9,8 @@
 
 		let variant = sl1();
 		let rand = [variant, variant - 1].iz();
-		let conditionText = [labelA + ' < ' + labelB, labelA + ' > ' + labelB][variant];
-		let reverseconditionText = [labelA + ' < ' + labelB, labelA + ' > ' + labelB][variant - 1];
+		let conditionText = labelA + [' < ', ' > '][variant] + labelB;
+		let reverseconditionText = labelA + [' < ', ' > '][variant - 1] + labelB;
 
 		let minus = sl(1, 99, 1);
 		let plus = slKrome([minus], 1, 99, 1);
