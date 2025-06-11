@@ -12,13 +12,13 @@
 
 		let word = ['положительные', 'отрицательные'][plusOrMinus];
 
-		let aSign = [labelA + ' > ' + labelB, labelA + ' < ' + labelB][isALessThanB];
+		let aSign = labelA + [' > ', ' < '][isALessThanB] + labelB;
 
 		let numerator = sl(1, 9, 1);
 		let exprA = numerator.texfrac(labelA);
 		let exprB = numerator.texfrac(labelB);
 
-		let correct = plusOrMinus === 0 ? [exprA + ' < ' + exprB, exprA + ' > ' + exprB][isALessThanB] : [exprA + ' > ' + exprB, exprA + ' < ' + exprB][isALessThanB];
+		let correct = exprA + [' < ', ' > '][isALessThanB] + exprB;
 
 		let wrong = [
 			exprA + ' < ' + exprB,
