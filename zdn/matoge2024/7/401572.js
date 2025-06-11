@@ -8,7 +8,7 @@
 		let numberSqrtFisrt = slKrome([4, 9, 16], 2, 20, 1);
 		let numberSqrtSecond = numberSqrtFisrt * slKrome([numberSqrtFisrt, 4, 9, 16, 25], 2, 35, 1);
 
-		genAssert(numberSqrtSecond.isPolnKvadr(), "корень не должен быть полным квадратом");
+		genAssert(!numberSqrtSecond.isPolnKvadr(), "корень не должен быть полным квадратом");
 
 		let numberSqrtWithRatio = slKrome([4, 9, 16, numberSqrtFisrt], 2, 20, 1);
 
@@ -29,7 +29,7 @@
 		NAtask.setTask({
 			text:
 				'Сколько целых чисел расположено между ${' + text1 + '}$ и ${' + text2 + '}$?',
-			answers: count.toString(),
+			answers: count,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000);
