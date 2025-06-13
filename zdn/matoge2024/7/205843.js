@@ -26,7 +26,7 @@
 		wrongForm = '-' + labelA.texfrac(denominatorMinus) + [' < -', ' > -'][variant] + labelB.texfrac(denominatorMinus);
 
 		NAtask.setTask({
-			text: 'Какое из данных утверждений ' + ['не', ''][rand] + 'верно, если $' + [conditionText, reverseconditionText][rand] + '$? В ответе укажите номер правильного варианта. ',
+			text: 'Какое из данных утверждений ' + ['не', ''][rand] + 'верно, если $' + [conditionText, reverseconditionText][rand] + '$?',
 			answers: wrongForm,
 			wrongAnswers: correctForms
 		});
