@@ -1,13 +1,15 @@
 (function() {
-	retryWhileError(function() {
-		'use strict';
-
-		NAtask.setEvaluationTask({
-			expr: 'a^sl(4,21) * divideColon(a^' + sl(4,21).pm() + ',a^sl(4,21))',
-			variables: {a : sl(sl(2,7),9)}, // Смещаемся от вечных двоек
-			//forbiddenAnswers: [0],
-			authors: ['Николай Авдеев'],
-		});
-	}, 100);
+    retryWhileError(function() {
+        'use strict';
+        let e1 = sl(1, 30).pm();      
+        let e2 = sl(1, 30).pm(); 
+        let e3 = sl(5, 50);       
+        
+        NAtask.setEvaluationTask({
+            expr: 'divideColon(' + [  'a^' + e1 + '*a^' + e2,  'a^' + e3  ].shuffle().join() + ')',
+            variables: {a: sl(2, 9)},
+            authors: ['Алендарь Сергей'],
+        });
+    }, 1000);
 })();
 //412184
