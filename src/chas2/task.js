@@ -585,7 +585,7 @@ chas2.task = {
 		if (o.variables) {
 			// TODO: честная символьная подстановка!
 			for (let v in o.variables) {
-				variableValues[v] = math.parse(o.variables[v]).evaluate();
+				variableValues[v] = math.parse('' + o.variables[v]).evaluate();
 			}
 		}
 
