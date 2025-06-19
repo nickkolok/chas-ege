@@ -16,11 +16,14 @@
 
 		let numDrob = countDrob * denominator + numerator;
 		let valueDrob = numDrob / denominator;
+
+		genAssert(!(valueDrob * 100).isAlmostInteger(), "дробь должна иметь 2 или более знака после запятой");
+
 		let exprStrDrob = numDrob.texfrac(denominator);
 
 		let countSqrt = sl(5, 25);
 		let numSqrt = countSqrt * countSqrt + denominator;
-	
+
 		genAssert(!numSqrt.isPolnKvadr(), "корень не должен быть полным квадратом");
 
 		let valueSqrt = numSqrt.sqrt();
