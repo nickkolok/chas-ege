@@ -4,7 +4,7 @@
 		let a = sl(2, 9);
 
 		NAtask.setEvaluationTask({
-			expr: a + '^' + sl(1, 9) + '/(' + Math.pow(a, sl(2, 4)) + ')^' + sl(1, 5),
+			expr: [a + '^' + sl(2, 9), '(' + a.pow(sl(1, 4)) + ')^' + sl(2, 5)].shuffle().join('/'),
 			authors: ['Алендарь Сергей'],
 		});
 	}, 1000);
