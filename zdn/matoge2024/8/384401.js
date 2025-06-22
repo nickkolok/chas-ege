@@ -1,10 +1,10 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-		let a = sl(1, 9);
+		let a = sl(2, 9);
 		let b = sl(2, 9);
 		NAtask.setEvaluationTask({
-			expr: [a*b + '^' + sl(1, 15) ,'(' + a + '^' + sl(1, 15) + '*' + b + '^' + sl(1, 15) + ')'].shuffle().join('/'),
+			expr: [a*b + '^' + sl(2, 15) ,'(' + a + '^' + sl(2, 15) + '*' + b + '^' + sl(2, 15) + ')'].shuffle().join('/'),
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10000);
