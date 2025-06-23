@@ -585,7 +585,11 @@ chas2.task = {
 		if (o.variables) {
 			// TODO: честная символьная подстановка!
 			for (let v in o.variables) {
-				variableValues[v] = math.parse('' + o.variables[v]).evaluate();
+				if (o.variables[v] === '-0') {
+					o.variables[v] = '0';
+				}
+				o.variables[v] = math.parse('' + o.variables[v]);
+				variableValues[v] = o.variables[v].evaluate();
 			}
 		}
 
@@ -652,8 +656,10 @@ chas2.task = {
 		if (o.variables) {
 			vars = '<br/>при ';
 			for (let v in o.variables) {
-				vars += '$' + v + '=' + math.parse('' + o.variables[v]).toTex() + '$, ';
+				vars += '$' + v + '=' + o.variables[v].toTex() + '$, ';
 			}
+			// В конце перечисления переменных у нас образовалась запятая.
+			// Заменяем её на точку
 			vars = vars.replace(/,\s$/, '.');
 		}
 
