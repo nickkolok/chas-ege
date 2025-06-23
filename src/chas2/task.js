@@ -166,6 +166,14 @@ chas2.task = {
 			window.vopr.dey = o.draw;
 		}
 
+		o.forbidDecimalFractions = o.forbidDecimalFractions || chas2.task.setTask.forbidDecimalFractions;
+
+		if(o.forbidDecimalFractions){
+			let decimal = /\d+[.,]\d+/g;
+			genAssert(!decimal.test(o.text), 'Текст задания содержит десятичные дроби');
+			genAssert(!decimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные дроби');
+		}
+
 		window.vopr.kat.importFrom(o.tags);
 
 		var voprcheck = dvig.validateVopr();
@@ -573,7 +581,20 @@ chas2.task = {
 		let expr = math.parse(o.expr);
 		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
 
-		let answer = o.variables ? expr.evaluate(o.variables) : expr.evaluate();
+		let variableValues = {};
+		if (o.variables) {
+			// TODO: честная символьная подстановка!
+			for (let v in o.variables) {
+				if (o.variables[v] === '-0') {
+					o.variables[v] = '0';
+				}
+				o.variables[v] = math.parse('' + o.variables[v]);
+				variableValues[v] = o.variables[v].evaluate();
+			}
+		}
+
+		let answer = expr.evaluate(variableValues);
+		genAssert(!isNaN(answer), "Ответ не определен. answer: " + answer);
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
@@ -595,7 +616,7 @@ chas2.task = {
 			genAssert(answer.n < 1000000, 'Числитель дроби слишком большой (по модулю)');
 			genAssert(answer.d <= (o.maxDenominator || 20), 'Знаменатель дроби слишком большой');
 			genAssert(answer.d >= (o.minDenominator ||  2), 'Знаменатель дроби слишком маленький');
-1
+
 			// Вносим минус в числитель
 			answer.n *= answer.s;
 
@@ -636,8 +657,10 @@ chas2.task = {
 		if (o.variables) {
 			vars = '<br/>при ';
 			for (let v in o.variables) {
-				vars += '$' + v + '=' + math.parse('' + o.variables[v]).toTex() + '$, ';
+				vars += '$' + v + '=' + o.variables[v].toTex() + '$, ';
 			}
+			// В конце перечисления переменных у нас образовалась запятая.
+			// Заменяем её на точку
 			vars = vars.replace(/,\s$/, '.');
 		}
 
@@ -738,17 +761,23 @@ chas2.task = {
 
 		genAssert(minY !== null || maxY !== null, 'Экстремальное значение запрещено или не удовлетворяет условиям');
 
-		var chooseMinMax;
+		let whatToFind = ['min', 'max'];
 		let chosenX;
-		if (maxY === null || (minY !== null && sl1())) {
-			chooseMinMax = 'наименьшее';
-			o.answers = minY;
-			chosenX = minX;
-		} else {
-			chooseMinMax = 'наибольшее';
-			o.answers = maxY;
-			chosenX = maxX;
+		let chooseMinMax;
+		switch(true){
+			case o.forbidMinY && maxY !== null:
+				whatToFind = 'max';
+				break;
+			case o.forbidMaxY && minY !== null:
+				whatToFind = 'min';
+				break;
+			default:
+				whatToFind = whatToFind.shuffle().iz()			
 		}
+
+		o.answers = {min: minY, max: maxY}[whatToFind];
+		chosenX = {min: minX, max: maxX}[whatToFind];
+		chooseMinMax = {min: 'наименьшее', max: 'наибольшее'}[whatToFind];
 
 		o.answers = o.answers.ts();
 		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
@@ -905,8 +934,19 @@ chas2.task = {
 
 		let whatToFind = Object.keys(sortedExtremums).shuffle();
 		genAssertNonempty(whatToFind, 'Искать-то нечего!');
-		whatToFind = whatToFind[0];
-		let theExtremum = sortedExtremums[whatToFind][0];
+
+		switch(true){
+			case o.forbidMinY:
+				whatToFind = 'max';
+				break;
+			case o.forbidMaxY:
+				whatToFind = 'min';
+				break;
+			default:
+				whatToFind = whatToFind.shuffle()[0];
+		}
+			
+		let theExtremum = sortedExtremums[whatToFind];
 
 		theExtremum = eval(theExtremum);
 		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
