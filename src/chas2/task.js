@@ -581,7 +581,20 @@ chas2.task = {
 		let expr = math.parse(o.expr);
 		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
 
-		let answer = o.variables ? expr.evaluate(o.variables) : expr.evaluate();
+		let variableValues = {};
+		if (o.variables) {
+			// TODO: честная символьная подстановка!
+			for (let v in o.variables) {
+				if (o.variables[v] === '-0') {
+					o.variables[v] = '0';
+				}
+				o.variables[v] = math.parse('' + o.variables[v]);
+				variableValues[v] = o.variables[v].evaluate();
+			}
+		}
+
+		let answer = expr.evaluate(variableValues);
+		genAssert(!isNaN(answer), "Ответ не определен. answer: " + answer);
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
@@ -644,8 +657,10 @@ chas2.task = {
 		if (o.variables) {
 			vars = '<br/>при ';
 			for (let v in o.variables) {
-				vars += '$' + v + '=' + math.parse('' + o.variables[v]).toTex() + '$, ';
+				vars += '$' + v + '=' + o.variables[v].toTex() + '$, ';
 			}
+			// В конце перечисления переменных у нас образовалась запятая.
+			// Заменяем её на точку
 			vars = vars.replace(/,\s$/, '.');
 		}
 
