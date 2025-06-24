@@ -11,6 +11,8 @@
         let finalProcent = 0.5 * (firstProcent + secondProcent);
 
         let t = [firstProcent + '−процентного', secondProcent + '−процентного'];
+        let randSub = sl1();
+        let substance = [sklonlxkand(om.substance.iz()).re, 'вещества'][randSub];
 
         if (rand) {
             t = t.reverse();
@@ -18,8 +20,8 @@
         }
 
         NAtask.setTask({
-            text: 'Смешали некоторое количество ' + t[0] + ' раствора некоторого вещества с таким же количеством ' + t[1] +
-                ' раствора этого вещества' + (' другой концентрации. Получился ' + finalProcent + '-процентный раствор').esli(rand) + '. ' +
+            text: 'Смешали некоторое количество ' + t[0] + ' раствора '+'некоторого'.esli(randSub)+' '+substance+' с таким же количеством ' + t[1] +
+                ' раствора '+'этого'.esli(randSub)+' '+substance + (' другой концентрации. Получился ' + finalProcent + '-процентный раствор').esli(rand) + '. ' +
                 ['Сколько процентов составляет концентрация получившегося',
                     'С раствором какой концентрации смешали ' + t[0].replace('ого', 'ый')][rand] +
                 ' раствор' + 'а'.esli(!rand) + '?',
