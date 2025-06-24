@@ -18,8 +18,9 @@
 				calculateDiagonals: true,
 			}
 		});
-
-		genAssert((par.lengthDiagonalBD / 3).isAlmostInteger(), 'Диагональ не целая');
+		
+		let answ = par.lengthDiagonalBD / 3;
+		genAssertAlmostInteger(answ, 'Диагональ не целая');
 
 		let middleCD = {
 			x: par.pointD.x + par.lengthAB / 2,
@@ -58,7 +59,7 @@
 
 		NAtask.setTask({
 			text: `В параллелограмме $ABCD$ отмечена точка $M$ – середина стороны $DC$. Отрезки $BD$ и $AM$ пересекаются в точке $K$. Найдите длину отрезка $DK$, если $BD=${par.lengthDiagonalBD}$.`,
-			answers: par.lengthDiagonalBD / 3,
+			answers: answ,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
