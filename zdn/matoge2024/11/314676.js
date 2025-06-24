@@ -2,9 +2,9 @@ retryWhileError(function () {
     NAinfo.requireApiVersion(0, 2);
 
     function interval(choose) {
-        if ((a > 0) == choose)
+        if ((a > 0) == choose) {
             return '[' + x0 + '; \\infty)';
-        else
+        }
             return '(-\\infty;' + x0 + ']';
     }
 
