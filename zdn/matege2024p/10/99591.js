@@ -18,16 +18,16 @@
 		let the_vehicleRacingOnRoad = sklonlxkand(decor.vehicleRacingOnRoad.iz()); // ["автомобиль","мотоцикл","велосипед","электросамокат","гироскутер","мотоциклист","велосипедист","машина","гонщик","грузовик","автомобилист"]
 		let the_orderToFind = decor.orderToFind.iz(); // ["найдите","определите","вычислите"]
 
-		genAssert(the_vehicleRacingOnRoad.rod==0,'');
-
+		let rod = the_vehicleRacingOnRoad.rod;
+		
 		NAtask.setTask({
 			text: 'Расстояние между ' + the_humanSettlementDestination.tm + ' $A$ и $B$ равно $' + s1 + '$ км. ' +
-				'Из ' + the_humanSettlementDestination.re + ' $A$ в ' + the_humanSettlementDestination.ve + ' выехал первый ' +
+				'Из ' + the_humanSettlementDestination.re + ' $A$ в ' + the_humanSettlementDestination.ve + ' '+selectVerbGender('выехал', rod)+' перв'+['ый','ая','ое'][rod]+' ' +
 				the_vehicleRacingOnRoad.ie + ', ' +
-				'а через '+[chislitlx(n, 'час'),(n*60).toChMin()].iz()+' после этого навстречу ему из '+the_humanSettlementDestination.re+' $B$ выехал со скоростью $' + v2 + '$ км/ч второй ' +
-				the_vehicleRacingOnRoad.ie + '. ' + the_orderToFind.toZagl() + ' скорость первого ' + the_vehicleRacingOnRoad.re +
-				', ' +
-				'если ' + the_vehicleRacingOnRoad.im + ' встретились на расстоянии $' + [s2,s1-s2][r1] + '$ км от ' +
+				'а через '+[chislitlx(n, 'час'),(n*60).toChMin()].iz()+' после этого навстречу '+['ему','ей','ему'][rod]+' из '+the_humanSettlementDestination.re+
+				' $B$ '+selectVerbGender('выехал', rod)+' со скоростью $' + v2 + '$ км/ч втор'+['ой','ая','ое'][rod] + ' ' +
+				the_vehicleRacingOnRoad.ie + '. ' + the_orderToFind.toZagl() + ' скорость перв'+['ого','ой','ого'][rod] + ' ' + the_vehicleRacingOnRoad.re +
+				', если ' + the_vehicleRacingOnRoad.im + ' встретились на расстоянии $' + [s2,s1-s2][r1] + '$ км от ' +
 				the_humanSettlementDestination.re + ' $'+['A','B'][r1]+'$. Ответ дайте в км/ч.',
 			answers: v1,
 			authors: ['Александра Суматохина'],
