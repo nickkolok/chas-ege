@@ -1,11 +1,11 @@
-(function() {
-	retryWhileError(function() {
+(function () {
+	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 		let key = '356518';
-        let preference = ['radius', 'side'];
-        let rand = getSelectedPreferenceFromList(key, preference);
-        
-		let circle = new Circle(new Point(0, 0), sl(1, 20)*[1, (2).sqrt()][rand]);
+		let preference = ['radius', 'side'];
+		let rand = getSelectedPreferenceFromList(key, preference);
+
+		let circle = new Circle(new Point(0, 0), sl(1, 20) * [1, (2).sqrt()][rand]);
 
 		let AB = circle.chordByAngles(90, 180, {
 			angleInDegrees: true
@@ -23,7 +23,7 @@
 
 		let points = autoScale([AB.ps, AB.pe, CD.ps, CD.pe]);
 
-		let paint1 = function(ctx) {
+		let paint1 = function (ctx) {
 			let h = 400;
 			let w = 400;
 
@@ -44,10 +44,10 @@
 				[{
 					text: `Сторона квадрата равна $${AB.length.pow(2).texsqrt(1)}$. Найдите радиус окружности, описанной около этого квадрата.`,
 					answers: circle.r
-				},{
+				}, {
 					text: `Радиус окружности, описанной около квадрата, равен $${circle.r.pow(2).texsqrt(1)}$. Найдите длину стороны этого квадрата.`,
 					answers: AB.length
-				} ][rand]
+				}][rand]
 			],
 			authors: ['Александра Суматохина'],
 		});
