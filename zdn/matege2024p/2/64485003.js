@@ -15,6 +15,21 @@
 		let vectorA = math.matrix(math.subtract([coordVectorA[2], coordVectorA[3]], [coordVectorA[0], coordVectorA[1]]));
 		let vectorB = math.matrix(math.subtract([coordVectorB[2], coordVectorB[3]], [coordVectorB[0], coordVectorB[1]]));
 		let vectorC = math.matrix(math.subtract([coordVectorC[2], coordVectorC[3]], [coordVectorC[0], coordVectorC[1]]));
+		
+		let midA = coordinatesMiddleOfSegment(...coordVectorA);
+		let midB = coordinatesMiddleOfSegment(...coordVectorB);
+		let midC = coordinatesMiddleOfSegment(...coordVectorC);
+		
+		let dist = ([x1, y1], [x2, y2]) => Math.hypot(x1 - x2, y1 - y2);
+		
+		let distAB = dist(midA, midB, 'Векторы A и B слиплись');
+		genAssert(distAB>3);
+		
+		let distBC = dist(midB, midC, 'Векторы C и B слиплись');
+		genAssert(distBC>3);
+		
+		let distCA = dist(midC, midA, 'Векторы A и C слиплись');
+		genAssert(distCA>3);
 
 		// Проверка совпадения векторов
 		genAssert(!math.deepEqual(vectorA, vectorB), 'Вектора A и B совпадают');
@@ -50,6 +65,7 @@
 			coordVectorA = coordVectorA.map((num) => num * scale);
 			coordVectorB = coordVectorB.map((num) => num * scale);
 			coordVectorC = coordVectorC.map((num) => num * scale);
+			
 			let h = 700;
 			let w = 700;
 			//Оси координат
@@ -72,20 +88,19 @@
 			ctx.drawArrow(coordVectorC[0], coordVectorC[1], coordVectorC[2], coordVectorC[3]);
 
 			ctx.font = "22px liberation_sans";
+			ctx.scale(1, -1);
 			ctx.signSegmentInMiddle(coordVectorA[0], -coordVectorA[1], coordVectorA[2], -coordVectorA[3], letter[0] + "⃗", 15, 15);
 			ctx.signSegmentInMiddle(coordVectorB[0], -coordVectorB[1], coordVectorB[2], -coordVectorB[3], letter[1] + "⃗", 15, 15);
 			ctx.signSegmentInMiddle(coordVectorC[0], -coordVectorC[1], coordVectorC[2], -coordVectorC[3], letter[2] + "⃗", 15, 15);
 		};
 
 		NAtask.setTask({
-			text: 'На координатной плоскости изображены векторы ' + ['$\\overrightarrow{' + letter[0] + '}$',
-			'$\\overrightarrow{' + letter[1] + '}$', '$\\overrightarrow{' + letter[2] + '}$'
-			].shuffle().joinWithConjunction() +
+			text: 'На координатной плоскости изображены векторы ' + letter.map(elem=>'$\\vec{' + elem + '}$').shuffle().joinWithConjunction() +
 				'. Найдите скалярное произведение $' + condition + '$.',
-			answers: 0,
-			analys: '$\\overrightarrow{' + letter[0] + '}=\\{' + vectorA.toArray().join(' ;') + '\\}$' + '<br>' +
-				'$\\overrightarrow{' + letter[1] + '}=\\{' + vectorB.toArray().join(' ;') + '\\}$' + '<br>' +
-				'$\\overrightarrow{' + letter[2] + '}=\\{' + vectorC.toArray().join(' ;') + '\\}$',
+			answers: answ,
+			analys: '$\\vec{' + letter[0] + '}=\\{' + vectorA.toArray().join(' ;') + '\\}$' + '<br>' +
+				'$\\vec{' + letter[1] + '}=\\{' + vectorB.toArray().join(' ;') + '\\}$' + '<br>' +
+				'$\\vec{' + letter[2] + '}=\\{' + vectorC.toArray().join(' ;') + '\\}$',
 			author: 'Суматохина Александра',
 		});
 		NAtask.modifiers.addCanvasIllustration({
