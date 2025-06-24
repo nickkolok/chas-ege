@@ -5,15 +5,8 @@
         let key = "10036";
         let preference1 = ['A', 'C'];
         let preference2 = ['catheter', 'hypotenuse'];
-        let rand = getListedPreference(key, preference1.map((pref, index) => ({
-            preference: pref,
-            preferenceValue: index
-        })), sl(preference1.length - 1));
-
-        let angleAC = getListedPreference(key, preference2.map((pref, index) => ({
-            preference: pref,
-            preferenceValue: index
-        })), sl(preference2.length - 1));
+        let rand = getSelectedPreferenceFromList(key, preference1);
+        let angleAC = getSelectedPreferenceFromList(key, preference2);
 
         let letters = latbukv.slice(0, 3);
 
@@ -33,7 +26,8 @@
             [
                 ['BC', triangle.lengthBC],
                 ['AB', triangle.lengthAB]
-            ].iz(), ['CA', triangle.lengthCA]
+            ].iz(), 
+            ['CA', triangle.lengthCA]
         ];
         let name = sklonlxkand([`катет`, `гипотенуза`]);
 
@@ -71,14 +65,13 @@
             ctx.drawFigure(points, triangle.connectionMatrix);
 
             ctx.strokeStyle = om.primaryBrandColors.iz();
-
-
+            
             if (!angleAC) {
                 ctx.arcBetweenSegments([points[2].x, points[2].y, points[0].x, points[0].y, points[3].x, points[3].y], 20);
             } else {
                 ctx.arcBetweenSegments([points[3].x, points[3].y, points[2].x, points[2].y, points[0].x, points[0].y], 20);
             }
-
+            
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
             points.slice(0, points.length - 1).forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
