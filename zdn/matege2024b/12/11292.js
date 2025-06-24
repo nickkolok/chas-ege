@@ -1,5 +1,5 @@
-(function() {
-	retryWhileError(function() {
+(function () {
+	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = "11292";
@@ -26,12 +26,13 @@
 		genAssert(triangle.medianCLength.pow(2).isAlmostInteger(), 'Площадь трапеции не целая');
 		genAssert((triangle.tgA.pow(2) * 1000).isAlmostInteger(), 'cosA трапеции не целый');
 
-		if (!rand){
-			triangle.addVertexToConnectionMatrix(triangle.medianC.pe, 'C');}
+		if (!rand) {
+			triangle.addVertexToConnectionMatrix(triangle.medianC.pe, 'C');
+		}
 
 		let points = autoScale(triangle.vertices);
 
-		let paint1 = function(ctx) {
+		let paint1 = function (ctx) {
 			let h = 400;
 			let w = 400;
 
