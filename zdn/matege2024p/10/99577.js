@@ -3,10 +3,8 @@
         /* Смешав 30 -процентный и 60 -процентный растворы '+mixin.re+' и добавив 10 кг чистой воды, получили 36 -процентный раствор '+mixin.re+'. Если бы вместо 10 кг воды добавили 10 кг 50 -процентного раствора той же '+mixin.re+', то получили бы 41 -процентный раствор '+mixin.re+'. Сколько килограммов 30 -процентного раствора использовали для получения смеси? */
         let key = '99577';
         let preference = ['first_mass', 'second_mass', 'mass_of_mixin_in_first', 'mass_of_mixin_in_second'];
-        let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+        
+        let rand = getSelectedPreferenceFromList(key, preference);
 
         let firstProcent = sl(1, 60);
         let firstMass = slKrome(firstProcent, 60);
@@ -25,7 +23,7 @@
         let secondFinalProcent = (firstProcent * firstMass + secondProcent * secondMass + mixinProcent * mixinMass) / (firstMass + secondMass + mixinMass);
         genAssertZ1000(secondFinalProcent);
 
-        let mixin = sklonlxkand(['соль', 'щёлочь', 'кислота'].iz());
+        let mixin = sklonlxkand(om.substance.iz());
 
         NAtask.setTask({
             text:
