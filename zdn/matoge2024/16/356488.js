@@ -3,10 +3,7 @@
         NAinfo.requireApiVersion(0, 2);
         let key = '356518';
         let preference = ['radius', 'side'];
-        let rand = getListedPreference(key, preference.map((pref, index) => ({
-            preference: pref,
-            preferenceValue: index
-        })), sl(preference.length - 1));
+        let rand = getSelectedPreferenceFromList(key, preference);
 
         let circle = new Circle(new Point(0, 0), sl(1, 20) * [1, (3).sqrt()][rand]);
 
