@@ -54,8 +54,8 @@ chas2.task = {
 		 * Привести объект-задание к нормальному виду
 		 * @param {String} text текст задания
 		 * @param {String} analys текст разбора задания
-		 * @param {String|Number|String[]|Number[]} answers правильные ответы
-		 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
+		 * @param {String|Number|String[]|Number[]|Set} answers правильные ответы
+		 * @param {String|Number|String[]|Number[]|Set} wrongAnswers неправильные ответы
 		 * @param {String[]} tags теги
 		 * @param {Function} checkAnswer функция проверки ответа
 		 * @param {Function} draw функция отрисовки
@@ -63,7 +63,14 @@ chas2.task = {
 		normalizeTask : function(o) {
 			o.text = o.text || '';
 			o.analys = o.analys || '';
+			if (o.answers instanceof Set) {
+				o.answers = Array.from(o.answers);
+			}
 			o.answers = chaslib.toStringsArray('answers' in o ? o.answers : []);
+
+			if (o.wrongAnswers instanceof Set) {
+				o.wrongAnswers = Array.from(o.wrongAnswers);
+			}
 			o.wrongAnswers = chaslib.toStringsArray((('wrongAnswers' in o) && (o.wrongAnswers !== undefined)) ? o.wrongAnswers : []);
 			// Просто o.answers || [] нельзя - ноль не будет передаваться
 			o.authors = chaslib.toStringsArray(o.authors || o.author || []);
@@ -141,8 +148,8 @@ chas2.task = {
 	 * Установить задание
 	 * @param {String} text текст задания
 	 * @param {String} analys текст разбора задания
-	 * @param {String|Number|String[]|Number[]} answers правильные ответы
-	 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
+	 * @param {String|Number|String[]|Number[]|Set} answers правильные ответы
+	 * @param {String|Number|String[]|Number[]|Set} wrongAnswers неправильные ответы
 	 * @param {String|String[]} authors авторы шаблона
 	 * @param {String[]} tags теги
 	 * @param {Function} checkAnswer функция проверки ответа
@@ -581,7 +588,20 @@ chas2.task = {
 		let expr = math.parse(o.expr);
 		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
 
-		let answer = o.variables ? expr.evaluate(o.variables) : expr.evaluate();
+		let variableValues = {};
+		if (o.variables) {
+			// TODO: честная символьная подстановка!
+			for (let v in o.variables) {
+				if (o.variables[v] === '-0') {
+					o.variables[v] = '0';
+				}
+				o.variables[v] = math.parse('' + o.variables[v]);
+				variableValues[v] = o.variables[v].evaluate();
+			}
+		}
+
+		let answer = expr.evaluate(variableValues);
+		genAssert(!isNaN(answer), "Ответ не определен. answer: " + answer);
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
@@ -644,8 +664,10 @@ chas2.task = {
 		if (o.variables) {
 			vars = '<br/>при ';
 			for (let v in o.variables) {
-				vars += '$' + v + '=' + math.parse('' + o.variables[v]).toTex() + '$, ';
+				vars += '$' + v + '=' + o.variables[v].toTex() + '$, ';
 			}
+			// В конце перечисления переменных у нас образовалась запятая.
+			// Заменяем её на точку
 			vars = vars.replace(/,\s$/, '.');
 		}
 
