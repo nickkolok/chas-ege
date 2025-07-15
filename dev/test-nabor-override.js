@@ -1,5 +1,25 @@
+console.log('Overriding...');
+// Здесь можно писать комментарии. Собственно, вот так!
+
+// По одному заданию каждой категории:
+vse1();
+
+// Это у нас так номер варианта пишется!
+$('#variantPrefix').val('37.');
+
+// Количество вариантов - положим 4
+$('#cV').val('4');
+
+// Воспроизводимая случайность!
+$('#randomSeed').val('13371337');
+
+
 window.nabor.upak[1].main = function(){
-	alert('main has been successfully overridden!');
-	console.log('Overriding...');
-	window.nomer = 1;
+	window.nomer = 319157; // Про площадь пар-ма
 }
+
+window.nabor.upak[2].main = function(){
+	window.nomer = 27741; // Ещё про что-то
+}
+
+//... и так далее!
