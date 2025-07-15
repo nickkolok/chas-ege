@@ -70,7 +70,11 @@ function readOptions() {
 }
 
 
-function zapusk() {
+async function zapusk() {
+	//Если файлы подгружены, то запускаем их сразу
+	//Например, чтобы выставить ими количество вариантов.
+	await processArbitraryCodeFiles();
+
 	//Сохраняем параметры генерации
 	chasStorage.domData.save();
 
@@ -581,4 +585,43 @@ function refreshLaTeXarchive() {
 		$('#latex-archive-placeholder').show();
 		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
 	});
+}
+
+function processArbitraryCodeFiles() {
+	const files = $('#arbitraryCodeInput')[0].files;
+
+	if (!files.length) {
+		console.log('Не найдено файлов для запуска произвольного кода.');
+		return Promise.resolve(); // resolve immediately if no files
+	}
+
+	console.log('Файлов для запуска произвольного кода: ' + files.length);
+
+	const promises = Array.from(files).map(file => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+
+			reader.onload = function (e) {
+				const content = e.target.result;
+				try {
+					eval(content);
+					console.log(`Исполнен файл ${file.name}`);
+					resolve();
+				} catch (err) {
+					console.error(`Не удалось исполнить файл ${file.name}:`, err);
+					resolve(); // or reject(err); depending on whether you want to halt on errors
+				}
+			};
+
+			reader.onerror = function () {
+				console.error(`Не удалось прочитать файл  ${file.name}`);
+				resolve(); // or reject() if you want to handle errors differently
+			};
+
+			reader.readAsText(file);
+		});
+	});
+
+	// Return a Promise that resolves when all files are processed
+	return Promise.all(promises);
 }
