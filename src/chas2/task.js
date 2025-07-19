@@ -589,6 +589,9 @@ chas2.task = {
 		if (o.shuffleAdditions) {
 			expr = mathjs_shuffle.shuffleAdditions(expr);
 		}
+		if (o.shuffleMultipliers) {
+			expr = mathjs_shuffle.shuffleMultipliers(expr);
+		}
 
 
 		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
