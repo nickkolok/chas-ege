@@ -4,7 +4,7 @@
         NAinfo.requireApiVersion(0, 2);
 
         let key = "369728";
-        let preference = ['frac', 'square'];
+        let preference = ['frac', 'square', 'advancedFrac'];
         let rand = getListedPreference(key, preference.map((pref, index) => ({
             preference: pref,
             preferenceValue: index
@@ -28,12 +28,13 @@
 
         let correctSqrt = '\\sqrt{' + numSqrt + '}';
 
-        let value = [valueDrob, valueSqrt][rand];
-        let correctExpr = [correctDrob, correctSqrt][rand];
+        let value = [valueDrob, valueSqrt, valueDrob][rand];
+        let correctExpr = [correctDrob, correctSqrt, valueDrob][rand];
         let floor = Math.floor(value);
         let intervalText = `[${floor}; ${floor + 1}]`;
 
         let wrongAnswers = [];
+        let ifFracAdvanced = '';
 
         if (rand === 0) { //дробь
             let usedNumerators = [numDrob];
@@ -64,7 +65,7 @@
                 let fakeExpr = (randMinus * fakeNumerator).texfrac(denominator);
                 wrongAnswers.push(fakeExpr);
             }
-        } else { // корни
+        } else if (rand === 1) { // корни
             let usedSqrts = [numSqrt];
             while (wrongAnswers.length < 3) {
                 let offset = sl(-10, 10);
@@ -85,10 +86,40 @@
                 usedSqrts.push(fakeRoot);
                 wrongAnswers.push(`\\sqrt{${fakeRoot}}`);
             }
+        } else if (rand === 2) { // "advancedFrac" — дроби прямо в тексте
+            let variants = [];
+            variants.push(correctDrob);
+
+            let usedNumerators = [numDrob];
+            while (variants.length < 4) {
+                let delta = sl(-4, 4);
+                if (delta === 0) continue;
+
+                let newCount = countDrob + delta;
+                if (newCount < 1) continue;
+
+                let fakeNumerator = newCount * denominator + numerator;
+                if (usedNumerators.includes(fakeNumerator)) continue;
+                usedNumerators.push(fakeNumerator);
+
+                let val = fakeNumerator / denominator;
+                if (randMinus === -1) val *= -1;
+
+                if (val >= floor && val <= floor + 1) continue;
+
+                let fakeExpr = (randMinus * fakeNumerator).texfrac(denominator);
+                variants.push(fakeExpr);
+            }
+
+            variants.shuffle();
+            correctExpr = correctDrob;
+            wrongAnswers = variants.filter(x => x !== correctDrob);
+            ifFracAdvanced = variants.map(x => '$' + x + '$').join(', ') + ' ';
         }
+        let dataName = ['имеющихся', 'данных', ''][rand];
 
         NAtask.setTask({
-            text: 'Какое из данных чисел принадлежит ' + section + ' ${' + intervalText + '}$? В ответе укажите номер правильного варианта.',
+            text: 'Какое из ' + dataName + ' чисел ' + ifFracAdvanced + 'принадлежит ' + section + ' ${' + intervalText + '}$? В ответе укажите номер правильного варианта.',
             answers: correctExpr,
             wrongAnswers: wrongAnswers,
             preference: preference,
