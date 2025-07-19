@@ -586,6 +586,11 @@ chas2.task = {
 		let task = o.clone();
 
 		let expr = math.parse(o.expr);
+		if (o.shuffleAdditions) {
+			expr = mathjs_shuffle.shuffleAdditions(expr);
+		}
+
+
 		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
 
 		let variableValues = {};
