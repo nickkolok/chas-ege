@@ -595,6 +595,9 @@ chas2.task = {
 		if (o.randomUnaryMinus) {
 			expr = mathjs_shuffle.randomUnaryMinus(expr);
 		}
+		if (o.randomFlipMainFraction) {
+			expr = mathjs_shuffle.randomFlipMainFraction(expr);
+		}
 
 
 		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
