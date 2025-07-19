@@ -586,19 +586,17 @@ chas2.task = {
 		let task = o.clone();
 
 		let expr = math.parse(o.expr);
-		if (o.shuffleAdditions) {
-			expr = mathjs_shuffle.shuffleAdditions(expr);
-		}
-		if (o.shuffleMultipliers) {
-			expr = mathjs_shuffle.shuffleMultipliers(expr);
-		}
-		if (o.randomUnaryMinus) {
-			expr = mathjs_shuffle.randomUnaryMinus(expr);
-		}
-		if (o.randomFlipMainFraction) {
-			expr = mathjs_shuffle.randomFlipMainFraction(expr);
-		}
 
+		for(let action of[
+			'shuffleAdditions',
+			'shuffleMultipliers',
+			'randomUnaryMinus',
+			'randomFlipMainFraction',
+		]) {
+			if (o[action]) {
+				expr = mathjs_shuffle[action](expr);
+			}
+		}
 
 		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
 
