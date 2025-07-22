@@ -29,20 +29,20 @@
         let correctSqrt = '\\sqrt{' + numSqrt + '}';
 
         let value = [valueDrob, valueSqrt, valueDrob][rand];
-        let correctExpr = [correctDrob, correctSqrt, valueDrob][rand];
+        let correctExpr = [correctDrob, correctSqrt, correctDrob][rand];
         let floor = Math.floor(value);
         let intervalText = `[${floor}; ${floor + 1}]`;
 
         let wrongAnswers = [];
         let ifFracAdvanced = '';
 
-        if (rand === 0) { //дробь
+        if (rand === 0 || rand === 2) { //дробь
+
             let usedNumerators = [numDrob];
-            while (wrongAnswers.length < 3) {
-                let delta = sl(-4, 4);
-                if (delta === 0) {
-                    continue
-                };
+            let variants = [{ val: valueDrob, expr: correctDrob }];
+
+            while (variants.length < 4) {
+                let delta = sl(1, 4).pm();
                 let newCount = countDrob + delta;
                 if (newCount < 1) {
                     continue
@@ -62,8 +62,15 @@
                     continue
                 };
 
-                let fakeExpr = (randMinus * fakeNumerator).texfrac(denominator);
-                wrongAnswers.push(fakeExpr);
+                let expr = (randMinus * fakeNumerator).texfrac(denominator);
+                variants.push({ val, expr });
+            }
+            variants.shuffle();
+            correctExpr = correctDrob;
+            wrongAnswers = variants.filter(v => v.expr !== correctDrob).map(v => v.expr);
+
+            if (rand === 2) {
+                ifFracAdvanced = variants.map(x => '$' + x.expr + '$').join(', ') + ' ';
             }
         } else if (rand === 1) { // корни
             let usedSqrts = [numSqrt];
@@ -86,35 +93,6 @@
                 usedSqrts.push(fakeRoot);
                 wrongAnswers.push(`\\sqrt{${fakeRoot}}`);
             }
-        } else if (rand === 2) { // "advancedFrac" — дроби прямо в тексте
-            let variants = [];
-            variants.push(correctDrob);
-
-            let usedNumerators = [numDrob];
-            while (variants.length < 4) {
-                let delta = sl(-4, 4);
-                if (delta === 0) continue;
-
-                let newCount = countDrob + delta;
-                if (newCount < 1) continue;
-
-                let fakeNumerator = newCount * denominator + numerator;
-                if (usedNumerators.includes(fakeNumerator)) continue;
-                usedNumerators.push(fakeNumerator);
-
-                let val = fakeNumerator / denominator;
-                if (randMinus === -1) val *= -1;
-
-                if (val >= floor && val <= floor + 1) continue;
-
-                let fakeExpr = (randMinus * fakeNumerator).texfrac(denominator);
-                variants.push(fakeExpr);
-            }
-
-            variants.shuffle();
-            correctExpr = correctDrob;
-            wrongAnswers = variants.filter(x => x !== correctDrob);
-            ifFracAdvanced = variants.map(x => '$' + x + '$').join(', ') + ' ';
         }
         let dataName = ['имеющихся', 'данных', ''][rand];
 
