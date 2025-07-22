@@ -21,7 +21,7 @@
         let correctDrob = (randMinus * numDrob).texfrac(denominator);
 
         let countSqrt = sl(5, 25);
-        let numSqrt = countSqrt * countSqrt + denominator;
+        let numSqrt = countSqrt.sqr() + denominator;
         let valueSqrt = numSqrt.sqrt();
 
         genAssert(!numSqrt.isPolnKvadr(), "корень не должен быть полным квадратом ");
@@ -75,12 +75,9 @@
         } else if (rand === 1) { // корни
             let usedSqrts = [numSqrt];
             while (wrongAnswers.length < 3) {
-                let offset = sl(-10, 10);
-                if (offset === 0) {
-                    continue
-                };
+                let offset = sl(1, 10).pm();
 
-                let fakeRoot = (countSqrt + offset) * (countSqrt + offset) + sl(1, 10);
+                let fakeRoot = (countSqrt + offset).sqr() + sl(1, 10);
                 if (fakeRoot <= 0 || usedSqrts.includes(fakeRoot)) {
                     continue
                 };
