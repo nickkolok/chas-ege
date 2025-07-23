@@ -4,7 +4,7 @@
         NAinfo.requireApiVersion(0, 2);
 
         let key = "369728";
-        let preference = ['frac', 'square', 'advancedFrac'];
+        let preference = ['frac', 'sqrt', 'advancedFrac'];
         let rand = getListedPreference(key, preference.map((pref, index) => ({
             preference: pref,
             preferenceValue: index
@@ -13,12 +13,12 @@
         let randMinus = [-1, 1].iz();
         let section = ['отрезку', 'промежутку'].iz();
 
-        let countDrob = sl(3, 12);
+        let countFrac = sl(3, 12);
         let denominator = sl(2, 25);
         let numerator = sl(1, denominator - 1);
-        let numDrob = countDrob * denominator + numerator;
-        let valueDrob = (numDrob / denominator) * randMinus;
-        let correctDrob = (randMinus * numDrob).texfrac(denominator);
+        let numFrac = countFrac * denominator + numerator;
+        let valueFrac = (numFrac / denominator) * randMinus;
+        let correctFrac = (randMinus * numFrac).texfrac(denominator);
 
         let countSqrt = sl(5, 25);
         let numSqrt = countSqrt.sqr() + denominator;
@@ -28,8 +28,8 @@
 
         let correctSqrt = '\\sqrt{' + numSqrt + '}';
 
-        let value = [valueDrob, valueSqrt, valueDrob][rand];
-        let correctExpr = [correctDrob, correctSqrt, correctDrob][rand];
+        let value = [valueFrac, valueSqrt, valueFrac][rand];
+        let correctExpr = [correctFrac, correctSqrt, correctFrac][rand];
         let floor = Math.floor(value);
         let intervalText = `[${floor}; ${floor + 1}]`;
 
@@ -38,12 +38,12 @@
 
         if (rand === 0 || rand === 2) { //дробь
 
-            let usedNumerators = [numDrob];
-            let variants = [{ val: valueDrob, expr: correctDrob }];
+            let usedNumerators = [numFrac];
+            let variants = [{ val: valueFrac, expr: correctFrac }];
 
             while (variants.length < 4) {
                 let delta = sl(1, 4).pm();
-                let newCount = countDrob + delta;
+                let newCount = countFrac + delta;
                 if (newCount < 1) {
                     continue
                 };
@@ -66,8 +66,8 @@
                 variants.push({ val, expr });
             }
             variants.shuffle();
-            correctExpr = correctDrob;
-            wrongAnswers = variants.filter(v => v.expr !== correctDrob).map(v => v.expr);
+            correctExpr = correctFrac;
+            wrongAnswers = variants.filter(v => v.expr !== correctFrac).map(v => v.expr);
 
             if (rand === 2) {
                 ifFracAdvanced = variants.map(x => '$' + x.expr + '$').join(', ') + ' ';
