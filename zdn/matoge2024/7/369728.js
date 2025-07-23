@@ -4,7 +4,7 @@
         NAinfo.requireApiVersion(0, 2);
 
         let key = "369728";
-        let preference = ['frac', 'sqrt', 'advancedFrac'];
+        let preference = ['frac', 'sqrt', 'advancedFrac', 'advancedSqrt'];
         let rand = getListedPreference(key, preference.map((pref, index) => ({
             preference: pref,
             preferenceValue: index
@@ -28,8 +28,8 @@
 
         let correctSqrt = '\\sqrt{' + numSqrt + '}';
 
-        let value = [valueFrac, valueSqrt, valueFrac][rand];
-        let correctExpr = [correctFrac, correctSqrt, correctFrac][rand];
+        let value = [valueFrac, valueSqrt, valueFrac, valueSqrt][rand];
+        let correctExpr = [correctFrac, correctSqrt, correctFrac, correctSqrt][rand];
         let floor = Math.floor(value);
         let intervalText = `[${floor}; ${floor + 1}]`;
 
@@ -72,11 +72,13 @@
             if (rand === 2) {
                 ifFracAdvanced = variants.map(x => '$' + x.expr + '$').join(', ') + ' ';
             }
-        } else if (rand === 1) { // корни
-            let usedSqrts = [numSqrt];
-            while (wrongAnswers.length < 3) {
-                let offset = sl(1, 10).pm();
+        } else if (rand === 1 || rand === 3) { // корни
 
+            let usedSqrts = [numSqrt];
+            let variants = [{ val: valueSqrt, expr: correctSqrt }];
+
+            while (variants.length < 4) {
+                let offset = sl(1, 10).pm();
                 let fakeRoot = (countSqrt + offset).sqr() + sl(1, 10);
                 if (fakeRoot <= 0 || usedSqrts.includes(fakeRoot)) {
                     continue
@@ -87,11 +89,19 @@
                     continue
                 };
 
-                usedSqrts.push(fakeRoot);
-                wrongAnswers.push(`\\sqrt{${fakeRoot}}`);
+                let expr = `\\sqrt{${fakeRoot}}`;
+                variants.push({ val, expr });
             }
+            variants.shuffle();
+            correctExpr = correctSqrt;
+            wrongAnswers = variants.filter(v => v.expr !== correctSqrt).map(v => v.expr);
+
+            if (rand === 3) {
+                ifFracAdvanced = variants.map(x => '$' + x.expr + '$').join(', ') + ' ';
+            }
+
         }
-        let dataName = ['имеющихся', 'данных', ''][rand];
+        let dataName = ['имеющихся', 'данных', '', ''][rand];
 
         NAtask.setTask({
             text: 'Какое из ' + dataName + ' чисел ' + ifFracAdvanced + 'принадлежит ' + section + ' ${' + intervalText + '}$? В ответе укажите номер правильного варианта.',
