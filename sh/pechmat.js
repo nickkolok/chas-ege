@@ -558,7 +558,7 @@ function refreshLaTeXarchive() {
 	}
 	var zip = new JSZip();
 	var bunchTasks = "";
-	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>10)?6:variantsGenerated.length)+"}";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>6)?6:variantsGenerated.length)+"}";
 
 	for(var variantN of variantsGenerated){
 		var head =
