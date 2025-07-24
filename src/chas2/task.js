@@ -594,6 +594,7 @@ chas2.task = {
 		}
 
 		let answer = expr.evaluate(variableValues);
+		genAssert(!isNaN(answer), "Ответ не определен. answer: " + answer);
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
