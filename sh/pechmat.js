@@ -477,16 +477,23 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = "\n\\\\\n\\hline\n";
-	return (
-		'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
+	const maxRows = options.splitAnswersNumber || 60;
+	const hline = "\n\\\\\n\\hline\n";
+	const colFormat = (new Array(cellsInFirstRow)).fill('|l').join('') + '|';
+
+	let res = '';
+	for (let i = 0; i < answersParsedToTeX.length; i += maxRows) {
+		const chunk = answersParsedToTeX.slice(i, i + maxRows);
+		res += '\\begin{tabular}{' + colFormat + '}' +
 			'\n\\hline\n' +
-			answersParsedToTeX.join(hline) +
+			chunk.join(hline) +
 			hline +
-		'\\end{tabular}' +
-		'\n\n\n'
-	);
+			'\\end{tabular}' +
+			'\n\n\n';
+	}
+	return res;
 }
+
 
 function createLaTeXbunchAnswers(variantN) {
 
