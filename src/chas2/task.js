@@ -63,7 +63,14 @@ chas2.task = {
 		normalizeTask : function(o) {
 			o.text = o.text || '';
 			o.analys = o.analys || '';
+			if (typeof o.answers === 'object' && o.answers instanceof Set) {
+				o.answers = Array.from(o.answers);
+			}
 			o.answers = chaslib.toStringsArray('answers' in o ? o.answers : []);
+
+			if (typeof o.wrongAnswers === 'object' && o.wrongAnswers instanceof Set) {
+				o.wrongAnswers = Array.from(o.wrongAnswers);
+			}
 			o.wrongAnswers = chaslib.toStringsArray((('wrongAnswers' in o) && (o.wrongAnswers !== undefined)) ? o.wrongAnswers : []);
 			// Просто o.answers || [] нельзя - ноль не будет передаваться
 			o.authors = chaslib.toStringsArray(o.authors || o.author || []);
@@ -141,7 +148,7 @@ chas2.task = {
 	 * Установить задание
 	 * @param {String} text текст задания
 	 * @param {String} analys текст разбора задания
-	 * @param {String|Number|String[]|Number[]} answers правильные ответы
+	 * @param {String|Number|String[]|Number[]|Set} answers правильные ответы
 	 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
 	 * @param {String|String[]} authors авторы шаблона
 	 * @param {String[]} tags теги
