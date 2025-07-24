@@ -68,7 +68,7 @@ chas2.task = {
 			}
 			o.answers = chaslib.toStringsArray('answers' in o ? o.answers : []);
 
-			if (typeof o.wrongAnswers === 'object' && o.wrongAnswers instanceof Set) {
+			if (o.wrongAnswers instanceof Set) {
 				o.wrongAnswers = Array.from(o.wrongAnswers);
 			}
 			o.wrongAnswers = chaslib.toStringsArray((('wrongAnswers' in o) && (o.wrongAnswers !== undefined)) ? o.wrongAnswers : []);
