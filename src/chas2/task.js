@@ -63,7 +63,7 @@ chas2.task = {
 		normalizeTask : function(o) {
 			o.text = o.text || '';
 			o.analys = o.analys || '';
-			if (typeof o.answers === 'object' && o.answers instanceof Set) {
+			if (o.answers instanceof Set) {
 				o.answers = Array.from(o.answers);
 			}
 			o.answers = chaslib.toStringsArray('answers' in o ? o.answers : []);
