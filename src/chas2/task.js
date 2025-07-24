@@ -54,8 +54,8 @@ chas2.task = {
 		 * Привести объект-задание к нормальному виду
 		 * @param {String} text текст задания
 		 * @param {String} analys текст разбора задания
-		 * @param {String|Number|String[]|Number[]} answers правильные ответы
-		 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
+		 * @param {String|Number|String[]|Number[]|Set} answers правильные ответы
+		 * @param {String|Number|String[]|Number[]|Set} wrongAnswers неправильные ответы
 		 * @param {String[]} tags теги
 		 * @param {Function} checkAnswer функция проверки ответа
 		 * @param {Function} draw функция отрисовки
@@ -149,7 +149,7 @@ chas2.task = {
 	 * @param {String} text текст задания
 	 * @param {String} analys текст разбора задания
 	 * @param {String|Number|String[]|Number[]|Set} answers правильные ответы
-	 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
+	 * @param {String|Number|String[]|Number[]|Set} wrongAnswers неправильные ответы
 	 * @param {String|String[]} authors авторы шаблона
 	 * @param {String[]} tags теги
 	 * @param {Function} checkAnswer функция проверки ответа
