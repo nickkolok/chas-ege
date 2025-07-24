@@ -9,7 +9,7 @@
         let name = [om.maleNames, om.femaleNames].iz().iz();
         genAssertZ1000(bakeryArray[selectedProduct] / numberOfBakeryProducts);
 
-        let bakeryProducts = sklonlxkand(['пирожок', 'круассан', 'слойка', 'сдоба', 'рулет'].iz());
+        let bakeryProducts = sklonlxkand(['пирожок', 'круассан', 'слойка', 'рулет'].iz());
 
         let fillingForBaking = ['мясом', 'лососем', 'вишней', 'клубникой', 'крыжовником', 'малиной', 'облепихой', 'ежевикой',
             'голубикой', 'арбузом', 'абрикосом', 'изюмом', 'иргой', 'рябиной', 'луком', 'морковкой', 'капустой', 'картошкой'
