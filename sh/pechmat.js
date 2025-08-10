@@ -51,6 +51,7 @@ function readOptions() {
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
 	options.forceIntegers = $('#forceIntegers').is(':checked');
+	options.onlyIntegers = $('#onlyIntegers').is(':checked');
 	options.randomSeed = $('#randomSeed').val();
 	if (options.randomSeed === '') {
 		options.randomSeed = Date.now();
@@ -60,7 +61,8 @@ function readOptions() {
 		variantNumber = $('#start-number').val() - 1;
 	}
 
-	sluchch.forceIntegers = (options.forceIntegers) ? true : false;
+	sluchch.forceIntegers = !!options.forceIntegers;
+	sluchch.onlyIntegers = !!options.onlyIntegers;
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
@@ -134,7 +136,7 @@ function konecSozd() {
 			).
 			 // Escape LaTeX comments,
 			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
+			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}').replace(/\" /g, '"\\space ');
 		}
 	}
 
@@ -475,16 +477,23 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = "\n\\\\\n\\hline\n";
-	return (
-		'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
+	const maxRows = options.splitAnswersNumber || 60;
+	const hline = "\n\\\\\n\\hline\n";
+	const colFormat = (new Array(cellsInFirstRow)).fill('|l').join('') + '|';
+
+	let res = '';
+	for (let i = 0; i < answersParsedToTeX.length; i += maxRows) {
+		const chunk = answersParsedToTeX.slice(i, i + maxRows);
+		res += '\\begin{tabular}{' + colFormat + '}' +
 			'\n\\hline\n' +
-			answersParsedToTeX.join(hline) +
+			chunk.join(hline) +
 			hline +
-		'\\end{tabular}' +
-		'\n\n\n'
-	);
+			'\\end{tabular}' +
+			'\n\n\n';
+	}
+	return res;
 }
+
 
 function createLaTeXbunchAnswers(variantN) {
 
@@ -549,7 +558,7 @@ function refreshLaTeXarchive() {
 	}
 	var zip = new JSZip();
 	var bunchTasks = "";
-	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>10)?6:variantsGenerated.length)+"}";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>6)?6:variantsGenerated.length)+"}";
 
 	for(var variantN of variantsGenerated){
 		var head =
