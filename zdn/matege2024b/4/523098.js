@@ -1,0 +1,35 @@
+(function () {
+	'use strict';
+	retryWhileError(function () {
+		NAinfo.requireApiVersion(0, 2);
+
+		let rand = sl1();
+
+		let the_orderToFind = decor.orderToFind.iz();
+
+		let second = sl(5, 30);
+		let amperage = slKrome([second], 5, 30);
+		let voltage = slKrome([second], 5, 30);
+		let resistance = slKrome([amperage, voltage, second], 5, 30);
+
+		let answer1 = amperage ** 2 * resistance * second;
+		genAssert(answer1.isZ(), 'должно быть целым');
+		let answer2 = voltage ** 2 * second / resistance;
+		genAssert(answer2.isZ(), 'должно быть целым');
+
+		NAtask.setTask({
+
+			text: 'Работа постоянного тока (в джоулях) вычисляется по формуле $' + ['A = I^2 Rt', 'A= \\frac{U^2 t}{R}'][rand] +
+				'$,где ' + ['$I$ – сила тока (в амперах)', '$U$ – напряжение (в вольтах)'][rand] + ',' +
+				'$R$ – сопротивление (в омах), $t$ – время (в секундах). Пользуясь этой формулой, ' +
+				the_orderToFind + ' $A$ (в джоулях), если $t$ = ' + second + ' c, ' + ['$I$ = ' + amperage, '$U$ = ' + voltage][rand] +
+				' А и $R$ = ' + resistance + ' Ом.',
+			answers: [answer1, answer2][rand],
+
+		});
+		NAtask.modifiers.allDecimalsToStandard();
+	}, 2000);
+})();
+//zer00player
+//https://mathb-ege.sdamgia.ru/problem?id=523098
+//https://mathb-ege.sdamgia.ru/problem?id=510314
