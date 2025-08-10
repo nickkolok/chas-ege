@@ -5,7 +5,7 @@ retryWhileError(function () {
         if ((a > 0) == choose) {
             return '[' + x0 + '; \\infty)';
         }
-            return '(-\\infty;' + x0 + ']';
+        return '(-\\infty;' + x0 + ']';
     }
 
     function func(x) {
