@@ -4,10 +4,7 @@
 
 		let key = "11292";
 		let preference = ['AC_by_median', 'AC_by_base'];
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let letters = latbukv.slice(0, 3).concat('M');
 		let side = sl(3, 15);
