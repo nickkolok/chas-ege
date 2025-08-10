@@ -7,7 +7,7 @@
         let numberOfPeople = sl(50, 100, 1);
         let placeToSleepInOneRoom = sl(2, 5, 1);
         let whoLiveHere = [' мужском ', ' женском ', ' '].iz();
-        let educationPlace = [' института ', ' колледжа ', ' ВУЗа ', ' '].iz();
+        let educationPlace = [' института ', ' колледжа ', ' вуза ', ' '].iz();
         
         genAssert(!numberOfPeople.kratno(placeToSleepInOneRoom), "Количество мест для сна кратко количеству людей");
 
