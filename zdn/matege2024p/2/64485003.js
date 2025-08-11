@@ -22,8 +22,8 @@
 		
 		let dist = ([x1, y1], [x2, y2]) => Math.hypot(x1 - x2, y1 - y2);
 		
-		let distAB = dist(midA, midB, 'Векторы A и B слиплись');
-		genAssert(distAB>3);
+		let distAB = dist(midA, midB);
+		genAssert(distAB>3, 'Векторы A и B слиплись');
 		
 		let distBC = dist(midB, midC, 'Векторы C и B слиплись');
 		genAssert(distBC>3);
