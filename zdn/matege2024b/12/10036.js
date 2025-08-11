@@ -4,7 +4,7 @@
 
         let key = "10036";
         let preference1 = ['A', 'C'];
-        let preference2 = ['catheter', 'hypotenuse'];
+        let preference2 = ['cathetus', 'hypotenuse'];
         let rand = getSelectedPreferenceFromList(key, preference1);
         let angleAC = getSelectedPreferenceFromList(key, preference2);
 
@@ -71,7 +71,7 @@
             } else {
                 ctx.arcBetweenSegments([points[3].x, points[3].y, points[2].x, points[2].y, points[0].x, points[0].y], 20);
             }
-            
+
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
             points.slice(0, points.length - 1).forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
