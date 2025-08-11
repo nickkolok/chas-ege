@@ -22,7 +22,7 @@
 		
 		NAtask.setTask({
 			text: 'Расстояние между ' + the_humanSettlementDestination.tm + ' $A$ и $B$ равно $' + s1 + '$ км. ' +
-				'Из ' + the_humanSettlementDestination.re + ' $A$ в ' + the_humanSettlementDestination.ve + ' '+selectVerbGender('выехал', rod)+' перв'+['ый','ая','ое'][rod]+' ' +
+				'Из ' + the_humanSettlementDestination.re + ' $A$ в ' + the_humanSettlementDestination.ve + ' $B$ '+selectVerbGender('выехал', rod)+' перв'+['ый','ая','ое'][rod]+' ' +
 				the_vehicleRacingOnRoad.ie + ', ' +
 				'а через '+[chislitlx(n, 'час'),(n*60).toChMin()].iz()+' после этого навстречу '+['ему','ей','ему'][rod]+' из '+the_humanSettlementDestination.re+
 				' $B$ '+selectVerbGender('выехал', rod)+' со скоростью $' + v2 + '$ км/ч втор'+['ой','ая','ое'][rod] + ' ' +
