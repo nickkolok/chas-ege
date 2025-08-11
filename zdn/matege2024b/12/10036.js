@@ -25,7 +25,7 @@
         let dano = [
             [
                 ['BC', triangle.lengthBC],
-                ['AB', triangle.lengthAB]
+                ['AB', triangle.lengthAB],
             ].iz(), 
             ['CA', triangle.lengthCA]
         ];
