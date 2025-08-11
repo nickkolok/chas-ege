@@ -6,12 +6,13 @@
 		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let circle = new Circle(new Point(0, 0), sl(1, 20) * [1, (2).sqrt()][rand]);
+		let rotate = sl(0, 100).pm();
 
-		let AB = circle.chordByAngles(90, 180, {
+		let AB = circle.chordByAngles(90 + rotate, 180 + rotate, {
 			angleInDegrees: true
 		});
 
-		let CD = circle.chordByAngles(270, 360, {
+		let CD = circle.chordByAngles(270 + rotate, 360 + rotate, {
 			angleInDegrees: true
 		});
 
@@ -22,8 +23,9 @@
 		];
 
 		let points = autoScale([AB.ps, AB.pe, CD.ps, CD.pe]);
+		var radius = new Point(points[0].x, points[0].y).distanceTo(new Point(points[2].x, points[2].y))[0] / 2;
 
-		let paint1 = function (ctx) {
+		let paint1 = function(ctx) {
 			let h = 400;
 			let w = 400;
 
@@ -34,9 +36,11 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectionMatrix);
-			ctx.drawArc(0, 0, new Point(points[0].x, points[0].y).distanceTo(new Point(points[2].x, points[2].y))[0] / 2, 0,
-				2 * Math.PI);
+
+			ctx.drawArc(0, 0, radius, 0, 2 * Math.PI);
 		};
+
+		genAssert(radius < 200, 'Окружность вышла за границы спрайта');
 
 		NAtask.setTask({
 			text: ``,
