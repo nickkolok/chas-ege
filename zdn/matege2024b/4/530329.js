@@ -3,7 +3,7 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let key = '506300';
+		let key = '530329';
 		let preference = ['findSin', 'findA'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
@@ -30,6 +30,7 @@
 				' Пользуясь этой формулой, ' + the_orderToFind + ' ' + ['$\\sin{\\alpha}$', '$a$'][rand] +
 				', если ' + ['$a =' + a + '$', '$\\sin{\\alpha} = \\frac{' + numA + '}{' + deNumA + '}$'][rand] + ', $b =' + b + '$, $\\sin{\\beta} = \\frac{' + numB + '}{' + deNumB + '}$.',
 			answers: [numA / deNumA, a][rand],
+			preference: preference,
 
 		});
 		NAtask.modifiers.allDecimalsToStandard();
