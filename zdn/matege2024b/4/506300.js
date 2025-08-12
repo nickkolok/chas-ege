@@ -20,10 +20,11 @@
 
 			text: 'Радиус окружности, ' + 'описанной около треугольника, ' +
 				'можно вычислить по формуле $R = \\frac{a}{2\\sin{\\alpha}}$, где $a$ – сторона, ' +
-				'а $\\alpha$ – противолежащий ей угол треугольника. ' +
+				'а $\\alpha$ – противолежащий ей угол треугольника. ' +
 				'Пользуясь этой формулой, ' + the_orderToFind + ' $' + ['R', 'a'][rand] + '$' +
-				', если $' + ['a =' + a, 'R =' + R][rand] + '$ и $\\sin{\\alpha} = \\frac{' + num + '}{' + deNum + '}$.',
+				', если $' + ['a =' + a, 'R =' + R][rand] + '$ и $\\sin{\\alpha} = \\frac{' + num + '}{' + deNum + '}$.',
 			answers: [R, a][rand],
+			preference: preference,
 
 		});
 		NAtask.modifiers.allDecimalsToStandard();
