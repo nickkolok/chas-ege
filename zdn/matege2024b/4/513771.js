@@ -12,10 +12,13 @@
 		let U = slKrome([C], 2, 15);
 
 		let answer1 = q ** 2 / (2 * 0.0001 * C);
-		genAssertZ1000(answer1, 'должно быть не более 3-х знаков после запятой');
-		
 		let answer2 = C * U ** 2 / 2;
-		genAssertZ1000(answer2, 'должно быть не более 3-х знаков после запятой');
+		
+		if (rand === 0) {
+			genAssertZ1000(answer1, 'должно быть не более 3-х знаков после запятой');
+		} else {
+			genAssertZ1000(answer2, 'должно быть не более 3-х знаков после запятой');
+		}
 
 		NAtask.setTask({
 
