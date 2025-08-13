@@ -3,21 +3,36 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
+		let key = '506276';
+		let preference = ['geometric', 'quadretic', 'harmonious'];
+		let rand = getSelectedPreferenceFromList(key, preference);
+
 		let the_orderToFind = decor.orderToFind.iz();
+		let word = ['геометрическое', 'квадратичное', 'гармоническое'][rand];
 
 		let a = sl(1, 50);
 		let b = slKrome([a], 1, 50);
 		let c = slKrome([a, b], 1, 50);
 
-		let answer = (a * b * c).cbrt();
+		let answer;
+		if (rand === 0) {
+			answer = (a * b * c).cbrt();
+		} else if (rand === 1) {
+			answer = ((a ** 2 + b ** 2 + c ** 2) / 3).sqrt();
+		} else {
+			answer = 3 / (a + b + c);
+		}
 
 		genAssertZ1000(answer, 'должно быть не более 3 - х знаков после запятой');
 
 		NAtask.setTask({
 
-			text: 'Среднее геометрическое трёх чисел $a$, $b$ и $c$ вычисляется по формуле $ g = \\sqrt[3]{abc}$. ' +
-				the_orderToFind.toZagl() + ' среднее геометрическое чисел $' + a + '$, $' + b + '$, $' + c + '$.',
+			text: 'Среднее ' + word + ' трёх чисел $a$, $b$ и $c$ вычисляется по формуле $ ' +
+				['g = \\sqrt[3]{abc}', 'q = \\sqrt{\\frac{a^2+b^2+c^2}{3}}', 'h = (\\frac{\\frac{1}{a}+\\frac{1}{b}+\\frac{1}{c}}{3})^{-1}'][rand] + '$. ' +
+				the_orderToFind.toZagl() + ' среднее ' + word +
+				' чисел $' + [a, a, '\\frac{1}{' + a + '}'][rand] + '$, $' + [b, b, '\\frac{1}{' + b + '}'][rand] + '$, $' + [c, c, '\\frac{1}{' + c + '}'][rand] + '$.',
 			answers: answer,
+			preference: preference,
 
 		});
 		NAtask.modifiers.allDecimalsToStandard();
@@ -25,3 +40,5 @@
 })();
 //zer00player
 //https://mathb-ege.sdamgia.ru/test?likes=506276
+//https://mathb-ege.sdamgia.ru/test?likes=506737
+//https://mathb-ege.sdamgia.ru/test?likes=506507
