@@ -87,6 +87,7 @@ module.exports = function(grunt) {
 					{ src: 'node_modules/nerdamer/all.min.js', dest: 'ext/nerdamer.js' },
 					{ src: 'node_modules/chas-storage/chasStorage.js', dest: 'dist/ext/chasStorage.js' },
 					{ src: 'node_modules/cubic-spline-browserified/cubic-spline-for-browser.js', dest: 'dist/ext/cubic-spline-for-browser.js' },
+					{ src: 'node_modules/flatten-js-browserified/dist/flatten_js_browserified.js', dest: 'dist/ext/flatten_js_browserified.js' },
 					{ src: 'node_modules/flatten-shape-geometry/dist/bundle.js', dest: 'dist/ext/flatten-shape-geometry.js' },
 					{ src: 'node_modules/html2canvas/dist/html2canvas.min.js', dest: 'dist/ext/html2canvas.js' },
 					{ src: 'node_modules/jszip/dist/jszip.min.js', dest: 'dist/ext/jszip.min.js' },
