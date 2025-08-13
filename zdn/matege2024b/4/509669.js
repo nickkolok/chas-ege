@@ -9,11 +9,11 @@
 		let b = slKrome([a], 1, 12);
 		let c = slKrome([a, b], 1, 12);
 
-		genAssert(a + b > c && a + c > b && b + c > a, 'должно выполняться правило треугольника');
+		genAssert(isValidTriangle(a, b, c) === true, 'должно выполняться правило треугольника');
 
 		let answer = (a ** 2 + b ** 2 - c ** 2) / (2 * a * b);
 
-		genAssert(answer != 1, 'ответ не единица');
+		genAssert(answer != 0, 'ответ не ноль');
 		genAssertZ1000(answer, 'должно быть не более 3 знаков после запятой');
 
 		NAtask.setTask({
