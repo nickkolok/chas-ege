@@ -625,3 +625,7 @@ function processArbitraryCodeFiles() {
 	// Return a Promise that resolves when all files are processed
 	return Promise.all(promises);
 }
+
+function clearArbitraryCodeInput() {
+	document.getElementById('arbitraryCodeInput').value = '';
+}
