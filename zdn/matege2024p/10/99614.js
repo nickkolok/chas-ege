@@ -23,7 +23,7 @@
 		};
 
 		NAtask.setTask({
-			text: rab_num[0][v]+' '+rab.ie+' может '+sdel.inf_e[sdel.v]+' '+zakaz.ve+' за '+chislitlx(a, 'час','r')+', а '+rab_num[1][v]+' – за '+chislitlx(b, 'час','r')+'. '+
+			text: rab_num[0][v]+' '+rab.ie+' может '+sdel.inf_e[sdel.v]+' '+zakaz.ve+' за '+chislitlx(a, 'час','v')+', а '+rab_num[1][v]+' – за '+chislitlx(b, 'час','v')+'. '+
 				'За сколько часов '+sdel.bud_m[sdel.v]+' '+zakaz.ve+' оба '+(rab.ie=='рабочий'?rab.rm:rab.re)+', работая '+['вместе','вдвоём','сообща'].iz()+'?',
 			answers: x,
 			authors: ['Aisse-258']

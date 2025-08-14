@@ -91,6 +91,9 @@
 			<input type="checkbox" id="forceIntegers" data-chasstorage-id="pech-forceIntegers"/><label for="forceIntegers">
 				Генерировать преимущественно натуральные числа
 			</label>
+			<input type="checkbox" id="onlyIntegers" data-chasstorage-id="pech-onlyIntegers"/><label for="onlyIntegers">
+				Генерировать ТОЛЬКО целые числа (может сломать логику некоторых задач)
+			</label>
 			<br/>
 			<input type="checkbox" id="uniqueAnswersAndSolutions" data-chasstorage-id="pech-uniqueAnswersAndSolutions"/><label for="uniqueAnswersAndSolutions">
 				Требовать уникальных ответов, решений или сигнатур (осторожно, ответов может не хватить!)
@@ -108,6 +111,11 @@
 			<br/>
 			<input type="checkbox" id="prepareLaTeX" data-chasstorage-id="pech-prepareLaTeX"/><label for="prepareLaTeX">
 				Возможность выгрузки в $\LaTeX$ (замедляет генерацию)
+			</label>
+			<br/>
+			Зерно ГПСЧ (random seed):
+			<input value="" id="randomSeed" data-chasstorage-id="pech-randomSeed"/>
+			<br/>
 		</div>
 	</div>
 	<div class="otstup pagewidth">
