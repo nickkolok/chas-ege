@@ -14,20 +14,18 @@
 		let num = (1, deNum - 1);
 
 		let R = a / (2 * (num / deNum));
-		genAssertZ1000(R, 'должно быть не более 3-х знаков после запятой');
+		genAssertZ1000(R, 'Должно быть не более 3 знаков после запятой');
 
 		NAtask.setTask({
-
-			text: 'Радиус окружности, ' + 'описанной около треугольника, ' +
+			text: 'Радиус окружности, описанной около треугольника, ' +
 				'можно вычислить по формуле $R = \\frac{a}{2\\sin{\\alpha}}$, где $a$ – сторона, ' +
 				'а $\\alpha$ – противолежащий ей угол треугольника. ' +
 				'Пользуясь этой формулой, ' + the_orderToFind + ' $' + ['R', 'a'][rand] + '$' +
 				', если $' + ['a =' + a, 'R =' + R][rand] + '$ и $\\sin{\\alpha} = \\frac{' + num + '}{' + deNum + '}$.',
 			answers: [R, a][rand],
 			preference: preference,
-
 		});
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 2000);
 })();
 //zer00player
