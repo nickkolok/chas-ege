@@ -13,23 +13,22 @@
 		let b = slKrome([a], 1, 30);
 
 		let deNumA = sl(3, 50);
-		let deNumB = slKrome([deNumA], 3, 50);
 		let numA = sl(1, deNumA - 1);
-		let numB = slKrome([numA], 1, deNumB - 1);
+		let sinA = numA / deNumA;
 
-		if (rand === 0) {
-			genAssertZ1000(numA / deNumA, 'должно быть не более 3 - х знаков после запятой');
-		}
+		genAssertZ1000(sinA, 'sinA должно быть не более 3 знаков после запятой');
 
-		genAssert(a * deNumA / numA - b * deNumB / numB === 0, 'должна выполняться теорема');
+		let sinB = (sinA * b) / a;
+
+		genAssertZ1000(sinB, 'sinB должно быть не более 3 знаков после запятой');
 
 		NAtask.setTask({
 
 			text: 'Теорему синусов можно записать в виде  $ \\frac{a}{\\sin{\\alpha}} = \\frac{b}{\\sin{\\beta}} $' +
 				', где $a$ и $b$ - две стороны треугольника, а $\\alpha$ и $\\beta$ - углы треугольника, лежащие против них соответственно. ' +
 				' Пользуясь этой формулой, ' + the_orderToFind + ' ' + ['$\\sin{\\alpha}$', '$a$'][rand] +
-				', если ' + ['$a =' + a + '$', '$\\sin{\\alpha} = \\frac{' + numA + '}{' + deNumA + '}$'][rand] + ', $b =' + b + '$, $\\sin{\\beta} = \\frac{' + numB + '}{' + deNumB + '}$.',
-			answers: [numA / deNumA, a][rand],
+				', если ' + ['$a =' + a + '$', '$\\sin{\\alpha} =' + sinA.texfrac(1) + '$'][rand] + ', $b =' + b + '$, $\\sin{\\beta} = ' + sinB.texfrac(1) + '$.',
+			answers: [sinA, a][rand],
 			preference: preference,
 
 		});
