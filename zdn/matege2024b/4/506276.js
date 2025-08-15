@@ -12,7 +12,7 @@
 		let the_pedestrianOnRoad = sklonlxkand(decor.pedestrianOnRoad.iz());
 		let metric = ['дм', 'см', 'мм'][randSecond];
 
-		let l = sl(30, 90);
+		let l = sl(30, 90) * [0.1, 1, 10][randSecond];
 		let n = sl(1000, 10000, 100);
 
 		let answer = l * n * [[0.0001, 0.1, 1, 10][rand], [0.00001, 0.01, 0.1, 1][rand], [0.000001, 0.001, 0.01, 0.1][rand],][randSecond];
