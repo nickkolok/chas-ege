@@ -4,10 +4,7 @@
         let key = '356399';
         let preference = ['radius', 'area', 'diagonal'];
 
-        let rand = getListedPreference(key, preference.map((pref, index) => ({
-            preference: pref,
-            preferenceValue: index
-        })), sl(preference.length - 1));
+        let rand = getSelectedPreferenceFromList(key, preference);
         
         let square = new Square({
             length: sl(5, 50)*[1,2*(2).sqrt()][Number(rand==2)],
@@ -16,10 +13,11 @@
             }
         });
         
-        if(rand==2){
-        square.connectVerticesInConnectionMatrix([
-            [[0, 2], [1, 3]].iz(),
-        ]);}
+        if (rand == 2) {
+            square.connectVerticesInConnectionMatrix([
+                [[0, 2], [1, 3]].iz(),
+            ]);
+        }
 
         let vertex = autoScale(square.vertices);
 
@@ -53,7 +51,7 @@
             authors: ['Александра Суматохина'],
             preference,
         });
-        NAtask.modifiers.allDecimalsToStandard();
+        NAtask.modifiers.allDecimalsToStandard(true);
 
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
