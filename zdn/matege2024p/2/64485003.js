@@ -25,11 +25,11 @@
 		let distAB = dist(midA, midB);
 		genAssert(distAB>3, 'Векторы A и B слиплись');
 		
-		let distBC = dist(midB, midC, 'Векторы C и B слиплись');
-		genAssert(distBC>3);
+		let distBC = dist(midB, midC);
+		genAssert(distBC>3, 'Векторы C и B слиплись');
 		
-		let distCA = dist(midC, midA, 'Векторы A и C слиплись');
-		genAssert(distCA>3);
+		let distCA = dist(midC, midA);
+		genAssert(distCA>3, 'Векторы A и C слиплись');
 
 		// Проверка совпадения векторов
 		genAssert(!math.deepEqual(vectorA, vectorB), 'Вектора A и B совпадают');
