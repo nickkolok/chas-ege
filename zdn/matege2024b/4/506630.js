@@ -19,15 +19,15 @@
 		let answer = l * n * 10 ** (-6) * [1, 1000, 10000, 100000][rand];
 		NAtask.setTask({
 
-			text: 'Зная длину своего шага, ' + the_pedestrianOnRoad.ie + ' может приближённо подсчитать пройденное им расстояние $s$ по формуле $s = nl$,' +
-				' где $n$ – число шагов, $l$ – длина шага. ' +
+			text: 'Зная длину своего шага, ' + the_pedestrianOnRoad.ie + ' может приближённо подсчитать пройденное им расстояние $s$ по формуле $s = nl$, ' +
+				'где $n$ – число шагов, $l$ – длина шага. ' +
 				'Какое расстояние прошёл ' + the_pedestrianOnRoad.ie + ', ' +
 				'если $l = ' + l + '$ ' + metric + ', $n = ' + n + '$? Ответ выразите в ' + ['километрах', 'метрах', 'дециметрах', 'сантиметрах'][rand] + '.',
 			answers: answer,
 			preference: [preference1, preference2],
 
 		});
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 2000);
 })();
 //zer00player
