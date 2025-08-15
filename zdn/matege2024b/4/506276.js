@@ -7,7 +7,7 @@
 		let preference = ['geometric', 'quadratic', 'harmonic'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		genAssert(!sl(0, 100) || rand !== 2, 'Среднее гармоническое появляется слишком часто');
+		genAssert(!sl(0, 25) || rand !== 2, 'Среднее гармоническое появляется слишком часто');
 
 		let the_orderToFind = decor.orderToFind.iz();
 		let word = ['геометрическое', 'квадратичное', 'гармоническое'][rand];
@@ -16,14 +16,7 @@
 		let b = slKrome([a], 1, 50);
 		let c = slKrome([a, b], 1, 50);
 
-		let answer;
-		if (rand === 0) {
-			answer = (a * b * c).cbrt();
-		} else if (rand === 1) {
-			answer = ((a ** 2 + b ** 2 + c ** 2) / 3).sqrt();
-		} else {
-			answer = 3 / (a + b + c);
-		}
+		let answer = [(a * b * c).cbrt(), ((a ** 2 + b ** 2 + c ** 2) / 3).sqrt(), 3 / (a + b + c)][rand];
 
 		genAssertZ1000(answer, 'Должно быть не более 3 знаков после запятой');
 
