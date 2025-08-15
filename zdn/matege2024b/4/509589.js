@@ -8,7 +8,7 @@
 		let d = sl(1, 20);
 		let deNumA = sl(3, 30);
 		let numA = sl(1, deNumA - 1);
-		let S = (d ** 2 * (numA * deNumA)) / 2;
+		let S = (d ** 2 * (numA / deNumA)) / 2;
 
 		genAssertZ1000(S, 'должно быть не более 3 знака после запятой');
 
