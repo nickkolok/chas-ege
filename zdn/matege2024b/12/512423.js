@@ -4,17 +4,13 @@
 		let key = '512423';
 		let preference = ['small_diagonal', 'perimeter'];
 
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
-
+		let rand = getSelectedPreferenceFromList(key, preference)
 
 		let rhombus = new Rhombus({
 			length: sl(1, 50),
 			angles: {
 				angle: {
-					angleA: 60
+					angleA: 60,
 				},
 				angleInDegree: true,
 			},
@@ -40,10 +36,10 @@
 			text: `Сумма двух углов ромба равна $${[`120`, `240`].iz()}^\\circ$, а его `,
 			questions: [
 				[{
-					text: `меньшая диагональ равна $${rhombus.lengthDiagonalBD}$. Найдите периметр`,
+					text: `меньшая диагональ равна $${rhombus.lengthDiagonalBD}$. ${decor.orderToFind.iz().toZagl()} периметр`,
 					answers: rhombus.perimeter,
 				}, {
-					text: `периметр равен $${rhombus.perimeter}$. Найдите длину меньшей диагонали`,
+					text: `периметр равен $${rhombus.perimeter}$. ${decor.orderToFind.iz().toZagl()} длину меньшей диагонали`,
 					answers: rhombus.lengthDiagonalBD,
 				}][rand]
 			],
