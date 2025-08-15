@@ -7,16 +7,16 @@
 		let preference1 = ['kilometer', 'meter', 'decimeter', 'centimeter'];
 		let preference2 = ['decimeterStep', 'centimeterStep', 'millimeterStep'];
 		let rand = getSelectedPreferenceFromList(key, preference1);
-		let randSecond = getSelectedPreferenceFromList(key, preference2);
+		let randDecor = getSelectedPreferenceFromList(key, preference2);
 
 		let the_pedestrianOnRoad = sklonlxkand(decor.pedestrianOnRoad.iz());
-		let metric = ['дм', 'см', 'мм'][randSecond];
 
-		let l = sl(30, 90) * [0.1, 1, 10][randSecond];
+		let metric = ['дм', 'см', 'мм'][randDecor];
+
+		let l = sl(300, 900, 10) * [0.01, 0.1, 1][randDecor];
 		let n = sl(1000, 10000, 100);
 
-		let answer = l * n * [[0.0001, 0.1, 1, 10][rand], [0.00001, 0.01, 0.1, 1][rand], [0.000001, 0.001, 0.01, 0.1][rand],][randSecond];
-
+		let answer = l * n * 10 ** (-6) * [1, 1000, 10000, 100000][rand];
 		NAtask.setTask({
 
 			text: 'Зная длину своего шага, ' + the_pedestrianOnRoad.ie + ' может приближённо подсчитать пройденное им расстояние $s$ по формуле $s = nl$,' +
