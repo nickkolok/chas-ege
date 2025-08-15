@@ -2,7 +2,7 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let letters = latbukv.slice(0, 4);
+        let letters = om.latbukv.slice(0, 4);
 
         let circle = new Circle(new Point(0, 0), 180);
 
@@ -49,7 +49,7 @@
         };
 
         NAtask.setTask({
-            text: `Угол $A$ трапеции $ABCD$ с основаниями $AD$ и $BC$, вписанной в окружность, равен $${angleA}$. Найдите угол $${[`B`, `C`].iz()}$ этой трапеции. Ответ дайте в градусах.`,
+            text: `Угол $A$ трапеции $ABCD$ с основаниями $AD$ и $BC$, вписанной в окружность, равен $${angleA}^\\circ$. Найдите угол $${[`B`, `C`].iz()}$ этой трапеции. Ответ дайте в градусах.`,
             answers: 180 - angleA,
             authors: ['Александра Суматохина'],
         });
