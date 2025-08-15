@@ -13,7 +13,7 @@
 		let number = p_1 * p_2 * p_3;
 		let answer = (p_1 + 1) * (p_2 + 1) * (p_3 + 1);
 
-		genAssertZ1000(answer, 'должно быть не более 3 - х знаков после запятой');
+		genAssertZ1000(answer, 'Должно быть не более 3-х знаков после запятой');
 
 		NAtask.setTask({
 
