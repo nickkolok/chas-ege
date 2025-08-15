@@ -19,9 +19,9 @@
 
 		let answer;
 		if (rand === 0) {
-			answer = (1 / (a + b)) * ((a * b) * ((a + b) ** 2 - (c ** 2 + sqrt))).sqrt();
+			answer = (1 / (a + b)) * ((a * b) * ((a + b) ** 2 - (c ** 2 * sqrt))).sqrt();
 		} else {
-			answer = ((2 * a ** 2 + 2 * (b ** 2 + sqrt) - c ^ 2).sqrt()) / 2;
+			answer = ((2 * a ** 2 + 2 * (b ** 2 * sqrt) - c ** 2).sqrt()) / 2;
 		}
 		genAssertZ1000(answer, 'Должно быть не более 3 знаков после запятой');
 
