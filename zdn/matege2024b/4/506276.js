@@ -23,7 +23,7 @@
 		NAtask.setTask({
 
 			text: 'Среднее ' + word + ' трёх чисел $a$, $b$ и $c$ вычисляется по формуле $ ' +
-				['g = \\sqrt[3]{abc}', 'q = \\sqrt{\\frac{a^2+b^2+c^2}{3}}', 'h = (\\frac{\\frac{1}{a}+\\frac{1}{b}+\\frac{1}{c}}{3})^{-1}'][rand] + '$. ' +
+				['g = \\sqrt[3]{abc}', 'q = \\sqrt{\\frac{a^2+b^2+c^2}{3}}', 'h =  \\left(\\frac{\\frac{1}{a}+\\frac{1}{b}+\\frac{1}{c}}{3} \\right)^{-1}'][rand] + '$. ' +
 				the_orderToFind.toZagl() + ' среднее ' + word +
 				' чисел $' + [a, a, '\\frac{1}{' + a + '}'][rand] + '$, $' + [b, b, '\\frac{1}{' + b + '}'][rand] + '$, $' + [c, c, '\\frac{1}{' + c + '}'][rand] + '$.',
 			answers: answer,
