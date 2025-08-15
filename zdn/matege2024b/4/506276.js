@@ -4,8 +4,10 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '506276';
-		let preference = ['geometric', 'quadretic', 'harmonious'];
+		let preference = ['geometric', 'quadratic', 'harmonic'];
 		let rand = getSelectedPreferenceFromList(key, preference);
+
+		genAssert(!sl(0, 100) || rand !== 2, 'Среднее гармоническое появляется слишком часто');
 
 		let the_orderToFind = decor.orderToFind.iz();
 		let word = ['геометрическое', 'квадратичное', 'гармоническое'][rand];
@@ -23,7 +25,7 @@
 			answer = 3 / (a + b + c);
 		}
 
-		genAssertZ1000(answer, 'должно быть не более 3 - х знаков после запятой');
+		genAssertZ1000(answer, 'Должно быть не более 3 знаков после запятой');
 
 		NAtask.setTask({
 
