@@ -18,7 +18,7 @@
 
 		genAssert(triangle.lengthCA.isAlmostInteger(), 'Гипотенуза не целая');
 
-		triangle.addVertexToConnectionMatrix([triangle.midlinePointsAB, triangle.midlinePointsBC].iz(), 'E');
+		triangle.addVertexToConnectionMatrix([triangle.midlinePointsBC, triangle.midlinePointsAB][Number((triangle.lengthAB < triangle.lengthBC))], 'E');
 		triangle.connectVerticesInConnectionMatrix([3, 4]);
 
 		let points = autoScale(triangle.vertices);
