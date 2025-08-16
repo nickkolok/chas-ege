@@ -1,7 +1,7 @@
 (function () {
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let letter = window.smallLatinLetters.iz(3);
+		let letter = om.smallLatinLetters.iz(3);
 
 		let coordVectorA = generateMatrix(1, 4, 1, 13).iz();
 		let coordVectorB = generateMatrix(1, 4, 1, 13).iz();
@@ -34,6 +34,7 @@
 		// Проверка совпадения векторов
 		genAssert(!math.deepEqual(vectorA, vectorB), 'Вектора A и B совпадают');
 		genAssert(!math.deepEqual(vectorA, vectorC), 'Вектора A и C совпадают');
+		genAssert(!math.deepEqual(vectorB, vectorC), 'Вектора B и C совпадают');
 
 		// Проверка длин векторов
 		genAssert(math.norm(vectorA) > 3, 'Вектор A слишком маленький');
