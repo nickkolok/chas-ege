@@ -21,6 +21,7 @@
 		let sinB = (sinA * b) / a;
 
 		genAssertZ1000(sinB, 'sinB должно быть не более 3 знаков после запятой');
+		genAssert(sinB < 1, 'sinB не должен превышать 1');
 
 		NAtask.setTask({
 
