@@ -2,11 +2,12 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 		let a = sl(5, 20);
+		let k = sl(1,10, 0.5);
 
 		let triangle = new Triangle({
 			lengths: {
-				lengthAB: a,
-				lengthBC: slKrome(a, 5, 20),
+				lengthAB: a*k,
+				lengthBC: slKrome(a, 5, 20)*k,
 			},
 			angles: {
 				angle: Math.PI / 2,
@@ -15,7 +16,7 @@
 				calculateMidlines: true
 			}
 		});
-
+		
 		genAssert(triangle.lengthCA.isAlmostInteger(), 'Гипотенуза не целая');
 
 		triangle.addVertexToConnectionMatrix([triangle.midlinePointsBC, triangle.midlinePointsAB][Number((triangle.lengthAB < triangle.lengthBC))], 'E');
