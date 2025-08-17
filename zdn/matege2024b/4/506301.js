@@ -13,6 +13,7 @@
 		let c = slKrome([a, b], 2, 30);
 
 		genAssert(isValidTriangle(a, b, c), 'должно быть треугольником');
+
 		let p = (a + b + c) / 2;
 		let r = ((p - a) * (p - b) * (p - c)).sqrt();
 
@@ -28,6 +29,7 @@
 				'Пользуясь этой формулой, ' + the_orderToFind + ' $b$, если $a = ' + a + '$, $c = ' + c + '$, $S =' + S + ['', ' \\sqrt{' + sqrt + '}'][rand] +
 				'$ и $r = ' + r + ['', ' \\sqrt{' + sqrt + '}'][rand] + '$.',
 			answers: b,
+			preference: preference,
 
 		});
 		NAtask.modifiers.allDecimalsToStandard();
