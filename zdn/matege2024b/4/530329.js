@@ -23,12 +23,16 @@
 		genAssertZ1000(sinB, 'sinB должно быть не более 3 знаков после запятой');
 		genAssert(sinB < 1, 'sinB не должен превышать 1');
 
+		let nameLetter = ['a', 'b'].iz(2);
+		let nameSin = ['\\alpha', '\\beta'].iz(2);
+
 		NAtask.setTask({
 
 			text: 'Теорему синусов можно записать в виде  $ \\frac{a}{\\sin{\\alpha}} = \\frac{b}{\\sin{\\beta}} $' +
 				', где $a$ и $b$ - две стороны треугольника, а $\\alpha$ и $\\beta$ - углы треугольника, лежащие против них соответственно. ' +
-				' Пользуясь этой формулой, ' + the_orderToFind + ' ' + ['$\\sin{\\alpha}$', '$a$'][rand] +
-				', если ' + ['$a =' + a + '$', '$\\sin{\\alpha} =' + sinA.texfrac(1) + '$'][rand] + ', $b =' + b + '$, $\\sin{\\beta} = ' + sinB.texfrac(1) + '$.',
+				' Пользуясь этой формулой, ' + the_orderToFind + ' ' + ['$\\sin{' + nameSin[0] + '}$', '$' + nameLetter[0] + '$'][rand] +
+				', если ' + ['$' + nameLetter[0] + ' =' + a + '$', '$\\sin{' + nameSin[0] + '} =' + sinA.texfrac(1) + '$'][rand] +
+				', $' + nameLetter[1] + ' =' + b + '$, $\\sin{' + nameSin[1] + '} = ' + sinB.texfrac(1) + '$.',
 			answers: [sinA, a][rand],
 			preference: preference,
 
