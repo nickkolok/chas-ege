@@ -12,20 +12,24 @@
 		let c = sl(3, b - 2);
 		let deNum = sl(3, 15);
 		let num = (1, deNum - 1);
-		let S = 0.5 * b * c * (num / deNum);
+		let sinA = num / deNum;
+
+		if (rand === 1) {
+			genAssertZ1000(sinA, 'не более 3-х знаков после запятой');
+		}
+
+		let S = 0.5 * b * c * sinA;
 
 		genAssertZ1000(S, 'не более 3-х знаков после запятой');
-		if (rand === 1) {
-			genAssertZ1000(num / deNum, 'не более 3-х знаков после запятой');
-		}
+
 
 		NAtask.setTask({
 
-			text: 'Площадь треугольника можно вычислить по формуле $S = \\frac{1}{2}bc \\sin{\\alpha}$, где $b$ и $c$ – две стороны треугольника,' +
+			text: 'Площадь треугольника можно вычислить по формуле $S = \\frac{1}{2}bc \\sin{\\alpha}$, где $b$ и $c$ – две стороны треугольника, ' +
 				'$\\alpha$ – угол между ними. ' +
 				'Пользуясь этой формулой, ' + the_orderToFind + ' ' + ['площадь $S$', 'величину  $\\sin{\\alpha}$'][rand] + ', если $b = ' + b + '$, $c =' + c + '$' +
-				' и ' + ['$\\sin{\\alpha} = \\frac{' + num + '}{' + deNum + '}$', '$S =' + S + '$'][rand] + '.',
-			answers: [S, num / deNum][rand],
+				' и ' + ['$\\sin{\\alpha}= \\frac{' + num + '}{' + deNum + '}$', '$S =' + S + '$'][rand] + '.',
+			answers: [S, sinA][rand],
 			preference: preference,
 
 
