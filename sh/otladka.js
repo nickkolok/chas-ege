@@ -231,6 +231,30 @@ var startShell = function (){
 		$("#textarea-script").val(templateTemplate);
 		chasStorage.domData.save();
 	}
+	// Read filepath/autorun from both query and hash (supports Firefox file://)
+	try {
+		var rawSearch = window.location.search || '';
+		var rawHash = window.location.hash || '';
+		var combined = rawSearch.replace(/^\?/, '');
+		if (rawHash) {
+			var h = rawHash.replace(/^#/, '');
+			if (h.charAt(0) === '?') h = h.slice(1);
+			combined += (combined ? '&' : '') + h;
+		}
+		var params = new URLSearchParams(combined);
+		var fp = params.get('filepath') || params.get('file') || params.get('template');
+		var autorun = params.get('autorun');
+		if (fp && fp.indexOf('${') !== -1) { fp = ''; }
+		if (fp) {
+			$("#filepath").val(fp);
+			chasStorage.domData.save();
+			if (autorun === null || autorun === '' || autorun === '1' || autorun === 'true') {
+				setTimeout(function(){ createFromFile(); }, 0);
+			}
+		}
+	} catch (e) {
+		console.error(e);
+	}
 }
 
 

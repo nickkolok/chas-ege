@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "templatePath",
+      "type": "promptString",
+      "description": "Относительный путь к шаблону внутри dist (например: zdn/matege2023p/4/1.js)",
+      "default": "zdn/matege2023p/4/1.js"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "Open Otladka with Template",
+      "type": "shell",
+      "command": "code -g ${workspaceFolder}/dist/sh/otladka.html?filepath=${input:templatePath}&autorun=1",
+      "problemMatcher": []
+    }
+  ]
+}

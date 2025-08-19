@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Режим отладки шаблона (Lite) - Тренажёр "Час ЕГЭ" </title>
+    <script>!function () { window.chas = { maintainer: "Николай Авдеев", mode: {}, design: { menuKeeperId: "legacyMenuKeeper", sliderKeeperId: "legacySliderKeeper" }, version: "1755346956209" }, chas.mode.svinta = !document.location.href.search("file:"), chas.mode.root = "../", chas.mode.extPath = chas.mode.root + "ext/", chas.mode.forceminjs = !!location.href.match("forceminjs"), chas.mode.izvk = !!location.href.match("api.vk.com"), chas.mode.svinta || chas.mode.izvk || !location.href.match("http://") || location.host.match("localhost") || location.host.match("127.0.0.1") || (location.href = location.href.replace("http://", "https://")), chas.mode.egeok = location.href.match("ege-ok.ru") || document.referrer.match("ege-ok.ru"), location.href.match("4ege.ru") && (chas.mode._4ege = 1, chas.mode.withoutMenu = 1), window.addstyle = function (e) { document.write("<link rel='stylesheet' type='text/css' href='" + e + "?" + window.chas.version + "'/>"); console.log("Таблица стилей " + e + " добавлена") }, window.addscript = function (e, s) { document.write('<script charset="utf-8" src="' + e + '" onload="console.log(\'Скрипт по адресу ' + e + " загружен\');" + (s || "") + '"><\/script>'); console.log("Скрипт по адресу " + e + " добавлен") }, window.addinitjs = function () { chas.mode.svinta && !chas.mode.forceminjs ? addscript(chas.mode.root + "lib/init.js") : addscript(chas.mode.root + "lib/init.min.js"), chas.initMinLoaded = 1 }, chas.mode.svinta ? (addstyle(chas.mode.extPath + "anyslider/css/anythingslider.css"), addstyle(chas.mode.extPath + "anyslider/css/theme-minimalist-square.css"), addstyle(chas.mode.root + "css/browser.css"), addstyle(chas.mode.extPath + "fonts/stylesheet.css"), addstyle(chas.mode.extPath + "keyboard/keyboard.css"), addstyle(chas.mode.extPath + "jqplot/jquery.jqplot.css"), addstyle(chas.mode.root + "css/menu.css"), window.bootstrapdesign ? addstyle(chas.mode.extPath + "bootstrap/css/bootstrap.min.css") : addstyle(chas.mode.root + "css/main.css")) : window.bootstrapdesign ? addstyle(chas.mode.root + "css/chas-ui-bs.min.css") : addstyle(chas.mode.root + "css/chas-ui.min.css"), console.log("head.js отработал") }();</script>
+    <link rel="shortcut icon" id="link_icon1">
+    <link rel="icon" id="link_icon2">
+    <script>addstyle("../css/otladka.css");</script>
+</head>
+
+<body onload="startShell()" class="legacy lite">
+    <div id="document-write"> </div>
+    <div id="legacyMenuKeeper"> </div>
+    <div id="legacySliderKeeper"> </div>
+    <script>addinitjs();</script><noscript>Для работы тренажёра необходим javascript.</noscript>
+    <div id="typesettable-wrap">
+        <div id="question" class="question"></div>
+        <div id="resh" class="question"></div>
+        <div id="answer"></div>
+        <div id="wrongAnswer"></div>
+    </div>
+    <div id="wrap">
+        <div id="panel" class="polosa">
+            <hr>
+            <div> Адрес подключаемого шаблона: <input type="text" id="filepath" data-chasstorage-id="otladka-filepath">
+                <button onclick="createFromFile()">Составить задание</button>
+            </div>
+        </div>
+    </div>
+    <div> <iframe src="" id="shabl" charset="utf-8" type="text/javascript" lang="ru"></iframe> </div>
+    <script>addscript("otladka.js"); addscript("dvig_lz.js"); addscript("chas-ege_to_reshuege.js");</script>
+    <div class="otstup" align="justify"> </div>
+    <script>chasStorage.domData.load(), window.addEventListener("unload", function () { chasStorage.domData.save() });</script>
+</body>
+
+</html>

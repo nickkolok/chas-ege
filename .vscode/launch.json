@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Chrome",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "webRoot": "${workspaceFolder}/dist",
+      "url": "file://${workspaceFolder}/dist/sh/otladka-lite.html?filepath=file://${file}&autorun=1"
+    },
+    {
+      "name": "Firefox",
+      "type": "firefox",
+      "request": "launch",
+      "url": "file://${workspaceFolder}/dist/sh/otladka-lite.html#?filepath=file://${file}&autorun=1",
+      "reAttach": true,
+      "profile": "default"
+    },
+  ],
+  "inputs": [
+    {
+      "id": "templatePath",
+      "type": "promptString",
+      "description": "Относительный путь к шаблону внутри dist (например: zdn/matege2023p/4/1.js)",
+      "default": "${file}"
+    }
+  ]
+}
