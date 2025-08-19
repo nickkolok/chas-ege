@@ -4,7 +4,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '507035';
-		let preference = ['onlyNumber', 'numberWithP1P2P3'];
+		let preference = ['onlyNumber', 'numberWithFractorization'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let the_orderToFind = decor.orderToFind.iz();
