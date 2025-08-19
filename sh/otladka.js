@@ -10,6 +10,9 @@ function updateQuestion(){
 	$("#answer").html(window.vopr.ver.join(";;"));
 	$("#wrongAnswer").html(window.vopr.nev.join(";;"));
 	MathJax.Hub.Typeset('typesettable-wrap');
+	if (document.body && document.body.classList.contains('lite')) {
+		$("#answer").show();
+	}
 }
 
 function createFromFile(){
@@ -30,7 +33,11 @@ function createFromFile(){
 	dvig.startxt=window.vopr.txt;
 	dvig.obnov(updateQuestion);
 	$("#answer-input").val("");
-	$("#answer").hide();
+	if (!(document.body && document.body.classList.contains('lite'))) {
+		$("#answer").hide();
+	} else {
+		$("#answer").show();
+	}
 	try {
 		var answerEl = document.getElementById("answer-input");
 		if (answerEl && typeof VKI_attach === 'function') {
