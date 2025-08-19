@@ -8,6 +8,8 @@
 		let b = slKrome([a], 2, 30);
 		let c = slKrome([a, b], 2, 30);
 
+		genAssert(a + b > math.min(c, 30), 'Должно выполнятся условие, что сумма a+b>c');
+
 		genAssert(isValidTriangle(a, b, c), 'Должно выполняться правило треугольника');
 
 		let p = (a + b + c) / 2;
