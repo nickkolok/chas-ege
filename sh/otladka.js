@@ -31,8 +31,19 @@ function createFromFile(){
 	dvig.obnov(updateQuestion);
 	$("#answer-input").val("");
 	$("#answer").hide();
-	setVKI();
-	VKI_attach(document.getElementById("answer-input"));
+	try {
+		var answerEl = document.getElementById("answer-input");
+		if (answerEl && typeof VKI_attach === 'function') {
+			if (typeof setVKI === 'function') setVKI();
+			VKI_attach(answerEl);
+		}
+	} catch(e) {
+		console.warn('Virtual keyboard attach failed:', e);
+	}
+	// Запуск автообновления после первой загрузки шаблона
+	if (typeof window.__chas_startAutoReload === 'function') {
+		window.__chas_startAutoReload();
+	}
 }
 
 function checkAnswer(){
