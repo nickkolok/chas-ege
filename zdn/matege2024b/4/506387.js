@@ -7,8 +7,7 @@
 		let a = sl(2, 30);
 		let b = slKrome([a], 2, 30);
 		let c = slKrome([a, b], 2, 30);
-
-		genAssert(a + b > math.min(c, 30), 'Должно выполнятся условие, что сумма a+b>c');
+		c = Math.min(c, 30, a + b - 1);
 
 		genAssert(isValidTriangle(a, b, c), 'Должно выполняться правило треугольника');
 
