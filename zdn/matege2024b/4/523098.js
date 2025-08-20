@@ -22,7 +22,7 @@
 			text: 'Работа постоянного тока (в джоулях) вычисляется по формуле $' + ['A = I^2 Rt', 'A= \\frac{U^2 t}{R}'][rand] +
 				'$, где ' + ['$I$ – сила тока (в амперах)', '$U$ – напряжение (в вольтах)'][rand] + ', ' +
 				'$R$ – сопротивление (в омах), $t$ – время (в секундах). Пользуясь этой формулой, ' +
-				the_orderToFind + ' $A$ (в джоулях), если $t = ' + second + '$ c, ' + ['$I = ' + amperage + '$ А', '$U = ' + voltage + '$'][rand] +
+				the_orderToFind + ' $A$ (в джоулях), если $t = ' + second + '$ c, $' + ['I = ' + amperage + '$ А', 'U = ' + voltage + '$ B'][rand] +
 				' и $R = ' + resistance + '$ Ом.',
 			answers: answer,
 			preference: preference,
