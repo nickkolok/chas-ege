@@ -963,7 +963,7 @@ chas2.task = {
 		let tex = expr.toTex({parenthesis: 'auto'}).allDecimalsToStandard(true);
 		o.text = 'Найдите точку '+ extremumName + 'а функции $y=' + tex + '$.'
 
-		o.answers = [theExtremum];
+		o.answers = theExtremum;
 
 		chas2.task.setTask(o);
 	},
