@@ -46,9 +46,7 @@ var chaslib = {
 					newArr.push(arr[i]);
 					break;
 				default:
-					console.log(arr);
-					console.log(arr[i]);
-					throw TypeError('Параметр arr должен содержать только строки и числа. Обнаружено: ' + chaslib.typeOf(arr[i]));
+					throw TypeError('Параметр arr должен содержать только строки и числа');
 				}
 			}
 			return newArr;
