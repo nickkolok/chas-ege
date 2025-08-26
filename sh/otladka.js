@@ -244,3 +244,14 @@ function startExport(){
 		copyToClipboard(fillerCode)
 	});
 }
+
+function startQuickExportToTex(){
+	copyToClipboard([
+		'Текст задания:',
+		window.vopr.txt,
+		'Ответ:',
+		window.vopr.ver,
+		'Решение:'.esli(window.vopr.rsh),
+		window.vopr.rsh,
+	].join('\n\n'));
+}
