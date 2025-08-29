@@ -7,40 +7,43 @@
 		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let the_orderToFind = decor.orderToFind.iz();
+		let letter = ['a', 'b', 'c'].shuffle();
 
-		let a = sl(2, 30);
-		let b = slKrome([a], 2, 30);
-		let c = slKrome([a, b], 2, 30);
+		let p = sl(2, 10).pow(2);
 
-		genAssert(isValidTriangle(a, b, c), 'должно быть треугольником');
+		let a = sl(1, p - 1);
+		let b = slKrome([a], 1, p - 2);
+		let c = 2 * p - a - b;
 
-		let p = (a + b + c) / 2;
-		let r;
-		let S;
+		genAssert(a != c, 'Равнобедренный треугольник');
+
+		let triangle = new Triangle({
+			lengths: {
+				lengthAB: a,
+				lengthBC: b,
+				lengthCA: c,
+			},
+		});
+
+		let r = triangle.radiusOfInscribedCircle;
+		let r2 = r * r;
+		let S = triangle.area();
+		let S2 = S * S;
+
 		if (rand === 0) {
-
-			r = ((p - a) * (p - b) * (p - c)).sqrt();
-
-			S = ((a + b + c) * r) / 2;
 			genAssertZ1000(S, 'должно быть не более 3 - х знаков после запятой');
+			genAssertZ1000(r, 'должно быть не более 3 - х знаков после запятой');
 		} else {
-			let triangle = new Triangle({
-				lengths: {
-					lengthAB: a, lengthBC: b, lengthCA: c,
-				},
-			})
-			S = triangle.area();
-			genAssertAlmostInteger(S * S);
-			r = triangle.radiusOfInscribedCircle;
-			genAssertZ1000(r * r);
+			genAssert(!r2.isPolnKvadr());
+			genAssertAlmostInteger(r2, 'должно быть не более 3 - х знаков после запятой');
 		}
 
 		NAtask.setTask({
 
 			text: 'Площадь треугольника можно вычислить по формуле $S =\\frac{(a+b+c)r}{2}$, где $a$, $b$ и $c$ – стороны треугольника, ' +
 				'а $r$ – радиус окружности, ' + 'вписанной в этот треугольник. ' +
-				'Пользуясь этой формулой, ' + the_orderToFind + ' $b$, если $a = ' + a + '$, $c = ' + c + '$, $S =' + [S, (S * S).okrugldo(0.0001).texsqrt(1)][rand] +
-				'$ и $r = ' + [r, (r * r).okrugldo(1).texsqrt(1)][rand] + '$.',
+				'Пользуясь этой формулой, ' + the_orderToFind + ' $' + letter[1] + '$, если $' + letter[0] + ' = ' + a + '$, $' + letter[2] + ' = ' + c + '$,' +
+				' $S =' + [S, S2.okrugldo(0.0001).texsqrt(1)][rand] + '$ и $r = ' + [r, r2.okrugldo(0.0001).texsqrt(1)][rand] + '$.',
 			answers: b,
 			preference: preference,
 
