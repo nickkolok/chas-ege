@@ -15,24 +15,37 @@
 		genAssert(isValidTriangle(a, b, c), 'должно быть треугольником');
 
 		let p = (a + b + c) / 2;
-		let r = ((p - a) * (p - b) * (p - c)).sqrt();
+		let r;
+		let S;
+		if (rand === 0) {
 
-		let S = ((a + b + c) * r) / 2;
-		let sqrt = slKrome([4, 9], 2, 15);
+			r = ((p - a) * (p - b) * (p - c)).sqrt();
 
-		genAssertZ1000(S, 'должно быть не более 3 - х знаков после запятой');
+			S = ((a + b + c) * r) / 2;
+			genAssertZ1000(S, 'должно быть не более 3 - х знаков после запятой');
+		} else {
+			let triangle = new Triangle({
+				lengths: {
+					lengthAB: a, lengthBC: b, lengthCA: c,
+				},
+			})
+			S = triangle.area();
+			genAssertAlmostInteger(S * S);
+			r = triangle.radiusOfInscribedCircle;
+			genAssertZ1000(r * r);
+		}
 
 		NAtask.setTask({
 
 			text: 'Площадь треугольника можно вычислить по формуле $S =\\frac{(a+b+c)r}{2}$, где $a$, $b$ и $c$ – стороны треугольника, ' +
 				'а $r$ – радиус окружности, ' + 'вписанной в этот треугольник. ' +
-				'Пользуясь этой формулой, ' + the_orderToFind + ' $b$, если $a = ' + a + '$, $c = ' + c + '$, $S =' + S + ['', ' \\sqrt{' + sqrt + '}'][rand] +
-				'$ и $r = ' + r + ['', ' \\sqrt{' + sqrt + '}'][rand] + '$.',
+				'Пользуясь этой формулой, ' + the_orderToFind + ' $b$, если $a = ' + a + '$, $c = ' + c + '$, $S =' + [S, (S * S).okrugldo(0.0001).texsqrt(1)][rand] +
+				'$ и $r = ' + [r, (r * r).okrugldo(1).texsqrt(1)][rand] + '$.',
 			answers: b,
 			preference: preference,
 
 		});
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 2000);
 })();
 //zer00player
