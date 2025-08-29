@@ -53,10 +53,10 @@
 			}, {
 				text: `значение $x$, при котором $f(x)=${chisl * k+ b }$`,
 				answer: chisl,
-				analys: `, $x=\\frac{${chisl}-${b}}{${k}}$`.plusminus().replace('+0', ''),
+				analys: (`, $x=\\frac{${chisl}-${b}}{${k}}$`).replace('+0', '').plusminus(),
 			}, ],
 			postquestion: `.`,
-			analys: (`$f(x)=` + (k + `x+` + b)).plusminus().replace('+0', '') + `$`,
+			analys: (`$f(x)=` + (k + `x+` + b)).replace('+0', '').plusminus() + `$`,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 		NAtask.modifiers.addCanvasIllustration({
