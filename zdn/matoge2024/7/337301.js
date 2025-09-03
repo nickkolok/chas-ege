@@ -23,13 +23,9 @@
 			] });
 		};
 
-		let pointA2 = pointA ** 2;
-		let pointA3 = pointA ** 3;
-		let pointA4 = pointA ** 4;
-
 		let randA = sl1();
-		let options = [["$a^2$", pointA2], ["$a^3$", pointA3]].concat([
-			[["$a$", pointA], ["$a^4$", pointA4]][randA]
+		let options = [["$a^2$", pointA ** 2], ["$a^3$", pointA ** 3]].concat([
+			[["$a$", pointA], ["$a^4$", pointA ** 4]][randA]
 		]);
 
 		let isMaxTaskOrMin = sl1();
