@@ -80,6 +80,7 @@ chas2.task = {
 		/** @function chas2.task._.unfoldTask
 		 * Развернуть вопросы в стандартный объект-задание,
 		 * а именно - обработать questions и postquestion
+		 * и распределить ответы из markedAnswers
 		 */
 		unfoldTask : function(o) {
 			if (o.questions) {
@@ -93,9 +94,15 @@ chas2.task = {
 				if (question.analys) {
 					o.analys += question.analys;
 				}
+				o.markedAnswers = question.markedAnswers;
 			}
 			if (o.postquestion) {
 				o.text += o.postquestion;
+			}
+			if (o.markedAnswers) {
+				for (let answer of o.markedAnswers) {
+					[o.wrongAnswers, o.answers][+!!answer[1]].push(answer[0]);
+				}
 			}
 		},
 
