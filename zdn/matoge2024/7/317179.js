@@ -22,20 +22,15 @@
 			});
 		};
 
-		// Генерация всех утверждений
-		let variants = [
-			[`${label1} < ${label2} и |${label1}| < |${label2}|`, x < y && x.abs() < y.abs()],
-			[`${label1} < ${label2} и |${label1}| > |${label2}|`, x < y && x.abs() > y.abs()],
-			[`${label1} > ${label2} и |${label1}| < |${label2}|`, x > y && x.abs() < y.abs()],
-			[`${label1} > ${label2} и |${label1}| > |${label2}|`, x > y && x.abs() > y.abs()],
-		];
-		let correct = variants.find(v => v[1]);
-		let wrongs = variants.filter(v => v !== correct);
-
+		
 		NAtask.setTask({
 			text: "На координатной прямой отмечены числа. Какое из следующих утверждений верно?",
-			answers: correct[0],
-			wrongAnswers: wrongs.map(v => v[0])
+			markedAnswers: [ // Генерация всех утверждений
+				[`${label1} < ${label2} и |${label1}| < |${label2}|`, x < y && x.abs() < y.abs()],
+				[`${label1} < ${label2} и |${label1}| > |${label2}|`, x < y && x.abs() > y.abs()],
+				[`${label1} > ${label2} и |${label1}| < |${label2}|`, x > y && x.abs() < y.abs()],
+				[`${label1} > ${label2} и |${label1}| > |${label2}|`, x > y && x.abs() > y.abs()],
+			],
 		});
 		AtoB(3);
 
