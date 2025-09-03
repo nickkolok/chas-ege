@@ -31,7 +31,7 @@
 		let options = [[["$a$", pointA], ["$a^2$", pointA2], ["$a^3$", pointA3]], [["$a^2$", pointA2], ["$a^3$", pointA3], ["$a^4$", pointA4]]][randA];
 
 		let isMaxTaskOrMin = sl1();
-		let targetValue = [options.T(x => x[1])[1].maxE(), options.T(x => x[1])[1].minE()][isMaxTaskOrMin];
+		let targetValue = options.T()[1][["maxE","minE"][isMaxTaskOrMin]]();
 		let maxOrMin = ['бол', 'мен'][isMaxTaskOrMin];
 
 		let correctOptions = options.filter(x => x[1] === targetValue);
