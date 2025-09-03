@@ -38,7 +38,7 @@
 		let correct = correctOptions.length === 1 ? correctOptions[0][0] : "нет данных";
 
 		let allLabels = options.map(x => x[0]);
-		allLabels.pushIf("нет данных", !allLabels.includes("нет данных"));
+		allLabels.pushUnique("нет данных");
 
 		NAtask.setTask({
 			text: "На координатной прямой отмечены числа. Какое из перечисленных чисел наи" + maxOrMin + "ьшее?",
