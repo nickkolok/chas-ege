@@ -46,7 +46,7 @@
 			wrongAnswers: allLabels.filter(label => label !== correct)
 		});
 
-		AtoB(3, allLabels.indexOf(correct));
+		AtoB(3);
 
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 400,
