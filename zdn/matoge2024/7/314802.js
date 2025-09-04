@@ -51,13 +51,10 @@
 		genAssert(trueExprs.length >= 3, "Мало истинных выражений");
 		genAssert(falseExprs.length >= 3, "Мало ложных выражений");
 
-		let correct = trueExprs.iz();
-		let wrong = falseExprs.iz();
-
 		NAtask.setTask({
 			text: 'На координатной прямой отмечены числа. Какое из приведённых утверждений для этих чисел ' + correctOrNot + '?',
-			answers: [correct[0], wrong[0]][rand],
-			wrongAnswers: [falseExprs.map(x => x[0]), trueExprs.map(x => x[0])][rand]
+			markedAnswers: forms,
+			invertMarkedAnswers: rand,
 		});
 		AtoB(3, {autoLaTeX: true});
 
