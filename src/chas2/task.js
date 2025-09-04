@@ -95,13 +95,14 @@ chas2.task = {
 					o.analys += question.analys;
 				}
 				o.markedAnswers = question.markedAnswers;
+				o.invertMarkedAnswers = question.invertMarkedAnswers;
 			}
 			if (o.postquestion) {
 				o.text += o.postquestion;
 			}
 			if (o.markedAnswers) {
 				for (let answer of o.markedAnswers) {
-					[o.wrongAnswers, o.answers][+!!answer[1]].push(answer[0]);
+					[o.wrongAnswers, o.answers][+(!!o.invertMarkedAnswers ^ !!answer[1])].push(answer[0]);
 				}
 			}
 		},
