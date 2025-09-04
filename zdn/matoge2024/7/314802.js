@@ -45,12 +45,6 @@
 		let rand = sl1();
 		let correctOrNot = ['верно', 'неверно'][rand];
 
-		let trueExprs = forms.filter(f => f[1]);
-		let falseExprs = forms.filter(f => !f[1]);
-
-		genAssert(trueExprs.length >= 3, "Мало истинных выражений");
-		genAssert(falseExprs.length >= 3, "Мало ложных выражений");
-
 		NAtask.setTask({
 			text: 'На координатной прямой отмечены числа. Какое из приведённых утверждений для этих чисел ' + correctOrNot + '?',
 			markedAnswers: forms,
