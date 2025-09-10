@@ -26,10 +26,10 @@
 		NAtask.setTask({
 			text: "На координатной прямой отмечены числа. Какое из следующих утверждений верно?",
 			markedAnswers: [ // Генерация всех утверждений
-				[`${label1} < ${label2} и |${label1}| < |${label2}|`, x < y && x.abs() < y.abs()],
-				[`${label1} < ${label2} и |${label1}| > |${label2}|`, x < y && x.abs() > y.abs()],
-				[`${label1} > ${label2} и |${label1}| < |${label2}|`, x > y && x.abs() < y.abs()],
-				[`${label1} > ${label2} и |${label1}| > |${label2}|`, x > y && x.abs() > y.abs()],
+				[`$ ${label1} < ${label2} $ и $ |${label1}| < |${label2}| $`, x < y && x.abs() < y.abs()],
+				[`$ ${label1} < ${label2} $ и $ |${label1}| > |${label2}| $`, x < y && x.abs() > y.abs()],
+				[`$ ${label1} > ${label2} $ и $ |${label1}| < |${label2}| $`, x > y && x.abs() < y.abs()],
+				[`$ ${label1} > ${label2} $ и $ |${label1}| > |${label2}| $`, x > y && x.abs() > y.abs()],
 			],
 		});
 		AtoB(3);
