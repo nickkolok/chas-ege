@@ -102,7 +102,9 @@ chas2.task = {
 			}
 			if (o.markedAnswers) {
 				for (let answer of o.markedAnswers) {
-					[o.wrongAnswers, o.answers][+(!!o.invertMarkedAnswers ^ !!answer[1])].push(answer[0]);
+					let needsInversion = Boolean(o.invertMarkedAnswers);
+					let isAnswerRight = Boolean(answer[1]) ^ needsInversion;
+					[o.wrongAnswers, o.answers][Number(isAnswerRight)].push(answer[0]);
 				}
 			}
 		},
