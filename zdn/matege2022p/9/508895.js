@@ -58,7 +58,7 @@
 			postquestion: `.`,
 			analys: (`$f(x)=` + (k + `x+` + b)).replace('+0', '').plusminus() + `$`,
 		});
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
