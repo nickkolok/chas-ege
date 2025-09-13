@@ -134,13 +134,10 @@ function konecSozd() {
 	convertCanvasToImagesIfNeeded();
 	if (options.prepareLaTeX) {
 		for (var id in generatedTasks) {
-			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
+			tasksInLaTeX[id] = roughHTML2LaTeX(replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
-			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}').replace(/\" /g, '"\\space ');
+			));
 		}
 	}
 
