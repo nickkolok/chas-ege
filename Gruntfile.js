@@ -88,6 +88,7 @@ module.exports = function(grunt) {
 					{ src: 'node_modules/chas-storage/chasStorage.js', dest: 'dist/ext/chasStorage.js' },
 					{ src: 'node_modules/cubic-spline-browserified/cubic-spline-for-browser.js', dest: 'dist/ext/cubic-spline-for-browser.js' },
 					{ src: 'node_modules/flatten-shape-geometry/dist/bundle.js', dest: 'dist/ext/flatten-shape-geometry.js' },
+					{ src: 'node_modules/crossword-layout-generator-browserified/dist/clgb.js', dest: 'dist/ext/clgb.js' },
 					{ src: 'node_modules/html2canvas/dist/html2canvas.min.js', dest: 'dist/ext/html2canvas.js' },
 					{ src: 'node_modules/jszip/dist/jszip.min.js', dest: 'dist/ext/jszip.min.js' },
 					{ src: 'node_modules/seedrandom/seedrandom.min.js', dest: 'dist/ext/seedrandom.min.js' },
