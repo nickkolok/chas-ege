@@ -248,10 +248,10 @@ function startExport(){
 function startQuickExportToTex(){
 	copyToClipboard([
 		'Текст задания:',
-		window.vopr.txt,
+		roughHTML2LaTeX(window.vopr.txt),
 		'Ответ:',
-		window.vopr.ver,
+		roughHTML2LaTeX(window.vopr.ver),
 		'Решение:'.esli(window.vopr.rsh),
-		window.vopr.rsh,
+		roughHTML2LaTeX(window.vopr.rsh),
 	].join('\n\n'));
 }
