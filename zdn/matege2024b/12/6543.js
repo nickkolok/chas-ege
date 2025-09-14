@@ -21,8 +21,8 @@
         let points = [
             { x: -radius, y: 0 },
             { x: radius, y: 0 },
-            calculateEndpointLineAtAngle(0, 0, (angleCMB * Math.PI) / 180.0, radius),
-            calculateEndpointLineAtAngle(0, 0, (0.5 * angleCMB * Math.PI) / 180.0, radius),
+            calculateEndpointLineAtAngle(0, 0, angleCMB * Math.PI / 180, radius),
+            calculateEndpointLineAtAngle(0, 0, 0.5 * angleCMB * Math.PI / 180, radius),
             { x: 0, y: 0 },   //M
         ];
 
