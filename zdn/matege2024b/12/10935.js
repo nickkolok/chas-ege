@@ -16,8 +16,8 @@
 			}
 		});
 
-		genAssert(triangle.medianCLength.pow(2).isAlmostInteger(), 'Площадь трапеции не целая');
-		genAssert((triangle.cosA * 100).isAlmostInteger(), 'cosA трапеции не целый');
+		genAssert(triangle.medianCLength.pow(2).isAlmostInteger(), 'Медиана треугольника не выражается корнем из целого числа');
+		genAssert((triangle.cosA * 100).isAlmostInteger(), 'cos A треугольника существенно нецелый');
 
 		triangle.addVertexToConnectionMatrix(triangle.medianC.pe, 'C');
 
