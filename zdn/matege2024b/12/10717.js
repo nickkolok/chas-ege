@@ -13,17 +13,17 @@
         let points = [
             { x: -radius, y: 0.75 * radius },
             { x: radius, y: 0.75 * radius },
-            calculateEndpointLineAtAngle(0, 0.75 * radius, (-angleA * Math.PI) / 180.0, 2 * radius),
-            calculateEndpointLineAtAngle(0, 0.75 * radius, (-angleB * Math.PI) / 180.0, 2 * radius),
+            calculateEndpointLineAtAngle(0, 0.75 * radius, -angleA * Math.PI / 180, 2 * radius),
+            calculateEndpointLineAtAngle(0, 0.75 * radius, -angleB * Math.PI / 180, 2 * radius),
             { x: 0, y: 0.75 * radius },   //M
             { x: -radius, y: -0.75 * radius },
             { x: radius, y: -0.75 * radius },
-            calculateEndpointLineAtAngle(0, 0.75 * radius, (-angleA * Math.PI) / 180.0 + Math.PI, 2 * radius),
-            calculateEndpointLineAtAngle(0, 0.75 * radius, (-angleB * Math.PI) / 180.0 + Math.PI, 2 * radius),
+            calculateEndpointLineAtAngle(0, 0.75 * radius, -angleA * Math.PI / 180 + Math.PI, 2 * radius),
+            calculateEndpointLineAtAngle(0, 0.75 * radius, -angleB * Math.PI / 180 + Math.PI, 2 * radius),
         ];
 
         let pointTwo = [points[5], points[6], points[3], points[4]].mt_coordinatesOfIntersectionOfTwoSegments();
-        let pointThree = calculateEndpointLineAtAngle(0, 0.75 * radius, ((-angleB - (angleA - angleB) / 2) * Math.PI) / 180.0, 40);
+        let pointThree = calculateEndpointLineAtAngle(0, 0.75 * radius, ((-angleB - (angleA - angleB) / 2) * Math.PI) / 180, 40);
 
         let paint1 = function (ctx) {
             let h = 400;
