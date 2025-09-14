@@ -5,8 +5,8 @@
 		let a = sl(2, 100);
 		let sign = ['+', '-'].shuffle();
 		NAtask.setEvaluationTask({
-			expr: ['(' + 'sqrt(' + a + ')' + sign[0] + b + ' )^2',
-				2 * b + '*sqrt(' + a + ')'].shuffle().join(sign[1]),
+			expr: ['(' + ['sqrt(' + a + ')',b].shuffle().join(sign[0]) + ' )^2',
+				2 * b + 'sqrt(' + a + ')'].shuffle().join(sign[1]),
 			authors: ['Алендарь Сергей'],
 		});
 	}, 10000);
