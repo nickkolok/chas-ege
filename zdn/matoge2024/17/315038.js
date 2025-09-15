@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 		let letters = latbukv.slice(0, 4);
-		
+
 		let par = new Parallelogram({
 			lengths: {
 				lengthAB: sl(10, 50),
@@ -15,13 +15,13 @@
 				angleInDegree: true,
 			},
 		});
-		
+
 		par.connectVerticesInConnectionMatrix([
 			[1, 3],
 		]);
-		
-		let angleADB = new Angle(par.pointA, par.pointD, par.pointB).angleInDegrees.ceil();
-		let angleBDC = new Angle(par.pointB, par.pointD, par.pointC).angleInDegrees.ceil();
+
+		let angleADB = new Angle(par.pointA, par.pointD, par.pointB).angleInDegrees.round();
+		let angleBDC = new Angle(par.pointB, par.pointD, par.pointC).angleInDegrees.round();
 
 		let points = autoScale(par.vertices);
 
@@ -36,7 +36,7 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, par.connectionMatrix);
-			
+
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
 			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
