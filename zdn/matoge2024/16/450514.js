@@ -25,8 +25,9 @@
 		let p = circle.pointOnCircle(90, {
 			angleInDegrees: true
 		});
-
-		let points = autoScale([AB.ps, AB.pe, PC.vertices[0], p.vertices[0]]);
+        
+        let points = autoScale([AB.ps, AB.pe, PC.vertices[0], p.vertices[0]]);
+        let scaleCircle = CircleByPoints.fromCenterAndPoint(new Point(0, 0), new Point(points[2].x, points[2].y));
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -39,8 +40,7 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectionMatrix);
-			ctx.drawArc(0, 0, new Point(0, 0).distanceTo(new Point(points[2].x, points[2].y))[0], 0, 2 * Math.PI);
-
+			ctx.drawArc(0, 0, scaleCircle.r, 0, 2 * Math.PI);
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
 			points.slice(0, -1).forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
