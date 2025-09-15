@@ -50,7 +50,7 @@
 
         NAtask.setTask({
             text: `Найдите ${[`острый`, `тупой`][Number(par.angleAInDegrees > par.angleBInDegrees)]} угол параллелограмма $ABCD$, если биссектриса угла $A$ 
-			образует со стороной $CD$ угол, равный $${par.angleAInDegrees.ceil() / 2}^\\circ$. Ответ дайте в градусах.`,
+			образует со стороной $CD$ угол, равный $${par.angleAInDegrees / 2}^\\circ$. Ответ дайте в градусах.`,
             answers: par.angleAInDegrees,
             authors: ['Александра Суматохина'],
         });
