@@ -119,7 +119,6 @@ function udalPanel() {
 
 function konecSozd() {
 	strOtv = '<h2>Ответы</h2>' + strOtv;
-	
 	if (options.largeFont) {
 		strOtv = largeFontStyle + strOtv;
 		strResh = largeFontStyle + strResh;
@@ -151,9 +150,9 @@ function konecSozd() {
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
 			).
-				// Escape LaTeX comments,
-				// but don't ruin if they've been already escaped!
-				replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}').replace(/\" /g, '"\\space ');
+			// Escape LaTeX comments,
+			// but don't ruin if they've been already escaped!
+			replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}').replace(/\" /g, '"\\space ');
 		}
 	}
 
@@ -516,10 +515,10 @@ function insertGridFields() {
 
 	$('#grid-style-placeholder').html(
 		'<style>'+
-		'.grid-for-writing { ' +
-		'display: block;' +
-		'min-height: ' + fieldHeight + 'cm;' +
-		'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
+			'.grid-for-writing { ' +
+				'display: block;' +
+				'min-height: ' + fieldHeight + 'cm;' +
+				'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
 			'}'+
 		'</style>'
 	);
@@ -638,7 +637,7 @@ function createLaTeXbunchTasks(variantN) {
 
 function refreshLaTeXarchive() {
     if (!options.prepareLaTeX) {
-        return;
+		return;
     }
     var zip = new JSZip();
     var bunchTasks = "";
