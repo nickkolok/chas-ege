@@ -1099,8 +1099,8 @@ chas2.task = {
 			
 				var task = chas2.task.getTask();
 				
-				var originalPreference = task.preference.slice() || [];
-				var originalAuthors = task.authors.slice() || [];
+				var originalPreference = task?.preference?.slice() || [];
+				var originalAuthors = task?.authors?.slice() || [];
 
 				var mappedTask = mapRecursive(
 					task,
