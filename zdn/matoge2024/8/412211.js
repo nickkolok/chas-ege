@@ -8,7 +8,7 @@
 
 		NAtask.setEvaluationTask({
 			expr: '(' + ['(b^' + e1 + ')^' + e2, 'a^' + e4].shuffle().join('*') + ')/(a*b)^' + e3,
-			variables: {a: sl(sl(2, 7), 9), b: sl(sl(2, 7), 9)},
+			variables: {a: sl(2, 9), b: "sqrt(" + sl(2, 9) + ")"},
 			authors: ['Алендарь Сергей'],
 		});
 	}, 1000);
