@@ -12,7 +12,7 @@
     {
       "label": "Open Otladka with Template",
       "type": "shell",
-      "command": "code -g ${workspaceFolder}/dist/sh/otladka.html?filepath=${input:templatePath}&autorun=1",
+      "command": "code -g ${workspaceFolder}/dist/sh/otladka.html#{\"filepath\":\"${input:templatePath}\",\"autorun\":true,\"alwaysShowAnswer\":true,\"hideMenu\":true,\"lite\":true}",
       "problemMatcher": []
     }
   ]

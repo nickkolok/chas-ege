@@ -6,13 +6,13 @@
       "type": "pwa-chrome",
       "request": "launch",
       "webRoot": "${workspaceFolder}/dist",
-      "url": "file://${workspaceFolder}/dist/sh/otladka-lite.html?filepath=file://${file}&autorun=1"
+      "url": "file://${workspaceFolder}/dist/sh/otladka.html#{\"filepath\":\"file://${file}\",\"autorun\":true,\"alwaysShowAnswer\":true,\"hideMenu\":true,\"lite\":true}"
     },
     {
       "name": "Firefox",
       "type": "firefox",
       "request": "launch",
-      "url": "file://${workspaceFolder}/dist/sh/otladka-lite.html#?filepath=file://${file}&autorun=1",
+      "url": "file://${workspaceFolder}/dist/sh/otladka.html#{\"filepath\":\"file://${file}\",\"autorun\":true,\"alwaysShowAnswer\":true,\"hideMenu\":true,\"lite\":true}",
       "reAttach": true,
       "profile": "default"
     },
