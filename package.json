@@ -9,6 +9,7 @@
   "dependencies": {
     "ace-builds": "^1.4.12",
     "chas-storage": "^0.1.1",
+    "crossword-layout-generator-browserified": "^1.1.0",
     "cubic-spline-browserified": "^3.0.3",
     "d": "1.0.1",
     "es5-ext": "0.10.53",

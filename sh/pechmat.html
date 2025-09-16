@@ -87,6 +87,7 @@
 			<br/>
 			<input type="checkbox" id="vanishVariants" data-chasstorage-id="pech-vanishVariants"/><label for="vanishVariants">
 				Не указывать данные вариантов (вероятно, вы этого <b>не</b> хотите!)
+			</label>
 			<br/>
 			<input type="checkbox" id="forceIntegers" data-chasstorage-id="pech-forceIntegers"/><label for="forceIntegers">
 				Генерировать преимущественно натуральные числа
@@ -116,6 +117,8 @@
 			Зерно ГПСЧ (random seed):
 			<input value="" id="randomSeed" data-chasstorage-id="pech-randomSeed"/>
 			<br/>
+			<input type="checkbox" id="crosswordAnswers" data-chasstorage-id="pech-crosswordAnswers"> Ответы в кроссворде
+			<br/>
 			Выполнить код перед генерацией:
 			<input type="file" id="arbitraryCodeInput" multiple />
 			<button onclick="clearArbitraryCodeInput()">Очистить файлы</button>
@@ -132,6 +135,11 @@
 		<button class="spoiler-show noprint" hidden>Показать решения</button>
 		<button class="spoiler-hide noprint" hidden>Скрыть решения</button>
 		<div id="rsh" class="d spoiler-body" style="padding-left:0">
+		</div>
+		<!-- Добавлена вкладка для кроссворда -->
+		<button class="spoiler-show noprint" id="cross-tab" hidden>Показать кроссворд</button>
+		<button class="spoiler-hide noprint" id="cross-tab-hide" hidden>Скрыть кроссворд</button>
+		<div id="cross" class="d spoiler-body" style="padding-left:0">
 		</div>
 		<div id="dopoln" class="noprint">
 			<h2>Дополнительные параметры (beta)</h2>
@@ -156,6 +164,7 @@
 		</div>
 	</div>
 	<script src='../ext/jszip.min.js'></script>
+	<script src='crossword.js'></script>
 	<script src='pechmat.js'></script>
 	<div id="grid-style-placeholder" style="display:none;">
 	</div>

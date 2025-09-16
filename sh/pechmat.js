@@ -13,11 +13,14 @@ var kZ;
 var strVopr = '';
 var strOtv = '';
 var strResh = '';
+var strCross = '';
 
 var variantsGenerated = [];
 var generatedTasks = {};
 var tasksInLaTeX = {};
 var preparedImages = {};
+var crosswordAnswers = {};
+var crosswordData = {};
 
 var options = {};
 
@@ -67,6 +70,7 @@ function readOptions() {
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
 	}
+	options.crosswordAnswers = $('#crosswordAnswers').is(':checked');
 }
 
 
@@ -115,15 +119,23 @@ function udalPanel() {
 
 function konecSozd() {
 	strOtv = '<h2>Ответы</h2>' + strOtv;
-
 	if (options.largeFont) {
 		strOtv = largeFontStyle + strOtv;
+		strResh = largeFontStyle + strResh;
+		strCross = largeFontStyle + strCross;
 	}
 
 	$('#otv').html(strOtv);
 	$('#rez').html(strVopr);
 	if (strResh) {
 		$('#rsh').html('<h2>Решения</h2>' + strResh);
+	}
+	
+	// Добавляем кроссворд с ответами в соответствующую вкладку
+	if (strCross && options.crosswordAnswers) {
+		$('#cross').html('<h2>Кроссворды</h2>' + strCross);
+		// Показываем кнопку для вкладки с кроссвордами
+		$('#cross-tab').show();
 	}
 
 	for (var id in generatedTasks) {
@@ -138,9 +150,9 @@ function konecSozd() {
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
 			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}').replace(/\" /g, '"\\space ');
+			// Escape LaTeX comments,
+			// but don't ruin if they've been already escaped!
+			replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}').replace(/\" /g, '"\\space ');
 		}
 	}
 
@@ -186,8 +198,8 @@ function appendVariantTasksEnding() {
 function appendVariantAnswersCaption() {
 	strOtv +=
 		'<table '+
-			'class="normtabl tablpech pech-answers-table" ' +
-			'id="pech-answers-table-variant-' + variantNumber +
+		'class="normtabl tablpech pech-answers-table" ' +
+		'id="pech-answers-table-variant-' + variantNumber +
 		'">';
 
 	if (!options.vanishVariants) {
@@ -210,6 +222,13 @@ function endCurrentVariant() {
 	nZ = 0;
 	appendVariantTasksEnding();
 	appendVariantAnswersEnding();
+	
+	// Добавляем кроссворды переменную для вкладки
+	if (options.crosswordAnswers) {
+		strCross += addCrossword(false); // false - без ответов
+		strCross += addCrossword(true); // true - с ответами
+	}
+	
 	if(options.uniqueAnswersOnlyInOneVariant){
 		unqDict={};
 	}
@@ -269,6 +288,22 @@ function createHtmlForTask(nazvzad) {
 	vopr.taskCategory = nazvzad;
 	vopr.variantNumber = variantNumber;
 
+	if (options.crosswordAnswers && window.vopr.ver) {
+		if (!crosswordAnswers[variantNumber]) {
+			crosswordAnswers[variantNumber] = {};
+		}
+		crosswordAnswers[variantNumber][nazvzad] = window.vopr.ver.map(answer => {
+			if (typeof answer === 'number') {
+				return answer.toString().split('');
+			} else if (typeof answer === 'string') {
+				return answer.split('');
+			} else if (Array.isArray(answer)) {
+				return answer.map(item => item.toString());
+			}
+			return [answer.toString()];
+		});
+	}
+
 	return {
 		txt:
 			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
@@ -276,8 +311,8 @@ function createHtmlForTask(nazvzad) {
 				'<div class="z">'+
 					window.vopr.txt+
 					'<button class="noprint renewbutton" title="Заменить задание на похожее"'+
-					'>' +
-						'&#x27F3;' +
+			'>' +
+			'&#x27F3;' +
 					'</button>'+
 				'</div>'+
 				'<div class="grid-for-writing"></div>'+
@@ -291,12 +326,12 @@ function createHtmlForTask(nazvzad) {
 			'</tr>',
 		rsh:
 			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
-				(
+			(
 					'<h3>'+
 						('Вариант №'+options.variantPrefix+variantNumber+', ').esli(!options.vanishVariants) +
 						'задача '+nazvzad+
 					'</h3><br/>'+
-					vopr.rsh
+				vopr.rsh
 				).esli(vopr.rsh)+
 			'</div>',
 		unq:
@@ -429,6 +464,24 @@ function renewTask() {
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
 		grabCurrentTask();
+		
+		if (options.crosswordAnswers && window.vopr.ver) {
+			// Обновляем ответы для этого задания
+			crosswordAnswers[variantNumber][nazvzad] = window.vopr.ver.map(answer => {
+				if (typeof answer === 'number') {
+					return answer.toString().split('');
+				} else if (typeof answer === 'string') {
+					return answer.split('');
+				} else if (Array.isArray(answer)) {
+					return answer.map(item => item.toString());
+				}
+				return [answer.toString()];
+			});
+			
+			// ПЕРЕСОЗДАЕМ КРОССВОРД для этого варианта
+			updateCrosswordForVariant(variantNumber);
+		}
+		
 		if (options.prepareLaTeX) {
 			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
 			refreshLaTeXarchive();
@@ -498,6 +551,32 @@ function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
 	return res;
 }
 
+function appendCrosswordAnswers() {
+	const variantAnswers = crosswordAnswers[variantNumber];
+	let crosswordHTML = '<div class="crossword-answers" style="margin: 20px 0; padding: 10px; border: 1px solid #ccc;">';
+	crosswordHTML += '<h3>Ответы для кроссворда (Вариант ' + options.variantPrefix + variantNumber + ')</h3>';
+	crosswordHTML += '<table class="crossword-table" style="width: 100%; border-collapse: collapse;">';
+
+	for (const [taskName, answers] of Object.entries(variantAnswers)) {
+		crosswordHTML += '<tr>';
+		crosswordHTML += '<td style="padding: 5px; border: 1px solid #eee; font-weight: bold;">' + taskName + '</td>';
+
+		answers.forEach((answerArray, index) => {
+			crosswordHTML += '<td style="padding: 5px; border: 1px solid #eee; font-family: monospace;">';
+			if (index > 0) crosswordHTML += ' или ';
+			crosswordHTML += answerArray.join(' | ');
+			crosswordHTML += '</td>';
+		});
+
+		crosswordHTML += '</tr>';
+	}
+
+	crosswordHTML += '</table></div>';
+
+	// Добавляем в конец варианта
+	strVopr += crosswordHTML;
+}
+
 
 function createLaTeXbunchAnswers(variantN) {
 
@@ -533,7 +612,7 @@ function replaceCanvasWithImgInTask(element, text) {
 			'\\ifdefined\\OnBeforeIllustratedTask\\OnBeforeIllustratedTask\\fi\n' +
 			text.trim() +
 			'\n\\ifdefined\\OnAfterIllustratedTask\\OnAfterIllustratedTask\\fi' +
-		'';
+			'';
 	}
 
 	return text;
@@ -546,8 +625,8 @@ function createLaTeXbunchTasks(variantN) {
 			bunchText +=
 				'\n' +
 				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
-					'% ' + generatedTasks[taskId].address + '\n' +
-					tasksInLaTeX[taskId] + '\n' +
+				'% ' + generatedTasks[taskId].address + '\n' +
+				tasksInLaTeX[taskId] + '\n' +
 				'\\end{taskBN}' + '\n';
 		}
 
@@ -557,41 +636,47 @@ function createLaTeXbunchTasks(variantN) {
 
 
 function refreshLaTeXarchive() {
-	if (!options.prepareLaTeX) {
+    if (!options.prepareLaTeX) {
 		return;
-	}
-	var zip = new JSZip();
-	var bunchTasks = "";
+    }
+    var zip = new JSZip();
+    var bunchTasks = "";
 	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>6)?6:variantsGenerated.length)+"}";
 
 	for(var variantN of variantsGenerated){
-		var head =
-			'\n\n' +
-			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
-			'\\def\\examvart{\\varianttitle ' + options.variantPrefix + variantN + '}\n' +
-			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
-			'\n\n';
-		var tail =
-			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
-		bunchTasks += head + createLaTeXbunchTasks(variantN) + tail;
-		answers += createLaTeXbunchAnswers(variantN);
-	}
+        var head =
+            '\n\n' +
+            '\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
+            '\\def\\examvart{\\varianttitle ' + options.variantPrefix + variantN + '}\n' +
+            '\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
+            '\n\n';
+        var tail =
+            '\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
+        bunchTasks += head + createLaTeXbunchTasks(variantN) + tail;
+        answers += createLaTeXbunchAnswers(variantN);
+    }
 
-	answers += "\n\n\\end{multicols}\n\n\\end{document}";
+    answers += "\n\n\\end{multicols}\n\n\\end{document}";
 
-	bunchTasks += "\n\n%Random seed:" + options.randomSeed;
+    bunchTasks += "\n\n%Random seed:" + options.randomSeed;
 
-	zip.file("tasks.tex", bunchTasks);
-	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
+    zip.file("tasks.tex", bunchTasks);
+    zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
+    
+    // Добавляем файлы с кроссвордами
+    if (options.crosswordAnswers && Object.keys(crosswordData).length > 0) {
+        zip.file("crosswords_with_answers.tex", createCrosswordLaTeX(true));
+        zip.file("crosswords_without_answers.tex", createCrosswordLaTeX(false));
+    }
 
-	var img = zip.folder("images");
-	for (var i in preparedImages) {
-		img.file(i + ".png", preparedImages[i], { base64: true });
-	}
-	zip.generateAsync({ type: "base64" }).then(function (base64) {
-		$('#latex-archive-placeholder').show();
-		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
-	});
+    var img = zip.folder("images");
+    for (var i in preparedImages) {
+        img.file(i + ".png", preparedImages[i], { base64: true });
+    }
+    zip.generateAsync({ type: "base64" }).then(function (base64) {
+        $('#latex-archive-placeholder').show();
+        $('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
+    });
 }
 
 function processArbitraryCodeFiles() {
