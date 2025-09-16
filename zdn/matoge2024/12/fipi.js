@@ -1,4 +1,5 @@
 window.nomer=[
+	98,
 	124,
 ].iz();
 
