@@ -1,18 +1,25 @@
 'use strict';
 
-
-function generateHtmlForTask(category,taskNumber,actionsArray){
-	var htmlContent='';
+/**
+ * Генерирует HTML для задания.
+ * @param {string} category - Категория задания.
+ * @param {string} taskNumber - Номер задания.
+ * @param {Array} actionsArray - Массив действий.
+ * @returns {string} - HTML-код задания.
+ */
+function generateHtmlForTask(category, taskNumber, actionsArray){
+	let htmlContent = '';
 	vopr.podg();
-	var currentTaskPath = nabor.adres+category+'/'+taskNumber+'.js';
+	const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
 	htmlContent+='<div class="task-wrapper" data-category="'+category+'" data-tasknumber="'+taskNumber+'">';
 	htmlContent+=currentTaskPath.vTag('h2');
 	console.log(currentTaskPath);
 	try{
+		// Execute the task generator
 		nabor.upak[category][taskNumber]();
 		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
 		vopr.taskNumber = category;
-		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
+		htmlContent += `<br/>${vopr.txt.vTag('div')}<br/>`;
 		htmlContent+=(
 			(
 				'<button class="copybutton" style="display:block; float:right;" title="Экспорт в РешуЕГЭ"'+
@@ -36,7 +43,7 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 			'<br/>'
 		);
 		actionsArray.push(vopr.dey);
-		if(vopr.rsh){
+		if (vopr.rsh) {
 			htmlContent+=(
 				('Показать решение ').vTag('button','class="spoiler-show"')+
 				('Скрыть   решение ').vTag('button','class="spoiler-hide"')+
@@ -47,18 +54,17 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 			'');
 
 		}
-		if(vopr.authors && vopr.authors.length){
-			htmlContent+=(
-				'<br/>' +
-				'<div class="katalog-authors">' +
-						'Автор' + ('ы').esli(vopr.authors.length > 1) + ': &nbsp;' +
-						vopr.authors.join(', ') +
-				'</div>'+
-				'<br/>'+
-			'');
+		if (vopr.authors && vopr.authors.length) {
+			htmlContent += `
+				<br/>
+				<div class="katalog-authors">
+					Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;${vopr.authors.join(', ')}
+				</div>
+				<br/>
+			`;
 		}
-	}catch(e){
-		console.log(e);
+	} catch(e) {
+		console.error(e);
 	}
 	htmlContent += '</div>';
 	return htmlContent;
