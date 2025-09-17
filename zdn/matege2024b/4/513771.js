@@ -4,8 +4,10 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '513771';
-		let preference = ['useQ', 'useU'];
-		let rand = getSelectedPreferenceFromList(key, preference);
+		let preference1 = ['useQ', 'useU'];
+		let preference2 = ['lessWords', 'moreWords'];
+		let rand = getSelectedPreferenceFromList(key, preference1);
+		let rand2 = getSelectedPreferenceFromList(key, preference2);
 
 		let the_orderToFind = decor.orderToFind.iz();
 
@@ -24,13 +26,17 @@
 
 		NAtask.setTask({
 
-			text: 'Энергия заряженного конденсатора $W$ (в Дж) вычисляется по формуле $' + ['W = \\frac{q^2}{2C}', 'W = \\frac{CU^2}{2}'][rand] +
-				'$, где $C$ – ёмкость конденсатора(в Ф), а ' +
-				['$q$ – заряд на одной обкладке конденсатора (в Кл)', '$U$ – разность потенциалов на обкладах конденсатора (в В)'][rand] + '. ' +
-				the_orderToFind.toZagl() + ' $W$ (в Дж), если $C$ = $' + C + '\\cdot 10^{-4}$ Ф и ' + ['$q = ' + q + '$ Кл', '$U = ' + U + '$ B'][rand] +
-				'.',
+			text: 'Энергия заряженного конденсатора $W$ (в ' + ['Дж', 'джоулях'][rand2] + ') вычисляется по формуле $' +
+				['W = \\frac{q^2}{2C}', 'W = \\frac{CU^2}{2}'][rand] + '$, где $C$ – ёмкость конденсатора (в ' + ['Ф', 'фарадах'][rand2] + '), а ' +
+				['$q$ – заряд на одной обкладке конденсатора (в ' + ['Кл', 'кулонах'][rand2] + ')',
+				'$U$ – разность потенциалов на обкладах конденсатора (в ' + ['В', 'вольтах'][rand2] + ')'][rand] + '. ' +
+				the_orderToFind.toZagl() + [' $W$ (в Дж)', ' энергию конденсатора ёмкостью '][rand2] + [', если $C$ = $' + C + '$', '$' + C + '$'][rand2] +
+				'$\\cdot 10^{-4}$ ' + ['Ф', 'фарад'][rand2] + [' и', ', если'][rand2] + ' ' +
+				[['$q =' + q + '$' + ' Кл', '$U =' + U + '$' + ' В'][rand],
+				['заряд на одной обкладке конденсатора равна ' + chislitlx(q, 'кулон', '$'),
+				'разность потенциалов на обкладах конденсатора равна ' + chislitlx(U, 'вольт', '$')][rand]][rand2] + ['', '. Ответ дайте в джоулях'][rand2] + '.',
 			answers: answer,
-			preference: preference,
+			preference: [preference1, preference2],
 
 		});
 		NAtask.modifiers.allDecimalsToStandard();
