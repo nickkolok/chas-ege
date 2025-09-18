@@ -4,11 +4,7 @@
 
 		let key = "26595";
 		let preference = ['first_worker', 'second_worker'];
-		let v=getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length-1));
-
+		let v = getSelectedPreferenceFromList(key, preference);
 		let A = sl(10,600);//кол-во деталей1
 		let B = sl([A/2,10].maxE(),[1.5*A,600].minE());//кол-во деталей2
 		genAssert(A!==B,'Заказ одинаковый: А: '+A+' B: '+B);

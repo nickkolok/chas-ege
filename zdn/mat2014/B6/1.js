@@ -2,7 +2,7 @@
 	retryWhileError(function () {
 		'use strict';
 		NAinfo.requireApiVersion(0, 0);
-		let configKey = "1";
+		let key = "283467";
 
 		let preference1 = ['two_tosses', 'three_tosses', 'four_tosses'];
 		let preference2 = ['equal', 'more', 'less', 'moreOrEqual', 'lesseOrEqual'];
@@ -16,7 +16,7 @@
 		let successfulTosses = sl(0, totalTosses);
 
 		// Тип сравнения
-		let comparisonType = getListedPreference(configKey, preference2.map((pref, index) => ({
+		let comparisonType = getListedPreference(key, preference2.map((pref, index) => ({
 			preference: pref,
 			preferenceValue: index
 		})), (totalTosses == successfulTosses || successfulTosses == 0) ? 0 : sl(preference1.length-1));
@@ -74,3 +74,5 @@
 		});
 	}, 1000);
 })();
+
+// https://ege.sdamgia.ru/problem?id=283467

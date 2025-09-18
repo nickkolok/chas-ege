@@ -4,10 +4,7 @@
 		
 		let key = "26597";
 		let preference = ['first_hose', 'second_hose'];
-		let rand=getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length-1));
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let A = sl(30,900);//объем резервуара (базовый)
 		let b = sl(1,[A/30,29].minE(),0.01);//объем (разница)

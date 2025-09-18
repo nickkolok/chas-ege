@@ -4,10 +4,7 @@
 		
 		let key = "26592";
 		let preference = ['first_worker', 'second_worker'];
-		let v=getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length-1));
+		let v = getSelectedPreferenceFromList(key, preference);
 
 		let A = sl(10,600);//кол-во деталей (базовое)
 		let b = sl(1,[A/4-1,30].minE(),0.01);//кол-во деталей (разница)
