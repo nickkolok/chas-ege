@@ -4,10 +4,7 @@
 		let key = '11502';
 		let preference = ['midline', 'side'];
 
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let side = sl(4, 60);
 
@@ -26,7 +23,7 @@
 		});
 
 		let height = triangle.heightCLength;
-		genAssert((height * 100).isAlmostInteger(), 'Высота слишком дробная');
+		genAssertAlmostInteger(height * 100, 'Высота слишком дробная');
 
 		triangle.addVertexToConnectionMatrix([triangle.heightC.pe], 'C');
 		triangle.addVertexToConnectionMatrix(triangle.midlinePointsAB, 'E');
