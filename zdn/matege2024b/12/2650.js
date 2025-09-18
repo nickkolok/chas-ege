@@ -21,7 +21,7 @@
 			sP: par.pointA,
 			tP: par.pointB
 		}, [par.segmentCD])[0].pe;
-		genAssert(bisector.x != par.pointC.x, 'Биссектриса совпала с диагональю');
+		genAssert((bisector.x - par.pointC.x).abs() > Number.EPSILON, 'Биссектриса совпала с диагональю');
 		par.addVertexToConnectionMatrix(bisector, 'A');
 
 		let points = autoScale(par.vertices);
