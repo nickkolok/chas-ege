@@ -1,13 +1,14 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-
-		let a = sl(5, 20);
+		
+		let range = sl(1,10);
+		let a = sl(5, 20)*range;
 
 		let triangle = new Triangle({
 			lengths: {
 				lengthAB: a,
-				lengthBC: slKrome(a, 5, 20),
+				lengthBC: slKrome(a, 5, 20)*range,
 			},
 			angles: {
 				angle: Math.PI / 2,
