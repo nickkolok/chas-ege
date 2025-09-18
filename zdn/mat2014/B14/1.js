@@ -2,25 +2,11 @@
 	'use strict';
 
 	retryWhileError(function() {
-		let key = '1';
-		let largestMass = getListedPreference(key, [{
-			preference: 'second_largest',
-			preferenceValue: 0,
-		}, {
-			preference: 'first_largest',
-			preferenceValue: 1,
-		}], sl1());
-		
-		let massForFind = getListedPreference(key, [{
-			preference: 'find_first_mass',
-			preferenceValue: 0,
-		}, {
-			preference: 'find_second_mass',
-			preferenceValue: 1,
-		}, {
-			preference: 'find_third_mass',
-			preferenceValue: 2,
-		}], sl(0,2));
+		let key = '512333';
+		let preference1 = ['second_largest', 'first_largest'];
+		let preference2= ['find_first_mass','find_second_mass', 'find_third_mass'];
+		let largestMass = getSelectedPreferenceFromList(key, preference1);
+		let massForFind = getSelectedPreferenceFromList(key, preference2);
 
 		let massFirst = sl(10, 99,0.01);
 		let massSecond = massFirst + slKrome(massFirst, 1, massFirst - 1, 0.01) * (-1).pow(largestMass);
@@ -60,6 +46,7 @@
             Ответ дайте ${massUnits[1]}.`,
 			answers: [massFirst, massSecond, massTrird][massForFind],
 			authors: ['Николай Авдеев', 'Александра Суматохина'],
+			preference: [preference1, preference2],
 		});
 
 		NAtask.modifiers.allDecimalsToStandard();
