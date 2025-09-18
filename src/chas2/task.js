@@ -54,8 +54,8 @@ chas2.task = {
 		 * Привести объект-задание к нормальному виду
 		 * @param {String} text текст задания
 		 * @param {String} analys текст разбора задания
-		 * @param {String|Number|String[]|Number[]} answers правильные ответы
-		 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
+		 * @param {String|Number|String[]|Number[]|Set} answers правильные ответы
+		 * @param {String|Number|String[]|Number[]|Set} wrongAnswers неправильные ответы
 		 * @param {String[]} tags теги
 		 * @param {Function} checkAnswer функция проверки ответа
 		 * @param {Function} draw функция отрисовки
@@ -63,16 +63,25 @@ chas2.task = {
 		normalizeTask : function(o) {
 			o.text = o.text || '';
 			o.analys = o.analys || '';
+			if (o.answers instanceof Set) {
+				o.answers = Array.from(o.answers);
+			}
 			o.answers = chaslib.toStringsArray('answers' in o ? o.answers : []);
+
+			if (o.wrongAnswers instanceof Set) {
+				o.wrongAnswers = Array.from(o.wrongAnswers);
+			}
 			o.wrongAnswers = chaslib.toStringsArray((('wrongAnswers' in o) && (o.wrongAnswers !== undefined)) ? o.wrongAnswers : []);
 			// Просто o.answers || [] нельзя - ноль не будет передаваться
 			o.authors = chaslib.toStringsArray(o.authors || o.author || []);
+			o.preference = o.preference || [];
 		},
 
 
 		/** @function chas2.task._.unfoldTask
 		 * Развернуть вопросы в стандартный объект-задание,
 		 * а именно - обработать questions и postquestion
+		 * и распределить ответы из markedAnswers
 		 */
 		unfoldTask : function(o) {
 			if (o.questions) {
@@ -86,9 +95,18 @@ chas2.task = {
 				if (question.analys) {
 					o.analys += question.analys;
 				}
+				o.markedAnswers = question.markedAnswers;
+				o.invertMarkedAnswers = question.invertMarkedAnswers;
 			}
 			if (o.postquestion) {
 				o.text += o.postquestion;
+			}
+			if (o.markedAnswers) {
+				for (let answer of o.markedAnswers) {
+					let needsInversion = Boolean(o.invertMarkedAnswers);
+					let isAnswerRight = Boolean(answer[1]) ^ needsInversion;
+					[o.wrongAnswers, o.answers][Number(isAnswerRight)].push(answer[0]);
+				}
 			}
 		},
 
@@ -141,8 +159,8 @@ chas2.task = {
 	 * Установить задание
 	 * @param {String} text текст задания
 	 * @param {String} analys текст разбора задания
-	 * @param {String|Number|String[]|Number[]} answers правильные ответы
-	 * @param {String|Number|String[]|Number[]} wrongAnswers неправильные ответы
+	 * @param {String|Number|String[]|Number[]|Set} answers правильные ответы
+	 * @param {String|Number|String[]|Number[]|Set} wrongAnswers неправильные ответы
 	 * @param {String|String[]} authors авторы шаблона
 	 * @param {String[]} tags теги
 	 * @param {Function} checkAnswer функция проверки ответа
@@ -159,11 +177,20 @@ chas2.task = {
 		window.vopr.ver = o.answers;
 		window.vopr.nev = o.wrongAnswers;
 		window.vopr.authors = o.authors;
+		window.vopr.preference = o.preference;
 		if (o.checkAnswer) {
 			window.vopr.vrn = o.checkAnswer;
 		}
 		if (o.draw) {
 			window.vopr.dey = o.draw;
+		}
+
+		o.forbidDecimalFractions = o.forbidDecimalFractions || chas2.task.setTask.forbidDecimalFractions;
+
+		if(o.forbidDecimalFractions){
+			let decimal = /\d+[.,]\d+/g;
+			genAssert(!decimal.test(o.text), 'Текст задания содержит десятичные дроби');
+			genAssert(!decimal.test(o.answers.join('__')), 'Один из ответов задания содержит десятичные дроби');
 		}
 
 		window.vopr.kat.importFrom(o.tags);
@@ -187,6 +214,7 @@ chas2.task = {
 			draw : window.vopr.dey,
 			tags : {},
 			authors : window.vopr.authors,
+			preference : window.vopr.preference,
 		};
 		chas2.task._.normalizeTask(o);
 		chas2.task._.validateTask(o);
@@ -573,7 +601,20 @@ chas2.task = {
 		let expr = math.parse(o.expr);
 		expr = math.simplify(expr,[mathjs_helpers.slEvaluate]);
 
-		let answer = o.variables ? expr.evaluate(o.variables) : expr.evaluate();
+		let variableValues = {};
+		if (o.variables) {
+			// TODO: честная символьная подстановка!
+			for (let v in o.variables) {
+				if (o.variables[v] === '-0') {
+					o.variables[v] = '0';
+				}
+				o.variables[v] = math.parse('' + o.variables[v]);
+				variableValues[v] = o.variables[v].evaluate();
+			}
+		}
+
+		let answer = expr.evaluate(variableValues);
+		genAssert(!isNaN(answer), "Ответ не определен. answer: " + answer);
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
@@ -636,8 +677,10 @@ chas2.task = {
 		if (o.variables) {
 			vars = '<br/>при ';
 			for (let v in o.variables) {
-				vars += '$' + v + '=' + math.parse('' + o.variables[v]).toTex() + '$, ';
+				vars += '$' + v + '=' + o.variables[v].toTex() + '$, ';
 			}
+			// В конце перечисления переменных у нас образовалась запятая.
+			// Заменяем её на точку
 			vars = vars.replace(/,\s$/, '.');
 		}
 
@@ -738,17 +781,23 @@ chas2.task = {
 
 		genAssert(minY !== null || maxY !== null, 'Экстремальное значение запрещено или не удовлетворяет условиям');
 
-		var chooseMinMax;
+		let whatToFind = ['min', 'max'];
 		let chosenX;
-		if (maxY === null || (minY !== null && sl1())) {
-			chooseMinMax = 'наименьшее';
-			o.answers = minY;
-			chosenX = minX;
-		} else {
-			chooseMinMax = 'наибольшее';
-			o.answers = maxY;
-			chosenX = maxX;
+		let chooseMinMax;
+		switch(true){
+			case o.forbidMinY && maxY !== null:
+				whatToFind = 'max';
+				break;
+			case o.forbidMaxY && minY !== null:
+				whatToFind = 'min';
+				break;
+			default:
+				whatToFind = whatToFind.shuffle().iz()			
 		}
+
+		o.answers = {min: minY, max: maxY}[whatToFind];
+		chosenX = {min: minX, max: maxX}[whatToFind];
+		chooseMinMax = {min: 'наименьшее', max: 'наибольшее'}[whatToFind];
 
 		o.answers = o.answers.ts();
 		genAssert(o.answers.length < 7, 'Ответ слишком длинный - вероятно, бесконечная десятичная дробь');
@@ -905,8 +954,19 @@ chas2.task = {
 
 		let whatToFind = Object.keys(sortedExtremums).shuffle();
 		genAssertNonempty(whatToFind, 'Искать-то нечего!');
-		whatToFind = whatToFind[0];
-		let theExtremum = sortedExtremums[whatToFind][0];
+
+		switch(true){
+			case o.forbidMinY:
+				whatToFind = 'max';
+				break;
+			case o.forbidMaxY:
+				whatToFind = 'min';
+				break;
+			default:
+				whatToFind = whatToFind.shuffle()[0];
+		}
+			
+		let theExtremum = sortedExtremums[whatToFind];
 
 		theExtremum = eval(theExtremum);
 		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
@@ -916,7 +976,7 @@ chas2.task = {
 		let tex = expr.toTex({parenthesis: 'auto'}).allDecimalsToStandard(true);
 		o.text = 'Найдите точку '+ extremumName + 'а функции $y=' + tex + '$.'
 
-		o.answers = [theExtremum];
+		o.answers = theExtremum;
 
 		chas2.task.setTask(o);
 	},
@@ -1039,20 +1099,30 @@ chas2.task = {
 					alph1 = alph1.filter(e => !o.preserve.includes(e));
 				}
 				var alph2 = alph1.slice().shuffle();
+			
+				var task = chas2.task.getTask();
+				
+				var originalPreference = task?.preference?.slice() || [];
+				var originalAuthors = task?.authors?.slice() || [];
+
+				var mappedTask = mapRecursive(
+					task,
+					function(str) {
+						return ('' + str).cepZamena(alph1, alph2);
+					}
+				);
+
 				if (variativeABCstrings) {
 					for (let i = 0; i < variativeABCstrings.length; i++) {
 						variativeABCstrings[i] =
 							variativeABCstrings[i].cepZamena(alph1, alph2);
 					}
 				}
-				chas2.task.setTask(
-					mapRecursive(
-						chas2.task.getTask(),
-						function(str) {
-							return ('' + str).cepZamena(alph1, alph2);
-						}
-					)
-				);
+				
+				mappedTask.preference = originalPreference;
+				mappedTask.authors = originalAuthors;
+				
+				chas2.task.setTask(mappedTask);
 			};
 		})(),
 

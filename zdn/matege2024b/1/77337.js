@@ -6,7 +6,7 @@
 
         let numberOfPeople = sl(9, 30, 1);
         let placeToSleepInOneTent = sl(2, 6, 1);
-        let educationPlace = ['школе', 'университете', 'училище', 'лицее', 'колледже', 'ВУЗе', 'подготовительном классе'].iz();
+        let educationPlace = ['школе', 'университете', 'училище', 'лицее', 'колледже', 'вузе', 'подготовительном классе'].iz();
 
         genAssert(!numberOfPeople.kratno(placeToSleepInOneTent), "Количество мест для сна кратко количеству людей");
 
