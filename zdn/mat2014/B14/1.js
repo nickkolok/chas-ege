@@ -1,48 +1,55 @@
 (function() {
+	'use strict';
 
-var x=sluchch(1,99);
-var f=[1,2,4,5,10,20,25].iz();
-var d=sluchch(30,50);
-var b=f+d;
-var a=sluchch(1,d-f-1);
-var c=x*(2*d-a-b)/10/f;
-x/=10;
-var g=sluchch(0,2);
-var h=['первого','второго','третьего'];
-var m=[x,x+c,2*x+c];
+	retryWhileError(function() {
+		let key = '512333';
+		let preference1 = ['second_largest', 'first_largest'];
+		let preference2= ['find_first_mass','find_second_mass', 'find_third_mass'];
+		let largestMass = getSelectedPreferenceFromList(key, preference1);
+		let massForFind = getSelectedPreferenceFromList(key, preference2);
 
+		let massFirst = sl(10, 99,0.01);
+		let massSecond = massFirst + slKrome(massFirst, 1, massFirst - 1, 0.01) * (-1).pow(largestMass);
+		let massDifference = (massFirst - massSecond).abs();
+		let massTrird = massFirst + massSecond;
 
-if(sl1()){ // Растворы
-	var bulk = 'раствор';
-	var mixin = ['соль','щёлочь','кислота'].iz();
-	var juncture = 'Два раствора сливают и получают третий, содержащий';
-} else { //Сплавы
-	var bulk = 'сплав';
-	var mixin = ['медь','олово','серебро','золото','алюминий'].iz();
-	var juncture = 'Из этих двух сплавов получили третий сплав, содержащий';
-}
+		let percentFirst = sl(1, 50, 0.01);
+		let percentSecond = slKrome(percentFirst, 1, 50, 0.01);
+		let percentThird = (massFirst * percentFirst + massSecond * percentSecond) / massTrird;
 
-bulk = sklonlxkand(bulk);
-mixin = sklonlxkand(mixin);
+		genAssertZ1000(percentThird, 'Процент третьего сплава слишком дробный');
 
-var massUnits=[
-	[ 'г', 'в граммах'],
-	['кг', 'в килограммах'],
-].iz();
+		let bulk, mixin, juncture;
+		if (sl1()) { // Растворы
+			bulk = 'раствор';
+			mixin = ['соль', 'щёлочь', 'кислота'].iz();
+			juncture = 'Два раствора сливают и получают третий, содержащий';
+		} else { // Сплавы
+			bulk = 'сплав';
+			mixin = ['медь', 'олово', 'серебро', 'золото', 'алюминий'].iz();
+			juncture = 'Из этих двух сплавов получили третий сплав, содержащий';
+		}
 
-window.vopr.txt=
-	('Имеется два ' + bulk.re + '. ').esli(sl1()) +
-	'Первый ' + bulk.ie + ' содержит '+a.ts()+'% ' + mixin.re + ', второй содержит '+b.ts()+'% ' + mixin.re + '.' +
-	' Масса второго ' + bulk.re + ' больше массы первого ' + bulk.re + ' на '+c.ts()+' ' + massUnits[0] + '.' +
-	' ' + juncture + ' '+d.toFixedLess(4)+'% ' + mixin.re + '.' +
-	' Найдите массу '+h[g]+' ' + bulk.re + '.' +
-	' Ответ дайте ' + massUnits[1] + '.';
+		bulk = sklonlxkand(bulk);
+		mixin = sklonlxkand(mixin);
 
-window.vopr.ver=[''+m[g].ts()];
+		let massUnits = [
+			['г', 'в граммах'],
+			['кг', 'в килограммах'],
+		].iz();
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
+		NAtask.setTask({
+			text: `Имеется два ${bulk.re}. Первый ${bulk.ie} содержит ${percentFirst}% ${mixin.re}, 
+            второй содержит ${percentSecond}% ${mixin.re}. 
+            Масса ${['второго', 'первого'][largestMass]} ${bulk.re} больше массы ${[ 'первого', 'второго'][largestMass]} ${bulk.re} на ${massDifference} ${massUnits[0]}. 
+            ${juncture} ${percentThird}% ${mixin.re}. Найдите массу ${['первого', 'второго', 'третьего'][massForFind]} ${bulk.re}. 
+            Ответ дайте ${massUnits[1]}.`,
+			answers: [massFirst, massSecond, massTrird][massForFind],
+			authors: ['Николай Авдеев', 'Александра Суматохина'],
+			preference: [preference1, preference2],
+		});
+
+		NAtask.modifiers.allDecimalsToStandard();
+	}, 5000);
 })();
-// В том числе РешуЕГЭ 99575
+//https://math-ege.sdamgia.ru/problem?id=512333
