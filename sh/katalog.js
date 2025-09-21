@@ -1,19 +1,19 @@
 'use strict';
 
 
-function generateHtmlForTask(kat,zdn,masdey){
-	var rez='';
+function generateHtmlForTask(category,taskNumber,actionsArray){
+	var htmlContent='';
 	vopr.podg();
-	var currentTask = nabor.adres+kat+'/'+zdn+'.js';
-	rez+='<div class="task-wrapper" data-category="'+kat+'" data-tasknumber="'+zdn+'">';
-	rez+=currentTask.vTag('h2');
-	console.log(currentTask);
+	var currentTaskPath = nabor.adres+category+'/'+taskNumber+'.js';
+	htmlContent+='<div class="task-wrapper" data-category="'+category+'" data-tasknumber="'+taskNumber+'">';
+	htmlContent+=currentTaskPath.vTag('h2');
+	console.log(currentTaskPath);
 	try{
-		nabor.upak[kat][zdn]();
-		vopr.template = currentTask.replace(/^(\.\.\/)+/,'');
-		vopr.taskNumber = kat;
-		rez+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
-		rez+=(
+		nabor.upak[category][taskNumber]();
+		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
+		vopr.taskNumber = category;
+		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
+		htmlContent+=(
 			(
 				'<button class="copybutton" style="display:block; float:right;" title="Экспорт в РешуЕГЭ"'+
 				'data-task="' + encodeURIComponent(JSON.stringify(vopr)) + '"' +
@@ -35,9 +35,9 @@ function generateHtmlForTask(kat,zdn,masdey){
 			).vTag('div') +
 			'<br/>'
 		);
-		masdey.push(vopr.dey);
+		actionsArray.push(vopr.dey);
 		if(vopr.rsh){
-			rez+=(
+			htmlContent+=(
 				('Показать решение ').vTag('button','class="spoiler-show"')+
 				('Скрыть   решение ').vTag('button','class="spoiler-hide"')+
 				'<div class="spoiler-body">'+
@@ -48,20 +48,20 @@ function generateHtmlForTask(kat,zdn,masdey){
 
 		}
 		if(vopr.authors && vopr.authors.length){
-			rez+=(
+			htmlContent+=(
 				'<br/>' +
 				'<div class="katalog-authors">' +
 						'Автор' + ('ы').esli(vopr.authors.length > 1) + ': &nbsp;' +
 						vopr.authors.join(', ') +
-				'<div/>'+
+				'</div>'+
 				'<br/>'+
 			'');
 		}
 	}catch(e){
 		console.log(e);
 	}
-	rez += '</div>';
-	return rez;
+	htmlContent += '</div>';
+	return htmlContent;
 }
 
 function generateKatalog(){
@@ -71,8 +71,9 @@ function generateKatalog(){
 	var br='<br/>';
 	for(var kat in nabor.upak){
 		window.comment='';
+		window.availableTaskNumbers = null;
 		try{
-				nabor.upak[kat].main()
+				nabor.upak[kat][nabor.scheduler]()
 		}catch(e){
 			console.log(e);
 		}
@@ -87,8 +88,10 @@ function generateKatalog(){
 			(kat+'. '+window.comment).vTag('a','href="#'+kat+'"')+
 			br+
 		'');
-		for(var zdn in nabor.upak[kat])
-			if(zdn!='main'){
+		var tasksToList = window.availableTaskNumbers || Object.keys(nabor.upak[kat]);
+
+		for(var zdn of tasksToList)
+			if(zdn!='main' && zdn!='fipi'){
 				rez += generateHtmlForTask(kat,zdn,masdey);
 			}
 			rez += '</div>';

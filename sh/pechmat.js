@@ -3,7 +3,7 @@
 var vr1 = chas.mode.svinta ? 100 : 200;
 var vr2 = chas.mode.svinta ? 100 : 1500;
 
-var variantNumber;
+var variantNumber = 0;
 var nV = 1;
 var nZ = 1;
 var aZ = [];
@@ -33,14 +33,11 @@ function vse0() {
 	$('#cV').val(1);
 }
 
-function zapusk() {
-	//Сохраняем параметры генерации
-	chasStorage.domData.save();
-
-	//Читаем настройки
+function readOptions() {
 	options.editable = $('#redakt').is(':checked');
 	options.largeFont = $('#largeFont').is(':checked');
 	options.customNumber = $('#customNumber').is(':checked');
+	options.variantPrefix = $('#variantPrefix').val();
 	options.vanishVariants = $('#vanishVariants').is(':checked');
 	options.nopagebreak = $('#nopagebreak').is(':checked');
 	options.compactAnswers = $('#compact-answers').is(':checked');
@@ -53,14 +50,36 @@ function zapusk() {
 	options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
+	options.forceIntegers = $('#forceIntegers').is(':checked');
+	options.onlyIntegers = $('#onlyIntegers').is(':checked');
+	options.randomSeed = $('#randomSeed').val();
+	if (options.randomSeed === '') {
+		options.randomSeed = Date.now();
+	}
 
-	if (customNumber) {
+	if (options.customNumber) {
 		variantNumber = $('#start-number').val() - 1;
 	}
+
+	sluchch.forceIntegers = !!options.forceIntegers;
+	sluchch.onlyIntegers = !!options.onlyIntegers;
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
 	}
+}
+
+
+async function zapusk() {
+	//Если файлы подгружены, то запускаем их сразу
+	//Например, чтобы выставить ими количество вариантов.
+	await processArbitraryCodeFiles();
+
+	//Сохраняем параметры генерации
+	chasStorage.domData.save();
+
+	//Читаем настройки
+	readOptions();
 
 	//Читаем количество заданий
 	aV = nV = 1 * $('#cV').val();
@@ -121,7 +140,7 @@ function konecSozd() {
 			).
 			 // Escape LaTeX comments,
 			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
+			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}').replace(/\" /g, '"\\space ');
 		}
 	}
 
@@ -155,7 +174,7 @@ function bumpVariantNumber() {
 
 function appendVariantTasksCaption() {
 	if (!options.vanishVariants) {
-		strVopr += '<h2 class="d">Вариант №' + variantNumber + '</h2>';
+		strVopr += '<h2 class="d">Вариант №' + options.variantPrefix + variantNumber + '</h2>';
 	}
 }
 
@@ -174,9 +193,9 @@ function appendVariantAnswersCaption() {
 	if (!options.vanishVariants) {
 		strOtv += '<tr><th colspan="10">';
 		if (options.compactAnswers) {
-			strOtv += 'Вар. ' + variantNumber;
+			strOtv += 'Вар. ' + options.variantPrefix + variantNumber;
 		} else {
-			strOtv += 'Ответы к варианту<br/>№' + variantNumber;
+			strOtv += 'Ответы к варианту<br/>№' + options.variantPrefix + variantNumber;
 		}
 		strOtv += '</th></tr>';
 	}
@@ -223,8 +242,14 @@ function zadan() {
 			nZ++;
 			zadan();
 		} else {
+			let tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
+			// Именно в этой точке происходит подсидовка -
+			// использование предсказуемых псевдослучайных чисел вместо встроенных случайных,
+			// позволяющее перегенерировать только отдельные задания из варианта
+			let seed = options.randomSeed + "__" + variantsGenerated.length + "__" + tasksReadyInCurrentVariant;
+			Math.seedrandom(seed);
+
 			if (options.splitAnswerTables) {
-				var tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
 				if (tasksReadyInCurrentVariant && (tasksReadyInCurrentVariant % options.splitAnswersNumber === 0)) {
 					appendVariantAnswersEnding();
 					appendVariantAnswersCaption();
@@ -246,7 +271,7 @@ function createHtmlForTask(nazvzad) {
 
 	return {
 		txt:
-			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'">'+
+			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
 				'<div class="b">'+nazvzad+'</div>'+
 				'<div class="z">'+
 					window.vopr.txt+
@@ -259,7 +284,7 @@ function createHtmlForTask(nazvzad) {
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
-			('<td>' + variantNumber + '</td>').esli(!options.vanishVariants) +
+			('<td>' + options.variantPrefix + variantNumber + '</td>').esli(!options.vanishVariants) +
 			'<td>' + nazvzad + '</td>' +
 			'<td>' + window.vopr.ver.join('; ') + '</td>' +
 			('<td>' + window.vopr.rsh + '</td>').esli(options.solutionsIntoAnswers) +
@@ -267,8 +292,10 @@ function createHtmlForTask(nazvzad) {
 		rsh:
 			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
 				(
-					'<h3>'+('Вариант №'+variantNumber+', ').esli(!options.vanishVariants) +
-					'задача '+nazvzad+'</h3><br/>'+
+					'<h3>'+
+						('Вариант №'+options.variantPrefix+variantNumber+', ').esli(!options.vanishVariants) +
+						'задача '+nazvzad+
+					'</h3><br/>'+
 					vopr.rsh
 				).esli(vopr.rsh)+
 			'</div>',
@@ -282,36 +309,36 @@ var unqDict = {};
 function obnov() {
 	var nazvzad;
 
-		if (options.transitTaskNumbers){
-			nazvzad = options.startTransitNumber + aZ.sum() - iZ.sum() - 1;
-		}else{
-			nazvzad =
-				dvig.getzadname(nZ)+
-				(aZ[nZ]==1? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1) );
-		}
-		var html = createHtmlForTask(nazvzad);
+	if (options.transitTaskNumbers) {
+		nazvzad = options.startTransitNumber + aZ.sum() - iZ.sum() - 1;
+	} else {
+		nazvzad =
+			dvig.getzadname(nZ) +
+			(aZ[nZ] == 1 ? '' : '-' + (aZ[nZ] - iZ[nZ] + options.firstTaskNumber - 1));
+	}
+	var html = createHtmlForTask(nazvzad);
 
-		if(options.uniqueAnswersAndSolutions && (html.unq in unqDict)){
-			console.log('Deduplicating ' + nazvzad + '...');
-			dvig.zadan(obnov,nZ);
-			return;
-		}
+	if (options.uniqueAnswersAndSolutions && (html.unq in unqDict)) {
+		console.log('Deduplicating ' + nazvzad + '...');
+		dvig.zadan(obnov, nZ);
+		return;
+	}
 
-		unqDict[html.unq] = true;
+	unqDict[html.unq] = true;
 
-		strVopr += html.txt;
-		strOtv  += html.ver;
-		strResh += html.rsh;
+	strVopr += html.txt;
+	strOtv  += html.ver;
+	strResh += html.rsh;
 
-		generatedTasks[vopr.taskId] = vopr.clone();
+	grabCurrentTask();
 
-		var sdel=aZ.sum()*(aV-nV+1)-iZ.sum();
-		var w=sdel/kZ;
-		$('.tx').text((100*w).toFixedLess(1).dopdo(' ',4)+'%');
-		$('#pr1').width($('#pr0').width()*w);
-		var v=(vr1+vr2)*(kZ-sdel)/1000;
-		$('#vrem').text(sdel+' из '+kZ+' '+v.toDvoet());
-		zadan();
+	var sdel = aZ.sum() * (aV - nV + 1) - iZ.sum();
+	var w = sdel / kZ;
+	$('.tx').text((100 * w).toFixedLess(1).dopdo(' ', 4) + '%');
+	$('#pr1').width($('#pr0').width() * w);
+	var v = (vr1 + vr2) * (kZ - sdel) / 1000;
+	$('#vrem').text(sdel + ' из ' + kZ + ' ' + v.toDvoet());
+	zadan();
 }
 
 function shirprim() {
@@ -374,6 +401,13 @@ function getTaskTextContainerByTaskId(taskId) {
 	return $('div.d[data-task-id="' + taskId + '"]')[0];
 }
 
+function grabCurrentTask(){
+	generatedTasks[vopr.taskId] = vopr.clone();
+	generatedTasks[vopr.taskId].address =
+		window.nabor.adres + dvig.getzadname(nZ) + '/' + window.nomer;
+
+}
+
 function renewTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.d');
@@ -381,6 +415,7 @@ function renewTask() {
 	console.log(wrapper);
 	var taskId = wrapper.attr('data-task-id');
 	var taskNumber = wrapper.attr('data-task-number');
+	variantNumber = wrapper.attr('data-variant-number');
 	var answerRow = $('tr.answer-container[data-task-id=' + taskId + ']');
 	var solution = $('div.solution-container[data-task-id=' + taskId + ']');
 
@@ -393,7 +428,7 @@ function renewTask() {
 		solution .replaceWith(taskHtml.rsh);
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
-		generatedTasks[vopr.taskId] = vopr.clone();
+		grabCurrentTask();
 		if (options.prepareLaTeX) {
 			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
 			refreshLaTeXarchive();
@@ -446,20 +481,25 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = "\n\\\\\n\\hline\n";
-	return (
-		'\\begin{table}[h]' +
-			'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
-				'\n\\hline\n' +
-				answersParsedToTeX.join(hline) +
-				hline +
+	const maxRows = options.splitAnswersNumber || 60;
+	const hline = "\n\\\\\n\\hline\n";
+	const colFormat = (new Array(cellsInFirstRow)).fill('|l').join('') + '|';
+
+	let res = '';
+	for (let i = 0; i < answersParsedToTeX.length; i += maxRows) {
+		const chunk = answersParsedToTeX.slice(i, i + maxRows);
+		res += '\\begin{tabular}{' + colFormat + '}' +
+			'\n\\hline\n' +
+			chunk.join(hline) +
+			hline +
 			'\\end{tabular}' +
-		'\\end{table}' +
-		'\n\n\n'
-	);
+			'\n\n\n';
+	}
+	return res;
 }
 
-function getAnswersTableLaTeX(variantN) {
+
+function createLaTeXbunchAnswers(variantN) {
 
 	var answerRows = $('table#pech-answers-table-variant-' + variantN + ' tr');
 
@@ -481,47 +521,69 @@ function replaceCanvasWithImgInTask(element, text) {
 		// Nothing to do
 		return text;
 	}
+	console.log(element);
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
-	console.log(canvases);
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
-		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictocenter[]{images/'+imageName+'}');
+		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.4\\linewidth]{'+imageName+'}');
 	}
+	if (canvases.length) {
+		text =
+			'\\ifdefined\\OnBeforeIllustratedTask\\OnBeforeIllustratedTask\\fi\n' +
+			text.trim() +
+			'\n\\ifdefined\\OnAfterIllustratedTask\\OnAfterIllustratedTask\\fi' +
+		'';
+	}
+
 	return text;
 }
 
-function createLaTeXbunch(variantN) {
+function createLaTeXbunchTasks(variantN) {
 	var bunchText = "";
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
 				'\n' +
 				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
+					'% ' + generatedTasks[taskId].address + '\n' +
 					tasksInLaTeX[taskId] + '\n' +
 				'\\end{taskBN}' + '\n';
 		}
 
 	}
-	return bunchText + '\n\\newpage\n Ответы\n\n' + getAnswersTableLaTeX(variantN) + '\n\\newpage\n';
+	return bunchText;
 }
 
-function refreshLaTeXarchive(){
-	if(!options.prepareLaTeX){
+
+function refreshLaTeXarchive() {
+	if (!options.prepareLaTeX) {
 		return;
 	}
 	var zip = new JSZip();
-	var bunch = "";
+	var bunchTasks = "";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>6)?6:variantsGenerated.length)+"}";
+
 	for(var variantN of variantsGenerated){
-		bunch +=
-			'\n\n\n\n' +
-			'\\cleardoublepage\n' +
-			'\\def\\examvart{Вариант ' + variantN + '}\n' +
-			'\\normalsize\n\\input{instruction.tex}\n\\startpartone\n\\large' +
-			'\n\n\n\n' +
-			createLaTeXbunch(variantN);
+		var head =
+			'\n\n' +
+			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
+			'\\def\\examvart{\\varianttitle ' + options.variantPrefix + variantN + '}\n' +
+			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
+			'\n\n';
+		var tail =
+			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
+		bunchTasks += head + createLaTeXbunchTasks(variantN) + tail;
+		answers += createLaTeXbunchAnswers(variantN);
 	}
-	zip.file("tasks.tex", bunch);
+
+	answers += "\n\n\\end{multicols}\n\n\\end{document}";
+
+	bunchTasks += "\n\n%Random seed:" + options.randomSeed;
+
+	zip.file("tasks.tex", bunchTasks);
+	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
+
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
 		img.file(i + ".png", preparedImages[i], { base64: true });
@@ -530,4 +592,47 @@ function refreshLaTeXarchive(){
 		$('#latex-archive-placeholder').show();
 		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
 	});
+}
+
+function processArbitraryCodeFiles() {
+	const files = $('#arbitraryCodeInput')[0].files;
+
+	if (!files.length) {
+		console.log('Не найдено файлов для запуска произвольного кода.');
+		return Promise.resolve(); // resolve immediately if no files
+	}
+
+	console.log('Файлов для запуска произвольного кода: ' + files.length);
+
+	const promises = Array.from(files).map(file => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+
+			reader.onload = function (e) {
+				const content = e.target.result;
+				try {
+					eval(content);
+					console.log(`Исполнен файл ${file.name}`);
+					resolve();
+				} catch (err) {
+					console.error(`Не удалось исполнить файл ${file.name}:`, err);
+					resolve(); // or reject(err); depending on whether you want to halt on errors
+				}
+			};
+
+			reader.onerror = function () {
+				console.error(`Не удалось прочитать файл  ${file.name}`);
+				resolve(); // or reject() if you want to handle errors differently
+			};
+
+			reader.readAsText(file);
+		});
+	});
+
+	// Return a Promise that resolves when all files are processed
+	return Promise.all(promises);
+}
+
+function clearArbitraryCodeInput() {
+	document.getElementById('arbitraryCodeInput').value = '';
 }
