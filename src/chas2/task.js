@@ -74,6 +74,7 @@ chas2.task = {
 			o.wrongAnswers = chaslib.toStringsArray((('wrongAnswers' in o) && (o.wrongAnswers !== undefined)) ? o.wrongAnswers : []);
 			// Просто o.answers || [] нельзя - ноль не будет передаваться
 			o.authors = chaslib.toStringsArray(o.authors || o.author || []);
+			o.preference = o.preference || [];
 		},
 
 
@@ -176,6 +177,7 @@ chas2.task = {
 		window.vopr.ver = o.answers;
 		window.vopr.nev = o.wrongAnswers;
 		window.vopr.authors = o.authors;
+		window.vopr.preference = o.preference;
 		if (o.checkAnswer) {
 			window.vopr.vrn = o.checkAnswer;
 		}
@@ -212,6 +214,7 @@ chas2.task = {
 			draw : window.vopr.dey,
 			tags : {},
 			authors : window.vopr.authors,
+			preference : window.vopr.preference,
 		};
 		chas2.task._.normalizeTask(o);
 		chas2.task._.validateTask(o);
@@ -1096,20 +1099,30 @@ chas2.task = {
 					alph1 = alph1.filter(e => !o.preserve.includes(e));
 				}
 				var alph2 = alph1.slice().shuffle();
+			
+				var task = chas2.task.getTask();
+				
+				var originalPreference = task?.preference?.slice() || [];
+				var originalAuthors = task?.authors?.slice() || [];
+
+				var mappedTask = mapRecursive(
+					task,
+					function(str) {
+						return ('' + str).cepZamena(alph1, alph2);
+					}
+				);
+
 				if (variativeABCstrings) {
 					for (let i = 0; i < variativeABCstrings.length; i++) {
 						variativeABCstrings[i] =
 							variativeABCstrings[i].cepZamena(alph1, alph2);
 					}
 				}
-				chas2.task.setTask(
-					mapRecursive(
-						chas2.task.getTask(),
-						function(str) {
-							return ('' + str).cepZamena(alph1, alph2);
-						}
-					)
-				);
+				
+				mappedTask.preference = originalPreference;
+				mappedTask.authors = originalAuthors;
+				
+				chas2.task.setTask(mappedTask);
 			};
 		})(),
 
