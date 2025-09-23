@@ -15,8 +15,8 @@
 		let V = sl(1, 20, 0.1);
 		let P = (nu * R * T) / V;
 
-		genAssertAlmostInteger(10000 * P, 'не более 4 знака после запятой');
-
+		genAssertAlmostInteger(1000 * P, 'не более 3 знака после запятой');
+		genAssert(P<100000, 'P не более 100 000');
 
 		let givenParts = [
 			'$T = ' + T + '$ К',
