@@ -10,9 +10,9 @@
 		let m2 = slKrome([m1], 2, 10, 0.5);
 		let gamma = 6.67 * Math.pow(10, -11);
 		let r = sl(1, 9, 0.5);
-		let F = gamma * (m1.pow(9) * m2.pow(9)) / r ** 2;
+		let F = gamma * (m1 * m2.pow(9)) / r ** 2;
 
-		genAssert((100000 * F).isAlmostInteger(), 'не более 6-х знаков после запятой');
+		genAssert((100000 * F).isAlmostInteger(), 'не более 6 знаков после запятой');
 
 		NAtask.setTask({
 			text: 'Закон всемирного тяготения можно записать в виде $F = \\gamma\\frac{m_1m_2}{r^2}$, ' +
