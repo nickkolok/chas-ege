@@ -131,12 +131,13 @@ function konecSozd() {
 		$('#rsh').html('<h2>Решения</h2>' + strResh);
 	}
 	
-	// Добавляем кроссворд с ответами в соответствующую вкладку
-	if (strCross && options.crosswordAnswers) {
-		$('#cross').html('<h2>Кроссворды</h2>' + strCross);
-		// Показываем кнопку для вкладки с кроссвордами
-		$('#cross-tab').show();
-	}
+	if (options.crosswordAnswers && strCross) {
+        $('#crossword-section').show(); // Показываем всю секцию
+        $('#cross').html('<h2>Кроссворды</h2>' + strCross);
+        $('#cross-tab').show();
+    } else {
+        $('#crossword-section').hide(); 
+    }
 
 	for (var id in generatedTasks) {
 		try {
@@ -429,6 +430,7 @@ var startShell = function () {
 	$('#zadaniya').html(sozdKolvoHtml('pech'));
 	$('#gotov').hide();
 	galkiKat('#galki_kat', 'pech');
+	$('#crossword-section').hide();
 }
 
 
