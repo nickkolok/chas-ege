@@ -669,14 +669,20 @@ function refreshLaTeXarchive() {
         zip.file("crosswords_without_answers.tex", createCrosswordLaTeX(false));
     }
 
-    var img = zip.folder("images");
-    for (var i in preparedImages) {
-        img.file(i + ".png", preparedImages[i], { base64: true });
+	// Добавляем файлы с кроссвордами
+    if (options.crosswordAnswers && Object.keys(crosswordData).length > 0) {
+        zip.file("crosswords_with_answers.tex", createCrosswordLaTeX(true));
+        zip.file("crosswords_without_answers.tex", createCrosswordLaTeX(false));
     }
-    zip.generateAsync({ type: "base64" }).then(function (base64) {
-        $('#latex-archive-placeholder').show();
-        $('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
-    });
+	
+	var img = zip.folder("images");
+	for (var i in preparedImages) {
+		img.file(i + ".png", preparedImages[i], { base64: true });
+	}
+	zip.generateAsync({ type: "base64" }).then(function (base64) {
+		$('#latex-archive-placeholder').show();
+		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
+	});
 }
 
 function processArbitraryCodeFiles() {
