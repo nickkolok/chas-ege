@@ -30,7 +30,7 @@
 
 		let value = [valueDrob, valueSqrt][rand];
 		let step = [0.1, 1][rand];
-		let format = rand === 0 ? x => ((x * 10).round() / 10).ts() : x => x;
+		let format = rand === 0 ? x => ((x * 10).round() / 10).ts(true) : x => x;
 
 		let start = Math.floor(value / step) * step;
 		let end = start + step;
@@ -55,7 +55,7 @@
 		NAtask.setTask({
 			text: 'Какому из данных промежутков принадлежит число $' + [exprStrDrob, '\\sqrt{' + numSqrt + '}'][rand] + '$? В ответе укажите номер правильного варианта.',
 			answers: correct,
-			wrongAnswers: Array.from(wrongAnswers),
+			wrongAnswers,
 			preference: preference,
 		});
 
