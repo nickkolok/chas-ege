@@ -652,6 +652,7 @@ chas2.task = {
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
+		genAssert(!o.forbiddenAnswers.hasElem(answer.ts()), 'Ответ находится в списке запрещённых');
 
 		if(!o.askAboutFraction){
 			genAssertZ1000(answer, 'Ответ существенно нецелый');
