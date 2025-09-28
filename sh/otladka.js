@@ -246,12 +246,14 @@ function startExport(){
 }
 
 function startQuickExportToTex(){
-	copyToClipboard([
-		'Текст задания:',
-		roughHTML2LaTeX(window.vopr.txt),
-		'Ответ:',
-		roughHTML2LaTeX(window.vopr.ver),
-		'Решение:'.esli(window.vopr.rsh),
-		roughHTML2LaTeX(window.vopr.rsh),
-	].join('\n\n'));
+	replaceCanvasWithImgInTaskAndHTML($('#question')[0], vopr, function(){
+		copyToClipboard([
+			'Текст задания:',
+			roughHTML2LaTeX(vopr.txt),
+			'Ответ:',
+			roughHTML2LaTeX(vopr.ver),
+			'Решение:'.esli(vopr.rsh),
+			roughHTML2LaTeX(vopr.rsh),
+		].join('\n\n'));
+	});
 }
