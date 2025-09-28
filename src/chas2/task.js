@@ -670,6 +670,9 @@ chas2.task = {
 		expr = math.simplify(expr, mathjsRules.omit1sqrt);
 		expr = math.simplify(expr, mathjsRules.trig2trigPow);
 
+		if (o.rulesBeforePrinting) {
+			expr = math.simplify(expr, o.rulesBeforePrinting);
+		}
 
 		let tex = expr.toTex().allDecimalsToStandard(true);
 
