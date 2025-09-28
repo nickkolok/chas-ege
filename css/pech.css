@@ -81,22 +81,6 @@ em{
 .bezramok{
 	border:0px;
 }
-#readiness-message{
-	position:fixed;
-	top:0px;
-	right:0px;
-	margin:15px;
-	float:right;
-	overflow:hidden;
-	vertical-align:middle;
-	border-radius:1em;
-	opacity:0.85;
-	background-color:#e8f0f0;
-	z-index:99997;
-	padding:1.1em;
-	height:3.5em;
-	font-weight:700;
-}
 #pr0,#pr1{
 	height:1.4em;
 	overflow:hidden;
