@@ -2,18 +2,19 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 		let side = sl(4, 60, 2);
+		let k = sl(1, 10) * [0.1, 1, 10, 100].iz();
 
 		let letters = latbukv.slice(0, 3).concat(['K', 'P']);
 
 		let triangle = new Triangle({
 			lengths: {
-				lengthAB: sl(side + 2, side + 20, 2),
-				lengthBC: side,
-				lengthCA: side,
+				lengthAB: sl(side + 2, side + 20, 2) * k,
+				lengthBC: side * k,
+				lengthCA: side * k,
 			},
 			supplementary: {
 				calculateHeights: true,
-				calculateMidlines: true
+				calculateMidlines: true,
 			}
 		});
 
@@ -58,11 +59,12 @@
 		};
 
 		NAtask.setTask({
-			text: `В равнобедренном треугольнике $ABC$ основание $AB=${triangle.lengthAB}$, высота $CK$, проведённая к основанию, равна $${height.ts()}$. Точка $P$ - середина стороны $BC$. Найдите длину отрезка $KP$.`,
+			text: `В равнобедренном треугольнике $ABC$ основание $AB=${triangle.lengthAB}$, высота $CK$, проведённая к основанию, равна $${height}$. Точка $P$ - середина стороны $BC$. Найдите длину отрезка $KP$.`,
 			answers: answ,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.variativeABC(letters);
+		NAtask.modifiers.allDecimalsToStandard(true);
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
