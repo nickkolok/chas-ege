@@ -234,7 +234,11 @@ var startShell = function (){
 	}
 }
 
-
+function displayReadinessMessage(message, timeout = 3000) {
+	$('#readiness-message').show();
+	$('#readiness-message').html(message);
+	setTimeout(() => $('#readiness-message').hide(), timeout);
+}
 
 function startExport(){
 	vopr.template = $("#filepath").val().replace(/^(\.\.\/)+/,'');
@@ -242,7 +246,8 @@ function startExport(){
 
 	replaceCanvasWithImgInTaskAndHTML($('#question')[0], vopr, function(){
 		var fillerCode = createFiller(vopr);
-		copyToClipboard(fillerCode)
+		copyToClipboard(fillerCode);
+		displayReadinessMessage('Код для экспорта на РешуЕГЭ скопирован');
 	});
 }
 
@@ -256,5 +261,6 @@ function startQuickExportToTex(){
 			'Решение:'.esli(vopr.rsh),
 			roughHTML2LaTeX(vopr.rsh),
 		].join('\n\n'));
+		displayReadinessMessage('LaTeX-код скопирован');
 	});
 }
