@@ -226,6 +226,7 @@ var templateTemplate = "(function() {\n \tretryWhileError(function() {\n\t\tNAin
 
 var startShell = function (){
 	spoiler();
+	$('#readiness-message').hide();
 	zagr("../ext/keyboard/keyboard.js");
 	if ($("#textarea-script").val() == "") {
 		$("#textarea-script").val(templateTemplate);
