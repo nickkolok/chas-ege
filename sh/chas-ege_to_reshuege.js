@@ -57,9 +57,9 @@ function createFiller(vopr){
 
 function escapeText(text){
 	return text.
-		replace(/'/g,'\\\'').
 		replace(/\n/g,' ').
-		replace(/[\\]/g,'\\\\');
+		replace(/[\\]/g,'\\\\').
+		replace(/'/g,"\\'");
 
 }
 
