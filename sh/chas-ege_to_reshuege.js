@@ -24,6 +24,8 @@ var fillerTemplate = function(){
 				break;
 			}
 		}
+		/*
+		// Поле "Источник" куда-то убрали. Возможно, временно, поэтому оставляем вот так!
 		if(sourceField){
 			console.log(sourceField);
 			console.log(sourceField.getElementsByTagName('input')[1]);
@@ -32,6 +34,7 @@ var fillerTemplate = function(){
 		} else {
 			alert('Не найдено поле "Источник!"');
 		}
+		*/
 
 		$('#body_preview')[0].scrollIntoView({
 			behavior: "smooth",
