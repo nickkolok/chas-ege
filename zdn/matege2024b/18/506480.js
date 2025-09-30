@@ -1,7 +1,6 @@
-function base18({ left, right }) {
+function base18({ left, right, text, leftHeader, rightHeader, postText }) {
 	left.sort(() => Math.random() - 0.5);
 	let shuffledSolutions = [...right].sort(() => Math.random() - 0.5);
-
 	let leftCol = '';
 	for (let i = 0; i < left.length; i++) {
 		let letter = String.fromCharCode(65 + i);
@@ -18,13 +17,13 @@ function base18({ left, right }) {
 	let answerSequence = left.map(item => solutionToIndex[item.solution]);
 
 	NAtask.setTask({
-		text: 'Каждому из четырёх неравенств в левом столбце соответствует одно из решений в правом столбце. Установите соответствие между неравенствами и их решениями.<br><br>' +
+		text: text + '<br><br>' +
 			'<table style="border-collapse: collapse; width: 100%;"><tr>' +
-			'<td style="vertical-align: top; padding-right: 20px;"><strong>НЕРАВЕНСТВА</strong><br>' + leftCol + '</td>' +
-			'<td style="vertical-align: top;"><strong>РЕШЕНИЯ</strong><br>' + rightCol + '</td>' +
+			'<td style="vertical-align: top; padding-right: 20px;"><strong>' + leftHeader + '</strong><br>' + leftCol + '</td>' +
+			'<td style="vertical-align: top;"><strong>' + rightHeader + '</strong><br>' + rightCol + '</td>' +
 			'</tr></table><br>' +
 			'<span style="font-family: monospace; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>' +
-			'Напишите по порядку букв цифры каждого решения.',
+			postText,
 		answers: answerSequence.join(' '),
 	});
 }
@@ -66,7 +65,16 @@ function base18({ left, right }) {
 		let uniqueSolutions = new Set(solutions.map(s => s.replace(/\s/g, '')));
 		genAssert(uniqueSolutions.size === 4, 'Дубликаты решений');
 
-		base18({ left: all, right: solutions });
+		base18({
+			text: 'Каждому из четырёх неравенств в левом столбце соответствует одно из решений в правом столбце. Установите соответствие между неравенствами и их решениями.',
+			leftHeader: 'НЕРАВЕНСТВА',
+			left: all,
+			rightHeader: 'РЕШЕНИЯ',
+			right: solutions,
+			postText: 'Напишите по порядку букв цифры каждого решения.'
+		});
+
+
 
 		NAtask.modifiers.allDecimalsToStandard();
 
