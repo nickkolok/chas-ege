@@ -3,13 +3,13 @@ function base18({ left, right }) {
 	let shuffledSolutions = [...right].sort(() => Math.random() - 0.5);
 
 	let leftCol = '';
-	for (let i = 0; i < 4; i++) {
+	for (let i = 0; i < left.length; i++) {
 		let letter = String.fromCharCode(65 + i);
 		leftCol += letter + ') ' + '$' + left[i].expr + '$<br>';
 	}
 	let rightCol = '';
 	let solutionToIndex = {};
-	for (let i = 0; i < 4; i++) {
+	for (let i = 0; i < shuffledSolutions.length; i++) {
 		let num = i + 1;
 		rightCol += num + ') ' + shuffledSolutions[i] + '<br>';
 		solutionToIndex[shuffledSolutions[i]] = num;
