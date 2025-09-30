@@ -496,7 +496,37 @@ chas2.task = {
 		o.parts = [left.slag(), right.slag()];
 		chas2.task.setEquationTask(o, taskOptions);
 	},
+	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight }) {
 
+		left.sort(() => Math.random() - 0.5);
+		let shuffledSolutions = [...right].sort(() => Math.random() - 0.5);
+		let leftCol = '';
+		for (let i = 0; i < left.length; i++) {
+			let letter = String.fromCharCode(65 + i);
+			let the$ = '$'.esli(autoLaTeXLeft && (left[i].expr.search('\\$') === -1));
+			leftCol += letter + ') ' + the$ + left[i].expr + the$ + '<br>';
+		}
+		let rightCol = '';
+		let solutionToIndex = {};
+		for (let i = 0; i < shuffledSolutions.length; i++) {
+			let num = i + 1;
+			let the$ = '$'.esli(autoLaTeXRight && (shuffledSolutions[i].search('\\$') === -1));
+			rightCol += num + ') ' + the$ + shuffledSolutions[i] + the$ + '<br>';
+			solutionToIndex[shuffledSolutions[i]] = num;
+		}
+		let answerSequence = left.map(item => solutionToIndex[item.solution]);
+
+		chas2.task.setTask({
+			text: text + '<br><br>' +
+				'<table style="border-collapse: collapse; width: 100%;"><tr>' +
+				'<td style="vertical-align: top; padding-right: 20px;"><strong>' + leftHeader + '</strong><br>' + leftCol + '</td>' +
+				'<td style="vertical-align: top;"><strong>' + rightHeader + '</strong><br>' + rightCol + '</td>' +
+				'</tr></table><br>' +
+				'<span style="font-family: monospace; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>' +
+				postText,
+			answers: answerSequence.join(' '),
+		});
+	},
 
 	/** @function NApi.task.setDilationTask
 	 * Составить задание о растяжении геометрической фигуры
