@@ -4,9 +4,11 @@ retryWhileError(function() {
 	let preference = ['numbersOfTrue1', 'numbersOfTrue2', 'numberOfTrue', 'numbersOfFalse1', 'numbersOfFalse2', 'numberOfFalse'];
 	let rand = getSelectedPreferenceFromList(key, preference);
 	
+	let flag = rand == 2 || rand == 5;
+	
 	let number = sl(3, 4);
-	let n = sl(sl1(), number);
-	let m = rand == 2 || rand == 5 ? 1 : number - n;
+	let n = sl(flag ? 2 : sl1(), number);
+	let m = flag ? 1 : number - n;
 	
 	var v1 = Number(rand > 2);
 	
