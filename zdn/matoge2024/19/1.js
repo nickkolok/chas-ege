@@ -1,7 +1,7 @@
 retryWhileError(function() {
 	'use strict';
 	let key = '1';
-	let preference = ['numbersOfTrue1', 'numbersOfTrue2', 'numberOfTrue', 'numbersOfFalse1', 'numbersOfFalse1', 'numberOfFalse'];
+	let preference = ['numbersOfTrue1', 'numbersOfTrue2', 'numberOfTrue', 'numbersOfFalse1', 'numbersOfFalse2', 'numberOfFalse'];
 	let rand = getSelectedPreferenceFromList(key, preference);
 	
 	let number = sl(3, 4);
