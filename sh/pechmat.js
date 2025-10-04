@@ -95,12 +95,12 @@ async function zapusk() {
 	iZ = aZ.slice();
 	nZ = 0;
 	$('#panel').html('Тесты составляются, подождите...');
-	$('#gotov').show();
+	$('#readiness-message').show();
 	zadan();
 }
 
 function testGotov() {
-	$('#gotov').hide();
+	$('#readiness-message').hide();
 	if (options.editable) {
 		$('#rez, #otv, #rsh').attr('contenteditable', 'true');
 	}
@@ -134,13 +134,10 @@ function konecSozd() {
 	convertCanvasToImagesIfNeeded();
 	if (options.prepareLaTeX) {
 		for (var id in generatedTasks) {
-			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
+			tasksInLaTeX[id] = roughHTML2LaTeX(replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
 				generatedTasks[id].txt
-			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}').replace(/\" /g, '"\\space ');
+			));
 		}
 	}
 
@@ -392,7 +389,7 @@ function optimcopyd(n) {
 var startShell = function () {
 	window.vopr.txt = '';
 	$('#zadaniya').html(sozdKolvoHtml('pech'));
-	$('#gotov').hide();
+	$('#readiness-message').hide();
 	galkiKat('#galki_kat', 'pech');
 }
 
