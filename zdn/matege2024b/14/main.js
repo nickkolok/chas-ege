@@ -1,4 +1,5 @@
-window.nomer=[
+window.nomer = [
+	509766,
 	510310,
 ].iz();
 
