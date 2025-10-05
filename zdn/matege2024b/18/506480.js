@@ -2,24 +2,48 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
+		let key = '506380';
+		let preference1 = ['quadratic', 'rational'];
+		let preference2 = ['fractional', 'logarithmicMinus'];
+		let preference3 = ['squareRational', 'exponential'];
+		let rand1 = getSelectedPreferenceFromList(key, preference1);
+		let rand2 = getSelectedPreferenceFromList(key, preference2);
+		let rand3 = getSelectedPreferenceFromList(key, preference3);
 
 		let a = sl(2, 5);
 		let b = a + sl(1, 5);
 
 		//квадратичные нер-ва
+		let isQuadraticLess = sl1();
 		let quadratic = {
-			expr: `(x - ${a})(x - ${b}) ${sl1() ? '<' : '>'} 0`,
-			solution: sl1() ? `${a} < x < ${b}` : `x < ${a} \\text{ или } x > ${b}`
+			expr: `(x - ${a})(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
+			solution: isQuadraticLess
+				? `$${a} < x < ${b}$`
+				: `$x < ${a} \\text{ или } x > ${b}$`
 		};
 		//дробные нер-ва
+		let isFractionalLess = sl1();
+		let fractional = {
+			expr: `\\frac{x - ${a}}{x - ${b}} ${isFractionalLess ? '<' : '>'} 0`,
+			solution: isFractionalLess
+				? `$${a} < x < ${b}$`
+				: `$x < ${a} \\text{ или } x > ${b}$`
+		};
+		//дробное с квадратом 
+		let sqRatExpr = `\\frac{x - ${a}}{(x - ${b})^2} > 0`;
+		let sqRatSolution = `x > ${a}`; // при условии, что b ≠ a (что у нас есть!)
+		let squareRational = { expr: sqRatExpr, solution: sqRatSolution };
+		//дробное рациональное второго типа
 		let rational = {
-			expr: `\\frac{x - ${a}}{x - ${b}} ${sl1() ? '<' : '>'} 0`,
-			solution: sl1() ? `${a} < x < ${b}` : `x < ${a} \\text{ или } x > ${b}`
+			expr: `\\frac{1}{(x - ${a})(x - ${b})} > 0`,
+			solution: `$x < ${a} \\text{ или } x > ${b}$`
 		};
 		//показательные нер-ва
 		let expBase = sl(2, 3);
 		let isExpGreater = sl1();
-		let expExpr = isExpGreater ? `${expBase}^{x} > ${expBase.pow(a)}` : `${expBase}^{x} < ${expBase.pow(b)}`;
+		let expSign = isExpGreater ? '>' : '<';
+		let expValue = isExpGreater ? expBase.pow(a) : expBase.pow(b);
+		let expExpr = `${expBase}^{x} ${expSign} ${expValue}`;
 		let expSolution = isExpGreater ? `x > ${a}` : `x < ${b}`;
 		let exponential = { expr: expExpr, solution: expSolution };
 		//логарифмические нер-ва
@@ -28,8 +52,13 @@
 		let logExpr = isLogGreater ? `\\log_{${logBase}} x > 1` : `\\log_{${logBase}} x < 1`;
 		let logSolution = isLogGreater ? `x > ${logBase}` : `x < ${logBase}`;
 		let logarithmic = { expr: logExpr, solution: logSolution };
+		//логарифмическое нер-во с минусом
+		let logBaseMinus = b - a;
+		let logExprMinus = `\\log_{${logBase}} (x - ${a}) < 1`;
+		let logSolutionMinus = `$${a} < x < ${b}$`;
+		let logarithmicMinus = { expr: logExprMinus, solution: logSolutionMinus };
 
-		let all = [quadratic, rational, exponential, logarithmic];
+		let all = [[quadratic, rational][rand1], [fractional, logarithmicMinus][rand2], [squareRational, exponential][rand3], logarithmic];
 
 		//уникальные реш.
 		let solutions = all.map(item => item.solution);
@@ -44,7 +73,8 @@
 			rightHeader: 'РЕШЕНИЯ',
 			right: solutions,
 			autoLaTeXRight: true,
-			postText: 'Напишите по порядку букв цифры каждого решения.'
+			postText: 'Напишите по порядку букв цифры каждого решения.',
+			preference: [preference1, preference2, preference3],
 		});
 
 		NAtask.modifiers.allDecimalsToStandard();
