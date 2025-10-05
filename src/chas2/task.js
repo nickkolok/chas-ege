@@ -496,7 +496,9 @@ chas2.task = {
 		o.parts = [left.slag(), right.slag()];
 		chas2.task.setEquationTask(o, taskOptions);
 	},
-	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight }) {
+
+
+	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference }) {
 
 		left.shuffle();
 		let shuffledSolutions = [...right].shuffle();
@@ -515,7 +517,6 @@ chas2.task = {
 			solutionToIndex[shuffledSolutions[i]] = num;
 		}
 		let answerSequence = left.map(item => solutionToIndex[item.solution]);
-		preference : window.vopr.preference,
 
 		chas2.task.setTask({
 			text: text + '<br><br>' +
@@ -526,8 +527,10 @@ chas2.task = {
 				'<span style="font-family: monospace; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>' +
 				postText,
 			answers: answerSequence.join(''),
+			preference,
 		});
 	},
+
 
 	/** @function NApi.task.setDilationTask
 	 * Составить задание о растяжении геометрической фигуры
