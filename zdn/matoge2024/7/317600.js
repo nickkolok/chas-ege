@@ -3,18 +3,16 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let intervals = [].concat(
-			sl(-0.7, -0.1, 0.03),
-			sl(0.1, 0.9, 0.03),
-			sl(1.1, 1.7, 0.03)
-		);
+		let key = '317600';
+		let preference1 = ['aBefore0', 'aBetween0And1', 'aAfter1'];
+		let preference2 = ['bBefore0', 'bBetween0And1', 'bAfter1'];
+		let rand1 = getSelectedPreferenceFromList(key, preference1);
+		let rand2 = getSelectedPreferenceFromList(key, preference2);
 
-		let a = intervals.iz();
-		let b = slKrome([a] - 0.7, 1.7, 0.03);
+		let a = [sl(-0.9, 0.3, 0.01), sl(0.3, 0.9, 0.01), sl(1.1, 2.5, 0.01)][rand1];
+		let b = [sl(-0.9, 0.3, 0.01), sl(0.3, 0.9, 0.01), sl(1.1, 2.5, 0.01)][rand2];
 
 		genAssert((a - b).abs() > 0.1, "Точки не должны быть слишком близко друг к другу");
-		genAssert(intervals.includes(a), "a вне допустимого интервала");
-		
 
 		let labels = window.smallLatinLetters.iz(2);
 		let labelA = labels[0];
@@ -23,16 +21,16 @@
 		let paint1 = function (ct) {
 			coordAxis_drawAuto(ct, {
 				points: [
-					// Нолик и плюс-минус единичка с чёрточками!
-					{ value: 0, mark: "line", labelPos: "underAxis", label: 0 },
-					{ value: 1, mark: "line", labelPos: "underAxis", label: 1 },
-					// Сами точки
-					{ value: 1 * a, mark: "dot", label: labelA, labelPos: "overAxis" },
-					{ value: 1 * b, mark: "dot", label: labelB, labelPos: "overAxis" },
-					// И немного разбавляем края для вариативности
-					{ value: -0.8, mark: "nothing" },
-					{ value: +1.8, mark: "nothing" },
-				]
+					{ value: -1.0, mark: "nothing" },
+					{ value: 1.0, mark: "nothing" },
+					{ value: 0, mark: "line", label: "0", labelPos: "underAxis" },
+					{ value: 1, mark: "line", label: "1", labelPos: "underAxis" },
+					{ value: a, mark: "dot", label: labelA, labelPos: "overAxis" },
+					{ value: b, mark: "dot", label: labelB, labelPos: "overAxis" },
+				],
+				width: 400,
+				height: 100,
+				margin: 20
 			});
 		};
 
@@ -67,13 +65,14 @@
 		NAtask.setTask({
 			text: 'Расположите в порядке ' + ['убывания', 'возрастания'][isAscending] + ' числа.',
 			answers: correct,
-			wrongAnswers: Array.from(wrongAnswers)
+			wrongAnswers: Array.from(wrongAnswers),
+			preference: [preference1, preference2],
 		});
 
 		AtoB(3);
 
 		chas2.task.modifiers.addCanvasIllustration({
-			width: 450,
+			width: 400,
 			height: 100,
 			paint: paint1
 		});
