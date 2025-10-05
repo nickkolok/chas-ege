@@ -498,8 +498,8 @@ chas2.task = {
 	},
 	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight }) {
 
-		left.sort(() => Math.random() - 0.5);
-		let shuffledSolutions = [...right].sort(() => Math.random() - 0.5);
+		left.shuffle();
+		let shuffledSolutions = [...right].shuffle();
 		let leftCol = '';
 		for (let i = 0; i < left.length; i++) {
 			let letter = String.fromCharCode(65 + i);
@@ -515,6 +515,7 @@ chas2.task = {
 			solutionToIndex[shuffledSolutions[i]] = num;
 		}
 		let answerSequence = left.map(item => solutionToIndex[item.solution]);
+		preference : window.vopr.preference,
 
 		chas2.task.setTask({
 			text: text + '<br><br>' +
@@ -524,7 +525,7 @@ chas2.task = {
 				'</tr></table><br>' +
 				'<span style="font-family: monospace; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>' +
 				postText,
-			answers: answerSequence.join(' '),
+			answers: answerSequence.join(''),
 		});
 	},
 
