@@ -4,13 +4,13 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '317600';
-		let preference1 = ['aBefore0', 'aBetween0And1', 'aAfter1'];
-		let preference2 = ['bBefore0', 'bBetween0And1', 'bAfter1'];
-		let rand1 = getSelectedPreferenceFromList(key, preference1);
-		let rand2 = getSelectedPreferenceFromList(key, preference2);
+		let preference = ['descending', 'ascending'];
+		let rand = getSelectedPreferenceFromList(key, preference);
 
-		let a = [sl(-0.9, 0.3, 0.01), sl(0.3, 0.9, 0.01), sl(1.1, 2.5, 0.01)][rand1];
-		let b = [sl(-0.9, 0.3, 0.01), sl(0.3, 0.9, 0.01), sl(1.1, 2.5, 0.01)][rand2];
+		let randA = sl(0, 2);
+		let randB = sl(0, 2);
+		let a = [sl(-0.9, 0.3, 0.01), sl(0.3, 0.9, 0.01), sl(1.1, 2.5, 0.01)][randA];
+		let b = [sl(-0.9, 0.3, 0.01), sl(0.3, 0.9, 0.01), sl(1.1, 2.5, 0.01)][randB];
 
 		genAssert((a - b).abs() > 0.1, "Точки не должны быть слишком близко друг к другу");
 
@@ -48,11 +48,9 @@
 
 		genAssert(valid, "Не подходящие значения");
 
-		let isAscending = sl1();
 		let sorted = values.slice().sort((x, y) =>
-			isAscending ? x[1] - y[1] : y[1] - x[1]
+			rand ? x[1] - y[1] : y[1] - x[1]
 		);
-
 		let correct = sorted.map(x => x[0]).join(", ");
 
 		let wrongAnswers = new Set();
@@ -63,10 +61,10 @@
 		}
 
 		NAtask.setTask({
-			text: 'Расположите в порядке ' + ['убывания', 'возрастания'][isAscending] + ' числа.',
+			text: 'Расположите в порядке ' + ['убывания', 'возрастания'][rand] + ' числа.',
 			answers: correct,
 			wrongAnswers: Array.from(wrongAnswers),
-			preference: [preference1, preference2],
+			preference: preference,
 		});
 
 		AtoB(3);
