@@ -27,6 +27,7 @@
 		tags: {
 			drs: 1
 		},
+		preference: preference, 
 	});
 })();
 
