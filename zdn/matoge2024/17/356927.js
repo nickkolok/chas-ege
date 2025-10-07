@@ -15,6 +15,9 @@
 		});
 
 		genAssert(rect.lengthDiagonalAC.isAlmostInteger(), 'Диагональ не целая');
+		
+		let side = [[['AB', 'CD'].iz(), rect.lengthAB], [['BC', 'AD'].iz(), rect.lengthBC]].iz();
+		let diagonal = [[['BO', 'DO'].iz(), 'AC'],[['AO', 'CO'].iz(), 'BD']].iz();
 
 		rect.connectVerticesInConnectionMatrix([
 			[0, 2],
@@ -44,7 +47,7 @@
 		};
 
 		NAtask.setTask({
-			text: ` Диагонали $AC$ и $BD$ прямоугольника $ABCD$ пересекаются в точке $O$, $BO = ${0.5*rect.lengthDiagonalAC}$, $AB = ${rect.lengthAB}$. Найдите $AC$.`,
+			text: ` Диагонали $AC$ и $BD$ прямоугольника $ABCD$ пересекаются в точке $O$, $${diagonal[0]} = ${0.5*rect.lengthDiagonalAC}$, $${side[0]} = ${side[1]}$. Найдите $${diagonal[1]}$.`,
 			answers: rect.lengthDiagonalAC,
 			authors: ['Александра Суматохина'],
 		});
