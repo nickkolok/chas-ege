@@ -10,9 +10,9 @@
 			},
 		});
 
-        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
-        [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle > 35, 'Треугольник имеет очень острый угол'));
-
+		genAssert(!triangle.isEquilateral(), 'Все стороны треугольника должны быть разными');
+		genAssert(triangle.minAngleInDegrees() > 35, 'Треугольник имеет очень острый угол');
+		
 		let paint1 = function (ctx) {
 			let h = 400;
 			let w = 400;
