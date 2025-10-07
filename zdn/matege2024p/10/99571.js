@@ -8,10 +8,10 @@
 		
         let firstVolume = sl(5, 50, 0.01);
         let waterVolume = slKrome(firstVolume, 5, 50, 0.01);
-        let procent = sl(10, 80);
-        let finalProcent = procent * firstVolume / (firstVolume + waterVolume);
+        let percent = sl(10, 80);
+        let finalPercent = percent * firstVolume / (firstVolume + waterVolume);
 
-        let dano = [chislitlx(firstVolume, 'литр', 'v'), procent + '−процентного'];
+        let dano = [chislitlx(firstVolume, 'литр', 'v'), percent + '−процентного'];
 
         switch (rand) {
             case 0:
@@ -26,21 +26,21 @@
                 break;
         }
 
-        genAssertZ1000(finalProcent, 'Концентрация получившегося раствора слишком дробная');
+        genAssertZ1000(finalPercent, 'Концентрация получившегося раствора слишком дробная');
 
         NAtask.setTask({
             text: 'В сосуд, содержащий ' + dano + ' водного раствора некоторого вещества, ' +
                 'добавили ' + [chislitlx(waterVolume, 'литр', 'v'), 'несколько литров'][Number(rand == 1)] +
-                ' воды' + [' так, что получился ' + finalProcent + '−процентный раствор', ''][Number(rand == 0)] + '. ',
+                ' воды' + [' так, что получился ' + finalPercent + '−процентный раствор', ''][Number(rand == 0)] + '. ',
             questions: [[{
                 text: 'Сколько процентов составляет концентрация получившегося раствора',
-                answers: finalProcent,
+                answers: finalPercent,
             }, {
                 text: 'Сколько литров воды добавили в раствор',
                 answers: waterVolume,
             }, {
                 text: 'Сколько процентов составляла концентрация изначального раствора',
-                answers: procent,
+                answers: percent,
             }, {
                 text: 'Сколько было литров изначального раствора',
                 answers: firstVolume,
