@@ -1,22 +1,65 @@
+function mixed(a, b, c) {
+    return a + b / c;
+}
+
+mixed.toTex = function (node, options) {
+    return mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[0], options) +
+        '\\dfrac{' + mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[1], options) + '}{' +
+        mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[2], options) + '}';
+}
+
+function lg(x){
+	return math.log10(x);
+}
+
+lg.toTex = function (node, options) {
+	return '\\lg{' + mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[0], options) + '}';
+}
+
+function lb(x){
+	return math.log2(x);
+}
+
+lb.toTex = function (node, options) {
+	return '\\lb{' + mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[0], options) + '}';
+}
+
+math.import({
+    lg,
+    lb,
+    mixed,
+}, { override: true });
+
 (function() {
-	retryWhileError(function() {
-		'use strict';
-		let x = sl(1, 10);
-		let y = sl(2, 10);
-		let divider = sl(5, 13);
-		let dividendA = sl(1, 81);
-		let dividendB = slKrome(dividendA, 1, 81);
-		genAssertIrreducible(dividendA, divider, 'Дробь должна быть несократима');
-		genAssertIrreducible(dividendB, divider, 'Дробь должна быть несократима');
-		NAtask.setEvaluationTask({
-			expr: 'sqrt(' + x * x + '*a^2' + ['+', '-'].iz() +
-				2 * x * y + '*a*b' + '+' + y * y + '*b^2)',
-			variables: {
-				a: [dividendA, dividendA + "/" + divider].iz(),
-				b: [dividendB, dividendB + "/" + divider].iz()
-			},
-			authors: ['Алендарь Сергей'],
-		});
-	}, 10000);
+    retryWhileError(function() {
+        'use strict';
+        let x = sl(1, 10);
+        let y = sl(2, 10);
+        let divider = sl(5, 13);
+        let dividendA = sl(1, 81) + divider;
+        let dividendB = slKrome(dividendA, divider+1, 81);
+        genAssertIrreducible(dividendA, divider, 'Дробь должна быть несократима');
+        genAssertIrreducible(dividendB, divider, 'Дробь должна быть несократима');
+
+        // Вычисляем компоненты для mixed
+        let wholeA = Math.floor(dividendA / divider);
+        let numA = dividendA % divider;
+        let denA = divider;
+
+        let wholeB = Math.floor(dividendB / divider);
+        let numB = dividendB % divider;
+        let denB = divider;
+
+        NAtask.setEvaluationTask({
+            expr: 'sqrt(' + x * x + '*a^2' + ['+', '-'].iz() +
+                2 * x * y + '*a*b' + '+' + y * y + '*b^2)',
+            variables: {
+                a: ['mixed(' + wholeA + ',' + numA + ',' + denA + ')',wholeA, numA + '/' + denA].iz(),
+                b: ['mixed(' + wholeB + ',' + numB + ',' + denB + ')',wholeB, numB + '/' + denB].iz(),
+            },
+            authors: ['Алендарь Сергей'],
+        });
+    }, 10000);
 })();
 //412197
+
