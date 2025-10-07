@@ -3,19 +3,8 @@
     retryWhileError(function () {
         /* В сосуд, содержащий 5 литров 12−процентного водного раствора некоторого вещества, добавили 7 литров воды. Сколько процентов составляет концентрация получившегося раствора? */
 		let key = '99571';
-        let rand = getListedPreference(key, [{
-			preference: 'final_concentration',
-			preferenceValue: 0,
-		}, {
-			preference: 'water_volume',
-			preferenceValue: 1,
-		}, {
-			preference: 'first_concentration',
-			preferenceValue: 2,
-		}, {
-			preference: 'first_volume',
-			preferenceValue: 3,
-		}], sl(0, 3));
+        let preference = ['final_concentration', 'water_volume', 'first_concentration', 'first_volume'];
+        let rand = getSelectedPreferenceFromList(key, preference);
 		
         let firstVolume = sl(5, 50, 0.01);
         let waterVolume = slKrome(firstVolume, 5, 50, 0.01);
@@ -58,6 +47,7 @@
             }
             ][rand]],
             postquestion: '?',
+            preference: preference,
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.allDecimalsToStandard( /*true*/);
