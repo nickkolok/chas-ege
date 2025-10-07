@@ -13,6 +13,8 @@
 				lengthDA: side,
 			},
 		});
+		
+		let angleA = trp.angleAInDegrees.round();
 
 		let points = autoScale(trp.vertices);
 
@@ -30,8 +32,8 @@
 		};
 
 		NAtask.setTask({
-			text: `Сумма двух углов равнобедренной трапеции равна $${(trp.angleAInDegrees+trp.angleBInDegrees).ceil()}^\\circ$. Найдите ${[`больший`, `меньший`][Number(trp.angleAInDegrees>trp.angleDInDegrees)]} угол трапеции. Ответ дайте в градусах.`,
-			answers: 180 - trp.angleAInDegrees.ceil(),
+			text: `Сумма двух углов равнобедренной трапеции равна $${2*angleA}^\\circ$. Найдите ${[`больший`, `меньший`][Number(trp.angleAInDegrees>trp.angleDInDegrees)]} угол трапеции. Ответ дайте в градусах.`,
+			answers: 180 - angleA,
 			authors: ['Александра Суматохина'],
 		});
 
