@@ -21,7 +21,7 @@
 		]);
 
 		let angleADB = new Angle(par.pointA, par.pointD, par.pointB).angleInDegrees.round();
-		let angleBDC = new Angle(par.pointB, par.pointD, par.pointC).angleInDegrees.round();
+		let angleBDC = 180 - angleADB;
 
 		let points = autoScale(par.vertices);
 
