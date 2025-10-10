@@ -65,8 +65,8 @@
 		NAtask.setTask({
 			text: 'Расположите в порядке ' + ['убывания', 'возрастания'][rand] + ' числа.',
 			answers: correct,
-			wrongAnswers: Array.from(wrongAnswers),
-			preference: preference,
+			wrongAnswers,
+			preference,
 		});
 
 		AtoB(3);
