@@ -57,7 +57,9 @@
 		while (wrongAnswers.size < 3) {
 			let perm = values.shuffle();
 			let variant = perm.map(x => x[0]).join(", ");
-			if (variant !== correct) wrongAnswers.add(variant);
+			if (variant !== correct) {
+				wrongAnswers.add(variant);
+			}
 		}
 
 		NAtask.setTask({
