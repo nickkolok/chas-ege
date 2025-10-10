@@ -100,11 +100,24 @@
 		}
 
 		//логарифмические нер-ва
+		let logarithmic;
 		let logBase = sl1() ? a : b;
-		let isLogGreater = sl1();
-		let logExpr = isLogGreater ? `\\log_{${logBase}} x > 1` : `\\log_{${logBase}} x < 1`;
-		let logSolution = isLogGreater ? `x > ${logBase}` : `x < ${logBase}`;
-		let logarithmic = { expr: logExpr, solution: logSolution };
+		if (a === 1) {
+			//логарифм сравнивается с 0
+			let baseZero = sl(2, 5);
+			let isLogZero = sl1();
+			logarithmic = {
+				expr: `\\log_{${baseZero}} x ${isLogZero ? '>' : '<'} 0`,
+				solution: isLogZero ? `$x > 1$` : `$x < 1$`
+			};
+		} else {
+			// Обычный логарифм: log_base(x) > 1
+			let isLogGreater = sl1();
+			logarithmic = {
+				expr: `\\log_{${logBase}} x ${isLogGreater ? '>' : '<'} 1`,
+				solution: isLogGreater ? `$x > ${logBase}$` : `$x < ${logBase}$`
+			};
+		}
 		//логарифмическое нер-во с минусом
 		let logBaseMinus = b - a;
 		let logExprMinus = `\\log_{${logBase}} (x - ${a}) < 1`;
@@ -112,7 +125,7 @@
 		let logarithmicMinus = { expr: logExprMinus, solution: logSolutionMinus };
 
 		let all = [[quadratic, rational][rand1], [fractional, logarithmicMinus, powerFraction][rand2], [squareRational, exponential][rand3], logarithmic];
-		//let all = [powerFraction, quadratic, logarithmicZero, fractional];
+
 		//уникальные реш.
 		let solutions = all.map(item => item.solution);
 		let uniqueSolutions = new Set(solutions.map(s => s.replace(/\s/g, '')));
