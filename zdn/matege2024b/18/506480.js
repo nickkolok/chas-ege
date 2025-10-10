@@ -46,6 +46,7 @@
 				? `$x < ${a} \\text{ или } x > ${b}$`
 				: `$${a} < x < ${b}$`
 		};
+		
 		//показательные нер-ва
 		let exponential;
 		let doubleOrNothing = sl1();
@@ -63,7 +64,7 @@
 			// Степенное с суммой
 			let base = sl(2, 5);
 			value = isGreater ? base.pow(b) : base.pow(a + b);
-			genAssert(value < 10000, "value слишком больше число");
+			genAssert(value < 10000, 'value слишком больше число');
 			if (isGreater) {
 				exponential = {
 					expr: `${base}^{-x + ${a + b}} > ${value}`,
@@ -84,7 +85,7 @@
 			let base = sl(2, 5);
 			let k = sl(2, 6);
 			valueFraction = base.pow(k * a);
-			genAssert(valueFraction < 10000, "valueFraction слишком больше число");
+			genAssert(valueFraction < 10000, 'valueFraction слишком больше число');
 			powerFraction = {
 				expr: `${base}^{-${k}x} > \\frac{1}{${valueFraction}}`,
 				solution: `$x < ${a}$`
@@ -120,7 +121,8 @@
 		}
 		//логарифмическое нер-во с минусом
 		let logBaseMinus = b - a;
-		let logExprMinus = `\\log_{${logBase}} (x - ${a}) < 1`;
+		genAssert(logBaseMinus != 1, 'основание логарифма не должно быть единицей');
+		let logExprMinus = `\\log_{${logBaseMinus}} (x - ${a}) < 1`;
 		let logSolutionMinus = `$${a} < x < ${b}$`;
 		let logarithmicMinus = { expr: logExprMinus, solution: logSolutionMinus };
 
