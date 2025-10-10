@@ -30,13 +30,20 @@
 				: `$x < ${a} \\text{ или } x > ${b}$`
 		};
 		//дробное с квадратом 
-		let sqRatExpr = `\\frac{x - ${a}}{(x - ${b})^2} > 0`;
-		let sqRatSolution = `x > ${a}`; // при условии, что b ≠ a (что у нас есть!)
+		let isSqRatGreater = sl1();
+		let swapNumDen = sl1();
+		let numPart = swapNumDen ? `(x - ${b})^2` : `x - ${a}`;
+		let denPart = swapNumDen ? `x - ${a}` : `(x - ${b})^2`;
+		let sqRatExpr = `\\frac{${numPart}}{${denPart}} ${isSqRatGreater ? '>' : '<'} 0`;
+		let sqRatSolution = isSqRatGreater ? `$x > ${a}$` : `$x < ${a}$`;
 		let squareRational = { expr: sqRatExpr, solution: sqRatSolution };
 		//дробное рациональное второго типа
+		let isRationalGreater = sl1();
 		let rational = {
-			expr: `\\frac{1}{(x - ${a})(x - ${b})} > 0`,
-			solution: `$x < ${a} \\text{ или } x > ${b}$`
+			expr: `\\frac{1}{(x - ${a})(x - ${b})} ${isRationalGreater ? '>' : '<'} 0`,
+			solution: isRationalGreater
+				? `$x < ${a} \\text{ или } x > ${b}$`
+				: `$${a} < x < ${b}$`
 		};
 		//показательные нер-ва
 		let expBase = sl(2, 3);
