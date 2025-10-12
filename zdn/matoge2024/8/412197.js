@@ -1,17 +1,3 @@
-function mixed(a, b, c) {
-    return a + b / c;
-}
-
-mixed.toTex = function (node, options) {
-    return mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[0], options) +
-        '\\dfrac{' + mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[1], options) + '}{' +
-        mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[2], options) + '}';
-}
-
-math.import({
-    mixed,
-}, { override: true });
-
 (function() {
     retryWhileError(function() {
         'use strict';
