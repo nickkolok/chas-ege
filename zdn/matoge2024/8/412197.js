@@ -8,25 +8,7 @@ mixed.toTex = function (node, options) {
         mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[2], options) + '}';
 }
 
-function lg(x){
-	return math.log10(x);
-}
-
-lg.toTex = function (node, options) {
-	return '\\lg{' + mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[0], options) + '}';
-}
-
-function lb(x){
-	return math.log2(x);
-}
-
-lb.toTex = function (node, options) {
-	return '\\lb{' + mathjs_helpers.wrapInTeXbracketsIfNeeded(node.args[0], options) + '}';
-}
-
 math.import({
-    lg,
-    lb,
     mixed,
 }, { override: true });
 
