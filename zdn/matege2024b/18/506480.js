@@ -3,12 +3,15 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 		let key = '506380';
-		let preference1 = ['quadratic', 'rational'];
-		let preference2 = ['fractional', 'logarithmicMinus', 'powerFraction'];
-		let preference3 = ['squareRational', 'exponential'];
-		let rand1 = getSelectedPreferenceFromList(key, preference1);
-		let rand2 = getSelectedPreferenceFromList(key, preference2);
-		let rand3 = getSelectedPreferenceFromList(key, preference3);
+		let preferenceLog = ['haveLog', 'noLog', 'randomLog'];
+		let preferencePow = ['havePow', 'noPow', 'randomPow'];
+		let preferenceLogType = ['logarithmic', 'logBaseMinus'];
+		let preferencePowType = ['exponential', 'powerFraction'];
+		let randLog = getSelectedPreferenceFromList(key, preferenceLog);
+		let randPow = getSelectedPreferenceFromList(key, preferencePow);
+		let randLogType = getSelectedPreferenceFromList(key, preferenceLogType);
+		let randPowType = getSelectedPreferenceFromList(key, preferencePowType);
+
 
 		let a = sl(1, 5);
 		let b = a + sl(1, 5);
@@ -46,7 +49,7 @@
 				? `$x < ${a} \\text{ или } x > ${b}$`
 				: `$${a} < x < ${b}$`
 		};
-		
+
 		//показательные нер-ва
 		let exponential;
 		let doubleOrNothing = sl1();
@@ -126,12 +129,21 @@
 		let logSolutionMinus = `$${a} < x < ${b}$`;
 		let logarithmicMinus = { expr: logExprMinus, solution: logSolutionMinus };
 
-		let all = [[quadratic, rational][rand1], [fractional, logarithmicMinus, powerFraction][rand2], [squareRational, exponential][rand3], logarithmic];
+		let logTask = [logarithmic, logarithmicMinus][randLogType];
+		let powTask = [exponential, powerFraction][randPowType];
+		let allAll = [];
+		if (randLog === 0 || randLog === 2 && sl1()) {
+			allAll.push(logTask);
+		}
+		if (randPow === 0 || randPow === 2 && sl1()) {
+			allAll.push(powTask);
+		}
+		let allRest = [fractional, quadratic, rational, squareRational].iz(4 - allAll.length);
+		let all = [].concat(allRest).concat(allAll);
 
 		//уникальные реш.
-		let solutions = all.map(item => item.solution);
-		let uniqueSolutions = new Set(solutions.map(s => s.replace(/\s/g, '')));
-		genAssert(uniqueSolutions.size === 4, 'Дубликаты решений');
+		let solutions = all.slice().map(item => item.solution);
+		genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
 		NAtask.setCorrespondenceTask({
 			text: 'Каждому из четырёх неравенств в левом столбце соответствует одно из решений в правом столбце. Установите соответствие между неравенствами и их решениями.',
@@ -142,7 +154,7 @@
 			right: solutions,
 			autoLaTeXRight: true,
 			postText: 'Напишите по порядку букв цифры каждого решения.',
-			preference: [preference1, preference2, preference3],
+			preference: [preferenceLog, preferencePow],
 		});
 
 		NAtask.modifiers.allDecimalsToStandard();
