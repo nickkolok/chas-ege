@@ -11,10 +11,10 @@
             [-a, b],
         ];
 
-        points = points.map((c) => {
+        points = points.map((point) => {
             return {
-                x: c[0],
-                y: c[1]
+                x: point[0],
+                y: point[1]
             };
         });
         
@@ -28,10 +28,10 @@
             [d, b],
         ];
 
-        points1 = points1.map((c) => {
+        points1 = points1.map((point) => {
             return {
-                x: c[0],
-                y: c[1]
+                x: point[0],
+                y: point[1]
             };
         });
 
