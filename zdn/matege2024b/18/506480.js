@@ -18,20 +18,29 @@
 
 		//квадратичные нер-ва
 		let isQuadraticLess = sl1();
+		let holeQuad = sl(0, 2);
 		let quadratic = {
-			expr: `(x - ${a})(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
-			solution: isQuadraticLess
-				? `$${a} < x < ${b}$`
-				: `$x < ${a} \\text{ или } x > ${b}$`
+			expr: [`(x - ${a})(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
+			`(x - ${a})^2(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
+			`(x - ${a})(x - ${b})^2 ${isQuadraticLess ? '<' : '>'} 0`][holeQuad],
+			solution: [
+				[`$${a} < x < ${b}$`, `$x < ${a} \\text{ или } x > ${b}$`][isQuadraticLess],
+				[`$x < ${a} \\text{ и } ${a} < x < ${b}$`, `$x > ${b}$`][isQuadraticLess],
+				[`$x < ${a}$`, `${a} < x < ${b}$ \\text{ и } x > ${b}$`][isQuadraticLess]
+			][holeQuad]
 		};
-
 		//дробные нер-ва
 		let isFractionalLess = sl1();
+		let holeFrac = sl(0, 2);
 		let fractional = {
-			expr: `\\frac{x - ${a}}{x - ${b}} ${isFractionalLess ? '<' : '>'} 0`,
-			solution: isFractionalLess
-				? `$${a} < x < ${b}$`
-				: `$x < ${a} \\text{ или } x > ${b}$`
+			expr: [`\\frac{x - ${a}}{x - ${b}} ${isFractionalLess ? '<' : '>'} 0`,
+			`\\frac{x - ${a}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`,
+			`\\frac{x - ${b}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`][holeFrac],
+			solution: [
+				[`$${a} < x < ${b}$`, `$x < ${a} \\text{ или } x > ${b}$`][isFractionalLess], //обычный
+				[`$x < ${a} \\text{ и } ${a} < x < ${b}$`, `$x > ${a} \\text{ и } ${a} < x < ${b}$`][isFractionalLess], //дырка в a
+				[`$${a} < x < ${b} \\text{ и } x < ${b}$`, `$${a} < x < ${b} \\text{ и } x > ${b}$`][isFractionalLess] //дырка в b
+			][holeFrac]
 		};
 		//дробное с квадратом 
 		let isSqRatGreater = sl1();
@@ -39,7 +48,7 @@
 		let numPart = swapNumDen ? `(x - ${b})^2` : `x - ${a}`;
 		let denPart = swapNumDen ? `x - ${a}` : `(x - ${b})^2`;
 		let sqRatExpr = `\\frac{${numPart}}{${denPart}} ${isSqRatGreater ? '>' : '<'} 0`;
-		let sqRatSolution = isSqRatGreater ? `$x > ${a}$` : `$x < ${a}$`;
+		let sqRatSolution = [`$x < ${a}$`, `$${a} < x < ${b} \\text{ и } x > ${b}$`][isSqRatGreater]
 		let squareRational = { expr: sqRatExpr, solution: sqRatSolution };
 		//дробное рациональное второго типа
 		let isRationalGreater = sl1();
@@ -131,15 +140,15 @@
 
 		let logTask = [logarithmic, logarithmicMinus][randLogType];
 		let powTask = [exponential, powerFraction][randPowType];
-		let allAll = [];
+		let allLogPow = [];
 		if (randLog === 0 || randLog === 2 && sl1()) {
-			allAll.push(logTask);
+			allLogPow.push(logTask);
 		}
 		if (randPow === 0 || randPow === 2 && sl1()) {
-			allAll.push(powTask);
+			allLogPow.push(powTask);
 		}
-		let allRest = [fractional, quadratic, rational, squareRational].iz(4 - allAll.length);
-		let all = [].concat(allRest).concat(allAll);
+		let allRest = [fractional, quadratic, rational, squareRational].iz(4 - allLogPow.length);
+		let all = [].concat(allRest).concat(allLogPow);
 
 		//уникальные реш.
 		let solutions = all.slice().map(item => item.solution);
