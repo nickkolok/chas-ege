@@ -96,13 +96,14 @@
 		let powerFraction;
 		let valueFraction;
 		let type = sl1();
-		if (type === 0) {
+		if (!type) {
 			let base = sl(2, 5);
 			let k = sl(2, 6);
 			valueFraction = base.pow(k * a);
+			let fracStr = (1).texrndfrac(valueFraction);
 			genAssert(valueFraction < 10000, 'valueFraction слишком больше число');
 			powerFraction = {
-				expr: `${base}^{-${k}x} > \\frac{1}{${valueFraction}}`,
+				expr: `${base}^{-${k}x} > ${fracStr}`,
 				solution: `$x < ${a}$`
 			};
 		} else {
@@ -110,7 +111,7 @@
 			let base = sl(2, 5);
 			valueFraction = base.pow(b - a);
 			powerFraction = {
-				expr: `${base}^{-x + ${b}} < \\frac{1}{${valueFraction}}`,
+				expr: `${base}^{-x + ${b}} < ${fracStr}`,
 				solution: `$x > ${a}$`
 			};
 		}
