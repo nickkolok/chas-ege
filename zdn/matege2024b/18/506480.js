@@ -70,24 +70,26 @@
 		if (doubleOrNothing == 0) {
 			// Классическое показательное
 			let base = sl(2, 3);
-			value = isGreater ? base.pow(a) : base.pow(b);
+			let c = sl1() ? a : b; 
+			value = base.pow(c);
 			exponential = {
 				expr: `${base}^{x} ${isGreater ? '>' : '<'} ${value}`,
-				solution: isGreater ? `$x > ${a}$` : `$x < ${b}$`
+				solution: isGreater ? `$x > ${c}$` : `$x < ${c}$`
 			};
 		} else {
 			// Степенное с суммой
 			let base = sl(2, 5);
-			value = isGreater ? base.pow(b) : base.pow(a + b);
+			let c = sl1() ? b : (a + b);
+			value = base.pow(c);
 			genAssert(value < 10000, 'value слишком больше число');
 			if (isGreater) {
 				exponential = {
-					expr: `${base}^{-x + ${a + b}} > ${value}`,
+					expr: `${base}^{-x + ${c}} > ${value}`,
 					solution: `$x < ${a}$`
 				};
 			} else {
 				exponential = {
-					expr: `${base}^{-x + ${b}} > ${value}`,
+					expr: `${base}^{-x + ${c}} > ${value}`,
 					solution: `$x < ${b}$`
 				};
 			}
@@ -101,7 +103,7 @@
 			let k = sl(2, 6);
 			valueFraction = base.pow(k * a);
 			let fracStr = (1).texrndfrac(valueFraction);
-			genAssert(valueFraction < 10000, 'valueFraction слишком больше число');
+			genAssert(valueFraction < 1000, 'valueFraction слишком больше число');
 			powerFraction = {
 				expr: `${base}^{-${k}x} > ${fracStr}`,
 				solution: `$x < ${a}$`
