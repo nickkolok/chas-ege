@@ -19,7 +19,7 @@
 		if (rand === 0) {
 			answer = q ** 2 / (2 * 0.0001 * C);
 		} else {
-			answer = C * U ** 2 / 2;
+			answer = C * (10).pow(-4) * U ** 2 / 2;
 		}
 
 		genAssertZ1000(answer, 'должно быть не более 3-х знаков после запятой');
