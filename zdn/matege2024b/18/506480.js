@@ -12,7 +12,6 @@
 		let randLogType = getSelectedPreferenceFromList(key, preferenceLogType);
 		let randPowType = getSelectedPreferenceFromList(key, preferencePowType);
 
-
 		let a = sl(1, 5);
 		let b = a + sl(1, 5);
 
@@ -24,9 +23,9 @@
 			`(x - ${a})^2(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
 			`(x - ${a})(x - ${b})^2 ${isQuadraticLess ? '<' : '>'} 0`][holeQuad],
 			solution: [
-				[`$${a} < x < ${b}$`, `$x < ${a} \\text{ или } x > ${b}$`][isQuadraticLess],
-				[`$x < ${a} \\text{ и } ${a} < x < ${b}$`, `$x > ${b}$`][isQuadraticLess],
-				[`$x < ${a}$`, `$${a} < x < ${b}$ $\\text{ и } x > ${b}$`][isQuadraticLess]
+				[`$${a} < x < ${b}$`, `$x < ${a}$ $\\text{ или }$ $x > ${b}$`][isQuadraticLess],
+				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$x > ${b}$`][isQuadraticLess],
+				[`$x < ${a}$`, `$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`][isQuadraticLess]
 			][holeQuad]
 		};
 		//дробные нер-ва
@@ -37,9 +36,9 @@
 			`\\frac{x - ${a}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`,
 			`\\frac{x - ${b}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`][holeFrac],
 			solution: [
-				[`$${a} < x < ${b}$`, `$x < ${a} \\text{ или } x > ${b}$`][isFractionalLess], //обычный
-				[`$x < ${a} \\text{ и } ${a} < x < ${b}$`, `$x > ${a} \\text{ и } ${a} < x < ${b}$`][isFractionalLess], //дырка в a
-				[`$${a} < x < ${b} \\text{ и } x < ${b}$`, `$${a} < x < ${b}$ $\\text{ и } x > ${b}$`][isFractionalLess] //дырка в b
+				[`$${a} < x < ${b}$`, `$x < ${a}$ $\\text{ или }$ $x > ${b}$`][isFractionalLess], //обычный
+				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$x > ${a}$ $\\text{ или }$ $${a} < x < ${b}$`][isFractionalLess], //дырка в a
+				[`$${a} < x < ${b}$ $\\text{ или }$ $x < ${b}$`, `$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`][isFractionalLess] //дырка в b
 			][holeFrac]
 		};
 		//дробное с квадратом 
@@ -49,8 +48,8 @@
 		let denPart = [`x - ${a}`, `(x - ${a})^2`, `(x - ${b})^2`, `(x - ${b})`][swapNumDen];;
 		let sqRatExpr = `\\frac{${numPart}}{${denPart}} ${isSqRatGreater ? '>' : '<'} 0`;
 		let sqRatSolution = [
-			[`$x < ${a}$`, `$x < ${a} \\text{ и } ${a} < x < ${b}$`, `$x < ${a}$`, `$x < ${a} \\text{ и } ${a} < x < ${b}$`][swapNumDen],
-			[`$${a} < x < ${b}$ $\\text{ и } x > ${b}$`, `$x > ${b}$`, `$${a} < x < ${b}$ $\\text{ и } x > ${b}$`, `$x > ${b}$`][swapNumDen]
+			[`$x < ${a}$`, `$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$x < ${a}$`, `$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`][swapNumDen],
+			[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$x > ${b}$`, `$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$x > ${b}$`][swapNumDen]
 		][isSqRatGreater]
 		let squareRational = { expr: sqRatExpr, solution: sqRatSolution };
 		//дробное рациональное второго типа
@@ -58,7 +57,7 @@
 		let rational = {
 			expr: `\\frac{1}{(x - ${a})(x - ${b})} ${isRationalGreater ? '>' : '<'} 0`,
 			solution: isRationalGreater
-				? `$x < ${a} \\text{ или } x > ${b}$`
+				? `$x < ${a}$ $\\text{ или }$ $x > ${b}$`
 				: `$${a} < x < ${b}$`
 		};
 
@@ -70,7 +69,7 @@
 		if (doubleOrNothing == 0) {
 			// Классическое показательное
 			let base = sl(2, 3);
-			let c = sl1() ? a : b; 
+			let c = sl1() ? a : b;
 			value = base.pow(c);
 			exponential = {
 				expr: `${base}^{x} ${isGreater ? '>' : '<'} ${value}`,
@@ -81,7 +80,7 @@
 			let base = sl(2, 5);
 			let c = sl1() ? b : (a + b);
 			value = base.pow(c);
-			genAssert(value < 10000, 'value слишком больше число');
+			genAssert(value < 10000, 'value слишком большое число');
 			if (isGreater) {
 				exponential = {
 					expr: `${base}^{-x + ${c}} > ${value}`,
