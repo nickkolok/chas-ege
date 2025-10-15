@@ -102,7 +102,7 @@
 			let k = sl(2, 6);
 			valueFraction = base.pow(k * a);
 			let fracStr = (1).texrndfrac(valueFraction);
-			genAssert(valueFraction < 1000, 'valueFraction слишком больше число');
+			genAssert(valueFraction < 1000, 'valueFraction слишком большое число');
 			powerFraction = {
 				expr: `${base}^{-${k}x} > ${fracStr}`,
 				solution: `$x < ${a}$`
