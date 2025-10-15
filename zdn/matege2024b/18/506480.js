@@ -37,8 +37,8 @@
 			`\\frac{x - ${b}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`][holeFrac],
 			solution: [
 				[`$${a} < x < ${b}$`, `$x < ${a}$ $\\text{ или }$ $x > ${b}$`][isFractionalLess], //обычный
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$x > ${a}$ $\\text{ или }$ $${a} < x < ${b}$`][isFractionalLess], //дырка в a
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x < ${b}$`, `$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`][isFractionalLess] //дырка в b
+				[`$x > ${b}$`, `$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`][isFractionalLess], //дырка в a
+				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$x < ${a}$`][isFractionalLess] //дырка в b
 			][holeFrac]
 		};
 		//дробное с квадратом 
