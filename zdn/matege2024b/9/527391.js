@@ -47,10 +47,10 @@
 		const settings = {
 			villagePoints: sl(10, 15),
 			villageSize: 4.2,
-			lakePoints: sl(8, 10),
+			lakePoints: sl(6, 8),
 			lakeCount: [2, nameCityWithlakes[1].length].maxE(),
-			minLakeSize: sl(10, 20)/10,
-			maxLakeSize: sl(20, 40)/10,
+			minLakeSize: 1,
+			maxLakeSize: 4,
 			colorFillLake: '#a0d3ff50',
 		};
 
@@ -67,8 +67,7 @@
 		let rand = sl(lakes.length - 1);
 		let chooseLake = lakes[rand];
 		let answ = chooseLake.polygon.area();
-
-		genAssert(answ - answ.floor() > 0.5, 'Ответ не читаем');
+		genAssert((answ - answ.floor() < 0.3) || (answ.ceil() - answ < 0.3), 'Ответ не читаем');
 
 		let paint1 = function(ctx) {
 			let height = 400;
@@ -108,9 +107,10 @@
 
 		NAtask.setTask({
 			text: 'На фрагменте географической карты схематично изображены границы города ' + nameCityWithlakes[0] +
-				' и очертания водоёмов (длина стороны квадратной клетки равна 1 км). Оценит приближённо площадь пруда ' +
+				' и очертания водоёмов (длина стороны квадратной клетки равна 1 км). Оцените приближённо площадь пруда ' +
 				nameCityWithlakes[1][rand] + '. Ответ дайте в квадратных километрах с округлением до целого числа.',
-			answers: answ.ceil(),
+			answers: answ.round(),
+			analys: '$' + answ.toFixedLess(3) + '$',
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
