@@ -49,8 +49,8 @@
 			villageSize: 4.2,
 			lakePoints: sl(8, 10),
 			lakeCount: [2, nameCityWithlakes[1].length].maxE(),
-			minLakeSize: sl(1, 2, 0.1),
-			maxLakeSize: sl(1, 3, 0.1),
+			minLakeSize: sl(10, 20)/10,
+			maxLakeSize: sl(20, 40)/10,
 			colorFillLake: '#a0d3ff50',
 		};
 
