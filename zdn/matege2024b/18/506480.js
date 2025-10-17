@@ -45,7 +45,7 @@
 		let isSqRatGreater = sl1();
 		let swapNumDen = sl(0, 3);
 		let numPart = [`(x - ${b})^2`, `(x - ${b})`, `x - ${a}`, `(x - ${a})^2`][swapNumDen];
-		let denPart = [`x - ${a}`, `(x - ${a})^2`, `(x - ${b})^2`, `(x - ${b})`][swapNumDen];;
+		let denPart = [`x - ${a}`, `(x - ${a})^2`, `(x - ${b})^2`, `(x - ${b})`][swapNumDen];
 		let sqRatExpr = `\\frac{${numPart}}{${denPart}} ${isSqRatGreater ? '>' : '<'} 0`;
 		let sqRatSolution = [
 			[`$x < ${a}$`, `$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$x < ${a}$`, `$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`][swapNumDen],
@@ -81,27 +81,21 @@
 			let c = sl1() ? b : (a + b);
 			value = base.pow(c);
 			genAssert(value < 10000, 'value слишком большое число');
-			if (isGreater) {
-				exponential = {
-					expr: `${base}^{-x + ${c}} > ${value}`,
-					solution: `$x < ${a}$`
-				};
-			} else {
-				exponential = {
-					expr: `${base}^{-x + ${c}} > ${value}`,
-					solution: `$x < ${b}$`
-				};
-			}
+			exponential = {
+				expr: `${base}^{-x + ${c}} > ${value}`,
+				solution: [`$x < ${a}$`, `$x < ${b}$`][isGreater],
+			};
 		}
 		//показательные с дробью в правой части нер-ва
 		let powerFraction;
 		let valueFraction;
+		let fracStr;
 		let type = sl1();
 		if (!type) {
 			let base = sl(2, 5);
 			let k = sl(2, 6);
 			valueFraction = base.pow(k * a);
-			let fracStr = (1).texrndfrac(valueFraction);
+			fracStr = (1).texrndfrac(valueFraction);
 			genAssert(valueFraction < 1000, 'valueFraction слишком большое число');
 			powerFraction = {
 				expr: `${base}^{-${k}x} > ${fracStr}`,
@@ -111,6 +105,7 @@
 			// -x + c
 			let base = sl(2, 5);
 			valueFraction = base.pow(b - a);
+			fracStr = (1).texrndfrac(valueFraction);
 			powerFraction = {
 				expr: `${base}^{-x + ${b}} < ${fracStr}`,
 				solution: `$x > ${a}$`
@@ -146,17 +141,17 @@
 		let logTask = [logarithmic, logarithmicMinus][randLogType];
 		let powTask = [exponential, powerFraction][randPowType];
 		let allLogPow = [];
-		if (randLog === 0 || randLog === 2 && sl1()) {
+		if (randLog === 0 || (randLog === 2) && sl1()) {
 			allLogPow.push(logTask);
 		}
-		if (randPow === 0 || randPow === 2 && sl1()) {
+		if (randPow === 0 || (randPow === 2) && sl1()) {
 			allLogPow.push(powTask);
 		}
 		let allRest = [fractional, quadratic, rational, squareRational].iz(4 - allLogPow.length);
-		let all = [].concat(allRest).concat(allLogPow);
+		let all = [...allRest, ...allLogPow];
 
 		//уникальные реш.
-		let solutions = all.slice().map(item => item.solution);
+		let solutions = all.map(item => item.solution);
 		genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
 		NAtask.setCorrespondenceTask({
@@ -168,7 +163,7 @@
 			right: solutions,
 			autoLaTeXRight: true,
 			postText: 'Напишите по порядку букв цифры каждого решения.',
-			preference: [preferenceLog, preferencePow],
+			preference: [preferenceLog, preferencePow, preferenceLogType, preferencePowType],
 		});
 
 		NAtask.modifiers.allDecimalsToStandard();
