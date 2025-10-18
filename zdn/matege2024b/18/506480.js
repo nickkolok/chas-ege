@@ -141,10 +141,10 @@
 		let logTask = [logarithmic, logarithmicMinus][randLogType];
 		let powTask = [exponential, powerFraction][randPowType];
 		let allLogPow = [];
-		if (randLog === 0 || (randLog === 2) && sl1()) {
+		if (randLog === 0 || (randLog === 2 && sl1())) {
 			allLogPow.push(logTask);
 		}
-		if (randPow === 0 || (randPow === 2) && sl1()) {
+		if (randPow === 0 || (randPow === 2 && sl1())) {
 			allLogPow.push(powTask);
 		}
 		let allRest = [fractional, quadratic, rational, squareRational].iz(4 - allLogPow.length);
