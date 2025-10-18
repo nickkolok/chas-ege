@@ -106,9 +106,10 @@
 			let base = sl(2, 5);
 			valueFraction = base.pow(b - a);
 			fracStr = (1).texrndfrac(valueFraction);
+			genAssert(valueFraction < 1000, 'valueFraction слишком большое число');
 			powerFraction = {
-				expr: `${base}^{-x + ${b}} < ${fracStr}`,
-				solution: `$x > ${a}$`
+				expr: `${base}^{-x + ${a}} < ${fracStr}`,
+				solution: `$x > ${b}$`
 			};
 		}
 
