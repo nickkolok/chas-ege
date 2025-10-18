@@ -78,12 +78,12 @@
 		} else {
 			// Степенное с суммой
 			let base = sl(2, 5);
-			let c = sl1() ? b : (a + b);
+			let c = b - a;
 			value = base.pow(c);
 			genAssert(value < 10000, 'value слишком большое число');
 			exponential = {
-				expr: `${base}^{-x + ${c}} > ${value}`,
-				solution: [`$x < ${a}$`, `$x < ${b}$`][isGreater],
+				expr: `${base}^{-x + ${b}} > ${value}`,
+				solution: `$x < ${a}$`,
 			};
 		}
 		//показательные с дробью в правой части нер-ва
