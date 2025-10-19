@@ -126,10 +126,9 @@
 			};
 		} else {
 			// Обычный логарифм: log_base(x) > 1
-			let isLogGreater = sl1();
 			logarithmic = {
-				expr: `\\log_{${logBase}} x ${isLogGreater ? '>' : '<'} 1`,
-				solution: isLogGreater ? `$x > ${logBase}$` : `$x < ${logBase}$`
+				expr: `\\log_{${logBase}} x > 1`,
+				solution: `$x > ${logBase}$`
 			};
 		}
 		//логарифмическое нер-во с минусом
