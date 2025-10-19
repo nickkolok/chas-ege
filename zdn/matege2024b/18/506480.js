@@ -23,7 +23,7 @@
 			`(x - ${a})^2(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
 			`(x - ${a})(x - ${b})^2 ${isQuadraticLess ? '<' : '>'} 0`][holeQuad],
 			solution: [
-				[`$${a} < x < ${b}$`, `$x < ${a}$ $\\text{ или }$ $x > ${b}$`][isQuadraticLess],
+				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$${a} < x < ${b}$`][isQuadraticLess],
 				[`$x > ${b}$`, `$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`][isQuadraticLess],
 				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$x < ${a}$`][isQuadraticLess]
 			][holeQuad]
