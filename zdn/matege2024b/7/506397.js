@@ -20,8 +20,7 @@
 
         function answAboutStop(interval, answ) {
             if (lengthOfZeroInterval(interval) > 1)
-                answ.push('автомобиль сделал остановку на ' + chislitlx((lengthOfZeroInterval(interval) - 1) * 15, 'секунда',
-                    'v'));
+                answ.push('автомобиль сделал остановку на ' + chislitlx((lengthOfZeroInterval(interval) - 1) * 15, 'секунда', 'v'));
         }
 
         function answAbouMaxV(intervals, answ) {
@@ -45,22 +44,22 @@
                 answ[maxIndex].solution.push('скорость автомобиля достигла максимума за всё время движения');
         }
 
-        function isNonMoreV(interval, answ, V) {
+        function isNonMoreV(interval, V) {
             return (interval.filter((int) => int < V)).length == interval.length;
         }
 
         function answAbouNonIncreasingNonMoreV(interval, answ, V) {
-            if (isNonIncreasing(interval) && isNonMoreV(interval, answ, V)) {
+            if (isNonIncreasing(interval) && isNonMoreV(interval, V)) {
                 answ.push('скорость автомобиля не увеличивалась и не превышала ' + V * 20 + ' км/ч');
             }
         }
 
-        function isNonLessV(interval, answ, V) {
+        function isNonLessV(interval, V) {
             return interval.filter((int) => int > V).length == interval.length;
         }
 
         function answAbouNonDecreasingNonLessV(interval, answ, V) {
-            if (isNonDecreasing(interval) && isNonLessV(interval, answ, V)) {
+            if (isNonDecreasing(interval) && isNonLessV(interval, V)) {
                 answ.push('скорость автомобиля не уменьшалась и не была менее ' + V * 20 + ' км/ч');
             }
         }
