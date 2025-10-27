@@ -2,6 +2,11 @@
 	'use strict';
 	retryWhileError(function () {
 		/* На рисунке точками показано атмосферное давление в некотором городе на протяжении трёх суток с 4 по 6 апреля 2013 года. Втечение суток давление измеряется 4 раза: в 0:00, в 6:00, в 12:00 и в 18:00.По горизонтали указывается время и дата, по вертикали – давление вмиллиметрах ртутного столба. Для наглядности точки соединены линиями.*/
+		
+		function convert(P){
+			return 752 + P * 2;
+		}
+		
 		function answAbouMaxP(intervalsP, answ) {
 			let maxV = p.maxE();
 			let maxIndex = null;
@@ -18,7 +23,7 @@
 			}
 
 			if (maxIndex)
-				answ[maxIndex].solution.push('давление достигло ' + (752 + maxV) + ' мм рт. ст.');
+				answ[maxIndex].solution.push('давление достигло ' + convert(maxV) + ' мм рт. ст.');
 		}
 
 		function answAbouMaxMinDeltaP(intervalsP, answ) {
@@ -56,7 +61,7 @@
 
 		function answAbouNonMoreP(interval, answ, moreP) {
 			if (isNonMoreP(interval, moreP)) {
-				answ.push('давление не превышало ' + (752 + moreP) + ' мм рт. ст.');
+				answ.push('давление не превышало ' + convert(moreP) + ' мм рт. ст.');
 			}
 		}
 
@@ -66,7 +71,7 @@
 
 		function answAbouNonLessP(interval, answ, lessP) {
 			if (isNonLessP(interval, lessP)) {
-				answ.push('давление не было ниже ' + (752 + lessP) + ' мм рт. ст.');
+				answ.push('давление не было ниже ' + convert(lessP) + ' мм рт. ст.');
 			}
 		}
 
@@ -96,13 +101,13 @@
 
 		function answAboutIncreasingNonMoreP(interval, answ, moreP) {
 			if (isIncreasing(interval) && isNonMoreP(interval, moreP)) {
-				answ.push('давление росло, но не превышало ' + (752 + moreP) + ' мм рт. ст.');
+				answ.push('давление росло, но не превышало ' + convert(moreP) + ' мм рт. ст.');
 			}
 		}
 
 		function answAboutDecreasingNonLessP(interval, answ, lessP) {
 			if (isDecreasing(interval) && isNonLessP(interval, lessP)) {
-				answ.push('давление упало, но осталось больше ' + (752 + lessP) + ' мм рт. ст.');
+				answ.push('давление упало, но осталось больше ' + convert(lessP) + ' мм рт. ст.');
 			}
 		}
 
@@ -117,24 +122,24 @@
 
 		function answAbouConstPNotLess(interval, answ, lessP) {
 			if (ConstP(interval) && isNonLessP(interval, lessP))
-				answ.push('давление не изменилось и было выше ' + (752 + lessP) + ' мм рт. ст');
+				answ.push('давление не изменилось и было выше ' + convert(lessP) + ' мм рт. ст');
 		}
 
 		function answAbouConstPNotMore(interval, answ, moreP) {
 			if (ConstP(interval) && isNonMoreP(interval, moreP))
-				answ.push('давление не изменилось и было ниже ' + (752 + moreP) + ' мм рт. ст');
+				answ.push('давление не изменилось и было ниже ' + convert(moreP) + ' мм рт. ст');
 		}
 
 		let mounth = sklonlxkand(om.months.iz()).re;
 		let beginDay = sl(1, 20);
 
 		let t = [1].zapMonot(13, 0, 1, 1); // шкала времени
-		let p = [sl(7)]; // шкала давления
+		let p = [sl(0, 7, 0.5)]; // шкала давления
 
 		for (; p.length <= t.length || p.length == t.length;) {
 			let interI = (t.length / sl(2, 8).floor());
 			for (let j = 0; j < interI; j++) {
-				p.push([sl(0, 7), p[p.length - 1]][Number([0, 0, 0, 1].iz() && p[p.length - 1] != 0)]);
+				p.push([sl(0, 7, 0.5), p[p.length - 1]][Number([0, 0, 0, 1].iz() && p[p.length - 1] != 0)]);
 			}
 		}
 
@@ -175,9 +180,9 @@
 				// добавляем ответ про понижение давления
 				answAboutDecreasing(interval, solution);
 				// добавляем ответ про повышение давления но меньше
-				answAboutIncreasingNonMoreP(interval, solution, MoreP1)
+				answAboutIncreasingNonMoreP(interval, solution, MoreP1);
 				// добавляем ответ про понижение давления но больше
-				answAboutDecreasingNonLessP(interval, solution, LessP1)
+				answAboutDecreasingNonLessP(interval, solution, LessP1);
 				// добавляем ответ про давление было не более
 				answAbouNonMoreP(interval, solution, MoreP2);
 				// добавляем ответ про давление было не менее
