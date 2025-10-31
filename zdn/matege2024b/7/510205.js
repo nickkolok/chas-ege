@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    retryWhileError(function () { /* На рисунке точками показаны ежемесячныеобъёмы продаж обогревателей в магазине бытовой техники. По горизонтали указываются месяцы, по вертикали – количество проданныхобогревателей. Для наглядности точки соединены линией.*/
+    retryWhileError(function () { /* На рисунке точками показаны ежемесячныеобъёмы продаж обогревателей в магазине бытовой техники. По горизонтали указываются месяцы, по вертикали – количество проданных обогревателей. Для наглядности точки соединены линией.*/
 
         function convert(P) {
             return P * 20;
@@ -230,6 +230,7 @@
         let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
 
         let paint1 = function (ctx) {
+            ctx.translate(0, -10);
             ctx.drawGridWithArrows({
                 gridWidth: 460,
                 gridHeight: 440,
@@ -243,7 +244,7 @@
                 maxY: 160,
                 stepByCeilX: 1,
                 arrowLengthX: 10.5,
-                arrowLengthY: 8.9,
+                arrowLengthY: 8.6,
             });
 
             ctx.translate(40, 40 * 9);
@@ -254,6 +255,20 @@
                 ctx.drawFilledCircle(t[i], production[i], 3 / 40);
                 if (i < t.length - 1)
                     ctx.drawLine(t[i], production[i], t[i + 1], production[i + 1]);
+            }
+
+            ctx.scale(1 / 40, -1 / 40);
+            ctx.lineWidth = 1;
+            ctx.font = "12px serif";
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.setLineDash([20, 5]);
+
+            for (let i = 0; i < 4; i++) {
+                const point = t[i] * 40 + 40 * 2 * i + 40;
+                if (i < 3)
+                    ctx.drawLine(point + 60, 30, point + 60, -360)
+                ctx.fillText(season[i], point, 40);
             }
         };
 
@@ -277,6 +292,6 @@
             height: 400,
             paint: paint1,
         });
-    }, 100);
+    }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=510205
