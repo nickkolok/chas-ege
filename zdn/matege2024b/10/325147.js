@@ -1,8 +1,7 @@
 (function () {
+    'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        'use strict';
-        window.nabor.preferences['325147'] = ['parquet'];
         let key = '325147';
         let preference = ['tile', 'parquet'];
         let rand = getSelectedPreferenceFromList(key, preference);
@@ -10,7 +9,7 @@
         let aSideFloor = sl(2, 9, 1);
         let bSideFloor = slKrome([aSideFloor], 2, 9, 1);
         let AparquetMultiplier = sl(0.1, 0.9, 0.01);
-        let BparquetMultiplier = slKrome([AparquetMultiplier],0.1, 0.9, 0.01);
+        let BparquetMultiplier = slKrome([AparquetMultiplier], 0.1, 0.9, 0.01);
 
         let aSidePart = sl(10, 30, 5);
         let bSidePart = slKrome([aSidePart], 10, 30, 5);
