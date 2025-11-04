@@ -11,16 +11,32 @@
 		let f = sl(2, 99);
 		let wholeNumE = sl(1, 9);
 		let div = [10, 100];
-		
+
 		genAssertIrreducible(a, b);
 		genAssertIrreducible(c, d);
 		genAssertIrreducible(e, f);
 
 		NAtask.setEvaluationTask({
-			expr: 'divideColon(' + ['(' + [['mixed(' + wholeNumA + ',' + a + ',' + b + ')', a + '/' + b, sl(1, 999) / div.iz()]
-				.iz(), ['mixed(' + wholeNumC + ',' + c + ',' + d + ')', c + '/' + d].iz()].shuffle().join(['+', '-'].iz()) +
-				')', '(' + ['mixed(' + wholeNumE + ',' + e + ',' + f + ')', e + '/' + f, sl(1, 999) / div.iz()].iz() + 
-				')'].shuffle().join() + ')',
+			expr: 'divideColon(' + [
+				'(' +
+					[
+						[
+							'mixed(' + wholeNumA + ',' + a + ',' + b + ')',
+							a + '/' + b,
+							sl(1, 999) / div.iz()
+						].iz(),
+						[
+							'mixed(' + wholeNumC + ',' + c + ',' + d + ')',
+							c + '/' + d
+						].iz()
+					].shuffle().join(['+', '-'].iz()) +
+				')',
+				[
+						'mixed(' + wholeNumE + ',' + e + ',' + f + ')',
+						e + '/' + f,
+						sl(1, 999) / div.iz()
+				].iz()
+			].shuffle().join() + ')',
 			authors: ['Алендарь Сергей'],
 		});
 	}, 100000);
