@@ -7,26 +7,24 @@
         let a = sl(3, 19, 1) + numRand;
 
         let paint1 = function (ct) {
-            let points = [];
-
-            for (let i = 0; i <= 20; i++) {
-                points.push({
-                    value: i,
-                    mark: 'line',
-                    label: (i === 0 || i === 1) ? i.toString() : ("" + i).esli(i <= 1),
-                    labelPos: 'underAxis'
-                });
-            }
-
-            points.push({
-                value: a,
-                mark: 'dot',
-                label: 'a',
-                labelPos: 'overAxis'
+            coordAxis_drawAuto(ct, {
+                min: -1,
+                max: 21,
+                points: [
+                    { value: -1, mark: "nothing" },
+                    { value: 21, mark: "nothing" },
+                    ...Array.from({ length: 21 }, (_, i) => ({
+                        value: i,
+                        mark: "line",
+                        label: (i === 0 || i === 1) ? i : ("" + i).esli(i <= 1), // только 0 и 1 подписаны
+                        labelPos: "underAxis"
+                    })),
+                    { value: a, mark: "dot", label: "a", labelPos: "overAxis" }
+                ],
+                width: 700,
+                height: 100,
+                margin: 20
             });
-
-            coordAxis_drawAuto(ct, { points });
-
         };
 
         // Генерация верных и ложных выражений
@@ -41,7 +39,7 @@
                 };
                 used.add(n);
 
-                let useAfirst = [true, false].iz();
+                let useAfirst = sl1();
                 let val = useAfirst ? a - n : n - a;
 
                 let [znak, znakOpp] = val > 0 ? [">0", "<0"] : ["<0", ">0"];
