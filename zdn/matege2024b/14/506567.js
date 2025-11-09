@@ -17,10 +17,25 @@
 		genAssertIrreducible(e, f);
 
 		NAtask.setEvaluationTask({
-			expr: 'divideColon(' + ['(' + ['mixed(' + wholeNumA + ',' + a + ',' + b + ')',
-				a + '/' + b, sl(1, 999) / div.iz()].iz() + ')', '(' + ['mixed(' + wholeNumC + ',' + c + ',' + d + ')',
-				c + '/' + d].iz() + ')'].shuffle().join() + ')' + ['+', '-'].iz() +
-				'(' + ['mixed(' + wholeNumE + ',' + e + ',' + f + ')', e + '/' + f, sl(1, 999) / div.iz()].iz() + ')',
+			expr: 'divideColon(' + [
+				'(' + 
+					[
+						'mixed(' + wholeNumA + ',' + a + ',' + b + ')',
+						a + '/' + b,
+						slKrome(100, 11, 999) / div.iz()
+					].iz() + ')',
+					'(' + 
+						[
+							'mixed(' + wholeNumC + ',' + c + ',' + d + ')',
+							c + '/' + d
+						].iz() + ')'
+					].shuffle().join() + ')' + ['+', '-'].iz() +
+					'(' + 
+						[
+							'mixed(' + wholeNumE + ',' + e + ',' + f + ')',
+							e + '/' + f,
+							slKrome(100, 11, 999) / div.iz()
+						].iz() + ')',
 			authors: ['Алендарь Сергей'],
 		});
 	}, 100000);
