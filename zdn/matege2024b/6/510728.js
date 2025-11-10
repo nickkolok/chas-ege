@@ -32,18 +32,18 @@
 		}
 		genAssert(answerNumbers.length > 0, 'Все трое спортсменов не нужный итоговый балл');
 
-		let tableHTML = '<table style="border-collapse: collapse; width: 100%; text-align: center; margin: 10px 0;">';
+		let tableHTML = '<table style="border-collapse: collapse; width: 100%; text-align: center; margin: 10px 0; border: 1px solid black;">';
 		tableHTML += '<tr>' +
-			'<th>Номер спортсмена</th>' +
-			'<th>K*</th>' +
-			judges.map(j => `<th>${j} судья</th>`).join('') +
+			'<th style="border: 1px solid black;">Номер спортсмена</th>' +
+			'<th style="border: 1px solid black;">K*</th>' +
+			judges.map(j => `<th style="border: 1px solid black;">${j} судья</th>`).join('') +
 			'</tr>';
 
 		for (let i = 0; i < 3; i++) {
 			tableHTML += '<tr>' +
-				`<td>${athletes[i]}</td>` +
-				`<td>${kValues[i].ts()}</td>` +
-				scores[i].map(s => `<td>${s.ts()}</td>`).join('') +
+				`<td style="border: 1px solid black;">${athletes[i]}</td>` +
+				`<td style="border: 1px solid black;">${kValues[i].ts()}</td>` +
+				scores[i].map(s => `<td style="border: 1px solid black;">${s.ts()}</td>`).join('') +
 				'</tr>';
 		}
 		tableHTML += '</table>';
