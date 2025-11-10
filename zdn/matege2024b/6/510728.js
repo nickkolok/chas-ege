@@ -24,8 +24,7 @@
 			let sorted = [...scores[i]].sortNumeric((a, b) => a - b);
 			let middle = sorted.slice(2, 5); // отбрасываем 2 мин и 2 макс → остаются 3 средние
 			let sumMiddle = middle.sum((a, b) => a + b, 0);
-			let finalScore = sumMiddle * kValues[i];
-			finalScores.push(finalScore);
+			finalScores.push(sumMiddle * kValues[i]);;
 		}
 		let answerNumbers = [];
 		for (let i = 0; i < 3; i++) {
