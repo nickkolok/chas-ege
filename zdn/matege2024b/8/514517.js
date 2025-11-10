@@ -4,7 +4,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		let key = '514517';
 		let preference = ['numbersOfTrue1', 'numbersOfTrue2', 'numberOfTrue', 'numbersOfFalse1', 'numbersOfFalse2', 'numberOfFalse'];
-		let rand = getListedPreference(key, preference);
+		let rand = getSelectedPreferenceFromList(key, preference);
 		let flag = rand == 2 || rand == 5;
 		let trueOrFalse = Number(rand > 2);
 
