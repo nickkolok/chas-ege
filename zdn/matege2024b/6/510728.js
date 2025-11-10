@@ -33,7 +33,6 @@
 				answerNumbers.push(athletes[i]);
 			}
 		}
-		genAssert(answerNumbers.length < 3, 'Все трое спортсменов набрали нужный итоговый балл');
 		genAssert(answerNumbers.length > 0, 'Все трое спортсменов не нужный итоговый балл');
 
 		let tableHTML = '<table style="border-collapse: collapse; width: 100%; text-align: center; margin: 10px 0;">';
