@@ -15,15 +15,14 @@
 		for (let i = 0; i < 3; i++) {
 			let athleteScores = [];
 			for (let j = 0; j < 7; j++) {
-				athleteScores.push(sluchch(5.0, 10.0, 0.1));
+				athleteScores.push(sl(5.0, 10.0, 0.1));
 			}
 			scores.push(athleteScores);
 		}
 		let finalScores = [];
 		for (let i = 0; i < 3; i++) {
 			let sorted = [...scores[i]].sortNumeric((a, b) => a - b);
-			let middle = sorted.slice(2, 5); // отбрасываем 2 мин и 2 макс → остаются 3 средние
-			let sumMiddle = middle.sum((a, b) => a + b, 0);
+			let sumMiddle = sorted.slice(2, 5).sum((a, b) => a + b, 0);
 			finalScores.push(sumMiddle * kValues[i]);;
 		}
 		let answerNumbers = [];
