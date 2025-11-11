@@ -1,97 +1,104 @@
-(function() {
-	NAinfo.requireApiVersion(0, 2);
+(function () {
+	retryWhileError(function () {
+		NAinfo.requireApiVersion(0, 2);
 
-	function parabl(a, b, c, x) {
-		return a * x * x + b * x + c;
-	}
-	let a, b, c, D;
-	let x0, y0;
-	do {
-		a = sluchch(1, 2).pm();
-		b = sluchch(0, 10).pm();
-		c = sluchch(0, 10).pm();
-		D = b * b - 4 * a * c;
-		x0 = -b / (2 * a);
-		y0 = parabl(a, b, c, x0);
-	} while (D < 0 || !D.isPolnKvadr() || (Math.abs(x0) > 6 || Math.abs(y0) > 5));
-	let chisl = sluchch(7, 20, 0.5).pm();
-	let answ = parabl(a, b, c, chisl);
-	let X = [],
-		Y = [];
-	if (x0.isZ() && y0.isZ()) {
-		X.push(x0 * 20);
-		Y.push(-0.05 * parabl(a, b * 20, c * 400, x0 * 20));
-	}
-
-	if (parabl(a, b, c, 0).isZ() && Math.abs(parabl(a, b, c, i)) <= 6 && !X.includes(0)) {
-		X.push(0);
-		Y.push(-0.05 * parabl(a, b * 20, c * 400, 0));
-	}
-	//if (X.length < 2)
-	for (let i = x0.ceil() + 1; i < 7; i++)
-		if (parabl(a, b, c, i).isZ() && Math.abs(parabl(a, b, c, i)) <= 6) {
-			X.push(i * 20);
-			Y.push(-0.05 * parabl(a, b * 20, c * 400, i * 20));
+		function parabl(x) {
+			return a * x * x + b * x + c;
 		}
-		//if (X.length < 2)
-	for (let i = x0.ceil() - 1; i > -7; i--)
-		if (parabl(a, b, c, i).isZ() && Math.abs(parabl(a, b, c, i)) <= 6) {
-			X.push(i * 20);
-			Y.push(-0.05 * parabl(a, b * 20, c * 400, i * 20));
-		}
-	let XY = [X, Y].T().iz(3).filter(function(e) {
-		return e;
-	});
 
-	let paint1 = function(ct) {
-		h = 300;
-		//Оси координат (сразу со стрелками)
-		graph9AdrawAxes_20_300(ct);
-		ct.translate(-10, -10);
+		let key = '508911';
+		let preference = ['dontShow', 'showA', 'showB', 'showC'];
+		let rand = getSelectedPreferenceFromList(key, preference);
 
-		//график
-		ct.translate(h / 2, h / 2);
-		for (let i = -130; i < 130; i++){
-			let y = -0.05 * parabl(a, b * 20, c * 400, i - 1);
-			if ( y.abs() <= 130 && (y > -110 || i.abs() >= 15))
-				ct.drawLine(i - 1, -0.05 * parabl(a, b * 20, c * 400, i - 1), i, -0.05 * parabl(a, b * 20, c * 400, i));
-		}
-		//точки
-		graph9AmarkCircles(ct, XY);
-	};
-	let text;
-	if (!sl(5)) {
-		text = `${a}x^2+bx+c`.plusminus();
-		XY.pop();
-	} else
-	if (!x0.isZ && !y0.isZ() || Math.abs(a) == 1)
-		text = `ax^2+bx+c`;
-	else {
-		text = `ax^2+`;
-		if (!c) {
-			if (b) {
+		let a = sluchch(1, 2).pm();
+		let b = sluchch(0, 10).pm();
+		let c = sluchch(0, 10).pm();
+		let D = b * b - 4 * a * c;
+		genAssert(D >= 0, 'Дискриминант меньше нуля');
+		genAssert(D.isPolnKvadr(), 'Дискриминант не полный квадрат');
+		let x0 = -b / (2 * a);
+		let y0 = parabl(x0);
+		genAssert(Math.abs(x0) <= 6, 'Абсцисса вершины параболы не видна');
+		genAssert(Math.abs(y0) <= 5, 'Ордината вершины параболы не видна');
+
+		let chisl = sluchch(7, 20, 0.5).pm();
+		let answ = parabl(chisl);
+
+		let minX = -8.5,
+			maxX = 8.5,
+			minY = -9.5,
+			maxY = 7.5;
+
+		let points = intPoints(parabl, {
+			minX,
+			maxX,
+			minY,
+			maxY
+		});
+
+		let paint1 = function (ctx) {
+			let h = 400;
+			let w = 400;
+			//Оси координат
+			ctx.drawCoordinatePlane(w, h, {
+				hor: 1,
+				ver: 1
+			}, {
+				x1: '1',
+				y1: '1',
+				sh1: 13,
+			}, 20);
+
+			let scale = 20;
+			ctx.scale(scale, -scale);
+			ctx.lineWidth = 2 / scale;
+
+			//график
+			graph9AdrawFunction(ctx, parabl, {
+				minX,
+				maxX,
+				minY,
+				maxY: maxY + 1,
+				step: 0.01,
+			});
+
+			//точки
+			graph9AmarkCircles(ctx, points, 3, 4 / scale);
+		};
+		let text = `ax^2+`;
+		switch (rand) {
+			case 0:
+				genAssert((x0.isZ() && y0.isZ()) && Math.abs(a) != 1);
+				text = `ax^2+bx+c`;
+				break;
+			case 1:
+				text = `${a}x^2+bx+c`.plusminus();
+				points.pop();
+				break;
+			case 2:
+				genAssert(!c && b);
 				text += (`${b}x+c`).plusminus();
-				if(XY.length>2)
-				         XY.pop();
-				//XY.pop();
-			} else
-				text += `bx+c`;
-		} else {
-			text += (`bx+` + `${c}`).plusminus();
-			XY = XY.filter(v => v[0]);
-			if(XY.length>2)
-				XY.pop();
+				break;
+			case 3:
+				genAssert(c);
+				text += (`bx+${c}`).plusminus();
+				points = points.filter(v => v[0]);
+				if (points.length > 2)
+					points.pop();
+				break;
 		}
-	}
-	NAtask.setTask({
-		text: `На рисунке изображён график функции $f(x)=${text.plusminus()}$${`,где числа $a,$ $b$ и $c $ - целые `.esli(text == `ax ^ 2 + bx + c `)}. Найдите $f(${chisl})$.`,
-		answers: answ,
-		analys: `$f(x)=${(a + `x ^ 2 +` + b + `x +` + c).replace('+0x', '').replace('+0', '').plusminus()}$`.plusminus(),
-	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
-		paint: paint1,
+		NAtask.setTask({
+			text: `На рисунке изображён график функции $f(x)=${text.plusminus()}$${`, где числа $a,	$ $b$ и $c $ - целые`.esli(rand == 0)}. Найдите $f(${chisl})$.`,
+			answers: answ,
+			analys: `$f(x)=${(a + `	x ^ 2 + ` + b + `x + ` + c).replace('+0x', '').replace('+0', '').plusminus()}$`.plusminus(),
+			preference,
+		});
+		NAtask.modifiers.allDecimalsToStandard(true);
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
+			paint: paint1,
+		});
 	});
 })();
 //508911 et al
