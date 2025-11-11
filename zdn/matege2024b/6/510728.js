@@ -20,8 +20,8 @@
 		}
 		let finalScores = [];
 		for (let i = 0; i < 3; i++) {
-			let sorted = [...scores[i]].sortNumeric((a, b) => a - b);
-			let sumMiddle = sorted.slice(2, 5).sum((a, b) => a + b, 0);
+			let sorted = [...scores[i]].sortNumeric();
+			let sumMiddle = sorted.slice(2, 5).sum();
 			finalScores.push(sumMiddle * kValues[i]);;
 		}
 		let answerNumbers = [];
