@@ -17,17 +17,17 @@
 		let tableHTML = '<table style="border-collapse: collapse; width: 100%; text-align: center;">';
 		// Заголовок
 		tableHTML += '<tr>' +
-			'<th>Номер магазина</th>' +
-			'<th>Стоимость ' + item.re + ' (руб.)</th>' +
-			'<th>Удалённость от ' + nameOfPerson.re + ' (км)</th>' +
+			'<th style="border: 1px solid black;">Номер магазина</th>' +
+			'<th style="border: 1px solid black;">Стоимость ' + item.re + ' (руб.)</th>' +
+			'<th style="border: 1px solid black;">Удалённость от ' + nameOfPerson.re + ' (км)</th>' +
 			'</tr>';
 
 		// Строки данных
 		for (let i = 0; i < numOfStores; i++) {
 			tableHTML += '<tr>' +
-				`<td>${nums[i]}</td>` +
-				`<td>${prices[i].ts()}</td>` +
-				`<td>${distances[i].ts()}</td>` +
+				`<td style="border: 1px solid black;">${nums[i]}</td>` +
+				`<td style="border: 1px solid black;">${prices[i].ts()}</td>` +
+				`<td style="border: 1px solid black;">${distances[i].ts()}</td>` +
 				'</tr>';
 		}
 		tableHTML += '</table>';
