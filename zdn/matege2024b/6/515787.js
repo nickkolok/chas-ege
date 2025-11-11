@@ -38,6 +38,7 @@
 				minPrice = Math.min(minPrice, prices[i]);
 			}
 		}
+		genAssert(minPrice != Infinity, 'слишком большой результат');
 
 		NAtask.setTask({
 			text: nameOfPerson.de + ' ' + ['нужен', 'нужна'][item.rod] + ' ' + item.ie +
