@@ -8,6 +8,7 @@
 
         let aSideFloor = sl(2, 9, 1) + [0, sl(0.1, 0.9, 0.1)][rand];
         let bSideFloor = slKrome([aSideFloor], 2, 9, 1) + [0, sl(0.1, 0.9, 0.1)][rand];
+        genAssert(aSideFloor != bSideFloor, 'не должны совпадать две стороны');
         let aSidePart = sl(10, 30, 5);
         let bSidePart = slKrome([aSidePart], 10, 30, 5);
 
