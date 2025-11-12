@@ -27,34 +27,39 @@
             });
         };
 
-        // Генерация верных и ложных выражений
-        function generateExpressionPairs(a, count) {
-            let used = new Set();
-            let pairs = [];
+        let usedN = new Set();
+        let correct = [];
+        let wrong = [];
+        //3 верных
+        while (correct.length < 3) {
+            let n = sl(1, 20);
+            if (usedN.has(n) || (n - a).abs() < 0.5) {
+                continue
+            };
+            usedN.add(n);
 
-            while (pairs.length < count) {
-                let n = sluchch(1, 20, 1);
-                if (Math.abs(n - a) < 1 || used.has(n)) {
-                    continue
-                };
-                used.add(n);
+            let useAfirst = sl1();
+            let diff = useAfirst ? a - n : n - a;
+            let znak = diff > 0 ? '>0' : '<0';
+            let expr = useAfirst ? `a-${n}${znak}` : `${n}-a${znak}`;
+            correct.push(expr);
+        }
+        //3 неверных
+        while (wrong.length < 3 && usedN.size < 20) {
+            let n = sl(1, 20);
+            if (usedN.has(n)) {
+                continue
+            };
+            usedN.add(n);
 
-                let useAfirst = sl1();
-                let val = useAfirst ? a - n : n - a;
-
-                let [znak, znakOpp] = val > 0 ? [">0", "<0"] : ["<0", ">0"];
-                let exprTrue = useAfirst ? `a-${n}${znak}` : `${n}-a${znak}`;
-                let exprFalse = useAfirst ? `a-${n}${znakOpp}` : `${n}-a${znakOpp}`;
-
-                pairs.push([exprTrue, exprFalse]);
-            }
-            return pairs;
+            let useAfirst = sl1();
+            let diff = useAfirst ? a - n : n - a;
+            let znak = diff > 0 ? '<0' : '>0';
+            let expr = useAfirst ? `a-${n}${znak}` : `${n}-a${znak}`;
+            wrong.push(expr);
         }
         let rand = sl1();
         let correctOrNot = ['', 'не'][rand];
-        let pairs = generateExpressionPairs(a, 3);
-        let correct = pairs.T()[0];
-        let wrong = pairs.T()[1];
 
         NAtask.setTask({
             text: 'На координатной прямой отмечено число $a$. Какое из утверждений для этого числа является ' + correctOrNot + 'верным?',
