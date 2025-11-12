@@ -34,16 +34,16 @@
 
 		let tableHTML = '<table style="border-collapse: collapse; width: 100%; text-align: center; margin: 10px 0; border: 1px solid black;">';
 		tableHTML += '<tr>' +
-			'<th style="border: 1px solid black;">Номер спортсмена</th>' +
-			'<th style="border: 1px solid black;">K*</th>' +
-			judges.map(j => `<th style="border: 1px solid black;">${j} судья</th>`).join('') +
+			'<th>Номер спортсмена</th>' +
+			'<th>K*</th>' +
+			judges.map(j => `<th >${j} судья</th>`).join('') +
 			'</tr>';
 
 		for (let i = 0; i < 3; i++) {
 			tableHTML += '<tr>' +
-				`<td style="border: 1px solid black;">${athletes[i]}</td>` +
-				`<td style="border: 1px solid black;">${kValues[i].ts()}</td>` +
-				scores[i].map(s => `<td style="border: 1px solid black;">${s.ts()}</td>`).join('') +
+				`<th>${athletes[i]}</th>` +
+				`<th>${kValues[i].ts()}</th>` +
+				scores[i].map(s => `<th>${s.ts()}</th>`).join('') +
 				'</tr>';
 		}
 		tableHTML += '</table>';
