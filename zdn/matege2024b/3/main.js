@@ -1,4 +1,4 @@
 window.nomer=[
 
 ].iz();
-window.comment = 'Графики и диограммы';
+window.comment = 'Графики и диаграммы';
