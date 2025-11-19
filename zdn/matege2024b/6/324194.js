@@ -26,22 +26,34 @@
 		}
 		let minTotal = Math.min(...totalCosts);
 
-		let tableHTML = '<table style="border-collapse: collapse; width: 100%; text-align: center; margin: 10px 0; border: 1px solid black;">';
-		tableHTML += '<tr>' +
-			'<th ">Салон</th>' +
-			`<th ">Стоимость ${item.re} (руб.)</th>` +
-			'<th ">Первоначальный взнос (в % от стоимости)</th>' +
-			'<th ">Срок кредита (мес.)</th>' +
-			'<th ">Сумма ежемесячного платежа (руб.)</th>' +
-			'</tr>';
+		let tableHTML = `
+      <style>
+        .bordered-table, .bordered-table th, .bordered-table td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          padding: 5px;
+          text-align: center;
+        }
+        .bordered-table {
+          width: 100%;
+        }
+      </style>
+      <table class="bordered-table">
+        <tr>
+          <th>Салон</th>
+          <th>Стоимость ${item.re} (руб.)</th>
+          <th>Первоначальный взнос (в % от стоимости)</th>
+          <th>Срок кредита (мес.)</th>
+          <th>Сумма ежемесячного платежа (руб.)</th>
+        </tr>`;
 
 		for (let i = 0; i < 3; i++) {
 			tableHTML += '<tr>' +
-				`<th>${salons[i]}</th>` +
-				`<th>${costs[i].ts()}</th>` +
-				`<th>${downPercents[i]}</th>` +
-				`<th>${terms[i]}</th>` +
-				`<th>${monthlyPayments[i].ts()}</th>` +
+				`<td>${salons[i]}</td>` +
+				`<td>${costs[i].ts()}</td>` +
+				`<td>${downPercents[i]}</td>` +
+				`<td>${terms[i]}</td>` +
+				`<td>${monthlyPayments[i].ts()}</td>` +
 				'</tr>';
 		}
 		tableHTML += '</table>';
