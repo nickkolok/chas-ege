@@ -14,20 +14,31 @@
 		let distances = []
 		distances.zapslch(0, numOfStores - 1, 0.5, 2.5, 0.1);
 
-		let tableHTML = '<table style="border-collapse: collapse; width: 100%; text-align: center;">';
-		// Заголовок
-		tableHTML += '<tr>' +
-			'<th>Номер магазина</th>' +
-			'<th>Стоимость ' + item.re + ' (руб.)</th>' +
-			'<th>Удалённость от ' + nameOfPerson.re + ' (км)</th>' +
-			'</tr>';
+		let tableHTML = `
+      <style>
+        .bordered-table, .bordered-table th, .bordered-table td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          padding: 5px;
+          text-align: center;
+        }
+        .bordered-table {
+          width: 100%;
+        }
+      </style>
+      <table class="bordered-table">
+        <tr>
+          <th>Номер магазина</th>
+          <th>Стоимость ${item.re} (руб.)</th>
+          <th>Удалённость от ${nameOfPerson.re} (км)</th>
+        </tr>`;
 
 		// Строки данных
 		for (let i = 0; i < numOfStores; i++) {
 			tableHTML += '<tr>' +
-				`<th>${nums[i]}</th>` +
-				`<th>${prices[i].ts()}</th>` +
-				`<th>${distances[i].ts()}</th>` +
+				`<td>${nums[i]}</td>` +
+				`<td>${prices[i].ts()}</td>` +
+				`<td>${distances[i].ts()}</td>` +
 				'</tr>';
 		}
 		tableHTML += '</table>';
