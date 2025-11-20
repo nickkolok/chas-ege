@@ -20,15 +20,13 @@
 			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
-		let answer = (5 * a * a);
-
 		NAtask.setTask({
 			text: 'Ящик, имеющий форму куба с ребром $' + a + '$ см без одной грани, '+
 			'нужно покрасить со всех сторон снаружи. Найдите площадь поверхности, которую необходимо покрасить. Ответ дайте в квадратных сантиметрах.',
-			answers: answer,
+			answers: 5 * a * a,
 		});
 
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
