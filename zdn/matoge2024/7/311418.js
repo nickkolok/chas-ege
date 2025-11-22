@@ -16,7 +16,7 @@
                     ...Array.from({ length: 21 }, (_, i) => ({
                         value: i,
                         mark: "line",
-                        label: (i === 0 || i === 1) ? i : ("" + i).esli(i <= 1), // только 0 и 1 подписаны
+                        label: (i === 0 || i === 1) ? i : "", // только 0 и 1 подписаны
                         labelPos: "underAxis"
                     })),
                     { value: a, mark: "dot", label: "a", labelPos: "overAxis" }
