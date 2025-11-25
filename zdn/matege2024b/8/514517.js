@@ -22,48 +22,68 @@
 		let n = sl(flag ? 2 : sl1(), 3);
 		let m = flag ? 1 : 4 - n;
 
-		let text = 'Во дворе ' + location.re + ' растут всего три дерева: ' + trees[0].ie + ', ' + trees[1].ie + ', ' + trees[2].ie + '. ' +
-			trees[0].ie.toZagl() + ' выше ' + trees[1].re + ' на $1$ метр, но ниже ' + trees[2].re + ' на $' + high + '$ метра.' +
-			' Выберите одно или несколько утверждений, которые ' + ['верны', 'неверны'][trueOrFalse] + ' при указанных условиях. ' +
-			' В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов.' +
-			' Если ответов несколько, записывайте их номера в порядке возрастания.';
-		text += '<br>';
-
-		let correct = [
-			//Список (на самом деле массив) правильных утверждений
-			'Среди указанных деревьев не найдётся двух одной высоты.',
-			trees[0].ie.toZagl() + ', растущ' + adjShort(trees[0]) + ' во дворе ' + location.re + ', выше ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' там же.',
-			trees[2].ie.toZagl() + ', растущ' + adjShort(trees[2]) + ' во дворе ' + location.re + ', выше ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' там же.',
-			trees[2].ie.toZagl() + ', растущ' + adjShort(trees[2]) + ' во дворе ' + location.re + ', выше ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' там же.',
-			trees[1].ie.toZagl() + ', растущ' + adjShort(trees[1]) + ' во дворе ' + location.re + ', ниже ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' там же.',
-			trees[1].ie.toZagl() + ', растущ' + adjShort(trees[1]) + ' во дворе ' + location.re + ', ниже ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' там же.',
-			trees[0].ie.toZagl() + ', растущ' + adjShort(trees[0]) + ' во дворе ' + location.re + ', ниже ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' там же.',
-			'Любое дерево, помимо указанных, которое ниже ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' во дворе ' + location.re + ', также ниже ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' там же.',
-			'Любое дерево, помимо указанных, которое ниже ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' во дворе ' + location.re + ', также ниже ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' там же.',
-			'Любое дерево, помимо указанных, которое ниже ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' во дворе ' + location.re + ', также ниже ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' там же.',
-			'Любое дерево, помимо указанных, которое выше ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' во дворе ' + location.re + ', также выше ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' там же.',
-			'Любое дерево, помимо указанных, которое выше ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' во дворе ' + location.re + ', также выше ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' там же.',
-			'Любое дерево, помимо указанных, которое выше ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' во дворе ' + location.re + ', также выше ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' там же.',
+		let correct = [];
+		// Простые сравнения (A > B, C > B, C > A)
+		const comparisons = [
+			{ from: 0, to: 1 },
+			{ from: 2, to: 1 },
+			{ from: 2, to: 0 }
 		];
+		comparisons.forEach(pair => {
+			correct.push(
+				trees[pair.from].ie.toZagl() + ', растущ' + adjShort(trees[pair.from]) + ' во дворе ' + location.re +
+				', выше ' + trees[pair.to].re + ', растущ' + adjGen(trees[pair.to]) + ' там же.'
+			);
+		});
+		// Обратные формулировки (B < A и т.д.)
+		const reverseComparisons = [
+			{ from: 1, to: 0 },
+			{ from: 1, to: 2 },
+			{ from: 0, to: 2 }
+		];
+		reverseComparisons.forEach(pair => {
+			correct.push(
+				trees[pair.from].ie.toZagl() + ', растущ' + adjShort(trees[pair.from]) + ' во дворе ' + location.re +
+				', ниже ' + trees[pair.to].re + ', растущ' + adjGen(trees[pair.to]) + ' там же.'
+			);
+		});
+		//Верные следствия
+		correct.push(
+			'Любое дерево, помимо указанных, которое выше ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' во дворе ' + location.re +
+			', также выше ' + trees[0].re + ' и ' + trees[1].re + '.',
+			'Любое дерево, помимо указанных, которое ниже ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' во дворе ' + location.re +
+			', также ниже ' + trees[0].re + ' и ' + trees[2].re + '.',
+			'Среди указанных деревьев не найдётся двух одной высоты.'
+		);
 
-		let wrong = [
+		let wrong = [];
+		// Ложные сравнения (A > C, B > A, B > C)
+		let falseComparisons = [
+			{ from: 0, to: 2 },
+			{ from: 1, to: 0 },
+			{ from: 1, to: 2 }
+		];
+		falseComparisons.forEach(pair => {
+			wrong.push(
+				trees[pair.from].ie.toZagl() + ', растущ' + adjShort(trees[pair.from]) + ' во дворе ' + location.re +
+				', выше ' + trees[pair.to].re + ', растущ' + adjGen(trees[pair.to]) + ' там же.'
+			);
+		});
+		// Ложные следствия
+		wrong.push(
 			'Среди указанных деревьев найдётся два одной высоты.',
-			trees[0].ie.toZagl() + ', растущ' + adjShort(trees[0]) + ' во дворе ' + location.re + ', выше ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' там же.',
-			trees[1].ie.toZagl() + ', растущ' + adjShort(trees[1]) + ' во дворе ' + location.re + ', выше ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' там же.',
-			trees[1].ie.toZagl() + ', растущ' + adjShort(trees[1]) + ' во дворе ' + location.re + ', выше ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' там же.',
-			trees[2].ie.toZagl() + ', растущ' + adjShort(trees[2]) + ' во дворе ' + location.re + ', ниже ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' там же.',
-			trees[2].ie.toZagl() + ', растущ' + adjShort(trees[2]) + ' во дворе ' + location.re + ', ниже ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' там же.',
-			trees[0].ie.toZagl() + ', растущ' + adjShort(trees[0]) + ' во дворе ' + location.re + ', ниже ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' там же.',
-			'Любое дерево, помимо указанных, которое ниже ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' во дворе ' + location.re + ', также ниже ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' там же.',
-			'Любое дерево, помимо указанных, которое ниже ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' во дворе ' + location.re + ', также ниже ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' там же.',
-			'Любое дерево, помимо указанных, которое ниже ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' во дворе ' + location.re + ', также ниже ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' там же.',
-			'Любое дерево, помимо указанных, которое выше ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' во дворе ' + location.re + ', также выше ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' там же.',
-			'Любое дерево, помимо указанных, которое выше ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' во дворе ' + location.re + ', также выше ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' там же.',
-			'Любое дерево, помимо указанных, которое выше ' + trees[1].re + ', растущ' + adjGen(trees[1]) + ' во дворе ' + location.re + ', также выше ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' там же.',
-		]; //Внимание: после последнего элемента тоже ставится запятая. Её можно и не ставить, но так удобнее.
+			'Любое дерево, помимо указанных, которое выше ' + trees[0].re + ', растущ' + adjGen(trees[0]) + ' во дворе ' + location.re +
+			', также выше ' + trees[2].re + '.',
+			'Любое дерево, помимо указанных, которое ниже ' + trees[2].re + ', растущ' + adjGen(trees[2]) + ' во дворе ' + location.re +
+			', также ниже ' + trees[1].re + '.'
+		);
 
 		chas2.task.setTask({
-			text: text,
+			text: 'Во дворе ' + location.re + ' растут всего три дерева: ' + trees[0].ie + ', ' + trees[1].ie + ', ' + trees[2].ie + '. ' +
+				trees[0].ie.toZagl() + ' выше ' + trees[1].re + ' на $1$ метр, но ниже ' + trees[2].re + ' на $' + high + '$ метра.' +
+				' Выберите одно или несколько утверждений, которые ' + ['верны', 'неверны'][trueOrFalse] + ' при указанных условиях. ' +
+				' В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов.' +
+				' Если ответов несколько, записывайте их номера в порядке возрастания.',
 			answers: trueOrFalse ? wrong : correct,
 			wrongAnswers: trueOrFalse ? correct : wrong,
 			preference: preference,
