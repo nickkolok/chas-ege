@@ -19,40 +19,52 @@
 		//квадратичные нер-ва
 		let isQuadraticLess = sl1();
 		let holeQuad = sl(0, 2);
-		let quadratic = {
-			expr: [`(x - ${a})(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
-			`(x - ${a})^2(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
-			`(x - ${a})(x - ${b})^2 ${isQuadraticLess ? '<' : '>'} 0`][holeQuad],
-			solution: [[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$${a} < x < ${b}$`][isQuadraticLess],
-				[`$x > ${b}$`, `$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`][isQuadraticLess],
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$x < ${a}$`][isQuadraticLess]
-			][holeQuad],
+		let quadraticSolutions = [
 			[
-				[`$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`, `$(${a},\\, ${b})$`][isQuadraticLess],
-				[`$(${b},\\, +\\infty)$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`][isQuadraticLess],
-				[`$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`, `$(-\\infty,\\, ${a})$`][isQuadraticLess]
-			][holeQuad]
-			][randAnswer]
+				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
+				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
+			],
+			[
+				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
+				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+			],
+			[
+				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
+				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`]
+			]
+		];
+		let quadratic = {
+			expr: [
+				`(x - ${a})(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
+				`(x - ${a})^2(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
+				`(x - ${a})(x - ${b})^2 ${isQuadraticLess ? '<' : '>'} 0`
+			][holeQuad],
+			solution: quadraticSolutions[holeQuad][isQuadraticLess][randAnswer]
 		};
 		//дробные нер-ва
 		let isFractionalLess = sl1();
 		let holeFrac = sl(0, 2);
-		let fractional = {
-			expr: [`\\frac{x - ${a}}{x - ${b}} ${isFractionalLess ? '<' : '>'} 0`,
-			`\\frac{x - ${a}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`,
-			`\\frac{x - ${b}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`][holeFrac],
-			solution: [[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$${a} < x < ${b}$`][isFractionalLess], //обычный
-				[`$x > ${b}$`, `$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`][isFractionalLess], //дырка в a
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$x < ${a}$`][isFractionalLess] //дырка в b
-			][holeFrac],
+		let fractionalSolutions = [
 			[
-				[`$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`, `$(${a},\\, ${b})$`][isFractionalLess], //обычный
-				[`$(${b},\\, +\\infty)$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`][isFractionalLess], //дырка в a
-				[`$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`, `$(-\\infty,\\, ${a})$`][isFractionalLess] //дырка в b
-			][holeFrac]
-			][randAnswer]
+				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
+				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
+			],
+			[
+				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
+				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+			],
+			[
+				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
+				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`]
+			]
+		];
+		let fractional = {
+			expr: [
+				`\\frac{x - ${a}}{x - ${b}} ${isFractionalLess ? '<' : '>'} 0`,
+				`\\frac{x - ${a}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`,
+				`\\frac{x - ${b}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`
+			][holeFrac],
+			solution: fractionalSolutions[holeFrac][isFractionalLess][randAnswer]
 		};
 		//дробное с квадратом 
 		let isSqRatGreater = sl1();
@@ -60,15 +72,25 @@
 		let numPart = [`(x - ${b})^2`, `(x - ${b})`, `x - ${a}`, `(x - ${a})^2`][swapNumDen];
 		let denPart = [`x - ${a}`, `(x - ${a})^2`, `(x - ${b})^2`, `(x - ${b})`][swapNumDen];
 		let sqRatExpr = `\\frac{${numPart}}{${denPart}} ${isSqRatGreater ? '>' : '<'} 0`;
-		let sqRatSolution = [[
-			[`$x < ${a}$`, `$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$x < ${a}$`, `$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`][swapNumDen],
-			[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$x > ${b}$`, `$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$x > ${b}$`][swapNumDen]
-		][isSqRatGreater],
-		[
-			[`$(-\\infty,\\, ${a})$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`, `$(-\\infty,\\, ${a})$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`][swapNumDen],
-			[`$(${a},\\, ${b}) \\cup  (${b},\\, +\\infty)$`, `$(${b},\\, +\\infty)$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`, `$(${b},\\, +\\infty)$`][swapNumDen]
-		][isSqRatGreater]
-		][randAnswer]
+		let sqRatSolutions = [
+			[
+				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`],
+				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+			],
+			[
+				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
+				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+			],
+			[
+				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
+				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
+			],
+			[
+				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
+				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`]
+			]
+		];
+		let sqRatSolution = sqRatSolutions[swapNumDen][isSqRatGreater][randAnswer];
 		let squareRational = { expr: sqRatExpr, solution: sqRatSolution };
 		//дробное рациональное второго типа
 		let isRationalGreater = sl1();
