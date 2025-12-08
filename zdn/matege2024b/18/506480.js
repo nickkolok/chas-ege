@@ -33,14 +33,15 @@
 				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`]
 			]
 		];
-		let quadratic = {
-			expr: [
-				`(x - ${a})(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
-				`(x - ${a})^2(x - ${b}) ${isQuadraticLess ? '<' : '>'} 0`,
-				`(x - ${a})(x - ${b})^2 ${isQuadraticLess ? '<' : '>'} 0`
-			][holeQuad],
-			solution: quadraticSolutions[holeQuad][isQuadraticLess][randAnswer]
-		};
+		let quadraticExprBase = [
+			`(x - ${a})(x - ${b})`,
+			`(x - ${a})^2(x - ${b})`,
+			`(x - ${a})(x - ${b})^2`
+		][holeQuad];
+		let quadraticExpr = quadraticExprBase + ` ${isQuadraticLess ? '<' : '>'} 0`;
+		let quadraticSolution = quadraticSolutions[holeQuad][isQuadraticLess][randAnswer];
+		let quadratic = { expr: quadraticExpr, solution: quadraticSolution };
+
 		//дробные нер-ва
 		let isFractionalLess = sl1();
 		let holeFrac = sl(0, 2);
@@ -58,14 +59,15 @@
 				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`]
 			]
 		];
-		let fractional = {
-			expr: [
-				`\\frac{x - ${a}}{x - ${b}} ${isFractionalLess ? '<' : '>'} 0`,
-				`\\frac{x - ${a}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`,
-				`\\frac{x - ${b}}{(x - ${a})(x - ${b})} ${isFractionalLess ? '<' : '>'} 0`
-			][holeFrac],
-			solution: fractionalSolutions[holeFrac][isFractionalLess][randAnswer]
-		};
+		let fractionalExprBase = [
+			`\\frac{x - ${a}}{x - ${b}}`,
+			`\\frac{x - ${a}}{(x - ${a})(x - ${b})}`,
+			`\\frac{x - ${b}}{(x - ${a})(x - ${b})}`
+		][holeFrac];
+		let fractionalExpr = fractionalExprBase + ` ${isFractionalLess ? '<' : '>'} 0`;
+		let fractionalSolution = fractionalSolutions[holeFrac][isFractionalLess][randAnswer];
+		let fractional = { expr: fractionalExpr, solution: fractionalSolution };
+		
 		//дробное с квадратом 
 		let isSqRatGreater = sl1();
 		let swapNumDen = sl(0, 3);
