@@ -937,6 +937,7 @@ chas2.task = {
 	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
 	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
 	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
+	 * @param {Function}  o.ODZ функция области допустимых значений: принимает x и возвращает Boolean
 	 */
 	setLocalExtremumTask: function (o) {
 		let expr = math.parse(o.expr);
@@ -971,6 +972,16 @@ chas2.task = {
 			//o.extremums = roots.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
 		}
 
+
+		let ODZ = (typeof o.ODZ === 'function') ? o.ODZ : function(){ return true; };
+		o.extremums = o.extremums.filter(function(e){
+			try {
+				var x = eval(''+e);
+				return !!ODZ(x);
+			} catch (err) {
+				return false;
+			}
+		});
 
 		let sortedExtremums = {min:[], max:[], not:[]};
 
@@ -1007,6 +1018,9 @@ chas2.task = {
 		let theExtremum = sortedExtremums[whatToFind];
 
 		theExtremum = eval(theExtremum);
+		if (typeof ODZ === 'function') {
+			genAssert(ODZ(theExtremum), 'Точка экстремума не принадлежит области допустимых значений');
+		}
 		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
 
 		let extremumName = {min: 'минимум', max: 'максимум'}[whatToFind];
