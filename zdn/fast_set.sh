@@ -23,6 +23,16 @@ printf "\tname: '"$result"',\n});\n" >> $result.js
 read -p "Add 'setMinimaxFunctionTask.forbidOpenEnds' to all main.js files? (y/N): " add_forbidOpenEnds
 read -p "Add 'setTask.forbidDecimalFractions' to all main.js files? (y/N): " add_forbidDecimalFractions
 
+{
+    printf "\n// fast_set metadata\n" >> "$result.js"
+    printf "// array entries:\n" >> "$result.js"
+    for element in "${array[@]}"; do
+        printf "// - %s\n" "$element" >> "$result.js"
+    done
+    printf "// forbidOpenEnds answer: %s\n" "$add_forbidOpenEnds" >> "$result.js"
+    printf "// forbidDecimalFractions answer: %s\n" "$add_forbidDecimalFractions" >> "$result.js"
+}
+
 cd "./"
 i=1;
 for element in "${array[@]}"; do
