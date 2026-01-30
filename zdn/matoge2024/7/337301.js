@@ -23,22 +23,20 @@
 			] });
 		};
 
-		let pointA2 = pointA ** 2;
-		let pointA3 = pointA ** 3;
-		let pointA4 = pointA ** 4;
-
 		let randA = sl1();
-		let options = [[["$a$", pointA], ["$a^2$", pointA2], ["$a^3$", pointA3]], [["$a^2$", pointA2], ["$a^3$", pointA3], ["$a^4$", pointA4]]][randA];
+		let options = [["$a^2$", pointA ** 2], ["$a^3$", pointA ** 3]].concat([
+			[["$a$", pointA], ["$a^4$", pointA ** 4]][randA]
+		]);
 
 		let isMaxTaskOrMin = sl1();
-		let targetValue = [options.T(x => x[1])[1].maxE(), options.T(x => x[1])[1].minE()][isMaxTaskOrMin];
+		let targetValue = options.T()[1][["maxE","minE"][isMaxTaskOrMin]]();
 		let maxOrMin = ['бол', 'мен'][isMaxTaskOrMin];
 
 		let correctOptions = options.filter(x => x[1] === targetValue);
 		let correct = correctOptions.length === 1 ? correctOptions[0][0] : "нет данных";
 
 		let allLabels = options.map(x => x[0]);
-		allLabels.pushIf("нет данных", !allLabels.includes("нет данных"));
+		allLabels.pushUnique("нет данных");
 
 		NAtask.setTask({
 			text: "На координатной прямой отмечены числа. Какое из перечисленных чисел наи" + maxOrMin + "ьшее?",
@@ -46,7 +44,7 @@
 			wrongAnswers: allLabels.filter(label => label !== correct)
 		});
 
-		AtoB(3, allLabels.indexOf(correct));
+		AtoB(3);
 
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 400,
