@@ -4,8 +4,13 @@
 
 		let a = sl(10,100)/10;//ускорение
 		let v0 = sl(a*10,300)/10;//скорость
-		let t = sl(10,v0/a*10)/10;//время
-		let S = v0*t-a*t*t/2;//путь
+		let t1 = sl(10,v0/a*10)/10;//время
+		let S = v0*t1-a*t1*t1/2;//путь
+		let t2 = 2*v0/a-t1;
+
+		let answ = Math.min(t1,t2);
+		genAssertZ1000(answ);
+
 		let transp = decor.vehicleRacingOnRoad.iz();
 		let transp_skl=sklonlxkand(transp);
 
@@ -18,7 +23,7 @@
 			     +['путь','расстояние'].iz()+' $S=v_0 t-\\dfrac{at^2}{2}({\\mbox{м}})$'
 			     +'. Определите время, прошедшее с момента начала торможения, если известно, что за это время '
 			     +transp+' проехал'+['','а','о','и'][transp_skl.rod]+' $'+S.ts()+'$ метров. Ответ дайте в секундах.',
-			answers: t,
+			answers: answ,
 		});
 	}, 1000);
 })();
