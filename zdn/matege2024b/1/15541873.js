@@ -18,7 +18,7 @@
             text:
                 'Оплачивая на кассе покупку ' + chislitlx(count, 'молочных ' + product.ie, 'r$') + ', ' +
                 name + ' с ' + chislitlx(given, 'рубль', 'r$') + ' получила сдачу ' +
-                chislitlx(change, 'рубль', 'v$') + '. Сколько стоит один молочный' + product.ie + '? Ответ дайте в рублях.',
+                chislitlx(change, 'рубль', 'v$') + '. Сколько стоит один молочный ' + product.ie + '? Ответ дайте в рублях.',
             answers: pricePerUnit,
         });
 
