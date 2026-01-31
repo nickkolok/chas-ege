@@ -16,7 +16,7 @@
         let totalBeforeDiscount = smallPrice * (1 + firstRatio + firstRatio * secondRatio);
         let totalCost = totalBeforeDiscount * discountFactor;
 
-        genAssertZ1000(totalCost / 10, "Итоговая стоимость должна иметь не более двух знаков после запятой");
+        genAssertZ1000(totalCost / 100, "Итоговая стоимость должна иметь не более одного знака после запятой");
 
         NAtask.setTask({
             text: 'В магазине дизайнерских сумок проходит акция. При покупке одновременно трёх сумок: ' +
