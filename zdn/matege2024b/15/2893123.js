@@ -4,7 +4,7 @@
         NAinfo.requireApiVersion(0, 2);
 
         let key = '2893123';
-        let preference = ['fixed_ratio', 'random_ratio'];
+        let preference = ['same_ratio', 'random_ratio'];
         let rand = getSelectedPreferenceFromList(key, preference);
 
         let smallPrice = sl(2000, 5000);
