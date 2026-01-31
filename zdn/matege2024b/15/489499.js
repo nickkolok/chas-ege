@@ -10,7 +10,7 @@
         let percentFirst = sl(10, 35);
         let percentSecond = slKrome([percentFirst], 10, 35);
 
-        let totalCost = [3 * pantsPrice, pantsPrice * (1 + percentFirst / 100 + 1 - percentSecond / 100)][rand];
+        let totalCost = [3 * pantsPrice, pantsPrice * (3 + percentFirst / 100 - percentSecond / 100)][rand];
 
         genAssertZ1000(totalCost / 10, "Стоимость должна быть до двух знаков после запятой");
 
