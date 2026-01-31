@@ -8,7 +8,7 @@
 
         let pantsPrice = sl(4000, 6000, 100);
         let percentFirst = sl(10, 35);
-        let percentSecond = slKrome([percentFirst], 10, 35);
+        let percentSecond = [percentFirst, slKrome([percentFirst], 10, 35)][rand];
 
         let totalCost = [3 * pantsPrice, pantsPrice * (3 + percentFirst / 100 - percentSecond / 100)][rand];
 
@@ -16,7 +16,7 @@
 
         NAtask.setTask({
             text: 'Мужской костюм состоит из брюк, жилета и пиджака. ' +
-                'Пиджак дороже брюк на $' + percentFirst + '\\%$, а жилет дешевле брюк на $' + [percentFirst, percentSecond][rand] + '\\%$. ' +
+                'Пиджак дороже брюк на $' + percentFirst + '\\%$, а жилет дешевле брюк на $' + percentSecond + '\\%$. ' +
                 'Сколько стоит мужской костюм, если брюки стоят ' + chislitlx(pantsPrice, 'рубль', 'v$') + '? ' +
                 'Ответ дайте в рублях.',
             answers: totalCost,
