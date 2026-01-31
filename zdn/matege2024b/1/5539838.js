@@ -8,6 +8,7 @@
         let studentNumber = sl(50, 300);
 
         let rooms = (studentNumber / maxPerRoom).ceil();
+        genAssert(studentNumber % maxPerRoom != 0, "Число студентов делится нацело на максимум в комнате — требуется остаток");
 
         let person = ['юноша', 'девушка'][rand];
         let student = ['студент', 'студентка'][rand];
