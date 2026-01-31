@@ -49,7 +49,7 @@
 			minY: -9,
 			maxY: 7,
 		});
-		genAssert(pointsP.length >= 3, 'Точек не достаточно');
+		genAssert(pointsP.length >= 3, 'Точек недостаточно');
 
 		let pointsK = intPoints(kf, {
 			minX: -8,
@@ -57,7 +57,7 @@
 			minY: -9,
 			maxY: 7,
 		});
-		genAssert(pointsK.length >= 2, 'Точек не достаточно');
+		genAssert(pointsK.length >= 2, 'Точек недостаточно');
 
 		let answ, find;
 		if (randFind) {
