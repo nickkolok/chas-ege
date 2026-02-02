@@ -9,8 +9,7 @@
         let maxPacks = (budget / price).floor();
 
         genAssert(maxPacks > 2, "Слишком мало пачек задачи");
-        genAssert(budget / price != 0, "бюджет на цену не должен делится нацело");
-
+        
         let pack = sklonlxkand(['печенье', 'чай', 'ряженка', 'молоко', 'мука', 'вермишель'].iz());
 
         NAtask.setTask({
