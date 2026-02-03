@@ -14,8 +14,6 @@
 
 		genAssert(area.isAlmostInteger(), "Площадь должна быть целым числом");
 
-		area = area.round();
-
 		let planNorm = area / planDays;
 		let factNorm = area / factDays;
 		genAssert(factNorm > 0 && planNorm > factNorm, "Фактическая норма должна быть положительной и меньше плановой");
