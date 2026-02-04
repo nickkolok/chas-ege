@@ -3,9 +3,9 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let denominatorA = sl(10, 90, 1);
-		let numeratorA = sl(1, denominatorA - 1, 1);
-		let sum = sl(1, 9, 1);
+		let denominatorA = sl(10, 90);
+		let numeratorA = sl(1, denominatorA - 1);
+		let sum = sl(1, 9);
 		let a = sum + numeratorA / denominatorA;
 
 		genAssert(!a <= 1.1, "точка А должна быть в границах от 1,1");
@@ -43,7 +43,7 @@
 
 		while (wrAns.length < 3) {
 			let wrongNumerator = slKrome(function (x) {
-				let num = (1, 9, 1);
+				let num = (1, 9);
 				let val = (num * denominatorA + x) / denominatorA;
 				return (
 					x.kratno(denominatorA) ||                     // исключаем целые
@@ -74,4 +74,3 @@
 })();
 //zer00player
 //https://oge.sdamgia.ru/test?likes=311392
-
