@@ -8,9 +8,9 @@
 		let sum = sl(1, 9);
 		let a = sum + numeratorA / denominatorA;
 
-		genAssert(!a <= 1.1, "точка А должна быть в границах от 1,1");
-		genAssert(!a <= 9.8, "точка А должна быть в границах до 9,8 ");
-		genAssert((a - a.round()).abs() < 0.05, "точка А не целое");
+		genAssert(a > 1.1, "точка A должна быть больше 1.1");
+		genAssert(a < 9.8, "точка A должна быть меньше 9.8");
+		genAssert((a - a.round()).abs() >= 0.05, "точка A не должна быть слишком близка к целому");
 
 		let paint1 = function (ct) {
 			coordAxis_drawAuto(ct, {
