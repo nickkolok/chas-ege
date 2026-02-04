@@ -1,4 +1,3 @@
-
 (function () {
 	'use strict';
 	retryWhileError(function () {
@@ -12,44 +11,40 @@
 		genAssert(((a * 10).round() / 10 - a).abs() > epsilon, "точка A не должна стоять на засечке");
 
 		let paint1 = function (ct) {
-			let points = [];
-
-			// Засечки от 0 до 1 с шагом 0.1, подписываем 0 и 1
-			for (let i = 0; i <= 1; i += 0.1) {
-
-				points.push({
-					value: i,
-					mark: 'line',
-					label: i.toFixedLess(1),
-					labelPos: 'underAxis'
-				});
-			}
-
-			// Точка A
-			points.push({
-				value: a,
-				mark: 'dot',
-				label: 'A',
-				labelPos: 'overAxis'
+			coordAxis_drawAuto(ct, {
+				min: -0.05,
+				max: 1.05,
+				points: [
+					// Фиктивные точки для границ
+					{ value: -0.05, mark: "nothing" },
+					{ value: 1.05, mark: "nothing" },
+					// Засечки от 0 до 1 с шагом 0.1
+					...Array.from({ length: 11 }, (_, i) => {
+						let val = i * 0.1;
+						return {
+							value: val,
+							mark: "line",
+							label: (val === 0 || val === 1) ? val.toString() : "",
+							labelPos: "underAxis"
+						};
+					}),
+					// Точка A
+					{ value: a, mark: "dot", label: "A", labelPos: "overAxis" }
+				],
+				width: 400,
+				height: 100,
+				margin: 20
 			});
-
-			// Фиктивные точки для ограничения диапазона и сдвига
-			points.push({ value: -0.05, mark: 'nothing' });
-			points.push({ value: 1.05, mark: 'nothing' });
-
-			coordAxis_drawAuto(ct, { points });
 		};
 
-		// Генерация ответа
 		let correct = numeratorA.texfrac(denominatorA);
 		let wrAns = [];
-
-		let usedNumerators = [numeratorA]; // чтобы избежать дубликатов
+		let usedNumerators = [numeratorA];
 		while (wrAns.length < 3) {
 			let notCorrectNumeratorA = slKrome(function (x) {
-				return x >= denominatorA ||//не >=1                 
+				return x >= denominatorA || // не >=1
 					x.kratno(denominatorA) ||
-					usedNumerators.includes(x);//чтобы не случались одиночные underfined
+					usedNumerators.includes(x);
 			}, 1, denominatorA - 1);
 
 			usedNumerators.push(notCorrectNumeratorA);
@@ -73,5 +68,3 @@
 })();
 //zer00player
 //https://oge.sdamgia.ru/test?likes=317074
-
-
