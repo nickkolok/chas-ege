@@ -13,27 +13,24 @@
 		genAssert((a - a.round()).abs() < 0.05, "точка А не целое");
 
 		let paint1 = function (ct) {
-
-			let points = [];
-
-			for (let i = 0; i <= 10; i++) {
-				points.push({
-					value: i,
-					mark: 'line',
-					label: i.toString().esli(i === 0 || i === 1),
-					labelPos: 'underAxis'
-				});
-			}
-
-			// Точка A
-			points.push({
-				value: a,
-				mark: 'dot',
-				label: 'A',
-				labelPos: 'overAxis'
+			coordAxis_drawAuto(ct, {
+				min: -0.5,
+				max: 10.5,
+				points: [
+					{ value: -0.5, mark: "nothing" },
+					{ value: 10.5, mark: "nothing" },
+					...Array.from({ length: 11 }, (_, i) => ({
+						value: i,
+						mark: "line",
+						label: (i === 0 || i === 1) ? i.toString() : "",
+						labelPos: "underAxis"
+					})),
+					{value: a, mark: "dot", label: "A", labelPos: "overAxis"}
+				],
+				width: 500,
+				height: 100,
+				margin: 20
 			});
-
-			coordAxis_drawAuto(ct, { points });
 		};
 
 		// Генерация ответа
