@@ -40,17 +40,19 @@
 
 		while (wrAns.length < 3) {
 			let wrongNumerator = slKrome(function (x) {
-				let num = (1, 9);
-				let val = (num * denominatorA + x) / denominatorA;
-				return (
-					x.kratno(denominatorA) ||                     // исключаем целые
-					usedNumerators.includes(x) ||                // дубликаты
-					val <= 1.05 || val >= 9.75 ||                // вне границ
-					(val - val.round()).abs() < 0.06       // близко к целому
-				);
+				if (x <= 0) return true;
+				if (usedNumerators.has(x)) return true;
+				if (x % denominatorA === 0) return true;
+
+				let val = x / denominatorA;
+				let intPart = Math.floor(val);
+				let fracPart = val - intPart;
+				if (intPart < 1 || intPart > 9) return true;
+				if (fracPart < 0.05 || fracPart > 0.95) return true;
+				return false;
 			}, 1, 150);
 
-			usedNumerators.push(wrongNumerator);
+			usedNumerators.add(wrongNumerator);
 			wrAns.push(wrongNumerator.texfrac(denominatorA));
 		}
 
