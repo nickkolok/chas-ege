@@ -25,6 +25,7 @@
 		let resultMinutes = resultTime * 60;
 
 		genAssert(resultMinutes.isAlmostInteger(), "Разница должна быть целым числом минут");
+		genAssert(resultMinutes < 30, "Минут должно быть не больше 30");
 
 		NAtask.setTask({
 			text: 'Расстояние между ' + the_humanSettlementDestination.tm + ' ' + pass[0] + ' и ' + pass[1] + ' равно $' + distancePart * 2 + '$ км. ' +
