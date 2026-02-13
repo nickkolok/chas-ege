@@ -44,9 +44,10 @@
 		let usedNumerators = [numeratorA];
 		while (wrAns.length < 3) {
 			let notCorrectNumeratorA = slKrome(function (x) {
-				return x >= denominatorA || // не >=1
+				return x >= denominatorA ||
 					x.kratno(denominatorA) ||
-					usedNumerators.includes(x);
+					usedNumerators.includes(x) ||
+					x.nod(denominatorA) !== 1;
 			}, 1, denominatorA - 1);
 
 			usedNumerators.push(notCorrectNumeratorA);
