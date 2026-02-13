@@ -2,9 +2,13 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-
-        let rand = sl1();
-        let randMoreOrLess = sl1();
+        let key = '513810';
+        let preference1 = ['genderBoy', 'genderGirl'];
+        let preference2 = ['more', 'less'];
+        let preference3 = ['everyStudent', 'oneTypeOfStudentSimple', 'oneTypeOfStudentReverse'];
+        let rand = getSelectedPreferenceFromList(key, preference1);
+        let randMoreOrLess = getSelectedPreferenceFromList(key, preference2);
+        let randGender = getSelectedPreferenceFromList(key, preference3);
         let randClass = sl1();
 
         let universityPairs = [
@@ -47,7 +51,7 @@
                 'В ' + educationInstitution.pe + ' ' + boyOrGirl.im + ' составляют ' + firstHalfOfStudent +
                 '% числа всех учащихся.' + ' Сколько всего ',
 
-            questions: [
+            questions: [[
                 {
                     text: 'учащихся ',
                     answers: result * 100,
@@ -60,10 +64,15 @@
                     text: girlOrBoy.rm + ' среди учащихся',
                     answers: result * (100 - firstHalfOfStudent),
                 },
-            ],
+            ][randGender]],
             postquestion: ' в ' + educationInstitution.pe + ', если ' + gender[1 - randMoreOrLess].rm +
                 ' там на ' + differenceInNumberOfStudent + ' ' + ['больше', 'меньше'][randMoreOrLess] + ', чем ' +
                 gender[randMoreOrLess].rm + '?',
+            preference: [preference1, preference2, preference3],
+
         });
-    }, 100);
+        NAtask.modifiers.allDecimalsToStandard()
+    }, 2000);
 })();
+//zer00player
+//513810
