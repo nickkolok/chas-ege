@@ -64,7 +64,7 @@
 		AtoB(3);
 
 		chas2.task.modifiers.addCanvasIllustration({
-			width: 500,
+			width: 400,
 			height: 100,
 			paint: paint1,
 		});
