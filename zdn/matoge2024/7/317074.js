@@ -6,6 +6,8 @@
 		let denominatorA = sl(5, 50, 1);
 		let numeratorA = sl(1, denominatorA - 1, 1);
 
+		genAssert(numeratorA.nod(denominatorA) === 1, "дробь должна быть несократимой");
+
 		let a = numeratorA / denominatorA;
 		const epsilon = 1e-6;
 		genAssert(((a * 10).round() / 10 - a).abs() > epsilon, "точка A не должна стоять на засечке");
