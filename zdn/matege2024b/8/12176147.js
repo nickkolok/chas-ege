@@ -2,18 +2,21 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let key = '12176147'; 
+		let key = '12176147';
 		let preference = [
-			'trueStatements',   // показывать верные
-			'falseStatements',  // показывать неверные
-			'mixedTrue',        // выбрать 1–2 верных
-			'mixedFalse'        // выбрать 1–2 неверных
+			'numbersOfTrue1',
+			'numbersOfTrue2',
+			'numberOfTrue',//все верные
+			'numbersOfFalse1',
+			'numbersOfFalse2',
+			'numberOfFalse'//все неверные
 		];
 		let rand = getSelectedPreferenceFromList(key, preference);
+		let flag = rand == 2 || rand == 5;
+		let trueOrFalse = Number(rand > 2);
 
-		let seekTrue = (rand === 0 || rand === 2);
-		let nCorrect = (rand === 2 || rand === 3) ? sl(1, 2) : 2;
-		let nWrong = 4 - nCorrect;
+		let nCorrect = sl(flag ? 2 : sl1(), 3);
+		let nWrong = flag ? 1 : 4 - nCorrect;
 
 		let statements = [
 			'Если владелец карты имеет постоянную скидку, то установленный лимит им достигнут.',//верно
@@ -32,23 +35,13 @@
 		let correct = trueIndices.map(i => statements[i]);
 		let wrong = falseIndices.map(i => statements[i]);
 
-		if (rand === 2) {
-			correct = chas2.utils.sample(correct, nCorrect);
-			wrong = chas2.utils.sample(wrong, nWrong);
-		} else if (rand === 3) {
-			wrong = chas2.utils.sample(wrong, nCorrect);
-			correct = chas2.utils.sample(correct, nWrong);
-			[correct, wrong] = [wrong, correct];
-			seekTrue = false;
-		}
-
 		NAtask.setTask({
 			text: 'Совершая покупки, владелец дисконтной карты накапливает баллы. Когда сумма баллов достигает установленного лимита, он получает постоянную скидку. ' +
-				'Выберите одно или несколько утверждений, которые ' + (seekTrue ? 'верны' : 'неверны') + ' при приведённом условии. ' +
+				'Выберите одно или несколько утверждений, которые ' + (trueOrFalse ? 'неверны' : 'верны') + ' при приведённом условии. ' +
 				'В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов. ' +
 				'Если ответов несколько, записывайте их номера в порядке возрастания.',
-			answers: seekTrue ? correct : wrong,
-			wrongAnswers: seekTrue ? wrong : correct,
+			answers: trueOrFalse ? wrong : correct,
+			wrongAnswers: trueOrFalse ? correct : wrong,
 			preference: preference,
 		});
 
