@@ -29,7 +29,7 @@
 					})),
 					{ value: a, mark: "dot", label: "A", labelPos: "overAxis" }
 				],
-				width: 500,
+				width: 400,
 				height: 100,
 				margin: 20
 			});
