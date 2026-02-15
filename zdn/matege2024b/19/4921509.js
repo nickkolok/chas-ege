@@ -11,8 +11,7 @@
 		let word = ['большее', 'меньшее'][rand1];
 
 		let divisor = sl(3, 30);
-		let include = ['3', '4', '5', '6', '7', '8', '9'].iz();
-
+		let include = null;;
 		let found = null;
 
 		if (rand2 === 2) {
@@ -25,31 +24,41 @@
 			}
 			genAssertNonempty(candidates, 'Нет трёхзначного числа из одинаковых цифр, делящегося на ' + divisor);
 			found = rand1 === 0 ? Math.max(...candidates) : Math.min(...candidates);
-		} else {
 
+		} else if (rand2 === 1) {
 			if (rand1 === 0) {
-				//Ищем НАИБОЛЬШЕЕ
-				for (let n = 999; n >= 100; n--) {
-					if (rand2 === 0 && String(n).includes(include)) {
-						continue;
-					}
-					if (n % divisor === 0) {
+				found = 999 - (999 % divisor);
+			} else {
+				found = 100 + ((divisor - (100 % divisor)) % divisor);
+			}
+		} else {
+			let naive;
+			if (rand1 === 0) {
+				naive = 999 - (999 % divisor);//наибольшее
+			} else {
+				naive = 100 + ((divisor - (100 % divisor)) % divisor);//наименьшее
+			}
+
+			let digits = [...new Set(String(naive))];
+			genAssert(digits.length > 0, 'naive число не имеет цифр');
+			include = digits.iz();
+			if (rand1 === 0) {
+				for (let n = naive; n >= 100; n -= divisor) {
+					if (!String(n).includes(include)) {
 						found = n;
 						break;
 					}
 				}
 			} else {
-				//Ищем НАИМЕНЬШЕЕ
-				for (let n = 100; n <= 999; n++) {
-					if (rand2 === 0 && String(n).includes(include)) {
-						continue;
-					}
-					if (n % divisor === 0) {
+				for (let n = naive; n <= 999; n += divisor) {
+					if (!String(n).includes(include)) {
 						found = n;
 						break;
 					}
 				}
 			}
+
+			genAssert(found != null, 'Не найдено подходящее число');
 		}
 
 		NAtask.setTask({
