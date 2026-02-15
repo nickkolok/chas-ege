@@ -8,6 +8,8 @@
 		let sum = sl(1, 9);
 		let a = sum + numeratorA / denominatorA;
 
+		genAssert(numeratorA.nod(denominatorA) === 1, "дробь должна быть несократимой");
+
 		genAssert(a > 1.1, "точка A должна быть больше 1.1");
 		genAssert(a < 9.8, "точка A должна быть меньше 9.8");
 		genAssert((a - a.round()).abs() >= 0.05, "точка A не должна быть слишком близка к целому");
@@ -25,7 +27,7 @@
 						label: (i === 0 || i === 1) ? i.toString() : "",
 						labelPos: "underAxis"
 					})),
-					{value: a, mark: "dot", label: "A", labelPos: "overAxis"}
+					{ value: a, mark: "dot", label: "A", labelPos: "overAxis" }
 				],
 				width: 500,
 				height: 100,
@@ -33,26 +35,26 @@
 			});
 		};
 
-		// Генерация ответа
 		let correct = (numeratorA + sum * denominatorA).texfrac(denominatorA);
 		let wrAns = [];
-		let usedNumerators = new Set([numeratorA]);
+		let usedNumerators = [numeratorA]; 
 
 		while (wrAns.length < 3) {
 			let wrongNumerator = slKrome(function (x) {
-				if (x <= 0) return true;
-				if (usedNumerators.has(x)) return true;
-				if (x % denominatorA === 0) return true;
-
-				let val = x / denominatorA;
-				let intPart = Math.floor(val);
-				let fracPart = val - intPart;
-				if (intPart < 1 || intPart > 9) return true;
-				if (fracPart < 0.05 || fracPart > 0.95) return true;
-				return false;
+				return x <= 0 ||
+					x >= 150 ||
+					usedNumerators.includes(x) ||
+					x % denominatorA === 0 ||
+					x.nod(denominatorA) !== 1 ||
+					(() => {
+						let val = x / denominatorA;
+						let intPart = Math.floor(val);
+						let fracPart = val - intPart;
+						return intPart < 1 || intPart > 9 || fracPart < 0.05 || fracPart > 0.95;
+					})();
 			}, 1, 150);
 
-			usedNumerators.add(wrongNumerator);
+			usedNumerators.push(wrongNumerator);
 			wrAns.push(wrongNumerator.texfrac(denominatorA));
 		}
 
