@@ -23,9 +23,7 @@
 					candidates.push(num);
 				}
 			}
-			if (candidates.length === 0) {
-				throw new Error('Нет трёхзначного числа из одинаковых цифр, делящегося на ' + divisor);
-			}
+			genAssertNonempty(candidates, 'Нет трёхзначного числа из одинаковых цифр, делящегося на ' + divisor);
 			found = rand1 === 0 ? Math.max(...candidates) : Math.min(...candidates);
 		} else {
 
@@ -55,7 +53,7 @@
 		}
 
 		NAtask.setTask({
-			text: 'Найдите наи' + word + ' трёхзначное число,' + [' в записи которого не используется цифра $' + include + '$ и', '',' записанное одинаковыми цифрами и'][rand2] +
+			text: 'Найдите наи' + word + ' трёхзначное число,' + [' в записи которого не используется цифра $' + include + '$ и', '', ' записанное одинаковыми цифрами и'][rand2] +
 				' которое нацело делится на $' + divisor + '$.',
 			answers: found,
 			preference: [preference1, preference2],
