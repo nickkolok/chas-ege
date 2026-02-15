@@ -72,7 +72,7 @@
 
         });
         NAtask.modifiers.allDecimalsToStandard()
-    }, 2000);
+    }, 100);
 })();
 //zer00player
 //513810
