@@ -12,7 +12,7 @@
         let randClass = sl1();
 
         let universityPairs = [
-            ['парень', 'девушка'],
+            ['юноша', 'девушка'],
             ['студент', 'студентка']
         ];
         let schoolPairs = [
@@ -27,7 +27,7 @@
         let schoolBoy = sklonlxkand(schoolPairs[schoolIndex][0]);
         let schoolGirl = sklonlxkand(schoolPairs[schoolIndex][1]);
 
-        let academic = sklonlxkand(['академия', 'колледж', 'университет', 'институт', 'ВУЗ', 'техникум', 'училище'].iz());
+        let academic = sklonlxkand(['академия', 'колледж', 'университет', 'институт', 'вуз', 'техникум', 'училище'].iz());
         let school = sklonlxkand(['школа', 'лицей', 'гимназия',].iz());
 
         let studentBoy = [schoolBoy, universityBoy][randClass];
