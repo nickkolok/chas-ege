@@ -11,7 +11,7 @@
 		let word = ['большее', 'меньшее'][rand1];
 
 		let divisor = sl(3, 30);
-		let include = null;;
+		let include = null;
 		let found = null;
 
 		if (rand2 === 2) {
