@@ -4,7 +4,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		let key = '4921509';
 		let preference1 = ['biggestNumber', 'smallestNumber'];
-		let preference2 = ['ignoreNumber', 'okayNumber', 'sameNumber'];
+		let preference2 = ['exceptNumber', 'simpleNumber', 'sameNumber'];
 		let rand1 = getSelectedPreferenceFromList(key, preference1);
 		let rand2 = getSelectedPreferenceFromList(key, preference2);
 
