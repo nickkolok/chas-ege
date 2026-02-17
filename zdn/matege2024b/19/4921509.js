@@ -14,7 +14,7 @@
 		let include = null;
 		let found = null;
 
-		if (rand2 === 2) {
+		function findSameDigitNumber() {
 			let candidates = [];
 			for (let d = 1; d <= 9; d++) {
 				let num = d * 111;
@@ -23,42 +23,52 @@
 				}
 			}
 			genAssertNonempty(candidates, 'Нет трёхзначного числа из одинаковых цифр, делящегося на ' + divisor);
-			found = rand1 === 0 ? Math.max(...candidates) : Math.min(...candidates);
+			return rand1 === 0 ? Math.max(...candidates) : Math.min(...candidates);
+		}
 
-		} else if (rand2 === 1) {
+		function findNaiveExtremum() {
 			if (rand1 === 0) {
-				found = 999 - (999 % divisor);
+				return 999 - (999 % divisor);//наибольшее
 			} else {
-				found = 100 + ((divisor - (100 % divisor)) % divisor);
+				let start = 100;
+				let remainder = start % divisor;
+				return remainder === 0 ? start : start + divisor - remainder;//наименьшее
 			}
-		} else {
-			let naive;
-			if (rand1 === 0) {
-				naive = 999 - (999 % divisor);//наибольшее
-			} else {
-				naive = 100 + ((divisor - (100 % divisor)) % divisor);//наименьшее
-			}
+		}
 
+		function findWithExcludedDigit() {
+			let naive = findNaiveExtremum();
 			let digits = [...new Set(String(naive))];
 			genAssert(digits.length > 0, 'naive число не имеет цифр');
 			include = digits.iz();
 			if (rand1 === 0) {
 				for (let n = naive; n >= 100; n -= divisor) {
 					if (!String(n).includes(include)) {
-						found = n;
-						break;
+						return n;
 					}
 				}
 			} else {
 				for (let n = naive; n <= 999; n += divisor) {
 					if (!String(n).includes(include)) {
-						found = n;
-						break;
+						return n;
 					}
 				}
 			}
+			genAssert(false, 'Не найдено подходящее число без цифры ' + include);
+		}
 
-			genAssert(found != null, 'Не найдено подходящее число');
+		switch (rand2) {
+			case 2://sameNumber
+				found = findSameDigitNumber();
+				break;
+			case 1://simpleNumber
+				found = findNaiveExtremum();
+				break;
+			case 0://exceptNumber
+				found = findWithExcludedDigit();
+				break;
+			default:
+				genAssert(false, 'Неизвестный режим rand2: ' + rand2);
 		}
 
 		NAtask.setTask({
