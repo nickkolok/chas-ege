@@ -9,63 +9,55 @@
 		let rand1 = getSelectedPreferenceFromList(key, preference1);
 		let rand2 = getSelectedPreferenceFromList(key, preference2);
 
-		let digits = [5, 4][rand1];
 		let digitWord = ['пятизначное', 'четырёхзначное'][rand1];
 		let direction = ['наибольшее', 'наименьшее'][rand2];
 
 		let divisor = sl(12, 60);
+		let minVal = [10000, 1000][rand1];
+		let maxVal = [99999, 9999][rand1];
 
-		let minVal = Math.pow(10, digits - 1);
-		let maxVal = Math.pow(10, digits) - 1;
-
-		let n = maxVal - (maxVal % divisor);
-		let found = null;
-		let prod = null;
-
+		let current, step;
 		if (rand2 === 0) {
-			//наибольшее
-			let n = maxVal - (maxVal % divisor);
-			while (n >= minVal) {
-				let s = String(n);
-				if (!s.includes('0')) {
-					prod = 1;
-					for (let c of s) prod *= parseInt(c);
-					if (prod >= 10 && prod <= 500) {
-						found = n;
-						break;
-					}
-				}
-				n -= divisor;
-			}
+			// наибольшее
+			current = maxVal - (maxVal % divisor);
+			step = -divisor;
 		} else {
-			//наименьшее
-			let start = minVal;
-			if (start % divisor !== 0) {
-				start += divisor - (start % divisor);
-			}
-			let n = start;
-			while (n <= maxVal) {
-				let s = String(n);
-				if (!s.includes('0')) {
-					prod = 1;
-					for (let c of s) prod *= parseInt(c);
-					if (prod >= 10 && prod <= 500) {
-						found = n;
-						break;
-					}
-				}
-				n += divisor;
-			}
+			// наименьшее
+			current = minVal + ((divisor - (minVal % divisor)) % divisor);
+			step = divisor;
 		}
 
-		genAssert(found !== null, 'Не найдено подходящее число, кратное divisor');
+		let found = [];
+		let prodForBounds = null;
 
-		let range = Math.max(5, Math.floor(prod / 5));
-		let minProd = prod - range;
-		let maxProd = prod + range;
+		while (
+			(rand2 === 0 && current >= minVal) ||
+			(rand2 === 1 && current <= maxVal)
+		) {
+			let s = String(current);
+			if (!s.includes('0')) {
+				let prod = 1;
+				for (let c of s) {
+					prod *= parseInt(c);
+				}
+				if (prod >= 10 && prod <= 100) {
+					found.push(current);
+					if (prodForBounds === null) {
+						prodForBounds = prod;
+					}
+					if (found.length >= 5) {
+						break;
+					}
+				}
+			}
+			current += step;
+		}
 
-		minProd = Math.max(1, minProd);
-		maxProd = Math.min(300, maxProd);
+		genAssert(found.length > 0, 'Не найдено подходящее число, кратное divisor');
+
+		let range = Math.max(5, Math.floor(prodForBounds / 5));
+		let minProd = Math.max(1, prodForBounds - range);
+		let maxProd = Math.min(300, prodForBounds + range);
 
 		NAtask.setTask({
 			text: 'Найдите ' + direction + ' ' + digitWord + ' число, кратное $' + divisor + '$, произведение цифр которого больше $' + minProd +
