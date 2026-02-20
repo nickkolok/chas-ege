@@ -20,9 +20,9 @@
 
 		if (randFind) {
 			answ = chisl;
-			find = `значение $x$, при котором $f(x)=${f(chisl).ts()}$`;
+			find = `значение $x$, при котором $f(x)=${f(chisl)}$`;
 		} else {
-			find = `$f(${chisl.ts()})$`;
+			find = `$f(${chisl})$`;
 			answ = f(chisl);
 		}
 
