@@ -90,7 +90,7 @@
 		NAtask.setTask({
 			text: `На рисунке изображён график функции $f(x)=${text.plusminus()}$${`, где числа $a,	$ $b$ и $c $ - целые`.esli(rand == 0)}. Найдите $f(${chisl})$.`,
 			answers: answ,
-			analys: `$f(x)=${(a + `	x ^ 2 + ` + b + `x + ` + c).replace('+0x', '').replace('+0', '').plusminus()}$`.plusminus(),
+			analys: (`$f(x)=${(a +`x^2+` + b + `x+` + c)}$`).replace('+0x', '').replace('+0', '').plusminus(),
 			preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
@@ -101,5 +101,4 @@
 		});
 	});
 })();
-//508911 et al
-//TODO
+//508911
