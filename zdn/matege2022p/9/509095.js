@@ -18,18 +18,18 @@
 		let b = [sluchch(1, 10).pm(), 0][randB];
 		let chisl = sluchch(0, 10).pm();
 		genAssert(f(chisl).abs() >= 8);
-		genAssertAlmostInteger((chisl));
+		genAssertAlmostInteger(chisl);
 		genAssertZ1000(f(chisl));
 		genAssert(f(chisl).abs() < 1000);
 
 		//слишком большое
 		let find, answ;
 		if (!randFind) {
-			find = `$f(${chisl.ts()})$`;
+			find = `$f(${chisl})$`;
 			answ = f(chisl);
 		} else {
 			answ = chisl;
-			find = `значение $x$, при котором $f(x)=${f(chisl).ts()}$`;
+			find = `значение $x$, при котором $f(x)=${f(chisl)}$`;
 		}
 
 		let points = intPoints(f, {
