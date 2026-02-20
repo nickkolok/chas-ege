@@ -4,7 +4,10 @@
 		let key = "11232";
 
 		let preference = ['area', 'side'];
-		let rand = getSelectedPreferenceFromList(key, preference);
+		let rand = getListedPreference(key, preference.map((pref, index) => ({
+			preference: pref,
+			preferenceValue: index
+		})), sl(preference.length - 1));
 
 		let side = sl(4, 60, 2);
 
@@ -12,7 +15,7 @@
 
 		let triangle = new Triangle({
 			lengths: {
-				lengthAB: sl(side + 2, side + 10, 2),
+				lengthAB: slKrome(side, 4, 60, 2),
 				lengthBC: side,
 				lengthCA: side,
 			},
