@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 		
-		let letters = latbukv.slice(0, 4).concat('');
+		let letters = latbukv.slice(0, 5);
 
 		let side = sl(5, 20);
 		let a = sl(5, 20);
@@ -41,7 +41,8 @@
 
 			ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
+			ctx.textAlign = "center";
+            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2 || i == 4) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
@@ -56,8 +57,8 @@
 			height: 400,
 			paint: paint1,
 		});
-
+		NAtask.modifiers.variativeABC(letters);
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 2000);
-	NAtask.modifiers.allDecimalsToStandard(true);
 })();
 // https://oge.sdamgia.ru/test?likes=324216
