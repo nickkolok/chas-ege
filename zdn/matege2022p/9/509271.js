@@ -18,16 +18,26 @@
 		let randB = getSelectedPreferenceFromList(key, preference2);
 		let randC = getSelectedPreferenceFromList(key, preference3);
 
-		let x1 = Math.pow(sluchch(1, 2), 2);
-		let y1 = sluchch(-7, 6);
+		let x1 = [Math.pow(sluchch(1, 2), 2), 0][randB];
+		let y1 = [sluchch(-7, 6), 0][randB];
 		let x2 = Math.pow(sluchch(3, 20), 2);
 		let y2 = sluchch(8, 20).pm();
 
 		let k = (y1 - y2) / (x1 - x2);
 		genAssert(k, 'k не определено');
-		genAssertAlmostInteger(k);
+		if (!randB) {
+			genAssertAlmostInteger(k);
+		}
 
-		let b = [y1 - k * x1, 0][randB];
+		let kView = [k, k.texfrac(1)][randB];
+		if (randB)
+			if ((kView).match(/\{(\d+)\}/)[1] > 100) {
+				kView = k;
+				genAssertZ1000(kView);
+			}
+
+
+		let b = y1 - k * x1;
 		if (randB) {
 			genAssert(b == 0, 'b не ноль');
 		}
@@ -116,10 +126,10 @@
 			ct.fillText('A', 20 * x1 - 10, -20 * y1 - 10);
 		};
 		NAtask.setTask({
-			text: `На рисунке изображены графики функций $f(x)=a\\sqrt{x}${`+c`.esli(!randC)}$ и $g(x)=kx${`+b`.esli(!randB)}$, которые пересекаются в точках $A$ и $B$. Найдите ${find} точки $B$.`,
+			text: `На рисунке изображены графики функций $f(x)=a\\sqrt{x}${` + c `.esli(!randC)}$ и $g(x)=kx${` + b `.esli(!randB)}$, которые пересекаются в точках $A$ и $B$. Найдите ${find} точки $B$.`,
 			answers: answ,
 			analys: '$f(x)=' + (a + '\\sqrt{x}+' + c + '$').replace('+0', '').plusminus() + '<br>' +
-				'$g(x)=' + (k + 'x+' + b).replace('+0', '').plusminus() + '$<br>' +
+				'$g(x)=' + (kView + 'x+' + b).replace('+0', '').plusminus() + '$<br>' +
 				'$A(' + x1 + ';' + y1 + ')$<br>' +
 				'$B(' + x2 + ';' + y2 + ')$',
 			preference: [preference1, preference2, preference3],
@@ -133,4 +143,3 @@
 	}, 100000);
 })();
 //509271
-
