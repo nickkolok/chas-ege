@@ -66,7 +66,7 @@
 		NAtask.setTask({
 			text: `На рисунке изображён график функции $f(x)=\\frac{k}{x${`+a`.esli(!randA)}}$. Найдите ${find}.`,
 			answers: answ,
-			analys: (`$f(x)=\\frac{${k}}{x+${a.esli(a)}}$`).plusminus(),
+			analys: (`$f(x)=\\frac{${k}}{x+${a.toString().esli(a)}}$`).plusminus(),
 			preference: [preference1, preference2],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
