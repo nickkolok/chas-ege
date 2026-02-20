@@ -4,10 +4,7 @@
 		let key = "11232";
 
 		let preference = ['area', 'side'];
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let side = sl(4, 60, 2);
 
@@ -43,6 +40,7 @@
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
+			ctx.textAlign = "center";
 			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2 || i == 3) ? 25 : -5)));
 		};
 
