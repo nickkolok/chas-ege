@@ -2,12 +2,13 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let a = sl(5, 20);
+		let [a,b] = om.pifagtr.iz();
+		let coefficient = sl(1, 100)/10;
 
 		let triangle = new Triangle({
 			lengths: {
-				lengthAB: a,
-				lengthBC: slKrome(a, 5, 20),
+				lengthAB: a*coefficient,
+				lengthBC: b*coefficient,
 			},
 			angles: {
 				angle: Math.PI / 2,
@@ -16,8 +17,6 @@
 				calculateMidlines: true
 			}
 		});
-
-		genAssert(triangle.lengthCA.isAlmostInteger(), 'Гипотенуза не целая');
 
 		let points = autoScale(triangle.vertices);
 
