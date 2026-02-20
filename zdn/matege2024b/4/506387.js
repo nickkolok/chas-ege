@@ -11,7 +11,7 @@
 		genAssert(isValidTriangle(a, b, c), 'Должно выполняться правило треугольника');
 
 		let p = (a + b + c) / 2;
-		let triangle = p * (p - a) * (p - b) * (p - c).sqrt();
+		let triangle = (p * (p - a) * (p - b) * (p - c)).sqrt();
 
 		genAssert(triangle.isZ(), "результат должен быть целым");
 

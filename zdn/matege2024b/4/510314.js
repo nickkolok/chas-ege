@@ -4,8 +4,10 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '510314';
-		let preference = ['ampereP', 'ampereR', 'volt'];
-		let rand = getSelectedPreferenceFromList(key, preference);
+		let preference1 = ['ampereP', 'ampereR', 'volt'];
+		let preference2 = ['lessWords', 'moreWords'];
+		let rand = getSelectedPreferenceFromList(key, preference1);
+		let rand2 = getSelectedPreferenceFromList(key, preference2);
 
 		let the_orderToFind = decor.orderToFind.iz();
 
@@ -24,14 +26,18 @@
 			formula = '$P =\\frac{U^2}{R} $, где $U$ – напряжение (в вольтах)';
 			genAssertZ1000(answerP2, 'не более 3-х знаков после запятой');
 		}
-
+		
 		NAtask.setTask({
 
 			text: 'Мощность постоянного тока (в ваттах) вычисляется по формуле ' + formula + ', $R$ – сопротивление (в омах).' +
-				' Пользуясь этой формулой, ' + the_orderToFind + ' ' + ['$P$ (в ваттах)', '$R$ (в омах)', '$P$ (в ваттах)'][rand] +
-				', если ' + ['$R = ' + R + '$ Ом' + ' и $I = ' + I + '$ А', '$P = ' + answerP1 + '$ Вт' + ' и $I = ' + I + '$ А', '$R = ' + R + '$ Ом и $U = ' + U + '$ В'][rand] + '.',
+				' Пользуясь этой формулой, ' + the_orderToFind + ' ' +
+				[['$P$ (в ваттах)', '$R$ (в омах)', '$P$ (в ваттах)'][rand], ['мощность постоянного тока $P$', 'сопротивление $R$', 'мощность постоянного тока $P$'][rand]][rand2] +
+				', если ' + [['$R = ' + R + '$ Ом' + ' и $I = ' + I + '$ А', '$P = ' + answerP1 + '$ Вт' + ' и $I = ' + I + '$ А', '$R = ' + R + '$ Ом и $U = ' + U + '$ В'][rand],
+				['сопротивление', 'мощность постоянного тока', 'сопротивление'][rand] + ' составляет ' +
+				['$' + R + '$ Ом', '$' + answerP1 + '$ Вт', '$' + R + '$ Ом'][rand] + ', а ' + ['сила тока', 'сила тока', 'напряжение'][rand] + ' равн' + ['а', 'а', 'о'][rand] + ' ' +
+				['$' + I + '$ А', '$' + I + '$ А', '$' + U + '$ В'][rand] + '. Ответ дайте в ' + ['ваттах', 'омах', 'ваттах'][rand]][rand2] + '.',
 			answers: [answerP1, R, answerP2][rand],
-			preference: preference,
+			preference: [preference1, preference2],
 
 
 

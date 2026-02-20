@@ -2,8 +2,10 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-
-		let rand = sl1();
+		let key = '509729'
+		let preference = ['CelToFar', 'FarToCel'];
+		let rand = getSelectedPreferenceFromList(key, preference);
+		
 		let degreeName = ['Цельсия', 'Фаренгейта'][rand];
 		let reverseDegreeName = ['Цельсия', 'Фаренгейта'][1 - rand];
 		let degreeNumberCelsius = sl(10, 99);
@@ -16,7 +18,7 @@
 				'Скольким градусам по шкале ' + reverseDegreeName + ' соответствует '
 				+ [chislitlx(degreeNumberCelsius, 'градус', '$'), chislitlx(degreeNumberFahrenheit, 'градус', '$')][rand] + ' по шкале ' + degreeName + '?',
 			answers: [degreeNumberFahrenheit, degreeNumberCelsius][rand],
-
+			preference: preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000);
