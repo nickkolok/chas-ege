@@ -85,7 +85,12 @@ chas2.task = {
 		 */
 		unfoldTask : function(o) {
 			if (o.questions) {
-				let question = o.questions.iz();
+				let question;
+				if (Array.isArray(o.questions)) {
+				    question = o.questions.iz();
+				} else {
+				    question = o.questions; 
+				}
 				if (! ('answer' in question) ){
 					question.answer = question.answers;
 				}
