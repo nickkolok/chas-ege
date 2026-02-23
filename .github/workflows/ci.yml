@@ -28,7 +28,8 @@ jobs:
       run: npm install grunt-cli --save-dev
 
     - name: Run default Grunt build
-      run: ./node_modules/.bin/grunt --force
+      run: ./node_modules/.bin/grunt
 
     - name: Check task sets
-      run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets --force
+      run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets
+
