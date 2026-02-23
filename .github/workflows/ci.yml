@@ -24,7 +24,7 @@ jobs:
       run: npm install
 
     - name: Run default Grunt build
-      run: npx grunt --force
+      run: ./node_modules/.bin/grunt --force
 
     - name: Check task sets
-      run: npx grunt process-task-sets packTasks process-task-sets --force
+      run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets --force
