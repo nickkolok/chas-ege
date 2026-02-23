@@ -27,5 +27,5 @@ jobs:
     - name: Run default Grunt build
       run: npx grunt --force
 
-    - name: Run specific task: process-task-sets packTasks process-task-sets
+    - name: Check task sets
       run: npx grunt process-task-sets packTasks process-task-sets --force
