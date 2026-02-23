@@ -21,7 +21,11 @@ jobs:
         node-version: '22.7.0'
 
     - name: Install dependencies
-      run: npm install
+      run: npm install    
+      
+    - name: Ensure grunt-cli is available
+      # Legacy Grunt 0.4.x often requires explicit CLI installation to work reliably on modern Node
+      run: npm install grunt-cli --save-dev
 
     - name: Run default Grunt build
       run: ./node_modules/.bin/grunt --force
