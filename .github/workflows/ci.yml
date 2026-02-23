@@ -19,7 +19,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '22.7.0'
-        cache: 'npm'  # ✅ Caches node_modules for faster subsequent runs
 
     - name: Install dependencies
       run: npm install
