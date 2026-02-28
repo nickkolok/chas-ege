@@ -98,6 +98,7 @@
         ][rand],
         postquestion: '.',
 		authors: ['Александра Суматохина'],
+		preference,
 	});
 	NAtask.modifiers.allDecimalsToStandard(/*true*/);
 	NAtask.modifiers.addCanvasIllustration({
