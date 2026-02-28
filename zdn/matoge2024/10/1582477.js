@@ -20,15 +20,21 @@
         coordinateB = coordinateB.T();
         let probabilityB = arrayOfUniqueValues(numberOfCoordinateB, 0.05, 0.3, 0.05);
 
-        let coordinateAAndB = [arrayOfUniqueValues(numberOfCoordinateAAndB, -0.6, -0.4, 0.2), arrayOfUniqueValues(numberOfCoordinateAAndB, -1, 1, 0.5)];
+        let coordinateAAndB = [arrayOfUniqueValues(numberOfCoordinateAAndB, -0.6, -0.4, 0.2), arrayOfUniqueValues(numberOfCoordinateAAndB, -1, 1)];
         coordinateAAndB = coordinateAAndB.T();
-        let probabilityAAndB = arrayOfUniqueValues(numberOfCoordinateAAndB, 0.05, 0.3, 0.05);
+        let probabilityAAndB = arrayOfUniqueValues(numberOfCoordinateAAndB, 0.05, 0.2, 0.05);
 
         let coordinateNotAB = [arrayOfUniqueValues(numberOfCoordinateNot, -8, 8, 0.5), arrayOfUniqueValues(numberOfCoordinateNot, 5, 8)];
         coordinateNotAB = coordinateNotAB.T();
-        let probabilityNotAB = arrayOfUniqueValues(numberOfCoordinateNot, 0.05, 0.3, 0.05);
-
-        genAssert(probabilityA.sum() + probabilityB.sum() + probabilityAAndB.sum() + probabilityNotAB.sum() <= 1, 'Вероятности слишком большые');
+        let deltaProb = 1 - (probabilityA.sum() + probabilityB.sum() + probabilityAAndB.sum());
+        genAssert(deltaProb > 0.1, 'Вероятности слишком большые');
+        let probabilityNotAB;
+        if (numberOfCoordinateNot == 2) {
+            probabilityNotAB = [sl(0.05, deltaProb - 0.05, 0.05)];
+            probabilityNotAB.push(deltaProb - probabilityNotAB[0]);
+        } else {
+            probabilityNotAB = [deltaProb];
+        }
 
         let the_orderToFind = decor.orderToFind.iz(); // ["найдите","определите","вычислите"]
 
