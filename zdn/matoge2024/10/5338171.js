@@ -3,7 +3,7 @@
 	retryWhileError(function() {
 	/* На рисунке изображена диаграмма Эйлера для случайных событий A и B в некотором случайном опыте. Точками показаны все элементарные события и около каждого указана его вероятность. Найдите вероятность события A. */
 
-	let key = '1582477';
+	let key = '5338171';
     let preference = ['probabilityA', 'probabilityB', 'probabilityAAndB', 'probabilityAOrB', 'probabilityNAAndB', 'probabilityAAndNB', 'probabilityNAOrB', 'probabilityAOrNB', 'probabilityNotAAndB', 'probabilityNotAOrB'];
     let rand = getSelectedPreferenceFromList(key, preference);
     
@@ -106,5 +106,5 @@
 		paint,
 	});
 }, 2000);})();
-//1582477
-//Открытый банк заданий 18258D
+//5338171
+//Открытый банк заданий 51743B
