@@ -1,7 +1,11 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-
+		
+		let key = '508895';
+		let preference = ['functionOfX', 'valueX'];
+		let rand = getSelectedPreferenceFromList(key, preference);		 
+		
 		function f(x) {
 			return k * x + b;
 		}
@@ -47,15 +51,16 @@
 
 		NAtask.setTask({
 			text: `На рисунке изображён график функции $f(x)=kx+b$. Найдите `,
-			questions: [{
+			questions: [[{
 				text: `$f(${chisl})$`,
 				answer: chisl * k + b,
 			}, {
 				text: `значение $x$, при котором $f(x)=${chisl * k+ b }$`,
 				answer: chisl,
 				analys: (`, $x=\\frac{${chisl}-${b}}{${k}}$`).replace('+0', '').plusminus(),
-			}, ],
+			}, ][rand]],
 			postquestion: `.`,
+			preference: preference,
 			analys: (`$f(x)=` + (k + `x+` + b)).replace('+0', '').plusminus() + `$`,
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
