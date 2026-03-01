@@ -5,13 +5,6 @@
  * @param {Array} actionsArray - Массив действий.
  * @returns {string} - HTML-код задания.
  */
-/**
- * Генерирует HTML для задания.
- * @param {string} category - Категория задания.
- * @param {string} taskNumber - Номер задания.
- * @param {Array} actionsArray - Массив действий.
- * @returns {string} - HTML-код задания.
- */
 function generateHtmlForTask(category, taskNumber, actionsArray) {
     let htmlContent = '';
     vopr.podg();
