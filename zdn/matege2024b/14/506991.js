@@ -29,7 +29,7 @@
 						'mixed(' + wholeNumC + ',' + c + ',' + d + ')',
 						c + '/' + d
 					].iz() + ')',
-				'(' + ['', '-'].iz() + 
+				 ['(', 'forceBrackets(' + '-'].iz() + 
 					[
 						'mixed(' + wholeNumE + ',' + e + ',' + f + ')',
 						e + '/' + f,
