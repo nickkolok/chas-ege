@@ -14,8 +14,8 @@
 		let div = [10, 100];
 		
 		genAssertIrreducible(num0, den0, 'Первая дробь должна быть несократима');
-		genAssertIrreducible(num1, den1, 'Первая дробь должна быть несократима');
-		genAssertIrreducible(num2, den2, 'Вторая дробь должна быть несократима');
+		genAssertIrreducible(num1, den1, 'Вторая дробь должна быть несократима');
+		genAssertIrreducible(num2, den2, 'Третья дробь должна быть несократима');
 
 		NAtask.setEvaluationTask({
 			expr: [[['mixed(' + wholeNum0 + ',' + num0 + ',' + den0 + ')', num0 + '/' + den0].iz(),
