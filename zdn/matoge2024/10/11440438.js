@@ -73,10 +73,10 @@
             questions: [
                 {
                     text: '$A$',
-                    answers: probabilityA / totalProbility,
+                    answers: (probabilityA + probabilityAAndB) / totalProbility,
                 }, {
                     text: '$B$',
-                    answers: probabilityB / totalProbility,
+                    answers: (probabilityB + probabilityAAndB) / totalProbility,
                 }, {
                     text: '$A \\cap B$',
                     answers: probabilityAAndB / totalProbility,
@@ -91,10 +91,10 @@
                     answers: probabilityA / totalProbility,
                 }, {
                     text: '$\\overline{A} \\cup B$',
-                    answers: (probabilityB + probabilityAAndB) / totalProbility,
+                    answers: (probabilityB + probabilityAAndB + probabilityNotAB) / totalProbility, // Все, кроме только A
                 }, {
                     text: '$A \\cup \\overline{B}$',
-                    answers: (probabilityA + probabilityAAndB) / totalProbility,
+                    answers: (probabilityA + probabilityAAndB + probabilityNotAB) / totalProbility, // Все, кроме только B
                 }, {
                     text: '$\\overline{A \\cap B}$',
                     answers: (probabilityA + probabilityB + probabilityNotAB) / totalProbility,
