@@ -66,10 +66,10 @@
         questions: [
             {
                 text: '$A$',
-                answers: numberOfCoordinateA/10,
+                answers: (numberOfCoordinateA + numberOfCoordinateAAndB) / 10,
             }, {
                 text: '$B$',
-                answers: numberOfCoordinateB/10,
+                answers: (numberOfCoordinateB + numberOfCoordinateAAndB) / 10,
             }, {
                 text: '$A \\cap B$',
                 answers: numberOfCoordinateAAndB/10,
@@ -84,10 +84,10 @@
                 answers: numberOfCoordinateA/10,
             },{
                 text: '$\\overline{A} \\cup B$',
-                answers: (numberOfCoordinateB+numberOfCoordinateAAndB)/10,
+                answers: (numberOfCoordinateB + numberOfCoordinateAAndB + numberOfCoordinateNot) / 10,
             }, {
                 text: '$A \\cup \\overline{B}$',
-                answers: (numberOfCoordinateA+numberOfCoordinateAAndB)/10,
+                answers: (numberOfCoordinateA + numberOfCoordinateAAndB + numberOfCoordinateNot) / 10,
             }, {
                 text: '$\\overline{A \\cap B}$',
                 answers: (numberOfCoordinateA+numberOfCoordinateB+numberOfCoordinateNot)/10,
