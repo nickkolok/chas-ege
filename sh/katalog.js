@@ -7,155 +7,210 @@
  * @param {Array} actionsArray - Массив действий.
  * @returns {string} - HTML-код задания.
  */
-function generateHtmlForTask(category,taskNumber,actionsArray){
-	let htmlContent = '';
-	vopr.podg();
-	const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
-	console.log(currentTaskPath);
-	try{
-		// Execute the task generator
-		nabor.upak[category][taskNumber]();
-		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
-		htmlContent += currentTaskPath.vTag('h2');
-		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
-		vopr.taskNumber = category;
-		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
-		htmlContent+=(
-			(
-				'<button class="copybutton" style="display:block; float:right;" title="Экспорт в РешуЕГЭ"'+
-				'data-task="' + encodeURIComponent(JSON.stringify(vopr)) + '"' +
-				'>' +
-					'&#x2398;' +
-				'</button>'+
+function generateHtmlForTask(category, taskNumber, actionsArray) {
+    let htmlContent = '';
+    vopr.podg();
+    const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
 
-				'<button class="renewbutton" style="display:block; float:right; margin-right:1.46em;" title="Заменить задание на похожее"'+
-				'>' +
-					'&#x27F3;' +
-				'</button>'+
+    try {
+        nabor.upak[category][taskNumber]();
 
-				'<button class="addbutton" style="display:block; float:right; margin-right:1.46em;" title="Добавить похожее задание"'+
-				'>' +
-					'+' +
-				'</button>'+
+        const variants = getTaskVariants(taskNumber);
+        
+        for (let i = 0; i < variants.length; i++) {
+            const originalPreferences = window.nabor.preferences ? {...window.nabor.preferences} : {};
+            const originalVopr = {...vopr};
+            
+            try {
+                applyVariantPreferences(taskNumber, variants[i]);
 
-				'Ответ: '+vopr.ver.join('или')
-			).vTag('div') +
-			'<br/>'
-		);
-		actionsArray.push(vopr.dey);
-		if(vopr.rsh){
-			htmlContent+=(
-				('Показать решение ').vTag('button','class="spoiler-show"')+
-				('Скрыть   решение ').vTag('button','class="spoiler-hide"')+
-				'<div class="spoiler-body">'+
-				'Решение: '+'<br/>'+
-				vopr.rsh+
-				'</div>'+
-			'');
+                nabor.upak[category][taskNumber]();
 
-		}
-		if(vopr.authors && vopr.authors.length){
-			htmlContent+=(
-				'<br/>' +
-				'<div class="katalog-authors">' +
-						'Автор' + ('ы').esli(vopr.authors.length > 1) + ': &nbsp;' +
-						vopr.authors.join(', ') +
-				'</div>'+
-				'<br/>'+
-			'');
-		}
-	}catch(e){
-		console.log(e);
-	}
-	htmlContent += '</div>';
-	return htmlContent;
+                htmlContent += generateVariantWrapper(category, taskNumber, currentTaskPath, variants, i, actionsArray);
+
+            } finally {
+                restoreVariantState(taskNumber, originalPreferences, originalVopr);
+            }
+        }
+    } catch (e) {
+        console.error(e);
+        htmlContent += generateErrorHtml(category, taskNumber, e);
+    }
+
+    return htmlContent;
 }
 
-function generateKatalog(){
-	var rez='';
-	var toc='';
-	var masdey=[];
-	var br='<br/>';
-	for(var kat in nabor.upak){
-		window.comment='';
-		window.availableTaskNumbers = null;
-		try{
-				nabor.upak[kat][nabor.scheduler]()
-		}catch(e){
-			console.log(e);
-		}
-		rez+=(
-			('Показать категорию '+kat).vTag('button','class="spoiler-show"')+
-			('Скрыть   категорию '+kat).vTag('button','class="spoiler-hide"')+
-			'<div class="spoiler-body">'+
-			('Категория '+kat).vTag('h1','id="'+kat+'"')+
-			window.comment+
-		'');
-		toc+=(
-			(kat+'. '+window.comment).vTag('a','href="#'+kat+'"')+
-			br+
-		'');
-		var tasksToList = window.availableTaskNumbers || Object.keys(nabor.upak[kat]);
-
-		for(var zdn of tasksToList)
-			if(zdn!='main' && zdn!='fipi'){
-				rez += generateHtmlForTask(kat,zdn,masdey);
-			}
-			rez += '</div>';
-	}
-	$('#divrez').html(toc+br+rez);
-	var len=masdey.length;
-	for(var i=0;i<len;i++){
-		try{
-			masdey[i]();
-		}catch(e){
-			console.log(e);
-		}
-	}
-	MathJax.Hub.Typeset();
-	afterTasksGenerated();
-	$('.spoiler-show').click();
+/**
+ * Получает варианты задания на основе предпочтений
+ * @param {string} taskNumber - Номер задания
+ * @returns {Array} Массив вариантов
+ */
+function getTaskVariants(taskNumber) {
+    let variants = [null]; // Default case - single variant
+    
+    let hasExplicitPreferences = window.nabor.preferences && window.nabor.preferences[taskNumber];
+    
+    if (vopr.preference && Array.isArray(vopr.preference) && vopr.preference.length > 0) {
+        if (hasExplicitPreferences) {
+            variants = [window.nabor.preferences[taskNumber]];
+        } else {
+            variants = generateVariations(vopr.preference);
+        }
+    }
+    
+    return variants;
 }
 
-function afterTasksGenerated(){
-	spoiler();
-	$( 'button.copybutton[data-already-inited!=true]').click( copyTask).attr('data-already-inited', true);
-	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
-	$(  'button.addbutton[data-already-inited!=true]').click(  addTask).attr('data-already-inited', true);
+/**
+ * Применяет предпочтения для конкретного варианта
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Предпочтения варианта
+ */
+function applyVariantPreferences(taskNumber, variant) {
+    if (variant !== null) {
+        window.nabor.preferences = window.nabor.preferences || {};
+        window.nabor.preferences[taskNumber] = variant;
+    }
 }
 
-
-function copyTask(){
-	console.log(this);
-	//var theTask = this.getElementsByTagName('span')[0].innerHTML;
-	var theTask = decodeURIComponent(this.getAttribute('data-task'));
-	console.log(theTask);
-	theTask = JSON.parse(theTask);
-	console.log(theTask);
-	replaceCanvasWithImgInTaskAndHTML($(this).parents('div.task-wrapper')[0], theTask, function(){
-		var fillerCode = createFiller(theTask);
-		copyToClipboard(fillerCode)
-	});
+/**
+ * Восстанавливает состояние после генерации варианта
+ * @param {string} taskNumber - Номер задания
+ * @param {Object} originalPreferences - Исходные предпочтения
+ * @param {Object} originalVopr - Исходное состояние vopr
+ */
+function restoreVariantState(taskNumber, originalPreferences, originalVopr) {
+    if (window.nabor.preferences) {
+        window.nabor.preferences[taskNumber] = originalPreferences[taskNumber];
+    }
+    
+    Object.keys(originalVopr).forEach(key => {
+        if (vopr[key] !== originalVopr[key]) {
+            vopr[key] = originalVopr[key];
+        }
+    });
 }
 
-function renewTask(){
-	console.log(this);
-	var wrapper = $(this).parents('div.task-wrapper')[0];
-	var actions = [];
-	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
-	$(wrapper).replaceWith(taskHtml);
-	actions[0]();
-	MathJax.Hub.Typeset(taskHtml[0]);
-	afterTasksGenerated();
+/**
+ * Генерирует обертку для варианта задания
+ * @param {string} category - Категория
+ * @param {string} taskNumber - Номер задания
+ * @param {string} currentTaskPath - Путь к заданию
+ * @param {Array} variants - Массив вариантов
+ * @param {number} index - Индекс текущего варианта
+ * @param {Array} actionsArray - Массив действий
+ * @returns {string} HTML варианта
+ */
+function generateVariantWrapper(category, taskNumber, currentTaskPath, variants, index, actionsArray) {
+    let html = '';
+    
+    html += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
+    html += currentTaskPath.vTag('h2');
+
+    if (variants.length > 1 || hasExplicitPreferences(taskNumber)) {
+        html += generateVariantInfo(taskNumber, variants[index]);
+    }
+
+    vopr.template = currentTaskPath.replace(/^(\.\.\/)+/, '');
+    vopr.taskNumber = category;
+    html += `<br/>${vopr.txt.vTag('div')}<br/>`;
+    html += generateTaskControls(actionsArray);
+    
+    if (vopr.rsh) {
+        html += generateSolutionHtml();
+    }
+
+    if (vopr.authors && vopr.authors.length) {
+        html += generateAuthorsHtml();
+    }
+
+    html += '</div>';
+    
+    return html;
 }
 
-function addTask(){
-	console.log(this);
-	var wrapper = $(this).parents('div.task-wrapper')[0];
-	var actions = [];
-	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
-	taskHtml.insertAfter(wrapper);
-	actions[0]();
-	MathJax.Hub.Typeset(taskHtml[0]);
-	afterTasksGenerated();
+/**
+ * Проверяет наличие явных предпочтений
+ * @param {string} taskNumber - Номер задания
+ * @returns {boolean}
+ */
+function hasExplicitPreferences(taskNumber) {
+    return window.nabor.preferences && window.nabor.preferences[taskNumber];
+}
+
+/**
+ * Генерирует информацию о варианте
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Текущий вариант
+ * @returns {string} HTML с информацией о варианте
+ */
+function generateVariantInfo(taskNumber, variant) {
+    const currentVariation = [taskNumber];
+    if (Array.isArray(variant)) {
+        currentVariation.push(variant.join('_'));
+        currentVariation.push(variant.join(' '));
+    } else {
+        currentVariation.push(variant, variant);
+    }
+    return `<div class="variant-info">Вариация: '${currentVariation.join(' ')}'</div>`;
+}
+
+/**
+ * Генерирует HTML с кнопками управления и ответом
+ * @param {Array} actionsArray - Массив действий
+ * @returns {string} HTML
+ */
+function generateTaskControls(actionsArray) {
+    if (vopr.dey) {
+        actionsArray.push(vopr.dey);
+    }
+    
+    return `
+        <div>
+            <button class="copybutton" style="float:right;" title="Экспорт в РешуЕГЭ" data-task="${encodeURIComponent(JSON.stringify(vopr))}">&#x2398;</button>
+            <button class="renewbutton" style="float:right; margin-right:1.46em;" title="Заменить задание на похожее">&#x27F3;</button>
+            <button class="addbutton" style="float:right; margin-right:1.46em;" title="Добавить похожее задание">+</button>
+            Ответ: ${vopr.ver.join('или')}
+        </div>
+        <br/>
+    `;
+}
+
+/**
+ * Генерирует HTML с решением
+ * @returns {string} HTML
+ */
+function generateSolutionHtml() {
+    return `
+        <button class="spoiler-show">Показать решение</button>
+        <button class="spoiler-hide">Скрыть решение</button>
+        <div class="spoiler-body">Решение: <br/>${vopr.rsh}</div>
+    `;
+}
+
+/**
+ * Генерирует HTML с информацией об авторах
+ * @returns {string} HTML
+ */
+function generateAuthorsHtml() {
+    return `
+        <br/>
+        <div class="katalog-authors">
+            Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;${vopr.authors.join(', ')}
+        </div>
+        <br/>
+    `;
+}
+
+/**
+ * Генерирует HTML при ошибке
+ * @param {string} category - Категория
+ * @param {string} taskNumber - Номер задания
+ * @param {Error} error - Объект ошибки
+ * @returns {string} HTML с сообщением об ошибке
+ */
+function generateErrorHtml(category, taskNumber, error) {
+    return `<div class="task-wrapper error" data-category="${category}" data-tasknumber="${taskNumber}">
+        Error generating task: ${error.message}
+    </div>`;
 }
