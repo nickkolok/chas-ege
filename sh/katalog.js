@@ -65,7 +65,8 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 			'');
 		}
 	}catch(e){
-		console.log(e);
+		console.error(e);
+		htmlContent += generateErrorHtml(category, taskNumber, e);
 	}
 	htmlContent += '</div>';
 	return htmlContent;
@@ -158,4 +159,17 @@ function addTask(){
 	actions[0]();
 	MathJax.Hub.Typeset(taskHtml[0]);
 	afterTasksGenerated();
+}
+
+/**
+ * Генерирует HTML при ошибке
+ * @param {string} category - Категория
+ * @param {string} taskNumber - Номер задания
+ * @param {Error} error - Объект ошибки
+ * @returns {string} HTML с сообщением об ошибке
+ */
+function generateErrorHtml(category, taskNumber, error) {
+    return `<div class="task-wrapper error" data-category="${category}" data-tasknumber="${taskNumber}">
+        Error generating task: ${error.message}
+    </div>`;
 }
