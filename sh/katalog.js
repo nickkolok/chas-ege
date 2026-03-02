@@ -22,22 +22,7 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
 		htmlContent+=(
 			(
-				'<button class="copybutton" style="display:block; float:right;" title="Экспорт в РешуЕГЭ"'+
-				'data-task="' + encodeURIComponent(JSON.stringify(vopr)) + '"' +
-				'>' +
-					'&#x2398;' +
-				'</button>'+
-
-				'<button class="renewbutton" style="display:block; float:right; margin-right:1.46em;" title="Заменить задание на похожее"'+
-				'>' +
-					'&#x27F3;' +
-				'</button>'+
-
-				'<button class="addbutton" style="display:block; float:right; margin-right:1.46em;" title="Добавить похожее задание"'+
-				'>' +
-					'+' +
-				'</button>'+
-
+				generateTaskControls() +
 				'Ответ: '+vopr.ver.join('или')
 			).vTag('div') +
 			'<br/>'
@@ -144,6 +129,21 @@ function addTask(){
 	actions[0]();
 	MathJax.Hub.Typeset(taskHtml[0]);
 	afterTasksGenerated();
+}
+
+/**
+ * Генерирует HTML с дополнительными кнопками
+ * @returns {string} HTML
+ */
+function generateTaskControls() {
+    return `
+        <div>
+            <button class="copybutton" style="float:right;" title="Экспорт в РешуЕГЭ" data-task="${encodeURIComponent(JSON.stringify(vopr))}">&#x2398;</button>
+            <button class="renewbutton" style="float:right; margin-right:1.46em;" title="Заменить задание на похожее">&#x27F3;</button>
+            <button class="addbutton" style="float:right; margin-right:1.46em;" title="Добавить похожее задание">+</button>
+        </div>
+        <br/>
+    `;
 }
 
 /**
