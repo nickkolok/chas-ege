@@ -55,14 +55,7 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 
 		}
 		if(vopr.authors && vopr.authors.length){
-			htmlContent+=(
-				'<br/>' +
-				'<div class="katalog-authors">' +
-						'Автор' + ('ы').esli(vopr.authors.length > 1) + ': &nbsp;' +
-						vopr.authors.join(', ') +
-				'</div>'+
-				'<br/>'+
-			'');
+			htmlContent += generateAuthorsHtml();
 		}
 	}catch(e){
 		console.error(e);
@@ -159,6 +152,20 @@ function addTask(){
 	actions[0]();
 	MathJax.Hub.Typeset(taskHtml[0]);
 	afterTasksGenerated();
+}
+
+/**
+ * Генерирует HTML с информацией об авторах
+ * @returns {string} HTML
+ */
+function generateAuthorsHtml() {
+    return `
+        <br/>
+        <div class="katalog-authors">
+            Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;${vopr.authors.join(', ')}
+        </div>
+        <br/>
+    `;
 }
 
 /**
