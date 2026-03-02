@@ -1,15 +1,22 @@
 'use strict';
 
-
+/**
+ * Генерирует HTML для задания.
+ * @param {string} category - Категория задания.
+ * @param {string} taskNumber - Номер задания.
+ * @param {Array} actionsArray - Массив действий.
+ * @returns {string} - HTML-код задания.
+ */
 function generateHtmlForTask(category,taskNumber,actionsArray){
-	var htmlContent='';
+	let htmlContent = '';
 	vopr.podg();
-	var currentTaskPath = nabor.adres+category+'/'+taskNumber+'.js';
-	htmlContent+='<div class="task-wrapper" data-category="'+category+'" data-tasknumber="'+taskNumber+'">';
-	htmlContent+=currentTaskPath.vTag('h2');
+	const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
 	console.log(currentTaskPath);
 	try{
+		// Execute the task generator
 		nabor.upak[category][taskNumber]();
+		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
+		htmlContent += currentTaskPath.vTag('h2');
 		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
 		vopr.taskNumber = category;
 		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
