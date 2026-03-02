@@ -8,36 +8,28 @@
  * @returns {string} - HTML-код задания.
  */
 function generateHtmlForTask(category, taskNumber, actionsArray) {
-    let htmlContent = '';
-    vopr.podg();
-    const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
-
     try {
-        nabor.upak[category][taskNumber]();
-
+        prepareTaskGeneration(category, taskNumber);
         const variants = getTaskVariants(taskNumber);
         
+        let htmlContent = '';
         for (let i = 0; i < variants.length; i++) {
-            const originalPreferences = window.nabor.preferences ? {...window.nabor.preferences} : {};
-            const originalVopr = {...vopr};
-            
-            try {
-                applyVariantPreferences(taskNumber, variants[i]);
-
-                nabor.upak[category][taskNumber]();
-
-                htmlContent += generateVariantWrapper(category, taskNumber, currentTaskPath, variants, i, actionsArray);
-
-            } finally {
-                restoreVariantState(taskNumber, originalPreferences, originalVopr);
-            }
+            htmlContent += generateVariantHtml(category, taskNumber, variants[i], i, variants.length, actionsArray);
         }
+        return htmlContent;
     } catch (e) {
-        console.error(e);
-        htmlContent += generateErrorHtml(category, taskNumber, e);
+        return handleTaskError(category, taskNumber, e);
     }
+}
 
-    return htmlContent;
+/**
+ * Подготавливает окружение для генерации задания
+ * @param {string} category - Категория
+ * @param {string} taskNumber - Номер задания
+ */
+function prepareTaskGeneration(category, taskNumber) {
+    vopr.podg();
+    nabor.upak[category][taskNumber]();
 }
 
 /**
@@ -46,9 +38,8 @@ function generateHtmlForTask(category, taskNumber, actionsArray) {
  * @returns {Array} Массив вариантов
  */
 function getTaskVariants(taskNumber) {
-    let variants = [null]; // Default case - single variant
-    
-    let hasExplicitPreferences = window.nabor.preferences && window.nabor.preferences[taskNumber];
+    let variants = [null];
+    const hasExplicitPreferences = window.nabor.preferences && window.nabor.preferences[taskNumber];
     
     if (vopr.preference && Array.isArray(vopr.preference) && vopr.preference.length > 0) {
         if (hasExplicitPreferences) {
@@ -57,8 +48,59 @@ function getTaskVariants(taskNumber) {
             variants = generateVariations(vopr.preference);
         }
     }
-    
     return variants;
+}
+
+/**
+ * Генерирует HTML для одного варианта задания
+ * @param {string} category - Категория
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Текущий вариант
+ * @param {number} index - Индекс варианта
+ * @param {number} totalVariants - Общее количество вариантов
+ * @param {Array} actionsArray - Массив действий
+ * @returns {string} HTML варианта
+ */
+function generateVariantHtml(category, taskNumber, variant, index, totalVariants, actionsArray) {
+    const state = saveCurrentState(taskNumber);
+    
+    try {
+        applyVariantPreferences(taskNumber, variant);
+        regenerateTask(category, taskNumber);
+        
+        return buildVariantHtml(category, taskNumber, variant, index, totalVariants, actionsArray);
+    } finally {
+        restoreState(taskNumber, state);
+    }
+}
+
+/**
+ * Сохраняет текущее состояние перед генерацией варианта
+ * @param {string} taskNumber - Номер задания
+ * @returns {Object} Сохраненное состояние
+ */
+function saveCurrentState(taskNumber) {
+    return {
+        originalPreferences: window.nabor.preferences ? {...window.nabor.preferences} : {},
+        originalVopr: {...vopr}
+    };
+}
+
+/**
+ * Восстанавливает состояние после генерации варианта
+ * @param {string} taskNumber - Номер задания
+ * @param {Object} state - Ранее сохраненное состояние
+ */
+function restoreState(taskNumber, state) {
+    if (window.nabor.preferences) {
+        window.nabor.preferences[taskNumber] = state.originalPreferences[taskNumber];
+    }
+    
+    Object.keys(state.originalVopr).forEach(key => {
+        if (vopr[key] !== state.originalVopr[key]) {
+            vopr[key] = state.originalVopr[key];
+        }
+    });
 }
 
 /**
@@ -74,93 +116,110 @@ function applyVariantPreferences(taskNumber, variant) {
 }
 
 /**
- * Восстанавливает состояние после генерации варианта
+ * Перегенерирует задание с текущими настройками
+ * @param {string} category - Категория
  * @param {string} taskNumber - Номер задания
- * @param {Object} originalPreferences - Исходные предпочтения
- * @param {Object} originalVopr - Исходное состояние vopr
  */
-function restoreVariantState(taskNumber, originalPreferences, originalVopr) {
-    if (window.nabor.preferences) {
-        window.nabor.preferences[taskNumber] = originalPreferences[taskNumber];
-    }
-    
-    Object.keys(originalVopr).forEach(key => {
-        if (vopr[key] !== originalVopr[key]) {
-            vopr[key] = originalVopr[key];
-        }
-    });
+function regenerateTask(category, taskNumber) {
+    nabor.upak[category][taskNumber]();
 }
 
 /**
- * Генерирует обертку для варианта задания
+ * Собирает полный HTML для варианта
  * @param {string} category - Категория
  * @param {string} taskNumber - Номер задания
- * @param {string} currentTaskPath - Путь к заданию
- * @param {Array} variants - Массив вариантов
- * @param {number} index - Индекс текущего варианта
+ * @param {any} variant - Текущий вариант
+ * @param {number} index - Индекс варианта
+ * @param {number} totalVariants - Общее количество вариантов
  * @param {Array} actionsArray - Массив действий
- * @returns {string} HTML варианта
+ * @returns {string} Полный HTML варианта
  */
-function generateVariantWrapper(category, taskNumber, currentTaskPath, variants, index, actionsArray) {
-    let html = '';
-    
-    html += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
-    html += currentTaskPath.vTag('h2');
-
-    if (variants.length > 1 || hasExplicitPreferences(taskNumber)) {
-        html += generateVariantInfo(taskNumber, variants[index]);
-    }
-
-    vopr.template = currentTaskPath.replace(/^(\.\.\/)+/, '');
-    vopr.taskNumber = category;
-    html += `<br/>${vopr.txt.vTag('div')}<br/>`;
-    html += generateTaskControls(actionsArray);
-    
-    if (vopr.rsh) {
-        html += generateSolutionHtml();
-    }
-
-    if (vopr.authors && vopr.authors.length) {
-        html += generateAuthorsHtml();
-    }
-
-    html += '</div>';
+function buildVariantHtml(category, taskNumber, variant, index, totalVariants, actionsArray) {
+    let html = createTaskWrapperStart(category, taskNumber);
+    html += createTaskTitle(category, taskNumber);
+    html += createVariantInfoIfNeeded(taskNumber, variant, index, totalVariants);
+    html += createTaskContent(category, taskNumber);
+    html += createTaskFooter(actionsArray);
+    html += createSolutionSection();
+    html += createAuthorsSection();
+    html += closeTaskWrapper();
     
     return html;
 }
 
 /**
- * Проверяет наличие явных предпочтений
+ * Создает открывающий тег обертки задания
+ * @param {string} category - Категория
  * @param {string} taskNumber - Номер задания
- * @returns {boolean}
+ * @returns {string} HTML
  */
-function hasExplicitPreferences(taskNumber) {
-    return window.nabor.preferences && window.nabor.preferences[taskNumber];
+function createTaskWrapperStart(category, taskNumber) {
+    return `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
 }
 
 /**
- * Генерирует информацию о варианте
+ * Создает заголовок задания
+ * @param {string} category - Категория
+ * @param {string} taskNumber - Номер задания
+ * @returns {string} HTML
+ */
+function createTaskTitle(category, taskNumber) {
+    const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
+    return currentTaskPath.vTag('h2');
+}
+
+/**
+ * Создает информацию о варианте, если их несколько
  * @param {string} taskNumber - Номер задания
  * @param {any} variant - Текущий вариант
- * @returns {string} HTML с информацией о варианте
+ * @param {number} index - Индекс варианта
+ * @param {number} totalVariants - Общее количество вариантов
+ * @returns {string} HTML
  */
-function generateVariantInfo(taskNumber, variant) {
-    const currentVariation = [taskNumber];
-    if (Array.isArray(variant)) {
-        currentVariation.push(variant.join('_'));
-        currentVariation.push(variant.join(' '));
-    } else {
-        currentVariation.push(variant, variant);
+function createVariantInfoIfNeeded(taskNumber, variant, index, totalVariants) {
+    const hasExplicitPreferences = window.nabor.preferences && window.nabor.preferences[taskNumber];
+    
+    if (totalVariants > 1 || hasExplicitPreferences) {
+        const variation = formatVariantInfo(taskNumber, variant);
+        return `<div class="variant-info">Вариация: '${variation}'</div>`;
     }
-    return `<div class="variant-info">Вариация: '${currentVariation.join(' ')}'</div>`;
+    return '';
 }
 
 /**
- * Генерирует HTML с кнопками управления и ответом
+ * Форматирует информацию о варианте
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Текущий вариант
+ * @returns {string} Отформатированная строка
+ */
+function formatVariantInfo(taskNumber, variant) {
+    const parts = [taskNumber];
+    if (Array.isArray(variant)) {
+        parts.push(variant.join('_'), variant.join(' '));
+    } else {
+        parts.push(variant, variant);
+    }
+    return parts.join(' ');
+}
+
+/**
+ * Создает основное содержание задания
+ * @param {string} category - Категория
+ * @param {string} taskNumber - Номер задания
+ * @returns {string} HTML
+ */
+function createTaskContent(category, taskNumber) {
+    vopr.template = `${nabor.adres}${category}/${taskNumber}.js`.replace(/^(\.\.\/)+/, '');
+    vopr.taskNumber = category;
+    return `<br/>${vopr.txt.vTag('div')}<br/>`;
+}
+
+/**
+ * Создает футер задания с кнопками и ответом
  * @param {Array} actionsArray - Массив действий
  * @returns {string} HTML
  */
-function generateTaskControls(actionsArray) {
+function createTaskFooter(actionsArray) {
     if (vopr.dey) {
         actionsArray.push(vopr.dey);
     }
@@ -177,10 +236,12 @@ function generateTaskControls(actionsArray) {
 }
 
 /**
- * Генерирует HTML с решением
+ * Создает секцию с решением
  * @returns {string} HTML
  */
-function generateSolutionHtml() {
+function createSolutionSection() {
+    if (!vopr.rsh) return '';
+    
     return `
         <button class="spoiler-show">Показать решение</button>
         <button class="spoiler-hide">Скрыть решение</button>
@@ -189,27 +250,39 @@ function generateSolutionHtml() {
 }
 
 /**
- * Генерирует HTML с информацией об авторах
+ * Создает секцию с авторами
  * @returns {string} HTML
  */
-function generateAuthorsHtml() {
+function createAuthorsSection() {
+    if (!vopr.authors || !vopr.authors.length) return '';
+    
+    const authorLabel = `Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;`;
     return `
         <br/>
         <div class="katalog-authors">
-            Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;${vopr.authors.join(', ')}
+            ${authorLabel}${vopr.authors.join(', ')}
         </div>
         <br/>
     `;
 }
 
 /**
- * Генерирует HTML при ошибке
+ * Закрывает обертку задания
+ * @returns {string} HTML
+ */
+function closeTaskWrapper() {
+    return '</div>';
+}
+
+/**
+ * Обрабатывает ошибку генерации задания
  * @param {string} category - Категория
  * @param {string} taskNumber - Номер задания
  * @param {Error} error - Объект ошибки
  * @returns {string} HTML с сообщением об ошибке
  */
-function generateErrorHtml(category, taskNumber, error) {
+function handleTaskError(category, taskNumber, error) {
+    console.error(error);
     return `<div class="task-wrapper error" data-category="${category}" data-tasknumber="${taskNumber}">
         Error generating task: ${error.message}
     </div>`;
