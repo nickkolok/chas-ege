@@ -44,15 +44,7 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 		);
 		actionsArray.push(vopr.dey);
 		if(vopr.rsh){
-			htmlContent+=(
-				('Показать решение ').vTag('button','class="spoiler-show"')+
-				('Скрыть   решение ').vTag('button','class="spoiler-hide"')+
-				'<div class="spoiler-body">'+
-				'Решение: '+'<br/>'+
-				vopr.rsh+
-				'</div>'+
-			'');
-
+			htmlContent += generateSolutionHtml();
 		}
 		if(vopr.authors && vopr.authors.length){
 			htmlContent += generateAuthorsHtml();
@@ -152,6 +144,18 @@ function addTask(){
 	actions[0]();
 	MathJax.Hub.Typeset(taskHtml[0]);
 	afterTasksGenerated();
+}
+
+/**
+ * Генерирует HTML с решением
+ * @returns {string} HTML
+ */
+function generateSolutionHtml() {
+    return `
+        <button class="spoiler-show">Показать решение</button>
+        <button class="spoiler-hide">Скрыть решение</button>
+        <div class="spoiler-body">Решение: <br/>${vopr.rsh}</div>
+    `;
 }
 
 /**
