@@ -136,14 +136,14 @@ function addTask(){
  * @returns {string} HTML
  */
 function generateTaskControls() {
-    return `
-        <div>
-            <button class="copybutton" style="float:right;" title="Экспорт в РешуЕГЭ" data-task="${encodeURIComponent(JSON.stringify(vopr))}">&#x2398;</button>
-            <button class="renewbutton" style="float:right; margin-right:1.46em;" title="Заменить задание на похожее">&#x27F3;</button>
-            <button class="addbutton" style="float:right; margin-right:1.46em;" title="Добавить похожее задание">+</button>
-        </div>
-        <br/>
-    `;
+	return `
+		<div>
+			<button class="copybutton" style="float:right;" title="Экспорт в РешуЕГЭ" data-task="${encodeURIComponent(JSON.stringify(vopr))}">&#x2398;</button>
+			<button class="renewbutton" style="float:right; margin-right:1.46em;" title="Заменить задание на похожее">&#x27F3;</button>
+			<button class="addbutton" style="float:right; margin-right:1.46em;" title="Добавить похожее задание">+</button>
+		</div>
+		<br/>
+	`;
 }
 
 /**
@@ -151,11 +151,11 @@ function generateTaskControls() {
  * @returns {string} HTML
  */
 function generateSolutionHtml() {
-    return `
-        <button class="spoiler-show">Показать решение</button>
-        <button class="spoiler-hide">Скрыть решение</button>
-        <div class="spoiler-body">Решение: <br/>${vopr.rsh}</div>
-    `;
+	return `
+		<button class="spoiler-show">Показать решение</button>
+		<button class="spoiler-hide">Скрыть решение</button>
+		<div class="spoiler-body">Решение: <br/>${vopr.rsh}</div>
+	`;
 }
 
 /**
@@ -163,13 +163,13 @@ function generateSolutionHtml() {
  * @returns {string} HTML
  */
 function generateAuthorsHtml() {
-    return `
-        <br/>
-        <div class="katalog-authors">
-            Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;${vopr.authors.join(', ')}
-        </div>
-        <br/>
-    `;
+	return `
+		<br/>
+		<div class="katalog-authors">
+			Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;${vopr.authors.join(', ')}
+		</div>
+		<br/>
+	`;
 }
 
 /**
@@ -180,7 +180,7 @@ function generateAuthorsHtml() {
  * @returns {string} HTML с сообщением об ошибке
  */
 function generateErrorHtml(category, taskNumber, error) {
-    return `<div class="task-wrapper error" data-category="${category}" data-tasknumber="${taskNumber}">
-        Error generating task: ${error.message}
-    </div>`;
+	return `<div class="task-wrapper error" data-category="${category}" data-tasknumber="${taskNumber}">
+		Error generating task: ${error.message}
+	</div>`;
 }
