@@ -57,12 +57,9 @@ function generateKatalog() {
 		executeCategoryScheduler(kat);
 		rez += buildCategoryHeader(kat);
 		toc += buildCategoryTocLink(kat, br);
-		var tasksToList = window.availableTaskNumbers || Object.keys(nabor.upak[kat]);
 
-		for(var zdn of tasksToList) {
-			if(zdn!='main' && zdn!='fipi') {
-				rez += generateHtmlForTask(kat,zdn,masdey);
-			}
+		for(var zdn of getIncludableTasksForCategory(kat)) {
+			rez += generateHtmlForTask(kat,zdn,masdey);
 		}
 		rez += '</div>';
 	}
@@ -178,6 +175,16 @@ function buildCategoryHeader(category) {
  */
 function buildCategoryTocLink(category, lineBreak) {
 	return `<a href="#${category}">${category}. ${window.comment || ''}</a>${lineBreak}`;
+}
+
+/**
+ * Получает список заданий для категории, исключая служебные
+ * @param {string} category - Категория
+ * @returns {Array} Массив номеров заданий, готовых к включению
+ */
+function getIncludableTasksForCategory(category) {
+	const tasks = window.availableTaskNumbers || Object.keys(nabor.upak[category] || {});
+	return tasks.filter(taskNumber => taskNumber !== 'main' && taskNumber !== 'fipi');
 }
 
 /**
