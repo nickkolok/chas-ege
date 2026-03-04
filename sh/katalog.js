@@ -468,15 +468,6 @@ function executeDeferredActions(actionsArray) {
 }
 
 /**
- * Запускает рендеринг MathJax
- */
-function triggerMathJaxRendering() {
-	if (window.MathJax && MathJax.Hub) {
-		MathJax.Hub.Typeset();
-	}
-}
-
-/**
  * Разворачивает все категории
  */
 function expandAllCategories() {
@@ -674,15 +665,15 @@ function insertTaskInDom(taskWrapper, taskHtml, mode) {
  */
 function finalizeTaskInsertion(taskHtml, actionsArray) {
 	executeDeferredActions(actionsArray);
-	triggerMathJaxRenderingForElement(taskHtml[0]);
+	triggerMathJaxRendering(taskHtml[0]);
 	afterTasksGenerated();
 }
 
 /**
  * Запускает рендеринг MathJax для элемента
- * @param {HTMLElement} element - Элемент
+ * @param {HTMLElement} element - элемент (необязательный параметр)
  */
-function triggerMathJaxRenderingForElement(element) {
+function triggerMathJaxRendering(element) {
 	if (window.MathJax && MathJax.Hub) {
 		MathJax.Hub.Typeset(element);
 	}
