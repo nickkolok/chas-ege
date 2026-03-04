@@ -46,22 +46,9 @@ function generateKatalog() {
 	var br='<br/>';
 	for(var kat in nabor.upak) {
 		resetCategoryState();
-		try {
-				nabor.upak[kat][nabor.scheduler]()
-		} catch(e) {
-			console.log(e);
-		}
-		rez+=(
-			('Показать категорию '+kat).vTag('button','class="spoiler-show"')+
-			('Скрыть   категорию '+kat).vTag('button','class="spoiler-hide"')+
-			'<div class="spoiler-body">'+
-			('Категория '+kat).vTag('h1','id="'+kat+'"')+
-			window.comment+
-		'');
-		toc+=(
-			(kat+'. '+window.comment).vTag('a','href="#'+kat+'"')+
-			br+
-		'');
+		executeCategoryScheduler(kat);
+		rez += buildCategoryHeader(kat);
+		toc += buildCategoryTocLink(kat, br);
 		var tasksToList = window.availableTaskNumbers || Object.keys(nabor.upak[kat]);
 
 		for(var zdn of tasksToList)
@@ -193,6 +180,45 @@ function handleTaskError(category, taskNumber, error) {
 function resetCategoryState() {
 	window.comment = '';
 	window.availableTaskNumbers = null;
+}
+
+/**
+ * Выполняет планировщик категории
+ * @param {string} category - Категория
+ */
+function executeCategoryScheduler(category) {
+	try {
+		if (nabor.upak[category] && nabor.upak[category][nabor.scheduler]) {
+			nabor.upak[category][nabor.scheduler]();
+		}
+	} catch (e) {
+		console.error(`Ошибка в планировщике категории ${category}:`, e);
+	}
+}
+
+/**
+ * Строит HTML заголовка категории
+ * @param {string} category - Категория
+ * @returns {string} HTML
+ */
+function buildCategoryHeader(category) {
+	return `
+		<button class="spoiler-show">Показать категорию ${category}</button>
+		<button class="spoiler-hide">Скрыть категорию ${category}</button>
+		<div class="spoiler-body">
+			<h1 id="${category}">Категория ${category}</h1>
+			${window.comment || ''}
+	`;
+}
+
+/**
+ * Строит ссылку в оглавлении
+ * @param {string} category - Категория
+ * @param {string} lineBreak - Разделитель
+ * @returns {string} HTML ссылки
+ */
+function buildCategoryTocLink(category, lineBreak) {
+	return `<a href="#${category}">${category}. ${window.comment || ''}</a>${lineBreak}`;
 }
 
 /**
