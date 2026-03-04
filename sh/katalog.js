@@ -28,9 +28,7 @@ function generateHtmlForTask(category, taskNumber, actionsArray) {
 			'<br/>'
 		);
 		actionsArray.push(vopr.dey);
-		if(vopr.rsh) {
-			htmlContent += generateSolutionHtml();
-		}
+		htmlContent += createSolutionSection();
 		htmlContent += createAuthorsSection();
 		htmlContent += '</div>';
 		return htmlContent;
@@ -86,10 +84,14 @@ function generateTaskControls() {
 }
 
 /**
- * Генерирует HTML с решением
+ * Создает секцию с решением
  * @returns {string} HTML
  */
-function generateSolutionHtml() {
+function createSolutionSection() {
+	if (!vopr.rsh) {
+		return '';
+	}
+
 	return `
 		<button class="spoiler-show">Показать решение</button>
 		<button class="spoiler-hide">Скрыть решение</button>
