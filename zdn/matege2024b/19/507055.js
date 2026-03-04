@@ -26,13 +26,13 @@
 			function dfs(pos, current) {
 				if (current.length === keep) {
 					if (current[0] === '0' && current.length > 1) {
-						return
+						return;
 					}
 					result.add(current);
 					return;
 				}
 				if (pos >= n) {
-					return
+					return;
 				}
 				dfs(pos + 1, current + str[pos]);
 				dfs(pos + 1, current);
@@ -47,7 +47,7 @@
 			if (num % N === 0) {
 				validAnswers.push(cand);
 				if (validAnswers.length >= 3) {
-					break
+					break;
 				}
 			}
 		}
