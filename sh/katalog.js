@@ -244,7 +244,9 @@ function createTaskFooter(actionsArray) {
  * @returns {string} HTML
  */
 function createSolutionSection() {
-	if (!vopr.rsh) return '';
+	if (!vopr.rsh) {
+		return '';
+	}
 	
 	return `
 		<button class="spoiler-show">Показать решение</button>
