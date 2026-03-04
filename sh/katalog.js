@@ -31,9 +31,7 @@ function generateHtmlForTask(category, taskNumber, actionsArray) {
 		if(vopr.rsh) {
 			htmlContent += generateSolutionHtml();
 		}
-		if(vopr.authors && vopr.authors.length) {
-			htmlContent += generateAuthorsHtml();
-		}
+		htmlContent += createAuthorsSection();
 		htmlContent += '</div>';
 		return htmlContent;
 	} catch(e) {
@@ -47,8 +45,7 @@ function generateKatalog() {
 	var masdey=[];
 	var br='<br/>';
 	for(var kat in nabor.upak) {
-		window.comment='';
-		window.availableTaskNumbers = null;
+		resetCategoryState();
 		try {
 				nabor.upak[kat][nabor.scheduler]()
 		} catch(e) {
@@ -158,14 +155,19 @@ function generateSolutionHtml() {
 }
 
 /**
- * Генерирует HTML с информацией об авторах
+ * Создает секцию с авторами
  * @returns {string} HTML
  */
-function generateAuthorsHtml() {
+function createAuthorsSection() {
+	if (!vopr.authors || !vopr.authors.length) {
+		return '';
+	}
+
+	const authorLabel = `Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;`;
 	return `
 		<br/>
 		<div class="katalog-authors">
-			Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;${vopr.authors.join(', ')}
+			${authorLabel}${vopr.authors.join(', ')}
 		</div>
 		<br/>
 	`;
@@ -183,6 +185,14 @@ function handleTaskError(category, taskNumber, error) {
 	return `<div class="task-wrapper error" data-category="${category}" data-tasknumber="${taskNumber}">
 		Error generating task: ${error.message}
 	</div>`;
+}
+
+/**
+ * Сбрасывает состояние для новой категории
+ */
+function resetCategoryState() {
+	window.comment = '';
+	window.availableTaskNumbers = null;
 }
 
 /**
