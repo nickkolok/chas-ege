@@ -258,8 +258,10 @@ function createSolutionSection() {
  * @returns {string} HTML
  */
 function createAuthorsSection() {
-	if (!vopr.authors || !vopr.authors.length) return '';
-	
+	if (!vopr.authors || !vopr.authors.length) {
+		return '';
+	}
+
 	const authorLabel = `Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;`;
 	return `
 		<br/>
