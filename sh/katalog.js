@@ -614,7 +614,7 @@ function replaceTask(button, mode) {
 	}
 
 	const actions = [];
-	const taskHtml = generateNewTaskHtml(category, taskNumber, actions);
+	const taskHtml = $(generateHtmlForTask(category, taskNumber, actions));
 	
 	insertTaskInDom(taskWrapper, taskHtml, mode);
 	finalizeTaskInsertion(taskHtml, actions);
@@ -630,18 +630,6 @@ function extractTaskInfo(taskWrapper) {
 		category: taskWrapper.getAttribute('data-category'),
 		taskNumber: taskWrapper.getAttribute('data-tasknumber')
 	};
-}
-
-/**
- * Генерирует HTML для нового задания
- * @param {string} category - Категория
- * @param {string} taskNumber - Номер задания
- * @param {Array} actionsArray - Массив действий
- * @returns {jQuery} jQuery объект с HTML
- */
-function generateNewTaskHtml(category, taskNumber, actionsArray) {
-	const htmlString = generateHtmlForTask(category, taskNumber, actionsArray);
-	return $(htmlString);
 }
 
 /**
