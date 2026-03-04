@@ -7,12 +7,12 @@
  * @param {Array} actionsArray - Массив действий.
  * @returns {string} - HTML-код задания.
  */
-function generateHtmlForTask(category,taskNumber,actionsArray){
+function generateHtmlForTask(category, taskNumber, actionsArray) {
 	let htmlContent = '';
 	vopr.podg();
 	const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
 	console.log(currentTaskPath);
-	try{
+	try {
 		// Execute the task generator
 		nabor.upak[category][taskNumber]();
 		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
@@ -28,13 +28,13 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 			'<br/>'
 		);
 		actionsArray.push(vopr.dey);
-		if(vopr.rsh){
+		if(vopr.rsh) {
 			htmlContent += generateSolutionHtml();
 		}
-		if(vopr.authors && vopr.authors.length){
+		if(vopr.authors && vopr.authors.length) {
 			htmlContent += generateAuthorsHtml();
 		}
-	}catch(e){
+	} catch(e) {
 		console.error(e);
 		htmlContent += generateErrorHtml(category, taskNumber, e);
 	}
@@ -42,17 +42,17 @@ function generateHtmlForTask(category,taskNumber,actionsArray){
 	return htmlContent;
 }
 
-function generateKatalog(){
+function generateKatalog() {
 	var rez='';
 	var toc='';
 	var masdey=[];
 	var br='<br/>';
-	for(var kat in nabor.upak){
+	for(var kat in nabor.upak) {
 		window.comment='';
 		window.availableTaskNumbers = null;
-		try{
+		try {
 				nabor.upak[kat][nabor.scheduler]()
-		}catch(e){
+		} catch(e) {
 			console.log(e);
 		}
 		rez+=(
@@ -69,17 +69,17 @@ function generateKatalog(){
 		var tasksToList = window.availableTaskNumbers || Object.keys(nabor.upak[kat]);
 
 		for(var zdn of tasksToList)
-			if(zdn!='main' && zdn!='fipi'){
+			if(zdn!='main' && zdn!='fipi') {
 				rez += generateHtmlForTask(kat,zdn,masdey);
 			}
 			rez += '</div>';
 	}
 	$('#divrez').html(toc+br+rez);
 	var len=masdey.length;
-	for(var i=0;i<len;i++){
-		try{
+	for(var i=0;i<len;i++) {
+		try {
 			masdey[i]();
-		}catch(e){
+		} catch(e) {
 			console.log(e);
 		}
 	}
@@ -88,7 +88,7 @@ function generateKatalog(){
 	$('.spoiler-show').click();
 }
 
-function afterTasksGenerated(){
+function afterTasksGenerated() {
 	spoiler();
 	$( 'button.copybutton[data-already-inited!=true]').click( copyTask).attr('data-already-inited', true);
 	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
@@ -96,20 +96,20 @@ function afterTasksGenerated(){
 }
 
 
-function copyTask(){
+function copyTask() {
 	console.log(this);
 	//var theTask = this.getElementsByTagName('span')[0].innerHTML;
 	var theTask = decodeURIComponent(this.getAttribute('data-task'));
 	console.log(theTask);
 	theTask = JSON.parse(theTask);
 	console.log(theTask);
-	replaceCanvasWithImgInTaskAndHTML($(this).parents('div.task-wrapper')[0], theTask, function(){
+	replaceCanvasWithImgInTaskAndHTML($(this).parents('div.task-wrapper')[0], theTask, function() {
 		var fillerCode = createFiller(theTask);
 		copyToClipboard(fillerCode)
 	});
 }
 
-function renewTask(){
+function renewTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.task-wrapper')[0];
 	var actions = [];
@@ -120,7 +120,7 @@ function renewTask(){
 	afterTasksGenerated();
 }
 
-function addTask(){
+function addTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.task-wrapper')[0];
 	var actions = [];
