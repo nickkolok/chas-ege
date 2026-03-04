@@ -34,12 +34,11 @@ function generateHtmlForTask(category, taskNumber, actionsArray) {
 		if(vopr.authors && vopr.authors.length) {
 			htmlContent += generateAuthorsHtml();
 		}
+		htmlContent += '</div>';
+		return htmlContent;
 	} catch(e) {
-		console.error(e);
-		htmlContent += generateErrorHtml(category, taskNumber, e);
+		return handleTaskError(category, taskNumber, e);
 	}
-	htmlContent += '</div>';
-	return htmlContent;
 }
 
 function generateKatalog() {
@@ -173,13 +172,14 @@ function generateAuthorsHtml() {
 }
 
 /**
- * Генерирует HTML при ошибке
+ * Обрабатывает ошибку генерации задания
  * @param {string} category - Категория
  * @param {string} taskNumber - Номер задания
  * @param {Error} error - Объект ошибки
  * @returns {string} HTML с сообщением об ошибке
  */
-function generateErrorHtml(category, taskNumber, error) {
+function handleTaskError(category, taskNumber, error) {
+	console.error(error);
 	return `<div class="task-wrapper error" data-category="${category}" data-tasknumber="${taskNumber}">
 		Error generating task: ${error.message}
 	</div>`;
