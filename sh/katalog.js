@@ -58,14 +58,7 @@ function generateKatalog() {
 			rez += '</div>';
 	}
 	$('#divrez').html(toc+br+rez);
-	var len=masdey.length;
-	for(var i=0;i<len;i++) {
-		try {
-			masdey[i]();
-		} catch(e) {
-			console.log(e);
-		}
-	}
+	executeDeferredActions(masdey);
 	triggerMathJaxRendering();
 	afterTasksGenerated();
 	$('.spoiler-show').click();
@@ -219,6 +212,22 @@ function buildCategoryHeader(category) {
  */
 function buildCategoryTocLink(category, lineBreak) {
 	return `<a href="#${category}">${category}. ${window.comment || ''}</a>${lineBreak}`;
+}
+
+/**
+ * Выполняет отложенные действия
+ * @param {Array} actionsArray - Массив действий
+ */
+function executeDeferredActions(actionsArray) {
+    actionsArray.forEach(action => {
+        try {
+            if (typeof action === 'function') {
+                action();
+            }
+        } catch (e) {
+            console.error('Ошибка выполнения отложенного действия:', e);
+        }
+    });
 }
 
 /**
