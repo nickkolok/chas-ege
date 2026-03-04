@@ -483,16 +483,7 @@ function expandAllCategories() {
  * Выполняет действия после генерации заданий.
  */
 function afterTasksGenerated() {
-	if (typeof spoiler === 'function') {
-		spoiler();
-	}
-	initializeAllButtons();
-}
-
-/**
- * Инициализирует все кнопки
- */
-function initializeAllButtons() {
+	spoiler();
 	initializeButton('.copybutton', copyTask);
 	initializeButton('.renewbutton', renewTask);
 	initializeButton('.addbutton', addTask);
