@@ -5,7 +5,7 @@
 
 		let key = '3918958';
 		let preference1 = ['5digit', '4digit'];
-		let preference2 = ['more', 'less'];
+		let preference2 = ['theLargest', 'theLeast'];
 		let rand1 = getSelectedPreferenceFromList(key, preference1);
 		let rand2 = getSelectedPreferenceFromList(key, preference2);
 
