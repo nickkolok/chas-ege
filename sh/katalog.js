@@ -64,49 +64,6 @@ function generateKatalog() {
 	$('.spoiler-show').click();
 }
 
-function afterTasksGenerated() {
-	spoiler();
-	$( 'button.copybutton[data-already-inited!=true]').click( copyTask).attr('data-already-inited', true);
-	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
-	$(  'button.addbutton[data-already-inited!=true]').click(  addTask).attr('data-already-inited', true);
-}
-
-
-function copyTask() {
-	console.log(this);
-	//var theTask = this.getElementsByTagName('span')[0].innerHTML;
-	var theTask = decodeURIComponent(this.getAttribute('data-task'));
-	console.log(theTask);
-	theTask = JSON.parse(theTask);
-	console.log(theTask);
-	replaceCanvasWithImgInTaskAndHTML($(this).parents('div.task-wrapper')[0], theTask, function() {
-		var fillerCode = createFiller(theTask);
-		copyToClipboard(fillerCode)
-	});
-}
-
-function renewTask() {
-	console.log(this);
-	var wrapper = $(this).parents('div.task-wrapper')[0];
-	var actions = [];
-	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
-	$(wrapper).replaceWith(taskHtml);
-	actions[0]();
-	triggerMathJaxRendering(taskHtml[0]);
-	afterTasksGenerated();
-}
-
-function addTask() {
-	console.log(this);
-	var wrapper = $(this).parents('div.task-wrapper')[0];
-	var actions = [];
-	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
-	taskHtml.insertAfter(wrapper);
-	actions[0]();
-	triggerMathJaxRendering(taskHtml[0]);
-	afterTasksGenerated();
-}
-
 /**
  * Генерирует HTML с дополнительными кнопками
  * @returns {string} HTML
@@ -228,6 +185,48 @@ function executeDeferredActions(actionsArray) {
             console.error('Ошибка выполнения отложенного действия:', e);
         }
     });
+}
+
+function afterTasksGenerated() {
+	spoiler();
+	$( 'button.copybutton[data-already-inited!=true]').click( copyTask).attr('data-already-inited', true);
+	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
+	$(  'button.addbutton[data-already-inited!=true]').click(  addTask).attr('data-already-inited', true);
+}
+
+function copyTask() {
+	console.log(this);
+	//var theTask = this.getElementsByTagName('span')[0].innerHTML;
+	var theTask = decodeURIComponent(this.getAttribute('data-task'));
+	console.log(theTask);
+	theTask = JSON.parse(theTask);
+	console.log(theTask);
+	replaceCanvasWithImgInTaskAndHTML($(this).parents('div.task-wrapper')[0], theTask, function() {
+		var fillerCode = createFiller(theTask);
+		copyToClipboard(fillerCode)
+	});
+}
+
+function renewTask() {
+	console.log(this);
+	var wrapper = $(this).parents('div.task-wrapper')[0];
+	var actions = [];
+	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
+	$(wrapper).replaceWith(taskHtml);
+	actions[0]();
+	triggerMathJaxRendering(taskHtml[0]);
+	afterTasksGenerated();
+}
+
+function addTask() {
+	console.log(this);
+	var wrapper = $(this).parents('div.task-wrapper')[0];
+	var actions = [];
+	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
+	taskHtml.insertAfter(wrapper);
+	actions[0]();
+	triggerMathJaxRendering(taskHtml[0]);
+	afterTasksGenerated();
 }
 
 /**
