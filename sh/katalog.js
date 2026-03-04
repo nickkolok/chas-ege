@@ -301,14 +301,14 @@ function handleTaskError(category, taskNumber, error) {
  * Генерирует каталог заданий.
  */
 function generateKatalog() {
-    const state = initializeCatalogState();
-    
-    for (const category in nabor.upak) {
-        processCategory(category, state);
-    }
+	const state = initializeCatalogState();
+	
+	for (const category in nabor.upak) {
+		processCategory(category, state);
+	}
 
-    renderCatalog(state);
-    finalizeCatalogGeneration(state.actionsArray);
+	renderCatalog(state);
+	finalizeCatalogGeneration(state.actionsArray);
 }
 
 /**
@@ -316,12 +316,12 @@ function generateKatalog() {
  * @returns {Object} Состояние каталога
  */
 function initializeCatalogState() {
-    return {
-        htmlContent: '',
-        tableOfContents: '',
-        actionsArray: [],
-        lineBreak: '<br/>'
-    };
+	return {
+		htmlContent: '',
+		tableOfContents: '',
+		actionsArray: [],
+		lineBreak: '<br/>'
+	};
 }
 
 /**
@@ -330,19 +330,19 @@ function initializeCatalogState() {
  * @param {Object} state - Состояние каталога
  */
 function processCategory(category, state) {
-    resetCategoryState();
-    executeCategoryScheduler(category);
-    addCategoryHeader(category, state);
-    addCategoryTasks(category, state);
-    closeCategory(state);
+	resetCategoryState();
+	executeCategoryScheduler(category);
+	addCategoryHeader(category, state);
+	addCategoryTasks(category, state);
+	closeCategory(state);
 }
 
 /**
  * Сбрасывает состояние для новой категории
  */
 function resetCategoryState() {
-    window.comment = '';
-    window.availableTaskNumbers = null;
+	window.comment = '';
+	window.availableTaskNumbers = null;
 }
 
 /**
@@ -350,13 +350,13 @@ function resetCategoryState() {
  * @param {string} category - Категория
  */
 function executeCategoryScheduler(category) {
-    try {
-        if (nabor.upak[category] && nabor.upak[category][nabor.scheduler]) {
-            nabor.upak[category][nabor.scheduler]();
-        }
-    } catch (e) {
-        console.error(`Ошибка в планировщике категории ${category}:`, e);
-    }
+	try {
+		if (nabor.upak[category] && nabor.upak[category][nabor.scheduler]) {
+			nabor.upak[category][nabor.scheduler]();
+		}
+	} catch (e) {
+		console.error(`Ошибка в планировщике категории ${category}:`, e);
+	}
 }
 
 /**
@@ -365,8 +365,8 @@ function executeCategoryScheduler(category) {
  * @param {Object} state - Состояние каталога
  */
 function addCategoryHeader(category, state) {
-    state.htmlContent += buildCategoryHeader(category);
-    state.tableOfContents += buildCategoryTocLink(category, state.lineBreak);
+	state.htmlContent += buildCategoryHeader(category);
+	state.tableOfContents += buildCategoryTocLink(category, state.lineBreak);
 }
 
 /**
@@ -375,13 +375,13 @@ function addCategoryHeader(category, state) {
  * @returns {string} HTML
  */
 function buildCategoryHeader(category) {
-    return `
-        <button class="spoiler-show">Показать категорию ${category}</button>
-        <button class="spoiler-hide">Скрыть категорию ${category}</button>
-        <div class="spoiler-body">
-            <h1 id="${category}">Категория ${category}</h1>
-            ${window.comment || ''}
-    `;
+	return `
+		<button class="spoiler-show">Показать категорию ${category}</button>
+		<button class="spoiler-hide">Скрыть категорию ${category}</button>
+		<div class="spoiler-body">
+			<h1 id="${category}">Категория ${category}</h1>
+			${window.comment || ''}
+	`;
 }
 
 /**
@@ -391,7 +391,7 @@ function buildCategoryHeader(category) {
  * @returns {string} HTML ссылки
  */
 function buildCategoryTocLink(category, lineBreak) {
-    return `<a href="#${category}">${category}. ${window.comment || ''}</a>${lineBreak}`;
+	return `<a href="#${category}">${category}. ${window.comment || ''}</a>${lineBreak}`;
 }
 
 /**
@@ -400,13 +400,13 @@ function buildCategoryTocLink(category, lineBreak) {
  * @param {Object} state - Состояние каталога
  */
 function addCategoryTasks(category, state) {
-    const tasksToList = getTasksForCategory(category);
-    
-    for (const taskNumber of tasksToList) {
-        if (isTaskIncludable(taskNumber)) {
-            state.htmlContent += generateHtmlForTask(category, taskNumber, state.actionsArray);
-        }
-    }
+	const tasksToList = getTasksForCategory(category);
+	
+	for (const taskNumber of tasksToList) {
+		if (isTaskIncludable(taskNumber)) {
+			state.htmlContent += generateHtmlForTask(category, taskNumber, state.actionsArray);
+		}
+	}
 }
 
 /**
@@ -415,7 +415,7 @@ function addCategoryTasks(category, state) {
  * @returns {Array} Массив номеров заданий
  */
 function getTasksForCategory(category) {
-    return window.availableTaskNumbers || Object.keys(nabor.upak[category] || {});
+	return window.availableTaskNumbers || Object.keys(nabor.upak[category] || {});
 }
 
 /**
@@ -424,7 +424,7 @@ function getTasksForCategory(category) {
  * @returns {boolean}
  */
 function isTaskIncludable(taskNumber) {
-    return taskNumber !== 'main' && taskNumber !== 'fipi';
+	return taskNumber !== 'main' && taskNumber !== 'fipi';
 }
 
 /**
@@ -432,7 +432,7 @@ function isTaskIncludable(taskNumber) {
  * @param {Object} state - Состояние каталога
  */
 function closeCategory(state) {
-    state.htmlContent += '</div>';
+	state.htmlContent += '</div>';
 }
 
 /**
@@ -440,12 +440,12 @@ function closeCategory(state) {
  * @param {Object} state - Состояние каталога
  */
 function renderCatalog(state) {
-    const element = $('#divrez');
-    if (!element.length) {
-        console.error('Элемент #divrez не найден');
-        return;
-    }
-    element.html(state.tableOfContents + state.lineBreak + state.htmlContent);
+	const element = $('#divrez');
+	if (!element.length) {
+		console.error('Элемент #divrez не найден');
+		return;
+	}
+	element.html(state.tableOfContents + state.lineBreak + state.htmlContent);
 }
 
 /**
@@ -453,10 +453,10 @@ function renderCatalog(state) {
  * @param {Array} actionsArray - Массив действий
  */
 function finalizeCatalogGeneration(actionsArray) {
-    executeDeferredActions(actionsArray);
-    triggerMathJaxRendering();
-    afterTasksGenerated();
-    expandAllCategories();
+	executeDeferredActions(actionsArray);
+	triggerMathJaxRendering();
+	afterTasksGenerated();
+	expandAllCategories();
 }
 
 /**
@@ -464,31 +464,31 @@ function finalizeCatalogGeneration(actionsArray) {
  * @param {Array} actionsArray - Массив действий
  */
 function executeDeferredActions(actionsArray) {
-    actionsArray.forEach(action => {
-        try {
-            if (typeof action === 'function') {
-                action();
-            }
-        } catch (e) {
-            console.error('Ошибка выполнения отложенного действия:', e);
-        }
-    });
+	actionsArray.forEach(action => {
+		try {
+			if (typeof action === 'function') {
+				action();
+			}
+		} catch (e) {
+			console.error('Ошибка выполнения отложенного действия:', e);
+		}
+	});
 }
 
 /**
  * Запускает рендеринг MathJax
  */
 function triggerMathJaxRendering() {
-    if (window.MathJax && MathJax.Hub) {
-        MathJax.Hub.Typeset();
-    }
+	if (window.MathJax && MathJax.Hub) {
+		MathJax.Hub.Typeset();
+	}
 }
 
 /**
  * Разворачивает все категории
  */
 function expandAllCategories() {
-    $('.spoiler-show').click();
+	$('.spoiler-show').click();
 }
 
 
@@ -500,19 +500,19 @@ function expandAllCategories() {
  * Выполняет действия после генерации заданий.
  */
 function afterTasksGenerated() {
-    if (typeof spoiler === 'function') {
-        spoiler();
-    }
-    initializeAllButtons();
+	if (typeof spoiler === 'function') {
+		spoiler();
+	}
+	initializeAllButtons();
 }
 
 /**
  * Инициализирует все кнопки
  */
 function initializeAllButtons() {
-    initializeButton('.copybutton', copyTask);
-    initializeButton('.renewbutton', renewTask);
-    initializeButton('.addbutton', addTask);
+	initializeButton('.copybutton', copyTask);
+	initializeButton('.renewbutton', renewTask);
+	initializeButton('.addbutton', addTask);
 }
 
 /**
@@ -521,9 +521,9 @@ function initializeAllButtons() {
  * @param {Function} handler - Обработчик события
  */
 function initializeButton(selector, handler) {
-    $(`${selector}[data-already-inited!=true]`)
-        .click(handler)
-        .attr('data-already-inited', true);
+	$(`${selector}[data-already-inited!=true]`)
+		.click(handler)
+		.attr('data-already-inited', true);
 }
 
 
@@ -536,14 +536,14 @@ function initializeButton(selector, handler) {
  * @param {Event} event - Событие
  */
 function copyTask(event) {
-    const button = event.currentTarget;
-    const taskData = parseTaskDataFromButton(button);
-    if (!taskData) return;
+	const button = event.currentTarget;
+	const taskData = parseTaskDataFromButton(button);
+	if (!taskData) return;
 
-    processTaskWithCanvas(button, taskData, (processedTaskData) => {
-        const fillerCode = createFiller(processedTaskData);
-        copyToClipboard(fillerCode);
-    });
+	processTaskWithCanvas(button, taskData, (processedTaskData) => {
+		const fillerCode = createFiller(processedTaskData);
+		copyToClipboard(fillerCode);
+	});
 }
 
 /**
@@ -552,19 +552,19 @@ function copyTask(event) {
  * @returns {Object|null} Распарсенные данные или null
  */
 function parseTaskDataFromButton(button) {
-    const encodedData = button.getAttribute('data-task');
-    if (!encodedData) {
-        console.error('Атрибут data-task не найден');
-        return null;
-    }
+	const encodedData = button.getAttribute('data-task');
+	if (!encodedData) {
+		console.error('Атрибут data-task не найден');
+		return null;
+	}
 
-    try {
-        const decodedData = decodeURIComponent(encodedData);
-        return JSON.parse(decodedData);
-    } catch (e) {
-        console.error('Ошибка парсинга данных задания:', e);
-        return null;
-    }
+	try {
+		const decodedData = decodeURIComponent(encodedData);
+		return JSON.parse(decodedData);
+	} catch (e) {
+		console.error('Ошибка парсинга данных задания:', e);
+		return null;
+	}
 }
 
 /**
@@ -574,17 +574,17 @@ function parseTaskDataFromButton(button) {
  * @param {Function} callback - Функция обратного вызова
  */
 function processTaskWithCanvas(button, taskData, callback) {
-    const taskWrapper = findTaskWrapper(button);
-    if (!taskWrapper) {
-        callback(taskData);
-        return;
-    }
+	const taskWrapper = findTaskWrapper(button);
+	if (!taskWrapper) {
+		callback(taskData);
+		return;
+	}
 
-    if (typeof replaceCanvasWithImgInTaskAndHTML === 'function') {
-        replaceCanvasWithImgInTaskAndHTML(taskWrapper, taskData, () => callback(taskData));
-    } else {
-        callback(taskData);
-    }
+	if (typeof replaceCanvasWithImgInTaskAndHTML === 'function') {
+		replaceCanvasWithImgInTaskAndHTML(taskWrapper, taskData, () => callback(taskData));
+	} else {
+		callback(taskData);
+	}
 }
 
 /**
@@ -593,7 +593,7 @@ function processTaskWithCanvas(button, taskData, callback) {
  * @returns {HTMLElement|null} Обертка задания
  */
 function findTaskWrapper(element) {
-    return $(element).closest('div.task-wrapper')[0] || null;
+	return $(element).closest('div.task-wrapper')[0] || null;
 }
 
 /**
@@ -601,7 +601,7 @@ function findTaskWrapper(element) {
  * @param {Event} event - Событие
  */
 function renewTask(event) {
-    replaceTask(event.currentTarget, 'replace');
+	replaceTask(event.currentTarget, 'replace');
 }
 
 /**
@@ -609,7 +609,7 @@ function renewTask(event) {
  * @param {Event} event - Событие
  */
 function addTask(event) {
-    replaceTask(event.currentTarget, 'after');
+	replaceTask(event.currentTarget, 'after');
 }
 
 /**
@@ -618,23 +618,23 @@ function addTask(event) {
  * @param {string} mode - Режим: 'replace' или 'after'
  */
 function replaceTask(button, mode) {
-    const taskWrapper = findTaskWrapper(button);
-    if (!taskWrapper) {
-        console.error('Обертка задания не найдена');
-        return;
-    }
+	const taskWrapper = findTaskWrapper(button);
+	if (!taskWrapper) {
+		console.error('Обертка задания не найдена');
+		return;
+	}
 
-    const { category, taskNumber } = extractTaskInfo(taskWrapper);
-    if (!category || !taskNumber) {
-        console.error('Не удалось получить информацию о задании');
-        return;
-    }
+	const { category, taskNumber } = extractTaskInfo(taskWrapper);
+	if (!category || !taskNumber) {
+		console.error('Не удалось получить информацию о задании');
+		return;
+	}
 
-    const actions = [];
-    const taskHtml = generateNewTaskHtml(category, taskNumber, actions);
-    
-    insertTaskInDom(taskWrapper, taskHtml, mode);
-    finalizeTaskInsertion(taskHtml, actions);
+	const actions = [];
+	const taskHtml = generateNewTaskHtml(category, taskNumber, actions);
+	
+	insertTaskInDom(taskWrapper, taskHtml, mode);
+	finalizeTaskInsertion(taskHtml, actions);
 }
 
 /**
@@ -643,10 +643,10 @@ function replaceTask(button, mode) {
  * @returns {Object} Информация о задании
  */
 function extractTaskInfo(taskWrapper) {
-    return {
-        category: taskWrapper.getAttribute('data-category'),
-        taskNumber: taskWrapper.getAttribute('data-tasknumber')
-    };
+	return {
+		category: taskWrapper.getAttribute('data-category'),
+		taskNumber: taskWrapper.getAttribute('data-tasknumber')
+	};
 }
 
 /**
@@ -657,8 +657,8 @@ function extractTaskInfo(taskWrapper) {
  * @returns {jQuery} jQuery объект с HTML
  */
 function generateNewTaskHtml(category, taskNumber, actionsArray) {
-    const htmlString = generateHtmlForTask(category, taskNumber, actionsArray);
-    return $(htmlString);
+	const htmlString = generateHtmlForTask(category, taskNumber, actionsArray);
+	return $(htmlString);
 }
 
 /**
@@ -668,11 +668,11 @@ function generateNewTaskHtml(category, taskNumber, actionsArray) {
  * @param {string} mode - Режим вставки
  */
 function insertTaskInDom(taskWrapper, taskHtml, mode) {
-    if (mode === 'replace') {
-        $(taskWrapper).replaceWith(taskHtml);
-    } else if (mode === 'after') {
-        taskHtml.insertAfter(taskWrapper);
-    }
+	if (mode === 'replace') {
+		$(taskWrapper).replaceWith(taskHtml);
+	} else if (mode === 'after') {
+		taskHtml.insertAfter(taskWrapper);
+	}
 }
 
 /**
@@ -681,9 +681,9 @@ function insertTaskInDom(taskWrapper, taskHtml, mode) {
  * @param {Array} actionsArray - Массив действий
  */
 function finalizeTaskInsertion(taskHtml, actionsArray) {
-    executeDeferredActions(actionsArray);
-    triggerMathJaxRenderingForElement(taskHtml[0]);
-    afterTasksGenerated();
+	executeDeferredActions(actionsArray);
+	triggerMathJaxRenderingForElement(taskHtml[0]);
+	afterTasksGenerated();
 }
 
 /**
@@ -691,7 +691,7 @@ function finalizeTaskInsertion(taskHtml, actionsArray) {
  * @param {HTMLElement} element - Элемент
  */
 function triggerMathJaxRenderingForElement(element) {
-    if (window.MathJax && MathJax.Hub) {
-        MathJax.Hub.Typeset(element);
-    }
+	if (window.MathJax && MathJax.Hub) {
+		MathJax.Hub.Typeset(element);
+	}
 }
