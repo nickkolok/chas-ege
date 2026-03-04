@@ -8,7 +8,7 @@
 
 		let initial = (denFrac ** 3 * remainder) / ((denFrac - 1) ** 3);
 
-		genAssert(initial.isAlmostInteger(), 'Начальное количество тетрадей должно быть целым');
+		genAssertAlmostInteger(initial, 'Начальное количество тетрадей должно быть целым');
 		genAssert(initial > 0, 'Начальное количество тетрадей должно быть положительным');
 
 		NAtask.setTask({
