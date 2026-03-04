@@ -51,11 +51,12 @@ function generateKatalog() {
 		toc += buildCategoryTocLink(kat, br);
 		var tasksToList = window.availableTaskNumbers || Object.keys(nabor.upak[kat]);
 
-		for(var zdn of tasksToList)
+		for(var zdn of tasksToList) {
 			if(zdn!='main' && zdn!='fipi') {
 				rez += generateHtmlForTask(kat,zdn,masdey);
 			}
-			rez += '</div>';
+		}
+		rez += '</div>';
 	}
 	$('#divrez').html(toc+br+rez);
 	executeDeferredActions(masdey);
@@ -187,11 +188,26 @@ function executeDeferredActions(actionsArray) {
     });
 }
 
+
+/**
+ * Выполняет действия после генерации заданий.
+ */
 function afterTasksGenerated() {
 	spoiler();
-	$( 'button.copybutton[data-already-inited!=true]').click( copyTask).attr('data-already-inited', true);
-	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
-	$(  'button.addbutton[data-already-inited!=true]').click(  addTask).attr('data-already-inited', true);
+	initializeButton('.copybutton', copyTask);
+	initializeButton('.renewbutton', renewTask);
+	initializeButton('.addbutton', addTask);
+}
+
+/**
+ * Инициализирует конкретный тип кнопок
+ * @param {string} selector - CSS селектор
+ * @param {Function} handler - Обработчик события
+ */
+function initializeButton(selector, handler) {
+	$(`${selector}[data-already-inited!=true]`)
+		.click(handler)
+		.attr('data-already-inited', true);
 }
 
 function copyTask() {
