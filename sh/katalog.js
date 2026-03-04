@@ -1,80 +1,58 @@
 'use strict';
 
-
-function generateHtmlForTask(category,taskNumber,actionsArray){
-	var htmlContent='';
+/**
+ * Генерирует HTML для задания.
+ * @param {string} category - Категория задания.
+ * @param {string} taskNumber - Номер задания.
+ * @param {Array} actionsArray - Массив действий.
+ * @returns {string} - HTML-код задания.
+ */
+function generateHtmlForTask(category, taskNumber, actionsArray) {
+	let htmlContent = '';
 	vopr.podg();
-	var currentTaskPath = nabor.adres+category+'/'+taskNumber+'.js';
-	htmlContent+='<div class="task-wrapper" data-category="'+category+'" data-tasknumber="'+taskNumber+'">';
-	htmlContent+=currentTaskPath.vTag('h2');
+	const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
 	console.log(currentTaskPath);
-	try{
+	try {
+		// Execute the task generator
 		nabor.upak[category][taskNumber]();
+		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
+		htmlContent += currentTaskPath.vTag('h2');
 		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
 		vopr.taskNumber = category;
 		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
 		htmlContent+=(
 			(
-				'<button class="copybutton" style="display:block; float:right;" title="Экспорт в РешуЕГЭ"'+
-				'data-task="' + encodeURIComponent(JSON.stringify(vopr)) + '"' +
-				'>' +
-					'&#x2398;' +
-				'</button>'+
-
-				'<button class="renewbutton" style="display:block; float:right; margin-right:1.46em;" title="Заменить задание на похожее"'+
-				'>' +
-					'&#x27F3;' +
-				'</button>'+
-
-				'<button class="addbutton" style="display:block; float:right; margin-right:1.46em;" title="Добавить похожее задание"'+
-				'>' +
-					'+' +
-				'</button>'+
-
+				generateTaskControls() +
 				'Ответ: '+vopr.ver.join('или')
 			).vTag('div') +
 			'<br/>'
 		);
 		actionsArray.push(vopr.dey);
-		if(vopr.rsh){
-			htmlContent+=(
-				('Показать решение ').vTag('button','class="spoiler-show"')+
-				('Скрыть   решение ').vTag('button','class="spoiler-hide"')+
-				'<div class="spoiler-body">'+
-				'Решение: '+'<br/>'+
-				vopr.rsh+
-				'</div>'+
-			'');
-
+		if(vopr.rsh) {
+			htmlContent += generateSolutionHtml();
 		}
-		if(vopr.authors && vopr.authors.length){
-			htmlContent+=(
-				'<br/>' +
-				'<div class="katalog-authors">' +
-						'Автор' + ('ы').esli(vopr.authors.length > 1) + ': &nbsp;' +
-						vopr.authors.join(', ') +
-				'</div>'+
-				'<br/>'+
-			'');
+		if(vopr.authors && vopr.authors.length) {
+			htmlContent += generateAuthorsHtml();
 		}
-	}catch(e){
-		console.log(e);
+	} catch(e) {
+		console.error(e);
+		htmlContent += generateErrorHtml(category, taskNumber, e);
 	}
 	htmlContent += '</div>';
 	return htmlContent;
 }
 
-function generateKatalog(){
+function generateKatalog() {
 	var rez='';
 	var toc='';
 	var masdey=[];
 	var br='<br/>';
-	for(var kat in nabor.upak){
+	for(var kat in nabor.upak) {
 		window.comment='';
 		window.availableTaskNumbers = null;
-		try{
+		try {
 				nabor.upak[kat][nabor.scheduler]()
-		}catch(e){
+		} catch(e) {
 			console.log(e);
 		}
 		rez+=(
@@ -91,17 +69,17 @@ function generateKatalog(){
 		var tasksToList = window.availableTaskNumbers || Object.keys(nabor.upak[kat]);
 
 		for(var zdn of tasksToList)
-			if(zdn!='main' && zdn!='fipi'){
+			if(zdn!='main' && zdn!='fipi') {
 				rez += generateHtmlForTask(kat,zdn,masdey);
 			}
 			rez += '</div>';
 	}
 	$('#divrez').html(toc+br+rez);
 	var len=masdey.length;
-	for(var i=0;i<len;i++){
-		try{
+	for(var i=0;i<len;i++) {
+		try {
 			masdey[i]();
-		}catch(e){
+		} catch(e) {
 			console.log(e);
 		}
 	}
@@ -110,7 +88,7 @@ function generateKatalog(){
 	$('.spoiler-show').click();
 }
 
-function afterTasksGenerated(){
+function afterTasksGenerated() {
 	spoiler();
 	$( 'button.copybutton[data-already-inited!=true]').click( copyTask).attr('data-already-inited', true);
 	$('button.renewbutton[data-already-inited!=true]').click(renewTask).attr('data-already-inited', true);
@@ -118,20 +96,20 @@ function afterTasksGenerated(){
 }
 
 
-function copyTask(){
+function copyTask() {
 	console.log(this);
 	//var theTask = this.getElementsByTagName('span')[0].innerHTML;
 	var theTask = decodeURIComponent(this.getAttribute('data-task'));
 	console.log(theTask);
 	theTask = JSON.parse(theTask);
 	console.log(theTask);
-	replaceCanvasWithImgInTaskAndHTML($(this).parents('div.task-wrapper')[0], theTask, function(){
+	replaceCanvasWithImgInTaskAndHTML($(this).parents('div.task-wrapper')[0], theTask, function() {
 		var fillerCode = createFiller(theTask);
 		copyToClipboard(fillerCode)
 	});
 }
 
-function renewTask(){
+function renewTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.task-wrapper')[0];
 	var actions = [];
@@ -142,7 +120,7 @@ function renewTask(){
 	afterTasksGenerated();
 }
 
-function addTask(){
+function addTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.task-wrapper')[0];
 	var actions = [];
@@ -151,4 +129,58 @@ function addTask(){
 	actions[0]();
 	MathJax.Hub.Typeset(taskHtml[0]);
 	afterTasksGenerated();
+}
+
+/**
+ * Генерирует HTML с дополнительными кнопками
+ * @returns {string} HTML
+ */
+function generateTaskControls() {
+	return `
+		<div>
+			<button class="copybutton" style="float:right;" title="Экспорт в РешуЕГЭ" data-task="${encodeURIComponent(JSON.stringify(vopr))}">&#x2398;</button>
+			<button class="renewbutton" style="float:right; margin-right:1.46em;" title="Заменить задание на похожее">&#x27F3;</button>
+			<button class="addbutton" style="float:right; margin-right:1.46em;" title="Добавить похожее задание">+</button>
+		</div>
+		<br/>
+	`;
+}
+
+/**
+ * Генерирует HTML с решением
+ * @returns {string} HTML
+ */
+function generateSolutionHtml() {
+	return `
+		<button class="spoiler-show">Показать решение</button>
+		<button class="spoiler-hide">Скрыть решение</button>
+		<div class="spoiler-body">Решение: <br/>${vopr.rsh}</div>
+	`;
+}
+
+/**
+ * Генерирует HTML с информацией об авторах
+ * @returns {string} HTML
+ */
+function generateAuthorsHtml() {
+	return `
+		<br/>
+		<div class="katalog-authors">
+			Автор${'ы'.esli(vopr.authors.length > 1)}: &nbsp;${vopr.authors.join(', ')}
+		</div>
+		<br/>
+	`;
+}
+
+/**
+ * Генерирует HTML при ошибке
+ * @param {string} category - Категория
+ * @param {string} taskNumber - Номер задания
+ * @param {Error} error - Объект ошибки
+ * @returns {string} HTML с сообщением об ошибке
+ */
+function generateErrorHtml(category, taskNumber, error) {
+	return `<div class="task-wrapper error" data-category="${category}" data-tasknumber="${taskNumber}">
+		Error generating task: ${error.message}
+	</div>`;
 }
