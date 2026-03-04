@@ -83,7 +83,7 @@ function generateKatalog() {
 			console.log(e);
 		}
 	}
-	MathJax.Hub.Typeset();
+	triggerMathJaxRendering();
 	afterTasksGenerated();
 	$('.spoiler-show').click();
 }
@@ -116,7 +116,7 @@ function renewTask() {
 	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
 	$(wrapper).replaceWith(taskHtml);
 	actions[0]();
-	MathJax.Hub.Typeset(taskHtml[0]);
+	triggerMathJaxRendering(taskHtml[0]);
 	afterTasksGenerated();
 }
 
@@ -127,7 +127,7 @@ function addTask() {
 	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
 	taskHtml.insertAfter(wrapper);
 	actions[0]();
-	MathJax.Hub.Typeset(taskHtml[0]);
+	triggerMathJaxRendering(taskHtml[0]);
 	afterTasksGenerated();
 }
 
@@ -183,4 +183,14 @@ function generateErrorHtml(category, taskNumber, error) {
 	return `<div class="task-wrapper error" data-category="${category}" data-tasknumber="${taskNumber}">
 		Error generating task: ${error.message}
 	</div>`;
+}
+
+/**
+ * Запускает рендеринг MathJax для элемента
+ * @param {HTMLElement} element - элемент (необязательный параметр)
+ */
+function triggerMathJaxRendering(element) {
+	if (window.MathJax && MathJax.Hub) {
+		MathJax.Hub.Typeset(element);
+	}
 }
