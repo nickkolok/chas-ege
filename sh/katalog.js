@@ -402,31 +402,21 @@ function buildCategoryTocLink(category, lineBreak) {
  * @param {Object} state - Состояние каталога
  */
 function addCategoryTasks(category, state) {
-	const tasksToList = getTasksForCategory(category);
+	const tasksToList = getIncludableTasksForCategory(category);
 	
 	for (const taskNumber of tasksToList) {
-		if (isTaskIncludable(taskNumber)) {
-			state.htmlContent += generateHtmlForTask(category, taskNumber, state.actionsArray);
-		}
+		state.htmlContent += generateHtmlForTask(category, taskNumber, state.actionsArray);
 	}
 }
 
 /**
- * Получает список заданий для категории
+ * Получает список заданий для категории, исключая служебные
  * @param {string} category - Категория
- * @returns {Array} Массив номеров заданий
+ * @returns {Array} Массив номеров заданий, готовых к включению
  */
-function getTasksForCategory(category) {
-	return window.availableTaskNumbers || Object.keys(nabor.upak[category] || {});
-}
-
-/**
- * Проверяет, нужно ли включать задание
- * @param {string} taskNumber - Номер задания
- * @returns {boolean}
- */
-function isTaskIncludable(taskNumber) {
-	return taskNumber !== 'main' && taskNumber !== 'fipi';
+function getIncludableTasksForCategory(category) {
+	const tasks = window.availableTaskNumbers || Object.keys(nabor.upak[category] || {});
+	return tasks.filter(taskNumber => taskNumber !== 'main' && taskNumber !== 'fipi');
 }
 
 /**
