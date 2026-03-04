@@ -8,11 +8,11 @@
  * @returns {string} - HTML-код задания.
  */
 function generateHtmlForTask(category, taskNumber, actionsArray) {
-	let htmlContent = '';
-	vopr.podg();
-	const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
-	console.log(currentTaskPath);
 	try {
+		let htmlContent = '';
+		vopr.podg();
+		const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
+
 		// Execute the task generator
 		nabor.upak[category][taskNumber]();
 		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
