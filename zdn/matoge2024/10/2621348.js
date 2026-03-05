@@ -16,8 +16,6 @@
             }
         }
 
-        console.log(minSum, maxSum, favorable);
-
         let probability = favorable / 36;
 
         let sumsText = [];
