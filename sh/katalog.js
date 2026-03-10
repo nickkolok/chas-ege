@@ -696,29 +696,3 @@ function triggerMathJaxRenderingForElement(element) {
     }
 }
 
-
-// ============================================================================
-// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-// ============================================================================
-
-/**
- * Копирует текст в буфер обмена
- * @param {string} text - Текст для копирования
- */
-function copyToClipboard(text) {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.select();
-    
-    try {
-        document.execCommand('copy');
-        console.log('Текст скопирован в буфер обмена');
-    } catch (err) {
-        console.error('Ошибка копирования в буфер обмена:', err);
-    } finally {
-        document.body.removeChild(textarea);
-    }
-}
