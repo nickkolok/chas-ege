@@ -12,6 +12,7 @@
         let finalPercent = percent * firstVolume / (firstVolume + waterVolume);
 
         let dano = [chislitlx(firstVolume, 'литр', 'v'), percent + '−процентного'];
+        let chemicalSubstance = ['водного', 'щелочного', 'солевой', 'кислотный'].iz();
 
         switch (rand) {
             case 0:
@@ -29,7 +30,7 @@
         genAssertZ1000(finalPercent, 'Концентрация получившегося раствора слишком дробная');
 
         NAtask.setTask({
-            text: 'В сосуд, содержащий ' + dano + ' водного раствора некоторого вещества, ' +
+            text: 'В сосуд, содержащий ' + dano + ' ' + chemicalSubstance + ' раствора некоторого вещества, ' +
                 'добавили ' + [chislitlx(waterVolume, 'литр', 'v'), 'несколько литров'][Number(rand == 1)] +
                 ' воды' + [' так, что получился ' + finalPercent + '−процентный раствор', ''][Number(rand == 0)] + '. ',
             questions: [[{
