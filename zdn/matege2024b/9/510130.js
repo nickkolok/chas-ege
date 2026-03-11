@@ -39,23 +39,23 @@
             shiftCoordinate: false
         };
 
-        let rect = new Rectangle({
+        let firstRect = new Rectangle({
             points,
             supplementary
         });
 
-        let rect1 = new Rectangle({
+        let secondRect = new Rectangle({
             points: points1,
             supplementary
         });
 
-        rect.addVertexToConnectionMatrix(rect1.pointC, 'E');
-        rect.connectVerticesInConnectionMatrix([2, 4]);
-        rect.addVertexToConnectionMatrix(rect1.pointD, 'E');
-        rect.connectVerticesInConnectionMatrix([3, 5]);
+        firstRect.addVertexToConnectionMatrix(secondRect.pointC, 'E');
+        firstRect.connectVerticesInConnectionMatrix([2, 4]);
+        firstRect.addVertexToConnectionMatrix(secondRect.pointD, 'E');
+        firstRect.connectVerticesInConnectionMatrix([3, 5]);
 
-        rect1.connectionMatrix[2][2] = 0;
-        rect.connectionMatrix[2][2] = 0;
+        secondRect.connectionMatrix[2][2] = 0;
+        firstRect.connectionMatrix[2][2] = 0;
 
         let paint1 = function (ctx) {
             let h = 400;
@@ -69,13 +69,13 @@
             ctx.strokeStyle = om.secondaryBrandColors;
             ctx.rotate(sl(0, 3) * Math.PI / 2);
             ctx.lineWidth = 4 / scale;
-            ctx.drawFigure(rect.vertices, rect.connectionMatrix);
-            ctx.drawFigure(rect1.vertices, rect1.connectionMatrix);
+            ctx.drawFigure(firstRect.vertices, firstRect.connectionMatrix);
+            ctx.drawFigure(secondRect.vertices, secondRect.connectionMatrix);
         };
 
         NAtask.setTask({
             text: `План местности разбит на клетки. Каждая клетка обозначает квадрат $1 \\text{ м} \\times 1 \\text{ м}$. Найдите площадь участка, выделенного на плане. Ответ дайте в квадратных метрах.`,
-            answers: rect.area() + rect1.area(),
+            answers: firstRect.area() + secondRect.area(),
             authors: ['Александра Суматохина'],
         });
 
