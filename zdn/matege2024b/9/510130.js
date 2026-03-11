@@ -4,14 +4,14 @@
         let a = sl(1, 4);
         let b = slKrome(a, 1, 4);
 
-        let points = [
+        let firstPoints = [
             [-a, -b],
             [a, -b],
             [a, b],
             [-a, b],
         ];
 
-        points = points.map((point) => {
+        firstPoints = firstPoints.map((point) => {
             return {
                 x: point[0],
                 y: point[1]
@@ -21,14 +21,14 @@
         let c = sl(0, a);
         let d = -slKrome(c, 0, a - 1);
 
-        let points1 = [
+        let secondPoints = [
             [d, b + 1],
             [c, b + 1],
             [c, b],
             [d, b],
         ];
 
-        points1 = points1.map((point) => {
+        secondPoints = secondPoints.map((point) => {
             return {
                 x: point[0],
                 y: point[1]
@@ -40,12 +40,12 @@
         };
 
         let firstRect = new Rectangle({
-            points,
+            points: firstPoints,
             supplementary
         });
 
         let secondRect = new Rectangle({
-            points: points1,
+            points: secondPoints,
             supplementary
         });
 
