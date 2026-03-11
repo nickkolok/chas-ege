@@ -1,4 +1,3 @@
-sluchch.forceIntegers = true;
 (function () {
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
