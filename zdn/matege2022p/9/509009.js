@@ -40,11 +40,11 @@
 
 		let find, answ;
 		if (!randFind) {
-			answ = f(chisl).ts(1);
-			find = `$f(${chisl.ts()})$`;
+			answ = f(chisl);
+			find = `$f(${chisl})$`;
 		} else {
 			answ = chisl;
-			find = `значение $x$, при котором $f(x)=${(f(chisl)).ts()}$`;
+			find = `значение $x$, при котором $f(x)=${(f(chisl))}$`;
 		}
 		let paint1 = function (ct) {
 			let h = 400;
