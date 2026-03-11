@@ -16,7 +16,7 @@
 		let k = sluchch(1, 8).pm();
 		let chisl = sluchch(1, 30, 0.5).pm();
 		genAssertZ1000(f(chisl));
-		genAssert(Math.abs(f(chisl)) >= 8);
+		genAssert(Math.abs(f(chisl)) >= 10, 'Спрашиваемое f(x) видно на графике');
 
 		if (randFind) {
 			answ = chisl;
