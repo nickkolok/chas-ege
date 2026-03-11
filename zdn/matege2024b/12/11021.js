@@ -3,11 +3,8 @@
 		NAinfo.requireApiVersion(0, 2);
 		let key = '11021';
 		let preference = ['tgC', 'sinA', 'cosA'];
-
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+		
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let letters = latbukv.slice(0, 3).concat('H');
 
