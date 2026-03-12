@@ -7,7 +7,13 @@
 #../fast_set.sh ../../matege2023p/4
 find . -mindepth 1 ! -name "$(basename "$0")" -exec rm -rf {} +
 
-array=()
+array=(
+506446
+506736
+515778
+518393
+12696305
+)
 
 if [[ ${#array[@]} -eq 0 ]]; then
      echo "change array in file"
