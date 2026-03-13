@@ -8,11 +8,13 @@
 	let position = sl(1, total);
 	let rand = sl1();
 	let reverse = ['орёл','решка'][1 - rand];      
+	let answer = tails / total;
+	genAssertZ1000(answer);
 
 	NAtask.setTask({
 		text: 'Монету бросили ' + chislitlx(total, 'раз', 'v$') + '. Известно, что ' + ['орёл', 'решка'][rand] + ' выпал ' + chislitlx(heads, 'раз', '$v') + '. ' +
 			'Найдите вероятность того, что при $' + position + '$-м по счёту броске выпал'+ ['','а'][1 - rand] + ' ' + reverse + '.',
-		answers: tails / total,
+		answers: answer,
 	});
 	NAtask.modifiers.assertSaneDecimals();
     }, 100);
