@@ -8,10 +8,10 @@ window.nabor.importFrom({
 
 // fast_set metadata
 // array entries:
-// - 518393
-// - 506446
-// - 506736
-// - 515778
-// - 12696305
+// - 518393 longRivePart longRivePart
+// - 506446 secondCulture_result secondCulture result
+// - 506736 winner_numberOfPeopleWhoVotedThatWeNeed winner numberOfPeopleWhoVotedThatWeNeed
+// - 515778 government_result government result
+// - 12696305 mint mint
 // forbidOpenEnds answer: n
 // forbidDecimalFractions answer: n
