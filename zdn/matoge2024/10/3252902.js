@@ -12,15 +12,15 @@
 
         let probability = [color1 - 1, color2][targetColor] / (total - 1);
         let colorSecond = ['тоже',''][targetColor];
-		let colorName =['зелён', 'жёлт', 'красн', 'фиолетов', 'оранжев', 'голуб', 'оранжев', 'розов', 'бел', 'чёрн', 'коричнев',].iz(2);
+		let colorName = om.trickyColors.iz(2);
 		let item =sklonlxkand(['карандаш', 'фломастер', 'маркер', 'ластик', 'транспортир', 'циркуль', 'угольник', 'корректор', 'степлер', 'трафорет'].iz());
 
         genAssertZ1000(probability);
 
         NAtask.setTask({
-            text: 'Из ящика, где хранятся $' + color1 + '$ ' + colorName[0] + 'ых и $' + color2 + '$ ' + colorName[1] + 'ых ' + item.rm + ', ' +
-                'не глядя достали два ' + item.re + '. Известно, что первый ' + item.ie + ' оказался ' + colorName[0] + 'ым. ' +
-                'Найдите вероятность того, что второй ' + item.ie + ' оказался ' + colorSecond + ' ' + [colorName[0], colorName[1]][targetColor] + 'ым.',
+            text: 'Из ящика, где хранятся ' + declensionOfAdjectives(color1, colorName[0])+ ' и ' + declensionOfAdjectives(color2, (colorName[1])) + chislitlx(color2,item.ie, 're').replace(color2, '') + ', ' +
+                'не глядя достали два ' + item.re + '. Известно, что первый ' + item.ie + ' оказался ' + colorName[0].replace('ый', 'ым') + '. ' +
+                'Найдите вероятность того, что второй ' + item.ie + ' оказался ' + colorSecond + ' ' + colorName[targetColor].replace('ый', 'ым') + '.',
             answers: probability,
             preference: preference,
         });
