@@ -13,7 +13,7 @@
         let probability = [color1 - 1, color2][targetColor] / (total - 1);
         let colorSecond = ['тоже',''][targetColor];
 		let colorName = om.trickyColors.iz(2);
-		let item =sklonlxkand(['карандаш', 'фломастер', 'маркер', 'ластик', 'транспортир', 'циркуль', 'угольник', 'корректор', 'степлер', 'трафорет'].iz());
+		let item =sklonlxkand(['карандаш', 'фломастер', 'маркер', 'ластик', 'транспортир', 'циркуль', 'угольник', 'корректор', 'степлер', 'трафарет'].iz());
 
         genAssertZ1000(probability);
 
