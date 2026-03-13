@@ -3,7 +3,7 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
         let key = '515778';
-        let preference1 = ['government', 'privateShareHolders'];
+        let preference1 = ['paymentsToGovernment', 'paymentsToPrivateShareHolders'];
         let preference2 = ['result', 'companyProfit'];
         let rand = getSelectedPreferenceFromList(key, preference1);
         let randUpgrade = getSelectedPreferenceFromList(key, preference2);
