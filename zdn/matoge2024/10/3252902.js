@@ -19,8 +19,8 @@
 
         NAtask.setTask({
             text: 'Из ящика, где хранятся ' + declensionOfAdjectives(color1, colorName[0])+ ' и ' + declensionOfAdjectives(color2, (colorName[1])) + chislitlx(color2,item.ie, 're').replace(color2, '') + ', ' +
-                'не глядя достали два ' + item.re + '. Известно, что первый ' + item.ie + ' оказался ' + colorName[0].replace('ый', 'ым') + '. ' +
-                'Найдите вероятность того, что второй ' + item.ie + ' оказался ' + colorSecond + ' ' + colorName[targetColor].replace('ый', 'ым') + '.',
+                'не глядя достали два ' + item.re + '. Известно, что первый ' + item.ie + ' оказался ' + colorName[0].replace('ый', 'ым').replace('ой', 'ым') + '. ' +
+                'Найдите вероятность того, что второй ' + item.ie + ' оказался ' + colorSecond + ' ' + colorName[targetColor].replace('ый', 'ым').replace('ой', 'ым') + '.',
             answers: probability,
             preference: preference,
         });
