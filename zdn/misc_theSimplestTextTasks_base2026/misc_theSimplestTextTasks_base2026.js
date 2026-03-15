@@ -1,9 +1,9 @@
 if (!window.nabor)
 	window.nabor = {};
 window.nabor.importFrom({
-	nZad: 30,
- 	adres: '../zdn/misc_ege1_base2026/',
-	name: 'misc_ege1_base2026',
+	nZad: 29,
+ 	adres: '../zdn/misc_theSimplestTextTasks_base2026/',
+	name: 'misc_theSimplestTextTasks_base2026',
 });
 
 // fast_set metadata
@@ -11,7 +11,6 @@ window.nabor.importFrom({
 // - 26616
 // - 26617
 // - 26622
-// - 26625
 // - 26625
 // - 26626
 // - 26632
