@@ -3,8 +3,13 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let rand = sl1();
-        let anotherRand = sl(0, 4, 1);
+        let key = '522673';
+        let preference1 = ['manRodClother', 'womanRodClother'];
+        let preference2 = ['count2', 'count4', 'count6', 'count8', 'count10'];
+        let preference3 = ['howManyCostOnSaleLess', 'HowManyCostOnSaleMore', 'howManyPercentLessItems', 'howManyCostWithoutSaleLess', 'howManyPercentMoreItems', 'howManyCostWithoutSaleMore'];
+        let rand = getSelectedPreferenceFromList(key, preference1);
+        let anotherRand = getSelectedPreferenceFromList(key, preference2);
+        let randQuestion = getSelectedPreferenceFromList(key, preference3);
 
         let endPrilag = ['-й', '-ю'][rand];
         let anotherEndPrilagFirst = ['ый', 'ую'][rand];
@@ -27,7 +32,7 @@
         NAtask.setTask({
             text:
                 'В спортивном магазине ' + ['любой', 'любая'][rand] + ' ' + clothers.ie,
-            questions: [
+            questions: [[
                 {
                     text: ' стоит ' + '$' + prise + '$' + 'р. ' +
                         'Сейчас магазин проводит акцию: при покупке ' + '$' + countOfClother + '$' + '-x ' + clothers.rm + ' — скидка на ' + '$' +
@@ -76,8 +81,9 @@
                         'Сколько стоит ' + oneItem + ' ' + clothers.ie + ' без акции',
                     answers: prise,
                 },
-            ],
+            ][randQuestion]],
             postquestion: '?',
+            preference: [preference1, preference2, preference3],
         });
     }, 100);
 })();
