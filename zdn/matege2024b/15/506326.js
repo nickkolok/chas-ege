@@ -2,8 +2,11 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-
-        let rand = sl1();
+        let key = '506326';
+        let preference1 = ['answerSubscribersArrived', 'answerSubscribersSecond'];
+        let preference2 = ['howMuchPercent', 'howMuchPeople_thisYear', 'howMuchPeople_startOfYear'];
+        let rand = getSelectedPreferenceFromList(key, preference1);
+        let randQuestion = getSelectedPreferenceFromList(key, preference2);
         let subscribersFirst = sl(200, 1000, 10);
         let subscribersArrived = sl(20, 190, 10);
         genAssert(subscribersArrived.kratno(subscribersFirst / 100), "количество прибывших кратко 1% от нынешних");
@@ -18,7 +21,7 @@
             text:
                 'В начале года в телефонной компании "' + company + '"',
 
-            questions: [
+            questions: [[
                 {
                     text: ' число абонентов составляло ' + subscribersFirst + ' тыс. человек, ' +
                         'а к концу года их стало ' + subscribersSecond + ' тыс. человек. ' +
@@ -37,8 +40,9 @@
                         'Сколько тыс. человек являлись абнонентами у этой компании в начале года',
                     answers: subscribersFirst,
                 },
-            ],
+            ][randQuestion]],
             postquestion: '?',
+            preference: [preference1, preference2],
         });
     }, 100);
 })();
