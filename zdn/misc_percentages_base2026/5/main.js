@@ -1,4 +1,5 @@
 window.nomer=[
-	77344,
+	77345,
 ].iz()
-window.comment='77344';
+window.comment='77345 solveRight correctSolve howManySolve fipi';
+window.nabor.preferences['77345'] = ['solveRight','correctSolve','howManySolve_fipi'];

@@ -1,4 +1,5 @@
 window.nomer=[
-	77345,
+	77365,
 ].iz()
-window.comment='77345';
+window.comment='77365 Cheap howMuchToPay';
+window.nabor.preferences['77365'] = ['Cheap','howMuchToPay'];

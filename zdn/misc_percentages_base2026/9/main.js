@@ -1,4 +1,5 @@
 window.nomer=[
 	317937,
 ].iz()
-window.comment='317937';
+window.comment='317937 findSecondMeat sumPart10';
+window.nabor.preferences['317937'] = ['findSecondMeat','sumPart10'];

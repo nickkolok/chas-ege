@@ -1,4 +1,5 @@
 window.nomer=[
-	77343,
+	77344,
 ].iz()
-window.comment='77343';
+window.comment='77344 findAll';
+window.nabor.preferences['77344'] = ['findAll'];
