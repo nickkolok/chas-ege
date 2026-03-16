@@ -6,6 +6,7 @@
 		let v0 = sl(a*10,300)/10;//скорость
 		let t1 = sl(10,v0/a*10)/10;//время
 		let S = v0*t1-a*t1*t1/2;//путь
+		genAssert(S>0, 'Путь отрицателен')
 		let t2 = 2*v0/a-t1;
 
 		let answ = Math.min(t1,t2);
