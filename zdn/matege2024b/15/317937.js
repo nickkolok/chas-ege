@@ -3,10 +3,9 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
         let key = '317937';
-        let preference1 = ['findFirstMeat', 'findSecondMeat'];
-        let preference2 = ['sumPart100', 'sumPart50', 'sumPart25', 'sumPart20', 'sumPart10', 'sumPart5'];
-        let rand = getSelectedPreferenceFromList(key, preference1);
-        let randPartOf100 = getSelectedPreferenceFromList(key, preference2);
+        let preference = ['findFirstMeat', 'findSecondMeat'];
+        let rand = getSelectedPreferenceFromList(key, preference);
+        let randPartOf100 = sl(0, 5);
         let coniferousOrDeciduous = sklonlxkand(['говядина', 'свинина', 'курица', 'индейка', 'козлина', 'конина', 'буйволятина',
             'оленина', 'верблюжатина', 'цесарка', 'треска', 'горбуша', 'минтай',].iz(2));
         let meat = [100, 50, 25, 20, 10, 5][randPartOf100];
@@ -22,7 +21,7 @@
                 ' в отношении ' + firstMeat + ':' + secondMeat + '.' +
                 ' Какой процент в фарше составляет ' + [coniferousOrDeciduous[0], coniferousOrDeciduous[1]][rand].ie + '?',
             answers: percent,
-            preference: [preference1, preference2],
+            preference: preference,
         });
     }, 100);
 })();
