@@ -3,10 +3,9 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
         let key = '506569';
-        let preference1 = ['findWinner', 'findLoser'];
-        let preference2 = ['sumPart100', 'sumPart50', 'sumPart25', 'sumPart20', 'sumPart10', 'sumPart5'];
-        let rand = getSelectedPreferenceFromList(key, preference1);
-        let randPartOf100 = getSelectedPreferenceFromList(key, preference2);
+        let preference = ['findWinner', 'findLoser'];
+        let rand = getSelectedPreferenceFromList(key, preference);
+        let randPartOf100 = sl(0, 5);
 
         let post = ['председателя', 'заместителя председателя', 'секретаря', 'президента', 'заместителя президента'].iz();
 
@@ -31,7 +30,7 @@
                 loserRatio + ':' + winnerRatio + '$' + '. Сколько голосов получил ' + winOrLose + ' в процентах?',
 
             answers: percent,
-            preference: [preference1, preference2],
+            preference: preference,
         });
     }, 100);
 })();
