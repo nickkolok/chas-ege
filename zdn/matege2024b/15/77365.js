@@ -3,7 +3,7 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
         let key = '77365';
-        let preference1 = ['Expensive', 'Cheap'];
+        let preference1 = ['expensive', 'cheap'];
         let preference2 = ['howMuchToPay', 'howMuchPercents', 'howMuchCost'];
         let rand = getSelectedPreferenceFromList(key, preference1);
         let randQuestion = getSelectedPreferenceFromList(key, preference2);
