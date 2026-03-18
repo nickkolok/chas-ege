@@ -4,10 +4,9 @@
         NAinfo.requireApiVersion(0, 2);
 
         let key = '506426';
-        let preference1 = ['manClother', 'womanClother'];
-        let preference2 = ['howManyWasBefore', 'howManyPercent', 'howManyOnSale'];
-        let rand = getSelectedPreferenceFromList(key, preference1);
-        let randQuestion = getSelectedPreferenceFromList(key, preference2);
+        let preference = ['howManyWasBefore', 'howManyPercent', 'howManyOnSale'];
+        let rand = sl1();
+        let randQuestion = getSelectedPreferenceFromList(key, preference);
 
         let clotherMR = sklonlxkand(['свитер', 'халат', 'плащ', 'дождевик', 'товар'].iz());
         let clotherWR = sklonlxkand(['рубашка', 'футболка', 'куртка', 'кофта'].iz());
@@ -44,7 +43,7 @@
 
             ][randQuestion]],
             postquestion: '?',
-            preference: [preference1, preference2],
+            preference: preference,
         });
         NAtask.modifiers.allDecimalsToStandard();
     }, 100);
