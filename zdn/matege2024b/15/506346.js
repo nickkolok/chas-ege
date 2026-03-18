@@ -4,10 +4,9 @@
         NAinfo.requireApiVersion(0, 2);
 
         let key = '506346';
-        let preference1 = ['howManyMillons', 'howManyRubles'];
-        let preference2 = ['howManySpend', 'howManyWasBefore', 'howManyPercent'];
-        let rand = getSelectedPreferenceFromList(key, preference1);
-        let randQuestion = getSelectedPreferenceFromList(key, preference2);
+        let preference = ['howManySpend', 'howManyWasBefore', 'howManyPercent'];
+        let rand = sl1();
+        let randQuestion = getSelectedPreferenceFromList(key, preference);
 
         let mlnRuble = slKrome([100], 10, 200, 1);
         let persent = sl(10, 50, 1);
@@ -34,7 +33,7 @@
                 },
             ][randQuestion]],
             postquestion: '?',
-            preference: [preference1, preference2],
+            preference: preference,
         });
     }, 100);
 })();
