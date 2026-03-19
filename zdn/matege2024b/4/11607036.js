@@ -16,10 +16,18 @@
 		genAssert(S.isAlmostInteger(), "Итоговая сумма должна быть целой");
 
 		let knownParts = [];
-		if (rand !== 1) knownParts.push('$A = ' + A + '$');
-		if (rand !== 2) knownParts.push('$p = ' + p + '\\%$');
-		if (rand !== 3) knownParts.push('$n = ' + n + '$');
-		if (rand !== 0) knownParts.push('$S = ' + S + '$');
+		if (rand !== 1) {
+			knownParts.push('$A = ' + A + '$')
+		}
+		if (rand !== 2) {
+			knownParts.push('$p = ' + p + '\\%$')
+		}
+		if (rand !== 3) {
+			knownParts.push('$n = ' + n + '$')
+		}
+		if (rand !== 0) {
+			knownParts.push('$S = ' + S + '$')
+		}
 		let knownText = knownParts.join(', ') + '.';
 
 		NAtask.setTask({
