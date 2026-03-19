@@ -1,5 +1,5 @@
 window.nomer=[
-	506426,
+	510347,
 ].iz()
-window.comment='506426 howManyWasBefore';
-window.nabor.preferences['506426'] = ['howManyWasBefore'];
+window.comment='510347 increase findResult nextYear';
+window.nabor.preferences['510347'] = ['increase','findResult_nextYear'];

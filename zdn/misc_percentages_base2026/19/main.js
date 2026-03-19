@@ -1,5 +1,5 @@
 window.nomer=[
-	510679,
+	513810,
 ].iz()
-window.comment='510679 increase';
-window.nabor.preferences['510679'] = [];
+window.comment='513810 genderGirl less everyStudent';
+window.nabor.preferences['513810'] = ['genderGirl','less','everyStudent'];

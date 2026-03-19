@@ -1,5 +1,5 @@
 window.nomer=[
-	510347,
+	513810,
 ].iz()
-window.comment='510347 increase findResult nextYear';
-window.nabor.preferences['510347'] = ['increase','findResult_nextYear'];
+window.comment='513810 genderGirl more oneTypeOfStudentSimple';
+window.nabor.preferences['513810'] = ['genderGirl','more','oneTypeOfStudentSimple'];

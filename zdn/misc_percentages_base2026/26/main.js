@@ -1,5 +1,5 @@
 window.nomer=[
-	515778,
+	527676,
 ].iz()
-window.comment='515778 paymentsToPrivateShareHolders result';
-window.nabor.preferences['515778'] = ['paymentsToPrivateShareHolders','result'];
+window.comment='527676 decreaseFirst decreaseSecond howManyCostNow';
+window.nabor.preferences['527676'] = ['decreaseFirst','decreaseSecond','howManyCostNow'];

@@ -1,5 +1,5 @@
 window.nomer=[
-	489499,
+	506426,
 ].iz()
-window.comment='489499 samePercent';
-window.nabor.preferences['489499'] = ['samePercent'];
+window.comment='506426 howManyWasBefore';
+window.nabor.preferences['506426'] = ['howManyWasBefore'];

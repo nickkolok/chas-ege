@@ -1,5 +1,5 @@
 window.nomer=[
-	522673,
+	2893123,
 ].iz()
-window.comment='522673 count2 howManyCostOnSaleLess';
-window.nabor.preferences['522673'] = ['count2','howManyCostOnSaleLess'];
+window.comment='2893123 same ratio';
+window.nabor.preferences['2893123'] = ['same_ratio'];

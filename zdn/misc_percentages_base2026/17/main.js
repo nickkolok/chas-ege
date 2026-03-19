@@ -1,5 +1,5 @@
 window.nomer=[
-	506569,
+	513810,
 ].iz()
-window.comment='506569 findLoser sumPart5';
-window.nabor.preferences['506569'] = ['findLoser','sumPart5'];
+window.comment='513810 genderBoy more oneTypeOfStudentSimple';
+window.nabor.preferences['513810'] = ['genderBoy','more','oneTypeOfStudentSimple'];

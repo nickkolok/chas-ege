@@ -1,5 +1,5 @@
 window.nomer=[
-	506326,
+	506569,
 ].iz()
-window.comment='506326 howMuchPercent';
-window.nabor.preferences['506326'] = ['howMuchPercent'];
+window.comment='506569 findWinner';
+window.nabor.preferences['506569'] = ['findWinner'];
