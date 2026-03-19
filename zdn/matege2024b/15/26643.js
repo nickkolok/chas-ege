@@ -3,10 +3,9 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
         let key = '26643';
-        let preference1 = ['Russia', 'France', 'Germany', 'Mexico', 'Australia', 'Singapore', 'Denmark', 'Japan', 'Norway', 'Canada', 'China'];
-        let preference2 = ['afterDeductionTax', 'beforeDeductionTax', 'taxPercent'];
-        let counrtyRand = getSelectedPreferenceFromList(key, preference1);
-        let randQuestion = getSelectedPreferenceFromList(key, preference2);
+        let preference = ['afterDeductionTax', 'beforeDeductionTax', 'taxPercent'];
+        let counrtyRand = sl(0, 10);
+        let randQuestion = getSelectedPreferenceFromList(key, preference);
         let rand = sl1();
         let country = sklonlxkand(['Россия', 'Франция', 'Германия', 'Мексика', 'Австралия', 'Сингапур', 'Дания', 'Япония', 'Норвегия', 'Канада', 'Китай'][counrtyRand]);
         let name = sklonlxkand([om.maleNames.iz(), om.femaleNames.iz()][rand]);
@@ -43,7 +42,7 @@
                 },
             ][randQuestion]],
             postquestion: '',
-            preference: [preference1, preference2],
+            preference: preference,
         });
     }, 100);
 })();
