@@ -1,92 +1,36 @@
 (function () {
     'use strict';
-    retryWhileError(function () { /* На рисунке точками показаны ежемесячныеобъёмы продаж обогревателей в магазине бытовой техники. По горизонтали указываются месяцы, по вертикали – количество проданных обогревателей. Для наглядности точки соединены линией.*/
+    retryWhileError(function () { 
+        /* На рисунке точками показаны ежемесячные объёмы продаж обогревателей в магазине бытовой техники. По горизонтали указываются месяцы, по вертикали – количество проданных обогревателей. Для наглядности точки соединены линией.*/
 
         function convert(P) {
             return P * 20;
         }
 
-        function answAbouMaxMin(intervals, answ) {
-            let max = production.maxE();
-            let min = production.minE();
-            let maxIndex = null;
-            let minIndex = null;
-            let maxCount = 0;
-            let minCount = 0;
-
-            for (let i = 0; i < intervals.length; i++) {
-                for (let j = 0; j < intervals[i].length; j++) {
-                    if (intervals[i][j] === max) {
-                        maxCount++;
-                        if (maxCount > 1) {
-                            return;
-                        }
-                        maxIndex = i;
-                    }
-                }
-            }
-
-            for (let i = 0; i < intervals.length; i++) {
-                for (let j = 0; j < intervals[i].length; j++) {
-                    if (intervals[i][j] === min) {
-                        minCount++;
-                        if (minCount > 1) {
-                            return;
-                        }
-                        minIndex = i;
-                    }
-                }
-            }
-
-            if (maxIndex)
-                answ[maxIndex].solution.push('ежемесячный объём продаж достигает максимума за весь период');
-
-            if (minIndex)
-                answ[minIndex].solution.push('ежемесячный объём продаж достигает минимума за весь период');
+        function answAboutMaxMin(intervals, answ) {
+            let maxIndex = findMaxInIntervals(intervals, production);
+            let minIndex = findMinInIntervals(intervals, production);
+            
+            let wasMax = intervals.map((_, i) => i === maxIndex);
+            let wasMin = intervals.map((_, i) => i === minIndex);
+            
+            if(sl1())
+                addUniqueAnsw(wasMax, answ, 'ежемесячный объём продаж достигает максимума за весь период');
+            if(sl1())
+                addUniqueAnsw(wasMin, answ, 'ежемесячный объём продаж достигает минимума за весь период');
         }
 
-        function indexConst(interval) {
-            let index = [];
-            for (let j = 1; j < interval.length; j++) {
-                if (interval[j] === interval[j - 1]) {
-                    if (index.length)
-                        index.push(j, j - 1);
-                    else
-                        index.push(j);
-                }
-            }
-            return index;
+        function answAboutIncreasingLess(intervals, answ, more) {
+            let wasCondition = intervals.map(interval => isIncreasing(interval) && isLess(interval, more));
+            addUniqueAnsw(wasCondition, answ, 'ежемесячный объём продаж рос, но был меньше ' + convert(more) + ' штук');
         }
 
-        function isIncreasing(interval) {
-            return interval.slice(1).every((current, index) =>
-                current > interval[index]
-            );
+        function answAboutIncreasingMore(intervals, answ, more) {
+            let wasCondition = intervals.map(interval => isIncreasing(interval) && isMore(interval, more));
+            addUniqueAnsw(wasCondition, answ, 'ежемесячный объём продаж рос и был больше ' + convert(more) + ' штук');
         }
 
-        function isDecreasing(interval) {
-            return interval.slice(1).every((current, index) =>
-                current < interval[index]
-            );
-        }
-
-        function isNonMore(interval, more) {
-            return (interval.filter((int) => int < more)).length == interval.length;
-        }
-
-        function answAboutIncreasingNonMore(interval, answ, more) {
-            if (isIncreasing(interval) && isNonMore(interval, more)) {
-                answ.push('ежемесячный объём продаж рос, но был меньше ' + convert(more) + ' штук');
-            }
-        }
-
-        function answAboutIncreasingMore(interval, answ, more) {
-            if (isDecreasing(interval) && isMore(interval, more)) {
-                answ.push('ежемесячный объём продаж рос и был больше ' + convert(more) + ' штук');
-            }
-        }
-
-        function answAbouMaxDeltaI(intervals, answ) {
+        function answAboutMaxDeltaI(intervals, answ) {
             let incr = intervals.map(int => {
                 if (isIncreasing(int)) {
                     return int.maxE() - int.minE();
@@ -96,37 +40,21 @@
             });
 
             let maxEI = incr.maxE();
-            let maxI = incr.max();
-
-            let length = (inter, value) => inter.filter(item => item === value).length == 1;
-
-            if (length(incr, maxEI)) {
-                answ[maxI].solution.push('рост объёма продаж более чем на ' + convert(maxEI - 1) + ' штук за период');
-            }
+            let wasMaxDeltaI = intervals.map((_, i) => incr[i] === maxEI);
+            addUniqueAnsw(wasMaxDeltaI, answ, 'рост объёма продаж более чем на ' + convert(maxEI - 1) + ' штук за период');
         }
 
-        function isLess(interval, less) {
-            return interval.filter((int) => int < less).length == interval.length;
+        function answAboutLess(intervals, answ, less) {
+            let wasCondition = intervals.map(interval => isLess(interval, less) && (isDecreasing(interval) || isIncreasing(interval)));
+            addUniqueAnsw(wasCondition, answ, 'ежемесячный объём продаж был меньше ' + convert(less) + ' штук в течение всего периода');
         }
 
-        function answAbouLess(interval, answ, less) {
-            if (isLess(interval, less) && (isDecreasing(interval) || isIncreasing(interval))) {
-                answ.push('ежемесячный объём продаж был меньше ' + convert(less) + ' штук в течение всего периода');
-            }
+        function answAboutMore(intervals, answ, more) {
+            let wasCondition = intervals.map(interval => isMore(interval, more) && (isDecreasing(interval) || isIncreasing(interval)));
+            addUniqueAnsw(wasCondition, answ, 'ежемесячный объём продаж был больше ' + convert(more) + ' штук в течение всего периода');
         }
 
-        function isMore(interval, more) {
-            return interval.filter((int) => int > more).length == interval.length;
-        }
-
-        function answAbouMore(interval, answ, more) {
-            if (isMore(interval, more) && (isDecreasing(interval) || isIncreasing(interval))) {
-                answ.push('ежемесячный объём продаж был больше ' + convert(more) + ' штук в течение всего периода');
-            }
-        }
-
-        function answAbouMaxDeltaD(intervals, answ) {
-
+        function answAboutMaxDeltaD(intervals, answ) {
             let decr = intervals.map(int => {
                 if (isDecreasing(int)) {
                     return int.maxE() - int.minE();
@@ -136,31 +64,23 @@
             });
 
             let maxED = decr.maxE();
-            let maxD = decr.max();
-
-            let length = (inter, value) => inter.filter(item => item === value).length == 1;
-
-            if (length(decr, maxED)) {
-                answ[maxD].solution.push('падение объёма продаж более чем на ' + convert(maxED - 1) + ' штук за период');
-            }
+            let wasMaxDeltaD = intervals.map((_, i) => decr[i] === maxED);
+            addUniqueAnsw(wasMaxDeltaD, answ, 'падение объёма продаж более чем на ' + convert(maxED - 1) + ' штук за период');
         }
 
-        function answAboutConst(interval, answ) {
-            if (indexConst(interval).length == 3) {
-                answ.push('ежемесячный объём продаж не менялся в течение всего периода');
-            }
+        function answAboutConst(intervals, answ) {
+            let wasConst = intervals.map(interval => indexConst(interval).length == 3);
+            addUniqueAnsw(wasConst, answ, 'ежемесячный объём продаж не менялся в течение всего периода');
         }
 
-        function answAboutIncreasing(interval, answ) {
-            if (isIncreasing(interval)) {
-                answ.push('ежемесячный объём продаж рос в течение всего периода');
-            }
+        function answAboutIncreasing(intervals, answ) {
+            let wasIncreasing = intervals.map(interval => isIncreasing(interval));
+            addUniqueAnsw(wasIncreasing, answ, 'ежемесячный объём продаж рос в течение всего периода');
         }
 
-        function answAboutDecreasing(interval, answ) {
-            if (isDecreasing(interval)) {
-                answ.push('ежемесячный объём продаж падал в течение всего периода');
-            }
+        function answAboutDecreasing(intervals, answ) {
+            let wasDecreasing = intervals.map(interval => isDecreasing(interval));
+            addUniqueAnsw(wasDecreasing, answ, 'ежемесячный объём продаж падал в течение всего периода');
         }
 
         let mounth = om.months.slice().permuteCyclic(1);
@@ -168,12 +88,12 @@
 
         let season = ['зима', 'весна', 'лето', 'осень'];
 
-        let t = [0].zapMonot(12, 0, 1, 1); // шкала времени
+        let time = [0].zapMonot(12, 0, 1, 1); // шкала времени
         let production = [sl(5, 8)]; // шкала продаж
         let count = 1;
 
-        for (; production.length <= t.length || production.length == t.length || count == 100;) {
-            let interI = ((t.length / 1.6).floor());
+        for (; production.length <= time.length || production.length == time.length || count == 100;) {
+            let interI = ((time.length / 1.6).floor());
             for (let j = 0; j < interI; j++) {
                 let lastProduction = production[production.length - 1];
                 let newProduction = sl1() ? lastProduction : lastProduction + (sl(0.5, 1.5, 0.1) * (-1).pow(count % 2));
@@ -198,28 +118,24 @@
         let less = sl(2, 4);
         let more = sl(4, 6);
         let nonMore = slKrome(less, 2, 4);
-
-        function addAllAnswers(intervals, listOfIntervals) {
-            intervals.forEach((interval, i) => {
-                const solution = listOfIntervals[i].solution;
-                answAboutConst(interval, solution);
-
-                answAboutIncreasing(interval, solution);
-                answAboutDecreasing(interval, solution);
-
-                answAbouLess(interval, solution, less);
-                answAbouMore(interval, solution, more);
-
-                answAboutIncreasingMore(interval, solution, more);
-                answAboutIncreasingNonMore(interval, solution, nonMore);
-            });
+        
+        answAboutConst(intervals, listOfIntervals);
+        if (sl1()) {
+            answAboutIncreasing(intervals, listOfIntervals);
+        } else {
+            answAboutDecreasing(intervals, listOfIntervals);
         }
-
+        
+        answAboutIncreasingMore(intervals, listOfIntervals, more);
+        answAboutIncreasingLess(intervals, listOfIntervals, nonMore);
+        
+        answAboutLess(intervals, listOfIntervals, less);
+        answAboutMore(intervals, listOfIntervals, more);
+        
         // добавляем ответ про максимальный показатель
-        answAbouMaxMin(intervals, listOfIntervals);
-        answAbouMaxDeltaI(intervals, listOfIntervals);
-        answAbouMaxDeltaD(intervals, listOfIntervals);
-        addAllAnswers(intervals, listOfIntervals);
+        answAboutMaxMin(intervals, listOfIntervals);
+        answAboutMaxDeltaI(intervals, listOfIntervals);
+        answAboutMaxDeltaD(intervals, listOfIntervals);
 
         listOfIntervals.forEach(item => item.solution = item.solution.iz());
 
@@ -251,10 +167,10 @@
             ctx.scale(40, -40);
             ctx.lineWidth = 2 / 40;
 
-            for (let i = 0; i < t.length; i++) {
-                ctx.drawFilledCircle(t[i], production[i], 3 / 40);
-                if (i < t.length - 1)
-                    ctx.drawLine(t[i], production[i], t[i + 1], production[i + 1]);
+            for (let i = 0; i < time.length; i++) {
+                ctx.drawFilledCircle(time[i], production[i], 3 / 40);
+                if (i < time.length - 1)
+                    ctx.drawLine(time[i], production[i], time[i + 1], production[i + 1]);
             }
 
             ctx.scale(1 / 40, -1 / 40);
@@ -265,7 +181,7 @@
             ctx.setLineDash([20, 5]);
 
             for (let i = 0; i < 4; i++) {
-                const point = t[i] * 40 + 40 * 2 * i + 40;
+                const point = time[i] * 40 + 40 * 2 * i + 40;
                 if (i < 3)
                     ctx.drawLine(point + 60, 30, point + 60, -360)
                 ctx.fillText(season[i], point, 40);
@@ -274,7 +190,7 @@
 
         NAtask.setCorrespondenceTask({
             text:
-                'На рисунке точками показаны ежемесячны еобъёмы продаж обогревателей в магазине бытовой техники. ' +
+                'На рисунке точками показаны ежемесячные объёмы продаж обогревателей в магазине бытовой техники. ' +
                 'По горизонтали указываются месяцы, ' +
                 'по вертикали – количество проданных обогревателей. ' +
                 'Для наглядности точки соединены линией.',
@@ -283,8 +199,8 @@
             rightHeader: 'ХАРАКТЕРИСТИКИ',
             right: solutions,
             postText: 'Пользуясь рисунком, ' +
-                'поставьте в соответствие каждому из указанных периодоввремени характеристикупродаж обогревателей.<br/><br/> ВРЕМЕННЫЕ ОТВЕТЫ <br/>' +
-                listView.join('<br/>'),
+                'поставьте в соответствие каждому из указанных периодов времени характеристику продаж обогревателей.',
+            analys: listView.join('<br/>'),
         });
         NAtask.modifiers.allDecimalsToStandard( /*true*/);
         NAtask.modifiers.addCanvasIllustration({
