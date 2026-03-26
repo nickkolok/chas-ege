@@ -532,6 +532,7 @@ chas2.task = {
 				'<span style="font-family: monospace; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>' +
 				postText,
 			answers: answerSequence.join(''),
+			analys: analys || '',
 			preference,
 		});
 	},
