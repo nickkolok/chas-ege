@@ -6,10 +6,11 @@
         let preference = ['final_concentration', 'water_volume', 'first_concentration', 'first_volume'];
         let rand = getSelectedPreferenceFromList(key, preference);
 
-        let firstVolume = sl(5, 50, 0.01);
-        let waterVolume = slKrome(firstVolume, 5, 50, 0.01);
+        let firstVolume = sl(5, 50);
+        let waterVolume = slKrome(firstVolume, 5, 50);
         let percent = sl(10, 80);
         let finalPercent = percent * firstVolume / (firstVolume + waterVolume);
+        genAssertAlmostInteger(finalPercent, 'Концентрация получившегося раствора слишком дробная');
 
         let dano = [chislitlx(firstVolume, 'литр', 'v'), percent + '−процентного'];
         let chemicalSubstance = ['некоторого вещества', 'щелочи', 'соли', 'кислоты'].iz();
@@ -26,8 +27,6 @@
                 dano = 'несколько литров ' + dano[1];
                 break;
         }
-
-        genAssertZ1000(finalPercent, 'Концентрация получившегося раствора слишком дробная');
 
         NAtask.setTask({
             text: 'В сосуд, содержащий ' + dano + ' водного раствора ' + chemicalSubstance + ', ' +
