@@ -1,150 +1,107 @@
 (function () {
 	'use strict';
 	retryWhileError(function () {
-		/* На рисунке точками показано атмосферное давление в некотором городе на протяжении трёх суток с 4 по 6 апреля 2013 года. Втечение суток давление измеряется 4 раза: в 0:00, в 6:00, в 12:00 и в 18:00.По горизонтали указывается время и дата, по вертикали – давление вмиллиметрах ртутного столба. Для наглядности точки соединены линиями.*/
-		
-		function convert(P){
-			return 752 + P * 2;
-		}
-		
-		function answAbouMaxP(intervalsP, answ) {
-			let maxV = p.maxE();
-			let maxIndex = null;
+		/* На рисунке точками показано атмосферное давление в некотором городе на протяжении трёх суток с 4 по 6 апреля 2013 года. В течение суток давление измеряется 4 раза: в 0:00, в 6:00, в 12:00 и в 18:00.По горизонтали указывается время и дата, по вертикали – давление в миллиметрах ртутного столба. Для наглядности точки соединены линиями.*/
 
-			for (let i = 0; i < intervalsP.length; i++) {
-				for (let j = 0; j < intervalsP[i].length; j++) {
-					if (intervalsP[i][j] === maxV) {
-						maxIndex = i;
-						break;
-					}
-				}
-				if (maxIndex != null)
-					break;
-			}
-
-			if (maxIndex)
-				answ[maxIndex].solution.push('давление достигло ' + convert(maxV) + ' мм рт. ст.');
+		function convert(P) {
+			return 752 + P * 2 + ' мм рт. ст.';
 		}
 
-		function answAbouMaxMinDeltaP(intervalsP, answ) {
-			let deltaP = intervalsP.map(int => int[1] - int[0]);
+		function answAboutMax(intervals, answ) {
+			let maxIndex = findMaxInIntervals(intervals, value);
+			let wasMax = intervals.map((_, i) => i === maxIndex);
+			addUniqueAnsw(wasMax, answ, 'давление достигло ' + convert(value.maxE()));
+		}
+
+		function answAboutMaxMinDelta(intervals, answ) {
+			let deltaP = intervals.map(int => int[1] - int[0]);
 
 			let incr = deltaP.filter(item => item > 0);
 			let decr = deltaP.filter(item => item < 0);
 
 			let minEI = incr.minE();
-			let minI = deltaP.indexOf(minEI);
 			let maxEI = incr.maxE();
-			let maxI = deltaP.indexOf(maxEI);
-
 			let minED = decr.minE();
-			let minD = deltaP.indexOf(minED);
 			let maxED = decr.maxE();
-			let maxD = deltaP.indexOf(maxED);
 
-			let length = (inter, value) => inter.filter(item => item === value).length == 1;
+			let wasMinRise = intervals.map((_, i) => deltaP[i] === minEI);
+			let wasMaxRise = intervals.map((_, i) => deltaP[i] === maxEI);
+			let wasMinFall = intervals.map((_, i) => deltaP[i] === minED);
+			let wasMaxFall = intervals.map((_, i) => deltaP[i] === maxED);
 
-			if (length(incr, minEI))
-				answ[minI].solution.push('наименьший рост давления');
-			if (length(incr, maxI))
-				answ[maxI].solution.push('наибольший рост давления');
+			if (sl1()) {
+				addUniqueAnsw(wasMinRise, answ, 'наименьший рост давления');
+			} else {
+				addUniqueAnsw(wasMaxRise, answ, 'наибольший рост давления');
+			}
 
-			if (length(decr, maxED))
-				answ[maxD].solution.push('наименьшее падение давления');
-			if (length(decr, minED))
-				answ[minD].solution.push('наибольшее падение давления');
-		}
-
-		function isNonMoreP(interval, moreP) {
-			return (interval.filter((int) => int < moreP)).length == interval.length;
-		}
-
-		function answAbouNonMoreP(interval, answ, moreP) {
-			if (isNonMoreP(interval, moreP)) {
-				answ.push('давление не превышало ' + convert(moreP) + ' мм рт. ст.');
+			if (sl1()) {
+				addUniqueAnsw(wasMinFall, answ, 'наибольшее падение давления');
+			} else {
+				addUniqueAnsw(wasMaxFall, answ, 'наименьшее падение давления');
 			}
 		}
 
-		function isNonLessP(interval, lessP) {
-			return interval.filter((int) => int > lessP).length == interval.length;
+		function answAboutNonMore(intervals, answ, more) {
+			let wasNonMore = intervals.map(interval => isNonMore(interval, more));
+			addUniqueAnsw(wasNonMore, answ, 'давление не превышало ' + convert(more));
 		}
 
-		function answAbouNonLessP(interval, answ, lessP) {
-			if (isNonLessP(interval, lessP)) {
-				answ.push('давление не было ниже ' + convert(lessP) + ' мм рт. ст.');
-			}
+		function answAboutNonLess(intervals, answ, less) {
+			let wasNonLess = intervals.map(interval => isNonLess(interval, less));
+			addUniqueAnsw(wasNonLess, answ, 'давление не было ниже ' + convert(less));
 		}
 
-		function isIncreasing(interval) {
-			return interval.slice(1).every((current, index) =>
-				current > interval[index]
-			);
+		function answAboutIncreasing(intervals, answ) {
+			let wasIncreasing = intervals.map(interval => isIncreasing(interval));
+			addUniqueAnsw(wasIncreasing, answ, 'давление выросло');
 		}
 
-		function isDecreasing(interval) {
-			return interval.slice(1).every((current, index) =>
-				current < interval[index]
-			);
+		function answAboutDecreasing(intervals, answ) {
+			let wasDecreasing = intervals.map(interval => isDecreasing(interval));
+			addUniqueAnsw(wasDecreasing, answ, 'давление упало');
 		}
 
-		function answAboutIncreasing(interval, answ) {
-			if (isIncreasing(interval)) {
-				answ.push('давление выросло');
-			}
+		function answAboutIncreasingNonMore(intervals, answ, more) {
+			let wasCondition = intervals.map(interval => isIncreasing(interval) && isNonLess(interval, more));
+			addUniqueAnsw(wasCondition, answ, 'давление росло, но не превышало ' + convert(more));
 		}
 
-		function answAboutDecreasing(interval, answ) {
-			if (isDecreasing(interval)) {
-				answ.push('давление упало');
-			}
+		function answAboutDecreasingNonLess(intervals, answ, less) {
+			let wasCondition = intervals.map(interval => isDecreasing(interval) && isNonMore(interval, less));
+			addUniqueAnsw(wasCondition, answ, 'давление упало, но осталось больше ' + convert(less));
 		}
 
-		function answAboutIncreasingNonMoreP(interval, answ, moreP) {
-			if (isIncreasing(interval) && isNonMoreP(interval, moreP)) {
-				answ.push('давление росло, но не превышало ' + convert(moreP) + ' мм рт. ст.');
-			}
+		function answAboutConstP(intervals, answ) {
+			let wasConst = intervals.map(interval => constValueByFirst(interval));
+			addUniqueAnsw(wasConst, answ, 'давление не изменилось');
 		}
 
-		function answAboutDecreasingNonLessP(interval, answ, lessP) {
-			if (isDecreasing(interval) && isNonLessP(interval, lessP)) {
-				answ.push('давление упало, но осталось больше ' + convert(lessP) + ' мм рт. ст.');
-			}
+		function answAboutConstNotLess(intervals, answ, less) {
+			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isNonLess(interval, less));
+			addUniqueAnsw(wasCondition, answ, 'давление не изменилось и было выше ' + convert(less));
 		}
 
-		function ConstP(interval) {
-			return interval[0] == interval[1];
-		}
-
-		function answAbouConstP(interval, answ) {
-			if (ConstP(interval))
-				answ.push('давление не изменилось');
-		}
-
-		function answAbouConstPNotLess(interval, answ, lessP) {
-			if (ConstP(interval) && isNonLessP(interval, lessP))
-				answ.push('давление не изменилось и было выше ' + convert(lessP) + ' мм рт. ст');
-		}
-
-		function answAbouConstPNotMore(interval, answ, moreP) {
-			if (ConstP(interval) && isNonMoreP(interval, moreP))
-				answ.push('давление не изменилось и было ниже ' + convert(moreP) + ' мм рт. ст');
+		function answAboutConstNotMore(intervals, answ, more) {
+			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isNonMore(interval, more));
+			addUniqueAnsw(wasCondition, answ, 'давление не изменилось и было ниже ' + convert(more));
 		}
 
 		let mounth = sklonlxkand(om.months.iz()).re;
 		let beginDay = sl(1, 20);
 
-		let t = [1].zapMonot(13, 0, 1, 1); // шкала времени
-		let p = [sl(0, 7, 0.5)]; // шкала давления
+		let time = [1].zapMonot(13, 0, 1, 1); // шкала времени
+		let value = [sl(0, 7, 0.5)]; // шкала давления
 
-		for (; p.length <= t.length || p.length == t.length;) {
-			let interI = (t.length / sl(2, 8).floor());
+		for (; value.length <= time.length || value.length == time.length;) {
+			let interI = (time.length / sl(2, 8).floor());
 			for (let j = 0; j < interI; j++) {
-				p.push([sl(0, 7, 0.5), p[p.length - 1]][Number([0, 0, 0, 1].iz() && p[p.length - 1] != 0)]);
+				value.push([sl(0, 7, 0.5), value[value.length - 1]][Number([0, 0, 0, 1].iz() && value[value.length - 1] != 0)]);
 			}
 		}
 
-		let intervalsTime = Array.from({ length: t.length - 1 }, (_, i) =>
-			t.slice(i, i + 2)
+		let intervalsTime = Array.from({ length: time.length - 1 }, (_, i) =>
+			time.slice(i, i + 2)
 		);
 
 		let intervals2 = Array.from({ length: 3 }, (_, i) =>
@@ -153,7 +110,7 @@
 
 		intervalsTime = intervals2.flat().iz(4);
 
-		let intervalsP = intervalsTime.map(intT => [p[intT[0]], p[intT[1]]]);
+		let intervals = intervalsTime.map(intT => [value[intT[0]], value[intT[1]]]);
 
 		let timeDay = ['ночь', 'утро', 'день', 'вечер'];
 		//  			0-6		6-12	12-18	18-0
@@ -164,47 +121,51 @@
 				solution: [],
 			};
 		});
-		let varianbleConst = sl1();
 
 		let LessP1 = sl(0, 7);
 		let LessP2 = sl(0, 7);
 		let MoreP1 = sl(0, 7);
 		let MoreP2 = sl(0, 7);
 
-		function addAllAnswers(intervalsP, listOfIntervals) {
-			intervalsP.forEach((interval, i) => {
-				const solution = listOfIntervals[i].solution;
 
-				// добавляем ответ про повышение давления
-				answAboutIncreasing(interval, solution);
-				// добавляем ответ про понижение давления
-				answAboutDecreasing(interval, solution);
-				// добавляем ответ про повышение давления но меньше
-				answAboutIncreasingNonMoreP(interval, solution, MoreP1);
-				// добавляем ответ про понижение давления но больше
-				answAboutDecreasingNonLessP(interval, solution, LessP1);
-				// добавляем ответ про давление было не более
-				answAbouNonMoreP(interval, solution, MoreP2);
-				// добавляем ответ про давление было не менее
-				answAbouNonLessP(interval, solution, LessP2);
+		if (sl1()) {
+			// добавляем ответ про повышение давления
+			answAboutIncreasing(intervals, listOfIntervals);
+		} else {
+			// добавляем ответ про понижение давления
+			answAboutDecreasing(intervals, listOfIntervals);
+		}
 
-				if (varianbleConst) {
-					// добавляем ответ про давление не изменилось
-					answAbouConstP(interval, solution);
-				} else {
-					//давление не изменилось и было ниже
-					answAbouConstPNotMore(interval, solution, MoreP1);
-					//давление не изменилось и было выше
-					answAbouConstPNotLess(interval, solution, LessP1);
-				}
-			});
+		if (sl1()) {
+			// добавляем ответ про повышение давления но меньше
+			answAboutIncreasingNonMore(intervals, listOfIntervals, MoreP1);
+		} else {
+			// добавляем ответ про понижение давления но больше
+			answAboutDecreasingNonLess(intervals, listOfIntervals, LessP1);
+		}
+
+		if (sl1()) {
+			// добавляем ответ про давление было не более
+			answAboutNonMore(intervals, listOfIntervals, MoreP2);
+		} else {
+			// добавляем ответ про давление было не менее
+			answAboutNonLess(intervals, listOfIntervals, LessP2);
+		}
+
+		if (sl1()) {
+			// добавляем ответ про давление не изменилось
+			answAboutConstP(intervals, listOfIntervals);
+		} else {
+			//давление не изменилось и было ниже
+			answAboutConstNotMore(intervals, listOfIntervals, MoreP1);
+			//давление не изменилось и было выше
+			answAboutConstNotLess(intervals, listOfIntervals, LessP1);
 		}
 
 		// добавляем ответ про максимальное давление
-		answAbouMaxP(intervalsP, listOfIntervals);
+		answAboutMax(intervals, listOfIntervals);
 		// добавляем ответ про максимальный и минимальный рост
-		answAbouMaxMinDeltaP(intervalsP, listOfIntervals);
-		addAllAnswers(intervalsP, listOfIntervals);
+		answAboutMaxMinDelta(intervals, listOfIntervals);
 
 		listOfIntervals.forEach(item => item.solution = item.solution.iz());
 
@@ -237,10 +198,10 @@
 			ctx.scale(40, -30);
 			ctx.lineWidth = 2 / 30;
 
-			for (let i = 0; i < t.length; i++) {
-				ctx.drawFilledCircle(t[i], p[i], 3 / 30);
-				if (i < t.length - 1)
-					ctx.drawLine(t[i], p[i], t[i + 1], p[i + 1]);
+			for (let i = 0; i < time.length; i++) {
+				ctx.drawFilledCircle(time[i], value[i], 3 / 30);
+				if (i < time.length - 1)
+					ctx.drawLine(time[i], value[i], time[i + 1], value[i + 1]);
 			}
 
 			ctx.scale(1 / 40, -1 / 30);
@@ -262,8 +223,8 @@
 			left: listOfIntervals,
 			rightHeader: 'ХАРАКТЕРИСТИКИ',
 			right: solutions,
-			postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику атмосферного давления в этом городе в течение этого периода.<br/><br/> ВРЕМЕННЫЕ ОТВЕТЫ <br/>' +
-				listView.join('<br/>'),
+			postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику атмосферного давления в этом городе в течение этого периода.',
+			analys:listView.join('<br/>'),
 		});
 		NAtask.modifiers.allDecimalsToStandard( /*true*/);
 		NAtask.modifiers.addCanvasIllustration({
