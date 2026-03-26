@@ -9,14 +9,17 @@
 
         let probability = [cars, cities][targetPuzzle] / total;
         genAssertZ1000(probability);
-        let puzzleType = ['с машиной', 'с видом города'][targetPuzzle];
-        let nameChild = om.childMaleNames.iz();        
+        let nameChild = sklonlxkand(om.childMaleNames.iz());
+        let kids = sklonlxkand(['школьник', 'ребёнок', 'ученик', 'подросток', 'первоклашка', 'второклашка', 'третьеклашка', 'четвероклашка', 'пятиклашка'].iz());
+        let item = sklonlxkand(['пазл', 'пенал', 'карандаш', 'портфель', 'ластик','дневник', 'раскраска'].iz());
+        let pictureView = sklonlxkand(['город', 'пейзаж', 'гор', 'озёро', 'замок',].iz());
+        let pictureWithOutView = sklonlxkand(['машина', 'птица', 'звезда'].iz());
 
         NAtask.setTask({
-            text: 'Родительский комитет закупил $' + total + '$ пазлов для подарков детям, ' +
-                'из них $' + cars + '$ с машинами и $' + cities + '$ с видами городов. ' +
-                'Подарки распределяются случайным образом между $' + total + '$ детьми, среди которых есть ' + nameChild + '. ' +
-                'Найдите вероятность того, что ' + sklonlxkand(nameChild).de + ' достанется пазл ' + puzzleType + '.',
+            text: 'Родительский комитет закупил ' + chislitlx(total, item, '$') + ' для подарков ' + kids.dm + ', ' +
+                'из них $' + cars + '$ с '+pictureWithOutView.tm+' и $' + cities + '$ с видами ' + pictureView.rm+'. ' +
+                'Подарки распределяются случайным образом между ' + chislitlx(total, kids, 't$') + ', среди которых есть ' + nameChild.ie + '. ' +
+                'Найдите вероятность того, что ' + nameChild.de + ' достанется ' + item.ie+ ' с ' + [pictureWithOutView.te, 'видом ' + pictureView.re][targetPuzzle] + '.',
             answers: probability,
         });
     }, 100);
