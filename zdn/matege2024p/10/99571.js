@@ -2,17 +2,17 @@
     'use strict';
     retryWhileError(function () {
         /* В сосуд, содержащий 5 литров 12−процентного водного раствора некоторого вещества, добавили 7 литров воды. Сколько процентов составляет концентрация получившегося раствора? */
-		let key = '99571';
+        let key = '99571';
         let preference = ['final_concentration', 'water_volume', 'first_concentration', 'first_volume'];
         let rand = getSelectedPreferenceFromList(key, preference);
-		
+
         let firstVolume = sl(5, 50, 0.01);
         let waterVolume = slKrome(firstVolume, 5, 50, 0.01);
         let percent = sl(10, 80);
         let finalPercent = percent * firstVolume / (firstVolume + waterVolume);
 
         let dano = [chislitlx(firstVolume, 'литр', 'v'), percent + '−процентного'];
-        let chemicalSubstance = ['водного', 'щелочного', 'солевой', 'кислотный'].iz();
+        let chemicalSubstance = ['некоторого вещества', 'щелочи', 'соли', 'кислоты'].iz();
 
         switch (rand) {
             case 0:
@@ -30,7 +30,7 @@
         genAssertZ1000(finalPercent, 'Концентрация получившегося раствора слишком дробная');
 
         NAtask.setTask({
-            text: 'В сосуд, содержащий ' + dano + ' ' + chemicalSubstance + ' раствора некоторого вещества, ' +
+            text: 'В сосуд, содержащий ' + dano + ' водного раствора ' + chemicalSubstance + ', ' +
                 'добавили ' + [chislitlx(waterVolume, 'литр', 'v'), 'несколько литров'][Number(rand == 1)] +
                 ' воды' + [' так, что получился ' + finalPercent + '−процентный раствор', ''][Number(rand == 0)] + '. ',
             questions: [[{
