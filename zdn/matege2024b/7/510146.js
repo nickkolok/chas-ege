@@ -7,81 +7,38 @@
             return minY + p * stepY;
         }
 
-        function answAbouMaxV(intervals, answ) {
-            let maxV = price.maxE();
-            let maxIndex = null;
-
-            for (let i = 0; i < intervals.length; i++) {
-                for (let j = 0; j < intervals[i].length; j++) {
-                    if (intervals[i][j] === maxV) {
-                        maxIndex = i;
-                        break;
-                    }
-                }
-                if (maxIndex != null)
-                    break;
-            }
-
-            if (maxIndex)
-                answ[maxIndex].solution.push(`цена достигла максимума за весь период с ${mounthDays[0]} по ${mounthDays[11]} ${mounthView}`);
+        function answAboutMax(intervals, answ) {
+            let maxIndex = findMaxInIntervals(intervals, price);
+            let wasMax = intervals.map((_, i) => i === maxIndex);
+            addUniqueAnsw(wasMax, answ, `цена достигла максимума за весь период с ${mounthDays[0]} по ${mounthDays[11]} ${mounthView}`);
         }
 
-        function isNonMoreP(interval, price) {
-            return (interval.filter((int) => int < price)).length == interval.length;
+        function answAboutNonMoreP(intervals, answ, price) {
+            let wasNonMore = intervals.map(interval => isNonMore(interval, price));
+            addUniqueAnsw(wasNonMore, answ, `цена акции не поднималась выше ${convert(price)} рублей за штуку`);
         }
 
-        function answAbouNonMoreP(interval, answ, price) {
-            if (isNonMoreP(interval, price)) {
-                answ.push(`цена акции не поднималась выше ${convert(price)} рублей за штуку`);
-            }
+        function answAboutNonLessP(intervals, answ, price) {
+            let wasNonLess = intervals.map(interval => isNonLess(interval, price));
+            addUniqueAnsw(wasNonLess, answ, `цена акции не опускалась ниже ${convert(price)} рублей за штуку`);
         }
 
-        function isNonLessP(interval, price) {
-            return interval.filter((int) => int > price).length == interval.length;
+        function answAboutIncreasing(intervals, answ) {
+            let wasIncreasing = intervals.map(interval => isIncreasing(interval));
+            addUniqueAnsw(wasIncreasing, answ, 'цена акции ежедневно росла');
         }
 
-        function answAbouNonLessP(interval, answ, price) {
-            if (isNonLessP(interval, price)) {
-                answ.push(`цена акции не опускалась ниже ${convert(price)} рублей за штуку`);
-            }
+        function answAboutDecreasing(intervals, answ) {
+            let wasDecreasing = intervals.map(interval => isDecreasing(interval));
+            addUniqueAnsw(wasDecreasing, answ, 'цена акции ежедневно снижалась');
         }
 
-        function isIncreasing(interval) {
-            return interval.slice(1).every((current, index) =>
-                current > interval[index]
-            );
+        function answAboutConst(intervals, answ) {
+            let wasConst = intervals.map(interval => constValueByFirst(interval));
+            addUniqueAnsw(wasConst, answ, 'цена акции не менялась');
         }
 
-        function isDecreasing(interval) {
-            return interval.slice(1).every((current, index) =>
-                current < interval[index]
-            );
-        }
-
-        function answAboutIncreasing(interval, answ) {
-            if (isIncreasing(interval)) {
-                answ.push('цена акции ежедневно росла');
-            }
-        }
-
-        function answAboutDecreasing(interval, answ) {
-            if (isDecreasing(interval)) {
-                answ.push('цена акции ежедневно снижалась');
-            }
-        }
-
-        function answAboutConst(interval, answ) {
-            if (constPrice(interval)) {
-                answ.push('цена акции не менялась');
-            }
-        }
-
-        function constPrice(interval) {
-            let start = interval[0];
-            return interval.slice(1).every(p => p == start)
-        }
-
-        function answAbouMaxDeltaI(intervals, answ) {
+        function answAboutMaxDeltaI(intervals, answ) {
             let incr = intervals.map(int => {
                 if (isIncreasing(int)) {
                     return int.maxE() - int.minE();
@@ -91,16 +48,11 @@
             });
 
             let maxEI = incr.maxE();
-            let maxI = incr.max();
-
-            let length = (inter, value) => inter.filter(item => item === value).length == 1;
-
-            if (length(incr, maxEI))
-                answ[maxI].solution.push('наибольшее увеличение цены за весь период');
+            let wasMaxDeltaI = intervals.map((_, i) => incr[i] === maxEI);
+            addUniqueAnsw(wasMaxDeltaI, answ, 'наибольшее увеличение цены за весь период');
         }
 
-        function answAbouMaxDeltaD(intervals, answ) {
-
+        function answAboutMaxDeltaD(intervals, answ) {
             let decr = intervals.map(int => {
                 if (isDecreasing(int)) {
                     return int.maxE() - int.minE();
@@ -110,70 +62,46 @@
             });
 
             let maxED = decr.maxE();
-            let maxD = decr.max();
-
-            let length = (inter, value) => inter.filter(item => item === value).length == 1;
-
-            if (length(decr, maxED))
-                answ[maxD].solution.push('наибольшее падение цены за весь период');
+            let wasMaxDeltaD = intervals.map((_, i) => decr[i] === maxED);
+            addUniqueAnsw(wasMaxDeltaD, answ, 'наибольшее падение цены за весь период');
         }
 
-        function answAbouMaxDeltaIDay(intervals, answ) {
+        function answAboutMaxDeltaIDay(intervals, answ) {
             let incr = intervals.map(interval => {
-                if (isIncreasing(interval)) {
                     let delta = [];
                     for (let i = 1; i < interval.length; i++) {
                         delta.push(interval[i] - interval[i - 1]);
                     }
                     return delta.maxE();
-                } else {
-                    return 0;
-                }
             });
 
             let maxEI = incr.maxE();
-            let maxI = incr.max();
-
-            let length = (inter, value) => inter.filter(item => item === value).length == 1;
-
-            if (length(incr, maxEI))
-                answ[maxI].solution.push('наибольшее рост цены за день торгов');
+            let wasMaxDeltaIDay = intervals.map((_, i) => incr[i] === maxEI);
+            addUniqueAnsw(wasMaxDeltaIDay, answ, 'наибольшее рост цены за день торгов');
         }
 
-        function answAbouMaxDeltaDDay(intervals, answ) {
+        function answAboutMaxDeltaDDay(intervals, answ) {
             let decr = intervals.map(interval => {
-                if (isDecreasing(interval)) {
                     let delta = [];
                     for (let i = 1; i < interval.length; i++) {
                         delta.push(interval[i - 1] - interval[i]);
                     }
                     return delta.maxE();
-                } else {
-                    return 0;
-                }
             });
 
             let maxED = decr.maxE();
-            let maxD = decr.max();
-
-            let length = (inter, value) => inter.filter(item => item === value).length == 1;
-
-            if (length(decr, maxED))
-                answ[maxD].solution.push('наибольшее падение цены за день торгов');
+            let wasMaxDeltaDDay = intervals.map((_, i) => decr[i] === maxED);
+            addUniqueAnsw(wasMaxDeltaDDay, answ, 'наибольшее падение цены за день торгов');
         }
         
-        function answAbouMaxDelta(intervals, answ) {
+        function answAboutMaxDelta(intervals, answ) {
             let interval = intervals.map(int => {
                 return (int.maxE() - int.minE()).abs();
             });
 
             let maxE = interval.maxE();
-            let max = interval.max();
-
-            let length = (inter, value) => inter.filter(item => item === value).length == 1;
-
-            if (length(interval, maxE))
-                answ[max].solution.push('наибольшее изменение цены за весь период');
+            let wasMaxDelta = intervals.map((_, i) => interval[i] === maxE);
+            addUniqueAnsw(wasMaxDelta, answ, 'наибольшее изменение цены за весь период');
         }
         
         function answAboutMinDeltas(intervals, answ) {
@@ -182,19 +110,15 @@
                 for (let i = 1; i < interval.length; i++) {
                     delta.push((interval[i - 1] - interval[i]).abs());
                 }
-                console.log(delta);
                 return delta.sum()
             });
             
-            console.log(deltaMin);
-
             let minE = deltaMin.minE();
-            let min = deltaMin.min();
-
-            let length = (inter, value) => inter.filter(item => item === value).length == 1;
-
-            if (length(deltaMin, minE))
-                answ[min].solution.push('минимальное колебание цены акций');
+            if (minE === 0)
+                return;           
+            
+            let wasMinDeltas = intervals.map((_, i) => deltaMin[i] === minE);
+            addUniqueAnsw(wasMinDeltas, answ, 'минимальное колебание цены акций');
         }
 
         function getWeekdays(year = 2012, month = 9, startFrom = 1, count = 11,) {
@@ -226,12 +150,12 @@
 
         let mounthDays = getWeekdays(year, mounth, startDay);
 
-        let t = [0].zapMonot(12, 0, 1, 1); // шкала дней
+        let time = [0].zapMonot(12, 0, 1, 1); // шкала дней
         let price = [sl(0, 8, 0.5)]; // шкала цены
         let count = 0;
 
-        for (; price.length <= t.length || price.length == t.length;) {
-            let interI = ((t.length / (sl(3, 8, 0.5))).floor());
+        for (; price.length <= time.length || price.length == time.length;) {
+            let interI = ((time.length / (sl(3, 8, 0.5))).floor());
             for (let j = 0; j < interI; j++) {
                 let lastPrice = price[price.length - 1];
                 let newPrice = lastPrice + ([1, 1, 1, 0].iz() ? sl(0.1, 3, 0.1) * (-1).pow(count % 2) : 0);
@@ -262,44 +186,40 @@
         let LessP = sl(3, 5);
         let MoreP = slKrome(LessP, 4, 7);
 
-        function addAllAnswers(intervals, listOfIntervals) {
-            intervals.forEach((interval, i) => {
-                const solution = listOfIntervals[i].solution;
-                if (aAboutIncrOrDecr) {
-                    // добавляем ответ про повышение цены
-                    answAboutIncreasing(interval, solution);
-                } else {
-                    // добавляем ответ про понижение цены
-                    answAboutDecreasing(interval, solution);
-                }
-                // добавляем ответ про цена акции не менялась
-                answAboutConst(interval, solution);
-                if (aAboutNonIncrOrDecr) {
-                    // добавляем ответ про цена была не более
-                    answAbouNonMoreP(interval, solution, MoreP);
-                } else {
-                    // добавляем ответ про цена была не менее
-                    answAbouNonLessP(interval, solution, LessP);
-                }
-            });
-        }
+            if (aAboutIncrOrDecr) {
+                // добавляем ответ про повышение цены
+                answAboutIncreasing(intervals, listOfIntervals);
+            } else {
+                // добавляем ответ про понижение цены
+                answAboutDecreasing(intervals, listOfIntervals);
+            }
+            // добавляем ответ про цена акции не менялась
+            answAboutConst(intervals, listOfIntervals);
+            if (aAboutNonIncrOrDecr) {
+                // добавляем ответ про цена была не более
+                answAboutNonMoreP(intervals, listOfIntervals, MoreP);
+            } else {
+                // добавляем ответ про цена была не менее
+                answAboutNonLessP(intervals, listOfIntervals, LessP);
+            }
 
         // добавляем ответ про максимальную цена
-        answAbouMaxV(intervals, listOfIntervals);
+        answAboutMax(intervals, listOfIntervals);
 
         if (aAboutDelta) {
-            answAbouMaxDelta(intervals, listOfIntervals);
+            answAboutMaxDelta(intervals, listOfIntervals);
         } else {
-            answAbouMaxDeltaI(intervals, listOfIntervals);
-            answAbouMaxDeltaD(intervals, listOfIntervals);
+            answAboutMaxDeltaI(intervals, listOfIntervals);
+            answAboutMaxDeltaD(intervals, listOfIntervals);
         }
 
-
-
-        answAbouMaxDeltaIDay(intervals, listOfIntervals);
-        answAbouMaxDeltaDDay(intervals, listOfIntervals);
+        if (sl1()) {
+            answAboutMaxDeltaIDay(intervals, listOfIntervals);
+        } else {
+            answAboutMaxDeltaDDay(intervals, listOfIntervals);
+        }
+        
         answAboutMinDeltas(intervals, listOfIntervals);
-        addAllAnswers(intervals, listOfIntervals);
 
         listOfIntervals.forEach(item => item.solution = item.solution.iz());
 
@@ -329,10 +249,10 @@
             ctx.scale(30, -30);
             ctx.lineWidth = 2 / 30;
 
-            for (let i = 0; i < t.length; i++) {
-                ctx.drawFilledCircle(t[i], price[i], 3 / 30);
-                if (i < t.length - 1)
-                    ctx.drawLine(t[i], price[i], t[i + 1], price[i + 1]);
+            for (let i = 0; i < time.length; i++) {
+                ctx.drawFilledCircle(time[i], price[i], 3 / 30);
+                if (i < time.length - 1)
+                    ctx.drawLine(time[i], price[i], time[i + 1], price[i + 1]);
             }
         };
 
@@ -342,8 +262,8 @@
             left: listOfIntervals,
             rightHeader: 'ХАРАКТЕРИСТИКИ',
             right: solutions,
-            postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику изменения цены акции в этот период.<br/><br/> ВРЕМЕННЫЕ ОТВЕТЫ <br/>' +
-                listView.join('<br/>'),
+            postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику изменения цены акции в этот период.',
+            analys:listView.join('<br/>')
         });
         NAtask.modifiers.allDecimalsToStandard( /*true*/);
         NAtask.modifiers.addCanvasIllustration({
