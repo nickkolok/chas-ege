@@ -12,8 +12,6 @@
 		let s = String(n);
 		let revStr = s.split('').reverse().join('');
 
-		genAssert(revStr[0] != '0', 'перевёрнутое число начинается с нуля');
-
 		let rev = parseInt(revStr, 10);
 		let diff = n - rev;
 
