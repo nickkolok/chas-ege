@@ -10,7 +10,7 @@
         let probability = [cars, cities][targetPuzzle] / total;
         genAssertZ1000(probability);
         let nameChild = sklonlxkand(om.childMaleNames.iz());
-        let kids = sklonlxkand(['школьник', 'ребёнок', 'ученик', 'подросток', 'первоклашка', 'второклашка', 'третьеклашка', 'четвероклашка', 'пятиклашка'].iz());
+        let kids = sklonlxkand(['школьник', 'ребёнок', 'ученик', 'подросток', 'первоклашка', 'второклашка', 'третьеклашка'].iz());
         let item = sklonlxkand(['пазл', 'пенал', 'карандаш', 'портфель', 'ластик','дневник', 'раскраска'].iz());
         let pictureView = sklonlxkand(['город', 'пейзаж', 'гора', 'озёро', 'замок'].iz());
         let pictureWithOutView = sklonlxkand(['машина', 'птица', 'звезда'].iz());
