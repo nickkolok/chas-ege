@@ -4,12 +4,12 @@
 
 		let rand = sl1(); //AB < BC = 0, AB > BC = 1
 
-		let a = sl(4, 48);
+		let a = sl(4, 99);
 
 		let par = new Parallelogram({
 			lengths: {
 				lengthAB: a,
-				lengthBC: [sl(a + 1, 50), sl(2, a - 1)][rand]
+				lengthBC: [sl(a + 1, 100), sl(2, a - 1)][rand]
 			},
 			angles: {
 				angle: {
