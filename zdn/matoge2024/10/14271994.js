@@ -3,7 +3,7 @@
     retryWhileError(function () {
 
         let cars = sl(3, 15);
-        let cities = sl(3, 15);
+        let cities = slKrome(cars, 3, 15);
         let total = cars + cities;
         let targetPuzzle = sl1();
 
@@ -12,7 +12,7 @@
         let nameChild = sklonlxkand(om.childMaleNames.iz());
         let kids = sklonlxkand(['школьник', 'ребёнок', 'ученик', 'подросток', 'первоклашка', 'второклашка', 'третьеклашка', 'четвероклашка', 'пятиклашка'].iz());
         let item = sklonlxkand(['пазл', 'пенал', 'карандаш', 'портфель', 'ластик','дневник', 'раскраска'].iz());
-        let pictureView = sklonlxkand(['город', 'пейзаж', 'гор', 'озёро', 'замок',].iz());
+        let pictureView = sklonlxkand(['город', 'пейзаж', 'гора', 'озёро', 'замок'].iz());
         let pictureWithOutView = sklonlxkand(['машина', 'птица', 'звезда'].iz());
 
         NAtask.setTask({
