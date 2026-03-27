@@ -5,7 +5,7 @@
 
 		let validNumbers = [];
 
-		let first = sl(1, 9);
+		let first = sl(5, 9);
 		let second = sl(0, 9);
 		let third = sl(0, 9);
 		let n = first * 1000 + second * 100 + third * 10 + 5;
