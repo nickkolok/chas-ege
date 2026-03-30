@@ -9,7 +9,7 @@
 			k = 0;
 			a = 1;
 		}
-		let l = -b + 1 + sl(0, 1.5, 0.5);
+		let l = sl(-b + 1, -0.5, 0.5);
 		let arr1 = ['+', '-'].shuffle();	
 
 		NAtask.setMinimaxFunctionTask({
