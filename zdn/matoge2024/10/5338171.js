@@ -11,18 +11,9 @@
 
 		let numberOfCoordinateAAndB = sl(1, Math.min(3, total - 3));
 		let remaining = total - numberOfCoordinateAAndB;
-		let numberOfCoordinateA = sl(1, Math.max(1, Math.floor(remaining / 2)));
+		let numberOfCoordinateA = sl(1, Math.max(1, Math.floor((remaining - 1) / 2)));
 		let numberOfCoordinateB = sl(1, Math.max(1, remaining - numberOfCoordinateA - 1));
 		let numberOfCoordinateNot = total - (numberOfCoordinateA + numberOfCoordinateB + numberOfCoordinateAAndB);
-
-		if (numberOfCoordinateNot < 0) {
-			numberOfCoordinateNot = 0;
-			numberOfCoordinateB = total - numberOfCoordinateA - numberOfCoordinateAAndB;
-			if (numberOfCoordinateB < 1) {
-				numberOfCoordinateB = 1;
-				numberOfCoordinateA = total - numberOfCoordinateB - numberOfCoordinateAAndB;
-			}
-		}
 
 		let coordinateA = [arrayOfUniqueValues(numberOfCoordinateA, -6, -2.5, 0.5), arrayOfUniqueValues(numberOfCoordinateA, -3.5, 3.5, 0.5)];
 		coordinateA = coordinateA.T();
