@@ -4,19 +4,17 @@
 		NAinfo.requireApiVersion(0, 2);
 		let key = '12176147';
 		let preference = [
-			'numbersOfTrue1',
-			'numbersOfTrue2',
-			'numberOfTrue',//все верные
-			'numbersOfFalse1',
-			'numbersOfFalse2',
-			'numberOfFalse'//все неверные
+			'oneOrTwoTrue',
+			'threeTrue',
+			'oneOrTwoFalse',
+			'threeFalse'
 		];
 		let rand = getSelectedPreferenceFromList(key, preference);
-		let flag = rand == 2 || rand == 5;
-		let trueOrFalse = Number(rand > 2);
+		let flag = rand == 1 || rand == 3;
+		let trueOrFalse = Number(rand > 1);
 
-		let nCorrect = sl(flag ? 2 : sl1(), 3);
-		let nWrong = flag ? 1 : 4 - nCorrect;
+		let nCorrect = flag ? 1 : sl(2, 3);
+		let nWrong = flag ? 3 : (4 - nCorrect);
 
 		let correct = [
 			'Если владелец карты имеет постоянную скидку, то установленный лимит им достигнут.',
