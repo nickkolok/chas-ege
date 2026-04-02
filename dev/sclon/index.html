@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyodide Example</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js"></script>
+</head>
+
+<body>
+    <h1>Склонение слов с Pyodide</h1>
+    <input type="text" id="word-input" placeholder="Введите слово" />
+    <button id="run-button">Склонять</button>
+    <pre id="output"></pre>
+
+    <script>
+        // Инициализация Pyodide
+        async function initPyodide() {
+            let pyodide = await loadPyodide();
+            await pyodide.loadPackage('pymorphy2'); // Загрузка pymorphy2
+            return pyodide;
+        }
+
+        // Функция для выполнения Python-кода
+        async function runPythonCode(pyodide, word) {
+            const code = `
+import pymorphy2
+morph = pymorphy2.MorphAnalyzer()
+
+def sklonlxkand(slovo):
+    parsed_word = morph.parse(slovo)[0]
+
+    # Singular forms
+    singular = {
+        'ie': parsed_word.inflect({'nomn'}).word,  # именительный
+        're': parsed_word.inflect({'gent'}).word,  # родительный
+        'de': parsed_word.inflect({'datv'}).word,  # дательный
+        've': parsed_word.inflect({'accs'}).word,  # винительный
+        'te': parsed_word.inflect({'ablt'}).word,  # творительный
+        'pe': parsed_word.inflect({'loct'}).word,  # предложный
+    }
+
+    # Plural forms
+    plural = {
+        'im': parsed_word.inflect({'nomn', 'plur'}).word,  # именительный
+        'rm': parsed_word.inflect({'gent', 'plur'}).word,  # родительный
+        'dm': parsed_word.inflect({'datv', 'plur'}).word,  # дательный
+        'vm': parsed_word.inflect({'accs', 'plur'}).word,  # винительный
+        'tm': parsed_word.inflect({'ablt', 'plur'}).word,  # творительный
+        'pm': parsed_word.inflect({'loct', 'plur'}).word,  # предложный
+    }
+
+    # Gender (rod)
+    gender_map = {
+        'masc': 0,  # мужской
+        'femn': 1,  # женский
+        'neut': 2,  # средний
+        'plur': 3,  # только множественное число
+    }
+    gender_tag = parsed_word.tag.gender
+    if gender_tag is None and 'plur' in parsed_word.tag: gender_tag = 'plur'
+    rod = gender_map.get(gender_tag, 3)  # Default to plural if gender is not found
+
+    # Animacy (odu)
+    odu = 1 if 'anim' in parsed_word.tag else 0  # 1: одушевлённое, 0: неодушевлённое
+
+    return {
+        **singular,
+        **plural,
+        'rod': rod,
+        'odu': odu,
+    }
+sklonlxkand('${word}')
+            `;
+
+            try {
+                let result = await pyodide.runPythonAsync(code);
+                document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+            } catch (err) {
+                document.getElementById('output').textContent = `Ошибка: ${err}`;
+            }
+        }
+
+        // Основная логика
+        (async function () {
+            const pyodide = await initPyodide();
+            document.getElementById('run-button').addEventListener('click', async () => {
+                const word = document.getElementById('word-input').value;
+                await runPythonCode(pyodide, word);
+            });
+        })();
+    </script>
+</body>
+
+</html>

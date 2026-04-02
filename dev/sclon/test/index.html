@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Склонение слов</title>
+</head>
+<body>
+    <h1>Склонение слов</h1>
+    <input type="text" id="word-input" placeholder="Введите слово" />
+    <button id="run-button">Склонять</button>
+    <pre id="output"></pre>
+
+    <script>
+        document.getElementById('run-button').addEventListener('click', async () => {
+            const word = document.getElementById('word-input').value;
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/sklonlxkand', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ slovo: word }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Ошибка при выполнении запроса');
+                }
+
+                const result = await response.json();
+                document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+
+                // Вывод результата в консоль
+                console.log('Результат:', result);
+            } catch (err) {
+                document.getElementById('output').textContent = `Ошибка: ${err}`;
+                console.error('Ошибка:', err);
+            }
+        });
+    </script>
+</body>
+</html>

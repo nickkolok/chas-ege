@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
+</head>
+<body>
+    <h1>Склонение русских слов</h1>
+    <input type="text" id="wordInput" placeholder="Введите слово" disabled>
+    <button onclick="processWord()" disabled>Просклонять</button>
+    <div id="status">Инициализация Pyodide...</div>
+    <div id="result"></div>
+
+    <script>
+        let pyodide;
+        async function initialize() {
+            try {
+                // Проверка подключения к интернету
+                if (!navigator.onLine) {
+                    throw new Error('Требуется интернет-соединение для инициализации');
+                }
+
+                pyodide = await loadPyodide({
+                    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.27.2/full/"
+                });
+
+                await pyodide.loadPackage(["micropip"]);
+                await pyodide.runPythonAsync(`
+                    import micropip
+                    try:
+                        await micropip.install('docopt==0.6.2', keep_going=True)
+                        await micropip.install('pymorphy2==0.9.1', keep_going=True)
+                        await micropip.install('pymorphy2-dicts', keep_going=True)
+                    except Exception as e:
+                        print(f"Ошибка установки пакетов: {e}")
+                        raise
+                `);
+
+                await pyodide.runPythonAsync(`
+                    import pymorphy2
+                    from js import window
+
+                    class WordDeclension:
+                        def __init__(self):
+                            self.morph = pymorphy2.MorphAnalyzer()
+
+                        def decline(self, word):
+                            parsed = self.morph.parse(word)[0]
+                            return self._get_forms(parsed)
+
+                        def _get_forms(self, parsed):
+                            return {
+                                'singular': self._get_singular(parsed),
+                                'plural': self._get_plural(parsed),
+                                'gender': self._get_gender(parsed),
+                                'animate': self._is_animate(parsed)
+                            }
+
+                        def _get_singular(self, parsed):
+                            return {
+                                'nominative': parsed.inflect({'nomn'}).word,
+                                'genitive': parsed.inflect({'gent'}).word,
+                                'dative': parsed.inflect({'datv'}).word,
+                                'accusative': parsed.inflect({'accs'}).word,
+                                'instrumental': parsed.inflect({'ablt'}).word,
+                                'prepositional': parsed.inflect({'loct'}).word
+                            }
+
+                        def _get_plural(self, parsed):
+                            return {
+                                'nominative': parsed.inflect({'nomn', 'plur'}).word,
+                                'genitive': parsed.inflect({'gent', 'plur'}).word,
+                                'dative': parsed.inflect({'datv', 'plur'}).word,
+                                'accusative': parsed.inflect({'accs', 'plur'}).word,
+                                'instrumental': parsed.inflect({'ablt', 'plur'}).word,
+                                'prepositional': parsed.inflect({'loct', 'plur'}).word
+                            }
+
+                        def _get_gender(self, parsed):
+                            gender_map = {'masc': 0, 'femn': 1, 'neut': 2, 'plur': 3}
+                            return gender_map.get(parsed.tag.gender, 3)
+
+                        def _is_animate(self, parsed):
+                            return 1 if 'anim' in parsed.tag else 0
+
+                    window.decliner = WordDeclension()
+                `);
+
+                document.getElementById('wordInput').disabled = false;
+                document.querySelector('button').disabled = false;
+                document.getElementById('status').innerHTML = "Готово! Введите слово";
+            } catch (error) {
+                document.getElementById('status').innerHTML = `Ошибка: ${error.message}`;
+            }
+        }
+
+        async function processWord() {
+            const word = document.getElementById('wordInput').value.trim();
+            if (!word) return;
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = "Обработка...";
+
+            try {
+                const forms = await pyodide.runPythonAsync(`
+                    from js import document
+                    word = document.getElementById('wordInput').value
+                    decliner.decline(word)
+                `);
+
+                resultDiv.innerHTML = this.renderResults(word, forms);
+            } catch (error) {
+                resultDiv.innerHTML = `Ошибка: ${error.message}`;
+            }
+        }
+
+        function renderResults(word, forms) {
+            return `
+                <h3>Результаты для: ${word}</h3>
+                ${this.renderCase('Единственное число:', forms.singular)}
+                ${this.renderCase('Множественное число:', forms.plural)}
+                <p>Род: ${['мужской', 'женский', 'средний', 'мн.ч.'][forms.gender]}</p>
+                <p>Одушевлённость: ${forms.animate ? 'да' : 'нет'}</p>
+            `;
+        }
+
+        function renderCase(title, cases) {
+            return `
+                <h4>${title}</h4>
+                <p>Именительный: ${cases.nominative}</p>
+                <p>Родительный: ${cases.genitive}</p>
+                <p>Дательный: ${cases.dative}</p>
+                <p>Винительный: ${cases.accusative}</p>
+                <p>Творительный: ${cases.instrumental}</p>
+                <p>Предложный: ${cases.prepositional}</p>
+            `;
+        }
+
+        initialize();
+    </script>
+</body>
+</html>

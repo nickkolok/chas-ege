@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "ace-builds": "^1.4.12",
+    "assert": "^2.1.0",
     "chas-storage": "^0.1.1",
     "cubic-spline-browserified": "^3.0.3",
     "d": "1.0.1",
@@ -19,6 +20,8 @@
     "jszip": "^3.10.1",
     "mathjs": "^11.5.1",
     "nerdamer": "^1.1.13",
+    "py2js": "^0.0.14",
+    "python-bridge": "^1.1.0",
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
