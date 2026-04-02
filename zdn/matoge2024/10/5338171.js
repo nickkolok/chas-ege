@@ -1,6 +1,6 @@
-(function () {
+(function() { 
 	'use strict';
-	retryWhileError(function () {
+	retryWhileError(function() {
 		/* На рисунке изображена диаграмма Эйлера для случайных событий A и B в некотором случайном опыте. Точками показаны все равновозможные элементарные события опыта. Найдите вероятность события A. */
 
 		let key = '5338171';
@@ -29,26 +29,26 @@
 
 		let the_orderToFind = decor.orderToFind.iz(); // ["найдите","определите","вычислите"]
 
-		let paint = function (ctx) {
+	let paint = function(ctx) {
 			let w = 400;
 			let h = 400;
-			ctx.strokeRect(10, 10, w - 20, h - 20);
-			ctx.translate(w / 2, h / 2 + 30);
+		ctx.strokeRect(10, 10, w-20, h-20);
+		ctx.translate(w/2, h/2 + 30);
 			ctx.scale(20, -20);
 			ctx.lineWidth = 0.1;
 
 			ctx.fillStyle = om.transparentBrandColors[1];
 			ctx.beginPath();
-			ctx.ellipse(-4, 0, 5, 4.5, 0, 0, 2 * Math.PI);
+		ctx.ellipse(-4,0, 5, 4.5, 0, 0, 2*Math.PI);
 			ctx.fill();
 
 			ctx.fillStyle = om.transparentBrandColors[0];
 			ctx.beginPath();
-			ctx.ellipse(4, 0, 5, 4.5, 0, 0, 2 * Math.PI);
+		ctx.ellipse(4,0, 5, 4.5, 0, 0, 2*Math.PI);
 			ctx.fill();
 
-			ctx.drawEllipse(-4, 0, 5, 4.5);
-			ctx.drawEllipse(4, 0, 5, 4.5);
+		ctx.drawEllipse(-4,0, 5, 4.5);
+		ctx.drawEllipse(4,0, 5, 4.5);
 
 			ctx.fillStyle = "black";
 			graph9AmarkCircles(ctx, coordinateA, coordinateA.length, 0.2);
@@ -64,8 +64,8 @@
 
 		NAtask.setTask({
 			text:
-				'На рисунке изображена диаграмма Эйлера для случайных событий $A$ и $B$ в некотором случайном опыте. ' +
-				'Точками показаны все равновозможные элементарные события опыта. ' + the_orderToFind.toZagl() + ' вероятность события ',
+				'На рисунке изображена диаграмма Эйлера для случайных событий $A$ и $B$ в некотором случайном опыте. '+
+				'Точками показаны все равновозможные элементарные события опыта. ' + the_orderToFind.toZagl() +' вероятность события ',
 			questions: [
 				{
 					text: '$A$',
@@ -109,7 +109,6 @@
 			height: 400,
 			paint,
 		});
-	}, 2000);
-})();
+}, 2000);})();
 //5338171
 //Открытый банк заданий 51743B
