@@ -3,18 +3,11 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 		let key = '12176147';
-		let preference = [
-			'oneOrTwoTrue',
-			'threeTrue',
-			'oneOrTwoFalse',
-			'threeFalse'
-		];
+		let preference = ['findTrue', 'findFalse'];
 		let rand = getSelectedPreferenceFromList(key, preference);
-		let flag = rand == 1 || rand == 3;
-		let trueOrFalse = Number(rand > 1);
-
-		let nCorrect = flag ? 1 : sl(2, 3);
-		let nWrong = flag ? 3 : (4 - nCorrect);
+		
+		let nCorrect = sl(1, 3);
+		let nWrong = (4 - nCorrect);
 
 		let correct = [
 			'Если владелец карты имеет постоянную скидку, то установленный лимит им достигнут.',
@@ -31,11 +24,11 @@
 
 		NAtask.setTask({
 			text: 'Совершая покупки, владелец дисконтной карты накапливает баллы. Когда сумма баллов достигает установленного лимита, он получает постоянную скидку. ' +
-				'Выберите одно или несколько утверждений, которые ' + (trueOrFalse ? 'неверны' : 'верны') + ' при приведённом условии. ' +
+				'Выберите одно или несколько утверждений, которые ' + (rand ? 'неверны' : 'верны') + ' при приведённом условии. ' +
 				'В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов. ' +
 				'Если ответов несколько, записывайте их номера в порядке возрастания.',
-			answers: trueOrFalse ? wrong : correct,
-			wrongAnswers: trueOrFalse ? correct : wrong,
+			answers: rand ? wrong : correct,
+			wrongAnswers: rand ? correct : wrong,
 			preference: preference,
 		});
 
