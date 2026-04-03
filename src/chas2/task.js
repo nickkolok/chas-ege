@@ -521,7 +521,7 @@ chas2.task = {
 			for (let item of originalLeft) {
 				let expr = stripDollars(item.expr);
 				let sol = stripDollars(item.solution);
-				parts.push(`$$${expr} \\quad ${sol}$$`);
+				parts.push(`$${expr} \\quad ${sol}$`);
 			}
 			analys = 'Правильное соответствие:<br>' + parts.join('<br>');
 		}
