@@ -21,15 +21,15 @@
 		let holeQuad = sl(0, 2);
 		let quadraticSolutions = [
 			[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
+				[`$x < ${a} \\text{ или } x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
 				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
 			],
 			[
 				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+				[`$x < ${a} \\text{ или } ${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
 			],
 			[
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
+				[`$${a} < x < ${b} \\text{ или } x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
 				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`]
 			]
 		];
@@ -47,15 +47,15 @@
 		let holeFrac = sl(0, 2);
 		let fractionalSolutions = [
 			[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
+				[`$x < ${a} \\text{ или } x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
 				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
 			],
 			[
 				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+				[`$x < ${a} \\text{ или } ${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
 			],
 			[
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
+				[`$${a} < x < ${b} \\text{ или } x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
 				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`]
 			]
 		];
@@ -77,19 +77,19 @@
 		let sqRatSolutions = [
 			[
 				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+				[`$x < ${a} \\text{ или } ${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
 			],
 			[
 				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+				[`$x < ${a} \\text{ или } ${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
 			],
 			[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
+				[`$x < ${a} \\text{ или } x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
 				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
 			],
 			[
 				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`]
+				[`$${a} < x < ${b} \\text{ или } x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`]
 			]
 		];
 		let sqRatSolution = sqRatSolutions[swapNumDen][isSqRatGreater][randAnswer];
@@ -99,7 +99,7 @@
 		let rational = {
 			expr: `\\frac{1}{(x - ${a})(x - ${b})} ${isRationalGreater ? '>' : '<'} 0`,
 			solution: isRationalGreater
-				? [`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`][randAnswer]
+				? [`$x < ${a} \\text{ или } x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`][randAnswer]
 				: [`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`][randAnswer]
 		};
 
