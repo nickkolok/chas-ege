@@ -523,7 +523,7 @@ chas2.task = {
 				let sol = stripDollars(item.solution);
 				parts.push(`$${expr} \\quad ${sol}$`);
 			}
-			analys = 'Правильное соответствие:<br>' + parts.join('<br>');
+			analys = '<br>' + parts.join('<br>');
 		}
 
 		let leftCol = '';
