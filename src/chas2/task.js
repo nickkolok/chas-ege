@@ -517,7 +517,7 @@ chas2.task = {
 			for (let item of originalLeft) {
 				parts.push(`$${item.expr} \\quad ${item.solution}$`);
 			}
-			analys = '<div style="text-align: left !important;">Правильное соответствие:<br>' + parts.join('<br>') + '</div>';
+			analys = '<br>' + parts.join('<br>');
 		}
 
 		let leftCol = '';
