@@ -504,10 +504,6 @@ chas2.task = {
 
 
 	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference,analys }) {
-		function stripDollars(str) {
-			if (typeof str !== 'string') return str;
-			return str.replace(/^\$(.*)\$$/, '$1');
-		}
 		let originalLeft = left.map(item => ({ expr: item.expr, solution: item.solution }));
 		left.shuffle();
 		let shuffledSolutions = [...right].shuffle();
@@ -519,11 +515,9 @@ chas2.task = {
 		if (!analys) {
 			let parts = [];
 			for (let item of originalLeft) {
-				let expr = stripDollars(item.expr);
-				let sol = stripDollars(item.solution);
-				parts.push(`$${expr} \\quad ${sol}$`);
+				parts.push(`$${item.expr} \\quad ${item.solution}$`);
 			}
-			analys = '<br>' + parts.join('<br>');
+			analys = '<div style="text-align: left !important;">Правильное соответствие:<br>' + parts.join('<br>') + '</div>';
 		}
 
 		let leftCol = '';
