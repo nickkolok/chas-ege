@@ -2,15 +2,15 @@
     'use strict';
     retryWhileError(function () {
 
-        let first = sl(10, 30);
-        let second = slKrome(first, 10, 30);
+        let first = sl(10, 30, 2);
+        let second = slKrome(first, 10, 30, 2);
         let total = first + second;
         let targetColor = sl1();
 
         let probability = [first, second][targetColor] / total;
         let colors = om.trickyColors.iz(2);
-        let colorsFirstPart = colors.map(elem => elem.replace('ый', 'ых').replace('ий', 'их'));
-        let colorsSecondPart = colors[targetColor].replace('ый', 'ым').replace('ий', 'им');
+        let colorsFirstPart = colors.map(elem => elem.replace('ый', 'ых').replace('ий', 'их').replace('ой', 'ых'));
+        let colorsSecondPart = colors[targetColor].replace('ый', 'ым').replace('ий', 'им').replace('ой', 'ым');
 
         genAssertZ1000(probability);
 
