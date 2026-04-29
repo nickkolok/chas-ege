@@ -3,7 +3,7 @@
     retryWhileError(function () {
 
         let diceSides = 6;
-        let minSum = sl(1, 6);
+        let minSum = sl(3, 6);
         let maxSum = minSum + slKrome(minSum, 1, 3);
 
         let favorable = 0;
