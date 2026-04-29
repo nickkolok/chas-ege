@@ -45,8 +45,8 @@
 			text: 'В ' + sportName + ' участвуют ' + chislitlx(counts[0], 'спортсмен', '$') + ' из ' + countries[0] + ', $' +
 				counts[1] + '$ из ' + countries[1] + ' и $' +
 				counts[2] + '$ из ' + countries[2] + '. ' +
-				'Порядок, в котором спортсмены стартуют, определяется жребием. ' +
-				'Найдите вероятность того, что ' + targetPosition + ' будет стартовать спортсмен ' + conditionText + '.',
+				'Порядок, в котором спортсмены выступают, определяется жребием. ' +
+				'Найдите вероятность того, что ' + targetPosition + ' будет выступать спортсмен ' + conditionText + '.',
 			answers: answerProbability,
 			preference,
 		});
