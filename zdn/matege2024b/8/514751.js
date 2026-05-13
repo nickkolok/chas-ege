@@ -9,7 +9,7 @@
 		let nWrong = 4 - nCorrect;
 
 		let fishCount = sl(20, 50);
-		let minLen = sl(2, 5);
+		let minLen = sl(3, 5);
 		let maxLen = sl(minLen + 2, 12);
 
 		let correct = [
