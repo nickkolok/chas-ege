@@ -8,7 +8,7 @@
 		let nCorrect = sl(1, 3);
 		let nWrong = 4 - nCorrect;
 
-		let name = sklonlxkand(om.femaleNames.iz(3));
+		let name = sklonlxkand(om.childFemaleNames.iz(3));
 		let diffAgeFirst = sl(1, 3);
 		let diffAgeSecnd = diffAgeFirst + sl(1, 3);
 
