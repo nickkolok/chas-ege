@@ -11,8 +11,8 @@
 		let subject = sklonlxkand(['биология', 'география', 'математика', 'физика', 'геометрия', 'информатика'].iz(2));
 		let total = sl(25, 40);
 		let bio = sl(15, total - 2);
-		let geo = sl(10, total - 2);
-		let minBoth = Math.max(0, bio + geo - total);
+		let geo = sl(total - bio + 1, total - 2);
+		let minBoth = bio + geo - total;
 		let maxBoth = Math.min(bio, geo);
 
 		let correct = [
