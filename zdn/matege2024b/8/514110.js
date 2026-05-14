@@ -11,9 +11,9 @@
 		let subject = ['экономике', 'английскому языку', 'математике', 'физике', 'китайскому языку',
 			'обществознанию', 'философии', 'немецкому языку', 'истории', 'биологии', 'географии'].iz(2);
 		let total = sl(25, 40);
-		let econ = sl(Math.ceil(total * 0.5), total);
-		let eng = sl(Math.ceil(total * 0.5), total);
-		let minBoth = Math.max(0, econ + eng - total);
+		let econ = sl(15, total);
+		let eng = sl(total - econ + 1, total);
+		let minBoth = bio + geo - total;
 		let maxBoth = Math.min(econ, eng);
 
 		let correct = [
