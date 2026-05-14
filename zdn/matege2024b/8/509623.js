@@ -11,7 +11,7 @@
 		
 		let website =['Однокурсники','ВСети','ИньЯнь','БеседыСЧаем','ПолуРаспад','Окно','МыЧат','Вавилон','Чирик'].iz(2);
 		let total = sl(25, 50);
-		let ok = sl(Math.ceil(total * 0.6), total - 2);
+		let ok = sl(15, total - 2);
 		let vk = sl(5, total - 2);
 		let minBoth = Math.max(0, ok + vk - total);
 		let maxBoth = Math.min(ok, vk);
