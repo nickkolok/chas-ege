@@ -9,7 +9,7 @@
 		let nWrong = 4 - nCorrect;
 		
 		
-		let website =['Одноклассники','ВКонтакте','Дзен'].iz(2);
+		let website =['Однокурсники','ВСети','ИньЯнь','БеседыСЧаем','ПолуРаспад','Окно','МыЧат','Вавилон','Чирик'].iz(2);
 		let total = sl(25, 50);
 		let ok = sl(Math.ceil(total * 0.6), total - 2);
 		let vk = sl(5, total - 2);
