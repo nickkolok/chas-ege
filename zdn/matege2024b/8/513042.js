@@ -8,7 +8,7 @@
 		let nCorrect = sl(1, 3);
 		let nWrong = 4 - nCorrect;
 
-		let places = [['речку', 'бассейн'], ['озеро', 'аквапарк'], ['море', 'стадион']].iz();
+		let places = [['речку', 'бассейн'], ['озеро', 'аквапарк'], ['море', 'водоёме']].iz();
 		let [P1, P2] = places;
 
 		let correct = [
