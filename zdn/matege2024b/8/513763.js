@@ -19,10 +19,10 @@
 
 
 		let correct = [
-			`По ${days[0].dm} и ${days[1].dm} ${name.de} из  ${classNumber} «${letter}» надо принести в школу ${item.ie}.`,
-			`По ${days[2].dm} ученикам  ${classNumber} «${letter}» не надо брать в школу ${item.ie}.`,
+			`По ${days[0].dm} и ${days[1].dm} ${name.de} из  ${classNumber} «${letter}» надо принести в школу ${item.ve}.`,
+			`По ${days[2].dm} ученикам  ${classNumber} «${letter}» не надо брать в школу ${item.ve}.`,
 			`${item.ie.toZagl()} требуется только на уроках ${subject.re}.`,
-			`В дни, когда нет ${subject.re}, ${item.ie} не нужен.`
+			`В дни, когда нет ${subject.re}, ${item.ve} не нужно приносить.`
 		];
 		let wrong = [
 			`Всякий день, когда ученик  ${classNumber} «${letter}» берёт с собой в школу ${item.ve}, является ${days[0].tm} и ${days[1].tm}.`,
