@@ -14,6 +14,7 @@
 
         let dano = [chislitlx(firstVolume, 'литр', 'v'), percent + '−процентного'];
         let chemicalSubstance = ['некоторого вещества', 'щелочи', 'соли', 'кислоты'].iz();
+        let substanceType = ['водного', 'спиртового'].iz();
 
         switch (rand) {
             case 0:
@@ -29,7 +30,7 @@
         }
 
         NAtask.setTask({
-            text: 'В сосуд, содержащий ' + dano + ' водного раствора ' + chemicalSubstance + ', ' +
+            text: 'В сосуд, содержащий ' + dano + ' ' + substanceType + ' раствора ' + chemicalSubstance + ', ' +
                 'добавили ' + [chislitlx(waterVolume, 'литр', 'v'), 'несколько литров'][Number(rand == 1)] +
                 ' воды' + [' так, что получился ' + finalPercent + '−процентный раствор', ''][Number(rand == 0)] + '. ',
             questions: [[{
