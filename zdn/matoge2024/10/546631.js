@@ -18,7 +18,7 @@
         genAssertZ1000(probability);
 
         NAtask.setTask({
-            text: 'В магазине канцтоваров продаётся ' + chislitlx(total, 'ручка', '$') + ' ручек: ' + '$' + c1 + '$ ' + colorsGen[0] + ', $' + c2 + '$ ' + colorsGen[1] + ', $' + c3 + '$ ' + colorsGen[2] + 
+            text: 'В магазине канцтоваров продаётся ' + chislitlx(total, 'ручка', '$') + ': ' + '$' + c1 + '$ ' + colorsGen[0] + ', $' + c2 + '$ ' + colorsGen[1] + ', $' + c3 + '$ ' + colorsGen[2] + 
             ', ' + 'остальные — ' + colorsNomPl[0] + ' и ' + colorsNomPl[1] + ', их поровну' + '. ' +
                 'Найдите вероятность того, что случайно выбранная в этом магазине ручка будет ' + colorsInstr.join(' или ') + '.',
             answers: probability,
