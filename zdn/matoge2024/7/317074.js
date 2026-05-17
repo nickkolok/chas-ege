@@ -2,6 +2,9 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
+		let key = '317074';
+		let preference = ['hideNumbers', 'showNumbers'];
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let denominatorA = sl(5, 50, 1);
 		let numeratorA = sl(1, denominatorA - 1, 1);
@@ -13,6 +16,15 @@
 		genAssert(((a * 10).round() / 10 - a).abs() > epsilon, "точка A не должна стоять на засечке");
 
 		let paint1 = function (ct) {
+				let ticks = Array.from({ length: 11 }, (_, i) => {
+				let val = i * 0.1;
+				return {
+					value: val,
+					mark: "line",
+					label: rand ? val.toFixed(1) : (val === 0 || val === 1 ? val.toString() : ""),
+					labelPos: "underAxis"
+				};
+			});
 			coordAxis_drawAuto(ct, {
 				min: -0.05,
 				max: 1.05,
@@ -21,15 +33,7 @@
 					{ value: -0.05, mark: "nothing" },
 					{ value: 1.05, mark: "nothing" },
 					// Засечки от 0 до 1 с шагом 0.1
-					...Array.from({ length: 11 }, (_, i) => {
-						let val = i * 0.1;
-						return {
-							value: val,
-							mark: "line",
-							label: (val === 0 || val === 1) ? val.toString() : "",
-							labelPos: "underAxis"
-						};
-					}),
+					...ticks,
 					// Точка A
 					{ value: a, mark: "dot", label: "A", labelPos: "overAxis" }
 				],
@@ -54,10 +58,12 @@
 			wrAns.push(notCorrectNumeratorA.texfrac(denominatorA));
 		}
 
+		let numbersList = [correct, ...wrAns].join(', ');
 		NAtask.setTask({
-			text: 'Одно из чисел отмечено на прямой точкой $A$. Какое это число?',
+			text: 'Одно из чисел ' + ['', '$' + numbersList + '$'][rand] + ' отмечено на прямой точкой $A$. Какое это число?',
 			answers: '$' + correct + '$',
 			wrongAnswers: wrAns.map(e => '$' + e + '$'),
+			preference: preference,
 		});
 		AtoB(3);
 
