@@ -14,26 +14,25 @@
 		genAssert(numerator / denominator > b, 'Правый конец должен быть больше левого');
 		genAssert(numerator / denominator < d, 'Правый конец должен быть больше левого');
 
-		let c = '\\frac{' + numerator + '}{' + denominator + '}';
+		const checkSign = (member) =>
+			member > 0 ? 1 : member < 0 ? 0 : 2;
+		let c = numerator + '/' + denominator;
 		let e = d + sluchch(1, 2);
 		let up = [a, b, d, e].shuffle();
 		let down = up.filter(item => item !== up[0]);
 		down = down.sortNumeric();
 		const checkAnswer = (member) =>
 			up[0] == member ? 0 : 1;
-
-		let answer = "(-∞;" + a + ["]", ")"][checkAnswer(a)] + "U" + ["[", "("][checkAnswer(b)] + b + ";$" + c + "$]U" + [
-			"[", "("
-		][checkAnswer(d)] + d + ";" + e + ["]", ")"][checkAnswer(e)];
-
 		const checkZero = (member) =>
 			member == 0 ? "" : member;
 		const checkOne = (member) =>
 			member == 1 ? "" : member;
 		const checkZeroWithCases = (member) =>
 			member == 0 ? "x" : "(x" + sign[checkSign(member)] + Math.abs(member) + ")";
-		const checkSign = (member) =>
-			member > 0 ? 1 : member < 0 ? 0 : 2;
+
+		let answer = "(-∞;" + a + ["]", ")"][checkAnswer(a)] + "U" + ["[", "("][checkAnswer(b)] + b + ";" + c + "]U" + [
+			"[", "("
+		][checkAnswer(d)] + d + ";" + e + ["]", ")"][checkAnswer(e)];
 
 		function gcd(a, b) {
 			a = Math.abs(a);
@@ -71,10 +70,9 @@
 		let N_B = (am * k2 * k2 + bm * k2 + cm) / ((k2 - k1) * (k2 - k3));
 		let N_C = (am * k3 * k3 + bm * k3 + cm) / ((k3 - k1) * (k3 - k2));
 
-		let sum = N_A + N_B + N_C;
 		let slSign = sl1();
 		let lessOrMore;
-		sum < 0 ? lessOrMore = 0 : lessOrMore = 1;
+		denominator < 0 ? lessOrMore = 0 : lessOrMore = 1;
 
 		//Приведение к общему знаменателю
 		let fracA = toFraction(N_A);
@@ -108,13 +106,13 @@
 				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + [
 					'\\ge', '\\le'
 				][Math.abs(lessOrMore + [0, -1][slSign])] + '0' + '$$' +
-				'используйте в ответе знаки: -∞, +∞, U',
+				'Используйте в ответе знаки: -∞, +∞, U. Если в ответе есть дробь, записывайте её в виде x/y.',
 			analys: 'Решение: ' +
 				'$$' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] +
 				'\\frac{' + Math.abs(A_int) + '}{' + 'x' + sign[checkSign(down[0])] + checkZero(Math.abs(down[0])) + '}' +
 				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] +
-				'\\frac{' + Math.abs(B_int) + '}{' + 'x' +
-				sign[checkSign(down[1])] + checkZero(Math.abs(down[1])) + '}' +
+				'\\frac{' + Math.abs(B_int) + '}{' +
+				'x' + sign[checkSign(down[1])] + checkZero(Math.abs(down[1])) + '}' +
 				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] +
 				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + [
 					'\\ge', '\\le'
@@ -144,7 +142,9 @@
 				checkZeroWithCases(down[2]) + '} \\le 0' +
 				'\\Leftrightarrow' +
 				'\\left[\\begin{aligned} x ' + ['\\le', '<'][checkAnswer(a)] + a + '\\\\' +
-				b + ['\\le', '<'][checkAnswer(b)] + ' x \\le' + c + '\\\\' +
+				b + ['\\le', '<'][checkAnswer(b)] + ' x \\le ' +
+				sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(numerator) + '}{' + denominator + '}' +
+				' \\\\' +
 				d + ['\\le', '<'][checkAnswer(d)] + ' x ' + ['\\le', '<'][checkAnswer(e)] + e +
 				'\\end{aligned}\\right.$$',
 			answers: answer,
