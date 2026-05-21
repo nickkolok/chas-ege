@@ -1,108 +1,155 @@
 (function() {
- retryWhileError(function() {
-  let a = sluchch(-5, 0);
-  let b = slKrome(0, a + 1, a + 2);
-  let d = slKrome(0, b + 1, b + 2);
-  let slChis = sl1();
-  let znak = ['+', '-'];
-  let znak2 = ['-', '+'];
-  let dividend = sluchch(2, 5);
-  let divider = dividend * [b, d][slChis] - [b, d][slChis] / Math.abs([b, d][slChis]);
+	retryWhileError(function() {
+		let a = sluchch(-5, 1);
+		let b = slKrome(0, a + 1, a + 2);
+		let d = slKrome(0, b + 1, b + 2);
+		let slNum = sl1();
+		let sign = ['+', '-', ''];
+		let sign2 = ['-', '+', ''];
+		let sign3 = ['-', ''];
+		let denominator = sluchch(2, 5);
+		let numerator = denominator * [b, d][slNum] - [b, d][slNum] / Math.abs([b, d][slNum]);
 
-  genAssertIrreducible(divider, dividend, 'Дробь должна быть несократима');
-  genAssert(divider / dividend > b, 'Правый конец должен быть больше левого');
-  genAssert(divider / dividend < d, 'Правый конец должен быть больше левого');
+		genAssertIrreducible(numerator, denominator, 'Дробь должна быть несократима');
+		genAssert(numerator / denominator > b, 'Правый конец должен быть больше левого');
+		genAssert(numerator / denominator < d, 'Правый конец должен быть больше левого');
 
-  let c = '$\\frac{' + divider + '}{' + dividend + '}$';
-  let e = d + sluchch(1, 2);
-  let up = [a, b, d, e].shuffle();
-  let down = up.filter(item => item !== up[0]);
-  down = down.sortNumeric();
+		let c = '\\frac{' + numerator + '}{' + denominator + '}';
+		let e = d + sluchch(1, 2);
+		let up = [a, b, d, e].shuffle();
+		let down = up.filter(item => item !== up[0]);
+		down = down.sortNumeric();
+		const checkAnswer = (member) =>
+			up[0] == member ? 0 : 1;
 
-  let answer = "(-∞;" + a + ")U(" + b + ";" + c + "]U(" + d + ";" + e + ")";
+		let answer = "(-∞;" + a + ["]", ")"][checkAnswer(a)] + "U" + ["[", "("][checkAnswer(b)] + b + ";$" + c + "$]U" + [
+			"[", "("
+		][checkAnswer(d)] + d + ";" + e + ["]", ")"][checkAnswer(e)];
 
-  const checkZnak = (member) =>
-   member > 0 ? 1 : member < 0 ? 0 : 1;
+		const checkZero = (member) =>
+			member == 0 ? "" : member;
+		const checkOne = (member) =>
+			member == 1 ? "" : member;
+		const checkZeroWithCases = (member) =>
+			member == 0 ? "x" : "(x" + sign[checkSign(member)] + Math.abs(member) + ")";
+		const checkSign = (member) =>
+			member > 0 ? 1 : member < 0 ? 0 : 2;
 
-function gcd(a, b) {
-    a = Math.abs(a);
-    b = Math.abs(b);
-    while (b !== 0) {
-        let t = b;
-        b = a % b;
-        a = t;
-    }
-    return a;
-}
+		function gcd(a, b) {
+			a = Math.abs(a);
+			b = Math.abs(b);
+			while (b !== 0) {
+				let t = b;
+				b = a % b;
+				a = t;
+			}
+			return a;
+		}
 
-function lcm(a, b) {
-    return Math.abs(a * b) / gcd(a, b);
-}
+		function lcm(a, b) {
+			return Math.abs(a * b) / gcd(a, b);
+		}
 
-function toFraction(value, eps = 1e-9) {
-    let num = Math.round(value * 1e9);
-    let den = 1e9;
-    let g = gcd(num, den);
-    return { num: num / g, den: den / g };
-}
+		function toFraction(value, eps = 1e-9) {
+			let num = Math.round(value * 1e9);
+			let den = 1e9;
+			let g = gcd(num, den);
+			return {
+				num: num / g,
+				den: den / g
+			};
+		}
 
-let k1 = -down[0];
-let k2 = -down[1];
-let k3 = -down[2];
-let am = dividend;
-let bm = dividend * up[0] + divider;
-let cm = divider * up[0];
+		let k1 = -down[0];
+		let k2 = -down[1];
+		let k3 = -down[2];
+		let am = denominator;
+		let bm = denominator * up[0] + numerator;
+		let cm = numerator * up[0];
 
-let N_A = (am * k1 * k1 + bm * k1 + cm) / ((k1 - k2) * (k1 - k3));
-let N_B = (am * k2 * k2 + bm * k2 + cm) / ((k2 - k1) * (k2 - k3));
-let N_C = (am * k3 * k3 + bm * k3 + cm) / ((k3 - k1) * (k3 - k2));
+		let N_A = (am * k1 * k1 + bm * k1 + cm) / ((k1 - k2) * (k1 - k3));
+		let N_B = (am * k2 * k2 + bm * k2 + cm) / ((k2 - k1) * (k2 - k3));
+		let N_C = (am * k3 * k3 + bm * k3 + cm) / ((k3 - k1) * (k3 - k2));
 
-//Приведение к общему знаменателю
-let fracA = toFraction(N_A);
-let fracB = toFraction(N_B);
-let fracC = toFraction(N_C);
+		let sum = N_A + N_B + N_C;
+		let slSign = sl1();
+		let lessOrMore;
+		sum < 0 ? lessOrMore = 0 : lessOrMore = 1;
 
-let commonDen = lcm(lcm(fracA.den, fracB.den), fracC.den);
+		//Приведение к общему знаменателю
+		let fracA = toFraction(N_A);
+		let fracB = toFraction(N_B);
+		let fracC = toFraction(N_C);
 
-let A_int = fracA.num * (commonDen / fracA.den);
-let B_int = fracB.num * (commonDen / fracB.den);
-let C_int = fracC.num * (commonDen / fracC.den);
+		let commonDen = lcm(lcm(fracA.den, fracB.den), fracC.den);
 
-//Сокращение общего множителя
-let g_all = gcd(gcd(Math.abs(A_int), Math.abs(B_int)), Math.abs(C_int));
-if (g_all > 1) {
-    A_int /= g_all;
-    B_int /= g_all;
-    C_int /= g_all;
-}
+		let A_int = fracA.num * (commonDen / fracA.den);
+		let B_int = fracB.num * (commonDen / fracB.den);
+		let C_int = fracC.num * (commonDen / fracC.den);
 
-genAssert(A_int<1000, "Числитель должен быть меньше 1000");
-genAssert(B_int<1000, "Числитель должен быть меньше 1000");
-genAssert(C_int<1000, "Числитель должен быть меньше 1000");
+		//Сокращение общего множителя
+		let g_all = gcd(gcd(Math.abs(A_int), Math.abs(B_int)), Math.abs(C_int));
+		if (g_all > 1) {
+			A_int /= g_all;
+			B_int /= g_all;
+			C_int /= g_all;
+		}
 
-  NAtask.setTask({
-   text: '$\\frac{' + A_int + '}{' + 'x' + znak[checkZnak(down[0])] + Math.abs(down[0]) + '} + $' +
-    '$\\frac{' + B_int + '}{' + 'x' + znak[checkZnak(down[1])] + Math.abs(down[1]) + '} + $' +
-    '$\\frac{' + C_int + '}{' + 'x' + znak[checkZnak(down[2])] + Math.abs(down[2]) + '} \\ge 0 $' +
-    ' $\\Leftrightarrow$ ' +
-    '$\\frac{' + A_int + '(x' + znak[checkZnak(down[1])] + Math.abs(down[1]) + ')(x' + znak[checkZnak(down[2])] + Math.abs(down[2]) + ')' +
-    znak[checkZnak(B_int)] +
-    Math.abs(B_int) + '(x' + znak[checkZnak(down[0])] + Math.abs(down[0]) + ')(x' + znak[checkZnak(down[2])] + Math.abs(down[2]) + ')' +
-    znak[checkZnak(C_int)] +
-    Math.abs(C_int) + '(x' + znak[checkZnak(down[0])] + Math.abs(down[0]) + ')' + '(x' + znak[checkZnak(down[1])] + Math.abs(down[1]) + ')' + '}{' +
-    '(x' + znak[checkZnak(down[0])] + Math.abs(down[0]) + ')' + 
-    '(x' + znak[checkZnak(down[1])] + Math.abs(down[1]) + ')' +
-    '(x' + znak[checkZnak(down[2])] + Math.abs(down[2]) + ')' + '} \\ge 0 $' +
-    ' $\\Leftrightarrow$ ' +
-    '$\\frac{' + dividend + 'x^2' + znak[checkZnak(dividend * up[0] + divider)] + Math.abs(dividend * up[0] + divider) + 'x' +
-    znak2[checkZnak(up[0] * divider)] + Math.abs(up[0] * divider) + '}{' + '(x' + znak[checkZnak(down[0])] + Math.abs(down[0]) + ')' + '(x' +
-    znak[checkZnak(down[1])] + Math.abs(down[1]) + ')' + '(x' + znak[checkZnak(down[2])] + Math.abs(down[2]) + ')' + '} \\le 0 $' +
-    ' $\\Leftrightarrow$ ' +
-    '$\\frac{(' + dividend + 'x' + znak[checkZnak(divider)] + Math.abs(divider) + ')(x' + znak[checkZnak(up[0])] + Math.abs(up[0]) + ')}{' + '(x' + znak[checkZnak(down[0])] + Math.abs(down[0]) + ')' +
-    '(x' + znak[checkZnak(down[1])] + Math.abs(down[1]) + ')' + '(x' + znak[checkZnak(down[2])] + Math.abs(down[2]) + ')' + '} \\le 0 $',
-   answers: answer,
-   authors: ['Сергей Алендарь'],
-  });
- }, 1000);
+		genAssert(A_int < 1000, "Числитель должен быть меньше 1000");
+		genAssert(B_int < 1000, "Числитель должен быть меньше 1000");
+		genAssert(C_int < 1000, "Числитель должен быть меньше 1000");
+
+		NAtask.setTask({
+			text: 'Решите неравенство: $$' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(A_int) + '}{' + 'x' + sign[checkSign(down[0])] + checkZero(Math.abs(down[0])) + '}' +
+				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(B_int) + '}{' + 'x' + sign[checkSign(down[1])] + checkZero(Math.abs(down[1])) + '}' +
+				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + [
+					'\\ge', '\\le'
+				][Math.abs(lessOrMore + [0, -1][slSign])] + '0' + '$$' +
+				'используйте в ответе знаки: -∞, +∞, U',
+			analys: 'Решение: ' +
+				'$$' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(A_int) + '}{' + 'x' + sign[checkSign(down[0])] + checkZero(Math.abs(down[0])) + '}' +
+				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(B_int) + '}{' + 'x' +
+				sign[checkSign(down[1])] + checkZero(Math.abs(down[1])) + '}' +
+				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + [
+					'\\ge', '\\le'
+				][Math.abs(lessOrMore + [0, -1][slSign])] + '0' +
+				'\\Leftrightarrow' +
+				'\\frac{' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] + checkOne(Math.abs(A_int)) +
+				checkZeroWithCases(down[1]) + checkZeroWithCases(down[2]) +
+				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] + checkOne(Math.abs(B_int)) +
+				checkZeroWithCases(down[0]) + checkZeroWithCases(down[2]) +
+				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] + checkOne(Math.abs(C_int)) +
+				checkZeroWithCases(down[0]) + checkZeroWithCases(down[1]) + '}{' +
+				checkZeroWithCases(down[0]) +
+				checkZeroWithCases(down[1]) +
+				checkZeroWithCases(down[2]) + '}' + ['\\ge', '\\le'][Math.abs(lessOrMore + [0, -1][slSign])] + '0' +
+				'\\Leftrightarrow' +
+				'\\frac{' + denominator + 'x^2' +
+				sign[checkSign(denominator * up[0] + numerator)] + checkOne(Math.abs(denominator * up[0] + numerator)) + 'x' +
+				sign2[checkSign(up[0] * numerator)] + checkZero(Math.abs(up[0] * numerator)) + '}{' +
+				checkZeroWithCases(down[0]) +
+				checkZeroWithCases(down[1]) +
+				checkZeroWithCases(down[2]) + '} \\le 0' +
+				' \\Leftrightarrow \\\\~\\\\ \\Leftrightarrow' +
+				'\\frac{(' + denominator + 'x' + sign[checkSign(numerator)] + Math.abs(numerator) + ')' +
+				checkZeroWithCases(up[0]) + '}{' +
+				checkZeroWithCases(down[0]) +
+				checkZeroWithCases(down[1]) +
+				checkZeroWithCases(down[2]) + '} \\le 0' +
+				'\\Leftrightarrow' +
+				'\\left[\\begin{aligned} x ' + ['\\le', '<'][checkAnswer(a)] + a + '\\\\' +
+				b + ['\\le', '<'][checkAnswer(b)] + ' x \\le' + c + '\\\\' +
+				d + ['\\le', '<'][checkAnswer(d)] + ' x ' + ['\\le', '<'][checkAnswer(e)] + e +
+				'\\end{aligned}\\right.$$',
+			answers: answer,
+			authors: ['Сергей Алендарь'],
+		});
+	}, 1000);
 })();
 //508440
