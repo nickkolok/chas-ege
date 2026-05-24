@@ -12,7 +12,7 @@
 	genAssertZ1000(answer);
 
 	NAtask.setTask({
-		text: 'Монету бросили ' + chislitlx(total, 'раз', 'v$') + '. Известно, что ' + ['орёл', 'решка'][rand] + ' выпал ' + chislitlx(heads, 'раз', '$v') + '. ' +
+		text: 'Монету бросили ' + chislitlx(total, 'раз', 'v$') + '. Известно, что ' + ['орёл', 'решка'][rand]  + ' выпал'+['', 'а'][rand] + ' ' + chislitlx(heads, 'раз', '$v') + '. ' +
 			'Найдите вероятность того, что при $' + position + '$-м по счёту броске выпал'+ ['','а'][1 - rand] + ' ' + reverse + '.',
 		answers: answer,
 	});
