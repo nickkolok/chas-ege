@@ -21,7 +21,9 @@
 				return {
 					value: val,
 					mark: "line",
-					label: rand ? val.toFixed(1) : (val === 0 || val === 1 ? val.toString() : ""),
+					label: rand 
+						? (val === 0 || val === 1 ? val.toString() : val.toFixed(1).replace('.', ',')) 
+						: (val === 0 || val === 1 ? val.toString() : ""),
 					labelPos: "underAxis"
 				};
 			});
