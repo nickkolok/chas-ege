@@ -13,7 +13,7 @@
 		let total = sl(25, 50);
 		let ok = sl(15, total - 2);
 		let vk = sl(5, total - 2);
-		let minBoth = Math.max(0, ok + vk - total);
+		let minBoth = Math.max(1, ok + vk - total);
 		let maxBoth = Math.min(ok, vk);
 
 		let correct = [
