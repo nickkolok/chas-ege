@@ -2,6 +2,9 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
+		let key = '317005';
+		let preference = ['hideNumbers', 'showNumbers'];
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let base = sl(2, 10);
 		let start = base;
@@ -68,9 +71,10 @@
 		let wrAns = options.filter(num => num !== correct_num).map(num => '$\\sqrt{' + num + '}$');
 
 		NAtask.setTask({
-			text: 'Одно из чисел $' + optionsText + '$ отмечено на прямой точкой $A$. Какое это число?',
+			text: 'Одно из чисел ' + ['', '$'+ optionsText+ '$'][rand] + ' отмечено на прямой точкой $A$. Какое это число?',
 			answers: '$\\sqrt{' + correct_num + '}$',
 			wrongAnswers: wrAns,
+			preference: preference,
 		});
 
 		AtoB(3);
