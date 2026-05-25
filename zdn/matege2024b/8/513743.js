@@ -24,7 +24,7 @@
 			`Минимум ${chislitlx(minNone, 'день', '$')} он никуда не ходил.`
 		]
 		let wrong = [
-			`Было ${chislitlx(spotA, 'день', '$')} дня, когда ${name} ${surname} ходил и на ${spotName[0].ve}, и на ${spotName[1].ve}.`,
+			`Было ${chislitlx(spotA, 'день', '$')}, когда ${name} ${surname} ходил и на ${spotName[0].ve}, и на ${spotName[1].ve}.`,
 			`Если ${name} ${surname} сходил на ${spotName[0].ve}, то в этот же день он ходил и на ${spotName[1].ve}.`,
 			`Он был на ${spotName[1].pe} каждый день.`,
 			`Он ни разу не был на ${spotName[0].pe}.`
