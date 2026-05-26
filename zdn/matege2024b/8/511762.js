@@ -11,7 +11,7 @@
 		let town = ['посёлке', 'городке', 'районе'].iz();
 		let letter = window.latbukv.iz();
 		let houseCount = sl(10, 30);
-		let minHeight = sl(3, 10);
+		let minHeight = sl(4, 10);
 		let maxHeight = sl(minHeight + 5, 30);
 
 		let correct = [
