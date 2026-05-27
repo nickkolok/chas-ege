@@ -1,4 +1,4 @@
-(function() {
+﻿(function() {
 	retryWhileError(function() {
 		let a = sluchch(-5, 1);
 		let b = slKrome(0, a + 1, a + 2);
@@ -14,13 +14,13 @@
 		genAssert(numerator / denominator > b, 'Правый конец должен быть больше левого');
 		genAssert(numerator / denominator < d, 'Правый конец должен быть больше левого');
 
-		const checkSign = (member) =>
-			member > 0 ? 1 : member < 0 ? 0 : 2;
 		let c = numerator + '/' + denominator;
 		let e = d + sluchch(1, 2);
 		let up = [a, b, d, e].shuffle();
 		let down = up.filter(item => item !== up[0]);
 		down = down.sortNumeric();
+		let slSign = sl1();
+		let slSign2 = sl1();
 		let shift = 1;
 
 		function checkShift(member) {
@@ -29,6 +29,9 @@
 			}
 			return shift;
 		}
+
+		const checkSign = (member) =>
+			member > 0 ? 1 : member < 0 ? 0 : 2;
 		const checkZero = (member) =>
 			member == 0 ? "" : member;
 		const checkOne = (member) =>
@@ -36,10 +39,14 @@
 		const checkZeroWithCases = (member) =>
 			member == 0 ? "x" : "(x" + sign[checkSign(member)] + Math.abs(member) + ")";
 
-		let answer = "(-∞;" + [b, a][checkShift(a)] + ")U" + ["[" + c, "(" + b][checkShift(b)] + ";" + [d + ")", c + "]"][
-			checkShift(c)
-		] + "U(" + [e, d][checkShift(d)] + ";" + ["+∞", e][checkShift(e)] + ")";
-		shift = 1;
+		let A = [checkShift(a)];
+		let B = [checkShift(b)];
+		let C = [checkShift(c)];
+		let D = [checkShift(d)];
+		let E = [checkShift(e)];
+
+		let answer = ["(-∞;" + [b, a][A] + ")U" + ["[" + c, "(" + b][B] + ";" + [d + ")", c + "]"][C] + "U(" + [e, d][D] + ";" + ["+∞", e][E] + ")",
+			"(" + [b, a][A] + ";" + [c + "]", b + ")"][B] + "U" + ["(" + d, "[" + c][C] + ";" + [e, d][D] + ")"][slSign2];
 
 		function gcd(a, b) {
 			a = Math.abs(a);
@@ -77,10 +84,6 @@
 		let N_B = (am * k2 * k2 + bm * k2 + cm) / ((k2 - k1) * (k2 - k3));
 		let N_C = (am * k3 * k3 + bm * k3 + cm) / ((k3 - k1) * (k3 - k2));
 
-		let slSign = sl1();
-		let lessOrMore;
-		denominator < 0 ? lessOrMore = 0 : lessOrMore = 1;
-
 		//Приведение к общему знаменателю
 		let fracA = toFraction(N_A);
 		let fracB = toFraction(N_B);
@@ -110,9 +113,8 @@
 				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] +
 				'\\frac{' + Math.abs(B_int) + '}{' + 'x' + sign[checkSign(down[1])] + checkZero(Math.abs(down[1])) + '}' +
 				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] +
-				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + [
-					'\\ge', '\\le'
-				][Math.abs(lessOrMore + [0, -1][slSign])] + '0' + '$$' +
+				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + 
+				['\\ge', '\\le'][Math.abs(1 + [0, -1][slSign])] + '0' + '$$' +
 				'Используйте в ответе знаки: -∞, +∞, U. Если в ответе есть дробь, записывайте её в виде x/y.',
 			analys: 'Решение: ' +
 				'$$' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] +
@@ -120,9 +122,8 @@
 				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] +
 				'\\frac{' + Math.abs(B_int) + '}{' + 'x' + sign[checkSign(down[1])] + checkZero(Math.abs(down[1])) + '}' +
 				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] +
-				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + [
-					'\\ge', '\\le'
-				][Math.abs(lessOrMore + [0, -1][slSign])] + '0' +
+				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + 
+				['\\ge', '\\le'][Math.abs(1 + [0, -1][slSign])] + '0' +
 				'\\Leftrightarrow' +
 				'\\frac{' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] + checkOne(Math.abs(A_int)) +
 				checkZeroWithCases(down[1]) + checkZeroWithCases(down[2]) +
@@ -132,20 +133,25 @@
 				checkZeroWithCases(down[0]) + checkZeroWithCases(down[1]) + '}{' +
 				checkZeroWithCases(down[0]) +
 				checkZeroWithCases(down[1]) +
-				checkZeroWithCases(down[2]) + '}' + ['\\ge', '\\le'][Math.abs(lessOrMore + [0, -1][slSign])] + '0' +
+				checkZeroWithCases(down[2]) + '}' + ['\\ge', '\\le'][Math.abs(1 + [0, -1][slSign])] + '0' +
 				' \\Leftrightarrow \\\\~\\\\ \\Leftrightarrow' +
 				'\\frac{' + denominator + 'x' + sign[checkSign(numerator)] + Math.abs(numerator) + '}{' +
 				checkZeroWithCases(down[0]) +
 				checkZeroWithCases(down[1]) +
-				checkZeroWithCases(down[2]) + '} \\ge 0' +
+				checkZeroWithCases(down[2]) + '}' + ['\\ge', '\\le'][slSign2] + '0' +
 				'\\Leftrightarrow' +
-				'\\left[\\begin{aligned}' + 'x' + '<' + [b, a][checkShift(a)] + '\\\\' + [sign3[Math.abs(checkSign(numerator))] +
-					'\\frac{' + Math.abs(numerator) + '}{' + denominator + '} \\le ', b + '<'
-				][checkShift(b)] + ' x ' + ['<' + d, '\\le' + sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(
-					numerator) + '}{' + denominator + '}'][checkShift(c)] +
-				' \\\\' +
-				' x ' + '>' + [e, d][checkShift(d)] +
-				'\\end{aligned}\\right.$$',
+				'\\left[\\begin{aligned}' +
+				['x' + '<' + [b, a][A] +
+				',\\\\' + 
+				[sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(numerator) + '}{' + denominator + '} \\le ', b + '<'][B] + ' x ' + 
+				['<' + d, '\\le' + sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(numerator) + '}{' + denominator + '}'][C] +
+				',\\\\' +
+				'x ' + '>' + [e, d][D],
+				[b, a][A] + '<' + ' x ' + ['\\le' + sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(numerator) + '}{' + denominator + '}', '<' + b][B] +
+				',\\\\' + 
+				[d + '<', sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(numerator) + '}{' + denominator + '} \\le '][C] + ' x ' + 
+				'<' + [e, d][D]][slSign2] +
+				'.\\end{aligned}\\right.$$',
 			answers: answer,
 			authors: ['Сергей Алендарь'],
 		});
