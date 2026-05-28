@@ -10,13 +10,13 @@
 
 		let girl = sklonlxkand(om.femaleNames.iz());
 		let relative = sklonlxkand(['бабушка', 'тётя', 'мама', 'сестра', 'подруга', 'племянница'].iz());
-		let activity = sklonlxkand(['физкультура', 'танец', 'лепка', 'технология'].iz());
+		let activity = sklonlxkand(['физкультура', 'музыка', 'лепка', 'технология'].iz());
 
 		let correct = [
 			`Если ${girl.ie} без косичек, значит, она не у ${relative.re} в гостях.`,
 			`Когда ${girl.ie} выполняет задание на ${activity.pe}, она с косичками.`,
 			`Если ${girl.ie} у ${relative.re}, ей заплетут косички.`,
-			`${girl.ie} всегда с косичками на ${activity.de}.`
+			`${girl.ie} всегда с косичками на ${activity.pe}.`
 		];
 		let wrong = [
 			`Каждый раз, когда у ${girl.re} заплетены косички, она находится у ${relative.re}.`,
