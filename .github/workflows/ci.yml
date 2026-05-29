@@ -1,0 +1,35 @@
+# .github/workflows/ci.yml
+name: CI Build
+
+on:
+  push:
+    branches: [ devel, main, master ]
+  pull_request:
+    branches: [ devel, main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js v22.7.0
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22.7.0'
+
+    - name: Install dependencies
+      run: npm install    
+      
+    - name: Ensure grunt-cli is available
+      # Legacy Grunt 0.4.x often requires explicit CLI installation to work reliably on modern Node
+      run: npm install grunt-cli --save-dev
+
+    - name: Run default Grunt build
+      run: ./node_modules/.bin/grunt
+
+    - name: Check task sets
+      run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets
+
