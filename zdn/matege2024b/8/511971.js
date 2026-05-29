@@ -8,12 +8,12 @@
 		let nCorrect = sl(1, 3);
 		let nWrong = 4 - nCorrect;
 
-		let expensive = sklonlxkand(['рыба', 'слон', 'крабовые палочки', 'сыр'].iz());
-		let medium = sklonlxkand(['чай', 'печенье', 'колбаса', 'мороженое',].iz());
-		let cheap = sklonlxkand(['йогурт', 'сок', 'морс', 'сухари'].iz(2));
+		let expensive = sklonlxkand(['рыба', 'мюсли', 'крабовые палочки', 'сыр'].iz());
+		let medium = sklonlxkand(['чай', 'печенье', 'колбаса', 'мороженое'].iz());
+		let cheap = sklonlxkand(['йогурт', 'упаковка сока', 'морс', 'шоколад'].iz(2));
 
 		let correct = [
-			`${cheap[0].ie.toZagl()} стоил дешевле ${expensive.re}.`,
+			`${cheap[0].ie.toZagl()} стоил` + ['', 'a'][cheap[0].rod] + ` дешевле ${expensive.re}.`,
 			`${expensive.ie.toZagl()} — самая дорогая из покупок.`,
 			`${medium.ie.toZagl()} дороже ${cheap[1].re}, но дешевле ${expensive.re}.`,
 			`${cheap[0].ie.toZagl()} дешевле ${medium.re}.`
@@ -26,7 +26,8 @@
 		];
 
 		NAtask.setTask({
-			text: `Хозяйка к празднику купила ${cheap[0].ve}, ${medium.ve}, ${cheap[1].ve} и ${expensive.ve}. ${medium.ie.toZagl()} стоило дороже ${cheap[1].re}, но дешевле ${expensive.re}, ${cheap[0].ie} стоил дешевле ${medium.re}. Выберите утверждения, которые ` +
+			text: `Хозяйка к празднику купила ${cheap[0].ve}, ${medium.ve}, ${cheap[1].ve} и ${expensive.ve}. ${medium.ie.toZagl()} стоил` + ['', 'a', 'о'][medium.rod] + 
+				` дороже ${cheap[1].re}, но дешевле ${expensive.re}, ${cheap[0].ie} стоил` + ['', 'a'][cheap[0].rod] + ` дешевле ${medium.re}. Выберите утверждения, которые ` +
 				(rand ? 'неверны' : 'верны') +
 				` при указанных условиях. В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов. Если ответов несколько, записывайте их номера в порядке возрастания.`,
 			answers: rand ? wrong : correct,
