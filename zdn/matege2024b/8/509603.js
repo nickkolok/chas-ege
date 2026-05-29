@@ -14,20 +14,20 @@
 		let activity = ['лабораторную работу', 'контрольную', 'эксперимент'].iz();
 
 		let correct = [
-			`Если телефон ${teacherName.re} ${teacherSurname.re} включён, значит, он не ведёт урок ${subject[0]}.`,
-			`Если ${teacherName.ie} ${teacherSurname.ie} проводит на уроке ${activity} по ${subject[0]}, значит, его телефон выключен.`,
-			`Во время урока ${subject[0]} телефон всегда выключен.`,
+			`Если телефон ${teacherName.re} ${teacherSurname.re} включён, значит, он не ведёт урок ${subject}.`,
+			`Если ${teacherName.ie} ${teacherSurname.ie} проводит на уроке ${activity} по ${subject}, значит, его телефон выключен.`,
+			`Во время урока ${subject} телефон всегда выключен.`,
 			`Выключенный телефон — необходимое условие проведения урока.`
 		];
 		let wrong = [
-			`Если телефон ${teacherName.re} ${teacherSurname.re} выключён, значит, он ведёт не урок ${subject[0]}.`,
-			`Если ${teacherName.ie} ${teacherSurname.ie} ведёт урок ${subject[0]}, значит, его телефон включён.`,
+			`Если телефон ${teacherName.re} ${teacherSurname.re} выключён, значит, он ведёт не урок ${subject}.`,
+			`Если ${teacherName.ie} ${teacherSurname.ie} ведёт урок ${subject}, значит, его телефон включён.`,
 			`Телефон может быть включён во время урока.`,
 			`${teacherName.ie} ${teacherSurname.ie} никогда не выключает телефон.`
 		];
 
 		NAtask.setTask({
-			text: `Когда учитель по ${subject[0]}, ${teacherName.ie} ${teacherSurname.ie}, ведёт урок, он обязательно отключает свой телефон. Выберите утверждения, которые ` + (rand ? 'неверны' : 'верны') + `
+			text: `Когда учитель по ${subject}, ${teacherName.ie} ${teacherSurname.ie}, ведёт урок, он обязательно отключает свой телефон. Выберите утверждения, которые ` + (rand ? 'неверны' : 'верны') + `
 			при приведённом условии. В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов. Если ответов несколько, записывайте их номера в порядке возрастания.`,
 			answers: rand ? wrong : correct,
 			wrongAnswers: rand ? correct : wrong,
