@@ -1,0 +1,133 @@
+sklonlxkand - модуль отвечающий за склонение существительных
+Принцип работы:
+function sklonlxkand(slovo,p1,al){
+	if(slovo.isArray){
+		return slovo.map(function(str){return sklonlxkand(str);});
+	}
+	if(slovo.ie)
+		return sklonlxkand(slovo.ie,p1,al);
+	if(lx[slovo]){
+		if(al)
+			alert('Такое слово уже есть в словаре.');
+		return new Word(lx[slovo]);
+	}
+	lxkand[slovo]=new Word();
+	if(p1!=undefined)
+		slovo+=p1;
+	var sl=slovo;
+	for(;sl.length && !lx[sl] && !lxskl[sl]; sl=sl.udalPerv()){};
+	var lxparent=lx[sl]?lx[sl]:lxskl[sl];
+	var osnova=slovo.udalPosl(sl.length);
+	lxkand[slovo]=lxparent.clone();
+	for(var padezh in lxpad)
+		lxkand[slovo][padezh]=osnova+lxparent[padezh];
+	lxkand[slovo].chr=1;
+	return lxkand[slovo];
+}
+Принцип работы:
+var meropr=sklonlxkand (['конференция','мероприятие','слёт'].iz());
+text: 'В среднем за день во время '+meropr.re
+где:
+ie: именительный	падеж единственного	числа
+re: родительный		падеж единственного	числа
+de: дательный		падеж единственного	числа
+ve: винительный		падеж единственного	числа
+te: творительный	падеж единственного	числа
+pe: предложный		падеж единственного	числа
+im: именительный	падеж множественного	числа
+rm: родительный		падеж множественного	числа
+dm: дательный		падеж множественного	числа
+vm: винительный		падеж множественного	числа
+tm: творительный	падеж множественного	числа
+pm: предложный		падеж множественного	числа
+
+
+
+chislitlx(число, существительное) - Возвращает строку, состоящую из данного числа и подходящего падежа слова p1, при этом
+полученное словосочетанию стоит в падеже p2 (если не указан - именительный).
+Используем в основной массе его. 
+Принцип работы:
+function chislitlx(p1,p2,p3,separator){
+/***/
+
+	let options = String(p3 || '');
+	let tex  = !!(1+options.search(/\$/g));
+	options  =  options.replace(/\$/g, '');
+	let nots = !!(1+options.search(/\./g));
+	options  =  options.replace(/\./g, '');
+
+	var rez=sklonlxkand(p2,undefined,0);
+	switch(options){
+		case 'r': return chislitM(p1,	rez.re,	 rez.rm,                rez.rm, tex, nots, separator);
+		case 'd': return chislitM(p1,	rez.de,	 rez.dm,                rez.dm, tex, nots, separator);
+		case 'v': return chislitM(p1,	rez.ve,	(rez.r2?rez.r2:rez.re),	rez.rm, tex, nots, separator);
+		case 't': return chislitM(p1,	rez.te,	 rez.tm,                rez.tm, tex, nots, separator);
+		case 'p': return chislitM(p1,	rez.pe,	 rez.pm,                rez.pm, tex, nots, separator);
+		case 'i':
+		default : return chislitM(p1,	rez.ie,	(rez.r2?rez.r2:rez.re),	rez.rm, tex, nots, separator);
+	}
+}
+Пример использования: 
+var dni=sluchch(2,10);
+text: 'длится '+chislitlx(dni,'день')+'.'
+
+
+
+chislitM - Вспомогательная функция для согласования существительного с числительным. Используется куда реже chislitlx
+function chislitM(p1,p2,p3,p4,tex,nots,separator){
+	if(Object.prototype.toString.call(separator) !== '[object String]') {
+		
+		separator = ' ';
+	}
+
+	let number = '';
+	if(tex && nots){
+		number = '$' + p1 + '$';
+	} else 	if(tex && !nots){
+		number = '$' + p1.ts(true) + '$';
+	} else 	if(!tex && nots){
+		number = '' + p1;
+	} else { // !tex && !nots
+		number = p1.ts();
+	}
+
+	return number + separator + chislit(p1,p2,p3,p4);
+}
+Пример использования: 
+chislitM(distanceToLeftStation*1000, 'метре', 'метрах', 'метрах')
+
+
+
+chislit - Вспомогательная функция для согласования существительного с числительным. 
+function chislit(a,s1,s2,s5){
+/**Вспомогательная процедура*/
+	a=a%100;
+
+	if(!a.isAlmostInteger())
+		return s2;
+
+	if((a>=5)&&(a<=20))
+		return s5;
+
+	a=a%10;
+	if(a==1)
+		return s1;
+
+	if((a<=4)&&(a>=2))
+		return s2;
+
+	return s5;
+}
+Пример использования:
+chislit(d,'имеет','имеют','имеют')
+
+
+
+declensionOfAdjectives - Склонение прилагательных с числительными
+Принцип работы:
+function declensionOfAdjectives(number, adjective) {
+	adjective = sklonlxkand(adjective);
+	return chislitM(number, adjective.ie, adjective.rm, adjective.rm);
+}
+Пример использования:
+ adjectiveForms.push(declensionOfAdjectives(itemQuantity, colors[i]));
