@@ -18,7 +18,7 @@
 			`${mediumAnimal[1].ie.toZagl()} и ${lightAnimal.ie} оба легче ${heavyAnimal.re}.`
 		];
 		let wrong = [
-			`${lightAnimal.ie.toZagl()} легче ${mediumAnimal[1].re}.`,
+			`${lightAnimal.ie.toZagl()} не легче ${mediumAnimal[1].re}.`,
 			`${mediumAnimal[1].ie.toZagl()} тяжелее ${mediumAnimal[0].re}.`,
 			`${mediumAnimal[0].ie.toZagl()} легче ${mediumAnimal[1].re}.`,
 			`${mediumAnimal[0].ie.toZagl()} самый тяжёлый.`
