@@ -7,9 +7,8 @@
 	let tails = total - heads;           
 	let position = sl(1, total);
 	let rand = sl1();
-	let straight = ['орёл','решка'];
-	let reverse = straight[1 - rand];
-	straight = ['орёл','решка'][rand];
+	let straight = ['орёл','решка'][rand];
+	let reverse = ['орёл','решка'][1 - rand];
 	let answer = tails / total;
 	genAssertZ1000(answer);
 
