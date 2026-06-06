@@ -8,7 +8,7 @@
 		let nCorrect = sl(1, 3);
 		let nWrong = 4 - nCorrect;
 
-		let bread = sklonlxkand(['рогалик','бублик','булочка','пирожок','ватрушка','плюшка','крендель'].iz());
+		let bread = sklonlxkand(['рогалик','бублик','булочка','пирожок','ватрушка','плюшка'].iz());
 		let total = sl(40, 60);
 		let cinnamon = sl(10, Math.floor(total * 0.4));
 		let sugar = sl(15, Math.floor(total * 0.5));
