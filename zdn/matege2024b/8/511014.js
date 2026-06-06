@@ -10,15 +10,15 @@
 
 		let total = sl(80, 120, 2);
 		let firstLang = sl(total / 2, total - 10);
-		let secondLang = sl(30, total - 10);
+		let secondLang = slKrome([firstLang], 30, total - 10);
 		let minBoth = Math.max(0, firstLang + secondLang - total);
-		let maxBoth = Math.min(firstLang, secondLang);
+		let maxBoth = Math.min(firstLang, secondLang); 
 		let lang = ['португальский', 'французский', 'китайский', 'немецкий', 'польский', 'английский', 'корейский', 'испанский'].iz(2);
 
 		let correct = [
 			`В этой фирме хотя бы ${chislitlx(minBoth,'человек','r')} знают и ${lang[0]}, и ${lang[1]} языки.`,
 			`Не более ${chislitlx(maxBoth,'человек','r')} из этой фирмы знают и португальский, и ${lang[1]} языки.`,
-			`Если все, кто знает ${lang[1]}, также знают ${lang[0]}, то двуязычных — ${secondLang}.`,
+			`Если все, кто знает ${lang[1]}, также знают ${lang[0]}, то двуязычных — ${maxBoth}.`,
 			`Если множества не пересекаются, то общее число — ${firstLang + secondLang}, но это возможно только если $\\le$ ${total}.`
 		];
 		let wrong = [
