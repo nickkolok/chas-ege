@@ -8,9 +8,8 @@
 		let nCorrect = sl(1, 3);
 		let nWrong = 4 - nCorrect;
 
-		let total = sl(80, 120);
+		let total = sl(80, 120, 2);
 		let firstLang = sl(total / 2, total - 10);
-		genAssertAlmostInteger(firstLang, 'Число не должно иметь знаков после запятой');
 		let secondLang = sl(30, total - 10);
 		let minBoth = Math.max(0, firstLang + secondLang - total);
 		let maxBoth = Math.min(firstLang, secondLang);
