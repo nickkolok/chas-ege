@@ -376,8 +376,8 @@
 			inputRoots = inputRoots.replace(/-1\\pi/g, '-\\pi').replace(/\b1\\pi/g, '\\pi');
 
 			chas2.task.setTask({
-				text: 'А) Решите уравнение: $$' + finalExpr.toTex() + '=0$$ Б) Укажите корни, принадлежащие отрезку: $$[' +
-					startStr + '; ' + endStr + ']$$' +
+				text: 'А) Решите уравнение: $$' + finalExpr.toTex() + '=0$$ Б) Укажите корни, принадлежащие отрезку: $$\\left[' +
+					startStr + '; ' + endStr + '\\right]$$' +
 					'(Ответ введите в виде: ' + '0, -(pi/2), 5pi/6, arccos(-1/10), pi-arccos(-1/10) и т.п.)',
 				analys: 'Решение: ' + uniqueEquations.join('') +
 					'\n\n$$' + answerText + '$$' +
