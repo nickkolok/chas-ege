@@ -3,6 +3,8 @@
 
 	let rez;
 	let S, N, n, xPercent, yPercent = 1, variants = 0;
+	let slVar = sl1();
+	let slPer = sl1();
 
 	let pol = ['взял', 'взяла'].iz();
 	let maleNames = [
@@ -23,33 +25,40 @@
 
 	do {
 		n = sluchch(3, 24, 3);
-		N = n * sluchch(1, 4);
+		N = [n * sluchch(2, 4), n].iz();
 		let monthlyPrincipal = sluchch(10000, 500000, 10000);
 		S = monthlyPrincipal * N;
 		xPercent = sluchch(2, 20, 1);
 		let x = xPercent / 100;
 		let sumInterest = x * S / N * (n * (2 * N - n + 1) / 2);
-		rez = Math.round(n * monthlyPrincipal + sumInterest);
+		yPercent = (((n * monthlyPrincipal + sumInterest) / S) - 1) * 100;
+		rez = n * monthlyPrincipal + sumInterest;
 		if (n == N) {
-			rez = xPercent;
-			variants = 1;
-			yPercent = Math.round((((n * monthlyPrincipal + sumInterest) / S) - 1) * 100);
+			if (slVar) {
+				rez = xPercent;
+				variants = 1;
+			} else {
+				rez = [yPercent, yPercent + 100][slPer];
+				variants = 2;
+			}
 		}
-	} while (!(rez * 100).isZ() && !(yPercent).isZ());
+	} while (!(rez * 100).isZ() || !(yPercent).isZ());
 
-
-	let questionText = `${name.ie} ${pol} в банке кредит ` + [`${S.toLocaleString('ru-RU')} рублей`, ``][variants] +
+	let questionText = `${name.ie} ${pol} в банке кредит ` + [`${S.toLocaleString('ru-RU')} рублей`, ``, ``][variants] +
 		` на срок ` + chislitlx(`${N}`, `месяц`) + `. ` +
-		`По договору каждый месяц общая сумма долга возрастает на ` + [`${xPercent}%`, `на одно и то же число процентов`][variants] +
+		`По договору каждый месяц общая сумма долга возрастает на ` + [`${xPercent}%`, `на одно и то же число процентов`,
+		`${xPercent}%`][variants] +
 		`, а затем уменьшается на сумму, уплаченную ` + [`${name.te}`, `клиентом`].iz() + ` в конце месяца. ` +
 		`Суммы выплат подбираются так, чтобы сумма долга уменьшалась равномерно, то есть на одну и ту же величину каждый месяц. ` + 
 		[`Какую сумму ` + [`${name.ie}`, `клиент`].iz() +
 		` выплатит банку в течение первых ` + chislitlx(`${n}`, `месяц`) + ` кредитования? Ответ дайте в рублях.`,
-		`Общая сумма выплат превысила сумму кредита на ${yPercent}%. Найдите месячную процентную ставку.`][variants];
+		`Общая сумма выплат превысила сумму кредита на ${yPercent}%. Найдите месячную процентную ставку.`,
+		`Сколько процентов от суммы кредита составила сумма, уплаченная ` + [`${name.te}`, `клиентом`].iz() + ` банку` + 
+		[` сверх кредита?`, `?`][slPer]][variants];
 
 	window.vopr.txt = questionText;
 	window.vopr.ver = [rez];
-
 })();
 //506958
 //509583
+//506957
