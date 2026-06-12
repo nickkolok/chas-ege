@@ -137,6 +137,8 @@ retryWhileUndefined(function() {
 		denominator2 = -denominator2;
 	}
 	let checkOneDenom = (num, denom) => denom === 1 ? num : '\\frac{' + num + '}{' + denom + '}';
+	let secondAWithoutCases = (N === 1) ? 'a' + checkSign(b1 + c1) : '\\frac{a' + checkSign(-(b1 + c1)) + '}{' + N + '}';
+	let firstAWithoutCases = (Q === 1) ? 'a' + checkSign(R) : '\\frac{a' + checkSign(-R) + '}{' + Q + '}';
 	let aFraction = (denominator1 === 1) ? numerator1.toString() : `\\frac{${numerator1}}{${denominator1}}`;
 	let bFraction = (denominator2 === 1) ? numerator2.toString() : `\\frac{${numerator2}}{${denominator2}}`;
 	let firstAnswer = (denominator1 === 1) ? numerator1 : numerator1 + '/' + denominator1;
@@ -161,7 +163,8 @@ retryWhileUndefined(function() {
 			'\\begin{cases} a \\le ' + k2 * left + ', \\\\ x \\le ' + checkOneDenom('a' + checkSign(R), P) +
 			', \\\\ x \\ge ' + checkOneDenom('a' + checkSign(-R), Q) + '. \\end{cases}' + '$$' +
 			'Решения образуют отрезок длины 1, если ' +
-			'$$ ' + checkOneDenom('a' + checkSign(R), P) + ' - \\left(' + checkOneDenom('a' + checkSign(-R), Q) + ' \\right) = 1 \\text{, откуда } a = ' + aFraction + '.$$' +
+			'$$ ' + checkOneDenom('a' + checkSign(R), P) + ' - ' + firstAWithoutCases + ' = 1 \\text{, откуда } a = ' + 
+			aFraction + '.$$' +
 
 			'$$ 2. ' + '\\begin{cases} a \\ge ' + k2 * right + ', \\\\ | ' + k2 + 'x - a| \\le ' + checkOne(k1) + 'x' + checkSign(b1 + c1) + ' \\end{cases}' +
 			'\\Leftrightarrow' +
@@ -171,7 +174,8 @@ retryWhileUndefined(function() {
 			'\\begin{cases} a \\ge ' + k2 * right + ', \\\\ x \\le ' + checkOneDenom('a' + checkSign(b1 + c1), Z) +
 			', \\\\ x \\ge ' + checkOneDenom('a' + checkSign(-(b1 + c1)), N) + '. \\end{cases}' + '$$' +
 			'Решения образуют отрезок длины 1, если ' +
-			'$$ ' + checkOneDenom('a' + checkSign(b1 + c1), Z) + ' - \\left(' + checkOneDenom('a' + checkSign(-(b1 + c1)), N) + ' \\right) = 1 \\text{, откуда } a = ' + bFraction + '.$$',
+			'$$ ' + checkOneDenom('a' + checkSign(b1 + c1), Z) + ' - ' + secondAWithoutCases + ' = 1 \\text{, откуда } a = ' +
+			bFraction + '.$$',
 		authors: ['Алендарь Сергей']
 	});
 
