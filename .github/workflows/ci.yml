@@ -8,9 +8,32 @@ on:
     branches: [ devel, main, master ]
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+      contents: read
+    outputs:
+      libs: ${{ steps.filter.outputs.libs }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Detect changes in critical paths
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            libs:
+              - 'lib/**'
+              - 'ext/**'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'test/**'
+
+  # === Основная сборка — запускается всегда ===
   build:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -24,12 +47,15 @@ jobs:
       run: npm install    
       
     - name: Ensure grunt-cli is available
-      # Legacy Grunt 0.4.x often requires explicit CLI installation to work reliably on modern Node
       run: npm install grunt-cli --save-dev
 
     - name: Run default Grunt build
       run: ./node_modules/.bin/grunt
 
+    # === Юнит-тесты — только если затронуты библиотеки ===
+    - name: Run Node.js unit tests
+      if: needs.changes.outputs.libs == 'true'
+      run: test/run-node-tests.js
+
     - name: Check task sets
       run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets
-
