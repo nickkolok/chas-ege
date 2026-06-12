@@ -106,10 +106,8 @@
 				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] +
 				'\\frac{' + Math.abs(B_int) + '}{' + 'x' + sign[checkSign(down[1])] + checkZero(Math.abs(down[1])) + '}' +
 				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] +
-				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + [
-					'\\ge', '\\le'
-				][Math.abs(1 + [0, -1][slSign])] + '0' + '$$' +
-				'Используйте в ответе знаки: -∞, +∞, U. Если в ответе есть дробь, записывайте её в виде x/y.',
+				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + 
+				['\\ge', '\\le'][Math.abs(1 + [0, -1][slSign])] + '0' + '$$',
 			analys: 'Решение: ' +
 				'$$' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] +
 				'\\frac{' + Math.abs(A_int) + '}{' + 'x' + sign[checkSign(down[0])] +
@@ -117,9 +115,8 @@
 				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] +
 				'\\frac{' + Math.abs(B_int) + '}{' + 'x' + sign[checkSign(down[1])] + checkZero(Math.abs(down[1])) + '}' +
 				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] +
-				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + [
-					'\\ge', '\\le'
-				][Math.abs(1 + [0, -1][slSign])] + '0' +
+				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + 
+				['\\ge', '\\le'][Math.abs(1 + [0, -1][slSign])] + '0' +
 				'\\Leftrightarrow' +
 				'\\frac{' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] + checkOne(Math.abs(A_int)) +
 				checkZeroWithCases(down[1]) + checkZeroWithCases(down[2]) +
@@ -144,16 +141,13 @@
 				checkZeroWithCases(down[1]) +
 				checkZeroWithCases(down[2]) + '}' + ['\\le', '\\ge'][slSign2] + '0' +
 				'\\Leftrightarrow' +
-				'\\left[\\begin{aligned} x ' + [
-					['\\le', '<'][checkAnswer(a)] + a, ['\\ge', '>'][checkAnswer(e)] + e
-				][slSign2] + ',\\\\' + [b + ['\\le', '<'][checkAnswer(b)], sign3[Math.abs(checkSign(numerator))] + '\\frac{' +
-					Math.abs(numerator) + '}{' + denominator + '}' + '\\le'
-				][slSign2] + ' x ' + ['\\le' + sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(numerator) + '}{' +
-					denominator + '}', ['\\le', '<'][checkAnswer(d)] + d
-				][slSign2] +
-				',\\\\' + [d + ['\\le', '<'][checkAnswer(d)], a + ['\\le', '<'][checkAnswer(a)]][slSign2] + ' x ' + [
-					['\\le', '<'][checkAnswer(e)] + e, ['\\le', '<'][checkAnswer(b)] + b
-				][slSign2] +
+				'\\left[\\begin{aligned} x ' + [['\\le', '<'][checkAnswer(a)] + a, ['\\ge', '>'][checkAnswer(e)] + e][slSign2] +
+				',\\\\' + [b + ['\\le', '<'][checkAnswer(b)], sign3[Math.abs(checkSign(numerator))] + '\\frac{' +
+				Math.abs(numerator) + '}{' + denominator + '}' + '\\le'][slSign2] + ' x ' +
+				['\\le' + sign3[Math.abs(checkSign(numerator))] + '\\frac{' +
+				Math.abs(numerator) + '}{' + denominator + '}', ['\\le', '<'][checkAnswer(d)] + d ][slSign2] +
+				',\\\\' + [d + ['\\le', '<'][checkAnswer(d)], a + ['\\le', '<'][checkAnswer(a)]][slSign2] + ' x ' +
+				[['\\le', '<'][checkAnswer(e)] + e, ['\\le', '<'][checkAnswer(b)] + b ][slSign2] +
 				'.\\end{aligned}\\right.$$',
 			answers: answer,
 			authors: ['Сергей Алендарь'],
