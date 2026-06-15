@@ -458,6 +458,11 @@ for (let i = 0; i < valuesInBase.length - 1; i++) {
 		[bigObjects[sluchIndexBigObject][0], mediumObjects[newSluchIndexMediumObject][0]][turnValueBToValueM]
 	];
 
+	let uniqueNames = new Set(arrayObjects);
+	if (uniqueNames.size !== arrayObjects.length) {
+    		throw new Error('Повторяющиеся названия объектов');
+	}
+
 	let arraySluchObjects = indexValue.map(index => arrayObjects[index]);
 
 	let arrayValue = [
@@ -486,4 +491,4 @@ for (let i = 0; i < valuesInBase.length - 1; i++) {
 		preference: measurementTypes,
 	});
 }, 10000);
-
+//506352
