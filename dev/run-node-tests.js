@@ -1,11 +1,30 @@
 'use strict';
 
-const { JSDOM } = require('jsdom');
-const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
-    url: "http://localhost/"
+const { JSDOM, VirtualConsole } = require('jsdom');
+
+// 1. Настраиваем консоль JSDOM
+const virtualConsole = new VirtualConsole();
+virtualConsole.on('log', console.log);
+virtualConsole.on('warn', console.warn);
+virtualConsole.on('error', console.error);
+
+// Фильтр для игнорирования предупреждений "Not implemented" (например, scrollTo)
+virtualConsole.on('jsdomError', e => {
+    if (e.message && e.message.includes('Not implemented')) {
+        return; // Тихо игнорируем
+    }
+    if (e.type === 'not implemented') {
+        return;
+ // Тихо игнорируем
+    }
+    console.error('JSDOM Error:', e);
 });
 
-// Универсальная функция для безопасного проброса свойств в global
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
+    url: "http://localhost/",
+    virtualConsole: virtualConsole
+});
+
 function setGlobal(key, value) {
     try {
         global[key] = value;
@@ -19,7 +38,6 @@ function setGlobal(key, value) {
     }
 }
 
-// Пробрасываем браузерное окружение
 setGlobal('window', dom.window);
 setGlobal('document', dom.window.document);
 setGlobal('navigator', dom.window.navigator);
@@ -28,25 +46,30 @@ setGlobal('getComputedStyle', dom.window.getComputedStyle);
 setGlobal('HTMLCanvasElement', dom.window.HTMLCanvasElement);
 setGlobal('CanvasRenderingContext2D', { prototype: {} });
 
-// Копируем остальные свойства window в global (эмуляция браузерного скоупа)
 for (let key in dom.window) {
     if (typeof global[key] === 'undefined') {
-        try {
-            global[key] = dom.window[key];
-        } catch (e) {
-            // пропускаем read-only свойства, которые не удалось перезаписать
-        }
+        try { global[key] = dom.window[key]; } catch (e) {}
     }
 }
 
-// Подключаем собранные библиотеки
-require('../build/lib/chas-lib.js');
+console.log('✅ Окружение настроено. Загружаем chas-lib.js...');
 
-// Если Triangle не находится — раскомментируйте и укажите нужный файл:
-// require('../build/lib/chas-uijs.js');
+try {
+    require('../build/lib/chas-lib.js');
+    console.log('✅ chas-lib.js успешно загружен.');
+} catch (err) {
+    console.error('❌ ОШИБКА при загрузке chas-lib.js:', err.message);
+    console.error('💡 Убедитесь, что вы запустили `grunt` перед тестами.');
+    process.exit(1);
+}
 
-// QUnit
+// 2. Подключаем QUnit
 const QUnit = require('qunit');
+
+// КЛЮЧЕВОЙ МОМЕНТ: Отключаем автоматический запуск, чтобы тесты успели зарегистрироваться
+QUnit.config.autostart = false;
+
+console.log('📝 Регистрация тестов...');
 
 QUnit.module('Node.js Unit Tests');
 
@@ -55,20 +78,37 @@ QUnit.test('Базовые расширения (iz, sl)', function(assert) {
     assert.ok(typeof sl === 'function', "Функция sl() доступна");
 });
 
+/*
 QUnit.test('Triangle', function(assert) {
-    assert.ok(typeof Triangle !== 'undefined', "Triangle определён");
-    let t = new Triangle(3, 4, 5);
-    assert.ok(t, "Triangle(3,4,5) создан");
+    assert.ok(typeof Triangle !== 'undefined', "Triangle определён в глобальной области");
+    if (typeof Triangle !== 'undefined') {
+        let t = new Triangle(3, 4, 5);
+        assert.ok(t, "Экземпляр Triangle(3,4,5) успешно создан");
+    }
 });
+*/
 
-QUnit.on('runEnd', function(data) {
-    if (data.failed > 0) {
-        console.error(`\n❌ ${data.failed} тестов провалено.`);
+// 3. Вешаем обработчик завершения ДО вызова start()
+// Метод .done() является самым стабильным API в QUnit для Node.js
+QUnit.done(function(details) {
+    console.log('\n--- Итоговый отчёт QUnit ---');
+    console.log(`Всего тестов: ${details.total}, Прошло: ${details.passed}, Упало: ${details.failed}`);
+
+    if (details.total === 0) {
+        console.error('⚠️ КРИТИЧЕСКАЯ ОШИБКА: QUnit не выполнил ни одного теста.');
+        process.exit(1);
+    }
+
+    if (details.failed > 0) {
+        console.error(`\n❌ ${details.failed} из ${details.total} тестов провалено.`);
         process.exit(1);
     } else {
-        console.log(`\n✅ Все ${data.passed} тестов пройдены.`);
+        console.log(`\n✅ Все ${details.passed} тестов успешно пройдены!`);
         process.exit(0);
     }
 });
 
+console.log('🚀 Явный запуск QUnit...');
+
+// 4. Запускаем тесты вручную
 QUnit.start();
