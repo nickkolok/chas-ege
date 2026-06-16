@@ -37,7 +37,9 @@ function setGlobal(key, value) {
     }
 }
 
+// Базовое браузерное окружение
 setGlobal('window', dom.window);
+setGlobal('self', dom.window); // Многие UMD-бандлы проверяют self вместо window
 setGlobal('document', dom.window.document);
 setGlobal('navigator', dom.window.navigator);
 setGlobal('HTMLElement', dom.window.HTMLElement);
@@ -45,23 +47,49 @@ setGlobal('getComputedStyle', dom.window.getComputedStyle);
 setGlobal('HTMLCanvasElement', dom.window.HTMLCanvasElement);
 setGlobal('CanvasRenderingContext2D', { prototype: {} });
 
-for (let key in dom.window) {
-    if (typeof global[key] === 'undefined') {
-        try { global[key] = dom.window[key]; } catch (e) { }
-    }
+console.log('✅ Окружение настроено. Загружаем библиотеки...');
+
+// =====================================================================
+// 2. ЗАГРУЗКА В ПРАВИЛЬНОМ ПОРЯДКЕ
+// =====================================================================
+
+// 2.1. Сначала внешние зависимости, которые объявляют глобальные классы
+try {
+    require('../node_modules/flatten-shape-geometry/dist/bundle.js');
+    console.log('  ↳ flatten-shape-geometry загружен');
+} catch (err) {
+    console.error('❌ ОШИБКА при загрузке flatten-shape-geometry:', err.message);
+    process.exit(1);
 }
 
-console.log('✅ Окружение настроено. Загружаем chas-lib.js...');
+// 2.2. Пробрасываем появившиеся в window классы в глобальную область Node.js
+if (dom.window.Triangle) {
+    global.Triangle = dom.window.Triangle;
+    console.log('  ↳ Triangle проброшен в global');
+}
+// Если там есть ещё классы (Point, Vector и т.д.), их тоже можно пробросить так же:
+// if (dom.window.Point) global.Point = dom.window.Point;
 
+// 2.3. Теперь загружаем основную библиотеку, которая зависит от Triangle
 try {
     require('../build/lib/chas-lib.js');
-    console.log('✅ chas-lib.js успешно загружен.');
+    console.log('  ↳ chas-lib.js загружен');
 } catch (err) {
     console.error('❌ ОШИБКА при загрузке chas-lib.js:', err.message);
     console.error('💡 Убедитесь, что вы запустили `grunt` перед тестами.');
     process.exit(1);
 }
 
+// Проверка
+if (typeof Triangle === 'undefined') {
+    console.warn('⚠️ ВНИМАНИЕ: Triangle всё ещё не найден в global!');
+} else {
+    console.log('  ↳ Глобальный Triangle успешно доступен!');
+}
+
+// =====================================================================
+// 3. QUnit SETUP
+// =====================================================================
 const QUnit = require('qunit');
 QUnit.config.autostart = false;
 
