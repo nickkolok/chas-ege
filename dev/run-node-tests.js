@@ -47,7 +47,7 @@ setGlobal('CanvasRenderingContext2D', { prototype: {} });
 
 for (let key in dom.window) {
     if (typeof global[key] === 'undefined') {
-        try { global[key] = dom.window[key]; } catch (e) {}
+        try { global[key] = dom.window[key]; } catch (e) { }
     }
 }
 
@@ -69,37 +69,38 @@ console.log('📝 Регистрация тестов...');
 
 QUnit.module('Node.js Unit Tests');
 
-QUnit.test('Базовые расширения (iz, sl)', function(assert) {
-    assert.ok(typeof [1,2,3].iz === 'function', "Метод iz() доступен");
+QUnit.test('Базовые расширения (iz, sl)', function (assert) {
+    assert.ok(typeof [1, 2, 3].iz === 'function', "Метод iz() доступен");
     assert.ok(typeof sl === 'function', "Функция sl() доступна");
 });
 
-QUnit.test('Triangle', function(assert) {
+QUnit.test('Triangle', function (assert) {
     assert.ok(typeof Triangle !== 'undefined', "Triangle определён в глобальной области");
     if (typeof Triangle !== 'undefined') {
         let t = new Triangle(3, 4, 5);
         assert.ok(t, "Экземпляр Triangle(3,4,5) успешно создан");
-        
-        // Пример проверки, которая может упасть, если свойства называются иначе
-        // assert.equal(t.a, 3, "Сторона 'a' равна 3");
     }
 });
 
-// =====================================================================
-// НОВОЕ: Подробный вывод ошибок для каждого упавшего теста
-// =====================================================================
-QUnit.testDone(function(details) {
+
+try {
+    const registerNodeTests = require('./node-unit-tests.js');
+    registerNodeTests(QUnit);
+    console.log('✅ Дополнительные тесты (node-unit-tests.js) подключены.');
+} catch (err) {
+    console.error('⚠️  Не удалось загрузить node-unit-tests.js:', err.message);
+}
+
+QUnit.testDone(function (details) {
     if (details.failed > 0) {
         console.error(`\n❌ Провален тест: "${details.name}"`);
         if (details.module) {
             console.error(`   Модуль: ${details.module}`);
         }
-        
-        details.assertions.forEach(function(assertion) {
+        details.assertions.forEach(function (assertion) {
             if (!assertion.result) {
                 console.error(`   ↳ ${assertion.message || 'Ошибка утверждения (без сообщения)'}`);
                 if (assertion.expected !== undefined) {
-                    // JSON.stringify помогает красиво вывести объекты и массивы, а не "[object Object]"
                     console.error(`     Ожидалось: ${JSON.stringify(assertion.expected)}`);
                 }
                 console.error(`     Получено:  ${JSON.stringify(assertion.actual)}`);
@@ -107,14 +108,13 @@ QUnit.testDone(function(details) {
         });
     }
 });
-// =====================================================================
 
-QUnit.done(function(details) {
+QUnit.done(function (details) {
     console.log('\n--- Итоговый отчёт QUnit ---');
     console.log(`Всего тестов: ${details.total}, Прошло: ${details.passed}, Упало: ${details.failed}`);
 
     if (details.total === 0) {
-        console.error('⚠️ КРИТИЧЕСКАЯ ОШИБКА: QUnit не выполнил ни одного теста.');
+        console.error('⚠️  КРИТИЧЕСКАЯ ОШИБКА: QUnit не выполнил ни одного теста.');
         process.exit(1);
     }
 
