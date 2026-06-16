@@ -8,14 +8,13 @@ virtualConsole.on('log', console.log);
 virtualConsole.on('warn', console.warn);
 virtualConsole.on('error', console.error);
 
-// Фильтр для игнорирования предупреждений "Not implemented" (например, scrollTo)
+// Фильтр для игнорирования предупреждений "Not implemented"
 virtualConsole.on('jsdomError', e => {
     if (e.message && e.message.includes('Not implemented')) {
-        return; // Тихо игнорируем
+        return;
     }
     if (e.type === 'not implemented') {
         return;
- // Тихо игнорируем
     }
     console.error('JSDOM Error:', e);
 });
@@ -63,10 +62,7 @@ try {
     process.exit(1);
 }
 
-// 2. Подключаем QUnit
 const QUnit = require('qunit');
-
-// КЛЮЧЕВОЙ МОМЕНТ: Отключаем автоматический запуск, чтобы тесты успели зарегистрироваться
 QUnit.config.autostart = false;
 
 console.log('📝 Регистрация тестов...');
@@ -78,18 +74,41 @@ QUnit.test('Базовые расширения (iz, sl)', function(assert) {
     assert.ok(typeof sl === 'function', "Функция sl() доступна");
 });
 
-/*
 QUnit.test('Triangle', function(assert) {
     assert.ok(typeof Triangle !== 'undefined', "Triangle определён в глобальной области");
     if (typeof Triangle !== 'undefined') {
         let t = new Triangle(3, 4, 5);
         assert.ok(t, "Экземпляр Triangle(3,4,5) успешно создан");
+        
+        // Пример проверки, которая может упасть, если свойства называются иначе
+        // assert.equal(t.a, 3, "Сторона 'a' равна 3");
     }
 });
-*/
 
-// 3. Вешаем обработчик завершения ДО вызова start()
-// Метод .done() является самым стабильным API в QUnit для Node.js
+// =====================================================================
+// НОВОЕ: Подробный вывод ошибок для каждого упавшего теста
+// =====================================================================
+QUnit.testDone(function(details) {
+    if (details.failed > 0) {
+        console.error(`\n❌ Провален тест: "${details.name}"`);
+        if (details.module) {
+            console.error(`   Модуль: ${details.module}`);
+        }
+        
+        details.assertions.forEach(function(assertion) {
+            if (!assertion.result) {
+                console.error(`   ↳ ${assertion.message || 'Ошибка утверждения (без сообщения)'}`);
+                if (assertion.expected !== undefined) {
+                    // JSON.stringify помогает красиво вывести объекты и массивы, а не "[object Object]"
+                    console.error(`     Ожидалось: ${JSON.stringify(assertion.expected)}`);
+                }
+                console.error(`     Получено:  ${JSON.stringify(assertion.actual)}`);
+            }
+        });
+    }
+});
+// =====================================================================
+
 QUnit.done(function(details) {
     console.log('\n--- Итоговый отчёт QUnit ---');
     console.log(`Всего тестов: ${details.total}, Прошло: ${details.passed}, Упало: ${details.failed}`);
@@ -100,15 +119,13 @@ QUnit.done(function(details) {
     }
 
     if (details.failed > 0) {
-        console.error(`\n❌ ${details.failed} из ${details.total} тестов провалено.`);
+        console.error(`\n❌ ИТОГ: ${details.failed} из ${details.total} тестов провалено.`);
         process.exit(1);
     } else {
-        console.log(`\n✅ Все ${details.passed} тестов успешно пройдены!`);
+        console.log(`\n✅ ИТОГ: Все ${details.passed} тестов успешно пройдены!`);
         process.exit(0);
     }
 });
 
 console.log('🚀 Явный запуск QUnit...');
-
-// 4. Запускаем тесты вручную
 QUnit.start();
