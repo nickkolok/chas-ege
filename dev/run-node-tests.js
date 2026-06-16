@@ -67,8 +67,29 @@ if (dom.window.Triangle) {
     global.Triangle = dom.window.Triangle;
     console.log('  ↳ Triangle проброшен в global');
 }
-// Если там есть ещё классы (Point, Vector и т.д.), их тоже можно пробросить так же:
-// if (dom.window.Point) global.Point = dom.window.Point;
+
+// 2.3. Загружаем @flatten-js/core (источник Circle, Point, Vector и др.)
+try {
+    // Node.js сам найдёт правильный entry point (обычно dist/main.js)
+    require('@flatten-js/core');
+    console.log('  ↳ @flatten-js/core загружен');
+} catch (err) {
+    console.error('❌ ОШИБКА при загрузке @flatten-js/core:', err.message);
+    console.error('💡 Попробуйте явный путь: require("../node_modules/@flatten-js/core/dist/main.js")');
+    process.exit(1);
+}
+
+// 2.4. УМНЫЙ ПРОБРОС: Находим все классы (с большой буквы) из @flatten-js/core и делаем их глобальными
+const flattenClassesToExpose = ['Circle', 'Point', 'Vector', 'Segment', 'Line', 'Arc', 'Box', 'Matrix', 'Ray'];
+let exposedCount = 0;
+
+flattenClassesToExpose.forEach(className => {
+    if (dom.window[className]) {
+        global[className] = dom.window[className];
+        exposedCount++;
+    }
+});
+console.log(`  ↳ Проброшено классов из @flatten-js/core в global: ${exposedCount} (включая Circle)`);
 
 // 2.3. Теперь загружаем основную библиотеку, которая зависит от Triangle
 try {
