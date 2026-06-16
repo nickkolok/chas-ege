@@ -123,11 +123,28 @@ QUnit.test('Базовые расширения (iz, sl)', function (assert) {
     assert.ok(typeof sl === 'function', "Функция sl() доступна");
 });
 
-QUnit.test('Triangle', function (assert) {
+QUnit.test('Triangle', function(assert) {
     assert.ok(typeof Triangle !== 'undefined', "Triangle определён в глобальной области");
+    
     if (typeof Triangle !== 'undefined') {
-        let t = new Triangle(3, 4, 5);
-        assert.ok(t, "Экземпляр Triangle(3,4,5) успешно создан");
+        // Используем правильный синтаксис, который принимает объект конфигурации
+        let a = 3, b = 4, c = 5;
+        let t = new Triangle({
+            lengths: {
+                lengthAB: a,
+                lengthBC: b,
+                lengthCA: c,
+            },
+            supplementary: {
+                calculateBisectors: true,
+            }
+        });
+        
+        assert.ok(t, "Экземпляр Triangle успешно создан через объект конфигурации");
+        assert.ok(typeof t === 'object', "Созданный экземпляр является объектом");
+        
+        // Дополнительная проверка: убедимся, что свойства инициализировались
+        assert.ok(t.lengths, "У треугольника есть свойство lengths");
     }
 });
 
