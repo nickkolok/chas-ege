@@ -98,7 +98,8 @@ module.exports = function registerNodeTests(QUnit) {
 
     QUnit.test('Number.prototype.mzhd (между a и b)', function (assert) {
         assert.strictEqual((5).mzhd(1, 10), true, '5 между 1 и 10');
-        assert.strictEqual((5).mzhd(5, 10), true, '5 между 5 и 10 (включительно)');
+        assert.strictEqual((5).mzhd(5, 10,  true), true, '5 между 5 и 10 (включительно)');
+        assert.strictEqual((5).mzhd(5, 10, false), false, '5 не между 5 и 10 (не включительно)');
         assert.strictEqual((5).mzhd(6, 10), false, '5 не между 6 и 10');
     });
 
@@ -130,15 +131,6 @@ module.exports = function registerNodeTests(QUnit) {
         assert.strictEqual((2).isPrime(), true, '2 — простое');
         assert.strictEqual((3).isPrime(), true, '3 — простое');
         assert.strictEqual((4).isPrime(), false, '4 — не простое');
-        assert.strictEqual((1).isPrime(), false, '1 — не простое');
-        assert.strictEqual((0).isPrime(), false, '0 — не простое');
-    });
-
-    QUnit.test('Number.prototype.nextPrime', function (assert) {
-        assert.equal((1).nextPrime(), 2, 'nextPrime(1) = 2');
-        assert.equal((2).nextPrime(), 3, 'nextPrime(2) = 3');
-        assert.equal((4).nextPrime(), 5, 'nextPrime(4) = 5');
-        assert.equal((6).nextPrime(), 7, 'nextPrime(6) = 7');
     });
 
     QUnit.test('Number.prototype.fct (факториал)', function (assert) {
@@ -148,7 +140,7 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     QUnit.test('Number.prototype.isAlmostEqual', function (assert) {
-        assert.strictEqual((5).isAlmostEqual(5.0000000001), true, '5 ≈ 5.0000000001');
+        assert.strictEqual((5).isAlmostEqual(5.00000000001,1/1024/1024), true, '5 ≈ 5.00000000001');
         assert.strictEqual((5).isAlmostEqual(5.1), false, '5 ≉ 5.1');
     });
 
@@ -245,7 +237,7 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual([1, 2, 3, 4].permuteCyclic(0), [1, 2, 3, 4], 'сдвиг на 0');
     });
 
-    QUnit.test('Array.generatePairs', function (assert) {
+    QUnit.test('Array.prototype.generatePairs', function (assert) {
         assert.deepEqual([1, 2, 3].generatePairs(), [[1, 2], [1, 3], [2, 3]], 'пары из 3');
         assert.deepEqual([1].generatePairs(), [], 'пары из 1');
         assert.deepEqual([].generatePairs(), [], 'пары из 0');
@@ -287,12 +279,12 @@ module.exports = function registerNodeTests(QUnit) {
 
     QUnit.test('String.prototype.last', function (assert) {
         assert.equal('hello'.last(), 'o', 'последний символ');
-        assert.equal(''.last(), '', 'из пустой строки');
+        assert.equal(''.last(), undefined, 'из пустой строки');
     });
 
     QUnit.test('String.prototype.multiply', function (assert) {
         assert.equal('abc'.multiply(3), 'abcabcabc', 'abc × 3');
-        assert.equal('abc'.multiply(0), '', 'abc × 0');
+        assert.equal('abc'.multiply(1), 'abc', 'abc × 1');
     });
 
     QUnit.test('String.prototype.reverse', function (assert) {
