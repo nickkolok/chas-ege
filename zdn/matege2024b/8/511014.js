@@ -14,12 +14,13 @@
 		let minBoth = Math.max(0, firstLang + secondLang - total);
 		let maxBoth = Math.min(firstLang, secondLang); 
 		let lang = ['португальский', 'французский', 'китайский', 'немецкий', 'польский', 'английский', 'корейский', 'испанский'].iz(2);
+		let moreOrLess = firstLang > secondLang ? 'больше' : 'меньше';
 
 		let correct = [
 			`В этой фирме хотя бы ${chislitlx(minBoth,'человек','r')} знают и ${lang[0]}, и ${lang[1]} языки.`,
 			`Не более ${chislitlx(maxBoth,'человек','r')} из этой фирмы знают и португальский, и ${lang[1]} языки.`,
 			`Если все, кто знает ${lang[1]}, также знают ${lang[0]}, то двуязычных — ${maxBoth}.`,
-			`Если множества не пересекаются, то общее число — ${firstLang + secondLang}, но это возможно только если $\\le$ ${total}.`
+			`Людей, знающих только ${lang[0]}, на ${(firstLang - secondLang).abs()} ${moreOrLess}, чем тех, кто знает только ${lang[1]}.`,
 		];
 		let wrong = [
 			`Нет ни одного человека в этой фирме, знающего и ${lang[0]}, и ${lang[1]} языки.`,
