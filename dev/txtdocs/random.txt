@@ -13,53 +13,6 @@ var drive = ['едь', 'ехай', 'ехайте'].iz(2);
 
 
 
-sluchDel - Случайный делитель числа a
-Принцип работы:
-Number.prototype.sluchDel=function(){
-	for(var r=this+1;!this.kratno(r);r=sluchch(1,this)){};
-	return r;
-}
-function sluchDel(a){
-	return a.sluchDel();
-}
-Пример использования:
-var c=sluchch(315,345,5);
-var a=sluchch(5,15);
-var v=1000;
-for(;v>20;){
-	v=(c*a*10).sluchDel();
-}
-
-
-
-zapslch - Присваивает элементам с m по n случайные значения от p1 до p2 с шагом генерации p3. p2 и p3 можно опускать, как в sluchch()
-Принцип работы:
-Array.prototype.zapslch=function(m,n,p1,p2,p3){
-	for(;m<=n;m++)
-		this[m]=sluchch(p1,p2,p3);
-	return this;
-}
-Пример использования:
-var b=[].zapslch(d1,d2,0,7);
-
-
-
-toFixedLess - массив, в котором каждый элемент - строка, содержащая соттв. элемент данного, округлённый до p1 цифр после запятой
-Array.prototype.toFixedLess=function(p1){
-Принцип работы:
-	var a=[];
-	var len=this.length;
-	for(var i=0;i<len;i++)
-		a[i]=this[i].toFixedLess(p1);
-	return a;
-}
-Пример использования:
-c = sluchch(0.01, 9.99, 0.01),
-z = sluchch(1, 4);
-(z+c).toFixedLess(5)
-
-
-
 slKrome() - Случайное число, кроме a:
 если a - массив, то не содержащееся в нём;
 если a - число или строка, то не равное ему;
@@ -103,8 +56,39 @@ function slKrome(a,p1,p2,p3){
 }
 Пример использования: var x2=slKrome([0,1,-1],-10,10,1);
 
-	
-	
+
+
+sluchDel - Случайный делитель числа a
+Принцип работы:
+Number.prototype.sluchDel=function(){
+	for(var r=this+1;!this.kratno(r);r=sluchch(1,this)){};
+	return r;
+}
+function sluchDel(a){
+	return a.sluchDel();
+}
+Пример использования:
+var c=sluchch(315,345,5);
+var a=sluchch(5,15);
+var v=1000;
+for(;v>20;){
+	v=(c*a*10).sluchDel();
+}
+
+
+
+zapslch - Присваивает элементам с m по n случайные значения от p1 до p2 с шагом генерации p3. p2 и p3 можно опускать, как в sluchch()
+Принцип работы:
+Array.prototype.zapslch=function(m,n,p1,p2,p3){
+	for(;m<=n;m++)
+		this[m]=sluchch(p1,p2,p3);
+	return this;
+}
+Пример использования:
+var b=[].zapslch(d1,d2,0,7);
+
+
+		
 sluchiz() - массив из p1 неповторяющихся элементов массива.
 Принцип работы:
 Array.prototype.sluchiz=function(n){
@@ -156,22 +140,6 @@ function sluchiz(a,n){
 	return b;
 }
 Пример использования: var a=sluchiz([20,25,40,80,100,125])[0];
-
-
-
-permuteCyclic - Циклическая перестановка массива [1,2,3,4].permuteCyclic(1)==>[4,1,2,3]
-Array.prototype.permuteCyclic = function (repeat) {
-	repeat %= this.length;
-
-	//Handling negative permutations
-	repeat += this.length * (repeat < 0);
-
-	let tail = this.splice(this.length - repeat);
-	this.splice(0, 0, ...tail);
-
-	return this;
-}
-Пример использования: question.data.permuteCyclic(sl(1, 3))
 
 
 
