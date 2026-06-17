@@ -11,6 +11,7 @@
 		let expensive = sklonlxkand(['рыба', 'мюсли', 'крабовые палочки', 'сыр'].iz());
 		let medium = sklonlxkand(['чай', 'печенье', 'колбаса', 'мороженое'].iz());
 		let cheap = sklonlxkand(['йогурт', 'упаковка сока', 'морс', 'шоколад'].iz(2));
+		let wordMix = [cheap[0].ve, medium.ve, cheap[1].ve, expensive.ve].shuffleJoin(', ');
 
 		let correct = [
 			`${cheap[0].ie.toZagl()} стоил` + ['', 'a'][cheap[0].rod] + ` дешевле ${expensive.re}.`,
@@ -26,7 +27,7 @@
 		];
 
 		NAtask.setTask({
-			text: `Хозяйка к празднику купила ${cheap[0].ve}, ${medium.ve}, ${cheap[1].ve} и ${expensive.ve}. ${medium.ie.toZagl()} стоил` + ['', 'a', 'о'][medium.rod] + 
+			text: `Хозяйка к празднику купила ${wordMix}. ${medium.ie.toZagl()} стоил` + ['', 'a', 'о'][medium.rod] + 
 				` дороже ${cheap[1].re}, но дешевле ${expensive.re}, ${cheap[0].ie} стоил` + ['', 'a'][cheap[0].rod] + ` дешевле ${medium.re}. Выберите утверждения, которые ` +
 				(rand ? 'неверны' : 'верны') +
 				` при указанных условиях. В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов. Если ответов несколько, записывайте их номера в порядке возрастания.`,
