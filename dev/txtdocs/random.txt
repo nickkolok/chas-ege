@@ -88,16 +88,6 @@ Array.prototype.zapslch=function(m,n,p1,p2,p3){
 var b=[].zapslch(d1,d2,0,7);
 
 
-		
-sluchiz() - массив из p1 неповторяющихся элементов массива.
-Принцип работы:
-Array.prototype.sluchiz=function(n){
-	return sluchiz(this,n);
-}
-Пример использования: 
-var a=sluchch(8,12);
-d=om.strany.ie.sluchiz(a);
-
 
 
 .pm() - Случайным образом возвращает число или ему противоположное
