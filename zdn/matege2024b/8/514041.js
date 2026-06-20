@@ -19,15 +19,15 @@
 		let drawn = sl(2, Math.min(6, total));
 
 		let correct = [
-			'Найдётся $' + chislitlx(Math.max(1, count2 - drawn), 'шарик', '$', colorsRM[1]) + ' без рисунков.',
-			'Не найдётся ' + chislitlx(drawn + sl(1, 5), 'шарик', '$', colorsRM[1]) + ' с рисунками.',
+			'Найдётся ' + chislitlx(Math.max(1, count2 - drawn), 'шарик', '$', (' '+colorsRM[1]+' ')) + ' без рисунков.',
+			'Не найдётся ' + chislitlx(drawn + sl(1, 5), 'шарик', '$', (' '+colorsRM[1]+' ')) + ' с рисунками.',
 			'Среди нарисованных шариков может не быть ни одного ' + colorsRE[2] + '.',
-			'Максимум $' + chislitlx(count2, 'шарик', '$', colorsRM[1]) + ' без рисунков.'
+			'Максимум ' + chislitlx(count2, 'шарик', '$', (' '+colorsRM[1]+' ')) + ' без рисунков.'
 		];
 
 		let wrong = [
 			'Если шарик ' + colors[0] + ', то на нём есть рисунок.',
-			'Найдётся $' + chislitlx(drawn, 'шарик', '$', colorsRM[1]) + ' шарика с рисунками.',
+			'Найдётся ' + chislitlx(drawn, 'шарик', '$', (' '+colorsRM[1]+' ')) + ' шарика с рисунками.',
 			'Все нарисованные шарики — ' + colorsVM[0] + '.',
 			'Нет ни одного ' + colorsRE[1] + ' шарика с рисунком.'
 		];
