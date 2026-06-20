@@ -39,4 +39,4 @@
 		AtoB2(nCorrect, nWrong);
 	}, 1000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=511014
+// https://mathb-ege.sdamgia.ru/problem?id=514088
