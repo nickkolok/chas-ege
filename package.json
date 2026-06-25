@@ -7,6 +7,7 @@
     "doc": "doc"
   },
   "dependencies": {
+    "@flatten-js/core": "^1.6.12",
     "ace-builds": "^1.4.12",
     "chas-storage": "^0.1.1",
     "cubic-spline-browserified": "^3.0.3",
