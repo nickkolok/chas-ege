@@ -8,9 +8,9 @@
 		let nCorrect = sl(1, 3);
 		let nWrong = 4 - nCorrect;
 
-		let expensive = sklonlxkand(['рыба', 'мюсли', 'крабовые палочки', 'сыр'].iz());
-		let medium = sklonlxkand(['чай', 'печенье', 'колбаса', 'мороженое'].iz());
-		let cheap = sklonlxkand(['йогурт', 'упаковка сока', 'морс', 'шоколад'].iz(2));
+		let expensive = sklonlxkand(['рыба', 'мюсли', 'говядина', 'сыр'].iz());
+		let medium = sklonlxkand(['чай', 'печенье', 'колбаса', 'свинина'].iz());
+		let cheap = sklonlxkand(['йогурт', 'курица', 'морс', 'шоколад'].iz(2));
 		let wordMix = [cheap[0].ve, medium.ve, cheap[1].ve, expensive.ve].shuffle();
 
 		let correct = [
