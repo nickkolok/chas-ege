@@ -15,10 +15,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Setup Node.js v22.7.0
+    - name: Setup Node.js v22.12.0
       uses: actions/setup-node@v4
       with:
-        node-version: '22.7.0'
+        node-version: '22.12.0'
 
     - name: Install dependencies
       run: npm install    
@@ -33,3 +33,8 @@ jobs:
     - name: Check task sets
       run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets
 
+    - name: Run Node.js unit tests
+      run: node dev/run-node-tests.js
+
+    - name: Check task sets
+      run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets
