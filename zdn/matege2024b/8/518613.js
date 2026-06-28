@@ -2,7 +2,7 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let key = '514041';
+		let key = '518613';
 		let preference = ['findTrue', 'findFalse'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 		let nCorrect = sl(1, 3);
@@ -44,4 +44,4 @@
 		AtoB2(nCorrect, nWrong);
 	}, 1000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=514041
+// https://mathb-ege.sdamgia.ru/problem?id=518613
