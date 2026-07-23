@@ -5,6 +5,7 @@
 		NAtask.setEvaluationTask({
 			expr: 'sqrt((b^' + sl(2, 10, 2) + ')/('  + ch * ch + 'b^' + sl(2, 10, 2) + '))',
 			variables: {b: sl(2, 9)},
+			forbiddenAnswers: [0],
 			authors: ['Алендарь Сергей'],
 		});
 	}, 1000);
