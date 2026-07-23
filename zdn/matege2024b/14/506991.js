@@ -22,31 +22,22 @@
         // Создаем три части выражения
         let part1 = '('+[
             'mixed('+wholeNumA+','+a+','+b[0]+')',
-            a+'/'+b[1],
+            '('+a+'/'+b[1]+')',
             sl(1,999)/div.iz()
         ].iz()+')'+['+','-'].iz()+
         '('+[
             'mixed('+wholeNumC+','+c+','+d[0]+')',
-            c+'/'+d[1]
+            '('+c+'/'+d[1]+')'
         ].iz()+')';
         
-        let part2 = '('+[
+        let part2 = '('+['','-'].iz()+[
             'mixed('+wholeNumE+','+e+','+f[0]+')',
             e+'/'+f[1],
             sl(1,999)/div.iz()
         ].iz()+')';
-        
-        let part3 = '(-'+[
-            'mixed('+wholeNumE+','+e+','+f[0]+')',
-            e+'/'+f[1],
-            sl(1,999)/div.iz()
-        ].iz()+')';
-
-        // Случайно выбираем знак для третьего множителя
-        let partWithSign = [part2, part3].iz();
         
         // Перемешиваем части
-        let parts = [part1, partWithSign].shuffle();
+        let parts = [part1, part2].shuffle();
         
         // Для первого множителя всегда обычные скобки
         // Для второго и третьего - forceBrackets добавит скобки только если отрицательное
