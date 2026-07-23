@@ -20,12 +20,12 @@
         genAssertIrreducible(e,f[1]);
 
         // Создаем три части выражения
-        let part1 = '('+[
+        let part1 = '('+['','-'].iz()+[
             'mixed('+wholeNumA+','+a+','+b[0]+')',
             '('+a+'/'+b[1]+')',
             sl(1,999)/div.iz()
         ].iz()+')'+['+','-'].iz()+
-        '('+[
+        ['(','forceBrackets(-'].iz()+[
             'mixed('+wholeNumC+','+c+','+d[0]+')',
             '('+c+'/'+d[1]+')'
         ].iz()+')';
