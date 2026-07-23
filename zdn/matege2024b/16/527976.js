@@ -5,7 +5,7 @@
         let slNumber = sl(2, 99).pm();
 
         NAtask.setEvaluationTask({
-            expr: [slNumber,''].iz()+['tg(' + angle + ')','ctg(' + angle + ')'].shuffle().join('*'),
+            expr: [slNumber,''].iz()+['tgdeg(' + angle + ')','ctgdeg(' + angle + ')'].shuffle().join('*'),
             authors: ['Алендарь Сергей'],
         });
     }, 10000);
