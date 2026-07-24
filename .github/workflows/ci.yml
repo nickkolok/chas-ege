@@ -45,14 +45,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # полная история для diff
+
+      - name: Fetch diff base (shallow, 1 commit)
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --depth=1 origin "${{ github.event.pull_request.base.sha }}"
+          else
+            BEFORE="${{ github.event.before }}"
+            # Первый пуш в ветку — before состоит из нулей
+            if echo "$BEFORE" | grep -qE '^0+$'; then
+              echo "Initial push — will check all files."
+              echo "LINT_ALL=1" >> "$GITHUB_ENV"
+            else
+              git fetch --depth=1 origin "$BEFORE"
+            fi
+          fi
 
       - name: Lint changed files in zdn/
         run: |
-          # Определяем базу для diff
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            ./dev/lint-zdn.sh "origin/${{ github.base_ref }}"
+          if [ "${LINT_ALL:-0}" = "1" ]; then
+            ./dev/lint-zdn.sh --all
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            ./dev/lint-zdn.sh "${{ github.event.pull_request.base.sha }}"
           else
-            ./dev/lint-zdn.sh "HEAD~1"
+            ./dev/lint-zdn.sh "${{ github.event.before }}"
           fi

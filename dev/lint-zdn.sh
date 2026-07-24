@@ -4,12 +4,15 @@
 #
 # Использование:
 #   ./dev/lint-zdn.sh [DIFF_BASE]
+#   ./dev/lint-zdn.sh --all
 #
-#   DIFF_BASE — база для git diff (по умолчанию: origin/devel).
-#   Примеры:
-#     ./dev/lint-zdn.sh              # diff против origin/devel
-#     ./dev/lint-zdn.sh HEAD~3       # diff против 3 коммитов назад
-#     ./dev/lint-zdn.sh --all        # проверить ВСЕ файлы в zdn/
+#   DIFF_BASE — коммит/SHA для сравнения (двухточечный diff).
+#   По умолчанию: origin/devel.
+#
+# Примеры:
+#   ./dev/lint-zdn.sh                    # diff против origin/devel
+#   ./dev/lint-zdn.sh abc1234            # diff против конкретного SHA
+#   ./dev/lint-zdn.sh --all              # проверить ВСЕ файлы в zdn/
 #
 # Выход: 0 — всё ок, 1 — найдены проблемы.
 
@@ -25,18 +28,19 @@ fi
 # ─── Собираем список файлов ───────────────────────────────────────────────────
 
 if [ "$CHECK_ALL" = true ]; then
-  CHANGED_FILES=$(find zdn/ -type f -name '*.js' | sort)
+  FILES=$(find zdn/ -type f | sort)
 else
-  CHANGED_FILES=$(git diff --name-only --diff-filter=ACMR "$DIFF_BASE"...HEAD -- 'zdn/' 2>/dev/null || true)
+  # Двухточечный diff: просто сравнение двух деревьев, история не нужна
+  FILES=$(git diff --name-only --diff-filter=ACMR "$DIFF_BASE" HEAD -- 'zdn/' 2>/dev/null || true)
 fi
 
-if [ -z "$CHANGED_FILES" ]; then
+if [ -z "$FILES" ]; then
   echo "lint-zdn: no files to check."
   exit 0
 fi
 
 echo "lint-zdn: checking files:"
-echo "$CHANGED_FILES" | sed 's/^/  /'
+echo "$FILES" | sed 's/^/  /'
 echo "---"
 
 # ─── Проверки ─────────────────────────────────────────────────────────────────
@@ -44,10 +48,7 @@ echo "---"
 ERRORS=0
 
 report() {
-  # report <file> <message>
-  local file="$1"
-  local msg="$2"
-  # Формат GitHub Actions annotation + просто читаемый вывод
+  local file="$1" msg="$2"
   echo "::error file=${file}::${msg}"
   echo "  ✗ ${file}: ${msg}"
 }
@@ -87,9 +88,6 @@ while IFS= read -r file; do
   fi
 
   # 5. Невидимый / bidi Unicode
-  #    U+200B ZWSP, U+200C ZWNJ, U+200D ZWJ, U+2060 Word Joiner,
-  #    U+FEFF BOM/ZWNBSP, U+00AD Soft Hyphen,
-  #    U+200E LRM, U+200F RLM, U+202A–202E bidi overrides
   HIDDEN_RE='[\x{200B}\x{200C}\x{200D}\x{2060}\x{FEFF}\x{00AD}\x{200E}\x{200F}\x{202A}-\x{202E}]'
   if grep -Pn "$HIDDEN_RE" "$file" > /dev/null 2>&1; then
     report "$file" "Hidden or bidirectional Unicode characters"
@@ -97,7 +95,7 @@ while IFS= read -r file; do
     ERRORS=$((ERRORS + 1))
   fi
 
-done <<< "$CHANGED_FILES"
+done <<< "$FILES"
 
 # ─── Итог ─────────────────────────────────────────────────────────────────────
 
