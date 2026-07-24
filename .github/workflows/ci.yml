@@ -52,73 +52,7 @@ jobs:
         run: |
           # Определяем базу для diff
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            DIFF_BASE="origin/${{ github.base_ref }}"
+            ./dev/lint-zdn.sh "origin/${{ github.base_ref }}"
           else
-            DIFF_BASE="HEAD~1"
+            ./dev/lint-zdn.sh "HEAD~1"
           fi
-
-          # Список изменённых файлов в zdn/
-          CHANGED_FILES=$(git diff --name-only --diff-filter=ACMR "$DIFF_BASE"...HEAD -- 'zdn/')
-
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "No changed files in zdn/ — nothing to lint."
-            exit 0
-          fi
-
-          echo "Changed files in zdn/:"
-          echo "$CHANGED_FILES"
-          echo "---"
-
-          ERRORS=0
-
-          while IFS= read -r file; do
-            [ -f "$file" ] || continue
-
-            # 1. Концевые пробелы / табы
-            if grep -Pn '[ \t]+$' "$file" > /dev/null 2>&1; then
-              echo "::error file=$file::Trailing whitespace detected:"
-              grep -Pn '[ \t]+$' "$file" | head -5
-              ERRORS=$((ERRORS + 1))
-            fi
-
-            # 2. CRLF вместо LF
-            if grep -Pn '\r$' "$file" > /dev/null 2>&1; then
-              echo "::error file=$file::CRLF line endings detected (should be LF)"
-              ERRORS=$((ERRORS + 1))
-            fi
-
-            # 3. Файл должен заканчиваться ровно одним переводом строки
-            if [ -s "$file" ] && [ "$(tail -c 1 "$file" | wc -l)" -eq 0 ]; then
-              echo "::error file=$file::No newline at end of file"
-              ERRORS=$((ERRORS + 1))
-            fi
-            if [ -s "$file" ] && [ "$(tail -c 2 "$file" | wc -l)" -eq 2 ]; then
-              echo "::error file=$file::Multiple blank lines at end of file"
-              ERRORS=$((ERRORS + 1))
-            fi
-
-            # 4. BOM в начале файла
-            if head -c 3 "$file" | grep -qP '\xEF\xBB\xBF'; then
-              echo "::error file=$file::UTF-8 BOM detected at start of file"
-              ERRORS=$((ERRORS + 1))
-            fi
-
-            # 5. Скрытые / невидимые Unicode-символы
-            #    U+200B zero-width space, U+200C/200D ZWNJ/ZWJ,
-            #    U+2060 word joiner, U+FEFF BOM/ZWNBSP, U+00AD soft hyphen,
-            #    U+200E/200F LRM/RLM, U+202A-202E bidi overrides
-            if grep -Pn '[\x{200B}\x{200C}\x{200D}\x{2060}\x{FEFF}\x{00AD}\x{200E}\x{200F}\x{202A}-\x{202E}]' "$file" > /dev/null 2>&1; then
-              echo "::error file=$file::Hidden or bidirectional Unicode characters detected:"
-              grep -Pn '[\x{200B}\x{200C}\x{200D}\x{2060}\x{FEFF}\x{00AD}\x{200E}\x{200F}\x{202A}-\x{202E}]' "$file" | head -5
-              ERRORS=$((ERRORS + 1))
-            fi
-
-          done <<< "$CHANGED_FILES"
-
-          if [ "$ERRORS" -gt 0 ]; then
-            echo ""
-            echo "::error::Lint found issues in $ERRORS file(s) under zdn/. Please fix before merging."
-            exit 1
-          fi
-
-          echo "All zdn/ lint checks passed ✓"
