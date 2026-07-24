@@ -61,7 +61,8 @@ jobs:
             fi
           fi
 
-      - name: Lint changed files in zdn/
+      # ── Шаг 1: shell-скрипт (быстрый, без зависимостей) ──────────────────
+      - name: Shell lint — zdn/
         run: |
           if [ "${LINT_ALL:-0}" = "1" ]; then
             ./dev/lint-zdn.sh --all
@@ -70,3 +71,40 @@ jobs:
           else
             ./dev/lint-zdn.sh "${{ github.event.before }}"
           fi
+
+      # ── Шаг 2: ESLint (синтаксис, дубли ключей, smart-tabs и т.д.) ───────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+
+      - name: Install ESLint
+        # Ставим только eslint + formatter, не весь npm install —
+        # иначе потащим grunt и прочее, что для линта не нужно.
+        # --no-save: не модифицируем package.json / lockfile на раннере.
+        run: npm install --no-save eslint@8 eslint-formatter-github-actions
+
+      - name: ESLint — zdn/
+        run: |
+          # Собираем список изменённых .js-файлов в zdn/
+          if [ "${LINT_ALL:-0}" = "1" ]; then
+            FILES=$(find zdn/ -type f -name '*.js' | sort)
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            FILES=$(git diff --name-only --diff-filter=ACMR \
+              "${{ github.event.pull_request.base.sha }}" HEAD -- 'zdn/*.js')
+          else
+            FILES=$(git diff --name-only --diff-filter=ACMR \
+              "${{ github.event.before }}" HEAD -- 'zdn/*.js')
+          fi
+
+          # Если изменённых .js нет — пропускаем
+          if [ -z "$FILES" ]; then
+            echo "No changed .js files in zdn/ — skipping ESLint."
+            exit 0
+          fi
+
+          echo "$FILES" | xargs npx eslint \
+            --rulesdir dev/eslint_rules \
+            --config dev/eslintrc.zdn.json \
+            --no-eslintrc \
+            --format github-actions
