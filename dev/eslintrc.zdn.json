@@ -16,7 +16,6 @@
     "no-irregular-whitespace": "error",
     "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
     "no-dupe-keys": "error",
-    "local/no-hidden-unicode": "error"
-  },
-  "plugins": ["local"]
+    "no-hidden-unicode": "error"
+  }
 }
