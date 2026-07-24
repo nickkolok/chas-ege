@@ -9,7 +9,7 @@ retryWhileError(function() {
 
 	let objectsArray1, objectsArray2, objectsArray3, objectsArray4;
 	let value = [
-		['масса', 'вес'].iz(), '', '', 'площадь', 'объём'
+		'масса', '', '', 'площадь', 'объём'
 	];
 	let timeSuffix = '';
 
