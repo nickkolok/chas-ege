@@ -1,0 +1,21 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "rules": {
+    "no-trailing-spaces": "error",
+    "linebreak-style": ["error", "unix"],
+    "eol-last": ["error", "always"],
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 0, "maxBOF": 0 }],
+    "unicode-bom": ["error", "never"],
+    "no-irregular-whitespace": "error",
+    "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
+    "no-dupe-keys": "error",
+    "no-hidden-unicode": "error"
+  }
+}
