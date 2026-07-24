@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "eslint": "^8.57.1",
+    "eslint-formatter-github-actions": "^1.1.0",
     "grunt": "^0.4.5",
     "grunt-check-pages": "^0.9.0",
     "grunt-concurrent": "^2.2.1",
