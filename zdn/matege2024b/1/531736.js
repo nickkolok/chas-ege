@@ -18,7 +18,7 @@
         NAtask.setTask({
             text:
                 'Файл размером ' + chislitlx(firstData, dataUnits, '$') + ' скачался за ' + chislitlx(firstTime, timeUnits, 'v$') +
-                '(скорость загрузки считайте постоянной).' +
+                ' (скорость загрузки считайте постоянной). ' +
                 'За сколько ' + timeUnits.rm + ' скачается файл размером ' + chislitlx(secondData, dataUnits, '$') + ', если скорость загрузки останется прежней?',
             answers: secondTime,
         });
