@@ -11,7 +11,7 @@ retryWhileError(function() {
 	let value = [
 		['масса', 'вес'].iz(), '', '', 'площадь', 'объём'
 	];
-	let minutes = '';
+	let timeSuffix = '';
 
 	switch (typeIndex) {
 	case 0:
@@ -96,7 +96,7 @@ retryWhileError(function() {
 		];
 		break;
 	case 1:
-		minutes = ['', ' 15 мин', ' 30 мин', ' 45 мин'].iz();
+		timeSuffix = ['', '15 мин', '30 мин', '45 мин'].iz();
 		measurements = ['с', 'мин', 'ч', 'дн'];
 		objectsArray1 = [
 			['время взмаха крыла колибри', 0.01, 0.1, 0.1],
@@ -468,7 +468,7 @@ for (let i = 0; i < valuesInBase.length - 1; i++) {
 	let arrayValue = [
 		valueVS.ts() + ' ' + [measurements[0], measurements[1]][sluchValueS],
 		valueS.ts() + ' ' + measurements[1],
-		valueM.ts() + ' ' + measurements[2] + minutes,
+		valueM.ts() + ' ' + measurements[2] + (timeSuffix ? ' ' + timeSuffix : ''),
 		valueB.ts() + ' ' + [measurements[3], measurements[2]][sluchValueM]
 	];
 
