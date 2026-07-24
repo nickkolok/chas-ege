@@ -425,17 +425,17 @@ retryWhileError(function() {
 
 let toBaseCoeff = [
     [0.001, 1, 1000, 1000000],
-    [1/3600, 1/60, 1, 24],  
+    [1/3600, 1/60, 1, 24],
     [0.001, 0.01, 1, 1000],
-    [1e-6, 1e-4, 1, 1e6], 
-    [1e-6, 0.001, 1, 1e9]  
+    [1e-6, 1e-4, 1, 1e6],
+    [1e-6, 0.001, 1, 1e9]
 ][typeIndex];
 
 let unitIndices = [
-    sluchValueS ? 1 : 0,  
-    1,                    
-    2,                    
-    sluchValueM ? 2 : 3    
+    sluchValueS ? 1 : 0,
+    1,
+    2,
+    sluchValueM ? 2 : 3
 ];
 
 let valuesInBase = [
