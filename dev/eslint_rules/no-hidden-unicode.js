@@ -11,7 +11,7 @@ module.exports = {
   create(context) {
     return {
       Program(node) {
-        const src = context.getSourceCode().getText();
+        const src = context.sourceCode.getText();
         const lines = src.split("\n");
         lines.forEach((line, i) => {
           const m = line.match(HIDDEN_RE);
