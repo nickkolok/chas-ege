@@ -103,7 +103,7 @@ jobs:
             exit 0
           fi
 
-          echo "$FILES" | xargs npx eslint \
+          echo "$FILES" | xargs -d '\n' npx eslint \ \
             --rulesdir dev/eslint_rules \
             --config dev/eslintrc.zdn.json \
             --no-eslintrc \
