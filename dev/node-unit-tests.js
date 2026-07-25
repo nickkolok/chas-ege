@@ -383,7 +383,6 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(gp.member(2), 6, 'b₂ = 6');
         assert.equal(gp.member(3), 18, 'b₃ = 18');
     });
-};
 
 // ============================================================
 // autoScale (lib/func.js)
@@ -500,3 +499,4 @@ assert.ok(outOfRange, 'Ненулевая точка вышла за диапа�
 assert.strictEqual(result[0].x, 0, 'Нулевая точка осталась в (0,0)');
 assert.strictEqual(result[0].y, 0, 'Нулевая точка осталась в (0,0)');
 });
+};
