@@ -384,3 +384,92 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(gp.member(3), 18, 'b₃ = 18');
     });
 };
+
+// ============================================================
+// autoScale (lib/func.js)
+// ============================================================
+
+QUnit.module('autoScale');
+
+QUnit.test('2D: масштабирует точки до выхода за диапазон', function(assert) {
+let result = autoScale([{x: 1, y: 1}, {x: -1, y: -1}]);
+let outOfRange = result.some(function(p) {
+return p.x > 180 || p.x < -180 || p.y > 160 || p.y < -160;
+});
+assert.ok(outOfRange, 'Точки вышли за диапазон по x или y');
+});
+
+QUnit.test('2D: результат содержит только x и y', function(assert) {
+let result = autoScale([{x: 1, y: 1}]);
+assert.strictEqual(result[0].z, undefined, 'Нет свойства z');
+assert.ok(typeof result[0].x === 'number', 'x — число');
+assert.ok(typeof result[0].y === 'number', 'y — число');
+});
+
+QUnit.test('2D: maxScale ограничивает масштабирование', function(assert) {
+// Очень маленькие точки не выйдут за диапазон при maxScale=2
+let result = autoScale([{x: 0.001, y: 0.001}], undefined, [], {maxScale: 2, step: 0.1});
+assert.ok(Math.abs(result[0].x) <= 180, 'x в диапазоне при maxScale');
+assert.ok(Math.abs(result[0].y) <= 160, 'y в диапазоне при maxScale');
+});
+
+QUnit.test('2D: genAssert бросает ошибку для точек вне начального диапазона', function(assert) {
+assert.throws(function() {
+autoScale([{x: 200, y: 0}]);
+}, 'x=200 > 180 — ошибка');
+assert.throws(function() {
+autoScale([{x: 0, y: -200}]);
+}, 'y=-200 < -160 — ошибка');
+});
+
+QUnit.test('2D: кастомный диапазон', function(assert) {
+let result = autoScale([{x: 1, y: 1}], undefined, [], {
+startX: -10, finishX: 10, startY: -10, finishY: 10, step: 0.1
+});
+let outOfRange = result.some(function(p) {
+return p.x > 10 || p.x < -10 || p.y > 10 || p.y < -10;
+});
+assert.ok(outOfRange, 'Точки вышли за кастомный диапазон [-10..10]');
+});
+
+QUnit.test('2D: меньший step даёт более точный результат', function(assert) {
+let rSmall = autoScale([{x: 1, y: 1}], undefined, [], {step: 0.01});
+let rLarge = autoScale([{x: 1, y: 1}], undefined, [], {step: 10});
+// С маленьким шагом x будет ближе к границе 180
+assert.ok(rSmall[0].x <= rLarge[0].x, 'Меньший шаг → точнее к границе');
+});
+
+QUnit.test('2D: симметрия масштабирования', function(assert) {
+let result = autoScale([{x: 1, y: 1}, {x: -1, y: -1}]);
+assert.ok(Math.abs(result[0].x + result[1].x) < 1e-10, 'x симметричны');
+assert.ok(Math.abs(result[0].y + result[1].y) < 1e-10, 'y симметричны');
+});
+
+QUnit.test('3D: проекция и масштабирование', function(assert) {
+let result = autoScale([{x: 1, y: 1, z: 0}]);
+assert.strictEqual(result[0].z, undefined, 'Результат — 2D (нет z)');
+let outOfRange = result.some(function(p) {
+return p.x > 180 || p.x < -180 || p.y > 160 || p.y < -160;
+});
+assert.ok(outOfRange, '3D-точки вышли за диапазон после проекции');
+});
+
+QUnit.test('3D: кастомная камера без поворотов', function(assert) {
+let camera = {x: 0, y: 0, z: 0, scale: 1, rotationX: 0, rotationY: 0, rotationZ: 0};
+let result = autoScale([{x: 1, y: 1, z: 0}], camera);
+assert.strictEqual(result[0].z, undefined, 'Результат — 2D');
+assert.ok(typeof result[0].x === 'number' && !isNaN(result[0].x), 'x — корректное число');
+assert.ok(typeof result[0].y === 'number' && !isNaN(result[0].y), 'y — корректное число');
+});
+
+QUnit.test('3D: точка на оси z проецируется в начало при нулевых углах', function(assert) {
+// При rotationX=rotationY=rotationZ=0 точка (0,0,1) -> dx=0,dy=0,dz=1
+// x2D = 0*scale = 0, y2D = (0*cos0 + 1*sin0)*scale = 0
+// Но genAssert требует, чтобы начальная проекция была в диапазоне — (0,0) в диапазоне ✓
+// Однако все итерации будут давать (0,0) — никогда не выйдет за диапазон
+// Значит упрётся в maxScale
+let camera = {x: 0, y: 0, z: 0, scale: 1, rotationX: 0, rotationY: 0, rotationZ: 0};
+let result = autoScale([{x: 0, y: 0, z: 1}], camera, [], {maxScale: 5, step: 0.1});
+assert.ok(Math.abs(result[0].x) < 1e-10, 'x ≈ 0');
+assert.ok(Math.abs(result[0].y) < 1e-10, 'y ≈ 0');
+});
