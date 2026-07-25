@@ -151,7 +151,9 @@ QUnit.test('Triangle', function(assert) {
 
 try {
     const registerNodeTests = require('./node-unit-tests.js');
+const registerAutoScaleTests = require('./node-unit-tests-autoscale.js');
     registerNodeTests(QUnit);
+registerAutoScaleTests(QUnit);
     console.log('✅ Дополнительные тесты (node-unit-tests.js) подключены.');
 } catch (err) {
     console.error('⚠️  Не удалось загрузить node-unit-tests.js:', err.message);
