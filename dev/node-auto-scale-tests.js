@@ -18,8 +18,10 @@ module.exports = function registerAutoScaleTests(QUnit) {
 			maxScale: 100,
 		});
 		assert.strictEqual(result.length, 1, 'одна вершина на выходе');
-		assert.strictEqual(result[0].x, 6, 'x = 1 * 6 = 6 (вышел за 5)');
-		assert.strictEqual(result[0].y, 6, 'y = 1 * 6 = 6 (вышел за 5)');
+		// mzhd без 3-го аргумента — строгое неравенство,
+		// поэтому (5,5) уже «вне» диапазона (-5, 5)
+		assert.strictEqual(result[0].x, 5, 'x = 1 * 5 = 5 (граница, строго вне)');
+		assert.strictEqual(result[0].y, 5, 'y = 1 * 5 = 5 (граница, строго вне)');
 	});
 
 	QUnit.test('2D: разные x и y — выход по большей координате', function (assert) {
@@ -70,8 +72,8 @@ module.exports = function registerAutoScaleTests(QUnit) {
 		});
 		assert.ok(result[0].x < 5, 'x не вышел за диапазон');
 		assert.ok(result[0].y < 5, 'y не вышел за диапазон');
-		assert.strictEqual(result[0].x, 0.003, 'x = 0.001 * 3');
-		assert.strictEqual(result[0].y, 0.003, 'y = 0.001 * 3');
+		assert.ok(Math.abs(result[0].x - 0.003) < 1e-12, 'x ≈ 0.001 * 3');
+		assert.ok(Math.abs(result[0].y - 0.003) < 1e-12, 'y ≈ 0.001 * 3');
 	});
 
 	QUnit.test('3D: без поворотов эквивалентно 2D', function (assert) {
@@ -86,8 +88,8 @@ module.exports = function registerAutoScaleTests(QUnit) {
 			step: 1,
 			maxScale: 100,
 		});
-		assert.strictEqual(result[0].x, 6, 'x = 6 (как в 2D)');
-		assert.strictEqual(result[0].y, 6, 'y = 6 (как в 2D)');
+		assert.strictEqual(result[0].x, 5, 'x = 5 (как в 2D, граница)');
+		assert.strictEqual(result[0].y, 5, 'y = 5 (как в 2D, граница)');
 		assert.strictEqual(result[0].z, undefined, 'z не возвращается (2D-результат)');
 	});
 
@@ -106,7 +108,9 @@ module.exports = function registerAutoScaleTests(QUnit) {
 			step: 1,
 			maxScale: 100,
 		});
-		assert.ok(Math.abs(result[0].x) > 5, 'x вышел за диапазон');
+		// при rotationY = π/2 координата z переходит в x:
+		// на scale = 5 получаем x = -5, что строго вне (-5, 5)
+		assert.ok(Math.abs(result[0].x) >= 5, 'x достиг границы диапазона');
 		assert.ok(Math.abs(result[0].y) < 1, 'y ≈ 0 (не изменился)');
 	});
 
@@ -138,8 +142,8 @@ module.exports = function registerAutoScaleTests(QUnit) {
 			step: 1,
 			maxScale: 100,
 		});
-		assert.strictEqual(result[0].x, -6, 'x = -1 * 6 = -6 (вышел за -5)');
-		assert.strictEqual(result[0].y, -6, 'y = -1 * 6 = -6 (вышел за -5)');
+		assert.strictEqual(result[0].x, -5, 'x = -1 * 5 = -5 (граница, строго вне)');
+		assert.strictEqual(result[0].y, -5, 'y = -1 * 5 = -5 (граница, строго вне)');
 	});
 
 };
