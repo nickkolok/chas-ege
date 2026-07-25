@@ -473,3 +473,30 @@ let result = autoScale([{x: 0, y: 0, z: 1}], camera, [], {maxScale: 5, step: 0.1
 assert.ok(Math.abs(result[0].x) < 1e-10, 'x ≈ 0');
 assert.ok(Math.abs(result[0].y) < 1e-10, 'y ≈ 0');
 });
+
+QUnit.test('3D: degenerate case — быстрое завершение, а не цикл до maxScale', function(assert) {
+// Точка на оси z при нулевых поворотах проецируется в (0,0)
+// Без фикса: цикл крутился бы до maxScale=100 (~990 итераций)
+// С фиксом: одна итерация, scale = 1 + step
+let camera = {x: 0, y: 0, z: 0, scale: 1, rotationX: 0, rotationY: 0, rotationZ: 0};
+autoScale([{x: 0, y: 0, z: 1}], camera, [], {maxScale: 100, step: 0.1});
+assert.ok(camera.scale < 2, 'scale не вырос до maxScale — цикл завершился рано');
+assert.ok(Math.abs(camera.scale - 1.1) < 1e-10, 'Ровно одна итерация: scale = 1.1');
+});
+
+QUnit.test('2D: degenerate case — все точки в (0,0)', function(assert) {
+let camera = {x: 0, y: 0, z: 0, scale: 1, rotationX: 0, rotationY: 0, rotationZ: 0};
+autoScale([{x: 0, y: 0}, {x: 0, y: 0}], camera, [], {maxScale: 50, step: 0.1});
+assert.ok(camera.scale < 2, 'Не крутится до maxScale');
+});
+
+QUnit.test('2D: смешанный случай — одна точка в (0,0), другая нет', function(assert) {
+// Цикл должен продолжаться, пока ненулевая точка не выйдет за диапазон
+let result = autoScale([{x: 0, y: 0}, {x: 1, y: 1}]);
+let outOfRange = result.some(function(p) {
+return p.x > 180 || p.x < -180 || p.y > 160 || p.y < -160;
+});
+assert.ok(outOfRange, 'Ненулевая точка вышла за диапазон');
+assert.strictEqual(result[0].x, 0, 'Нулевая точка осталась в (0,0)');
+assert.strictEqual(result[0].y, 0, 'Нулевая точка осталась в (0,0)');
+});
