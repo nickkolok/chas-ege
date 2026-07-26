@@ -162,6 +162,44 @@ echo ""
 echo ">>> commit"
 git commit --no-edit
 
+# ─── Safeguard: результат мёржа vs devel ────────────────────────────
+echo ">>> Проверяю результат мёржа..."
+
+SAFEGUARD_OK=1
+while IFS= read -r file; do
+    [ -z "$file" ] && continue
+
+    STAT=$(git diff --numstat origin/devel HEAD -- "$file")
+    if [ -z "$STAT" ]; then
+        # Файл идентичен devel — тоже ок (номер мог уже быть в devel)
+        continue
+    fi
+
+    ADDED=$(echo "$STAT" | awk '{print $1}')
+    REMOVED=$(echo "$STAT" | awk '{print $2}')
+
+    if [ "$REMOVED" -gt 0 ]; then
+        echo "  ✗ $file: удалено $REMOVED стр. (ожидалось 0)"
+        SAFEGUARD_OK=0
+    fi
+    if [ "$ADDED" -gt 1 ]; then
+        echo "  ✗ $file: добавлено $ADDED стр. (ожидалось ≤1)"
+        SAFEGUARD_OK=0
+    fi
+done <<< "$GOOD_FILES"
+
+if [ "$SAFEGUARD_OK" -ne 1 ]; then
+    echo ""
+    echo "ОШИБКА: мёрж привёл к подозрительному результату. Пуш отменён."
+    echo "Ветка «$BRANCH» оставлена — посмотри руками:"
+    echo "  git diff origin/devel HEAD -- zdn/"
+    echo "Откат:"
+    echo "  git reset --hard HEAD~1 && git checkout devel && git branch -D $BRANCH"
+    exit 1
+fi
+
+echo "  ✓ ОК: только добавления, ≤1 строки на файл."
+
 # ─── Пуш ────────────────────────────────────────────────────────────
 echo ">>> push → $REMOTE (${HEAD_BRANCH:-$BRANCH})"
 git push "$REMOTE" "HEAD:${HEAD_BRANCH:-$BRANCH}"
