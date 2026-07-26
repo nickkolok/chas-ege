@@ -2,9 +2,11 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-
-        let rand = sl1();
-        let randUpgrade = sl1();
+        let key = '515778';
+        let preference1 = ['paymentsToGovernment', 'paymentsToPrivateShareHolders'];
+        let preference2 = ['result', 'companyProfit'];
+        let rand = getSelectedPreferenceFromList(key, preference1);
+        let randUpgrade = getSelectedPreferenceFromList(key, preference2);
         let govOrPriShare = ['государству', 'частным акционерам'][rand];
         let nameOfCompany = ['Что за люди', 'Одичалая ягода', 'Гелий', 'Бра и Тришка', 'Винни и Пух', '1 раз отрежь - 8 раз переделывай', 'Стул да стол', 'Папины сапожки', 'Юпитерианцы', 'Вершки да Корешки'].iz();
         let government = sl(1, 10, 1);
@@ -22,6 +24,7 @@
                 'Часть из этой прибыли, после уплаты налогов, пошла в качестве выплаты ' + govOrPriShare + ' и составила ' +
                 '$' + result + '$' + ' млн рублей. Сколько составила общая прибыль предприятия? Ответ дайте в миллионах рублей.'][randUpgrade],
             answers: [result, companyProfit][randUpgrade],
+            preference: [preference1, preference2],
         });
     }, 100);
 })();
