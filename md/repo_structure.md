@@ -29,6 +29,7 @@ chas-ege/
 ├── ext/          ← Внешние библиотеки (jQuery, MathJax, jqplot, bootstrap…)
 ├── dev/          ← Dev-инструменты, скрипты, node-тесты, документация
 ├── doc/          ← HTML-документация
+├── md/           ← markdown-документация (по содержанию не совпадает с doc)
 ├── test/         ← QUnit-тесты
 ├── .github/workflows/  ← CI (ci.yml, Node 22.12.0)
 └── .vscode/      ← Настройки редактора
