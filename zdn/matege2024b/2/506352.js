@@ -13,6 +13,7 @@ retryWhileError(function() {
 	];
 	let timeSuffix = '';
 
+	// Массивы объектов по 4 категориям (от самых маленьких до самых больших)
 	switch (typeIndex) {
 	case 0:
 		measurements = ['мг', 'г', 'кг', 'т'];
@@ -373,20 +374,21 @@ retryWhileError(function() {
 		break;
 	}
 
+	// Сортировка по возрастанию минимального значения
 	objectsArray1.sort((a, b) => a[1] - b[1]);
 	objectsArray2.sort((a, b) => a[1] - b[1]);
 	objectsArray3.sort((a, b) => a[1] - b[1]);
 	objectsArray4.sort((a, b) => a[1] - b[1]);
 
+
+	// Генерация случайных значений для выбранных объектов
 	let verySmallObjects = createObjectsWithValues(objectsArray1);
 	let smallObjects = createObjectsWithValues(objectsArray2);
 	let mediumObjects = createObjectsWithValues(objectsArray3);
 	let bigObjects = createObjectsWithValues(objectsArray4);
 
-	let indexObject = [0, 1, 2, 3];
-	let indexValue = [0, 1, 2, 3];
-	indexObject.shuffle();
-	indexValue.shuffle();
+
+	// Выбор случайных объектов; флаги замены категории
 	let sluchValueS = 0;
 	let sluchValueM = 0;
 	let turnValueBToValueM = 0;
@@ -422,6 +424,8 @@ retryWhileError(function() {
 		turnValueBToValueM = 1;
 	}
 
+
+// Коэффициенты перевода в базовую единицу (г, мин, м, м², м³)
 let toBaseCoeff = [
     [0.001, 1, 1000, 1000000],
     [1/3600, 1/60, 1, 24],
@@ -442,7 +446,7 @@ let valuesInBase = [
     valueS * toBaseCoeff[unitIndices[1]],
     valueM * toBaseCoeff[unitIndices[2]],
     valueB * toBaseCoeff[unitIndices[3]]
-].sort((a, b) => a - b);
+].sortNumeric();
 
 for (let i = 0; i < valuesInBase.length - 1; i++) {
     if (valuesInBase[i + 1] / valuesInBase[i] < 5) {
@@ -450,6 +454,8 @@ for (let i = 0; i < valuesInBase.length - 1; i++) {
     }
 }
 
+
+	// Итоговые названия объектов и значения
 	let arrayObjects = [
 		[verySmallObjects[sluchIndexVerySmallObject][0], smallObjects[newSluchIndexSmallObject][0]][sluchValueS],
 		smallObjects[sluchIndexSmallObject][0],
@@ -462,7 +468,6 @@ for (let i = 0; i < valuesInBase.length - 1; i++) {
     		throw new Error('Повторяющиеся названия объектов');
 	}
 
-	let arraySluchObjects = indexValue.map(index => arrayObjects[index]);
 
 	let arrayValue = [
 		valueVS.ts() + ' ' + [measurements[0], measurements[1]][sluchValueS],
@@ -471,13 +476,15 @@ for (let i = 0; i < valuesInBase.length - 1; i++) {
 		valueB.ts() + ' ' + [measurements[3], measurements[2]][sluchValueM]
 	];
 
-	let left = arraySluchObjects.map((obj, i) => ({
+	let left = arrayObjects.map((obj, i) => ({
 		expr: value[typeIndex] + ' ' + obj,
-		solution: arrayValue[indexValue[i]]
+		solution: arrayValue[i]
 	}));
 
-	let right = indexObject.map(i => arrayValue[i]);
+	let right = arrayValue.slice();
 
+
+	// setCorrespondenceTask сам перемешивает left и right
 	NAtask.setCorrespondenceTask({
 		text: 'Установите соответствие между величинами и их возможными значениями: к каждому элементу первого столбца подберите соответствующий элемент из второго столбца.',
 		leftHeader: 'Величины',
