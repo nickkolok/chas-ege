@@ -1,3 +1,6 @@
+const Flatten = require('@flatten-js/core');
+const {Circle, Point} = Flatten;
+
 module.exports = function registerAutoScaleTests(QUnit) {
 
 	// ============================================================
@@ -144,6 +147,115 @@ module.exports = function registerAutoScaleTests(QUnit) {
 		});
 		assert.strictEqual(result[0].x, -5, 'x = -1 * 5 = -5 (граница, строго вне)');
 		assert.strictEqual(result[0].y, -5, 'y = -1 * 5 = -5 (граница, строго вне)');
+	});
+
+	// ============================================================
+	// autoScale + Circle
+	// ============================================================
+	QUnit.module('autoScale + Circle');
+
+	QUnit.test('isCircleObj: распознаёт Circle из @flatten-js/core', function (assert) {
+		const c = new Circle(new Point(1, 2), 3);
+		assert.ok(isCircleObj(c), 'Circle распознаётся');
+		assert.notOk(isCircleObj({x: 1, y: 2}), 'обычная точка — не Circle');
+		assert.notOk(isCircleObj(null), 'null — не Circle');
+	});
+
+	QUnit.test('isCircleObj: распознаёт duck-typed объект', function (assert) {
+		const fake = {center: {x: 0, y: 0}, radius: 5};
+		assert.ok(isCircleObj(fake), 'duck-typed объект распознаётся');
+	});
+
+	QUnit.test('2D Circle: масштабирование до выхода за диапазон', function (assert) {
+		const vertex = [new Circle(new Point(1, 1), 0.5)];
+		const result = autoScale(vertex, {
+			x: 0, y: 0, z: 0,
+			scale: 1,
+			rotationX: 0, rotationY: 0, rotationZ: 0,
+		}, [], {
+			startX: -5, finishX: 5,
+			startY: -5, finishY: 5,
+			step: 1,
+			maxScale: 100,
+		});
+		// scale=4: center (4,4), r=2 	 bbox (2,2)..(6,6) 	 6 вне (-5,5)
+		assert.strictEqual(result[0].center.x, 4, 'center.x = 1 * 4');
+		assert.strictEqual(result[0].center.y, 4, 'center.y = 1 * 4');
+		assert.strictEqual(result[0].radius, 2, 'radius = 0.5 * 4');
+	});
+
+	QUnit.test('2D Circle: центр в начале координат', function (assert) {
+		const vertex = [new Circle(new Point(0, 0), 1)];
+		const result = autoScale(vertex, {
+			x: 0, y: 0, z: 0,
+			scale: 1,
+			rotationX: 0, rotationY: 0, rotationZ: 0,
+		}, [], {
+			startX: -5, finishX: 5,
+			startY: -5, finishY: 5,
+			step: 1,
+			maxScale: 100,
+		});
+		// scale=5: r=5, bbox (-5,-5)..(5,5) 	 -5 не mzhd(-5,5) 	 стоп
+		assert.strictEqual(result[0].center.x, 0, 'center.x = 0');
+		assert.strictEqual(result[0].center.y, 0, 'center.y = 0');
+		assert.strictEqual(result[0].radius, 5, 'radius = 1 * 5');
+	});
+
+	QUnit.test('2D: Circle + точка вместе', function (assert) {
+		const vertex = [
+			new Circle(new Point(0, 0), 1),
+			{x: 3, y: 3},
+		];
+		const result = autoScale(vertex, {
+			x: 0, y: 0, z: 0,
+			scale: 1,
+			rotationX: 0, rotationY: 0, rotationZ: 0,
+		}, [], {
+			startX: -5, finishX: 5,
+			startY: -5, finishY: 5,
+			step: 1,
+			maxScale: 100,
+		});
+		// Точка (3,3) выходит при scale=2: (6,6) вне
+		assert.strictEqual(result[1].x, 6, 'точка x = 3 * 2 = 6');
+		assert.strictEqual(result[1].y, 6, 'точка y = 3 * 2 = 6');
+		assert.strictEqual(result[0].radius, 2, 'круг radius = 1 * 2');
+	});
+
+	QUnit.test('3D + Circle: бросает ошибку', function (assert) {
+		const vertex = [
+			{x: 1, y: 1, z: 1},
+			new Circle(new Point(0, 0), 1),
+		];
+		assert.throws(function () {
+			autoScale(vertex, {
+				x: 0, y: 0, z: 0,
+				scale: 1,
+				rotationX: 0, rotationY: 0, rotationZ: 0,
+			}, [], {
+				startX: -5, finishX: 5,
+				startY: -5, finishY: 5,
+				step: 1,
+				maxScale: 100,
+			});
+		}, /Circle.*3D/, 'ошибка упоминает Circle и 3D');
+	});
+
+	QUnit.test('genAssert: Circle изначально вне диапазона', function (assert) {
+		const vertex = [new Circle(new Point(0, 0), 200)];
+		assert.throws(function () {
+			autoScale(vertex, {
+				x: 0, y: 0, z: 0,
+				scale: 1,
+				rotationX: 0, rotationY: 0, rotationZ: 0,
+			}, [], {
+				startX: -180, finishX: 180,
+				startY: -160, finishY: 160,
+				step: 0.1,
+				maxScale: 100,
+			});
+		}, Error, 'Circle радиусом 200 не влезает в диапазон');
 	});
 
 };
