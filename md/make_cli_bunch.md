@@ -21,7 +21,7 @@ bind 'set enable-bracketed-paste on'
 вносятся исправления в файлы,
 создаётся последовательность коммитов и т.д.
 Можно использовать:
-`cat`, `sed`, `echo`, `printf`, `awk`, `sort`, `jq`,
+`cat`, `sed`, `echo`, `tee`, `printf`, `awk`, `sort`, `jq`,
 `node`- и `python`-скрипты,
 а также любые команды `git` и `gh`.
 
