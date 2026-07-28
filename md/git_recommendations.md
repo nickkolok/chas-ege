@@ -48,8 +48,7 @@ git checkout pr-12345678
 
 ```
 git fetch origin
-git checkout origin/devel
-git checkout -b имя_ветки
+git checkout -b имя_ветки origin/devel
 ```
 
 А в конце, понятно, `git push`.
