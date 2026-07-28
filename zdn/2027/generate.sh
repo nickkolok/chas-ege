@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 SETS_DIR="sets"
 OUTPUT_DIR="nabor"

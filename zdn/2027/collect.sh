@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 SETS_DIR="sets"
 OUTPUT="${SETS_DIR}/all.txt"
