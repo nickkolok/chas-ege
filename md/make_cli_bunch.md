@@ -28,6 +28,16 @@ bind 'set enable-bracketed-paste on'
 В конце, если поручение это предполагает,
 можно открыть Pull Request с помощью `gh`.
 
+Основной способ создать новый файл
+(или полностью переписать существующий):
+```bash
+cat > path/to/file <<'EOF'
+noindent
+	indent
+noindent
+EOF
+```
+
 Наконец, хорошим тоном считается вернуть терминал в исходное состояние:
 ```bash
 bind 'set enable-bracketed-paste off'
