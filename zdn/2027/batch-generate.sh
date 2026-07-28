@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -eo pipefail
 
 # Массовая генерация override-файлов
 # Использование: ./batch-generate.sh <начальный_номер> <количество>
