@@ -507,6 +507,8 @@ chas2.task = {
 
 	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference }) {
 
+		genAssert(new Set(right).size === right.length, 'setCorrespondenceTask: в правом столбце есть повторяющиеся элементы');
+		left.forEach(item => genAssert(right.includes(item.solution), 'setCorrespondenceTask: solution левого элемента отсутствует в правом столбце'));
 		left.shuffle();
 		let shuffledSolutions = [...right].shuffle();
 		let leftCol = '';
