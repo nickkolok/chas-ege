@@ -3,76 +3,89 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		// Число в строку для LaTeX/текста: целые как есть, дробные — запятая в {}.
-		let fmt = x => {
-			let s = String(x);
-			return s.includes('.') ? s.replace('.', '{,}') : s;
-		};
-
-		// m = sqrt(k); k не должен быть полным квадратом (иначе m целое).
-		let k = [2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 0.5, 0.15, 2.2, 0.3, 1.5, 3.5, 7.7].iz();
+		// m = sqrt(k). k — либо целое не-полный-квадрат, либо дробное (как в прототипах).
+		// Дробный k даёт точку в LaTeX, которую потом поправит allDecimalsToStandard(true).
+		let k = sl(0, 1)
+			? [0.5, 0.15, 2.2, 0.3, 1.5, 3.5, 7.7].iz()
+			: slKrome(x => x.isPolnKvadr(), 2, 15);
 		let m = Math.sqrt(k);
 
-		// Пул выражений от m: latex — запись, value — значение, ok — ОДЗ.
-		let pool = [
-			{ latex: '-\\frac{1}{m}',  value: () => -1 / m,            ok: () => true },
-			{ latex: '\\frac{1}{m}',   value: () => 1 / m,             ok: () => true },
-			{ latex: '\\frac{2}{m}',   value: () => 2 / m,             ok: () => true },
-			{ latex: '\\frac{3}{m}',   value: () => 3 / m,             ok: () => true },
-			{ latex: '\\frac{6}{m}',   value: () => 6 / m,             ok: () => true },
-			{ latex: '\\frac{7}{m}',   value: () => 7 / m,             ok: () => true },
-			{ latex: '\\frac{m}{10}',  value: () => m / 10,            ok: () => true },
-			{ latex: '-\\frac{m}{10}', value: () => -m / 10,           ok: () => true },
-			{ latex: '\\frac{m}{2}',   value: () => m / 2,             ok: () => true },
-			{ latex: 'm^3',            value: () => m * m * m,         ok: () => true },
-			{ latex: 'm^2',            value: () => m * m,             ok: () => true },
-			{ latex: 'm^2-3{,}5',      value: () => m * m - 3.5,       ok: () => true },
-			{ latex: 'm^2-1{,}2',      value: () => m * m - 1.2,       ok: () => true },
-			{ latex: 'm^2-2',          value: () => m * m - 2,         ok: () => true },
-			{ latex: 'm^2+1',          value: () => m * m + 1,         ok: () => true },
-			{ latex: 'm-1',            value: () => m - 1,             ok: () => true },
-			{ latex: '1-m',            value: () => 1 - m,             ok: () => true },
-			{ latex: 'm+1',            value: () => m + 1,             ok: () => true },
-			{ latex: 'm+2',            value: () => m + 2,             ok: () => true },
-			{ latex: '2m-5',           value: () => 2 * m - 5,         ok: () => true },
-			{ latex: '-m+5',           value: () => -m + 5,            ok: () => true },
-			{ latex: '5-m',            value: () => 5 - m,             ok: () => true },
-			{ latex: '-m',             value: () => -m,                ok: () => true },
-			{ latex: '-m-1',           value: () => -m - 1,            ok: () => true },
-			{ latex: '-2m',            value: () => -2 * m,            ok: () => true },
-			{ latex: '3+m',            value: () => 3 + m,             ok: () => true },
-			{ latex: '4m',             value: () => 4 * m,             ok: () => true },
-			{ latex: '\\sqrt{m}',      value: () => Math.sqrt(m),      ok: () => m >= 0 },
-			{ latex: '\\sqrt{m+1}',    value: () => Math.sqrt(m + 1),  ok: () => m + 1 >= 0 },
-			{ latex: '\\sqrt{6+m}',    value: () => Math.sqrt(6 + m),  ok: () => 6 + m >= 0 },
-			{ latex: '\\sqrt{2-m}',    value: () => Math.sqrt(2 - m),  ok: () => 2 - m >= 0 },
-		];
-
-		// Только конечные нецелые значения (целое = граница двух отрезков, неоднозначно).
-		let candidates = pool.filter(t => {
-			if (!t.ok(m)) {
-				return false;
+		// Случайное выражение от m. У каждой формы — явная проверка ОДЗ (ok):
+		// при её нарушении value = NaN, и genAssert по ok не пустит мусор в таблицу.
+		// При иррациональном m все формы дают иррациональное значение,
+		// поэтому число никогда не сядет ровно на границу двух отрезков.
+		let makeExpr = function () {
+			let a, b, c, v, ok, latex;
+			switch (sl(0, 4)) {
+				case 0: // ±a/m ; ОДЗ: m != 0
+					a = sl(1, 7).pm();
+					latex = (a < 0 ? '-' : '') + '\\frac{' + Math.abs(a) + '}{m}';
+					v = a / m;
+					ok = m !== 0;
+					break;
+				case 1: // ±a·m ; ОДЗ тривиален
+					a = sl(1, 2).pm();
+					latex = (a === -1 ? '-' : (a === 1 ? '' : a)) + 'm';
+					v = a * m;
+					ok = true;
+					break;
+				case 2: // ±a·m + b ; ОДЗ тривиален
+					a = sl(1, 2).pm();
+					b = sl(-3, 3);
+					latex = (a === -1 ? '-' : (a === 1 ? '' : a)) + 'm' + (b ? (b > 0 ? '+' : '-') + Math.abs(b) : '');
+					v = a * m + b;
+					ok = true;
+					break;
+				case 3: // b − a·m ; ОДЗ тривиален
+					a = sl(1, 2);
+					b = sl(1, 9);
+					latex = b + '-' + (a === 1 ? '' : a) + 'm';
+					v = b - a * m;
+					ok = true;
+					break;
+				default: // корни: ОДЗ нетривиален у подформ с m+c и c−m
+					switch (sl(0, 2)) {
+						case 0:
+							latex = '\\sqrt{m}';
+							v = Math.sqrt(m);
+							ok = m >= 0;
+							break;
+						case 1:
+							c = sl(-3, 6);
+							latex = '\\sqrt{m' + (c > 0 ? '+' + c : (c < 0 ? c : '')) + '}';
+							v = Math.sqrt(m + c);
+							ok = m + c >= 0;
+							break;
+						default:
+							c = sl(1, 5);
+							latex = '\\sqrt{' + c + '-m}';
+							v = Math.sqrt(c - m);
+							ok = c - m >= 0;
+							break;
+					}
+					break;
 			}
-			let v = t.value(m);
-			return isFinite(v) && !Number.isInteger(v);
-		});
-		genAssert(candidates.length >= 4, 'Слишком мало пригодных выражений для данного m');
+			return { latex: latex, value: v, ok: ok };
+		};
 
-		// 4 разных выражения; отрезки [floor; floor+1] должны быть различны.
-		let chosen = candidates.iz(4);
-		let values = chosen.map(t => t.value(m));
-		let floors = values.map(v => Math.floor(v));
+		// Отрезок [n; n+1] в LaTeX; $...$ ставим сами, на autoLaTeX не полагаемся.
+		let intervalStr = n => '$[' + n + ';\\, ' + (n + 1) + ']$';
+
+		let chosen = [makeExpr(), makeExpr(), makeExpr(), makeExpr()];
+
+		// 1) ОДЗ всех четырёх выражений (иначе value = NaN -> отрезок [NaN; NaN]).
+		genAssert(chosen.every(t => t.ok), 'Нарушено ОДЗ одного из выражений');
+
+		// 2) Отрезки в разумных пределах и попарно различны.
+		let floors = chosen.map(t => Math.floor(t.value));
 		genAssert(floors.every(n => n >= -5 && n <= 9), 'Отрезок вышел за разумные пределы');
 		genAssert(new Set(floors).size === 4, 'Два выражения попали в один отрезок');
-
-		// Отрезок в LaTeX; $...$ ставим сами, на autoLaTeX не полагаемся.
-		let intervalStr = n => '$[' + n + ';\\, ' + (n + 1) + ']$';
 
 		let left = chosen.map((t, i) => ({ expr: '$' + t.latex + '$', solution: intervalStr(floors[i]) }));
 		let right = floors.map(n => intervalStr(n));
 
 		NAtask.setCorrespondenceTask({
-			text: 'Число $m$ равно $\\sqrt{' + fmt(k) + '}$. ' +
+			text: 'Число $m$ равно $\\sqrt{' + k + '}$. ' +
 				'Каждому из четырёх чисел в левом столбце соответствует отрезок, которому оно принадлежит. ' +
 				'Установите соответствие между числами и отрезками из правого столбца.',
 			leftHeader: 'ЧИСЛА',
@@ -82,7 +95,8 @@
 			postText: 'Впишите в приведённую в ответе таблицу под каждой буквой соответствующий отрезку номер.',
 		});
 
-		NAtask.modifiers.allDecimalsToStandard();
+		// Постобработка десятичных дробей в LaTeX (точка в \sqrt{0.5} -> {,}).
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 20000);
 })();
 //nadezhda
