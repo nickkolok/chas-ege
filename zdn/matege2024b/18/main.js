@@ -1,5 +1,6 @@
 window.nomer=[
-	506380,
+ 506380,
+ 529910,
 ].iz();
 
-window.comment = 'Неревенства';
+window.comment = 'Соответствия';
