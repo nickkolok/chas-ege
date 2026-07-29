@@ -18,8 +18,8 @@ mkdir -p "$CACHE_DIR"
 
 # Номер варианта: из аргумента или из интерактивного ввода
 if [ -n "$1" ]; then
-    NOMER="$1"
-else
+NOMER="$1"
+if [ -z "$NOMER" ]; then
     read -p "Введите номер варианта (например, 15): " NOMER
 fi
 
@@ -29,11 +29,10 @@ if ! [[ "$NOMER" =~ ^[0-9]+$ ]]; then
 fi
 
 # 2. Количество подвариантов
-if [ -n "$2" ]; then
-    CV="$2"
-else
+CV="$2"
+if [ -z "$CV" ]; then
     read -p "Введите количество подвариантов (по умолчанию 5): " CV_INPUT
-    CV="${CV_INPUT:-5}"
+    CV="${CV_INPUT:-5}" # Если ввод пустой, используется 5
 fi
 
 if ! [[ "$CV" =~ ^[0-9]+$ ]] || [ "$CV" -eq 0 ]; then
@@ -162,9 +161,9 @@ process_line() {
 
 # Режим работы: объединённый файл или отдельные
 if [ -f "$ALL_FILE" ]; then
-    [ -z "$1" ] && echo "Режим: объединённый файл ($ALL_FILE)"
+    [ -z "$1" ] && [ -z "$2" ] && echo "Режим: объединённый файл ($ALL_FILE)"
     NUM_SETS=$(grep -c '^===SET:' "$ALL_FILE")
-    [ -z "$1" ] && echo "Найдено наборов: $NUM_SETS"
+    [ -z "$1" ] && [ -z "$2" ] && echo "Найдено наборов: $NUM_SETS"
     
     for i in $(seq 1 "$NUM_SETS"); do
         block=$(awk -v set="$i" '
@@ -184,7 +183,7 @@ if [ -f "$ALL_FILE" ]; then
         process_line "$line" "$i"
     done
 else
-    [ -z "$1" ] && echo "Режим: отдельные файлы (папка $SETS_DIR)"
+    [ -z "$1" ] && [ -z "$2" ] && echo "Режим: отдельные файлы (папка $SETS_DIR)"
     
     for i in {1..12}; do
         file="${SETS_DIR}/${i}.txt"
@@ -209,6 +208,6 @@ fi
 # Сохраняем новый кэш (заменяем старый)
 mv "$NEW_LAST_FILE" "$LAST_FILE"
 
-[ -z "$1" ] && echo "Сгенерирован файл: $OUTPUT_FILE (подвариантов: $CV)"
+[ -z "$1" ] && [ -z "$2" ] && echo "Сгенерирован файл: $OUTPUT_FILE (подвариантов: $CV)"
 
 exit 0
