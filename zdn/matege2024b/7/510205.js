@@ -83,8 +83,8 @@
             addUniqueAnsw(wasDecreasing, answ, 'ежемесячный объём продаж падал в течение всего периода');
         }
 
-        let mounth = om.months.slice().permuteCyclic(1);
-        let mounthView = mounth.map(m => m.slice(0, 3));
+        let month = om.months.slice().permuteCyclic(1);
+        let monthView = month.map(m => m.slice(0, 3));
 
         let season = ['зима', 'весна', 'лето', 'осень'];
 
@@ -155,7 +155,7 @@
                 stepX: 1,
                 stepY: 20,
                 typeX: 'custom',
-                labelsX: mounthView,
+                labelsX: monthView,
                 minY: 0,
                 maxY: 160,
                 stepByCeilX: 1,
