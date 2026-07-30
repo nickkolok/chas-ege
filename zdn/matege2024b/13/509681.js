@@ -16,34 +16,42 @@
 
 		let answer = Math.pow(k, stepen);
 
-		// Иллюстрация декоративная (как в прототипах): два шара фиксированного
-		// размера, контур + эллипс-экватор + пунктирный радиус в плоскости экватора.
+		// Иллюстрация: два шара, касающиеся внешне и центрированные по горизонтали.
+		// Радиусы в пикселях пропорциональны радиусам из условия (R_big : R_small = rBig : rSmall);
+		// масштаб подобран так, чтобы полуширина композиции (R_big+R_small) не вылезала за канвас.
 		let paint = function(ctx) {
-			let h = 400;
-			let w = 400;
-			ctx.translate(h / 2, w / 2);
+			let W = 400;
+			ctx.translate(W / 2, W / 2);
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
 
-			let drawSphere = function(cx, cy, R) {
+			let margin = 12;
+			let maxHalf = W / 2 - margin;
+			let scale = maxHalf / (rBig + rSmall);
+			let R1 = scale * rBig;
+			let R2 = scale * rSmall;
+			let cxBig = -R2;
+			let cxSmall = R1;
+
+			let drawSphere = function(cx, R) {
 				ctx.beginPath();
-				ctx.arc(cx, cy, R, 0, 2 * Math.PI);
+				ctx.arc(cx, 0, R, 0, 2 * Math.PI);
 				ctx.stroke();
 
 				ctx.beginPath();
-				ctx.ellipse(cx, cy, R, R * 0.28, 0, 0, 2 * Math.PI);
+				ctx.ellipse(cx, 0, R, R * 0.28, 0, 0, 2 * Math.PI);
 				ctx.stroke();
 
 				ctx.setLineDash([5, 4]);
 				ctx.beginPath();
-				ctx.moveTo(cx, cy);
-				ctx.lineTo(cx + 0.66 * R, cy + 0.13 * R);
+				ctx.moveTo(cx, 0);
+				ctx.lineTo(cx + 0.66 * R, 0.13 * R);
 				ctx.stroke();
 				ctx.setLineDash([]);
 			};
 
-			drawSphere(-70, 0, 70);
-			drawSphere(70, 0, 28);
+			drawSphere(cxBig, R1);
+			drawSphere(cxSmall, R2);
 		};
 
 		NAtask.setTask({
