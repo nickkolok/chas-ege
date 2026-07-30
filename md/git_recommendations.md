@@ -25,8 +25,6 @@ kalendar2       git@github.com:Kalendar2/chas-ege.git (fetch)
 kalendar2       git@github.com:Kalendar2/chas-ege.git (push)
 sugarhedgehog   git@github.com:SugarHedgehog/chas-ege.git (fetch)
 sugarhedgehog   git@github.com:SugarHedgehog/chas-ege.git (push)
-veronikakit     git@github.com:VeronikaKit/chas-ege.git (fetch)
-veronikakit     git@github.com:VeronikaKit/chas-ege.git (push)
 zer00player     git@github.com:Zer00Player/chas-ege.git (fetch)
 zer00player     git@github.com:Zer00Player/chas-ege.git (push)
 ```
