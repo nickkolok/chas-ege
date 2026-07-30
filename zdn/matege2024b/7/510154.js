@@ -82,7 +82,7 @@
         let production = [sl(0, 4)]; // шкала добычи
         let count = 0;
 
-        for (; production.length <= time.length || production.length == time.length;) {
+        for (; production.length <= time.length;) {
             let interI = ((time.length / (sl(3, 8, 0.5))).floor());
             for (let j = 0; j < interI; j++) {
                 let lastProduction = production[production.length - 1];
