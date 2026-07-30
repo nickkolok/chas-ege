@@ -14,12 +14,12 @@
         }
 
         function answAboutNonMoreP(intervals, answ, price) {
-            let wasNonMore = intervals.map(interval => isNonMore(interval, price));
+            let wasNonMore = intervals.map(interval => isNotMore(interval, price));
             addUniqueAnsw(wasNonMore, answ, `цена акции не поднималась выше ${convert(price)} рублей за штуку`);
         }
 
         function answAboutNonLessP(intervals, answ, price) {
-            let wasNonLess = intervals.map(interval => isNonLess(interval, price));
+            let wasNonLess = intervals.map(interval => isNotLess(interval, price));
             addUniqueAnsw(wasNonLess, answ, `цена акции не опускалась ниже ${convert(price)} рублей за штуку`);
         }
 
