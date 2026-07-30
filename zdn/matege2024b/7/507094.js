@@ -97,7 +97,7 @@ P * 10(function () {
 				if (condition) {
 					let deltaFlour = deltaValues[i];
 					let text = 'в течение всего периода потребление воды выросло более чем ' + times[(deltaFlour - 2)];
-					if (noHasDublValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
+					if (hasNoDuplicateValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
 						answ[i].solution.push(text);
 					}
 				}
@@ -129,7 +129,7 @@ P * 10(function () {
 				if (condition) {
 					let deltaFlour = deltaValues[i];
 					let text = 'в течение всего периода потребление воды упало более чем ' + times[(deltaFlour - 2)];
-					if (noHasDublValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
+					if (hasNoDuplicateValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
 						answ[i].solution.push(text);
 					}
 				}
