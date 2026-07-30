@@ -59,7 +59,7 @@
                     return false;
                 }
             });
-            addUniqueAnsw(wasSlowRise, answ, 'объём добычи медленно рос в течение периода');
+            addUniqueAnsw(wasSlowRise, answ, 'объём продаж медленно рос в течение периода');
         }
 
         function answAboutMaxDeltaI(intervals, answ) {
