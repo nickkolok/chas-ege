@@ -69,7 +69,7 @@
         }
 
         function answAboutConst(intervals, answ) {
-            let wasConst = intervals.map(interval => indexConst(interval).length == 3);
+            let wasConst = intervals.map(interval => indexConst(interval).length === 3);
             addUniqueAnsw(wasConst, answ, 'ежемесячный объём продаж не менялся в течение всего периода');
         }
 
