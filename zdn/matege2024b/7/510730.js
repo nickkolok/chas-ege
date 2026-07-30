@@ -11,7 +11,7 @@
                 'батискаф ровно ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1) * 15, 'секунда', 'value') + ' оставался на одной глубине',
                 'в течение ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1) * 15, 'секунда', 'value') + ' подряд батискаф оставался на одной глубине'
             ];
-            if (noHasDublValue(wasStop, true)) {
+            if (hasNoDuplicateValue(wasStop, true)) {
                 answ[index].solution.push(stopTexts[variable]);
             }
         }
@@ -23,12 +23,12 @@
         }
 
         function answAboutNonMore(intervals, answ, V) {
-            let wasNonMore = intervals.map(interval => isNonMore(interval, V));
+            let wasNonMore = intervals.map(interval => isNotMore(interval, V));
             addUniqueAnsw(wasNonMore, answ, 'скорость погружения не больше ' + V * 0.1 + ' м/с на всём интервале');
         }
 
         function answAboutNonLess(intervals, answ, V) {
-            let wasNonLess = intervals.map(interval => isNonLess(interval, V));
+            let wasNonLess = intervals.map(interval => isNotLess(interval, V));
             addUniqueAnsw(wasNonLess, answ, 'скорость погружения не меньше ' + V * 0.1 + ' м/с на всём интервале');
         }
 
@@ -78,7 +78,7 @@
             wasCondition.forEach((condition, i) => {
                 if (condition) {
                     let text = 'скорость погружения уменьшалась, а затем произошла остановка на ' + secTexts[i];
-                    if (noHasDublValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
+                    if (hasNoDuplicateValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
                         answ[i].solution.push(text);
                     }
                 }
@@ -91,7 +91,7 @@
 
             wasConst.forEach((condition, i) => {
                 if (condition) {
-                    if (noHasDublValue(wasConst, true) || wasConst.filter(c => c).length === 1) {
+                    if (hasNoDuplicateValue(wasConst, true) || wasConst.filter(c => c).length === 1) {
                         answ[i].solution.push(constTexts[i]);
                     }
                 }
