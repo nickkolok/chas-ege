@@ -8,12 +8,12 @@
         }
 
         function answAboutNonLess(intervals, answ, value) {
-            let wasNonLess = intervals.map(interval => isNonLess(interval, value));
+            let wasNonLess = intervals.map(interval => isNotLess(interval, value));
             addUniqueAnsw(wasNonLess, answ, 'крутящий момент был не ниже ' + convert(value) + ' на всём интервале');
         }
 
         function answAboutNonMore(intervals, answ, value) {
-            let wasNonMore = intervals.map(interval => isNonMore(interval, value));
+            let wasNonMore = intervals.map(interval => isNotMore(interval, value));
             addUniqueAnsw(wasNonMore, answ, 'крутящий момент не превышает ' + convert(value) + ' на всём интервале');
         }
 
@@ -28,25 +28,25 @@
         }
 
         function answAboutIncreasingNonMore(intervals, answ, more) {
-            let wasCondition = intervals.map(interval => isIncreasing(interval) && isNonMore(interval, more));
+            let wasCondition = intervals.map(interval => isIncreasing(interval) && isNotMore(interval, more));
             addUniqueAnsw(wasCondition, answ, 'при увеличении числа оборотов крутящий момент растёт, но не превышает ' +
                 convert(more));
         }
 
         function answAboutDecreasingNonMore(intervals, answ, more) {
-            let wasCondition = intervals.map(interval => isDecreasing(interval) && isNonMore(interval, more));
+            let wasCondition = intervals.map(interval => isDecreasing(interval) && isNotMore(interval, more));
             addUniqueAnsw(wasCondition, answ, 'при увеличении числа оборотов крутящий момент падает, но не превышает ' +
                 convert(more));
         }
 
         function answAboutIncreasingNonLess(intervals, answ, less) {
-            let wasCondition = intervals.map(interval => isIncreasing(interval) && isNonLess(interval, less));
+            let wasCondition = intervals.map(interval => isIncreasing(interval) && isNotLess(interval, less));
             addUniqueAnsw(wasCondition, answ, 'при увеличении числа оборотов крутящий момент растёт, но остаётся больше ' +
                 convert(less));
         }
 
         function answAboutDecreasingNonLess(intervals, answ, less) {
-            let wasCondition = intervals.map(interval => isDecreasing(interval) && isNonLess(interval, less));
+            let wasCondition = intervals.map(interval => isDecreasing(interval) && isNotLess(interval, less));
             addUniqueAnsw(wasCondition, answ, 'при увеличении числа оборотов крутящий момент падает, но остаётся больше ' +
                 convert(less));
         }
