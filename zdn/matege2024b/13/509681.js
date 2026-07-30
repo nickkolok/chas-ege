@@ -16,6 +16,19 @@
 
 		let answer = Math.pow(k, stepen);
 
+		// preference переключает направление сравнения в формулировке:
+		// 0 — «... большего шара больше ... меньшего»,
+		// 1 — «... меньшего шара меньше ... большего».
+		// Числовой ответ от направления не зависит (это отношение большей величины к меньшей),
+		// поэтому answers не ветвится. Иллюстрация тоже не зависит — на ней просто два шара.
+		let key = '509681';
+		let preference = ['biggerGreaterThanSmaller', 'smallerLessThanBigger'];
+		let compareDir = getSelectedPreferenceFromList(key, preference);
+
+		let cmpWord = ['больше', 'меньше'][compareDir];
+		let subjGen = ['большего', 'меньшего'][compareDir];
+		let objGen = ['меньшего', 'большего'][compareDir];
+
 		// Иллюстрация: два шара в пропорции условия, НЕ касающиеся (зазор как в методичке),
 		// центрированные по горизонтали и вписанные в канвас. Зазор пропорционален масштабу
 		// композиции (gapRatio от суммы радиусов в пикселях), чтобы смотрелось одинаково
@@ -66,10 +79,11 @@
 		};
 
 		NAtask.setTask({
-			text: 'Даны два шара с радиусами ' + rBig + ' и ' + rSmall + '. Во сколько раз ' + objectIm + ' большего шара больше ' + objectRod + ' меньшего?',
+			text: 'Даны два шара с радиусами ' + rBig + ' и ' + rSmall + '. Во сколько раз ' + objectIm + ' ' + subjGen + ' шара ' + cmpWord + ' ' + objectRod + ' ' + objGen + '?',
 			answers: answer,
 			analys: 'Обозначим радиусы $R = ' + rBig + '$ и $r = ' + rSmall + '$, тогда $\\frac{R}{r} = ' + k + '$. ' + (isVolume ? 'Объёмы шаров относятся как кубы радиусов: $\\left(\\frac{R}{r}\\right)^3 = ' + k + '^3 = ' + answer + '$.' : 'Площади поверхностей шаров относятся как квадраты радиусов: $\\left(\\frac{R}{r}\\right)^2 = ' + k + '^2 = ' + answer + '$.'),
 			authors: ['Надежда'],
+			preference,
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
