@@ -130,7 +130,7 @@
         answAboutMoreInMounth(intervals, listOfIntervals, moreM, moreP);
 
         // добавляем ответ про максимальный показатель
-        answAboutMax(intervals, listOfIntervals);
+        answAboutMax(intervals, listOfIntervals, production);
         answAboutMaxDeltaI(intervals, listOfIntervals);
         answAboutMaxDeltaD(intervals, listOfIntervals);
         answAboutSlowRise(intervals, listOfIntervals);
