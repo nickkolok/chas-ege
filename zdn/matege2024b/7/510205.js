@@ -92,7 +92,7 @@
         let production = [sl(5, 8)]; // шкала продаж
         let count = 1;
 
-        for (; production.length <= time.length || production.length == time.length || count == 100;) {
+        for (; production.length <= time.length || count == 100;) {
             let interI = ((time.length / 1.6).floor());
             for (let j = 0; j < interI; j++) {
                 let lastProduction = production[production.length - 1];
