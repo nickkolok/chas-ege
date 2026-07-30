@@ -38,32 +38,35 @@
             addUniqueAnsw(wasDecreasing, answ, 'объём добычи в этот период падал с каждым годом');
         }
 
+        function getDeltas(interval) {
+            if (!isIncreasing(interval)) {
+                return null;
+            }
+            let delta = [];
+            for (let i = 1; i < interval.length; i++) {
+                delta.push(interval[i] - interval[i - 1]);
+            }
+            return delta;
+        }
+
         function answAboutSharpRise(intervals, answ) {
             let wasSharpRise = intervals.map((interval) => {
-                let delta = [];
-                if (isIncreasing(interval)) {
-                    for (let i = 1; i < interval.length; i++) {
-                        delta.push(interval[i] - interval[i - 1]);
-                    }
-                    return delta[1] - delta[0] > 1 && delta[0] < 0.7;
-                } else {
+                let delta = getDeltas(interval);
+                if (!delta) {
                     return false;
                 }
+                return delta[1] - delta[0] > 1 && delta[0] < 0.7;
             });
             addUniqueAnsw(wasSharpRise, answ, 'объём добычи в первые два года почти не менялся, а затем значительно вырос');
         }
 
         function answAboutSlowRise(intervals, answ) {
             let wasSlowRise = intervals.map((interval) => {
-                let delta = [];
-                if (isIncreasing(interval)) {
-                    for (let i = 1; i < interval.length; i++) {
-                        delta.push(interval[i] - interval[i - 1]);
-                    }
-                    return delta.every(d => d < 0.5);
-                } else {
+                let delta = getDeltas(interval);
+                if (!delta) {
                     return false;
                 }
+                return delta.every(d => d < 0.5);
             });
             addUniqueAnsw(wasSlowRise, answ, 'объём добычи медленно рос в течение периода');
         }
