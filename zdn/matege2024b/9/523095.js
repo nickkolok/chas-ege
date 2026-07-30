@@ -13,7 +13,7 @@
             [c + delta, b],
         ];
 
-        points.forEach(point => genAssert(point[0].abs() < 7 && point[1].abs() < 7), 'Параллелограм вышел за пределы клеток');
+        points.forEach(point => genAssert(point[0].abs() < 7 && point[1].abs() < 7, 'Параллелограм вышел за пределы клеток'));
 
         points = points.map((c) => {
             return {
