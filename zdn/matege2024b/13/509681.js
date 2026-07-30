@@ -29,6 +29,12 @@
 			let margin = 12;
 			let maxHalf = W / 2 - margin;
 			let gapRatio = 0.3;
+			// Сплюснутость экватора — одна константа и на эллипс, и на пунктирный радиус,
+			// чтобы кончик радиуса всегда лежал ровно на экваторе.
+			let flat = 0.28;
+			// Угол на окружности экватора, куда ведём пунктирный радиус (ближняя дуга, вправо-вниз).
+			let alpha = Math.PI / 4;
+
 			let scale = maxHalf / ((rBig + rSmall) * (1 + gapRatio / 2));
 			let R1 = scale * rBig;
 			let R2 = scale * rSmall;
@@ -42,13 +48,15 @@
 				ctx.stroke();
 
 				ctx.beginPath();
-				ctx.ellipse(cx, 0, R, R * 0.28, 0, 0, 2 * Math.PI);
+				ctx.ellipse(cx, 0, R, R * flat, 0, 0, 2 * Math.PI);
 				ctx.stroke();
 
+				// Кончик вычислен через тот же alpha и тот же flat, что и эллипс выше,
+				// поэтому он попадает точно на экватор (cos^2+sin^2 = 1), а не внутрь него.
 				ctx.setLineDash([5, 4]);
 				ctx.beginPath();
 				ctx.moveTo(cx, 0);
-				ctx.lineTo(cx + 0.66 * R, 0.13 * R);
+				ctx.lineTo(cx + Math.cos(alpha) * R, Math.sin(alpha) * R * flat);
 				ctx.stroke();
 				ctx.setLineDash([]);
 			};
