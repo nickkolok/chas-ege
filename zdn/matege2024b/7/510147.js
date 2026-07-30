@@ -28,7 +28,7 @@
             
             wasConstN.forEach((condition, i) => {
                 if (condition) {
-                    if (noHasDublValue(lengthConsts, maxLength)) {
+                    if (hasNoDuplicateValue(lengthConsts, maxLength)) {
                         answ[i].solution.push(constTexts[i]);
                     }
                 }
