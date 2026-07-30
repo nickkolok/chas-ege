@@ -14,13 +14,13 @@
 
 Не от слова "удалить", а от слова "далеко".
 
-Предполагается, что основной репозиторий проекта называется `origin`,
+Предполагается, что основной репозиторий проекта называется `upstream`,
 а остальные форки контрибьюторов - по их никам, т.е. как-то так:
 
 ```
 $ git remote -v
-origin  git@github.com:nickkolok/chas-ege.git (fetch)
-origin  git@github.com:nickkolok/chas-ege.git (push)
+upstream  git@github.com:nickkolok/chas-ege.git (fetch)
+upstream  git@github.com:nickkolok/chas-ege.git (push)
 kalendar2       git@github.com:Kalendar2/chas-ege.git (fetch)
 kalendar2       git@github.com:Kalendar2/chas-ege.git (push)
 sugarhedgehog   git@github.com:SugarHedgehog/chas-ege.git (fetch)
@@ -37,7 +37,7 @@ zer00player     git@github.com:Zer00Player/chas-ege.git (push)
 Забираем ветку из PR 12345678 локально:
 
 ```
-git fetch origin pull/12345678/head:pr-12345678
+git fetch upstream pull/12345678/head:pr-12345678
 git checkout pr-12345678
 ```
 
@@ -45,8 +45,8 @@ git checkout pr-12345678
 ## Работа над новой фичей
 
 ```
-git fetch origin
-git checkout -b имя_ветки origin/devel
+git fetch upstream
+git checkout -b имя_ветки upstream/devel
 ```
 
 А в конце, понятно, `git push`.
