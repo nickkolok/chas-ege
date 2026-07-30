@@ -43,12 +43,12 @@
 		}
 
 		function answAboutNonMore(intervals, answ, more) {
-			let wasNonMore = intervals.map(interval => isNonMore(interval, more));
+			let wasNonMore = intervals.map(interval => isNotMore(interval, more));
 			addUniqueAnsw(wasNonMore, answ, 'давление не превышало ' + convert(more));
 		}
 
 		function answAboutNonLess(intervals, answ, less) {
-			let wasNonLess = intervals.map(interval => isNonLess(interval, less));
+			let wasNonLess = intervals.map(interval => isNotLess(interval, less));
 			addUniqueAnsw(wasNonLess, answ, 'давление не было ниже ' + convert(less));
 		}
 
@@ -63,12 +63,12 @@
 		}
 
 		function answAboutIncreasingNonMore(intervals, answ, more) {
-			let wasCondition = intervals.map(interval => isIncreasing(interval) && isNonLess(interval, more));
+			let wasCondition = intervals.map(interval => isIncreasing(interval) && isNotLess(interval, more));
 			addUniqueAnsw(wasCondition, answ, 'давление росло, но не превышало ' + convert(more));
 		}
 
 		function answAboutDecreasingNonLess(intervals, answ, less) {
-			let wasCondition = intervals.map(interval => isDecreasing(interval) && isNonMore(interval, less));
+			let wasCondition = intervals.map(interval => isDecreasing(interval) && isNotMore(interval, less));
 			addUniqueAnsw(wasCondition, answ, 'давление упало, но осталось больше ' + convert(less));
 		}
 
@@ -78,12 +78,12 @@
 		}
 
 		function answAboutConstNotLess(intervals, answ, less) {
-			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isNonLess(interval, less));
+			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isNotLess(interval, less));
 			addUniqueAnsw(wasCondition, answ, 'давление не изменилось и было выше ' + convert(less));
 		}
 
 		function answAboutConstNotMore(intervals, answ, more) {
-			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isNonMore(interval, more));
+			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isNotMore(interval, more));
 			addUniqueAnsw(wasCondition, answ, 'давление не изменилось и было ниже ' + convert(more));
 		}
 
