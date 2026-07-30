@@ -8,12 +8,12 @@
         }
 
         function answAboutNonLess(intervals, answ, value) {
-            let wasNonLess = intervals.map(interval => isNonLess(interval, value));
+            let wasNonLess = intervals.map(interval => isNotLess(interval, value));
             addUniqueAnsw(wasNonLess, answ, 'температура была не ниже ' + convert(value) + ' на всём интервале');
         }
 
         function answAboutNonMore(intervals, answ, value) {
-            let wasNonMore = intervals.map(interval => isNonMore(interval, value));
+            let wasNonMore = intervals.map(interval => isNotMore(interval, value));
             addUniqueAnsw(wasNonMore, answ, 'температура не превышала ' + convert(value));
         }
 
@@ -39,7 +39,7 @@
             let delta = intervals.map(interval => interval.maxE() - interval.minE() + 0.1);
             let text = intervals.map((interval, i) => 'температура росла, и её прирост составил менее ' + convert(delta[i].ceil()));
 
-            if (noHasDublValue(wasIncreasing, true) && delta[index].ceil() > 0) {
+            if (hasNoDuplicateValue(wasIncreasing, true) && delta[index].ceil() > 0) {
                 answ[index].solution.push(text[index]);
             }
         }
