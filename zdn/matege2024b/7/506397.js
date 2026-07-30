@@ -9,7 +9,7 @@
             let index = wasStop.indexOf(true);
             let text = 'автомобиль сделал остановку на ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1)*15, 'секунда');
 
-            if (noHasDublValue(wasStop, true)) {
+            if (hasNoDuplicateValue(wasStop, true)) {
                 answ[index].solution.push(text);
             }            
         }
@@ -21,12 +21,12 @@
         }
 
         function answAboutNonIncreasingNonMoreV(intervals, answ, V) {
-            let wasCondition = intervals.map(interval => isNonIncreasing(interval) && isNonMore(interval, V));
+            let wasCondition = intervals.map(interval => isNonIncreasing(interval) && isNotMore(interval, V));
             addUniqueAnsw(wasCondition, answ, 'скорость автомобиля не увеличивалась и не превышала ' + V * 20 + ' км/ч');
         }
 
         function answAboutNonDecreasingNonLessV(intervals, answ, V) {
-            let wasCondition = intervals.map(interval => isNonDecreasing(interval) && isNonLess(interval, V));
+            let wasCondition = intervals.map(interval => isNonDecreasing(interval) && isNotLess(interval, V));
             addUniqueAnsw(wasCondition, answ, 'скорость автомобиля не уменьшалась и не была менее ' + V * 20 + ' км/ч');
         }
 
@@ -76,7 +76,7 @@
             let index = wasConst.indexOf(true);
             let text = 'автомобиль ровно ' + chislitlx(lengthOfZeroInterval(intervals[index]) * 15, 'минута'+ ' ехал с постоянной скоростью');
 
-            if (noHasDublValue(wasConst, true)) {
+            if (hasNoDuplicateValue(wasConst, true)) {
                 answ[index].solution.push(text);
             }            
         }
@@ -87,7 +87,7 @@
             let index = wasConst.indexOf(true);
             let text = 'автомобиль более ' + chislitlx((lengthConst(intervals[index]) - 1) * 15, 'секунда', 'r') + ' ехал с постоянной скоростью';
 
-            if (noHasDublValue(wasConst, true)) {
+            if (hasNoDuplicateValue(wasConst, true)) {
                 answ[index].solution.push(text);
             } 
         }
