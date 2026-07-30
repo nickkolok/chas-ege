@@ -26,7 +26,7 @@
             shiftCoordinate: false
         };
 
-        let square = new Parallelogram({
+        let parallelogram = new Parallelogram({
             points,
             supplementary
         });
@@ -43,12 +43,12 @@
             ctx.strokeStyle = om.secondaryBrandColors;
             ctx.rotate(sl1() * Math.PI / 2);
             ctx.lineWidth = 4 / scale;
-            ctx.drawFigure(square.vertices, square.connectionMatrix);
+            ctx.drawFigure(parallelogram.vertices, parallelogram.connectionMatrix);
         };
 
         NAtask.setTask({
             text: `План местности разбит на клетки. Каждая клетка обозначает квадрат $1 \\text{ м} \\times 1 \\text{ м}$. Найдите площадь участка, выделенного на плане. Ответ дайте в квадратных метрах.`,
-            answers: square.area(),
+            answers: parallelogram.area(),
             authors: ['Александра Суматохина'],
         });
 
