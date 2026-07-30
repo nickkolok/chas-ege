@@ -16,9 +16,10 @@
 
 		let answer = Math.pow(k, stepen);
 
-		// Иллюстрация: два шара, касающиеся внешне и центрированные по горизонтали.
-		// Радиусы в пикселях пропорциональны радиусам из условия (R_big : R_small = rBig : rSmall);
-		// масштаб подобран так, чтобы полуширина композиции (R_big+R_small) не вылезала за канвас.
+		// Иллюстрация: два шара в пропорции условия, НЕ касающиеся (зазор как в методичке),
+		// центрированные по горизонтали и вписанные в канвас. Зазор пропорционален масштабу
+		// композиции (gapRatio от суммы радиусов в пикселях), чтобы смотрелось одинаково
+		// и для крошечного, и для крупного меньшего шара.
 		let paint = function(ctx) {
 			let W = 400;
 			ctx.translate(W / 2, W / 2);
@@ -27,11 +28,13 @@
 
 			let margin = 12;
 			let maxHalf = W / 2 - margin;
-			let scale = maxHalf / (rBig + rSmall);
+			let gapRatio = 0.3;
+			let scale = maxHalf / ((rBig + rSmall) * (1 + gapRatio / 2));
 			let R1 = scale * rBig;
 			let R2 = scale * rSmall;
-			let cxBig = -R2;
-			let cxSmall = R1;
+			let gap = gapRatio * (R1 + R2);
+			let cxBig = -(R2 + gap / 2);
+			let cxSmall = R1 + gap / 2;
 
 			let drawSphere = function(cx, R) {
 				ctx.beginPath();
