@@ -18,12 +18,12 @@
         }
 
         function answAboutNonLess(intervals, answ, value) {
-            let wasNonLess = intervals.map(interval => isNonLess(interval, value));
+            let wasNonLess = intervals.map(interval => isNotLess(interval, value));
             addUniqueAnsw(wasNonLess, answ, 'частота пульса была не ниже ' + convert(value));
         }
 
         function answAboutNonMore(intervals, answ, value) {
-            let wasNonMore = intervals.map(interval => isNonMore(interval, value));
+            let wasNonMore = intervals.map(interval => isNotMore(interval, value));
             addUniqueAnsw(wasNonMore, answ, 'частота пульса была не выше ' + convert(value));
         }
 
@@ -48,7 +48,7 @@
         }
 
         function answAboutIncreasingNonLess(intervals, answ, more) {
-            let wasCondition = intervals.map(interval => isIncreasing(interval) && isNonLess(interval, more));
+            let wasCondition = intervals.map(interval => isIncreasing(interval) && isNotLess(interval, more));
             addUniqueAnsw(wasCondition, answ, 'частота пульса росла на всём интервале и была не ниже  ' + convert(more));
         }
 
