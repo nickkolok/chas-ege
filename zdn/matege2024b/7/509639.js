@@ -35,16 +35,16 @@
             addUniqueAnsw(wasConst, answ, 'все три месяца периода объём продаж был одинаковым');
         }
 
-        function answAboutMoreInMounth(intervals, answ, mounth, MoreP) {
-            let wasMore = intervals.map(interval => interval[mounth] > MoreP);
-            let mounthNames = ['первый', 'второй', 'последний'];
-            addUniqueAnsw(wasMore, answ, 'за ' + mounthNames[mounth] + ' месяц периода было продано больше ' + convert(MoreP) + ' холодильников');
+        function answAboutMoreInMounth(intervals, answ, month, MoreP) {
+            let wasMore = intervals.map(interval => interval[month] > MoreP);
+            let monthNames = ['первый', 'второй', 'последний'];
+            addUniqueAnsw(wasMore, answ, 'за ' + monthNames[month] + ' месяц периода было продано больше ' + convert(MoreP) + ' холодильников');
         }
 
-        function answAboutLessInMounth(intervals, answ, mounth, LessP) {
-            let wasLess = intervals.map(interval => interval[mounth] < LessP);
-            let mounthNames = ['первый', 'второй', 'последний'];
-            addUniqueAnsw(wasLess, answ, 'за ' + mounthNames[mounth] + ' месяц периода было продано меньше ' + convert(LessP) + ' холодильников');
+        function answAboutLessInMounth(intervals, answ, month, LessP) {
+            let wasLess = intervals.map(interval => interval[month] < LessP);
+            let monthNames = ['первый', 'второй', 'последний'];
+            addUniqueAnsw(wasLess, answ, 'за ' + monthNames[month] + ' месяц периода было продано меньше ' + convert(LessP) + ' холодильников');
         }
 
         function answAboutSlowRise(intervals, answ) {
@@ -90,8 +90,8 @@
             addUniqueAnsw(wasMaxDeltaD, answ, 'за этот период ежемесячный объём продаж уменьшился на ' + convert(maxED - 1) + ' холодильников');
         }
 
-        let mounth = om.months;
-        let mounthView = mounth.map(m => m.slice(0, 3));
+        let month = om.months;
+        let monthView = month.map(m => m.slice(0, 3));
 
         let time = [0].zapMonot(12, 0, 1, 1); // шкала времени
         let production = [sl(2, 5)]; // шкала продаж
@@ -115,7 +115,7 @@
 
         let listOfIntervals = intervals.map((interval, i) => {
             return {
-                expr: `${mounth[i * 3]}-${mounth[i * 3 + 2]}`,
+                expr: `${month[i * 3]}-${month[i * 3 + 2]}`,
                 solution: []
             };
         });
@@ -152,7 +152,7 @@
                 stepX: 1,
                 stepY: 100,
                 typeX: 'custom',
-                labelsX: mounthView,
+                labelsX: monthView,
                 minY: 100,
                 maxY: 700,
                 stepByCeilX: 1,
