@@ -3,44 +3,52 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let a = sl(2, 9);
-		let b = slKrome(a, 2, 9);
+		let b = sl(2, 9);
 		let c = sl(2, 12);
 
 		let V = a * b * c;
 		let S = 2 * (a * b + a * c + b * c);
 
+		// Чертёж: пропорциональный параллелепипед, авто-вписанный в canvas.
+		// Контракт вписывания (bounding box + maxScale:50) и стиль линий заимствованы из
+		// zdn/matege2024p/3/245335.js (autoScale / setLineDash([5,4]) / om.secondaryBrandColors).
+		// Ракурс и видимость рёбер считаем явно, чтобы попасть во фронтальную проекцию со
+		// скриншота (движковый ракурс 245335 — изометрия, другой вид).
+		let W = 400, H = 400, pad = 20, maxScale = 50;
+		let k = 0.5, ang = Math.PI / 6;            // кавалерская проекция: глубина под 30°, коэф 0.5
+		let ddx = Math.cos(ang), ddy = Math.sin(ang);
+		// 3D-вершины пропорционально рёбрам: X~a (ширина), Y~b (глубина), Z~c (высота)
+		// 0 fBL,1 fBR,2 fTR,3 fTL,  4 bBL,5 bBR,6 bTR,7 bTL
+		let P3 = [
+			[0, 0, 0], [a, 0, 0], [a, 0, c], [0, 0, c],
+			[0, b, 0], [a, b, 0], [a, b, c], [0, b, c],
+		];
+		let proj = function(p) { return { x: p[0] + k * p[1] * ddx, y: -p[2] - k * p[1] * ddy }; };
+		let pts = P3.map(proj);
+		let xs = pts.map(function(p) { return p.x; });
+		let ys = pts.map(function(p) { return p.y; });
+		let minx = Math.min.apply(null, xs), maxx = Math.max.apply(null, xs);
+		let miny = Math.min.apply(null, ys), maxy = Math.max.apply(null, ys);
+		let scale = Math.min((W - 2 * pad) / (maxx - minx), (H - 2 * pad) / (maxy - miny));
+		if (scale > maxScale) { scale = maxScale; }
+		let cx = (minx + maxx) / 2, cy = (miny + maxy) / 2;
+		let verts = pts.map(function(p) { return { x: (p.x - cx) * scale, y: (p.y - cy) * scale }; });
+		let solid  = [[0,1],[1,2],[2,3],[3,0],[1,5],[2,6],[3,7],[5,6],[6,7]];
+		let dashed = [[0,4],[4,5],[4,7]];          // три ребра в дальней нижней левой вершине
+
 		let paint = function(ctx) {
-			let W = 400;
-			ctx.translate(W / 2, W / 2);
+			ctx.translate(W / 2, H / 2);
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
-
-			// Передняя (ближняя) грань — квадрат; задняя смещена вправо-вверх, как на скриншоте.
-			let hw = 70, hh = 70, ox = 40, oy = 20, sx = 55, sy = 55;
-			let fTL = [-ox - hw,  oy - hh];
-			let fTR = [-ox + hw,  oy - hh];
-			let fBL = [-ox - hw,  oy + hh];
-			let fBR = [-ox + hw,  oy + hh];
-			let bTL = [fTL[0] + sx, fTL[1] - sy];
-			let bTR = [fTR[0] + sx, fTR[1] - sy];
-			let bBL = [fBL[0] + sx, fBL[1] - sy];
-			let bBR = [fBR[0] + sx, fBR[1] - sy];
-
-			let line = function(p, q) {
+			let seg = function(e) {
 				ctx.beginPath();
-				ctx.moveTo(p[0], p[1]);
-				ctx.lineTo(q[0], q[1]);
+				ctx.moveTo(verts[e[0]].x, verts[e[0]].y);
+				ctx.lineTo(verts[e[1]].x, verts[e[1]].y);
 				ctx.stroke();
 			};
-
-			// Видимые рёбра (сплошные)
-			line(fTL, fTR); line(fTR, fBR); line(fBR, fBL); line(fBL, fTL); // передняя грань
-			line(fTL, bTL); line(fTR, bTR); line(fBR, bBR);                 // уходящие вглубь
-			line(bTL, bTR); line(bTR, bBR);                                 // верхнее и правое задние
-
-			// Невидимые рёбра (пунктир)
+			solid.forEach(seg);
 			ctx.setLineDash([5, 4]);
-			line(bTL, bBL); line(bBL, bBR); line(fBL, bBL);
+			dashed.forEach(seg);
 			ctx.setLineDash([]);
 		};
 
@@ -49,10 +57,10 @@
 				', а объём параллелепипеда равен ' + V +
 				'. Найдите площадь поверхности этого параллелепипеда.',
 			answers: S,
-			analys: 'Объём прямоугольного параллелепипеда равен произведению его рёбер: $V = a b c$, ' +
+			analys: 'Объём прямоугольного параллелепипеда равен произведению его измерений: $V = a b c$, ' +
 				'откуда третье ребро $c = V / (a b) = ' + V + ' / ' + (a * b) + ' = ' + c + '$. ' +
-				'Площадь поверхности $S = 2(ab + ac + bc) = 2(' + (a * b) + ' + ' + (a * c) + ' + ' + (b * c) + ') = ' + S + '$.',
-			authors: ['Надежда'],
+				'Площадь полной поверхности $S = 2(ab + ac + bc) = 2(' + (a * b) + ' + ' + (a * c) + ' + ' + (b * c) + ') = ' + S + '$.',
+			author: ['Надежда'],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
@@ -63,4 +71,4 @@
 	}, 100000);
 })();
 //506379
-/* СдамГИА: 506379 506519 510012 510207 510227 510247 510267 515838 515858 */
+/* СдамГИА: 506379 (аналоги по тому же прототипу, симлинками НЕ оформлены: 506519 510012 510207 510227 510247 510267 515838 515858) */
