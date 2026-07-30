@@ -46,8 +46,11 @@ git checkout pr-12345678
 
 ```
 git fetch upstream
-git checkout -b имя_ветки upstream/devel
+git checkout upstream/devel
+git checkout -b имя_ветки
 ```
+Двумя командами, а не одной - по опыту нашей команды это безопаснее.
+
 
 А в конце, понятно, `git push`.
 
