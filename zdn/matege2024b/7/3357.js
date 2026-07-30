@@ -10,7 +10,7 @@
             let wasStop = intervals.map(interval => lengthOfZeroInterval(interval) > 1);
             let index = wasStop.indexOf(true);
 
-            if (index !== -1 && noHasDublValue(wasStop, true)) {
+            if (index !== -1 && hasNoDuplicateValue(wasStop, true)) {
                 let text = 'автобус сделал остановку длительностью ' +
                     chislitlx(lengthOfZeroInterval(intervals[index]) - 1, 'минута');
                 answ[index].solution.push(text);
@@ -24,12 +24,12 @@
         }
 
         function answAboutNonLess(intervals, answ, V) {
-            let wasNonLess = intervals.map(interval => isNonLess(interval, V));
+            let wasNonLess = intervals.map(interval => isNotLess(interval, V));
             addUniqueAnsw(wasNonLess, answ, 'скорость автобуса была не меньше ' + V * 20 + ' км/ч на всём интервале');
         }
 
         function answAboutNonMore(intervals, answ, V) {
-            let wasNonMore = intervals.map(interval => isNonMore(interval, V));
+            let wasNonMore = intervals.map(interval => isNotMore(interval, V));
             addUniqueAnsw(wasNonMore, answ, 'скорость автобуса была не больше ' + V * 20 + ' км/ч на всём интервале');
         }
 
@@ -47,7 +47,7 @@
             let wasConst = intervals.map(interval => lengthConst(interval) > 2);
             let index = wasConst.indexOf(true);
 
-            if (index !== -1 && noHasDublValue(wasConst, true)) {
+            if (index !== -1 && hasNoDuplicateValue(wasConst, true)) {
                 let text = chislitlx(lengthConst(intervals[index]), 'минута') +
                     ' автобус двигался с постоянной ненулевой скоростью';
                 answ[index].solution.push(text);
