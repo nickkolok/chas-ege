@@ -149,6 +149,7 @@
         let startDay = sl(1, 14);
 
         let monthDays = getWeekdays(year, month, startDay);
+        genAssert(monthDays.length >= 12, "Недостаточно рабочих дней в месяце");
 
         let time = [0].zapMonot(12, 0, 1, 1); // шкала дней
         let price = [sl(0, 8, 0.5)]; // шкала цены
