@@ -141,7 +141,7 @@ P * 10(function () {
 		let count = 0;
 		let times = ['вдвое', 'втрое', 'вчетверо', 'впятеро', 'вшестеро', 'всемеро', 'восьмеро'];
 
-		for (; p.length <= time.length || p.length == time.length;) {
+		for (; p.length <= time.length;) {
 			let interI = ((time.length / (sl(1.5, 2.5, 0.5))).floor());
 			for (let j = 0; j < interI; j++) {
 				let newPoint = p[p.length - 1] + sl(0.1, 1, 0.1) * [-1, 1][count % 2];
