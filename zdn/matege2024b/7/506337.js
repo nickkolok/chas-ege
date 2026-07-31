@@ -91,7 +91,7 @@
         let valueW = [slKrome(valueM[0], 1, 6)]; // шкала рождаемости девочек
         let count = sl1();
 
-        for (; valueM.length != time.length;) {
+        for (; valueM.length !== time.length;) {
             let lastValue = valueM[valueM.length - 1];
             let newValue = [0, 0, 0, 0, 1].iz() ? lastValue : lastValue + sl(0.5, 2, 0.3) * (-1).pow(count);
             if (newValue.mzhd(1, 8, true) && sl1())
@@ -100,7 +100,7 @@
                 count++;
         }
 
-        for (; valueW.length != time.length;) {
+        for (; valueW.length !== time.length;) {
             let lastValue = valueM[valueW.length];
             let newValue = [0, 0, 1].iz() ? lastValue : lastValue + sl(1, 2, 0.3).pm();
             if (newValue.mzhd(1, 8, true) && (newValue - valueM[valueW.length]).abs() > 0.5)
