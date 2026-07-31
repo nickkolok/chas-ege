@@ -212,7 +212,7 @@
             ctx.font = "14px serif";
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('t,°C', -3, 10)
+            ctx.fillText('t,°C', -3, 10);
 
             ctx.translate(15, 20 * 15);
             ctx.scale(15, -15);
