@@ -110,7 +110,7 @@
                 for (let i = 1; i < interval.length; i++) {
                     delta.push((interval[i - 1] - interval[i]).abs());
                 }
-                return delta.sum()
+                return delta.sum();
             });
             
             let minE = deltaMin.minE();
