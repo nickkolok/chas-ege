@@ -77,8 +77,8 @@ P * 10(function () {
 					let min = interval.minE();
 					let max = interval.maxE();
 					let delta = max / min;
-					let deltaFlour = delta.floor();
-					return !delta.isZ() && deltaFlour > 1 && deltaFlour < 6;
+					let deltaFloor = delta.floor();
+					return !delta.isZ() && deltaFloor > 1 && deltaFloor < 6;
 				}
 				return false;
 			});
@@ -95,8 +95,8 @@ P * 10(function () {
 
 			wasCondition.forEach((condition, i) => {
 				if (condition) {
-					let deltaFlour = deltaValues[i];
-					let text = 'в течение всего периода потребление воды выросло более чем ' + times[(deltaFlour - 2)];
+					let deltaFloor = deltaValues[i];
+					let text = 'в течение всего периода потребление воды выросло более чем ' + times[(deltaFloor - 2)];
 					if (hasNoDuplicateValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
 						answ[i].solution.push(text);
 					}
@@ -110,8 +110,8 @@ P * 10(function () {
 					let min = interval.minE();
 					let max = interval.maxE();
 					let delta = max / min;
-					let deltaFlour = delta.floor();
-					return !delta.isZ() && deltaFlour > 1 && deltaFlour < 6;
+					let deltaFloor = delta.floor();
+					return !delta.isZ() && deltaFloor > 1 && deltaFloor < 6;
 				}
 				return false;
 			});
@@ -127,8 +127,8 @@ P * 10(function () {
 
 			wasCondition.forEach((condition, i) => {
 				if (condition) {
-					let deltaFlour = deltaValues[i];
-					let text = 'в течение всего периода потребление воды упало более чем ' + times[(deltaFlour - 2)];
+					let deltaFloor = deltaValues[i];
+					let text = 'в течение всего периода потребление воды упало более чем ' + times[(deltaFloor - 2)];
 					if (hasNoDuplicateValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
 						answ[i].solution.push(text);
 					}
