@@ -68,7 +68,7 @@
         }
 
         function answAboutConst(intervals, answ) {
-            let wasConst = intervals.map(interval => interval[0] == interval[interval.length - 1]);
+            let wasConst = intervals.map(interval => interval[0] === interval[interval.length - 1]);
             addUniqueAnsw(wasConst, answ, ['крутящий момент не меняется на всём интервале',
                 'при увеличении числа оборотов крутящий момент не меняется'
             ].iz());
