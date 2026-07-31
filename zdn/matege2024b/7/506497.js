@@ -7,7 +7,7 @@
 			return 752 + P * 2 + ' мм рт. ст.';
 		}
 
-		function answAboutMax(intervals, answ) {
+		function answAboutMax(intervals, answ, value) {
 			let maxIndex = findMaxInIntervals(intervals, value);
 			let wasMax = intervals.map((_, i) => i === maxIndex);
 			addUniqueAnsw(wasMax, answ, 'давление достигло ' + convert(value.maxE()));
@@ -163,7 +163,7 @@
 		}
 
 		// добавляем ответ про максимальное давление
-		answAboutMax(intervals, listOfIntervals);
+		answAboutMax(intervals, listOfIntervals, value);
 		// добавляем ответ про максимальный и минимальный рост
 		answAboutMaxMinDelta(intervals, listOfIntervals);
 
