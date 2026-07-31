@@ -43,7 +43,7 @@
         }
 
         function answAboutDecreasingDroppedBelowN(intervals, answ, belowN) {
-            let wasDecreasing = intervals.map(interval => !isIncreasing(interval) && interval.some(value => value == belowN) && interval.every(value => value >= belowN));
+            let wasDecreasing = intervals.map(interval => !isIncreasing(interval) && interval.some(value => value === belowN) && interval.every(value => value >= belowN));
             addUniqueAnsw(wasDecreasing, answ, 'частота пульса упала до ' + convert(belowN));
         }
 
