@@ -232,7 +232,7 @@
             rightHeader: 'ХАРАКТЕРИСТИКИ',
             right: solutions,
             postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику изменения температуры.',
-            analys:listView.join('<br/>'),
+            analys: listView.join('<br/>'),
         });
         NAtask.modifiers.allDecimalsToStandard();
         NAtask.modifiers.addCanvasIllustration({
