@@ -87,7 +87,7 @@
 			addUniqueAnsw(wasCondition, answ, 'давление не изменилось и было ниже ' + convert(more));
 		}
 
-		let mounth = sklonlxkand(om.months.iz()).re;
+		let month = sklonlxkand(om.months.iz()).re;
 		let beginDay = sl(1, 20);
 
 		let time = [1].zapMonot(13, 0, 1, 1); // шкала времени
@@ -117,7 +117,7 @@
 
 		let listOfIntervals = intervalsTime.map((interval, i) => {
 			return {
-				expr: `${timeDay[interval[0] % 4]} ${Math.floor(interval[0] / 4) + 1 + beginDay} ${mounth} (с ${(interval[0] * 6) % 24} до ${(interval[1] * 6) % 24} часов)`,
+				expr: `${timeDay[interval[0] % 4]} ${Math.floor(interval[0] / 4) + 1 + beginDay} ${month} (с ${(interval[0] * 6) % 24} до ${(interval[1] * 6) % 24} часов)`,
 				solution: [],
 			};
 		});
@@ -210,12 +210,12 @@
 			ctx.textBaseline = 'middle';
 
 			for (let i = 0; i < 3; i++) {
-				ctx.fillText((i + 1 + beginDay) + ' ' + mounth, 80 + 160 * i, 40);
+				ctx.fillText((i + 1 + beginDay) + ' ' + month, 80 + 160 * i, 40);
 			}
 		};
 
 		NAtask.setCorrespondenceTask({
-			text: 'На рисунке точками показано атмосферное давление в некотором городе на протяжении трёх суток с ' + (beginDay + 1) + ' по ' + (beginDay + 3) + ' ' + mounth + ' 20' + sl(10, 25) + ' года. ' +
+			text: 'На рисунке точками показано атмосферное давление в некотором городе на протяжении трёх суток с ' + (beginDay + 1) + ' по ' + (beginDay + 3) + ' ' + month + ' 20' + sl(10, 25) + ' года. ' +
 				'В течение суток давление измеряется 4 раза: в 0:00, в 6:00, в 12:00 и в 18:00. ' +
 				'По горизонтали указывается время и дата, по вертикали – давление в миллиметрах ртутного столба. ' +
 				'Для наглядности точки соединены линиями.',
