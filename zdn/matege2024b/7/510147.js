@@ -77,28 +77,28 @@
                 let first = interval.slice(0, 4);
                 return isNonIncreasing(first);
             });
-            if(sl1())
+            if (sl1())
                 addUniqueAnsw(isIncreasingFirst, answ, 'в первой половине периода среднесуточная температура не повышалась');
 
             let isDecreasingFirst = intervals.map(interval => {
                 let first = interval.slice(0, 4);
                 return isNonDecreasing(first);
             });
-            if(sl1())
+            if (sl1())
                 addUniqueAnsw(isDecreasingFirst, answ, 'в первой половине периода среднесуточная температура не понижалась');
 
             let isIncreasingSecond = intervals.map(interval => {
                 let second = interval.slice(4);
                 return isNonIncreasing(second);
             });
-            if(sl1())
+            if (sl1())
                 addUniqueAnsw(isIncreasingSecond, answ, 'во второй половине периода среднесуточная температура не повышалась');
 
             let isDecreasingSecond = intervals.map(interval => {
                 let second = interval.slice(4);
                 return isNonDecreasing(second);
             });
-            if(sl1())
+            if (sl1())
                 addUniqueAnsw(isDecreasingSecond, answ, 'во второй половине периода среднесуточная температура не понижалась');
         }
 
@@ -159,7 +159,7 @@
         let less2 = slKrome([less1, more1], 9, 15);
         let more2 = slKrome([less1, more1, less2], 2, 9);
 
-        if(sl1())
+        if (sl1())
             answAboutIncrDescr(intervals, listOfIntervals);
         if (sl1()) {
             answAboutNonIncreasing(intervals, listOfIntervals);
