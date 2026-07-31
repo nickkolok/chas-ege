@@ -77,7 +77,7 @@
 
             let maxEI = incr.maxE();
             let wasMaxDeltaIDay = intervals.map((_, i) => incr[i] === maxEI);
-            addUniqueAnsw(wasMaxDeltaIDay, answ, 'наибольшее рост цены за день торгов');
+            addUniqueAnsw(wasMaxDeltaIDay, answ, 'наибольший рост цены за день торгов');
         }
 
         function answAboutMaxDeltaDDay(intervals, answ) {
