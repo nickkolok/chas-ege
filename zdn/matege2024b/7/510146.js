@@ -154,7 +154,7 @@
         let price = [sl(0, 8, 0.5)]; // шкала цены
         let count = 0;
 
-        for (; price.length <= time.length || price.length == time.length;) {
+        for (; price.length <= time.length;) {
             let interI = ((time.length / (sl(3, 8, 0.5))).floor());
             for (let j = 0; j < interI; j++) {
                 let lastPrice = price[price.length - 1];
