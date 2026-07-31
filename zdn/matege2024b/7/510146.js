@@ -10,7 +10,7 @@
         function answAboutMax(intervals, answ) {
             let maxIndex = findMaxInIntervals(intervals, price);
             let wasMax = intervals.map((_, i) => i === maxIndex);
-            addUniqueAnsw(wasMax, answ, `цена достигла максимума за весь период с ${mounthDays[0]} по ${mounthDays[11]} ${mounthView}`);
+            addUniqueAnsw(wasMax, answ, `цена достигла максимума за весь период с ${monthDays[0]} по ${monthDays[11]} ${monthView}`);
         }
 
         function answAboutNonMoreP(intervals, answ, price) {
@@ -144,11 +144,11 @@
         let maxY = minY + stepY * 8;
 
         let year = 2000 + sl(0, 24);
-        let mounth = sl(11);
-        let mounthView = sklonlxkand(om.months[mounth]).re;
+        let month = sl(11);
+        let monthView = sklonlxkand(om.months[month]).re;
         let startDay = sl(1, 14);
 
-        let mounthDays = getWeekdays(year, mounth, startDay);
+        let monthDays = getWeekdays(year, month, startDay);
 
         let time = [0].zapMonot(12, 0, 1, 1); // шкала дней
         let price = [sl(0, 8, 0.5)]; // шкала цены
@@ -174,7 +174,7 @@
 
         let listOfIntervals = intervals.map((interval, i) => {
             return {
-                expr: `${mounthDays[i * 3]}-${mounthDays[i * 3 + 2]} ${mounthView}`,
+                expr: `${monthDays[i * 3]}-${monthDays[i * 3 + 2]} ${monthView}`,
                 solution: []
             };
         });
@@ -238,7 +238,7 @@
                 cellHeight: 30,
                 stepY,
                 typeX: 'custom',
-                labelsX: mounthDays,
+                labelsX: monthDays,
                 minY,
                 maxY,
                 arrowLengthX: 10.5,
@@ -257,7 +257,7 @@
         };
 
         NAtask.setCorrespondenceTask({
-            text: `На рисунке показана цена акции компании на момент закрытия биржевых торгов во все рабочие дни в период с ${mounthDays[0]} по ${mounthDays[11]} ${mounthView} ${year} года. По горизонтали указываются числа месяца, по вертикали – цена акции в рублях за штуку. Для наглядности точки соединены линией.`,
+            text: `На рисунке показана цена акции компании на момент закрытия биржевых торгов во все рабочие дни в период с ${monthDays[0]} по ${monthDays[11]} ${monthView} ${year} года. По горизонтали указываются числа месяца, по вертикали – цена акции в рублях за штуку. Для наглядности точки соединены линией.`,
             leftHeader: 'ИНТЕРВАЛЫ',
             left: listOfIntervals,
             rightHeader: 'ХАРАКТЕРИСТИКИ',
