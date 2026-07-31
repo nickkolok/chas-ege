@@ -84,16 +84,16 @@
         for (; value.length < time.length - 1;) {
             let interI = sl(2, (time.length / 2).floor());
             for (let j = 0; j < interI; j++) {
-                let curentValue = value[value.length - 1] + sl(1, 1.5, 0.1) * (-1).pow(count);
-                while (!curentValue.mzhd(1, 7, true)) {
-                    if (curentValue < 1) {
-                        curentValue += 0.1;
+                let currentValue = value[value.length - 1] + sl(1, 1.5, 0.1) * (-1).pow(count);
+                while (!currentValue.mzhd(1, 7, true)) {
+                    if (currentValue < 1) {
+                        currentValue += 0.1;
                     }
-                    if (curentValue > 5) {
-                        curentValue -= 0.1;
+                    if (currentValue > 5) {
+                        currentValue -= 0.1;
                     }
                 }
-                value.push(curentValue);
+                value.push(currentValue);
             }
             if (count == 0) {
                 indexConst = value.length - 1;
