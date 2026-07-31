@@ -197,7 +197,7 @@
             ctx.scale(40, -40);
             ctx.lineWidth = 2 / 40;
 
-            for (let i = 0; i < valuesView.length; i++) {
+            for (let i = 0; i < valuesView.length - 1; i++) {
                 ctx.drawLine(i * 0.1, valuesView[i], (i + 1) * 0.1, valuesView[i + 1]);
             }
         };
