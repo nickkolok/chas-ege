@@ -99,9 +99,9 @@
         let extrindex = sl(5, 8);
 
         for (; value.length != time.length;) {
-            let curentValue = value[value.length - 1] + [sl(0.5, 1, 0.1), -sl(0.1, 0.8, 0.1)][count];
-            genAssert(curentValue.mzhd(1, 8, true), 'График вышел за пределы сетки');
-            value.push(curentValue);
+            let currentValue = value[value.length - 1] + [sl(0.5, 1, 0.1), -sl(0.1, 0.8, 0.1)][count];
+            genAssert(currentValue.mzhd(1, 8, true), 'График вышел за пределы сетки');
+            value.push(currentValue);
             if (value.length == extrindex)
                 count++;
         }
