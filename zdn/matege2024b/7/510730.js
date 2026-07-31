@@ -101,7 +101,7 @@
         let time = [0].zapMonot(22, 0, 1, 1); // шкала времени
         let value = [0]; // шкала скорости
 
-        for (; value.length <= time.length || value.length == time.length;) {
+        for (; value.length <= time.length;) {
             let interI = (time.length / sl(2, 3).floor());
             for (let j = 0; j < interI; j++) {
                 value.push([sl(1, 5), value[value.length - 1]][Number([0, 0, 0, 1].iz() && value[value.length - 1] != 0)]);
