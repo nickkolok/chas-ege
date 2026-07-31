@@ -94,7 +94,7 @@
 		let value = [sl(0, 7, 0.5)]; // шкала давления
 
 		for (; value.length <= time.length;) {
-			let interI = (time.length / sl(2, 8).floor());
+			let interI = (time.length / sl(2, 8)).floor();
 			for (let j = 0; j < interI; j++) {
 				value.push([sl(0, 7, 0.5), value[value.length - 1]][Number([0, 0, 0, 1].iz() && value[value.length - 1] != 0)]);
 			}
