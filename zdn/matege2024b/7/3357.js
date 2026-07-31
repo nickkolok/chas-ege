@@ -44,10 +44,10 @@
         }
 
         function answAboutConst(intervals, answ) {
-            let wasConst = intervals.map(interval => lengthConst(interval) > 2);
-            let index = wasConst.indexOf(true);
+            let constFlags = intervals.map(interval => lengthConst(interval) > 2);
+            let index = constFlags.indexOf(true);
 
-            if (index !== -1 && hasNoDuplicateValue(wasConst, true)) {
+            if (index !== -1 && hasNoDuplicateValue(constFlags, true)) {
                 let text = chislitlx(lengthConst(intervals[index]), 'минута') +
                     ' автобус двигался с постоянной ненулевой скоростью';
                 answ[index].solution.push(text);
