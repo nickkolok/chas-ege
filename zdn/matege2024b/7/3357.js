@@ -17,8 +17,8 @@
             }
         }
 
-        function answAboutMax(intervals, answ) {
-            let maxIndex = findMaxInIntervals(intervals, value);
+        function answAboutMax(intervals, answ, values) {
+            let maxIndex = findMaxInIntervals(intervals, values);
             let wasMax = intervals.map((_, i) => i === maxIndex);
             addUniqueAnsw(wasMax, answ, 'скорость автобуса достигла максимума за всё время движения');
         }
@@ -99,7 +99,7 @@
         answAboutNonMore(intervals, listOfIntervals, moreV);
         answAboutNonIncreasing(intervals, listOfIntervals);
         answAboutNonDecreasing(intervals, listOfIntervals);
-        answAboutMax(intervals, listOfIntervals);
+        answAboutMax(intervals, listOfIntervals, value);
         answAboutConst(intervals, listOfIntervals);
 
         // Убираем дубликаты в решениях
