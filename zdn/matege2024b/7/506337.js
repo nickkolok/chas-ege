@@ -47,13 +47,13 @@
 
         function answAboutIncreasing(intervals, answ, flag) {
             let wasIncreasing = intervals.map(interval => isIncreasing(interval));
-            let genderI = gender[flag].rm
+            let genderI = gender[flag].rm;
             addUniqueAnsw(wasIncreasing, answ, 'в течение этого периода рождаемость ' + genderI + ' только росла');
         }
 
         function answAboutDecreasing(intervals, answ, flag) {
             let wasDecreasing = intervals.map(interval => isDecreasing(interval));
-            let genderD = gender[flag].rm
+            let genderD = gender[flag].rm;
             addUniqueAnsw(wasDecreasing, answ, 'в течение этого периода рождаемость ' + genderD + ' только снижалась');
         }
 
