@@ -81,8 +81,8 @@
             addUniqueAnsw(deltas, answ, 'в один из месяцев этого периода число рождений мальчиков и девочек различалось более чем на ' + delta * 5);
         }
 
-        let mounth = om.months;
-        let mounthView = mounth.map(m => m.slice(0, 3));
+        let month = om.months;
+        let monthView = month.map(m => m.slice(0, 3));
         let year = sl(2001, 2024);
         let gender = sklonlxkand(['мальчик', 'девочка']);
 
@@ -119,7 +119,7 @@
 
         let listOfIntervals = intervalsM.map((interval, i) => {
             return {
-                expr: `${mounth[i * 3]}-${mounth[i * 3 + 2]}`,
+                expr: `${month[i * 3]}-${month[i * 3 + 2]}`,
                 solution: ['']
             };
         });
@@ -161,7 +161,7 @@
                 stepX: 1,
                 stepY: 5,
                 typeX: 'custom',
-                labelsX: mounthView,
+                labelsX: monthView,
                 minY: 90,
                 maxY: 130,
                 stepByCeilX: 1,
