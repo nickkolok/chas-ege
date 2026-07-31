@@ -116,7 +116,7 @@
             addUniqueAnsw(wasIncr, answ, 'в конце периода наблюдался рост среднесуточной температуры');
         }
 
-        function answAboutDescrisingAtEnd(intervals, answ) {
+        function answAboutDecreasingAtEnd(intervals, answ) {
             let wasDecr = intervals.map(interval => {
                 return isDecreasing(interval.slice(4)) || isDecreasing(interval.slice(5));
             });
@@ -174,7 +174,7 @@
         if (sl1()) {
             answAboutIncreasingAtEnd(intervals, listOfIntervals);
         } else {
-            answAboutDescrisingAtEnd(intervals, listOfIntervals);
+            answAboutDecreasingAtEnd(intervals, listOfIntervals);
         }
     
         answAboutMin(intervals, listOfIntervals);
