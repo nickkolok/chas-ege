@@ -209,7 +209,7 @@
             rightHeader: 'ХАРАКТЕРИСТИКИ',
             right: solutions,
             postText: 'Пользуясь графиком, поставьте в соответствие каждому интервалу времени характеристику погружения батискафа на этом интервале.',
-            analys:listView.join('<br/>'),
+            analys: listView.join('<br/>'),
         });
         NAtask.modifiers.allDecimalsToStandard();
         NAtask.modifiers.addCanvasIllustration({
