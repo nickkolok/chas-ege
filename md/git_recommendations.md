@@ -37,7 +37,8 @@ zer00player     git@github.com:Zer00Player/chas-ege.git (push)
 Забираем ветку из PR 12345678 локально:
 
 ```
-git fetch upstream pull/12345678/head:pr-12345678
+git checkout upstream/devel
+git fetch upstream pull/12345678/head:pr-12345678 --force
 git checkout pr-12345678
 ```
 
