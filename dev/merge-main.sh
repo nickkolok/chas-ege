@@ -69,13 +69,10 @@ git checkout "$BRANCH"
 
 # ─── Merge ──────────────────────────────────────────────────────────
 echo ">>> merge origin/devel"
-if git merge origin/devel; then
+if git merge --no-commit --no-ff origin/devel; then
+    git merge --abort
     echo ""
-    echo "Конфликтов нет — чистый мёрдж. Пушу."
-    git push "$REMOTE" "HEAD:${HEAD_BRANCH:-$BRANCH}"
-    git checkout devel
-    git branch -D "$BRANCH"
-    echo "Готово!"
+    echo "Конфликтов нет — скрипт не нужен. Жмите кнопку на GitHub."
     exit 0
 fi
 
