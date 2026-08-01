@@ -1,7 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-		let key = "26719";
+		let key = '26719';
 		let preference = ['maximum', 'minimum'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 		let [forbidMinY, forbidMaxY] = [1 - rand, rand].map(elem => Boolean(elem));
