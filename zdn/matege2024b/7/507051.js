@@ -95,7 +95,7 @@
                 }
                 value.push(currentValue);
             }
-            if (count == 0) {
+            if (count === 0) {
                 indexConst = value.length - 1;
                 add = sl(2, 4);
                 let constArr = Array(add).fill(value[indexConst]);
