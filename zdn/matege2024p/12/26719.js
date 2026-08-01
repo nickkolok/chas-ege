@@ -27,7 +27,7 @@
 			forbidMinY,
 			forbidMaxY,
 			domain: x => x > 0,
-			preference: preference,
+			preference,
 		});
 	}, 1000);
 })();
