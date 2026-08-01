@@ -31,7 +31,7 @@
 					break;
 				case 2: // ±a·m + b ; ОДЗ тривиален
 					a = sl(1, 2).pm();
-					b = sl(-3, 3);
+					b = sl(1, 3).pm();
 					latex = (a === -1 ? '-' : (a === 1 ? '' : a)) + 'm' + (b ? (b > 0 ? '+' : '-') + Math.abs(b) : '');
 					v = a * m + b;
 					ok = true;
