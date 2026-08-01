@@ -150,9 +150,9 @@
             // добавляем ответ про не понижение скорости
             answAboutNonDecreasing(intervals, listOfIntervals, variable);
         } else {
-            // добавляем ответ про не понижение скорости и не остановку на интервале
             // добавляем ответ про не повышение скорости
             answAboutNonIncreasing(intervals, listOfIntervals, variable);
+            // добавляем ответ про не понижение скорости и не остановку на интервале
             answAboutNonDecreasingAndWasConst(intervals, listOfIntervals);
         }
         // добавляем ответ про скорость была не более
