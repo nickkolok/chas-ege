@@ -211,7 +211,7 @@
             postText: 'Пользуясь графиком, поставьте в соответствие каждому интервалу числа оборотов в минуту характеристику крутящего момента на этом интервале.',
             analys: listView.join('<br/>')
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
+        NAtask.modifiers.allDecimalsToStandard();
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 400,
