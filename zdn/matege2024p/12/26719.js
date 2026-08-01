@@ -5,7 +5,7 @@
 		let preference = ['maximum', 'minimum'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 		let [forbidMinY, forbidMaxY] = [1 - rand, rand].map(elem => Boolean(elem));
-		
+
 		let a = sl(1, 100).pm();
 		let b = sl(2, 19);
 		let arr1 = ['+', '-'];
