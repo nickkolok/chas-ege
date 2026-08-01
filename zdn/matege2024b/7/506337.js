@@ -3,10 +3,6 @@
     retryWhileError(function () {
         /* На рисунке точками изображено число родившихся мальчиков и девочек(по отдельности) за каждый календарный месяц 2013 года в городском роддоме. По горизонтали указываются месяцы, по вертикали – число рождений. Для наглядности точки соединены линиями. */
 
-        function convert(P) {
-            return P * 5 + 90;
-        }
-
         function answAboutMax(intervals, answ, flag) {
             let maxIndex = findMaxInIntervals(intervals, [valueM, valueW][flag]);
             let genderMax = gender[flag].rm;
