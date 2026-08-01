@@ -16,7 +16,7 @@
 		if ( b > b1) {
 			a1 = 1;
 		}
-		genAssertIrreducible(a1, b1);		
+		genAssertIrreducible(a1, b1);
 		NAtask.setMinimaxFunctionTask({
 			expr: arr1[maxmin] + 'log(' + b + 'x)+' + arr2[maxmin] + b + 'x+' + a,
 			leftEnd: '1/' + b * 2,
