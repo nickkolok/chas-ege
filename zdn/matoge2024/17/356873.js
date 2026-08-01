@@ -30,7 +30,6 @@
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, trp.connectionMatrix);
-
         };
 
         NAtask.setTask({
