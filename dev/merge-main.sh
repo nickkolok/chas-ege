@@ -61,7 +61,8 @@ echo ""
 # ─── Fetch ──────────────────────────────────────────────────────────
 echo ">>> fetch"
 git fetch origin devel
-git fetch origin "pull/$PR/head:$BRANCH"
+git checkout origin/devel
+git fetch origin "pull/$PR/head:$BRANCH" --force
 
 # ─── Checkout ───────────────────────────────────────────────────────
 echo ">>> checkout $BRANCH"
