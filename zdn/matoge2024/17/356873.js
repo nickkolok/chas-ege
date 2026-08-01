@@ -2,7 +2,6 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let letters = latbukv.slice(0, 4);
         let height = sl(5, 20);
 
         let trp = new Trapezoid({
