@@ -19,13 +19,21 @@ if [ "${1:-}" = "all" ]; then
         exit 0
     fi
     echo "Найдено PR: $(echo "$PR_NUMS" | wc -l)"
+
+    # Копируем себя во временный файл, чтобы переключение веток не сломало рекурсию
+    SELF_COPY=$(mktemp /tmp/merge-main.XXXXXX.sh)
+    cp "$0" "$SELF_COPY"
+    chmod +x "$SELF_COPY"
+    trap 'rm -f "$SELF_COPY"' EXIT
+
     for num in $PR_NUMS; do
         echo ""
         echo "════════════════════════════════════════"
         echo " PR #$num"
         echo "════════════════════════════════════════"
-        "$0" "$num" "${2:-}" || echo "⚠ PR #$num: ошибка, пропускаю."
+        bash "$SELF_COPY" "$num" "${2:-}" || echo "⚠ PR #$num: ошибка, пропускаю."
     done
+    rm -f "$SELF_COPY"
     exit 0
 fi
 
