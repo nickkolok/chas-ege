@@ -9,6 +9,26 @@
 #
 set -euo pipefail
 
+# ─── Режим «all»: прогнать по всем подходящим PR ─────────────────────
+if [ "${1:-}" = "all" ]; then
+    echo ">>> Режим «all»: ищу открытые PR с изменениями в zdn/*/*/{main,fipi}.js..."
+    PR_NUMS=$(gh pr list --state open --limit 500 --json number,files \
+        --jq '.[] | select(any(.files[].path; test("^zdn/[^/]+/[^/]+/(main|fipi)\\.js$"))) | .number')
+    if [ -z "$PR_NUMS" ]; then
+        echo "Подходящих PR не найдено."
+        exit 0
+    fi
+    echo "Найдено PR: $(echo "$PR_NUMS" | wc -l)"
+    for num in $PR_NUMS; do
+        echo ""
+        echo "════════════════════════════════════════"
+        echo " PR #$num"
+        echo "════════════════════════════════════════"
+        "$0" "$num" "${2:-}" || echo "⚠ PR #$num: ошибка, пропускаю."
+    done
+    exit 0
+fi
+
 # ─── Аргументы ──────────────────────────────────────────────────────
 PR="${1:?Использование: dev/merge-main.sh <NUM_PR> [REMOTE]}"
 BRANCH="pr-$PR"
