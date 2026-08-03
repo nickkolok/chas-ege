@@ -89,7 +89,6 @@ echo ""
 # ─── Fetch ──────────────────────────────────────────────────────────
 echo ">>> fetch"
 git fetch origin devel
-git checkout origin/devel
 git fetch origin "pull/$PR/head:$BRANCH" --force
 
 # ─── Проверка идентичности ─────────────────────────────────────────
