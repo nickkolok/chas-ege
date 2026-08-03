@@ -12,7 +12,7 @@
 	let the_humanSettlementDestination = sklonlxkand(["пункт","город","село","деревню"].iz()); 
         NAtask.setTask({
 		text:
-			'От ' + the_berthForFloatingVehicle.im +' A к ' + the_berthForFloatingVehicle.im +' B, расстояние между которыми равно '+s+' км, '+
+			'От ' + the_berthForFloatingVehicle.re +' A к ' + the_berthForFloatingVehicle.de +' B, расстояние между которыми равно '+s+' км, '+
 			'отправился с постоянной скоростью первый ' + the_activeFloatingVehicle.ie +', '+
 			'а через ' + chislitlx(n, 'час') + ' после этого следом за ним, '+
 			'со скоростью на ' + a + ' км/ч большей, отправился второй. ' + 
