@@ -28,6 +28,7 @@ NAtask.setTask({
 		'все '+kolvo+' '+pers+' заняты одновременно (считайте, что клиенты заходят независимо друг от друга).',
 		
 	answers,
-
+	authors: ['aisse-258'],
 });
+NAtask.modifiers.allDecimalsToStandard();
 })();
