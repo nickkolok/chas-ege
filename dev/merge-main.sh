@@ -100,17 +100,16 @@ if git diff --quiet "$BRANCH" origin/devel -- 'zdn/*/*/main.js' 'zdn/*/*/fipi.js
     exit 0
 fi
 
-# ─── Checkout ───────────────────────────────────────────────────────
-echo ">>> checkout $BRANCH"
-git checkout "$BRANCH"
-
 # ─── Проверка: уже up-to-date? ─────────────────────────────────────
 if git merge-base --is-ancestor origin/devel "$BRANCH"; then
     echo "Ветка PR уже содержит все изменения из origin/devel. Нечего мёржить!"
-    git checkout devel
     git branch -D "$BRANCH"
     exit 0
 fi
+
+# ─── Checkout ───────────────────────────────────────────────────────
+echo ">>> checkout $BRANCH"
+git checkout "$BRANCH"
 
 # ─── Merge ──────────────────────────────────────────────────────────
 echo ">>> merge origin/devel"
