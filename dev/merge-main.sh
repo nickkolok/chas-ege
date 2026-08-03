@@ -92,6 +92,14 @@ git fetch origin devel
 git checkout origin/devel
 git fetch origin "pull/$PR/head:$BRANCH" --force
 
+# ─── Проверка идентичности ─────────────────────────────────────────
+echo ">>> проверка: идентичны ли main.js и fipi.js"
+if git diff --quiet "$BRANCH" origin/devel -- 'zdn/*/*/main.js' 'zdn/*/*/fipi.js'; then
+    echo "Файлы main.js и fipi.js (при наличии) в обеих ветках идентичны. Нечего мёржить!"
+    git branch -D "$BRANCH" 2>/dev/null || true
+    exit 0
+fi
+
 # ─── Checkout ───────────────────────────────────────────────────────
 echo ">>> checkout $BRANCH"
 git checkout "$BRANCH"
