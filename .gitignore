@@ -29,3 +29,6 @@ zdn/*/upak.js
 lib/head.min.js
 #lib/chas-uijs.js
 
+#Библиотеки
+math.js
+nerdamer.js
