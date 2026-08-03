@@ -32,13 +32,13 @@ function zapusk(){
 	iZ=aZ.slice();
 	kategory=1;
 	$('#panel').html('Тест составляется, подождите...');
-	$('#gotov').show();
+	$('#readiness-message').show();
 	zadan();
 }
 
 function testGotov(){
 	vazhnOn();
-	$('#gotov').hide();
+	$('#readiness-message').hide();
 	for(var i=0;i<aZ.sum();i++)
 		try{
 			voprosy[i].dey();
@@ -127,7 +127,7 @@ function prov(){
 
 var startShell = function (){
 	$('#zadaniya').html(sozdKolvoHtml('poln'));
-	$('#gotov').hide();
+	$('#readiness-message').hide();
 	galkiKat('#galki_kat','pech');
 	$('#prov_knopki').hide();
 	assertCheckability();
