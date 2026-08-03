@@ -88,20 +88,20 @@ echo ""
 
 # ─── Fetch ──────────────────────────────────────────────────────────
 echo ">>> fetch"
-git fetch origin devel
-git fetch origin "pull/$PR/head:$BRANCH" --force
+git fetch upstream devel
+git fetch upstream "pull/$PR/head:$BRANCH" --force
 
 # ─── Проверка идентичности ─────────────────────────────────────────
 echo ">>> проверка: идентичны ли main.js и fipi.js"
-if git diff --quiet "$BRANCH" origin/devel -- 'zdn/*/*/main.js' 'zdn/*/*/fipi.js'; then
+if git diff --quiet "$BRANCH" upstream/devel -- 'zdn/*/*/main.js' 'zdn/*/*/fipi.js'; then
     echo "Файлы main.js и fipi.js (при наличии) в обеих ветках идентичны. Нечего мёржить!"
     git branch -D "$BRANCH" 2>/dev/null || true
     exit 0
 fi
 
 # ─── Проверка: уже up-to-date? ─────────────────────────────────────
-if git merge-base --is-ancestor origin/devel "$BRANCH"; then
-    echo "Ветка PR уже содержит все изменения из origin/devel. Нечего мёржить!"
+if git merge-base --is-ancestor upstream/devel "$BRANCH"; then
+    echo "Ветка PR уже содержит все изменения из upstream/devel. Нечего мёржить!"
     git branch -D "$BRANCH"
     exit 0
 fi
@@ -111,8 +111,8 @@ echo ">>> checkout $BRANCH"
 git checkout "$BRANCH"
 
 # ─── Merge ──────────────────────────────────────────────────────────
-echo ">>> merge origin/devel"
-if git merge --no-commit --no-ff origin/devel; then
+echo ">>> merge upstream/devel"
+if git merge --no-commit --no-ff upstream/devel; then
     git merge --abort
     echo ""
     echo "Конфликтов нет — скрипт не нужен. Жмите кнопку на GitHub."
@@ -209,7 +209,7 @@ SAFEGUARD_OK=1
 while IFS= read -r file; do
     [ -z "$file" ] && continue
 
-    STAT=$(git diff --numstat origin/devel HEAD -- "$file")
+    STAT=$(git diff --numstat upstream/devel HEAD -- "$file")
     if [ -z "$STAT" ]; then
         # Файл идентичен devel — тоже ок (номер мог уже быть в devel)
         continue
@@ -232,7 +232,7 @@ if [ "$SAFEGUARD_OK" -ne 1 ]; then
     echo ""
     echo "ОШИБКА: мёрж привёл к подозрительному результату. Пуш отменён."
     echo "Ветка «$BRANCH» оставлена — посмотри руками:"
-    echo "  git diff origin/devel HEAD -- zdn/"
+    echo "  git diff upstream/devel HEAD -- zdn/"
     echo "Откат:"
     echo "  git reset --hard HEAD~1 && git checkout devel && git branch -D $BRANCH"
     exit 1
