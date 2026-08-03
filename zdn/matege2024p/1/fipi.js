@@ -1,4 +1,4 @@
-window.nomer=[
+window.availableTaskNumbers = [
 	8,
 	9,
 	10,
@@ -7,5 +7,7 @@ window.nomer=[
 	13,
 	319157,
 	2743901,
-].iz()
+];
+
+window.nomer = window.availableTaskNumbers.iz();
 window.comment='Планиметрия';

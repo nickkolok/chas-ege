@@ -1,31 +1,23 @@
-(function() {
+(function() { 'use strict'; retryWhileError(function() {
+    let a=sluchch(2,9).pm();
+    let g=sluchch(1,9).pm();
+    let d=sluchch(2,2*a*g-1).pm();
+    let b=(2*a*g+d);
+    let f=sluchch(1,a*g*g-1).pm();
+    let c=(a*g*g+f);
+    let m=[a,c,d,f];
+    let n=['a','c','d','f'];
+    let h=sluchch(0,3);
+    NAtask.setTask({
+    	text: ('Прямая $y='+((h-2)?(d):('d'))+'x+'+((h-3)?(f):('f'))+
+		'$ является касательной к графику функции $y='+
+		((h)?(a):('a'))+'x^{2}+'+b+'x+'+((h-1)?(c):('c'))+'$. Найдите $'+n[h]+'$.').plusminus(),
 
-var a=sluchch(2,9).pm();
-var g=sluchch(1,9).pm();
-
-var d=sluchch(2,2*a*g-1).pm();
-var b=(2*a*g+d);
-
-var f=sluchch(1,a*g*g-1).pm();
-var c=(a*g*g+f);
-
-var h=2*(a*(c-f)).sqrt();
-
-var m1=[d-h,d+h];
-var t1=['меньше','больше'];
-var v1=sluchch(1);
-
-window.vopr.txt=(
-				'Прямая $y='+d+'x+'+f+'$ является касательной к графику функции $y='+a+'x^{2}+bx+'+c+
-				'$. Найдите $b$, зная, что оно '+t1[v1]+' '+sluchch(m1[0]+1,m1[1]-1)
-				).plusminus()+'.';
-window.vopr.ver=[''+m1[v1]];
-
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
-})();
+        answers: m[h],
+	authors: ['VeronikaKit'],
+    });
+    NAtask.modifiers.allDecimalsToStandard(/*true*/);
+}, 20000);})();
 /*119973 120717 121211 121215 120719 120721 120723 120725 120727 120729 120731
 120733 120735 120737 120739 120741 120743 120745 120747 120749 120751 120753 
 120755 120757 120759 120761 120763 120765 120767 120769 120771 120773 120775 
