@@ -3,7 +3,7 @@
 var a=sluchch(0,dlina.m.length-1);
 var b=sluchch(10,100,5);
 var g=dlina.m[a];
-var d=transportm.ie.iz();
+var d=transportm.ve.iz();
 
 NAtask.setTask({
 	text : profesj.ie.iz().toZagl()+' '+om.imenaj.ie.iz()+' '+otchestvaj.ie.iz()+
