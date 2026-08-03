@@ -48,7 +48,7 @@ function checkAnswer(){
 function createFromTextarea(){
 	saveAce();
 	$("#question").html("Если Вы видите эту надпись - задание не составлено, скорее всего, в программе ошибка.");
-	var code=nabrano();
+	var code=getCode();
 	try {
 		if(isCppCode(code)){
 			//Костыль, но положим, что это С++
@@ -59,7 +59,7 @@ function createFromTextarea(){
 				eval(code);
 		}
 	} catch (e) {
-		$("#question").html(e+'<br/>'+e.name + " : " + e.message);
+		$("#question").html(e.message.replace(/\n/g,'<br/>'));
 		console.error(e);
 		return;
 	}
@@ -69,7 +69,7 @@ function createFromTextarea(){
 function tt(){
 	saveAce();
 	var t1=new Date().getTime();
-	var code=nabrano();
+	var code=getCode();
 	var iter=1*$("#iter").val();
 	for(var i=iter;i;i--)
 		eval(code);
@@ -104,11 +104,20 @@ function enableAce(){
 	flAce=1;
 }
 
-function nabrano(){
+function getCode(){
 	if(flAce)
 		return editor.getValue();
 	else
 		return $("#textarea-script").val();
+}
+
+function setCode(code){
+	if(flAce) {
+		editor.setValue(code,1);
+	}
+	else {
+		$("#textarea-script").val(code);
+	}
 }
 
 function saveAce(){
@@ -135,13 +144,26 @@ function beautifyCode(){
 			alert("Обратите внимание: код шаблона не соответствует соглашениям, принятым в проекте."+
 				"В редактор помещена скорректированная версия.");
 		}
-		if(flAce) {
-			editor.setValue(beautifiedCode,1);
-		}
-		else {
-			$("#textarea-script").val(beautifiedCode);
-		}
+		setCode(beautifiedCode);
 	}
+}
+
+function makeTemplate(){
+	saveAce();
+	chasStorage.domData.save();
+
+	let oldCode =
+		$("#textarea-script").val()+
+		"\n\n"+
+		"//////////////////////////////////////"+
+		"\n\n"+
+		$("#textarea-previous-code").val();
+
+	$("#textarea-previous-code").val(oldCode);
+
+	let taskText = $("#textarea-task-text").val();
+	let generatedCode = makeTemplateFromPlainText(taskText);
+	setCode(generatedCode);
 }
 
 function startFullscreen(){
@@ -203,6 +225,8 @@ document.onkeydown = function(e) {
 var templateTemplate = "(function() {\n \tretryWhileError(function() {\n\t\tNAinfo.requireApiVersion(" + NAinfo.API_VERSION.major + ", " + NAinfo.API_VERSION.minor + "); \n\t\tNAtask.setTask({\n\t\t\ttext: '',\n\t\t\tanswers: 0,\n\t\t\tanalys: '',\n\t\t});\n\t});\n})();";
 
 var startShell = function (){
+	spoiler();
+	$('#readiness-message').hide();
 	zagr("../ext/keyboard/keyboard.js");
 	if ($("#textarea-script").val() == "") {
 		$("#textarea-script").val(templateTemplate);
@@ -210,7 +234,11 @@ var startShell = function (){
 	}
 }
 
-
+function displayReadinessMessage(message, timeout = 3000) {
+	$('#readiness-message').show();
+	$('#readiness-message').html(message);
+	setTimeout(() => $('#readiness-message').hide(), timeout);
+}
 
 function startExport(){
 	vopr.template = $("#filepath").val().replace(/^(\.\.\/)+/,'');
@@ -218,6 +246,21 @@ function startExport(){
 
 	replaceCanvasWithImgInTaskAndHTML($('#question')[0], vopr, function(){
 		var fillerCode = createFiller(vopr);
-		copyToClipboard(fillerCode)
+		copyToClipboard(fillerCode);
+		displayReadinessMessage('Код для экспорта на РешуЕГЭ скопирован');
+	});
+}
+
+function startQuickExportToTex(){
+	replaceCanvasWithImgInTaskAndHTML($('#question')[0], vopr, function(){
+		copyToClipboard([
+			'Текст задания:',
+			roughHTML2LaTeX(vopr.txt),
+			'Ответ:',
+			roughHTML2LaTeX(vopr.ver),
+			'Решение:'.esli(vopr.rsh),
+			roughHTML2LaTeX(vopr.rsh),
+		].join('\n\n'));
+		displayReadinessMessage('LaTeX-код скопирован');
 	});
 }
