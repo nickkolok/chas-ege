@@ -64,7 +64,10 @@ String.prototype.toStandart = function(wrapComma) {
 Предназначена для строк, содержащих представление числа.*/
 	var a = this.replace(/[.]/g, ',');
 	if (wrapComma) {
-		a = a.replace(/[,]/, '{,}');
+		a = ' '+a.replace(/[,]/, '{,}')+' ';
+	}
+	if (a === '-0') {
+		return '0';
 	}
 	return a;
 };
