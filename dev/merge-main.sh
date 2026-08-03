@@ -104,6 +104,14 @@ fi
 echo ">>> checkout $BRANCH"
 git checkout "$BRANCH"
 
+# ─── Проверка: уже up-to-date? ─────────────────────────────────────
+if git merge-base --is-ancestor origin/devel "$BRANCH"; then
+    echo "Ветка PR уже содержит все изменения из origin/devel. Нечего мёржить!"
+    git checkout devel
+    git branch -D "$BRANCH"
+    exit 0
+fi
+
 # ─── Merge ──────────────────────────────────────────────────────────
 echo ">>> merge origin/devel"
 if git merge --no-commit --no-ff origin/devel; then
