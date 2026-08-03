@@ -18,5 +18,7 @@ NAtask.setTask({
 		'Найдите вероятность того, что в случайный момент времени '+
 		'у здорового человека температура окажется '+norm+' °С или '+ vn[1-ind] +'.',
 	answers: (1-ver),
+	authors: ['aisse-258'],
 });
+NAtask.modifiers.allDecimalsToStandard();
 })();
