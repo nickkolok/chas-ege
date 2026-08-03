@@ -14,7 +14,7 @@
 		text:
 			'Часы со стрелками показывают ' +
 			chislitlx(hours, 'час') + ' ' +
-			(minutes ? chislitlx(minutes, 'минута') : 'ровно') +
+			(minutes ? chislitlx(minutes, 'минута', 'v') : 'ровно') +
 			'. ' +
 			'Через сколько минут минутная стрелка в ' + om.porchisl[coincidenceNumber].i[0] + ' раз поравняется с часовой?',
 		answers: answer.ts(),
