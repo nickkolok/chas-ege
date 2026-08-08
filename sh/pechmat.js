@@ -20,6 +20,7 @@ var tasksInLaTeX = {};
 var preparedImages = {};
 
 var options = {};
+window.parsedJSON = window.parsedJSON || {};
 
 
 var largeFontStyle = 'div.z{font-size:128%}\n .MathJax_SVG_Display {font-size: 128%;}'.vTag('style');
