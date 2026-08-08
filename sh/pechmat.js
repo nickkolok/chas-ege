@@ -640,21 +640,41 @@ function processArbitraryCodeFiles() {
 	});
 
 	urlFiles.forEach(fileUrl => {
-		promises.push(
-			fetch(fileUrl)
-				.then(response => response.text())
-				.then(content => {
-					try {
-						eval(content);
-						console.log(`Исполнен URL-файл ${fileUrl}`);
-					} catch (err) {
-						console.error(`Не удалось исполнить URL-файл ${fileUrl}:`, err);
-					}
+		if (fileUrl.startsWith('file://')) {
+			// Для локальных файлов используем <script> теги
+			promises.push(
+				new Promise((resolve, reject) => {
+					const script = document.createElement('script');
+					script.src = fileUrl;
+					script.onload = () => {
+						console.log(`Исполнен локальный файл ${fileUrl}`);
+						resolve();
+					};
+					script.onerror = () => {
+						console.error(`Не удалось загрузить локальный файл ${fileUrl}`);
+						resolve();
+					};
+					document.head.appendChild(script);
 				})
-				.catch(err => {
-					console.error(`Не удалось загрузить URL-файл ${fileUrl}:`, err);
-				})
-		);
+			);
+		} else {
+			// Для http/https используем fetch
+			promises.push(
+				fetch(fileUrl)
+					.then(response => response.text())
+					.then(content => {
+						try {
+							eval(content);
+							console.log(`Исполнен URL-файл ${fileUrl}`);
+						} catch (err) {
+							console.error(`Не удалось исполнить URL-файл ${fileUrl}:`, err);
+						}
+					})
+					.catch(err => {
+						console.error(`Не удалось загрузить URL-файл ${fileUrl}:`, err);
+					})
+			);
+		}
 	});
 
 	// Return a Promise that resolves when all files are processed
