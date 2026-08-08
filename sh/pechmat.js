@@ -600,6 +600,8 @@ function refreshLaTeXarchive() {
 	zip.generateAsync({ type: "base64" }).then(function (base64) {
 		$('#latex-archive-placeholder').show();
 		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
+		var archiveName = variantsGenerated.length == 1 ? variantsGenerated[0] : variantsGenerated[0] + '_and_' + (variantsGenerated.length - 1) + '_more';
+		$('#latex-archive-placeholder')[0].download = archiveName + '.zip';
 	});
 }
 
