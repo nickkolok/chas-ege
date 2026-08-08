@@ -605,12 +605,15 @@ function refreshLaTeXarchive() {
 function processArbitraryCodeFiles() {
 	const files = $('#arbitraryCodeInput')[0].files;
 
-	if (!files.length) {
+	var urlOptions = getUrlOptions();
+	var urlFiles = (urlOptions.preloadFiles && Array.isArray(urlOptions.preloadFiles)) ? urlOptions.preloadFiles : [];
+
+	if (!files.length && !urlFiles.length) {
 		console.log('Не найдено файлов для запуска произвольного кода.');
 		return Promise.resolve(); // resolve immediately if no files
 	}
 
-	console.log('Файлов для запуска произвольного кода: ' + files.length);
+	console.log('Файлов для запуска произвольного кода: ' + (files.length + urlFiles.length));
 
 	const promises = Array.from(files).map(file => {
 		return new Promise((resolve, reject) => {
@@ -635,6 +638,24 @@ function processArbitraryCodeFiles() {
 
 			reader.readAsText(file);
 		});
+	});
+
+	urlFiles.forEach(fileUrl => {
+		promises.push(
+			fetch(fileUrl)
+				.then(response => response.text())
+				.then(content => {
+					try {
+						eval(content);
+						console.log(`Исполнен URL-файл ${fileUrl}`);
+					} catch (err) {
+						console.error(`Не удалось исполнить URL-файл ${fileUrl}:`, err);
+					}
+				})
+				.catch(err => {
+					console.error(`Не удалось загрузить URL-файл ${fileUrl}:`, err);
+				})
+		);
 	});
 
 	// Return a Promise that resolves when all files are processed
