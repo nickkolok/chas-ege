@@ -597,11 +597,14 @@ function refreshLaTeXarchive() {
 	for (var i in preparedImages) {
 		img.file(i + ".png", preparedImages[i], { base64: true });
 	}
-	zip.generateAsync({ type: "base64" }).then(function (base64) {
-		$('#latex-archive-placeholder').show();
-		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
+	zip.generateAsync({ type: "blob" }).then(function (blob) {
+		var link = $('#latex-archive-placeholder')[0];
+		$(link).show();
+		link.href = URL.createObjectURL(blob);
 		var archiveName = variantsGenerated.length == 1 ? variantsGenerated[0] : variantsGenerated[0] + '_and_' + (variantsGenerated.length - 1) + '_more';
-		$('#latex-archive-placeholder')[0].download = archiveName + '.zip';
+		link.download = archiveName + '.zip';
+		link.click();
+		setTimeout(function(){ URL.revokeObjectURL(link.href); }, 1000);
 	});
 }
 
