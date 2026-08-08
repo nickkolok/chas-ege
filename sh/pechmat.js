@@ -605,8 +605,7 @@ function refreshLaTeXarchive() {
 function processArbitraryCodeFiles() {
 	const files = $('#arbitraryCodeInput')[0].files;
 
-	var urlOptions = getUrlOptions();
-	var urlFiles = (urlOptions.preloadFiles && Array.isArray(urlOptions.preloadFiles)) ? urlOptions.preloadFiles : [];
+	var urlFiles = (window.parsedJSON.preloadFiles && Array.isArray(window.parsedJSON.preloadFiles)) ? window.parsedJSON.preloadFiles : [];
 
 	if (!files.length && !urlFiles.length) {
 		console.log('Не найдено файлов для запуска произвольного кода.');
