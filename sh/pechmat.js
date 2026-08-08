@@ -391,6 +391,17 @@ var startShell = function () {
 	$('#zadaniya').html(sozdKolvoHtml('pech'));
 	$('#readiness-message').hide();
 	galkiKat('#galki_kat', 'pech');
+	
+	if (window.parsedJSON.autostart) {
+		var autostartInterval = setInterval(function() {
+			try {
+				zapusk();				
+				clearInterval(autostartInterval);
+			} catch (e) {
+				console.log('Не удалось выполнить автозапуск');
+			}
+		}, 1000);
+	}
 }
 
 
