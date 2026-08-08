@@ -601,7 +601,9 @@ function refreshLaTeXarchive() {
 		var link = $('#latex-archive-placeholder')[0];
 		$(link).show();
 		link.href = URL.createObjectURL(blob);
-		var archiveName = variantsGenerated.length == 1 ? variantsGenerated[0] : variantsGenerated[0] + '_and_' + (variantsGenerated.length - 1) + '_more';
+		var archiveName =
+			options.variantPrefix + variantsGenerated[0] +
+			('_and_' + (variantsGenerated.length - 1) + '_more').esli(variantsGenerated.length > 1);
 		link.download = archiveName + '.zip';
 		link.click();
 		setTimeout(function(){ URL.revokeObjectURL(link.href); }, 1000);
