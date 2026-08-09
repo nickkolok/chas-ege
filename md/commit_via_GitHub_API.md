@@ -35,7 +35,7 @@ current_sha = resp["sha"]
 print(f"Current SHA: {current_sha}")
 
 # 2. Update file
-put_url = "https://api.github.com/repos/{repo}/chas-ege/contents/{filepath}"
+put_url = f"https://api.github.com/repos/{repo}/chas-ege/contents/{filepath}"
 content = "Insert file content here!\n"
 content_b64 = base64.b64encode(content.encode()).decode()
 
@@ -43,7 +43,7 @@ data = {
     "message": "[...] Commit message",
     "content": content_b64,
     "sha": current_sha,
-    "branch": "{branch}"
+    "branch": branch
 }
 
 resp = requests.put(put_url, headers=headers, json=data)
