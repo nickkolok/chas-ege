@@ -119,6 +119,16 @@ if git merge-base --is-ancestor upstream/devel "$BRANCH"; then
     exit 0
 fi
 
+# ─── Проверка: мёрж без конфликтов? ─────────────────────────────────
+echo ">>> проверка: мёрж без конфликтов?"
+MERGE_TREE_OUTPUT=$(git merge-tree "$(git merge-base "$BRANCH" upstream/devel)" "$BRANCH" upstream/devel 2>/dev/null) || true
+if ! echo "$MERGE_TREE_OUTPUT" | grep -qE '<<<<<<<|>>>>>>>|changed in both'; then
+    echo "Мёрж проходит чисто — кнопка Merge на GitHub справится сама. Нечего делать!"
+    echo "${PR_HEAD} ${DEVEL_HEAD}" >> "$CACHE_FILE"
+    git branch -D "$BRANCH" 2>/dev/null || true
+    exit 0
+fi
+
 # ─── Checkout ───────────────────────────────────────────────────────
 echo ">>> checkout $BRANCH"
 git checkout "$BRANCH"
