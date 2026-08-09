@@ -139,6 +139,7 @@ if git merge --no-commit --no-ff upstream/devel; then
     git merge --abort
     echo ""
     echo "Конфликтов нет — скрипт не нужен. Жмите кнопку на GitHub."
+    echo "${PR_HEAD} ${DEVEL_HEAD}" >> "$CACHE_FILE"
     exit 0
 fi
 
@@ -266,6 +267,9 @@ echo "  ✓ ОК: только добавления, ≤1 строки на фа
 # ─── Пуш ────────────────────────────────────────────────────────────
 echo ">>> push → $REMOTE (${HEAD_BRANCH:-$BRANCH})"
 git push "$REMOTE" "HEAD:${HEAD_BRANCH:-$BRANCH}"
+
+# ─── Кэш: успешный мёрж ────────────────────────────────────────────
+echo "${PR_HEAD} ${DEVEL_HEAD}" >> "$CACHE_FILE"
 
 # ─── Уборка ─────────────────────────────────────────────────────────
 echo ">>> уборка"
