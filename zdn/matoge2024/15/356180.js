@@ -37,7 +37,7 @@
 			letters[3]
 		];
 
-		let centralAngle = angleDano.slice().splice(0, 1)[0];
+		let centralAngle = angleDano[0];
 
 		let triangle = new Triangle({
 			lengths: {
