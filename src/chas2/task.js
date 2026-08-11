@@ -505,10 +505,23 @@ chas2.task = {
 	},
 
 
-	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference }) {
-
+	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference,analys }) {
+		let originalLeft = left.map(item => ({ expr: item.expr, solution: item.solution }));
 		left.shuffle();
 		let shuffledSolutions = [...right].shuffle();
+
+		let solutionToIndex = {};
+		for (let i = 0; i < shuffledSolutions.length; i++) {
+			solutionToIndex[shuffledSolutions[i]] = i + 1;
+		}
+		if (!analys) {
+			let parts = [];
+			for (let item of originalLeft) {
+				parts.push(`$${item.expr} \\quad ${item.solution}$`);
+			}
+			analys = '<br>' + parts.join('<br>');
+		}
+
 		let leftCol = '';
 		for (let i = 0; i < left.length; i++) {
 			let letter = String.fromCharCode(65 + i);
@@ -516,12 +529,10 @@ chas2.task = {
 			leftCol += letter + ') ' + the$ + left[i].expr + the$ + '<br>';
 		}
 		let rightCol = '';
-		let solutionToIndex = {};
 		for (let i = 0; i < shuffledSolutions.length; i++) {
 			let num = i + 1;
 			let the$ = '$'.esli(autoLaTeXRight && (shuffledSolutions[i].search('\\$') === -1));
 			rightCol += num + ') ' + the$ + shuffledSolutions[i] + the$ + '<br>';
-			solutionToIndex[shuffledSolutions[i]] = num;
 		}
 		let answerSequence = left.map(item => solutionToIndex[item.solution]);
 
@@ -534,6 +545,7 @@ chas2.task = {
 				'<span style="font-family: monospace; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>' +
 				postText,
 			answers: answerSequence.join(''),
+			analys: analys || '',
 			preference,
 		});
 	},
