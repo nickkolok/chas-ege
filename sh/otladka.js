@@ -10,6 +10,12 @@ function updateQuestion(){
 	$("#answer").html(window.vopr.ver.join(";;"));
 	$("#wrongAnswer").html(window.vopr.nev.join(";;"));
 	MathJax.Hub.Typeset('typesettable-wrap');
+	// Используем флаги из parsedJSON вместо проверки класса
+	if (window.parsedJSON && window.parsedJSON.alwaysShowAnswer) {
+		$("#answer").show();
+	} else if (document.body && document.body.classList.contains('lite')) {
+		$("#answer").show();
+	}
 }
 
 function createFromFile(){
@@ -30,9 +36,28 @@ function createFromFile(){
 	dvig.startxt=window.vopr.txt;
 	dvig.obnov(updateQuestion);
 	$("#answer-input").val("");
-	$("#answer").hide();
-	setVKI();
-	VKI_attach(document.getElementById("answer-input"));
+	
+	var shouldShowAnswer = (window.parsedJSON && window.parsedJSON.alwaysShowAnswer) || 
+						  (document.body && document.body.classList.contains('lite'));
+	
+	if (!shouldShowAnswer) {
+		$("#answer").hide();
+	} else {
+		$("#answer").show();
+	}
+	try {
+		var answerEl = document.getElementById("answer-input");
+		if (answerEl && typeof VKI_attach === 'function') {
+			if (typeof setVKI === 'function') setVKI();
+			VKI_attach(answerEl);
+		}
+	} catch(e) {
+		console.warn('Virtual keyboard attach failed:', e);
+	}
+	// Запуск автообновления после первой загрузки шаблона
+	if (typeof window.__chas_startAutoReload === 'function') {
+		window.__chas_startAutoReload();
+	}
 }
 
 function checkAnswer(){
@@ -231,6 +256,23 @@ var startShell = function (){
 	if ($("#textarea-script").val() == "") {
 		$("#textarea-script").val(templateTemplate);
 		chasStorage.domData.save();
+	}
+	
+	try {
+		if (window.parsedJSON) {
+			var fp = window.parsedJSON.filepath || window.parsedJSON.file || window.parsedJSON.template;
+			var autorun = window.parsedJSON.autorun;
+			
+			if (fp && fp.indexOf('${') === -1) {
+				$("#filepath").val(fp);
+				chasStorage.domData.save();
+				if (autorun === null || autorun === '' || autorun === true || autorun === 1 || autorun === '1' || autorun === 'true') {
+					setTimeout(function(){ createFromFile(); }, 0);
+				}
+			}
+		}
+	} catch (e) {
+		console.error('Error processing parsedJSON:', e);
 	}
 }
 

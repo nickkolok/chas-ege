@@ -96,6 +96,10 @@
 		<iframe src="" id="shabl" charset="utf-8" type="text/javascript" lang="ru"></iframe>
 	</div>
 	<script>
+		// Добавляем класс 'lite' если в parsedJSON есть соответствующие флаги
+		if (window.parsedJSON && (window.parsedJSON.lite || window.parsedJSON.autorun || window.parsedJSON.alwaysShowAnswer)) {
+			document.body.classList.add('lite');
+		}
 		addscript('otladka.js');
 		addscript('dvig_lz.js');
 		addscript('chas-ege_to_reshuege.js');
