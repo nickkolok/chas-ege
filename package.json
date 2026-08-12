@@ -1,7 +1,7 @@
 {
   "name": "chas-ege",
   "version": "2.2.2",
-  "description": "Тренажёр для подготовки к экзаменам",
+  "description": "\u0422\u0440\u0435\u043d\u0430\u0436\u0451\u0440 \u0434\u043b\u044f \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0438 \u043a \u044d\u043a\u0437\u0430\u043c\u0435\u043d\u0430\u043c",
   "main": "index.js",
   "directories": {
     "doc": "doc"
@@ -15,6 +15,7 @@
     "es6-set": "0.1.5",
     "es6-symbol": "3.1.3",
     "flatten-shape-geometry": "^1.15.1",
+    "fractional-chas-ege-unofficial": "1.0.0",
     "html2canvas": "^1.0.0-rc.7",
     "jsdom": "^29.1.1",
     "jszip": "^3.10.1",
@@ -54,6 +55,6 @@
     "type": "git",
     "url": "https://bitbucket.org/chas-ege-team/chas-ege/"
   },
-  "author": "Команда проекта Час ЕГЭ",
+  "author": "\u041a\u043e\u043c\u0430\u043d\u0434\u0430 \u043f\u0440\u043e\u0435\u043a\u0442\u0430 \u0427\u0430\u0441 \u0415\u0413\u042d",
   "license": "GPL-3.0"
 }
