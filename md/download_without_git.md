@@ -2,29 +2,53 @@
 
 В некоторых изолированных средах (например, в sandbox-окружениях AI-ассистентов) стандартный `git clone` может не работать из-за ограничений сети или отсутствия настроенного SSH-ключа. В таких случаях можно скачать архив конкретной ветки напрямую с GitHub и распаковать его локально.
 
-## Проблема
+Мы используем именно указанную ветку - там нет огромной папки `ext/mathjax`,
+а всё остальное плюс-минус актуально.
 
-При попытке скачать большой архив с GitHub через стандартные утилиты (wget, curl без заголовков) можно столкнуться с таймаутами или блокировками со стороны WAF (Web Application Firewall). GitHub требует корректный User-Agent для скачивания архивов.
+Скрипт ниже можно просто копировать и вставлять.
 
-## Решение через curl
+```python
+import urllib.request
+import zipfile
+import os
+import shutil
 
-Если нужно быстро скачать архив вручную, используйте следующую команду:
+URL = "https://github.com/golden333gitgirl/chas-ege/archive/refs/heads/mathjax-to-npm.zip"
+TEMP_ZIP = "mathjax-to-npm.zip"
+TARGET_DIR = "./chas-ege"
 
-curl -L -H "User-Agent: Mozilla/5.0" -o project.zip "https://github.com/owner/repo/archive/refs/heads/branch.zip"
-unzip project.zip
+def main():
+    print("⬇️  Скачиваю архив (с корректным User-Agent)...")
+    # Используем urllib, чтобы не зависеть от curl и таймаутов
+    req = urllib.request.Request(URL, headers={'User-Agent': 'Mozilla/5.0'})
+    with urllib.request.urlopen(req) as response, open(TEMP_ZIP, 'wb') as out_file:
+        shutil.copyfileobj(response, out_file)
+    print("✅  Архив скачан!")
 
-## Решение через Python
+    print("📦  Распаковываю...")
+    os.makedirs(TARGET_DIR, exist_ok=True)
+    with zipfile.ZipFile(TEMP_ZIP, 'r') as zip_ref:
+        zip_ref.extractall(TARGET_DIR)
 
-Используйте библиотеку urllib.request с заголовком User-Agent: Mozilla/5.0 для скачивания и стандартный модуль zipfile для распаковки.
+    print("📂  Восстанавливаю правильную структуру (убираю вложенность)...")
+    # GitHub при выгрузке zip создаёт папку вида <repo>-<branch>
+    # Находим её и переносим содержимое на уровень выше
+    extracted_dirs = [d for d in os.listdir(TARGET_DIR) if os.path.isdir(os.path.join(TARGET_DIR, d))]
+    
+    if len(extracted_dirs) == 1:
+        inner_dir = os.path.join(TARGET_DIR, extracted_dirs[0])
+        # Перемещаем все файлы, включая скрытые (например, .gitignore)
+        for item in os.listdir(inner_dir):
+            shutil.move(os.path.join(inner_dir, item), os.path.join(TARGET_DIR, item))
+        
+        # Удаляем пустую папку
+        os.rmdir(inner_dir)
+        print(f"🧹  Временная папка {extracted_dirs[0]} удалена.")
 
-## Важно
+    # Чистим за собой архив
+    os.remove(TEMP_ZIP)
+    print("🚀  Готово! Все файлы проекта лежат прямо в ./chas-ege")
 
-При скачивании через веб-интерфейс GitHub создаётся папка вида repo-branch. Не забудьте переместить файлы на уровень выше для правильной структуры проекта.
-
-## Готовый скрипт
-
-Полный рабочий скрипт доступен в обсуждении Pull Request. Он автоматически:
-- Скачивает архив ветки с корректным User-Agent
-- Распаковывает его локально
-- Убирает лишнюю вложенность папок
-- Очищает временные файлы
+if __name__ == "__main__":
+    main()
+```
