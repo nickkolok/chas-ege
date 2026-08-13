@@ -10,7 +10,7 @@
 			},
 		});
 
-		genAssert(!triangle.isIsosceles(), 'Все стороны треугольника должны быть разными');
+		genAssert(!triangle.isEquilateral(), 'Все стороны треугольника должны быть разными');
 		genAssert(triangle.minAngleInDegrees() > 35, 'Треугольник имеет очень острый угол');
 		
 		let paint1 = function (ctx) {
