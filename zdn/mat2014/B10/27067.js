@@ -82,7 +82,6 @@
 				answers: cube.baseArea,
 			}, ],
 			postquestion: '.',
-			analys: '',
 			author: ['Суматохина Александра']
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(12);
