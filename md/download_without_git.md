@@ -12,6 +12,7 @@ import urllib.request
 import zipfile
 import os
 import shutil
+import subprocess
 
 URL = "https://github.com/golden333gitgirl/chas-ege/archive/refs/heads/mathjax-to-npm.zip"
 TEMP_ZIP = "mathjax-to-npm.zip"
@@ -25,10 +26,21 @@ def main():
         shutil.copyfileobj(response, out_file)
     print("✅  Архив скачан!")
 
-    print("📦  Распаковываю...")
+    print("🔍  Проверяю архив на целостность...")
+    zip_ref = zipfile.ZipFile(TEMP_ZIP, 'r')
+    try:
+        bad_file = zip_ref.testzip()
+        if bad_file is not None:
+            print(f"❌  Архив повреждён! Первый битый файл: {bad_file}")
+            return
+        print("✅  Архив цел!")
+    finally:
+        zip_ref.close()
+
+    print("📦  Распаковываю через системный unzip...")
     os.makedirs(TARGET_DIR, exist_ok=True)
-    with zipfile.ZipFile(TEMP_ZIP, 'r') as zip_ref:
-        zip_ref.extractall(TARGET_DIR)
+    # Используем системный unzip, чтобы избежать багов урезанного Python с extractall()
+    subprocess.run(['unzip', '-q', '-o', TEMP_ZIP, '-d', TARGET_DIR], check=True)
 
     print("📂  Восстанавливаю правильную структуру (убираю вложенность)...")
     # GitHub при выгрузке zip создаёт папку вида <repo>-<branch>
