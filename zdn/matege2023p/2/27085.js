@@ -20,7 +20,7 @@
 			['ребро', pyr2.baseSide / pyr1.baseSide],
 			['высота', pyr2.height / pyr1.height],
 			[
-				['площадь боковой поверхности', pyr2.sideSurfaceArea / pyr2.sideSurfaceArea],
+				['площадь боковой поверхности', pyr2.sideSurfaceArea / pyr1.sideSurfaceArea],
 				['площадь грани', pyr2.baseArea / pyr1.baseArea],
 				['полная площадь поверхности', pyr2.surfaceArea / pyr1.surfaceArea]
 			].iz(), ['объём', pyr2.volume / pyr1.volume]
