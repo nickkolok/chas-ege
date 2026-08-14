@@ -22,11 +22,11 @@
 
 		genAssert(heightSmall.isZ(), 'высота нормальная');
 
-		let generatrixСoneBig = radiusBig.pow(2) + heightBig.pow(2);
-		let generatrixСoneSmall = radiusSmall.pow(2) + heightSmall.pow(2);
+		let generatrixConeBig = radiusBig.pow(2) + heightBig.pow(2);
+		let generatrixConeSmall = radiusSmall.pow(2) + heightSmall.pow(2);
 
-		genAssert(generatrixСoneBig.sqrt().isZ(), 'Образующая нормальная');
-		genAssert(generatrixСoneSmall.sqrt().isZ(), 'Образующая нормальная');
+		genAssert(generatrixConeBig.sqrt().isZ(), 'Образующая нормальная');
+		genAssert(generatrixConeSmall.sqrt().isZ(), 'Образующая нормальная');
 		let variable = [
 
 			['высота', heightBig, heightSmall],
@@ -35,7 +35,7 @@
 				['радиус основания', radiusBig, radiusSmall],
 				['длина окружности основания', 2 * radiusBig + '\\pi', 2 * radiusSmall + '\\pi'],
 				['площадь окружности основания', radiusBig.pow(2) + '\\pi', radiusSmall.pow(2) + '\\pi']
-			].iz(), ['образующая', generatrixСoneBig.texsqrt(sl1()), generatrixСoneSmall.texsqrt(sl1())],
+			].iz(), ['образующая', generatrixConeBig.texsqrt(sl1()), generatrixConeSmall.texsqrt(sl1())],
 			['площадь осевого сечения', radiusBig * heightBig, radiusSmall * heightSmall],
 		];
 
