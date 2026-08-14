@@ -1,1 +1,1 @@
-node_modules/fractional-chas-ege-unofficial/index.js
+../node_modules/fractional-chas-ege-unofficial/index.js
