@@ -12,49 +12,41 @@
 			ctx.translate(0, 20);
 			ctx.lineWidth = 2;
 			//образующие
-			ctx.drawLine(61, 23, 150, 150);
-			ctx.drawLine(239, 23, 150, 150);
+			ctx.drawLine(60, 20, 150, 150);
+			ctx.drawLine(240, 20, 150, 150);
 			//эллипс
 			ctx.beginPath();
-			ctx.ellipse(150, 20, 20, 90, Math.PI / 2, 0, 2 * Math.PI);
+			ctx.ellipse(150, 20, 90, 20, 0, 0, 2 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 			
 			let frac = numerator / denominator;
-			let add = 6;
-			if (frac < 0.5) {
-				frac = 2 / 3;
-				add = 3;
-			} else
-			if (frac > 0.5) {
-				frac = 1 / 3;
-				add = 9;
-			}
+			let yLiq = 150 - 130 * frac;
+			let rxLiq = 90 * frac;
+			let ryLiq = 20 * frac;
 
 			ctx.fillStyle = "#61DC9A";
 			ctx.beginPath();
-			ctx.moveTo(150 - (90 * (1 - frac) + add), 150 * frac);
-			ctx.lineTo(150 + 90 * (1 - frac) + add, 150 * frac);
+			ctx.moveTo(150 - rxLiq, yLiq);
+			ctx.lineTo(150 + rxLiq, yLiq);
 			ctx.lineTo(150, 150);
-			ctx.lineTo(150 - (90 * (1 - frac) + add), 150 * frac);
-			ctx.fill();
 			ctx.closePath();
+			ctx.fill();
+
 			ctx.beginPath();
-			ctx.ellipse(150, 150 * frac, 10, 90 * (1 - frac) + add, Math
-				.PI / 2, 0, 2 * Math.PI);
+			ctx.ellipse(150, yLiq, rxLiq, ryLiq, 0, 0, 2 * Math.PI);
 			ctx.fill();
 			ctx.closePath();
 
-			ctx.fillStyle = "black";
-			ctx.beginPath();
-			ctx.ellipse(150, 150 * frac, 10, 90 * (1 - frac) + add, Math
-				.PI / 2, -0.5 * Math.PI, -1.5 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.strokeStyle = "black";
+			ctx.lineWidth = 1;
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, 150 * frac, 10, 90 * (1 - frac) + add, Math
-				.PI / 2, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.ellipse(150, yLiq, rxLiq, ryLiq, 0, Math.PI, 2 * Math.PI);
+			ctx.stroke();
+			ctx.setLineDash([]);
+			ctx.beginPath();
+			ctx.ellipse(150, yLiq, rxLiq, ryLiq, 0, 0, Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
