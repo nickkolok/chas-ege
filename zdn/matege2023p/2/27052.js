@@ -48,7 +48,7 @@
 		let numberBig = variable.T()[1];
 		let numberSmall = variable.T()[2];
 
-		let secondWorld = name[1].im.replace('площадь', 'площади').replace('боковой', 'боковых').replace('основания',
+		let secondWord = name[1].im.replace('площадь', 'площади').replace('боковой', 'боковых').replace('основания',
 			'оснований').replace(
 			'поверхности', 'поверхностей').replace('осевого', 'осевых').replace('сечения', 'сечений').replace('окружности',
 			'окружностей');
@@ -65,7 +65,7 @@
 		let NOD = ratio[1].nod(ratio[0]);
 		ratio = ratio.map((elem) => elem / NOD);
 
-		let verb = ['делит его так, что ' + secondWorld + ' конусов ' + ['равны $' + numberSmall[1] + '$ и $' + numberBig[
+		let verb = ['делит его так, что ' + secondWord + ' конусов ' + ['равны $' + numberSmall[1] + '$ и $' + numberBig[
 				1] + '$',
 			'относятся, как $' + ratio.join(':') + '$'
 		].iz(), 'делящее ' + name[1].ve + ' в отношении ' + [ratio.join(':') + ', считая от вершины', ratio.reverse().join(
