@@ -3,9 +3,8 @@
 /**
  * Headless debug script for chas-ege templates
  * 
- * This script uses puppeteer to open otladka.html in headless mode,
- * generates tasks from a template multiple times, and exports LaTeX code
- * for each generated task.
+ * Opens build/sh/otladka.html in headless Chrome,
+ * generates tasks from a template multiple times, and exports LaTeX code.
  * 
  * Prerequisites:
  * 1. Build the project: `grunt`
@@ -46,99 +45,89 @@ if (!filepath) {
     process.exit(1);
 }
 
-// Build the file:// URL to otladka.html
-const otladkaPath = path.resolve(projectRoot, 'build', 'sh', 'otladka.html');
-const otladkaUrl = `file://${otladkaPath}`;
+const otladkaPath = path.join(projectRoot, 'build', 'sh', 'otladka.html');
+const fileUrl = 'file://' + otladkaPath;
 
-console.log(`Opening ${otladkaUrl}...`);
-
-const browser = await puppeteer.launch({
-    headless: 'new',
-    args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--allow-file-access-from-files',
-        '--disable-web-security'
-    ]
-});
-
-const page = await browser.newPage();
-
-// Intercept copyToClipboard before page loads
-await page.evaluateOnNewDocument((fp) => {
-    window.parsedJSON = {
-        filepath: fp,
-        autostartFile: false
-    };
-    
-    window.__latexResults = [];
-    const originalCopyToClipboard = window.copyToClipboard;
-    window.copyToClipboard = function(text) {
-        window.__latexResults.push(text);
-        console.log('=== LaTeX CODE START ===');
-        console.log(text);
-        console.log('=== LaTeX CODE END ===');
-        if (originalCopyToClipboard) {
-            return originalCopyToClipboard.call(this, text);
-        }
-    };
-}, filepath);
-
-// Open otladka.html
-try {
-    await page.goto(otladkaUrl, { waitUntil: 'networkidle2', timeout: 60000 });
-    console.log('Page loaded successfully.');
-} catch (error) {
-    console.error('Failed to load page:', error.message);
-    await browser.close();
-    process.exit(1);
-}
-
-// Wait for the page to be ready
-await new Promise(resolve => setTimeout(resolve, 2000));
-
-// Execute iterations
-for (let i = 0; i < iterations; i++) {
-    console.log(`\n=== Iteration ${i + 1} of ${iterations} ===`);
-    
-    // Set filepath and create from file
-    await page.evaluate((fp) => {
-        document.getElementById('filepath').value = fp;
-        createFromFile();
-    }, filepath);
-    
-    // Wait for question to be generated
-    try {
-        await page.waitForFunction(
-            () => {
-                const question = document.getElementById('question');
-                return question && 
-                       question.innerHTML !== 'Задание составляется, подождите...' &&
-                       question.innerHTML !== '';
-            },
-            { timeout: 15000 }
-        );
-    } catch (error) {
-        console.log('Timeout waiting for question to be generated, continuing...');
-    }
-    
-    // Wait a bit for MathJax to render
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Click the LaTeX export button
-    await page.evaluate(() => {
-        if (typeof startQuickExportToTex === 'function') {
-            startQuickExportToTex();
-        } else {
-            console.error('startQuickExportToTex is not defined');
-        }
+(async () => {
+    const browser = await puppeteer.launch({
+        headless: 'new',
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--allow-file-access-from-files']
     });
     
-    // Wait for the copyToClipboard to be called
-    await new Promise(resolve => setTimeout(resolve, 1000));
-}
-
-await browser.close();
-console.log('\n=== DONE ===');
-process.exit(0);
+    const page = await browser.newPage();
+    
+    // Intercept copyToClipboard before page loads
+    await page.evaluateOnNewDocument((fp) => {
+        window.parsedJSON = {
+            filepath: fp,
+            autostartFile: false
+        };
+        
+        const originalCopyToClipboard = window.copyToClipboard;
+        window.copyToClipboard = function(text) {
+            console.log('=== LaTeX CODE START ===');
+            console.log(text);
+            console.log('=== LaTeX CODE END ===');
+            if (originalCopyToClipboard) {
+                return originalCopyToClipboard.call(this, text);
+            }
+        };
+    }, filepath);
+    
+    console.log(`Opening ${fileUrl}...`);
+    
+    try {
+        await page.goto(fileUrl, { waitUntil: 'networkidle2', timeout: 60000 });
+        console.log('Page loaded successfully.');
+    } catch (error) {
+        console.error('Failed to load page:', error.message);
+        await browser.close();
+        process.exit(1);
+    }
+    
+    // Wait for page to be ready
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    for (let i = 0; i < iterations; i++) {
+        console.log(`\n=== Iteration ${i + 1} of ${iterations} ===`);
+        
+        // Set filepath and create from file
+        await page.evaluate((fp) => {
+            document.getElementById('filepath').value = fp;
+            createFromFile();
+        }, filepath);
+        
+        // Wait for question to be generated
+        try {
+            await page.waitForFunction(
+                () => {
+                    const question = document.getElementById('question');
+                    return question && 
+                           question.innerHTML !== 'Задание составляется, подождите...' &&
+                           question.innerHTML !== '';
+                },
+                { timeout: 15000 }
+            );
+        } catch (error) {
+            console.log('Timeout waiting for question generation, continuing...');
+        }
+        
+        // Wait for MathJax
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Click LaTeX export button
+        await page.evaluate(() => {
+            if (typeof startQuickExportToTex === 'function') {
+                startQuickExportToTex();
+            } else {
+                console.error('startQuickExportToTex is not defined');
+            }
+        });
+        
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+    
+    await browser.close();
+    console.log('\n=== DONE ===');
+    process.exit(0);
+})();
