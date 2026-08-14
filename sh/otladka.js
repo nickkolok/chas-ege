@@ -236,9 +236,15 @@ var startShell = function (){
 	}
 	
 	if (window.parsedJSON.filepath) {
+		$('#filepath').val(window.parsedJSON.filepath);
+	}
+	
+	if (window.parsedJSON.autostartFile) {
 		var autostartInterval = setInterval(function() {
 			try {
-				$('#filepath').val(window.parsedJSON.filepath);
+				if (window.parsedJSON.filepath) {
+					$('#filepath').val(window.parsedJSON.filepath);
+				}
 				createFromFile();
 				clearInterval(autostartInterval);
 			} catch (e) {
