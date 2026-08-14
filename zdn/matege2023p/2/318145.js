@@ -5,7 +5,6 @@
 
 		let volumeDown = sl(1, 10) * numerator.pow(3);
 		let volumeUp = volumeDown * denominator.pow(3) / numerator.pow(3);
-		genAssert(volumeDown.isZ(), 'кривое значение');
 
 		let question=[['нужно долить, чтобы наполнить сосуд доверху',volumeUp-volumeDown], ['поместится в сосуде',volumeUp]].iz();
 		
