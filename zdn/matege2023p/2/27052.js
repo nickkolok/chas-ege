@@ -12,6 +12,7 @@
 	lx_declareClarifiedPhrase('длина', 'окружности основания');
 	lx_declareClarifiedPhrase('площадь', 'окружности основания');
 	lx_declareClarifiedPhrase('площадь', 'осевого сечения');
+	lx_declareClarifiedPhrase('диаметр', 'основания');
 	retryWhileError(function() {
 
 		let radiusBig = sl(1, 50);
