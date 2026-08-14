@@ -8,6 +8,8 @@
 
 [Шаблоны по геометрии (планиметрии, стереометрии)](task_geometry.md)
 
+[Как делать ревью пуллреквеста](how_to_review_PR.md)
+
 ## Экзотика
 [Коммит через GitHub REST API](commit_via_GitHub_API.md)
 
