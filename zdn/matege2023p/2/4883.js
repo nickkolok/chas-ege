@@ -14,7 +14,7 @@
 			['площадь поверхности', cube.surfaceArea],
 			['объём', cube.volume],
 			['квадрат диагонали', cube.mainDiagonal.pow(2)],
-			['диагональ', cube.mainDiagonal, ]
+			['диагональ', cube.mainDiagonal]
 		].iz();
 		let nameSphere = [
 			['радиус', sphere.radius],
@@ -54,7 +54,7 @@
 				[0, 0, 0, 1],
 				[strok, 0, 0, 0, 1],
 				[0, 1, 0, 0, 0, 1],
-				[0, 0, 1, 0, 1, 0, 1, ],
+				[0, 0, 1, 0, 1, 0, 1],
 			]);
 
 			ctx.setLineDash([4, 5]);
