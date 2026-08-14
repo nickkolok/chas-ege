@@ -29,21 +29,12 @@
 
 
 			//шар 1
-			ctx.beginPath();
-			ctx.arc(100, 150, 80, 0, Math.PI * 2, true); // Внешняя окружность
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawCircle(100, 150, 80); // Внешняя окружность
 
-			ctx.beginPath();
-			ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(100, 150, 20, 80, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, 150, 20, 80, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(100, 150, 20, 80, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.drawLine(100, 150, 180, 150);
 
 			//шар 2
@@ -59,20 +50,13 @@
 			ctx.fill();
 			ctx.closePath();
 
-			ctx.beginPath();
 			ctx.setLineDash([0, 0]);
-			ctx.arc(100, 150, 100, 0, Math.PI * 2, true); // Внешняя окружность
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawCircle(100, 150, 100); // Внешняя окружность
 
-			ctx.beginPath();
-			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
+			ctx.drawEllipse(100, 150, 20, 100, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
+			ctx.drawEllipse(100, 150, 20, 100, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
 			ctx.drawLine(100, 150, 200, 150);
 		};
