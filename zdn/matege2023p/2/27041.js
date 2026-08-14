@@ -6,7 +6,7 @@
 	lx_declareClarifiedPhrase('диагональ', 'основания');
 	lx_declareClarifiedPhrase('радиус', 'основания');
 	lx_declareClarifiedPhrase('сторона', 'основания');
-	lx_declareClarifiedPhrase('площадь', ' боковой поверхности');
+	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 
 	retryWhileError(function() {
 			NAinfo.requireApiVersion(0, 2);
