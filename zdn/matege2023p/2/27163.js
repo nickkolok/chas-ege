@@ -48,11 +48,12 @@
 
 			//шар 2
 			ctx.translate(200, 0);
-				ctx.beginPath();
+			ctx.beginPath();
 			if (radiusNew[1] == 'площадь большого круга') {
 				ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 0, 2 * Math.PI);
-			} else
+			} else {
 				ctx.arc(100, 150, 100, 0, Math.PI * 2, true);
+			}
 				
 			ctx.fillStyle = "#61DC9A";
 			ctx.fill();
