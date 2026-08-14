@@ -22,7 +22,8 @@
     "mathjs": "^11.5.1",
     "nerdamer": "^1.1.13",
     "qunit": "^2.26.0",
-    "seedrandom": "^3.0.5"
+    "seedrandom": "^3.0.5",
+    "js-beautify-chas-ege-unofficial-patched": "1.5.3"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
