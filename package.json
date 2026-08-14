@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "ace-builds": "^1.4.12",
-    "chas-ege-fonts-chas-ege-unofficial": "^1.0.0",
+    "chas-ege-fonts-chas-ege-unofficial": "1.0.0",
     "chas-storage": "^0.1.1",
     "cubic-spline-browserified": "^3.0.3",
     "d": "1.0.1",
