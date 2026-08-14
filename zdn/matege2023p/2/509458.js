@@ -85,7 +85,6 @@
 			ctx.strokeStyle = om.secondaryBrandColors;
 
 
-			console.log(point2DPyr1);
 
 			ctx.drawFigure(point2DPyr1, matrixPyr);
 			ctx.translate(w / 4 + x, -(y - point2DPyr2[4].y));
