@@ -11,7 +11,6 @@
 			.iz()
 		];
 
-		console.log(radiusNew);
 
 		let paint1 = function(ctx) {
 			ctx.translate(-10, 0);
