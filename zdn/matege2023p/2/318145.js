@@ -7,7 +7,7 @@
 		let volumeUp = volumeDown * denominator.pow(3) / numerator.pow(3);
 		genAssert(volumeDown.isZ(), 'кривое значение');
 
-		let question=[['нужно долить, чтобы наполнить сосуд доверху',volumeUp-volumeDown], ['поместится в весь сосуд',volumeUp]].iz();
+		let question=[['нужно долить, чтобы наполнить сосуд доверху',volumeUp-volumeDown], ['поместится в сосуде',volumeUp]].iz();
 		
 		let paint1 = function(ctx) {
 			ctx.translate(0, 20);
