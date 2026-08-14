@@ -85,7 +85,12 @@ chas2.task = {
 		 */
 		unfoldTask : function(o) {
 			if (o.questions) {
-				let question = o.questions.iz();
+				let question;
+				if (Array.isArray(o.questions)) {
+				    question = o.questions.iz();
+				} else {
+				    question = o.questions; 
+				}
 				if (! ('answer' in question) ){
 					question.answer = question.answers;
 				}
@@ -339,6 +344,8 @@ chas2.task = {
 		if (taskOptions === undefined) {
 			taskOptions = {};
 		}
+		
+		taskOptions.preference = (o.preference || []);
 
 		//Применяем обёртку - ДО преобразований
 		if (o.wrapper) {
