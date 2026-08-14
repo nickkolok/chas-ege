@@ -14,80 +14,88 @@
 		name: 'площадь большого круга',
 		power: 2,
 	}, ].iz(2);
-	console.log(measurements);
+	
+	let dilationCoefficient = sl(2, 3);
+	
 	let paint1 = function(ctx) {
 		ctx.translate(-10, -40);
 		ctx.lineWidth = 2;
-
+		
+		let isSurfaceArea = [measurements[0].name.ie, measurements[1].name.ie].includes('площадь поверхности');
+		let isCircleArea = [measurements[0].name.ie, measurements[1].name.ie].includes('площадь большого круга');
+		
+		// Первый шар - базовый радиус
+		let radius1 = 40;
+		// Второй шар - радиус пропорционален коэффициенту
+		let radius2 = radius1 * dilationCoefficient;
+		
+		// Цвета для шаров
+		let color1 = om.secondaryBrandColors.iz();
+		let color2 = om.secondaryBrandColors.iz();
+		
+		// Заливка (если нужно показать площадь)
 		ctx.beginPath();
-		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь поверхности'))
-			ctx.arc(100, 150, 80, 0, Math.PI * 2, true);
-		else
-		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь большого круга'))
-			ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 0, 2 * Math.PI);
-
-		ctx.fillStyle = "#61DC9A";
+		if (isSurfaceArea)
+			ctx.arc(100, 150, radius1, 0, Math.PI * 2, true);
+		else if (isCircleArea)
+			ctx.ellipse(100, 150, 20, radius1, Math.PI / 2, 0, 2 * Math.PI);
+		
+		ctx.fillStyle = color1;
 		ctx.fill();
 		ctx.closePath();
 
-		//шар 1
+		//шар 1 - контур
+		ctx.strokeStyle = color1;
 		ctx.beginPath();
-		ctx.arc(100, 150, 80, 0, Math.PI * 2, true); // Внешняя окружность
+		ctx.arc(100, 150, radius1, 0, Math.PI * 2, true);
 		ctx.stroke();
 		ctx.closePath();
 
-		ctx.beginPath();
-		ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-		ctx.stroke();
-		ctx.closePath();
+		ctx.drawEllipse(100, 150, 20, radius1, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-		ctx.beginPath();
 		ctx.setLineDash([5, 5]);
-		ctx.ellipse(100, 150, 20, 80, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-		ctx.stroke();
-		ctx.closePath();
-		ctx.drawLine(100, 150, 180, 150);
+		ctx.drawEllipse(100, 150, 20, radius1, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+		ctx.setLineDash([]);
+
+		ctx.drawLine(100, 150, 100 + radius1, 150);
 
 		//шар 2
-		ctx.translate(200, 0);
-
+		ctx.translate(radius1 + radius2 + 20, 0);
+		
+		// Заливка
 		ctx.beginPath();
-		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь поверхности'))
-			ctx.arc(100, 150, 100, 0, Math.PI * 2, true);
-		else
-		if ([measurements[0].name.ie, measurements[1].name.ie].includes('площадь большого круга'))
-			ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 0, 2 * Math.PI);
-
-		ctx.fillStyle = "#61DC9A";
+		if (isSurfaceArea)
+			ctx.arc(100, 150, radius2, 0, Math.PI * 2, true);
+		else if (isCircleArea)
+			ctx.ellipse(100, 150, 20, radius2, Math.PI / 2, 0, 2 * Math.PI);
+		
+		ctx.fillStyle = color2;
 		ctx.fill();
 		ctx.closePath();
 
+		//шар 2 - контур
+		ctx.strokeStyle = color2;
 		ctx.beginPath();
-		ctx.setLineDash([0, 0]);
-		ctx.arc(100, 150, 100, 0, Math.PI * 2, true); // Внешняя окружность
+		ctx.arc(100, 150, radius2, 0, Math.PI * 2, true);
 		ctx.stroke();
 		ctx.closePath();
 
-		ctx.beginPath();
-		ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-		ctx.stroke();
+		ctx.drawEllipse(100, 150, 20, radius2, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-		ctx.beginPath();
 		ctx.setLineDash([5, 5]);
-		ctx.ellipse(100, 150, 20, 100, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-		ctx.stroke();
+		ctx.drawEllipse(100, 150, 20, radius2, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+		ctx.setLineDash([]);
 
-		ctx.drawLine(100, 150, 200, 150);
-
+		ctx.drawLine(100, 150, 100 + radius2, 150);
 	};
 
 	NAtask.setDilationTask({
 		measurements: measurements,
 		figureName: 'шар',
-		dilationCoefficient: sl(2, 10),
+		dilationCoefficient: dilationCoefficient,
 		authors: ['Суматохина Ася'],
 	});
-	chas2.task.modifiers.addCanvasIllustration({
+	NAtask.modifiers.addCanvasIllustration({
 		width: 400,
 		height: 250,
 		paint: paint1,
