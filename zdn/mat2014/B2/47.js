@@ -6,7 +6,13 @@
 			if (trig == 'ctg' && x % 180 == 0) return true;
 			return false;
 		}, -900, 900);
-		var otvet = (gradus / 180 * Math.PI)[trig]()['arc' + trig]();
+		
+		var angle_rad = (gradus / 180 * Math.PI)[trig]();
+		var otvet = angle_rad['arc' + trig]();
+		if (trig == 'ctg' && otvet < 0) {
+			otvet += Math.PI;
+		}
+		
 		NAtask.setTask({
 		text: 'Найти значение угла (в градусах)' + '  $ \\arc' + trig + '(\\' + trig + '(' + gradus + '^{\\circ}))$',
 		answers: otvet / Math.PI * 180,
