@@ -1,4 +1,5 @@
 (function() {
+	NAinfo.requireApiVersion(0, 2);
 	lx_declareClarifiedPhrase('площадь', 'основания');
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 	retryWhileError(function() {
@@ -44,7 +45,6 @@
 			ctx.strokeStyle = "black";
 		};
 
-		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
 			text: name[0].ie.toZagl() + ' конуса в два раза ' + moreLess + ' ' + name[1].re +
 				'. ' +
