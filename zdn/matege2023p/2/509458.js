@@ -82,7 +82,6 @@
 
 			ctx.translate(w / 4, h / 2);
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.primaryBrandColors[0];
 			ctx.strokeStyle = om.secondaryBrandColors;
 
 
