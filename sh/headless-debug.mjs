@@ -3,7 +3,7 @@
 /**
  * Headless debug script for chas-ege templates
  * 
- * Opens build/sh/otladka.html in headless Chrome,
+ * Opens dist/sh/otladka.html in Chrome,
  * generates tasks from a template multiple times, and exports LaTeX code.
  * 
  * Prerequisites:
@@ -11,10 +11,10 @@
  * 2. Install puppeteer: `npm install puppeteer@^23.0.0` (compatible with Node.js 22.7.0)
  * 
  * Usage:
- *   node headless-debug.mjs --filepath <path-to-template> [--iterations <count>]
+ *   node headless-debug.mjs --filepath <path-to-template> [--iterations <count>] [--headless]
  * 
  * Example:
- *   node headless-debug.mjs --filepath ../zdn/matege2024p/10/1.js --iterations 5
+ *   node headless-debug.mjs --filepath ../zdn/matege2024p/10/1.js --iterations 5 --headless
  */
 
 import puppeteer from 'puppeteer';
@@ -29,6 +29,7 @@ const projectRoot = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
 let filepath = '';
 let iterations = 1;
+let headless = true; // Default to headless mode
 
 for (let i = 0; i < args.length; i++) {
     if (args[i] === '--filepath' && args[i + 1]) {
@@ -37,20 +38,29 @@ for (let i = 0; i < args.length; i++) {
     } else if (args[i] === '--iterations' && args[i + 1]) {
         iterations = parseInt(args[i + 1], 10);
         i++;
+    } else if (args[i] === '--headless') {
+        headless = true;
     }
 }
 
+// Check for --no-headless flag
+if (args.includes('--no-headless')) {
+    headless = false;
+}
+
 if (!filepath) {
-    console.error('Usage: node headless-debug.mjs --filepath <path> [--iterations <count>]');
+    console.error('Usage: node headless-debug.mjs --filepath <path> [--iterations <count>] [--headless|--no-headless]');
     process.exit(1);
 }
 
-const otladkaPath = path.join(projectRoot, 'build', 'sh', 'otladka.html');
+const otladkaPath = path.join(projectRoot, 'dist', 'sh', 'otladka.html');
 const fileUrl = 'file://' + otladkaPath;
+
+console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
 
 (async () => {
     const browser = await puppeteer.launch({
-        headless: 'new',
+        headless: headless ? 'new' : false,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--allow-file-access-from-files']
     });
     
