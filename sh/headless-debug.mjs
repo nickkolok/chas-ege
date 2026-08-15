@@ -141,25 +141,27 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
     console.log(`[PAGE ERROR]`, error.message);
   });
     
-    // Intercept copyToClipboard before page loads
-    await page.evaluateOnNewDocument(() => {
-        const originalCopyToClipboard = window.copyToClipboard;
-        window.copyToClipboard = function(text) {
-            console.log('=== LaTeX CODE START ===');
-            console.log(text);
-            console.log('=== LaTeX CODE END ===');
-            window.__latexExported = true;
-            if (originalCopyToClipboard) {
-                return originalCopyToClipboard.call(this, text);
-            }
-        };
-    });
+    // We will intercept copyToClipboard AFTER page scripts have loaded
     
     console.log(`Opening ${fileUrl}...`);
     
     try {
         await page.goto(fileUrl, { waitUntil: 'networkidle2', timeout: 60000 });
         console.log('Page loaded successfully.');
+        
+        // Intercept copyToClipboard AFTER page scripts have loaded
+        await page.evaluate(() => {
+            const originalCopyToClipboard = window.copyToClipboard;
+            window.copyToClipboard = function(text) {
+                console.log('=== LaTeX CODE START ===');
+                console.log(text);
+                console.log('=== LaTeX CODE END ===');
+                window.__latexExported = true;
+                if (originalCopyToClipboard) {
+                    return originalCopyToClipboard.call(this, text);
+                }
+            };
+        });
     } catch (error) {
         console.error('Failed to load page:', error.message);
         await browser.close();
