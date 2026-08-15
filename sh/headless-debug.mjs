@@ -123,10 +123,22 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
   
   page.on('console', msg => {
     const text = msg.text();
+    const type = msg.type();
+    
+    // Always log errors and warnings, even if they match spam patterns
+    if (type === 'error' || type === 'warning') {
+      console.log(`[BROWSER ${type.toUpperCase()}]`, text);
+      return;
+    }
+    
     if (spamPatterns.some(pattern => text.includes(pattern))) {
       return;
     }
     console.log(text);
+  });
+  
+  page.on('pageerror', error => {
+    console.log(`[PAGE ERROR]`, error.message);
   });
     
     // Intercept copyToClipboard before page loads
