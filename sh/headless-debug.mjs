@@ -40,7 +40,7 @@ while (!fs.existsSync(path.join(projectRoot, 'package.json'))) {
 const args = process.argv.slice(2);
 let filepath = '';
 let iterations = 1;
-let headless = true; // Default to headless mode
+let headless = false; // Default to visible mode
 
 for (let i = 0; i < args.length; i++) {
     if (args[i] === '--filepath' && args[i + 1]) {
@@ -54,13 +54,10 @@ for (let i = 0; i < args.length; i++) {
     }
 }
 
-// Check for --no-headless flag
-if (args.includes('--no-headless')) {
-    headless = false;
-}
+
 
 if (!filepath) {
-    console.error('Usage: node headless-debug.mjs --filepath <path> [--iterations <count>] [--headless|--no-headless]');
+    console.error('Usage: node headless-debug.mjs --filepath <path> [--iterations <count>] [--headless]');
     process.exit(1);
 }
 
