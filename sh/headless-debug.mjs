@@ -74,7 +74,12 @@ const filepathRelativeToRoot = path.relative(projectRoot, absoluteFilepath);
 const filepathForBrowser = '../../' + filepathRelativeToRoot.split(path.sep).join('/');
 
 const otladkaPath = path.join(projectRoot, 'dist', 'sh', 'otladka.html');
-const fileUrl = 'file://' + otladkaPath;
+const urlJsonData = {
+    filepath: filepathForBrowser,
+    autostartFile: true
+};
+const hashString = '#' + encodeURIComponent(JSON.stringify(urlJsonData));
+const fileUrl = 'file://' + otladkaPath + hashString;
 
 console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
 
@@ -121,22 +126,18 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
   });
     
     // Intercept copyToClipboard before page loads
-    await page.evaluateOnNewDocument((fp) => {
-        window.parsedJSON = {
-            filepath: fp,
-            autostartFile: false
-        };
-        
+    await page.evaluateOnNewDocument(() => {
         const originalCopyToClipboard = window.copyToClipboard;
         window.copyToClipboard = function(text) {
             console.log('=== LaTeX CODE START ===');
             console.log(text);
             console.log('=== LaTeX CODE END ===');
+            window.__latexExported = true;
             if (originalCopyToClipboard) {
                 return originalCopyToClipboard.call(this, text);
             }
         };
-    }, filepathForBrowser);
+    });
     
     console.log(`Opening ${fileUrl}...`);
     
@@ -155,11 +156,13 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
     for (let i = 0; i < iterations; i++) {
         console.log(`\n=== Iteration ${i + 1} of ${iterations} ===`);
         
-        // Set filepath and create from file
-        await page.evaluate((fp) => {
-            document.getElementById('filepath').value = fp;
-            createFromFile();
-        }, filepathForBrowser);
+        if (i > 0) {
+            // For subsequent iterations, trigger generation manually
+            // (the first one is auto-started by otladka.js via parsedJSON.autostartFile)
+            await page.evaluate(() => {
+                createFromFile();
+            });
+        }
         
         // Wait for question to be generated
         try {
@@ -170,7 +173,7 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
                            question.innerHTML !== 'Задание составляется, подождите...' &&
                            question.innerHTML !== '';
                 },
-                { timeout: 15000 }
+                { timeout: 30000 }
             );
         } catch (error) {
             console.log('Timeout waiting for question generation, continuing...');
@@ -181,6 +184,7 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         
         // Click LaTeX export button
         await page.evaluate(() => {
+            window.__latexExported = false; // Reset flag before export
             if (typeof startQuickExportToTex === 'function') {
                 startQuickExportToTex();
             } else {
@@ -188,7 +192,14 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
             }
         });
         
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+            await page.waitForFunction(
+                () => window.__latexExported === true,
+                { timeout: 30000 }
+            );
+        } catch (error) {
+            console.log('Timeout waiting for LaTeX export completion.');
+        }
     }
     
     await browser.close();
