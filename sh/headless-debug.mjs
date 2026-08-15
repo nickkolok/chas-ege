@@ -98,6 +98,11 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
     const browser = await puppeteer.launch(launchOptions);
     
     const page = await browser.newPage();
+
+  // Listen to console messages from the browser
+  page.on('console', msg => {
+    console.log(msg.text());
+  });
     
     // Intercept copyToClipboard before page loads
     await page.evaluateOnNewDocument((fp) => {
