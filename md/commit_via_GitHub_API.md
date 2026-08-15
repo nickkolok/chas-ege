@@ -50,3 +50,10 @@ resp = requests.put(put_url, headers=headers, json=data)
 print(resp.status_code)
 print(resp.json())
 ```
+
+## Альтернативный способ
+
+*Например, для симлинков.*
+
+Можно использовать Git Data API:
+создать отдельные Blob'ы, собрать новый Tree, сделать Commit и обновить Reference для ветки.
