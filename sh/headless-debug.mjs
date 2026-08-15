@@ -102,7 +102,11 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
 
     const browser = await puppeteer.launch(launchOptions);
     
-    const page = await browser.newPage();
+    // Grant clipboard permissions BEFORE creating the page
+  const context = browser.defaultBrowserContext();
+  await context.overridePermissions(fileUrl, ['clipboard-read', 'clipboard-write']);
+
+  const page = await browser.newPage();
 
   // Listen to console messages from the browser
   const spamPatterns = [
