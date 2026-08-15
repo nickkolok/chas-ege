@@ -21,6 +21,7 @@ import puppeteer from 'puppeteer';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import os from 'os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,6 +42,8 @@ const args = process.argv.slice(2);
 let filepath = '';
 let iterations = 1;
 let headless = false; // Default to visible mode
+let browserPath = '';
+let tempProfile = false;
 
 for (let i = 0; i < args.length; i++) {
     if (args[i] === '--filepath' && args[i + 1]) {
@@ -51,6 +54,11 @@ for (let i = 0; i < args.length; i++) {
         i++;
     } else if (args[i] === '--headless') {
         headless = true;
+    } else if (args[i] === '--browser' && args[i + 1]) {
+        browserPath = args[i + 1];
+        i++;
+    } else if (args[i] === '--temp-profile') {
+        tempProfile = true;
     }
 }
 
@@ -71,10 +79,23 @@ const fileUrl = 'file://' + otladkaPath;
 console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
 
 (async () => {
-    const browser = await puppeteer.launch({
+    const launchOptions = {
         headless: headless ? 'new' : false,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--allow-file-access-from-files']
-    });
+    };
+
+    let tempDir = null;
+
+    if (browserPath) {
+        launchOptions.executablePath = browserPath;
+    }
+
+    if (tempProfile) {
+        tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'puppeteer_dev_profile-'));
+        launchOptions.userDataDir = tempDir;
+    }
+
+    const browser = await puppeteer.launch(launchOptions);
     
     const page = await browser.newPage();
     
@@ -150,6 +171,9 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
     }
     
     await browser.close();
+    if (tempDir) {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+    }
     console.log('\n=== DONE ===');
     process.exit(0);
 })();
