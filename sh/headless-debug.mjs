@@ -100,8 +100,24 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
     const page = await browser.newPage();
 
   // Listen to console messages from the browser
+  const spamPatterns = [
+    'Скрипт по адресу',
+    'Таблица стилей',
+    'отработал',
+    'загружен',
+    'добавлен',
+    'запрошен',
+    'debug',
+    'verbose',
+    'Не удалось выделить настройки'
+  ];
+  
   page.on('console', msg => {
-    console.log(msg.text());
+    const text = msg.text();
+    if (spamPatterns.some(pattern => text.includes(pattern))) {
+      return;
+    }
+    console.log(text);
   });
     
     // Intercept copyToClipboard before page loads
