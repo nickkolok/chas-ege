@@ -14,7 +14,8 @@
  *   node headless-debug.mjs --filepath <path-to-template> [--iterations <count>] [--headless]
  * 
  * Example:
- *   node headless-debug.mjs --filepath ../zdn/matege2024p/10/1.js --iterations 5 --headless
+ *   node sh/headless-debug.mjs --filepath zdn/matege2024p/10/15.js --browser `which chromium` --temp-profile --iterations 5 --headless
+
  */
 
 import puppeteer from 'puppeteer';
