@@ -19,11 +19,22 @@
 
 import puppeteer from 'puppeteer';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const projectRoot = path.resolve(__dirname, '..');
+
+let projectRoot = process.cwd();
+while (!fs.existsSync(path.join(projectRoot, 'package.json'))) {
+    const parent = path.dirname(projectRoot);
+    if (parent === projectRoot) {
+        // Fallback to script location if package.json not found
+        projectRoot = path.resolve(__dirname, '..');
+        break;
+    }
+    projectRoot = parent;
+}
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -52,6 +63,10 @@ if (!filepath) {
     console.error('Usage: node headless-debug.mjs --filepath <path> [--iterations <count>] [--headless|--no-headless]');
     process.exit(1);
 }
+
+const absoluteFilepath = path.resolve(process.cwd(), filepath);
+const filepathRelativeToRoot = path.relative(projectRoot, absoluteFilepath);
+const filepathForBrowser = '../../' + filepathRelativeToRoot.split(path.sep).join('/');
 
 const otladkaPath = path.join(projectRoot, 'dist', 'sh', 'otladka.html');
 const fileUrl = 'file://' + otladkaPath;
@@ -82,7 +97,7 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
                 return originalCopyToClipboard.call(this, text);
             }
         };
-    }, filepath);
+    }, filepathForBrowser);
     
     console.log(`Opening ${fileUrl}...`);
     
@@ -105,7 +120,7 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         await page.evaluate((fp) => {
             document.getElementById('filepath').value = fp;
             createFromFile();
-        }, filepath);
+        }, filepathForBrowser);
         
         // Wait for question to be generated
         try {
