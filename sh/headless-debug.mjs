@@ -86,7 +86,7 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
 (async () => {
     const launchOptions = {
         headless: headless ? 'new' : false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--allow-file-access-from-files']
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--allow-file-access-from-files', '--disable-web-security']
     };
 
     let tempDir = null;
