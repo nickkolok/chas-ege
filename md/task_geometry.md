@@ -6,7 +6,9 @@
 
 ## Буквы на чертеже
 
-За случайную перестановку отвечает `NAtask.modifiers.variativeABC(letters);`
+За случайную перестановку отвечает `NAtask.modifiers.variativeABC(letters);`.
+Он заменяет буквенные обозначения точек на случайные с сохранением консистентности условия,
+превращая какую-нибудь трапецию $ABCD$ в нечто вроде $RTFM$.
 Его надлежит использовать, если не указано обратное.
 `NAtask.modifiers.variativeABC(letters);` используется после `set*Task(...);`,
 но перед `NAtask.modifiers.addCanvasIllustration(...);`, если таковой есть.
