@@ -214,6 +214,20 @@ async function postComment(prNum, body, token) {
     return response.json();
 }
 
+
+async function getPRHeadSha(prNum, token) {
+    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${prNum}`, {
+        headers: {
+            'Accept': 'application/vnd.github.v3+json',
+            'User-Agent': 'chas-ege-provide-examples-script',
+            ...(token && { 'Authorization': `token ${token}` })
+        }
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    const data = await response.json();
+    return data.head.sha;
+}
+
 async function main() {
     console.log(`Processing PR #${prNumber}...`);
     const token = await getGitHubToken();
@@ -231,8 +245,16 @@ async function main() {
     const cacheDir = path.join(projectRoot, '.cache', `pr-${prNumber}-${uuid}`);
     if (!fs.existsSync(cacheDir)) fs.mkdirSync(cacheDir, { recursive: true });
 
-    const latexExamples = [];
+    const examples = [];
     const pattern = /^zdn\/[^\/]+\/[^\/]+\/\d+\.js$/;
+    
+    let headSha = 'unknown';
+    try {
+        headSha = await getPRHeadSha(prNumber, token);
+    } catch (e) {
+        console.warn('Failed to fetch PR head SHA:', e.message);
+    }
+
 
     try {
         for (const file of files) {
@@ -256,7 +278,7 @@ async function main() {
                 const latex = extractLatex(output);
                 
                 if (latex) {
-                    latexExamples.push(latex);
+                    examples.push({ filename: file.filename, text: latex });
                 } else {
                     console.warn(`No LaTeX code found for ${file.filename}`);
                 }
@@ -265,20 +287,20 @@ async function main() {
             }
         }
 
-        if (latexExamples.length === 0) {
+        if (examples.length === 0) {
             console.log('No examples found for the PR.');
             return;
         }
 
         // Upload base64 images and replace with URLs
-        let processedExamples = [];
-        for (let i = 0; i < latexExamples.length; i++) {
-            console.log(`\nProcessing images in example ${i + 1}...`);
-            const processed = await replaceBase64ImagesWithUploads(latexExamples[i], prNumber, token);
-            processedExamples.push(processed);
+        const blocks = [];
+        for (const example of examples) {
+            console.log(`\nProcessing images in ${example.filename}...`);
+            const processed = await replaceBase64ImagesWithUploads(example.text, prNumber, token);
+            blocks.push(`<details>\n<summary>ПРИМЕРЫ_ЗАДАЧ \`${example.filename}\` ${headSha}</summary>\n\n${processed}\n\n</details>`);
         }
 
-        const commentBody = `ПРИМЕРЫ_ЗАДАЧ:\n\n${processedExamples.join('\n\n---\n\n')}`;
+        const commentBody = blocks.join('\n\n---\n\n');
 
         if (!token) {
             console.warn('GitHub token not found. Cannot post comment.');
