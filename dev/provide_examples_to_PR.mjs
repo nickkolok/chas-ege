@@ -101,74 +101,35 @@ function extractLatex(output) {
     return matches.map(m => m[1].trim()).filter(text => text.length > 0).join('\n');
 }
 
-async function uploadImageToRepo(base64Data, extension, prNum, token) {
+async function uploadImageViaUserAttachments(base64Data, extension, prNum, token, repositoryId) {
     const uuid = crypto.randomUUID();
     const fileName = `${uuid}.${extension}`;
-    const filePath = `.github/assets/pr-${prNum}/${fileName}`;
-    
-    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
-    const data = {
-        "message": `Add image for PR #${prNum}`,
-        "content": base64Data,
-        "branch": `pr-${prNum}-assets`
-    };
-    
-    // Check if branch exists, if not create it from devel
-    const branchRefUrl = `https://api.github.com/repos/${owner}/${repo}/git/ref/heads/pr-${prNum}-assets`;
-    let branchResp = await fetch(branchRefUrl, {
-        headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'chas-ege-provide-examples-script',
-            'Authorization': `token ${token}`
-        }
-    });
-    
-    if (branchResp.status === 404) {
-        // Get devel SHA
-        const develRefUrl = `https://api.github.com/repos/${owner}/${repo}/git/ref/heads/devel`;
-        const develResp = await fetch(develRefUrl, {
-            headers: {
-                'Accept': 'application/vnd.github.v3+json',
-                'User-Agent': 'chas-ege-provide-examples-script',
-                'Authorization': `token ${token}`
-            }
-        });
-        const develSha = (await develResp.json()).object.sha;
-        
-        // Create branch
-        const createBranchResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/refs`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json',
-                'User-Agent': 'chas-ege-provide-examples-script',
-                'Authorization': `token ${token}`
-            },
-            body: JSON.stringify({
-                "ref": `refs/heads/pr-${prNum}-assets`,
-                "sha": develSha
-            })
-        });
-        if (!createBranchResp.ok) throw new Error(`Failed to create branch: ${await createBranchResp.text()}`);
-    }
-    
+    const mimeType = `image/${extension}`;
+
+    const binaryData = Buffer.from(base64Data, 'base64');
+
+    const url = `https://uploads.github.com/user-attachments/assets?name=${encodeURIComponent(fileName)}&content_type=${encodeURIComponent(mimeType)}&repository_id=${repositoryId}`;
+
     const response = await fetch(url, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json',
-            'User-Agent': 'chas-ege-provide-examples-script',
-            'Authorization': `token ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/octet-stream'
         },
-        body: JSON.stringify(data)
+        body: binaryData
     });
-    
-    if (!response.ok) throw new Error(`Failed to upload image: ${await response.text()}`);
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to upload image: HTTP ${response.status} - ${errorText}`);
+    }
+
     const result = await response.json();
-    return result.content.download_url;
+    return result.href || result.url;
 }
 
-async function replaceBase64ImagesWithUploads(latexText, prNum, token) {
+async function replaceBase64ImagesWithUploads(latexText, prNum, token, repositoryId) {
     // Match %<img src="data:image/png;base64,..." />
     const imgRegex = /%<img[^>]*src="(data:image\/([^;]+);base64,([A-Za-z0-9+/=]+))"[^>]*>/gi;
     
@@ -182,7 +143,7 @@ async function replaceBase64ImagesWithUploads(latexText, prNum, token) {
         
         try {
             console.log(`Uploading image (${mimeType}, ${base64Data.length} chars)...`);
-            const downloadUrl = await uploadImageToRepo(base64Data, mimeType, prNum, token);
+            const downloadUrl = await uploadImageViaUserAttachments(base64Data, mimeType, prNum, token, repositoryId);
             
             // Replace the commented img tag with markdown image
             const imgMarkdown = `\n![illustration](${downloadUrl})\n`;
@@ -231,6 +192,25 @@ async function getPRHeadSha(prNum, token) {
 async function main() {
     console.log(`Processing PR #${prNumber}...`);
     const token = await getGitHubToken();
+
+    let repositoryId = null;
+    if (token) {
+        try {
+            const repoInfoUrl = `https://api.github.com/repos/${owner}/${repo}`;
+            const repoInfoResp = await fetch(repoInfoUrl, {
+                headers: {
+                    'Accept': 'application/vnd.github.v3+json',
+                    'User-Agent': 'chas-ege-provide-examples-script',
+                    'Authorization': `token ${token}`
+                }
+            });
+            if (repoInfoResp.ok) {
+                repositoryId = (await repoInfoResp.json()).id;
+            }
+        } catch (e) {
+            console.warn('Failed to fetch repository ID:', e.message);
+        }
+    }
 
     let files;
     try {
@@ -296,7 +276,7 @@ async function main() {
         const blocks = [];
         for (const example of examples) {
             console.log(`\nProcessing images in ${example.filename}...`);
-            const processed = await replaceBase64ImagesWithUploads(example.text, prNumber, token);
+            const processed = await replaceBase64ImagesWithUploads(example.text, prNumber, token, repositoryId);
             blocks.push(`<details>\n<summary>ПРИМЕРЫ_ЗАДАЧ \`${example.filename}\` ${headSha}</summary>\n\n${processed}\n\n</details>`);
         }
 
