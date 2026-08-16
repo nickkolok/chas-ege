@@ -101,14 +101,28 @@ async function runDebug(filepath, extraArgs) {
 
 
 function fixLatexEscapes(text) {
-    // Fix common LaTeX commands where \f, \n, etc. were interpreted as special chars
-    // Replace special characters back to \f, \n, etc.
-    text = text.replace(/\x0c/g, '\\f');  // form feed -> \f
-    text = text.replace(/\x0a/g, '\\n');  // newline (shouldn't happen but just in case)
-    text = text.replace(/\x0d/g, '\\r');  // carriage return
-    text = text.replace(/\x09/g, '\\t');  // tab
+    // Fix LaTeX commands where special characters were incorrectly interpreted
+    // In template literals and strings, \f, \n, \t, etc. are special chars
+    // We need to replace them back to \f, \n, \t when followed by LaTeX commands
     
-    // Also fix any other common LaTeX commands that might have been broken
+    // Common LaTeX commands that start with letters that are also special chars:
+    // \f -> form feed (\x0c)
+    // \n -> newline (\x0a)  
+    // \r -> carriage return (\x0d)
+    // \t -> tab (\x09)
+    // \v -> vertical tab (\x0b)
+    // \b -> backspace (\x08)
+    
+    const specialCharMap = {
+        '\x0c': 'f',  // form feed
+        '\x0a': 'n',  // newline
+        '\x0d': 'r',  // carriage return
+        '\x09': 't',  // tab
+        '\x0b': 'v',  // vertical tab
+        '\x08': 'b',  // backspace
+    };
+    
+    // Common LaTeX commands
     const latexCommands = [
         'frac', 'sqrt', 'sum', 'prod', 'int', 'oint', 'partial', 'infty',
         'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'theta', 'lambda',
@@ -116,12 +130,27 @@ function fixLatexEscapes(text) {
         'leq', 'geq', 'neq', 'approx', 'equiv', 'sim', 'propto',
         'left', 'right', 'big', 'Big', 'bigg', 'Bigg',
         'textbf', 'textit', 'mathrm', 'mathbf', 'mathit', 'mathcal',
-        'begin', 'end', 'includegraphics', 'caption', 'label', 'ref'
+        'begin', 'end', 'includegraphics', 'caption', 'label', 'ref',
+        'cdot', 'times', 'div', 'pm', 'mp', 'circ', 'bullet',
+        'le', 'ge', 'ne', 'in', 'notin', 'subset', 'supset', 'cup', 'cap',
+        'forall', 'exists', 'nexists', 'neg', 'land', 'lor',
+        'rightarrow', 'leftarrow', 'Rightarrow', 'Leftarrow', 'leftrightarrow',
+        'uparrow', 'downarrow', 'Uparrow', 'Downarrow',
+        'langle', 'rangle', 'lceil', 'rceil', 'lfloor', 'rfloor',
+        'ldots', 'cdots', 'vdots', 'ddots'
     ];
     
-    // This regex looks for special chars followed by LaTeX command names
-    // and replaces them with proper backslash + command
-    // But this is tricky because we need to know which chars were originally \command
+    // For each special char, check if it's followed by a LaTeX command
+    for (const [specialChar, letter] of Object.entries(specialCharMap)) {
+        const regex = new RegExp(specialChar + '([a-zA-Z]+)', 'g');
+        text = text.replace(regex, (match, cmd) => {
+            // Check if the command is a known LaTeX command
+            if (latexCommands.includes(cmd)) {
+                return '\\' + cmd;
+            }
+            return match;
+        });
+    }
     
     return text;
 }
