@@ -1,23 +1,20 @@
 (function() { 'use strict'; retryWhileError(function() {
 	let prizes = [
 		{
-			p: ['100', '1000', '5000', '10 000', '50 000'],
 			weights: [100, 1000, 5000, 10000, 50000],
 			divs: [100, 10, 2, 1, 1],
 		},
 		{
-			p: ['50', '500', '2 000', '10 000', '50 000'],
 			weights: [50, 500, 2000, 10000, 50000],
 			divs: [200, 20, 5, 1, 1],
 		},
 		{
-			p: ['200', '1 000', '5 000', '50 000', '100 000'],
 			weights: [200, 1000, 5000, 50000, 100000],
 			divs: [50, 10, 2, 1, 1],
 		},
 	].iz();
 
-	let p = prizes.p;
+	let p = prizes.weights.map(w => w.ts());
 	let c0 = sluchch(300, 1200, prizes.divs[0]);
 	let c1 = sluchch(80, 300, prizes.divs[1]);
 	let c2 = sluchch(8, 120, prizes.divs[2]);
