@@ -99,62 +99,10 @@ async function runDebug(filepath, extraArgs) {
     }
 }
 
-
-function fixLatexEscapes(text) {
-    // Fix LaTeX commands where special characters were incorrectly interpreted
-    // In template literals and strings, \f, \n, \t, etc. are special chars
-    // For example, \frac becomes form feed + "rac"
-    
-    const specialCharMap = {
-        '\x0c': 'f',  // form feed -> \f
-        '\x0a': 'n',  // newline -> \n  
-        '\x0d': 'r',  // carriage return -> \r
-        '\x09': 't',  // tab -> \t
-        '\x0b': 'v',  // vertical tab -> \v
-        '\x08': 'b',  // backspace -> \b
-    };
-    
-    // Common LaTeX commands
-    const latexCommands = [
-        'frac', 'sqrt', 'sum', 'prod', 'int', 'oint', 'partial', 'infty',
-        'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'theta', 'lambda',
-        'pi', 'sigma', 'omega', 'phi', 'psi', 'rho', 'mu', 'nu', 'xi',
-        'leq', 'geq', 'neq', 'approx', 'equiv', 'sim', 'propto',
-        'left', 'right', 'big', 'Big', 'bigg', 'Bigg',
-        'textbf', 'textit', 'mathrm', 'mathbf', 'mathit', 'mathcal',
-        'begin', 'end', 'includegraphics', 'caption', 'label', 'ref',
-        'cdot', 'times', 'div', 'pm', 'mp', 'circ', 'bullet',
-        'le', 'ge', 'ne', 'in', 'notin', 'subset', 'supset', 'cup', 'cap',
-        'forall', 'exists', 'nexists', 'neg', 'land', 'lor',
-        'rightarrow', 'leftarrow', 'Rightarrow', 'Leftarrow', 'leftrightarrow',
-        'uparrow', 'downarrow', 'Uparrow', 'Downarrow',
-        'langle', 'rangle', 'lceil', 'rceil', 'lfloor', 'rfloor',
-        'ldots', 'cdots', 'vdots', 'ddots',
-        // Commands that might be split by special chars
-        'rac', 'ncludegraphics', 'egin', 'nd', 'ime', 'imes', 'iv', 'm', 'p', 'irc', 'ullet'
-    ];
-    
-    // For each special char, check if it's followed by part of a LaTeX command
-    for (const [specialChar, letter] of Object.entries(specialCharMap)) {
-        const regex = new RegExp(specialChar + '([a-zA-Z]+)', 'g');
-        text = text.replace(regex, (match, cmd) => {
-            // Check if letter + cmd is a known LaTeX command
-            const fullCmd = letter + cmd;
-            if (latexCommands.includes(fullCmd) || latexCommands.includes(cmd)) {
-                return '\\' + letter + cmd;
-            }
-            return match;
-        });
-    }
-    
-    return text;
-}
-
-
 function extractLatex(output) {
     const regex = /=== LaTeX CODE START ===\r?\n([\s\S]*?)\r?\n=== LaTeX CODE END ===/g;
     const matches = [...output.matchAll(regex)];
-    return matches.map(m => fixLatexEscapes(m[1].trim())).filter(text => text.length > 0).join('\n');
+    return matches.map(m => m[1].trim()).filter(text => text.length > 0).join('\n');
 }
 
 async function uploadImageViaUserAttachments(base64Data, extension, prNum, token, repositoryId) {
