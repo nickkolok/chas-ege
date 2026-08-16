@@ -369,6 +369,7 @@ module.exports = function(grunt) {
 				'process-pages-js',
 				'concurrent:process-task-sets',
 				'process-css',
+				'gitstatus',
 			],
 			'process-lib': ['newer:copy:lib', 'make-chas-lib', ['make-chas-uijs', 'make-init']],
 			'process-task-sets': [['newer:copy:taskSets', 'packTasks', 'uglify:tasksPacks']],
@@ -406,7 +407,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('check-urls', ['checkPages:dev']);
 
-	grunt.registerTask('build-except-ext', ['concurrent:build-except-ext', 'gitstatus']);
+	grunt.registerTask('build-except-ext', ['concurrent:build-except-ext']);
 	
 	// --- gitstatus.txt ---
 	var childProcess = require('child_process');
