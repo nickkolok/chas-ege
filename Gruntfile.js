@@ -406,7 +406,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('check-urls', ['checkPages:dev']);
 
-	grunt.registerTask('build-except-ext', ['concurrent:build-except-ext']);
+	grunt.registerTask('build-except-ext', ['concurrent:build-except-ext', 'gitstatus']);
 	
 	// --- gitstatus.txt ---
 	var childProcess = require('child_process');
@@ -506,5 +506,5 @@ module.exports = function(grunt) {
 	);
 	// --- /gitstatus.txt ---
 
-	grunt.registerTask('default', ['build-except-ext', 'process-ext', 'process-unit-test', 'gitstatus']);
+	grunt.registerTask('default', ['build-except-ext', 'process-ext', 'process-unit-test']);
 };
