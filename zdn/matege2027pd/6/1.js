@@ -1,11 +1,30 @@
 (function() { 'use strict'; retryWhileError(function() {
-	let p = ['100', '1000', '5000', '10 000', '50 000'];
-	let c0 = sluchch(300, 900, 100);
-	let c1 = sluchch(80, 250, 10);
-	let c2 = sluchch(8, 90, 2);
-	let c3 = sluchch(2, 15);
-	let c4 = sluchch(1, 5);
-	let s = (100*c0 + 1000*c1 + 5000*c2 + 10000*c3 + 50000*c4) / 10000;
+	let prizes = [
+		{
+			p: ['100', '1000', '5000', '10 000', '50 000'],
+			weights: [100, 1000, 5000, 10000, 50000],
+			divs: [100, 10, 2, 1, 1],
+		},
+		{
+			p: ['50', '500', '2 000', '10 000', '50 000'],
+			weights: [50, 500, 2000, 10000, 50000],
+			divs: [200, 20, 5, 1, 1],
+		},
+		{
+			p: ['200', '1 000', '5 000', '50 000', '100 000'],
+			weights: [200, 1000, 5000, 50000, 100000],
+			divs: [50, 10, 2, 1, 1],
+		},
+	].iz();
+
+	let p = prizes.p;
+	let c0 = sluchch(300, 1200, prizes.divs[0]);
+	let c1 = sluchch(80, 300, prizes.divs[1]);
+	let c2 = sluchch(8, 120, prizes.divs[2]);
+	let c3 = sluchch(2, 20, prizes.divs[3]);
+	let c4 = sluchch(1, 8, prizes.divs[4]);
+
+	let s = (prizes.weights[0]*c0 + prizes.weights[1]*c1 + prizes.weights[2]*c2 + prizes.weights[3]*c3 + prizes.weights[4]*c4) / 10000;
 
 	let y = ['Выигрыш (в рублях)'].concat(p).tr('th');
 	let z = [['Число выигрышных билетов', c0.ts(), c1.ts(), c2.ts(), c3.ts(), c4.ts()].tr()];
