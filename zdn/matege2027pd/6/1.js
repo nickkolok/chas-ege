@@ -28,10 +28,7 @@
 	let table = (y + z.soed()).vTabl();
 
 	let preference = ['table', 'text'];
-	let displayMode = getListedPreference('matege2027pd_6_1', preference.map((pref, index) => ({
-		preference: pref,
-		preferenceValue: index
-	})), sl(preference.length - 1));
+	let displayMode = getSelectedPreferenceFromList('matege2027pd_6_1', preference);
 
 	let condition = '';
 	if (displayMode === 0) {
