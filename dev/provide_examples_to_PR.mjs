@@ -103,23 +103,15 @@ async function runDebug(filepath, extraArgs) {
 function fixLatexEscapes(text) {
     // Fix LaTeX commands where special characters were incorrectly interpreted
     // In template literals and strings, \f, \n, \t, etc. are special chars
-    // We need to replace them back to \f, \n, \t when followed by LaTeX commands
-    
-    // Common LaTeX commands that start with letters that are also special chars:
-    // \f -> form feed (\x0c)
-    // \n -> newline (\x0a)  
-    // \r -> carriage return (\x0d)
-    // \t -> tab (\x09)
-    // \v -> vertical tab (\x0b)
-    // \b -> backspace (\x08)
+    // For example, \frac becomes form feed + "rac"
     
     const specialCharMap = {
-        '\x0c': 'f',  // form feed
-        '\x0a': 'n',  // newline
-        '\x0d': 'r',  // carriage return
-        '\x09': 't',  // tab
-        '\x0b': 'v',  // vertical tab
-        '\x08': 'b',  // backspace
+        '\x0c': 'f',  // form feed -> \f
+        '\x0a': 'n',  // newline -> \n  
+        '\x0d': 'r',  // carriage return -> \r
+        '\x09': 't',  // tab -> \t
+        '\x0b': 'v',  // vertical tab -> \v
+        '\x08': 'b',  // backspace -> \b
     };
     
     // Common LaTeX commands
@@ -137,16 +129,19 @@ function fixLatexEscapes(text) {
         'rightarrow', 'leftarrow', 'Rightarrow', 'Leftarrow', 'leftrightarrow',
         'uparrow', 'downarrow', 'Uparrow', 'Downarrow',
         'langle', 'rangle', 'lceil', 'rceil', 'lfloor', 'rfloor',
-        'ldots', 'cdots', 'vdots', 'ddots'
+        'ldots', 'cdots', 'vdots', 'ddots',
+        // Commands that might be split by special chars
+        'rac', 'ncludegraphics', 'egin', 'nd', 'ime', 'imes', 'iv', 'm', 'p', 'irc', 'ullet'
     ];
     
-    // For each special char, check if it's followed by a LaTeX command
+    // For each special char, check if it's followed by part of a LaTeX command
     for (const [specialChar, letter] of Object.entries(specialCharMap)) {
         const regex = new RegExp(specialChar + '([a-zA-Z]+)', 'g');
         text = text.replace(regex, (match, cmd) => {
-            // Check if the command is a known LaTeX command
-            if (latexCommands.includes(cmd)) {
-                return '\\' + cmd;
+            // Check if letter + cmd is a known LaTeX command
+            const fullCmd = letter + cmd;
+            if (latexCommands.includes(fullCmd) || latexCommands.includes(cmd)) {
+                return '\\' + letter + cmd;
             }
             return match;
         });
