@@ -25,6 +25,10 @@ if (args.length === 0 || isNaN(parseInt(args[0], 10))) {
 const prNumber = args[0];
 const debugArgs = args.slice(1);
 
+if (!debugArgs.includes('--headless')) {
+    debugArgs.unshift('--headless');
+}
+
 const owner = 'nickkolok';
 const repo = 'chas-ege';
 
