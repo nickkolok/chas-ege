@@ -209,8 +209,16 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         }
         const screenshotName = `${crypto.randomUUID()}.png`;
         const screenshotPath = path.join(screenshotsDir, screenshotName);
-        await page.screenshot({ path: screenshotPath, fullPage: true });
-        console.log(`Screenshot saved to ${screenshotPath}`);
+        
+        const element = await page.$('#typesettable-wrap');
+        if (element) {
+            await element.screenshot({ path: screenshotPath });
+            console.log(`Screenshot of #typesettable-wrap saved to ${screenshotPath}`);
+        } else {
+            console.warn('[WARNING] #typesettable-wrap not found, taking full page screenshot.');
+            await page.screenshot({ path: screenshotPath, fullPage: true });
+            console.log(`Screenshot saved to ${screenshotPath}`);
+        }
         
         // Click LaTeX export button
         await page.evaluate(() => {
