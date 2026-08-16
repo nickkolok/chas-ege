@@ -101,6 +101,103 @@ function extractLatex(output) {
     return matches.map(m => m[1].trim()).filter(text => text.length > 0).join('\n');
 }
 
+async function uploadImageToRepo(base64Data, extension, prNum, token) {
+    const uuid = crypto.randomUUID();
+    const fileName = `${uuid}.${extension}`;
+    const filePath = `.github/assets/pr-${prNum}/${fileName}`;
+    
+    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+    const data = {
+        "message": `Add image for PR #${prNum}`,
+        "content": base64Data,
+        "branch": `pr-${prNum}-assets`
+    };
+    
+    // Check if branch exists, if not create it from devel
+    const branchRefUrl = `https://api.github.com/repos/${owner}/${repo}/git/ref/heads/pr-${prNum}-assets`;
+    let branchResp = await fetch(branchRefUrl, {
+        headers: {
+            'Accept': 'application/vnd.github.v3+json',
+            'User-Agent': 'chas-ege-provide-examples-script',
+            'Authorization': `token ${token}`
+        }
+    });
+    
+    if (branchResp.status === 404) {
+        // Get devel SHA
+        const develRefUrl = `https://api.github.com/repos/${owner}/${repo}/git/ref/heads/devel`;
+        const develResp = await fetch(develRefUrl, {
+            headers: {
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': 'chas-ege-provide-examples-script',
+                'Authorization': `token ${token}`
+            }
+        });
+        const develSha = (await develResp.json()).object.sha;
+        
+        // Create branch
+        const createBranchResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/refs`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json',
+                'User-Agent': 'chas-ege-provide-examples-script',
+                'Authorization': `token ${token}`
+            },
+            body: JSON.stringify({
+                "ref": `refs/heads/pr-${prNum}-assets`,
+                "sha": develSha
+            })
+        });
+        if (!createBranchResp.ok) throw new Error(`Failed to create branch: ${await createBranchResp.text()}`);
+    }
+    
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json',
+            'User-Agent': 'chas-ege-provide-examples-script',
+            'Authorization': `token ${token}`
+        },
+        body: JSON.stringify(data)
+    });
+    
+    if (!response.ok) throw new Error(`Failed to upload image: ${await response.text()}`);
+    const result = await response.json();
+    return result.content.download_url;
+}
+
+async function replaceBase64ImagesWithUploads(latexText, prNum, token) {
+    // Match %<img src="data:image/png;base64,..." />
+    const imgRegex = /%<img[^>]*src="(data:image\/([^;]+);base64,([A-Za-z0-9+/=]+))"[^>]*>/gi;
+    
+    let result = latexText;
+    const matches = [...latexText.matchAll(imgRegex)];
+    
+    for (const match of matches) {
+        const fullMatch = match[0];
+        const mimeType = match[2];
+        const base64Data = match[3];
+        
+        try {
+            console.log(`Uploading image (${mimeType}, ${base64Data.length} chars)...`);
+            const downloadUrl = await uploadImageToRepo(base64Data, mimeType, prNum, token);
+            
+            // Replace the commented img tag with markdown image
+            const imgMarkdown = `\n![illustration](${downloadUrl})\n`;
+            result = result.replace(fullMatch, imgMarkdown);
+            console.log(`  -> Uploaded: ${downloadUrl}`);
+        } catch (e) {
+            console.error(`Failed to upload image: ${e.message}`);
+            // If upload fails, just remove the commented img tag to not clutter the comment
+            result = result.replace(fullMatch, '');
+        }
+    }
+    
+    return result;
+}
+
 async function postComment(prNum, body, token) {
     const url = `https://api.github.com/repos/${owner}/${repo}/issues/${prNum}/comments`;
     const response = await fetch(url, {
@@ -173,7 +270,15 @@ async function main() {
             return;
         }
 
-        const commentBody = `ПРИМЕРЫ_ЗАДАЧ:\n\n${latexExamples.join('\n\n---\n\n')}`;
+        // Upload base64 images and replace with URLs
+        let processedExamples = [];
+        for (let i = 0; i < latexExamples.length; i++) {
+            console.log(`\nProcessing images in example ${i + 1}...`);
+            const processed = await replaceBase64ImagesWithUploads(latexExamples[i], prNumber, token);
+            processedExamples.push(processed);
+        }
+
+        const commentBody = `ПРИМЕРЫ_ЗАДАЧ:\n\n${processedExamples.join('\n\n---\n\n')}`;
 
         if (!token) {
             console.warn('GitHub token not found. Cannot post comment.');
