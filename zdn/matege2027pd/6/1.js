@@ -23,8 +23,8 @@
 
 	let s = (prizes.weights[0]*c0 + prizes.weights[1]*c1 + prizes.weights[2]*c2 + prizes.weights[3]*c3 + prizes.weights[4]*c4) / 10000;
 
-	let y = ['Выигрыш (в рублях)'].concat(p.map(String)).tr('th');
-	let z = [['Число выигрышных билетов', c0, c1, c2, c3, c4].map(String).tr()];
+	let y = ['Выигрыш (в рублях)'].concat(p).tr('th');
+	let z = [['Число выигрышных билетов', c0, c1, c2, c3, c4].tr()];
 	let table = (y + z.soed()).vTabl();
 
 	let preference = ['table', 'text'];
