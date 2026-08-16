@@ -23,6 +23,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import os from 'os';
+import crypto from 'crypto';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -200,6 +201,24 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         
         // Wait for MathJax
         await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Make a screenshot
+        const screenshotsDir = path.join(projectRoot, 'dev', 'taskscreens');
+        if (!fs.existsSync(screenshotsDir)) {
+            fs.mkdirSync(screenshotsDir, { recursive: true });
+        }
+        const screenshotName = `${crypto.randomUUID()}.png`;
+        const screenshotPath = path.join(screenshotsDir, screenshotName);
+        
+        const element = await page.$('#typesettable-wrap');
+        if (element) {
+            await element.screenshot({ path: screenshotPath });
+            console.log(`Screenshot of #typesettable-wrap saved to ${screenshotPath}`);
+        } else {
+            console.warn('[WARNING] #typesettable-wrap not found, taking full page screenshot.');
+            await page.screenshot({ path: screenshotPath, fullPage: true });
+            console.log(`Screenshot saved to ${screenshotPath}`);
+        }
         
         // Click LaTeX export button
         await page.evaluate(() => {
