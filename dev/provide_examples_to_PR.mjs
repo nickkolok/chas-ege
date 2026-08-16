@@ -3,6 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import crypto from 'crypto';
 import { execFile } from 'child_process';
 import util from 'util';
 import { fileURLToPath } from 'url';
@@ -26,6 +27,19 @@ const debugArgs = args.slice(1);
 
 const owner = 'nickkolok';
 const repo = 'chas-ege';
+
+async function getGitHubToken() {
+    if (process.env.GITHUB_TOKEN) {
+        return process.env.GITHUB_TOKEN;
+    }
+    try {
+        const { stdout } = await execFileAsync('gh', ['auth', 'token']);
+        return stdout.trim();
+    } catch (e) {
+        console.warn('Could not get token via `gh auth token` or GITHUB_TOKEN.');
+        return null;
+    }
+}
 
 async function fetchAllPRFiles(prNum, token) {
     let allFiles = [];
@@ -105,7 +119,7 @@ async function postComment(prNum, body, token) {
 
 async function main() {
     console.log(`Processing PR #${prNumber}...`);
-    const token = process.env.GITHUB_TOKEN;
+    const token = await getGitHubToken();
 
     let files;
     try {
@@ -115,57 +129,67 @@ async function main() {
         process.exit(1);
     }
 
-    const tempDir = path.join(os.tmpdir(), `chas-ege-pr-${prNumber}`);
-    if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+    // Используем директорию внутри проекта, чтобы относительные пути headless-debug.mjs работали корректно
+    const uuid = crypto.randomUUID();
+    const cacheDir = path.join(projectRoot, '.cache', `pr-${prNumber}-${uuid}`);
+    if (!fs.existsSync(cacheDir)) fs.mkdirSync(cacheDir, { recursive: true });
 
     const latexExamples = [];
     const pattern = /^zdn\/[^\/]+\/[^\/]+\/\d+\.js$/;
 
-    for (const file of files) {
-        if (file.status === 'removed' || !file.raw_url) continue;
-        if (!pattern.test(file.filename)) continue;
+    try {
+        for (const file of files) {
+            if (file.status === 'removed' || !file.raw_url) continue;
+            if (!pattern.test(file.filename)) continue;
 
-        console.log(`Processing ${file.filename}...`);
+            console.log(`Processing ${file.filename}...`);
 
-        const rawUrl = file.raw_url;
-        try {
-            const content = await fetchRaw(rawUrl);
+            const rawUrl = file.raw_url;
+            try {
+                const content = await fetchRaw(rawUrl);
 
-            const localDir = path.join(tempDir, path.dirname(file.filename));
-            if (!fs.existsSync(localDir)) fs.mkdirSync(localDir, { recursive: true });
-            const localPath = path.join(localDir, path.basename(file.filename));
-            fs.writeFileSync(localPath, content);
+                const localDir = path.join(cacheDir, path.dirname(file.filename));
+                if (!fs.existsSync(localDir)) fs.mkdirSync(localDir, { recursive: true });
+                const localPath = path.join(localDir, path.basename(file.filename));
+                fs.writeFileSync(localPath, content);
 
-            const output = await runDebug(localPath, debugArgs);
-            const latex = extractLatex(output);
-            
-            if (latex) {
-                latexExamples.push(latex);
-            } else {
-                console.warn(`No LaTeX code found for ${file.filename}`);
+                // Передаём относительный путь от корня проекта, чтобы headless-debug.mjs корректно его обработал
+                const relativePath = path.relative(projectRoot, localPath);
+                const output = await runDebug(relativePath, debugArgs);
+                const latex = extractLatex(output);
+                
+                if (latex) {
+                    latexExamples.push(latex);
+                } else {
+                    console.warn(`No LaTeX code found for ${file.filename}`);
+                }
+            } catch (e) {
+                console.error(`Error processing ${file.filename}:`, e.message);
             }
-        } catch (e) {
-            console.error(`Error processing ${file.filename}:`, e.message);
         }
-    }
 
-    if (latexExamples.length === 0) {
-        console.log('No examples found for the PR.');
-        process.exit(0);
-    }
-
-    const commentBody = `ПРИМЕРЫ_ЗАДАЧ:\n\n${latexExamples.join('\n\n---\n\n')}`;
-
-    if (!token) {
-        console.warn('GITHUB_TOKEN not found in environment variables. Cannot post comment.');
-        console.log('Generated comment:\n', commentBody);
-    } else {
-        try {
-            await postComment(prNumber, commentBody, token);
-            console.log('Successfully posted comment to PR.');
-        } catch (e) {
-            console.error('Failed to post comment:', e.message);
+        if (latexExamples.length === 0) {
+            console.log('No examples found for the PR.');
+            return;
         }
+
+        const commentBody = `ПРИМЕРЫ_ЗАДАЧ:\n\n${latexExamples.join('\n\n---\n\n')}`;
+
+        if (!token) {
+            console.warn('GitHub token not found. Cannot post comment.');
+            console.log('Generated comment:\n', commentBody);
+        } else {
+            try {
+                await postComment(prNumber, commentBody, token);
+                console.log('Successfully posted comment to PR.');
+            } catch (e) {
+                console.error('Failed to post comment:', e.message);
+            }
+        }
+    } finally {
+        // Чистим за собой
+        fs.rmSync(cacheDir, { recursive: true, force: true });
+        console.log('Cleaned up temporary files.');
     }
 }
 
