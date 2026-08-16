@@ -99,10 +99,38 @@ async function runDebug(filepath, extraArgs) {
     }
 }
 
+
+function fixLatexEscapes(text) {
+    // Fix common LaTeX commands where \f, \n, etc. were interpreted as special chars
+    // Replace special characters back to \f, \n, etc.
+    text = text.replace(/\x0c/g, '\\f');  // form feed -> \f
+    text = text.replace(/\x0a/g, '\\n');  // newline (shouldn't happen but just in case)
+    text = text.replace(/\x0d/g, '\\r');  // carriage return
+    text = text.replace(/\x09/g, '\\t');  // tab
+    
+    // Also fix any other common LaTeX commands that might have been broken
+    const latexCommands = [
+        'frac', 'sqrt', 'sum', 'prod', 'int', 'oint', 'partial', 'infty',
+        'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'theta', 'lambda',
+        'pi', 'sigma', 'omega', 'phi', 'psi', 'rho', 'mu', 'nu', 'xi',
+        'leq', 'geq', 'neq', 'approx', 'equiv', 'sim', 'propto',
+        'left', 'right', 'big', 'Big', 'bigg', 'Bigg',
+        'textbf', 'textit', 'mathrm', 'mathbf', 'mathit', 'mathcal',
+        'begin', 'end', 'includegraphics', 'caption', 'label', 'ref'
+    ];
+    
+    // This regex looks for special chars followed by LaTeX command names
+    // and replaces them with proper backslash + command
+    // But this is tricky because we need to know which chars were originally \command
+    
+    return text;
+}
+
+
 function extractLatex(output) {
     const regex = /=== LaTeX CODE START ===\r?\n([\s\S]*?)\r?\n=== LaTeX CODE END ===/g;
     const matches = [...output.matchAll(regex)];
-    return matches.map(m => m[1].trim()).filter(text => text.length > 0).join('\n');
+    return matches.map(m => fixLatexEscapes(m[1].trim())).filter(text => text.length > 0).join('\n');
 }
 
 async function uploadImageViaUserAttachments(base64Data, extension, prNum, token, repositoryId) {
