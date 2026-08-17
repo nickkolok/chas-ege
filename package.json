@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "ace-builds": "^1.4.12",
-    "anyslider-chas-ege-unofficial": "^1.9.3",
+    "anyslider-chas-ege-unofficial": "1.9.2-all",
     "chas-storage": "^0.1.1",
     "cubic-spline-browserified": "^3.0.3",
     "d": "1.0.1",
