@@ -1,5 +1,19 @@
 (function(){'use strict';
 retryWhileError(function(){
+    let imenam = ['Вася', 'Петя', 'Миша', 'Коля', 'Саша', 'Дима', 'Сергей', 'Иван'];
+    let isGirl = sluchch(0, 1);
+    let name, pupil, pronounPossessive;
+    
+    if (isGirl) {
+        name = window.imenaj.ie.iz();
+        pupil = 'Школьница';
+        pronounPossessive = 'её';
+    } else {
+        name = imenam.iz();
+        pupil = 'Школьник';
+        pronounPossessive = 'его';
+    }
+
     let coins = [
         {
             weights: [1, 2, 5, 10, 0.5],
@@ -44,7 +58,7 @@ retryWhileError(function(){
                  `$$M(X) = ${wStr[0]} \cdot rac{${cStr[0]}}{${sum}} + ${wStr[1]} \cdot rac{${cStr[1]}}{${sum}} + ${wStr[2]} \cdot rac{${cStr[2]}}{${sum}} + ${wStr[3]} \cdot rac{${cStr[3]}}{${sum}} + ${wStr[4]} \cdot rac{${cStr[4]}}{${sum}} = ${s}$$`;
 
     NAtask.setTask({
-        text: `Мальчик Вася копит деньги на велосипед. В его копилке лежат монеты достоинством 1, 2, 5, 10 и 50 копеек (0,5 рубля). Распределение монет по достоинству следующее:<br/><br/>${condition}Вася трясёт копилку, и из неё выпадает одна случайно выбранная монета. Найдите математическое ожидание достоинства выпавшей монеты. Ответ дайте в рублях.`,
+        text: `${pupil} ${name} копит деньги на велосипед. В ${pronounPossessive} копилке лежат монеты достоинством 1, 2, 5, 10 и 50 копеек (0,5 рубля). Распределение монет по достоинству следующее:<br/><br/>${condition}${name} трясёт копилку, и из неё выпадает одна случайно выбранная монета. Найдите математическое ожидание достоинства выпавшей монеты. Ответ дайте в рублях.`,
         answers: s,
         analys: analys,
         preference: [preference],
