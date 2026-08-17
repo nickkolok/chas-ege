@@ -8,20 +8,15 @@ retryWhileError(function(){
     ].iz();
 
     let w = coins.weights;
-    let c4, c3, c2, c1, c0;
-    let attempts = 0;
-    do {
-        c4 = sluchch(1, 5);
-        c3 = sluchch(1, 10);
-        c2 = sluchch(5, 30);
-        c1 = sluchch(10, 40);
-        attempts++;
-        if (attempts > 100) throw new Error("Cannot generate coins");
-    } while (c1 + c2 + c3 + c4 >= 100);
-    c0 = 100 - (c1 + c2 + c3 + c4);
+    let c4 = sluchch(1, 10);
+    let c3 = sluchch(2, 15);
+    let c2 = sluchch(5, 30);
+    let c1 = sluchch(5, 30);
+    let c0 = sluchch(10, 50);
 
-    let sum = c0*w[0] + c1*w[1] + c2*w[2] + c3*w[3] + c4*w[4];
-    let s = sum / 100;
+    let sum = c0 + c1 + c2 + c3 + c4;
+    let totalValue = c0*w[0] + c1*w[1] + c2*w[2] + c3*w[3] + c4*w[4];
+    let s = totalValue / sum;
 
     let wStr = w.map(x => x === 0.5 ? '0,5' : x.toLocaleString('ru-RU'));
     let cStr = [c0, c1, c2, c3, c4].map(x => x.toLocaleString('ru-RU'));
@@ -45,11 +40,11 @@ retryWhileError(function(){
     }
 
     let analys = `Математическое ожидание случайной величины равно сумме произведений её возможных значений на вероятности этих значений.<br/>` +
-                 `Так как всего в копилке 100 монет, вероятность выпадения монеты каждого достоинства равна количеству таких монет, делённому на 100.<br/>` +
-                 `$$M(X) = ${wStr[0]} \cdot rac{${cStr[0]}}{100} + ${wStr[1]} \cdot rac{${cStr[1]}}{100} + ${wStr[2]} \cdot rac{${cStr[2]}}{100} + ${wStr[3]} \cdot rac{${cStr[3]}}{100} + ${wStr[4]} \cdot rac{${cStr[4]}}{100} = ${s}$$`;
+                 `Вероятность выпадения монеты каждого достоинства равна количеству таких монет, делённому на их общее количество (${sum}).<br/>` +
+                 `$$M(X) = ${wStr[0]} \cdot rac{${cStr[0]}}{${sum}} + ${wStr[1]} \cdot rac{${cStr[1]}}{${sum}} + ${wStr[2]} \cdot rac{${cStr[2]}}{${sum}} + ${wStr[3]} \cdot rac{${cStr[3]}}{${sum}} + ${wStr[4]} \cdot rac{${cStr[4]}}{${sum}} = ${s}$$`;
 
     NAtask.setTask({
-        text: `Мальчик Вася копит деньги на велосипед. В его копилке лежит ровно 100 монет достоинством 1, 2, 5, 10 и 50 копеек (0,5 рубля). Распределение монет по достоинству следующее:<br/><br/>${condition}Вася трясёт копилку, и из неё выпадает одна случайно выбранная монета. Найдите математическое ожидание достоинства выпавшей монеты. Ответ дайте в рублях.`,
+        text: `Мальчик Вася копит деньги на велосипед. В его копилке лежат монеты достоинством 1, 2, 5, 10 и 50 копеек (0,5 рубля). Распределение монет по достоинству следующее:<br/><br/>${condition}Вася трясёт копилку, и из неё выпадает одна случайно выбранная монета. Найдите математическое ожидание достоинства выпавшей монеты. Ответ дайте в рублях.`,
         answers: s,
         analys: analys,
         preference: [preference],
