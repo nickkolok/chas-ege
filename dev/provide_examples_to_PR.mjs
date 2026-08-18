@@ -105,6 +105,14 @@ function extractLatex(output) {
     return matches.map(m => m[1].trim()).filter(text => text.length > 0).join('\n');
 }
 
+function formatForGitHub(latexText) {
+    let result = latexText.replace(/\$\$([\s\S]*?)\$\$/g, (match, formula) => {
+        return '\n```math\n' + formula.trim() + '\n```\n';
+    });
+    result = result.replace(/\\\\/g, '\n\n');
+    return result;
+}
+
 async function uploadImageViaUserAttachments(base64Data, extension, prNum, token, repositoryId) {
     const uuid = crypto.randomUUID();
     const fileName = `${uuid}.${extension}`;
