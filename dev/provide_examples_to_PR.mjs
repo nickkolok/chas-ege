@@ -110,6 +110,13 @@ function formatForGitHub(latexText) {
         return '\n```math\n' + formula.trim() + '\n```\n';
     });
     result = result.replace(/\\\\/g, '\n\n');
+    
+    // Remove LaTeX tables: \begin{tabular}...\end{tabular}
+    result = result.replace(/\\begin\{tabular\}[\s\S]*?\\end\{tabular\}/g, '');
+    
+    // Uncomment HTML tables: % <table ...>...</table> -> <table ...>...</table>
+    result = result.replace(/% (<table[\s\S]*?<\/table>)/g, '$1');
+    
     return result;
 }
 
