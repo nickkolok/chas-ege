@@ -12,7 +12,6 @@
 		NAtask.setEvaluationTask({
 			expr: 'varlog(' + outerBase + ',' + base * den + ')/varlog(' + outerBase + ',' + base + ')' +
 				'+varlog(' + base + ',' + num + '/' + den + ')',
-			//forbiddenAnswers: [0],
 			authors: ['Надежда'],
 		});
 	}, 10000);
