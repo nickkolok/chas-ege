@@ -4,7 +4,7 @@
 
 		let base = sl(2, 9);
 		let outerBase = slKrome(base, 2, 9);
-		let pow = sl(2, 3);
+		let pow = sl(2, 5);
 		let num = base.pow(pow - 1);
 		let den = sl(2, 20);
 		genAssertIrreducible(num, den);
