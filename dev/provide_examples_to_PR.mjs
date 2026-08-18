@@ -291,12 +291,22 @@ async function main() {
             return;
         }
 
+        // Read gitstatus from dist/gitstatus.txt
+        let gitStatus = 'unknown';
+        try {
+            const gitStatusPath = path.join(projectRoot, 'dist', 'gitstatus.txt');
+            const gitStatusContent = fs.readFileSync(gitStatusPath, 'utf8');
+            gitStatus = gitStatusContent.split('\n')[0].trim();
+        } catch (e) {
+            console.warn('Could not read dist/gitstatus.txt:', e.message);
+        }
+
         // Upload base64 images and replace with URLs
         const blocks = [];
         for (const example of examples) {
             console.log(`\nProcessing images in ${example.filename}...`);
             const processed = formatForGitHub(await replaceBase64ImagesWithUploads(example.text, prNumber, token, repositoryId));
-            blocks.push(`<details>\n<summary>ПРИМЕРЫ_ЗАДАЧ \`${example.filename}\` ${headSha}</summary>\n\n${processed}\n\n</details>`);
+            blocks.push(`<details>\n<summary>ПРИМЕРЫ_ЗАДАЧ \`${example.filename}\` ${headSha} сборка ${gitStatus}</summary>\n\n${processed}\n\n</details>`);
         }
 
         const commentBody = blocks.join('\n\n---\n\n');
