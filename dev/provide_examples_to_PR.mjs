@@ -288,7 +288,7 @@ async function main() {
         const blocks = [];
         for (const example of examples) {
             console.log(`\nProcessing images in ${example.filename}...`);
-            const processed = await replaceBase64ImagesWithUploads(example.text, prNumber, token, repositoryId);
+            const processed = formatForGitHub(await replaceBase64ImagesWithUploads(example.text, prNumber, token, repositoryId));
             blocks.push(`<details>\n<summary>ПРИМЕРЫ_ЗАДАЧ \`${example.filename}\` ${headSha}</summary>\n\n${processed}\n\n</details>`);
         }
 
