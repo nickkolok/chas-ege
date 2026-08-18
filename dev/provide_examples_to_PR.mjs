@@ -102,7 +102,7 @@ async function runDebug(filepath, extraArgs) {
 function extractLatex(output) {
     const regex = /=== LaTeX CODE START ===\r?\n([\s\S]*?)\r?\n=== LaTeX CODE END ===/g;
     const matches = [...output.matchAll(regex)];
-    return matches.map(m => m[1].trim()).filter(text => text.length > 0).join('\n\n---\n\n');
+    return matches.map((m, i) => `## Пример ${i + 1}\n\n${m[1].trim()}`).filter(text => text.length > 0).join('\n\n---\n\n');
 }
 
 function formatForGitHub(latexText) {
