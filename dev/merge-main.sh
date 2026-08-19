@@ -212,7 +212,7 @@ def resolve_conflict(match):
     resolved = []
     for n in sorted_nums:
         resolved.append(f"\t{n},")
-    return "\n".join(resolved)
+    return "\n".join(resolved) + "\n"
 
 new_content = pattern.sub(resolve_conflict, content)
 with open(file_path, "w", encoding="utf-8") as f:
