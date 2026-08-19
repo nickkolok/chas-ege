@@ -119,7 +119,7 @@ function formatForGitHub(latexText) {
     
     // GitHub не считает инлайн-формулой `$ x $`: после открывающего
     // и перед закрывающим $ не должно быть пробелов — убираем их
-    result = result.replace(/\$\s+([^$\n]+?)\s+\$/g, '$1');
+    result = result.replace(/\$\s+([^$\n]+?)\s+\$/g, '$$');result = result.replace(/\$\s+([^$\n]+?)\s+\$/g, ';
 
     return result;
 }
