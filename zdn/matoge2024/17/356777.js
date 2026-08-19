@@ -22,7 +22,7 @@
 
             ctx.translate(w / 2, h / 2);
 
-            ctx.scale([-1, 1].pm(), -1);
+            ctx.scale((1).pm(), -1);
             ctx.strokeStyle = om.secondaryBrandColors;
 
             ctx.lineWidth = 2;
