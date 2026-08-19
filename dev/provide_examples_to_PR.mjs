@@ -117,6 +117,10 @@ function formatForGitHub(latexText) {
     // Uncomment HTML tables: % <table ...>...</table> -> <table ...>...</table>
     result = result.replace(/% (<table[\s\S]*?<\/table>)/g, '$1');
     
+    // GitHub не считает инлайн-формулой `$ x $`: после открывающего
+    // и перед закрывающим $ не должно быть пробелов — убираем их
+    result = result.replace(/\$\s+([^$\n]+?)\s+\$/g, '$1');
+
     return result;
 }
 
