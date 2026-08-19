@@ -29,8 +29,6 @@
 
         let AH = par.pointA.distanceTo(par.heightDAB.pe)[0];
 
-        //
-        //console.log(AH);
         let points = autoScale(par.vertices);
 
         let paint1 = function (ctx) {
