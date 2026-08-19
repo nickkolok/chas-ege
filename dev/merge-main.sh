@@ -173,40 +173,41 @@ echo "$GOOD_FILES"
 # ─── Разрешение конфликтов ──────────────────────────────────────────
 echo ">>> Разрешаю..."
 
-OURS_TMP=$(mktemp /tmp/merge_ours.XXXXXX)
-NUMS_TMP=$(mktemp /tmp/merge_nums.XXXXXX)
-trap 'rm -f "$OURS_TMP" "$NUMS_TMP"; cleanup' EXIT
-
 while IFS= read -r file; do
     [ -z "$file" ] && continue
     echo "  → $file"
 
-    # Достаём обе версии
-    git show ":2:$file" > "$OURS_TMP"
+    # Обрабатываем зоны конфликта в файле через Python
+    python3 -c '
+import sys, re
 
-    # Все числа из обеих версий → sort -n -u
-    { git show ":2:$file"; git show ":3:$file"; } \
-        | sed -n 's/^[[:space:]]*\([0-9][0-9]*\),\{0,1\}[[:space:]]*$/\1/p' \
-        | sort -n -u > "$NUMS_TMP"
+file_path = sys.argv[1]
+with open(file_path, "r", encoding="utf-8") as f:
+    content = f.read()
 
-    # Пересобираем файл: скелет из ours, числа — объединённые
-    awk -v nf="$NUMS_TMP" '
-        /\[[[:space:]]*$/ && !inn {
-            print
-            inn = 1
-            while ((getline num < nf) > 0)
-                printf "\t%s,\n", num
-            close(nf)
-            next
-        }
-        /^[[:space:]]*\]/ && inn {
-            inn = 0
-            print
-            next
-        }
-        inn { next }
-        { print }
-    ' "$OURS_TMP" > "$file"
+pattern = re.compile(
+    r"<<<<<<<[^\n]*\n(.*?)\n=======\n(.*?)\n>>>>>>>[^\n]*\n",
+    re.DOTALL
+)
+
+def resolve_conflict(match):
+    ours = match.group(1)
+    theirs = match.group(2)
+    nums = set()
+    for line in ours.split("\n") + theirs.split("\n"):
+        m = re.search(r"^\s*([0-9]+)\s*,?\s*$", line)
+        if m:
+            nums.add(int(m.group(1)))
+    sorted_nums = sorted(list(nums))
+    resolved = []
+    for n in sorted_nums:
+        resolved.append(f"\t{n},")
+    return "\n".join(resolved)
+
+new_content = pattern.sub(resolve_conflict, content)
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(new_content)
+' "$file"
 
     git add "$file"
 done <<< "$GOOD_FILES"
