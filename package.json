@@ -19,7 +19,7 @@
     "html2canvas": "^1.0.0-rc.7",
     "js-beautify-chas-ege-unofficial-patched": "1.5.3",
     "jscpp-chas-ege-unofficial": "^2.0.2",
-    "jsdom": "^29.1.1",
+    "jsdom": "^28.1.0",
     "jszip": "^3.10.1",
     "mathjax-chas-ege-unofficial": "2.1.0",
     "mathjs": "^11.5.1",
