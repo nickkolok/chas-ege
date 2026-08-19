@@ -178,9 +178,10 @@ while IFS= read -r file; do
     [ -z "$file" ] && continue
     echo "  → $file"
 
-    # Сохраняем версии для возможных логов
-    git show ":2:$file" > "/tmp/merge_ours_${file##*/}"
-    git show ":3:$file" > "/tmp/merge_theirs_${file##*/}"
+    # Сохраняем версии для возможных логов (заменяем / на _ в пути файла)
+    safe_name="${file//\//_}"
+    git show ":2:$file" > "/tmp/merge_ours_${safe_name}"
+    git show ":3:$file" > "/tmp/merge_theirs_${safe_name}"
 
     # Обрабатываем зоны конфликта в файле через Python
     python3 -c '
