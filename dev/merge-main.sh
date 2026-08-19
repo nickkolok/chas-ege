@@ -203,13 +203,13 @@ def resolve_conflict(match):
     close_regex = re.compile(r"^\s*\](?:\.[a-zA-Z0-9_]+\(\))?;?\s*$")
     
     nums = set()
-    for line in ours.split("\n") + theirs.split("\n"):
+    for line in ours.splitlines() + theirs.splitlines():
         m = num_regex.search(line)
         if m:
             nums.add(int(m.group(1)))
     all_nums = sorted(list(nums))
     
-    ours_lines = ours.split("\n")
+    ours_lines = ours.splitlines()
     slots = [i for i, line in enumerate(ours_lines) if num_regex.search(line)]
     
     result_lines = []
@@ -218,11 +218,15 @@ def resolve_conflict(match):
     for i, line in enumerate(ours_lines):
         if i in slots:
             if num_idx < len(all_nums):
-                result_lines.append(f"\t{all_nums[num_idx]},")
+                result_lines.append(f"        {all_nums[num_idx]},")
                 num_idx += 1
         else:
-            result_lines.append(line)
-            
+            stripped = line.lstrip()
+            if stripped:
+                result_lines.append(f"        {stripped}")
+            else:
+                result_lines.append(line)
+                
     if num_idx < len(all_nums):
         remaining_nums = all_nums[num_idx:]
         insert_pos = len(result_lines)
@@ -232,7 +236,7 @@ def resolve_conflict(match):
                 break
         
         for n in remaining_nums:
-            result_lines.insert(insert_pos, f"\t{n},")
+            result_lines.insert(insert_pos, f"        {n},")
             insert_pos += 1
             
     return "\n".join(result_lines)
