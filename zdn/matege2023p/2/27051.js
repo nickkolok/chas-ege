@@ -21,7 +21,6 @@
 			][rand2];
 
 			let paint1 = function(ctx) {
-				ctx.scale = (60, 60);
 				radius = 180;
 				height = 300;
 				ctx.translate(200, 200);
