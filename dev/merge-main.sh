@@ -177,6 +177,10 @@ while IFS= read -r file; do
     [ -z "$file" ] && continue
     echo "  → $file"
 
+    # Сохраняем версии для возможных логов
+    git show ":2:$file" > "/tmp/merge_ours_${file##*/}"
+    git show ":3:$file" > "/tmp/merge_theirs_${file##*/}"
+
     # Обрабатываем зоны конфликта в файле через Python
     python3 -c '
 import sys, re
@@ -282,11 +286,11 @@ if [ "$SAFEGUARD_OK" -ne 1 ]; then
         echo "===== LOG: $f ====="
         echo "========================================"
         echo "--- In PR branch (ours) ---"
-        git show :2:$f
+        cat "/tmp/merge_ours_${f##*/}"
         echo "--- In devel (theirs) ---"
-        git show :3:$f
+        cat "/tmp/merge_theirs_${f##*/}"
         echo "--- After merge (HEAD) ---"
-        cat $f
+        cat "$f"
     done
     
     echo ""
