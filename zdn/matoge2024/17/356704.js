@@ -2,8 +2,6 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let letters = latbukv.slice(0, 4);
-
         let AB = sl(3, 15);
         let CD = sl(2, AB - 1);
 
@@ -46,7 +44,6 @@
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.allDecimalsToStandard(true);
-        NAtask.modifiers.variativeABC(letters);
 
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
