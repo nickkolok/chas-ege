@@ -11,7 +11,7 @@ import os
 import shutil
 import subprocess
 
-URL = "https://github.com/nickkolol/chas-ege/archive/refs/heads/devel.zip"
+URL = "https://github.com/nickkolok/chas-ege/archive/refs/heads/devel.zip"
 TEMP_ZIP = "devel.zip"
 TARGET_DIR = "./chas-ege"
 
