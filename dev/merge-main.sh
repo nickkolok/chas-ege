@@ -254,30 +254,29 @@ while IFS= read -r file; do
 done <<< "$GOOD_FILES"
 
 if [ "$SAFEGUARD_OK" -ne 1 ]; then
+    if [ "${MERGE_RETRY:-0}" -eq 1 ]; then
+        echo "ОШИБКА: повторный сбой safeguard после фикса отступов."
+        exit 1
+    fi
+
     echo ""
-    echo "ОШИБКА: мёрж привёл к подозрительному результату. Пуш отменён."
+    echo "ОШИБКА: мёрж привёл к подозрительному результату. Откатываюсь и чиню отступы..."
     
-    echo ""
-    echo ">>> Вывожу логи конфликтов..."
+    git reset --hard "$PR_HEAD"
+    
     for f in $GOOD_FILES; do
-        echo "========================================"
-        echo "===== LOG: $f ====="
-        echo "========================================"
-        safe_name="${f//\//_}"
-        echo "--- In PR branch (ours) ---"
-        cat "/tmp/merge_ours_${safe_name}"
-        echo "--- In devel (theirs) ---"
-        cat "/tmp/merge_theirs_${safe_name}"
-        echo "--- After merge (HEAD) ---"
-        cat "$f"
+        sed -i 's/    /\t/g' "$f"
     done
     
-    echo ""
-    echo "Ветка «$BRANCH» оставлена — посмотри руками:"
-    echo "  git diff upstream/devel HEAD -- zdn/"
-    echo "Откат:"
-    echo "  git reset --hard HEAD~1 && git checkout devel && git branch -D $BRANCH"
-    exit 1
+    git add $GOOD_FILES
+    git commit -m '[codestyle] Fix indent'
+    
+    echo ">>> push → $REMOTE (${HEAD_BRANCH:-$BRANCH}) (fix indent)"
+    git push "$REMOTE" "HEAD:${HEAD_BRANCH:-$BRANCH}"
+    
+    echo ">>> Запускаю мёрж заново..."
+    export MERGE_RETRY=1
+    exec "$0" "$@"
 fi
 
 echo "  ✓ ОК: только добавления, ≤1 строки на файл."
