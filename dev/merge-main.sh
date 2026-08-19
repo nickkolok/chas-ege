@@ -91,41 +91,51 @@ echo "╚═══════════════════════�
 echo ""
 
 # ─── Fetch ──────────────────────────────────────────────────────────
-echo ">>> fetch"
-git fetch upstream devel
-git fetch upstream "pull/$PR/head:$BRANCH" --force
+if [ "${MERGE_RETRY:-0}" -ne 1 ]; then
+    echo ">>> fetch"
+    git fetch upstream devel
+    git fetch upstream "pull/$PR/head:$BRANCH" --force
 
-# ─── Кэш ───────────────────────────────────────────────────────────
-CACHE_FILE="dev/.merge-main-not-needed.cache"
-PR_HEAD=$(git rev-parse "$BRANCH")
-DEVEL_HEAD=$(git rev-parse upstream/devel)
+    # ─── Кэш ───────────────────────────────────────────────────────────
+    CACHE_FILE="dev/.merge-main-not-needed.cache"
+    PR_HEAD=$(git rev-parse "$BRANCH")
+    DEVEL_HEAD=$(git rev-parse upstream/devel)
+    export PR_HEAD DEVEL_HEAD CACHE_FILE
 
-if grep -q "^${PR_HEAD} ${DEVEL_HEAD}$" "$CACHE_FILE" 2>/dev/null; then
-    echo "Кэш: пара коммитов уже проверена, мёрдж не требуется."
-    git branch -D "$BRANCH" 2>/dev/null || true
-    exit 0
+    if grep -q "^${PR_HEAD} ${DEVEL_HEAD}$" "$CACHE_FILE" 2>/dev/null; then
+        echo "Кэш: пара коммитов уже проверена, мёрдж не требуется."
+        git branch -D "$BRANCH" 2>/dev/null || true
+        exit 0
+    fi
+
+    # ─── Проверка идентичности ─────────────────────────────────────────
+    echo ">>> проверка: идентичны ли main.js и fipi.js"
+    if git diff --quiet "$BRANCH" upstream/devel -- 'zdn/*/*/main.js' 'zdn/*/*/fipi.js'; then
+        echo "Файлы main.js и fipi.js (при наличии) в обеих ветках идентичны. Нечего мёржить!"
+        echo "${PR_HEAD} ${DEVEL_HEAD}" >> "$CACHE_FILE"
+        git branch -D "$BRANCH" 2>/dev/null || true
+        exit 0
+    fi
+
+    # ─── Проверка: уже up-to-date? ─────────────────────────────────────
+    if git merge-base --is-ancestor upstream/devel "$BRANCH"; then
+        echo "Ветка PR уже содержит все изменения из upstream/devel. Нечего мёржить!"
+        echo "${PR_HEAD} ${DEVEL_HEAD}" >> "$CACHE_FILE"
+        git branch -D "$BRANCH"
+        exit 0
+    fi
+
+    # ─── Checkout ───────────────────────────────────────────────────────
+    echo ">>> checkout $BRANCH"
+    git checkout "$BRANCH"
+else
+    # При повторном запуске (после фикса отступов) просто обновляем devel
+    echo ">>> fetch devel (retry mode)"
+    git fetch upstream devel
+    DEVEL_HEAD=$(git rev-parse upstream/devel)
+    CACHE_FILE="dev/.merge-main-not-needed.cache"
+    export DEVEL_HEAD CACHE_FILE
 fi
-
-# ─── Проверка идентичности ─────────────────────────────────────────
-echo ">>> проверка: идентичны ли main.js и fipi.js"
-if git diff --quiet "$BRANCH" upstream/devel -- 'zdn/*/*/main.js' 'zdn/*/*/fipi.js'; then
-    echo "Файлы main.js и fipi.js (при наличии) в обеих ветках идентичны. Нечего мёржить!"
-    echo "${PR_HEAD} ${DEVEL_HEAD}" >> "$CACHE_FILE"
-    git branch -D "$BRANCH" 2>/dev/null || true
-    exit 0
-fi
-
-# ─── Проверка: уже up-to-date? ─────────────────────────────────────
-if git merge-base --is-ancestor upstream/devel "$BRANCH"; then
-    echo "Ветка PR уже содержит все изменения из upstream/devel. Нечего мёржить!"
-    echo "${PR_HEAD} ${DEVEL_HEAD}" >> "$CACHE_FILE"
-    git branch -D "$BRANCH"
-    exit 0
-fi
-
-# ─── Checkout ───────────────────────────────────────────────────────
-echo ">>> checkout $BRANCH"
-git checkout "$BRANCH"
 
 # ─── Merge ──────────────────────────────────────────────────────────
 echo ">>> merge upstream/devel"
@@ -293,7 +303,6 @@ if [ "$SAFEGUARD_OK" -ne 1 ]; then
     echo ""
     echo "ОШИБКА: мёрж привёл к подозрительному результату. Пробую починить отступы (локально)..."
     
-    ORIGINAL_PR_HEAD=$(git rev-parse HEAD)
     git reset --hard "$PR_HEAD"
     
     for f in $GOOD_FILES; do
@@ -305,7 +314,7 @@ if [ "$SAFEGUARD_OK" -ne 1 ]; then
     
     echo ">>> Запускаю мёрж заново (dry run)..."
     export MERGE_RETRY=1
-    export PR_HEAD_BEFORE_FIX="$ORIGINAL_PR_HEAD"
+    export PR_HEAD_BEFORE_FIX="$PR_HEAD"
     "$SELF_COPY" "$@"
     exit $?
 fi
