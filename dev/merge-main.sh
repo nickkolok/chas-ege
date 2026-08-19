@@ -9,6 +9,15 @@
 #
 set -euo pipefail
 
+# Копируем себя во временный файл, чтобы переключение веток не сломало рекурсию
+if [ -z "${SELF_COPY:-}" ]; then
+    SELF_COPY=$(mktemp /tmp/merge-main.XXXXXX.sh)
+    cp "$0" "$SELF_COPY"
+    chmod +x "$SELF_COPY"
+    trap 'rm -f "$SELF_COPY"' EXIT
+    export SELF_COPY
+fi
+
 # ─── Режим «all»: прогнать по всем подходящим PR ─────────────────────
 if [ "${1:-}" = "all" ]; then
     echo ">>> Режим «all»: ищу открытые PR с изменениями в zdn/*/*/{main,fipi}.js..."
@@ -19,12 +28,6 @@ if [ "${1:-}" = "all" ]; then
         exit 0
     fi
     echo "Найдено PR: $(echo "$PR_NUMS" | wc -l)"
-
-    # Копируем себя во временный файл, чтобы переключение веток не сломало рекурсию
-    SELF_COPY=$(mktemp /tmp/merge-main.XXXXXX.sh)
-    cp "$0" "$SELF_COPY"
-    chmod +x "$SELF_COPY"
-    trap 'rm -f "$SELF_COPY"' EXIT
 
     for num in $PR_NUMS; do
         echo ""
@@ -303,7 +306,8 @@ if [ "$SAFEGUARD_OK" -ne 1 ]; then
     echo ">>> Запускаю мёрж заново (dry run)..."
     export MERGE_RETRY=1
     export PR_HEAD_BEFORE_FIX="$ORIGINAL_PR_HEAD"
-    exec "$0" "$@"
+    "$SELF_COPY" "$@"
+    exit $?
 fi
 
 echo "  ✓ ОК: только добавления, ≤1 строки на файл."
