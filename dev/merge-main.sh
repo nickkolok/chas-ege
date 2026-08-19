@@ -255,13 +255,42 @@ done <<< "$GOOD_FILES"
 
 if [ "$SAFEGUARD_OK" -ne 1 ]; then
     if [ "${MERGE_RETRY:-0}" -eq 1 ]; then
+        echo ""
         echo "ОШИБКА: повторный сбой safeguard после фикса отступов."
+        echo "Откатываю коммит '[codestyle] Fix indent' и попытку мёржа, чтобы не засорять PR."
+        git reset --hard "${PR_HEAD_BEFORE_FIX:-$PR_HEAD}"
+        
+        echo ""
+        echo ">>> Вывожу логи конфликтов..."
+        for f in $GOOD_FILES; do
+            echo "========================================"
+            echo "===== LOG: $f ====="
+            echo "========================================"
+            safe_name="${f//\//_}"
+            if [ -f "/tmp/merge_ours_${safe_name}" ]; then
+                echo "--- In PR branch (ours) ---"
+                cat "/tmp/merge_ours_${safe_name}"
+            fi
+            if [ -f "/tmp/merge_theirs_${safe_name}" ]; then
+                echo "--- In devel (theirs) ---"
+                cat "/tmp/merge_theirs_${safe_name}"
+            fi
+            echo "--- After merge (HEAD) ---"
+            cat "$f"
+        done
+        
+        echo ""
+        echo "Ветка «$BRANCH» оставлена — посмотри руками:"
+        echo "  git diff upstream/devel HEAD -- zdn/"
+        echo "Откат:"
+        echo "  git reset --hard HEAD~1 && git checkout devel && git branch -D $BRANCH"
         exit 1
     fi
 
     echo ""
-    echo "ОШИБКА: мёрж привёл к подозрительному результату. Откатываюсь и чиню отступы..."
+    echo "ОШИБКА: мёрж привёл к подозрительному результату. Пробую починить отступы (локально)..."
     
+    ORIGINAL_PR_HEAD=$(git rev-parse HEAD)
     git reset --hard "$PR_HEAD"
     
     for f in $GOOD_FILES; do
@@ -271,11 +300,9 @@ if [ "$SAFEGUARD_OK" -ne 1 ]; then
     git add $GOOD_FILES
     git commit -m '[codestyle] Fix indent'
     
-    echo ">>> push → $REMOTE (${HEAD_BRANCH:-$BRANCH}) (fix indent)"
-    git push "$REMOTE" "HEAD:${HEAD_BRANCH:-$BRANCH}"
-    
-    echo ">>> Запускаю мёрж заново..."
+    echo ">>> Запускаю мёрж заново (dry run)..."
     export MERGE_RETRY=1
+    export PR_HEAD_BEFORE_FIX="$ORIGINAL_PR_HEAD"
     exec "$0" "$@"
 fi
 
