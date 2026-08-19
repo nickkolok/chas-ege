@@ -47,6 +47,7 @@ ADDED_REMOTE=""
 cleanup() {
     # Удаляем временный remote, если добавляли
     [ -n "$ADDED_REMOTE" ] && git remote remove "$ADDED_REMOTE" 2>/dev/null || true
+    rm -f /tmp/merge_ours_* /tmp/merge_theirs_*
 }
 trap cleanup EXIT
 
