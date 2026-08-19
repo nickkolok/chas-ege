@@ -39,7 +39,7 @@
   
   NAtask.setTask({
     text: condition,
-    answers: Mstr,
+    answers: M,
     analys: analys,
   });
   NAtask.modifiers.allDecimalsToStandard(true);
