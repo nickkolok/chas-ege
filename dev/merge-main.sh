@@ -290,10 +290,11 @@ if [ "$SAFEGUARD_OK" -ne 1 ]; then
         echo "========================================"
         echo "===== LOG: $f ====="
         echo "========================================"
+        safe_name="${f//\//_}"
         echo "--- In PR branch (ours) ---"
-        cat "/tmp/merge_ours_${f##*/}"
+        cat "/tmp/merge_ours_${safe_name}"
         echo "--- In devel (theirs) ---"
-        cat "/tmp/merge_theirs_${f##*/}"
+        cat "/tmp/merge_theirs_${safe_name}"
         echo "--- After merge (HEAD) ---"
         cat "$f"
     done
