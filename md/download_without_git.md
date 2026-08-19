@@ -2,9 +2,6 @@
 
 В некоторых изолированных средах (например, в sandbox-окружениях AI-ассистентов) стандартный `git clone` может не работать из-за ограничений сети или отсутствия настроенного SSH-ключа. В таких случаях можно скачать архив конкретной ветки напрямую с GitHub и распаковать его локально.
 
-Мы используем именно указанную ветку - там нет огромной папки `ext/mathjax`,
-а всё остальное плюс-минус актуально.
-
 Скрипт ниже можно просто копировать и вставлять.
 
 ```python
@@ -14,8 +11,8 @@ import os
 import shutil
 import subprocess
 
-URL = "https://github.com/golden333gitgirl/chas-ege/archive/refs/heads/mathjax-to-npm.zip"
-TEMP_ZIP = "mathjax-to-npm.zip"
+URL = "https://github.com/nickkolol/chas-ege/archive/refs/heads/devel.zip"
+TEMP_ZIP = "devel.zip"
 TARGET_DIR = "./chas-ege"
 
 def main():
