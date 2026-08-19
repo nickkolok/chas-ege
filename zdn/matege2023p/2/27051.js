@@ -21,32 +21,32 @@
 			][rand2];
 
 			let paint1 = function(ctx) {
-				radius = 180;
-				height = 300;
+				let drawRadius = 180;
+				let drawHeight = 300;
 				ctx.translate(200, 200);
 				ctx.strokeStyle = om.secondaryBrandColors;
 
 				ctx.lineWidth = 2;
 				//цилиндр
-				ctx.drawEllipse(0, -height / 2, radius, 40, 0, 0, 2 * Math.PI);
-				ctx.drawEllipse(0, height / 2, radius, 40, 0, 0, Math.PI);
+				ctx.drawEllipse(0, -drawHeight / 2, drawRadius, 40, 0, 0, 2 * Math.PI);
+				ctx.drawEllipse(0, drawHeight / 2, drawRadius, 40, 0, 0, Math.PI);
 				
 				ctx.setLineDash([4, 5]);
-				ctx.drawEllipse(0, height / 2, radius, 40, 0, Math.PI, 2 * Math.PI);
+				ctx.drawEllipse(0, drawHeight / 2, drawRadius, 40, 0, Math.PI, 2 * Math.PI);
 
 				ctx.setLineDash([0, 0]);
-				ctx.drawLine(-radius, height / 2, -radius, -height / 2);
-				ctx.drawLine(radius, height / 2, radius, -height / 2);
+				ctx.drawLine(-drawRadius, drawHeight / 2, -drawRadius, -drawHeight / 2);
+				ctx.drawLine(drawRadius, drawHeight / 2, drawRadius, -drawHeight / 2);
 
 				//конус
 				ctx.strokeStyle = om.primaryBrandColors.iz();
 				ctx.setLineDash([4, 5]);
-				ctx.drawLine(-radius, height / 2, 0, -height / 2);
-				ctx.drawLine(radius, height / 2, 0, -height / 2);
+				ctx.drawLine(-drawRadius, drawHeight / 2, 0, -drawHeight / 2);
+				ctx.drawLine(drawRadius, drawHeight / 2, 0, -drawHeight / 2);
 
 				ctx.setLineDash([4, 5]);
-				ctx.drawLine(0, height / 2, 0, -height / 2);
-				ctx.drawLine(0, height / 2, radius, height / 2);
+				ctx.drawLine(0, drawHeight / 2, 0, -drawHeight / 2);
+				ctx.drawLine(0, drawHeight / 2, drawRadius, drawHeight / 2);
 			};
 
 			NAtask.setTask({
