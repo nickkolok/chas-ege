@@ -247,22 +247,21 @@ if [ "$SAFEGUARD_OK" -ne 1 ]; then
     echo ""
     echo "ОШИБКА: мёрж привёл к подозрительному результату. Пуш отменён."
     
-    echo ">>> Сохраняю логи в merge-conflicts.log..."
-    {
-        for f in $GOOD_FILES; do
-            echo "========================================"
-            echo "===== LOG: $f ====="
-            echo "========================================"
-            echo "--- In PR branch (ours) ---"
-            git show :2:$f
-            echo "--- In devel (theirs) ---"
-            git show :3:$f
-            echo "--- After merge (HEAD) ---"
-            cat $f
-        done
-    } > merge-conflicts.log
-    echo "Логи сохранены в merge-conflicts.log"
+    echo ""
+    echo ">>> Вывожу логи конфликтов..."
+    for f in $GOOD_FILES; do
+        echo "========================================"
+        echo "===== LOG: $f ====="
+        echo "========================================"
+        echo "--- In PR branch (ours) ---"
+        git show :2:$f
+        echo "--- In devel (theirs) ---"
+        git show :3:$f
+        echo "--- After merge (HEAD) ---"
+        cat $f
+    done
     
+    echo ""
     echo "Ветка «$BRANCH» оставлена — посмотри руками:"
     echo "  git diff upstream/devel HEAD -- zdn/"
     echo "Откат:"
