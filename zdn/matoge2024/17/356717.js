@@ -17,8 +17,8 @@
             }
         });
         genAssert(trp.lengthHeightACD.isAlmostInteger(), 'Высота не целая');
-        genAssert(Math.abs(trp.angleAInDegrees - 90) > 1e-5, 'Угол прямой');
-        genAssert(Math.abs(trp.angleBInDegrees - 90) > 1e-5, 'Угол прямой');
+        genAssert(!trp.angleAInDegrees.isAlmostEqual(90), 'Угол прямой');
+        genAssert(!trp.angleBInDegrees.isAlmostEqual(90), 'Угол прямой');
 
         let points = autoScale(trp.vertices);
 
