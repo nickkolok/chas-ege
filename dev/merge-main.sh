@@ -201,46 +201,18 @@ def resolve_conflict(match):
     theirs = match.group(2)
     
     num_regex = re.compile(r"^\s*([0-9]+)\s*,?\s*$")
-    close_regex = re.compile(r"^\s*\](?:\.[a-zA-Z0-9_]+\(\))?;?\s*$")
     
     nums = set()
     for line in ours.splitlines() + theirs.splitlines():
         m = num_regex.search(line)
         if m:
             nums.add(int(m.group(1)))
-    all_nums = sorted(list(nums))
+    sorted_nums = sorted(list(nums))
     
-    ours_lines = ours.splitlines()
-    slots = [i for i, line in enumerate(ours_lines) if num_regex.search(line)]
-    
-    result_lines = []
-    num_idx = 0
-    
-    for i, line in enumerate(ours_lines):
-        if i in slots:
-            if num_idx < len(all_nums):
-                result_lines.append(f"        {all_nums[num_idx]},")
-                num_idx += 1
-        else:
-            stripped = line.lstrip()
-            if stripped:
-                result_lines.append(f"        {stripped}")
-            else:
-                result_lines.append(line)
-                
-    if num_idx < len(all_nums):
-        remaining_nums = all_nums[num_idx:]
-        insert_pos = len(result_lines)
-        for j in range(len(result_lines) - 1, -1, -1):
-            if close_regex.search(result_lines[j]):
-                insert_pos = j
-                break
-        
-        for n in remaining_nums:
-            result_lines.insert(insert_pos, f"        {n},")
-            insert_pos += 1
-            
-    return "\n".join(result_lines)
+    resolved = []
+    for n in sorted_nums:
+        resolved.append(f"\t{n},")
+    return "\n".join(resolved)
 
 new_content = pattern.sub(resolve_conflict, content)
 with open(file_path, "w", encoding="utf-8") as f:
