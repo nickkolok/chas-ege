@@ -5,7 +5,7 @@
         let height = sl(3, 20);
 
         let BC = (c.pow(2) + height.pow(2)).sqrt();
-        genAssert(BC.isAlmostInteger());
+        genAssert(BC.isAlmostInteger(), "Вторая сторона параллелограмма тоже должна быть целой");
 
         let par = new Parallelogram({
             lengths: {
