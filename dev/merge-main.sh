@@ -214,7 +214,7 @@ done <<< "$GOOD_FILES"
 # ─── Коммит ─────────────────────────────────────────────────────────
 echo ""
 echo ">>> commit"
-git commit --no-edit
+git commit -m '[auto] Merge task list to avoid conflicts with the devel branch'
 
 # ─── Safeguard: результат мёржа vs devel ────────────────────────────
 echo ">>> Проверяю результат мёржа..."
