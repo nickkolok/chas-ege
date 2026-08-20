@@ -100,6 +100,9 @@ async function runDebug(filepath, extraArgs) {
 }
 
 function extractLatex(output) {
+    if (output.includes('ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ')) {
+        return 'ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ';
+    }
     const regex = /=== LaTeX CODE START ===\r?\n([\s\S]*?)\r?\n=== LaTeX CODE END ===/g;
     const matches = [...output.matchAll(regex)];
     return matches.map((m, i) => `## Пример ${i + 1}\n\n${m[1].trim()}`).filter(text => text.length > 0).join('\n\n---\n\n');
@@ -310,8 +313,13 @@ async function main() {
         // Upload base64 images and replace with URLs
         const blocks = [];
         for (const example of examples) {
-            console.log(`\nProcessing images in ${example.filename}...`);
-            const processed = formatForGitHub(await replaceBase64ImagesWithUploads(example.text, prNumber, token, repositoryId));
+            let processed = example.text;
+            if (processed !== 'ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ') {
+                console.log(`\nProcessing images in ${example.filename}...`);
+                processed = formatForGitHub(await replaceBase64ImagesWithUploads(example.text, prNumber, token, repositoryId));
+            } else {
+                console.log(`\nSkipping image processing for empty task in ${example.filename}.`);
+            }
             blocks.push(`<details>\n<summary>ПРИМЕРЫ_ЗАДАЧ \`${example.filename}\` ${headSha} сборка ${gitStatus}</summary>\n\n${processed}\n\n</details>`);
         }
 
