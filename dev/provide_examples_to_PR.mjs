@@ -100,8 +100,28 @@ async function runDebug(filepath, extraArgs) {
 }
 
 function extractLatex(output) {
+    if (output.includes('ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ')) {
+        return 'ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ';
+    }
     const regex = /=== LaTeX CODE START ===\r?\n([\s\S]*?)\r?\n=== LaTeX CODE END ===/g;
     const matches = [...output.matchAll(regex)];
+    if (matches.length === 0) {
+        return 'ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ';
+    }
+    
+    for (const m of matches) {
+        const latexBlock = m[1];
+        const textWithoutBoilerplate = latexBlock
+            .replace(/Текст задания:/g, '')
+            .replace(/Ответ:/g, '')
+            .replace(/Решение:/g, '')
+            .trim();
+            
+        if (textWithoutBoilerplate.length === 0) {
+            return 'ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ';
+        }
+    }
+    
     return matches.map((m, i) => `## Пример ${i + 1}\n\n${m[1].trim()}`).filter(text => text.length > 0).join('\n\n---\n\n');
 }
 
@@ -286,6 +306,7 @@ async function main() {
                     examples.push({ filename: file.filename, text: latex });
                 } else {
                     console.warn(`No LaTeX code found for ${file.filename}`);
+                    examples.push({ filename: file.filename, text: 'ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ' });
                 }
             } catch (e) {
                 console.error(`Error processing ${file.filename}:`, e.message);
@@ -311,7 +332,10 @@ async function main() {
         const blocks = [];
         for (const example of examples) {
             console.log(`\nProcessing images in ${example.filename}...`);
-            const processed = formatForGitHub(await replaceBase64ImagesWithUploads(example.text, prNumber, token, repositoryId));
+            let processed = example.text;
+            if (processed !== 'ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ') {
+                processed = formatForGitHub(await replaceBase64ImagesWithUploads(example.text, prNumber, token, repositoryId));
+            }
             blocks.push(`<details>\n<summary>ПРИМЕРЫ_ЗАДАЧ \`${example.filename}\` ${headSha} сборка ${gitStatus}</summary>\n\n${processed}\n\n</details>`);
         }
 
