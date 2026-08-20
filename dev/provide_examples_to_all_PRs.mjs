@@ -12,6 +12,8 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..');
 
 const args = process.argv.slice(2);
+const editLastFlag = args.includes('--edit-last');
+const filteredArgs = args.filter(a => a !== '--edit-last');
 
 const owner = 'nickkolok';
 const repo = 'chas-ege';
@@ -125,6 +127,38 @@ async function fetchPRComments(prNum, token) {
         }
     }
     return comments;
+}
+
+async function fetchPRReviewComments(prNum, token) {
+    let reviewComments = [];
+    let url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNum}/comments?per_page=100`;
+    while (url) {
+        const response = await fetch(url, {
+            headers: {
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': 'chas-ege-provide-examples-all-prs',
+                ...(token && { 'Authorization': `token ${token}` })
+            }
+        });
+        if (!response.ok) return [];
+        const data = await response.json();
+        reviewComments = reviewComments.concat(data);
+        const linkHeader = response.headers.get('link');
+        if (linkHeader) {
+            const nextMatch = linkHeader.match(/<([^>]+)>;\s*rel="next"/);
+            url = nextMatch ? nextMatch[1] : null;
+        } else {
+            url = null;
+        }
+    }
+    return reviewComments;
+}
+
+async function isLastCommentInPR(issueComments, reviewComments, targetCommentId) {
+    const allComments = [...issueComments, ...reviewComments];
+    allComments.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    if (allComments.length === 0) return false;
+    return allComments[allComments.length - 1].id === targetCommentId;
 }
 
 async function getFileContent(filePath, ref, token) {
@@ -262,7 +296,7 @@ async function main() {
 
             if (exampleComments.length === 0) {
                 console.log(`PR #${pr.number} has no ПРИМЕРЫ_ЗАДАЧ comment. Generating examples.`);
-                await runProvideScript(pr.number, args);
+                await runProvideScript(pr.number, filteredArgs);
                 continue;
             }
 
@@ -272,7 +306,7 @@ async function main() {
             const match = commentBody.match(/ПРИМЕРЫ_ЗАДАЧ\s+([^\s]+)\s+([0-9a-f]+)\s+сборка\s+([0-9a-f]+)/);
             if (!match) {
                 console.log(`Could not parse ПРИМЕРЫ_ЗАДАЧ comment in PR #${pr.number}. Generating.`);
-                await runProvideScript(pr.number, args);
+                await runProvideScript(pr.number, filteredArgs);
                 continue;
             }
 
@@ -293,12 +327,25 @@ async function main() {
                     const hasNonZdnMdDoc = diffFiles.some(f => !f.filename.startsWith('zdn/') && !f.filename.startsWith('md/') && !f.filename.startsWith('doc/'));
                     if (hasNonZdnMdDoc) {
                         console.log(`Build commit differs from current not only by zdn/md/doc. Generating.`);
-                        await runProvideScript(pr.number, args);
+                        
+                        // Check if we should edit last comment
+                        let shouldEditLast = false;
+                        if (editLastFlag && validFiles.length === 1) {
+                            const reviewComments = await fetchPRReviewComments(pr.number, token);
+                            shouldEditLast = await isLastCommentInPR(comments, reviewComments, lastComment.id);
+                        }
+                        
+                        if (shouldEditLast) {
+                            console.log(`Editing last comment for PR #${pr.number}`);
+                            await runProvideScript(pr.number, [...filteredArgs, '--edit-last']);
+                        } else {
+                            await runProvideScript(pr.number, filteredArgs);
+                        }
                         continue;
                     }
                 } else {
                     console.log(`Failed to compare commits. Generating just in case.`);
-                    await runProvideScript(pr.number, args);
+                    await runProvideScript(pr.number, filteredArgs);
                     continue;
                 }
             }
@@ -308,7 +355,7 @@ async function main() {
             
             if (currentFileContent !== oldFileContent) {
                 console.log(`File ${commentedFile} differs. Generating.`);
-                await runProvideScript(pr.number, args);
+                await runProvideScript(pr.number, filteredArgs);
             } else {
                 console.log(`File ${commentedFile} is identical. Skipping.`);
             }

@@ -15,15 +15,17 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..');
 
 const args = process.argv.slice(2);
+const editLast = args.includes('--edit-last');
+const filteredArgs = args.filter(a => a !== '--edit-last');
 
-if (args.length === 0 || isNaN(parseInt(args[0], 10))) {
+if (filteredArgs.length === 0 || isNaN(parseInt(filteredArgs[0], 10))) {
     console.error('Usage: node dev/provide_examples_to_PR.mjs <PR_NUMBER> [headless-debug options...]');
     console.error('Example: node dev/provide_examples_to_PR.mjs 1234 --headless --browser /usr/bin/chromium');
     process.exit(1);
 }
 
-const prNumber = args[0];
-const debugArgs = args.slice(1);
+const prNumber = filteredArgs[0];
+const debugArgs = filteredArgs.slice(1);
 
 if (!debugArgs.includes('--headless')) {
     debugArgs.unshift('--headless');
@@ -184,6 +186,49 @@ async function replaceBase64ImagesWithUploads(latexText, prNum, token, repositor
     return result;
 }
 
+async function getLastCommentId(prNum, token) {
+    let comments = [];
+    let url = `https://api.github.com/repos/${owner}/${repo}/issues/${prNum}/comments?per_page=100`;
+    while (url) {
+        const response = await fetch(url, {
+            headers: {
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': 'chas-ege-provide-examples-script',
+                ...(token && { 'Authorization': `token ${token}` })
+            }
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+        const data = await response.json();
+        comments = comments.concat(data);
+        const linkHeader = response.headers.get('link');
+        if (linkHeader) {
+            const nextMatch = linkHeader.match(/<([^>]+)>;\s*rel="next"/);
+            url = nextMatch ? nextMatch[1] : null;
+        } else {
+            url = null;
+        }
+    }
+    const exampleComments = comments.filter(c => c.body.includes('ПРИМЕРЫ_ЗАДАЧ'));
+    if (exampleComments.length === 0) return null;
+    return exampleComments[exampleComments.length - 1].id;
+}
+
+async function editComment(commentId, body, token) {
+    const url = `https://api.github.com/repos/${owner}/${repo}/issues/comments/${commentId}`;
+    const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json',
+            'User-Agent': 'chas-ege-provide-examples-script',
+            'Authorization': `token ${token}`
+        },
+        body: JSON.stringify({ body })
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    return response.json();
+}
+
 async function postComment(prNum, body, token) {
     const url = `https://api.github.com/repos/${owner}/${repo}/issues/${prNum}/comments`;
     const response = await fetch(url, {
@@ -322,10 +367,21 @@ async function main() {
             console.log('Generated comment:\n', commentBody);
         } else {
             try {
-                await postComment(prNumber, commentBody, token);
-                console.log('Successfully posted comment to PR.');
+                if (editLast) {
+                    const lastCommentId = await getLastCommentId(prNumber, token);
+                    if (lastCommentId) {
+                        await editComment(lastCommentId, commentBody, token);
+                        console.log('Successfully edited last comment in PR.');
+                    } else {
+                        await postComment(prNumber, commentBody, token);
+                        console.log('No ПРИМЕРЫ_ЗАДАЧ comment found, posted new comment to PR.');
+                    }
+                } else {
+                    await postComment(prNumber, commentBody, token);
+                    console.log('Successfully posted comment to PR.');
+                }
             } catch (e) {
-                console.error('Failed to post comment:', e.message);
+                console.error('Failed to post/edit comment:', e.message);
             }
         }
     } finally {
