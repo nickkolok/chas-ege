@@ -206,7 +206,11 @@ async function main() {
     console.log(`Recent non-zdn/md/doc devel commits: ${recentDevelCommits}`);
 
     let prs = await fetchAllOpenPRs(token);
-    prs.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    if (recentDevelCommits) {
+        prs.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
+    } else {
+        prs.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    }
 
     let currentGitStatus = 'unknown';
     const gitStatusContent = await getFileContent('dist/gitstatus.txt', 'devel', token);
