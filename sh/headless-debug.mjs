@@ -154,6 +154,7 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         await page.evaluate(() => {
             const originalCopyToClipboard = window.copyToClipboard;
             window.copyToClipboard = function(text) {
+                window.__latexText = text;
                 console.log('=== LaTeX CODE START ===');
                 console.log(text);
                 console.log('=== LaTeX CODE END ===');
@@ -204,6 +205,7 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         // Click LaTeX export button
         await page.evaluate(() => {
             window.__latexExported = false; // Reset flag before export
+            window.__latexText = ''; // Reset text
             if (typeof startQuickExportToTex === 'function') {
                 startQuickExportToTex();
             } else {
@@ -218,6 +220,18 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
             );
         } catch (error) {
             console.log('Timeout waiting for LaTeX export completion.');
+        }
+
+        const latexText = await page.evaluate(() => window.__latexText || '');
+        const textWithoutBoilerplate = latexText
+            .replace(/Текст задания:/g, '')
+            .replace(/Ответ:/g, '')
+            .replace(/Решение:/g, '')
+            .trim();
+            
+        if (textWithoutBoilerplate.length === 0) {
+            console.log('ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ');
+            break;
         }
     }
     
