@@ -154,6 +154,7 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         await page.evaluate(() => {
             const originalCopyToClipboard = window.copyToClipboard;
             window.copyToClipboard = function(text) {
+                window.__lastExportedText = text;
                 console.log('=== LaTeX CODE START ===');
                 console.log(text);
                 console.log('=== LaTeX CODE END ===');
@@ -216,6 +217,27 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
                 () => window.__latexExported === true,
                 { timeout: 30000 }
             );
+
+            // Check if the generated LaTeX is empty (just headers)
+            const isEmpty = await page.evaluate(() => {
+                const text = window.__lastExportedText || '';
+                let cleaned = text.replace(/Текст задания:\s*/g, '')
+                                  .replace(/Ответ:\s*/g, '')
+                                  .replace(/Решение:\s*/g, '')
+                                  .replace(/\\begin\{tabular\}[\s\S]*?\\end\{tabular\}/g, '')
+                                  .replace(/\\\[|\\\]/g, '')
+                                  .replace(/\$\$/g, '')
+                                  .replace(/\s+/g, '');
+                return cleaned.length === 0;
+            });
+
+            if (isEmpty) {
+                console.log('Empty task detected. Stopping generation.');
+                console.log('=== LaTeX CODE START ===');
+                console.log('ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ');
+                console.log('=== LaTeX CODE END ===');
+                break;
+            }
         } catch (error) {
             console.log('Timeout waiting for LaTeX export completion.');
         }
