@@ -344,7 +344,9 @@ async function main() {
                         continue;
                     }
                 } else {
-                    console.log(`Failed to compare commits. Generating just in case.`);
+                    const errorText = await compareResp.text();
+                    console.log(`Failed to compare commits. Status: ${compareResp.status} ${compareResp.statusText}. Response: ${errorText.substring(0, 500)}`);
+                    console.log(`Debug: buildCommit=${buildCommit}, currentGitStatus=${currentGitStatus}`);
                     await runProvideScript(pr.number, filteredArgs);
                     continue;
                 }
