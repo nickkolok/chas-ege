@@ -1367,19 +1367,21 @@ chas2.task = {
 		},
 
 		/** @function chas2.task.modifiers.forbidLongNumbers
-		Вызывает ошибку, если в тексте, решении или ответах встречается число длиннее N десятичных знаков.
+		Вызывает ошибку, если в тексте, решении или ответах встречается число, содержащее больше N цифр.
+		Считаются только цифры, разделители (., {,}, {.}) не учитываются.
 		С корректной обработкой дробей - числитель и знаменатель считаются отдельными числами.
 		@param {Number} N максимальная допустимая длина числа
 		*/
 		forbidLongNumbers : function(N) {
 			let o = chas2.task.getTask();
 			let strings = [o.text, o.analys, o.answers.join('__')];
-			let numberRegex = /\d+(?:[.,]\d+)?/g;
+			let numberRegex = /\d+(?:(?:[.,]|\{[.,]\})\d+)?/g;
 			for (let str of strings) {
 				let matches = str.match(numberRegex);
 				if (matches) {
 					for (let num of matches) {
-						genAssert(num.length <= N, 'Число ' + num + ' длиннее ' + N + ' знаков');
+						let digitsOnly = num.replace(/[^0-9]/g, '');
+						genAssert(digitsOnly.length <= N, 'Число ' + num + ' содержит больше ' + N + ' цифр');
 					}
 				}
 			}
