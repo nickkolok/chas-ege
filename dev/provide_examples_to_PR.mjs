@@ -370,8 +370,14 @@ async function main() {
                 if (editLast) {
                     const lastCommentId = await getLastCommentId(prNumber, token);
                     if (lastCommentId) {
-                        await editComment(lastCommentId, commentBody, token);
-                        console.log('Successfully edited last comment in PR.');
+                        try {
+                            await editComment(lastCommentId, commentBody, token);
+                            console.log('Successfully edited last comment in PR.');
+                        } catch (editError) {
+                            console.warn(`Failed to edit last comment (${editError.message}). Posting new comment instead.`);
+                            await postComment(prNumber, commentBody, token);
+                            console.log('Successfully posted new comment to PR.');
+                        }
                     } else {
                         await postComment(prNumber, commentBody, token);
                         console.log('No ПРИМЕРЫ_ЗАДАЧ comment found, posted new comment to PR.');
