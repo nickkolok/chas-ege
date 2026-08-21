@@ -1365,5 +1365,25 @@ chas2.task = {
 			genAssert(!insaneDecimal.test(o.analys), 'Решение задания содержит слишком длинные десятичные дроби');
 			genAssert(!insaneDecimal.test(o.answers.join('__')), 'Один из ответов задания содержит слишком длинные десятичные дроби');
 		},
+
+		/** @function chas2.task.modifiers.forbidLongNumbers
+		Вызывает ошибку, если в тексте, решении или ответах встречается число длиннее N десятичных знаков.
+		С корректной обработкой дробей - числитель и знаменатель считаются отдельными числами.
+		@param {Number} N максимальная допустимая длина числа
+		*/
+		forbidLongNumbers : function(N) {
+			let o = chas2.task.getTask();
+			let strings = [o.text, o.analys, o.answers.join('__')];
+			let numberRegex = /\d+(?:[.,]\d+)?/g;
+			for (let str of strings) {
+				let matches = str.match(numberRegex);
+				if (matches) {
+					for (let num of matches) {
+						genAssert(num.length <= N, 'Число ' + num + ' длиннее ' + N + ' знаков');
+					}
+				}
+			}
+		},
+
 	},
 };
