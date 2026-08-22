@@ -183,6 +183,8 @@ async function main() {
         process.exit(1);
     }
 
+    const state = loadState();
+
     console.log('Fetching upstream devel...');
     try {
         execSync('git fetch upstream devel', { stdio: 'inherit' });
@@ -190,131 +192,64 @@ async function main() {
         console.warn('Failed to fetch upstream devel.');
     }
 
-    let currentGitStatus = 'unknown';
+    let currentDevelHash = 'unknown';
     try {
-        currentGitStatus = execSync('git rev-parse upstream/devel', { encoding: 'utf-8' }).trim();
+        currentDevelHash = execSync('git rev-parse upstream/devel', { encoding: 'utf-8' }).trim();
     } catch (e) {
         console.warn('Could not get devel hash.');
     }
-    console.log(`Current devel hash: ${currentGitStatus}`);
+    console.log(`Current devel hash: ${currentDevelHash}`);
 
-    let prs = await fetchAllOpenPRs(token);
-    prs.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-
-    for (const pr of prs) {
-        console.log(`\n--- Checking PR #${pr.number} ---`);
+    let develChangedSignificantly = false;
+    if (state.develHash && state.develHash !== currentDevelHash) {
         try {
-            const files = await fetchAllPRFiles(pr.number, token);
-            
-            let validFiles = files.filter(f => {
-                if (f.status === 'removed' || f.status === 'renamed') return false;
-                if (f.filename.startsWith('md/') || f.filename.startsWith('doc/')) return false;
-                if (/^zdn\/[^\/]+\/[^\/]+\/(main|fipi)\.js$/.test(f.filename)) return false;
-                if (/^zdn\/[^\/]+\/[^\/]+\.js$/.test(f.filename)) return false;
-                return true;
-            });
-            
-            let symlinkChecked = await Promise.all(validFiles.map(async f => {
-                const url = `https://api.github.com/repos/${owner}/${repo}/contents/${f.filename}?ref=${pr.head.sha}`;
-                try {
-                    const resp = await fetch(url, {
-                        headers: {
-                            'Accept': 'application/vnd.github.v3+json',
-                            'User-Agent': 'chas-ege-provide-examples-all-prs',
-                            'Authorization': `token ${token}`
-                        }
-                    });
-                    if (resp.ok) {
-                        const data = await resp.json();
-                        return data.type === 'symlink';
-                    }
-                } catch(e) {}
-                return false;
-            }));
-            
-            validFiles = validFiles.filter((f, i) => !symlinkChecked[i]);
-            validFiles = validFiles.filter(f => /^zdn\/[^\/]+\/[^\/]+\/[^\/]+\.js$/.test(f.filename));
+            const diffFiles = execSync(
+                `git diff --name-only ${state.develHash} ${currentDevelHash}`,
+                { encoding: 'utf-8' }
+            ).trim().split('\n').filter(Boolean);
 
-            if (validFiles.length < 1 || validFiles.length > 4) {
-                console.log(`PR #${pr.number} has ${validFiles.length} valid zdn/*/*/*.js files. Skipping.`);
-                continue;
-            }
-
-            const comments = await fetchPRComments(pr.number, token);
-            const exampleComments = comments.filter(c => c.body.includes('ПРИМЕРЫ_ЗАДАЧ'));
-
-            if (exampleComments.length === 0) {
-                console.log(`PR #${pr.number} has no ПРИМЕРЫ_ЗАДАЧ comment. Generating examples.`);
-                await runProvideScript(pr.number, filteredArgs);
-                continue;
-            }
-
-            const lastComment = exampleComments[exampleComments.length - 1];
-            const commentBody = lastComment.body;
-            
-            const match = commentBody.match(/ПРИМЕРЫ_ЗАДАЧ\s+([^\s]+)\s+([0-9a-f]+)\s+сборка\s+([0-9a-f]+)/);
-            if (!match) {
-                console.log(`Could not parse ПРИМЕРЫ_ЗАДАЧ comment in PR #${pr.number}. Generating.`);
-                await runProvideScript(pr.number, filteredArgs);
-                continue;
-            }
-
-            const [, commentedFile, commitHash, buildCommit] = match;
-
-            if (buildCommit !== currentGitStatus) {
-                const compareUrl = `https://api.github.com/repos/${owner}/${repo}/compare/${buildCommit}...${currentGitStatus}`;
-                const compareResp = await fetch(compareUrl, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3+json',
-                        'User-Agent': 'chas-ege-provide-examples-all-prs',
-                        'Authorization': `token ${token}`
-                    }
-                });
-                if (compareResp.ok) {
-                    const compareData = await compareResp.json();
-                    const diffFiles = compareData.files || [];
-                    const hasNonZdnMdDoc = diffFiles.some(f => !f.filename.startsWith('zdn/') && !f.filename.startsWith('md/') && !f.filename.startsWith('doc/'));
-                    if (hasNonZdnMdDoc) {
-                        console.log(`Build commit differs from current not only by zdn/md/doc. Generating.`);
-                        
-                        // Check if we should edit last comment
-                        let shouldEditLast = false;
-                        if (editLastFlag && validFiles.length === 1) {
-                            const reviewComments = await fetchPRReviewComments(pr.number, token);
-                            shouldEditLast = await isLastCommentInPR(comments, reviewComments, lastComment.id);
-                        }
-                        
-                        if (shouldEditLast) {
-                            console.log(`Editing last comment for PR #${pr.number}`);
-                            await runProvideScript(pr.number, [...filteredArgs, '--edit-last']);
-                        } else {
-                            await runProvideScript(pr.number, filteredArgs);
-                        }
-                        continue;
-                    }
-                } else {
-                    const errorText = await compareResp.text();
-                    console.log(`Failed to compare commits. Status: ${compareResp.status} ${compareResp.statusText}. Response: ${errorText.substring(0, 500)}`);
-                    console.log(`Debug: buildCommit=${buildCommit}, currentGitStatus=${currentGitStatus}`);
-                    await runProvideScript(pr.number, filteredArgs);
-                    continue;
-                }
-            }
-
-            const currentFileContent = await getFileContent(commentedFile, pr.head.sha, token);
-            const oldFileContent = await getFileContent(commentedFile, commitHash, token);
-            
-            if (currentFileContent !== oldFileContent) {
-                console.log(`File ${commentedFile} differs. Generating.`);
-                await runProvideScript(pr.number, filteredArgs);
-            } else {
-                console.log(`File ${commentedFile} is identical. Skipping.`);
-            }
-
+            develChangedSignificantly = diffFiles.some(f =>
+                !f.startsWith('zdn/') && !f.startsWith('md/') && !f.startsWith('doc/')
+            );
+            console.log(`Devel changed significantly: ${develChangedSignificantly}`);
         } catch (e) {
-            console.error(`Error processing PR #${pr.number}:`, e.message);
+            console.warn('Failed to diff devel hashes. Assuming significant change.');
+            develChangedSignificantly = true;
         }
     }
+
+    console.log('Fetching PRs via GraphQL...');
+    const prs = await fetchAllPRsGraphQL(token);
+    console.log(`Fetched ${prs.length} open PRs.`);
+
+    if (develChangedSignificantly) {
+        prs.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
+    } else {
+        prs.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    }
+
+    for (const pr of prs) {
+        const saved = state.prs[pr.number];
+
+        if (!develChangedSignificantly && saved && saved.headRefOid === pr.headRefOid && saved.updatedAt === pr.updatedAt) {
+            continue;
+        }
+
+        console.log(`\n--- Processing PR #${pr.number} ---`);
+        await runProvide_script(pr.number, [...filteredArgs, ...(editLastFlag ? ['--edit-last'] : [])]);
+        
+        state.prs[pr.number] = {
+            updatedAt: pr.updatedAt,
+            processedAt: new Date().toISOString(),
+            headRefOid: pr.headRefOid
+        };
+        saveState(state);
+    }
+
+    state.develHash = currentDevelHash;
+    state.lastRunAt = new Date().toISOString();
+    saveState(state);
+    console.log('Done.');
 }
 
 main();
