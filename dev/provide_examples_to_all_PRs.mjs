@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { execFile } from 'child_process';
+import { execFile, execSync } from 'child_process';
 import util from 'util';
 import { fileURLToPath } from 'url';
 
@@ -161,59 +161,6 @@ async function isLastCommentInPR(issueComments, reviewComments, targetCommentId)
     return allComments[allComments.length - 1].id === targetCommentId;
 }
 
-async function getFileContent(filePath, ref, token) {
-    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}?ref=${ref}`;
-    const response = await fetch(url, {
-        headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'chas-ege-provide-examples-all-prs',
-            ...(token && { 'Authorization': `token ${token}` })
-        }
-    });
-    if (!response.ok) return null;
-    const data = await response.json();
-    if (data.encoding === 'base64' && data.content) {
-        return Buffer.from(data.content, 'base64').toString('utf8');
-    }
-    return null;
-}
-
-async function checkDevelCommits(token) {
-    const url = `https://api.github.com/repos/${owner}/${repo}/commits?sha=devel&per_page=50`;
-    const response = await fetch(url, {
-        headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'chas-ege-provide-examples-all-prs',
-            ...(token && { 'Authorization': `token ${token}` })
-        }
-    });
-    if (!response.ok) return false;
-    const commits = await response.json();
-    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
-    
-    for (const commit of commits) {
-        const commitDate = new Date(commit.commit.committer.date);
-        if (commitDate < twoHoursAgo) break;
-        
-        const cResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits/${commit.sha}`, {
-            headers: {
-                'Accept': 'application/vnd.github.v3+json',
-                'User-Agent': 'chas-ege-provide-examples-all-prs',
-                'Authorization': `token ${token}`
-            }
-        });
-        if (!cResp.ok) continue;
-        const cData = await cResp.json();
-        const commitFiles = cData.files || [];
-        const hasNonZdnMdDoc = commitFiles.some(file => {
-            const p = file.filename;
-            return !p.startsWith('zdn/') && !p.startsWith('md/') && !p.startsWith('doc/');
-        });
-        if (hasNonZdnMdDoc) return true;
-    }
-    return false;
-}
-
 async function runProvideScript(prNum, extraArgs) {
     const scriptPath = path.join(projectRoot, 'dev', 'provide_examples_to_PR.mjs');
     const scriptArgs = [scriptPath, prNum.toString(), ...extraArgs];
@@ -236,21 +183,23 @@ async function main() {
         process.exit(1);
     }
 
-    const recentDevelCommits = await checkDevelCommits(token);
-    console.log(`Recent non-zdn/md/doc devel commits: ${recentDevelCommits}`);
-
-    let prs = await fetchAllOpenPRs(token);
-    if (recentDevelCommits) {
-        prs.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
-    } else {
-        prs.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    console.log('Fetching upstream devel...');
+    try {
+        execSync('git fetch upstream devel', { stdio: 'inherit' });
+    } catch (e) {
+        console.warn('Failed to fetch upstream devel.');
     }
 
     let currentGitStatus = 'unknown';
-    const gitStatusContent = await getFileContent('dist/gitstatus.txt', 'devel', token);
-    if (gitStatusContent) {
-        currentGitStatus = gitStatusContent.split('\n')[0].trim();
+    try {
+        currentGitStatus = execSync('git rev-parse upstream/devel', { encoding: 'utf-8' }).trim();
+    } catch (e) {
+        console.warn('Could not get devel hash.');
     }
+    console.log(`Current devel hash: ${currentGitStatus}`);
+
+    let prs = await fetchAllOpenPRs(token);
+    prs.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
 
     for (const pr of prs) {
         console.log(`\n--- Checking PR #${pr.number} ---`);
