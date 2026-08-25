@@ -14,21 +14,25 @@
 			let alpha = Math.PI / 9;
 			let cosA = Math.cos(alpha);
 			let sinA = Math.sin(alpha);
+			//Прямоугольная косоугольная проекция: ось ширины сжимается (как в эталонном рисунке),
+			//иначе чертёж расплывается в диагональную полосу.
+			let squeeze = 0.4;
+			let wDraw = width * squeeze;
 
 			let fieldW = 480;
 			let fieldH = 260;
 			let pad = 16;
 
-			let fullX = steps * depth + width * cosA;
-			let fullY = steps * height + width * sinA;
+			let fullX = steps * depth + wDraw * cosA;
+			let fullY = steps * height + wDraw * sinA;
 			let k = Math.min((fieldW - 2 * pad) / fullX, (fieldH - 2 * pad) / fullY);
 			let ox = (fieldW - fullX * k) / 2;
 			let oy = fieldH - (fieldH - fullY * k) / 2;
 
 			let pt = function (x, y, t) {
 				return [
-					ox + k * (x + t * width * cosA),
-					oy - k * (y + t * width * sinA),
+					ox + k * (x + t * wDraw * cosA),
+					oy - k * (y + t * wDraw * sinA),
 				];
 			};
 
@@ -42,7 +46,7 @@
 				});
 				let xMin = Math.min.apply(null, xs);
 				let xMax = Math.max.apply(null, xs);
-				let stepPx = 5;
+				let stepPx = 4;
 				for (let x = xMin + stepPx / 2; x < xMax; x += stepPx) {
 					let ys = [];
 					for (let i = 0; i < 4; i++) {
