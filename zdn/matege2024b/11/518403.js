@@ -14,8 +14,6 @@
 			let alpha = Math.PI / 9;
 			let cosA = Math.cos(alpha);
 			let sinA = Math.sin(alpha);
-			//Прямоугольная косоугольная проекция: ось ширины сжимается (как в эталонном рисунке),
-			//иначе чертёж расплывается в диагональную полосу.
 			let squeeze = 0.4;
 			let wDraw = width * squeeze;
 
@@ -66,23 +64,7 @@
 				}
 			};
 
-			ct.strokeStyle = '#000';
-			ct.lineWidth = 1;
-			let front = [pt(0, 0, 0)];
-			let back = [pt(0, 0, 1)];
-			for (let i = 0; i < steps; i++) {
-				front.push(pt(i * depth, (i + 1) * height, 0), pt((i + 1) * depth, (i + 1) * height, 0));
-				back.push(pt(i * depth, (i + 1) * height, 1), pt((i + 1) * depth, (i + 1) * height, 1));
-			}
-			for (let i = 1; i < front.length; i++)
-				line(front[i - 1], front[i]);
-			for (let i = 1; i < back.length; i++)
-				line(back[i - 1], back[i]);
-			line(front[0], back[0]);
-			line(front[front.length - 1], back[back.length - 1]);
-			line(pt(-0.5 * depth, 0, 0), front[0]);
-			line(back[back.length - 1], pt(steps * depth + 0.5 * depth, steps * height, 1));
-
+			// Hatching
 			ct.strokeStyle = om.secondaryBrandColors.iz();
 			for (let i = 0; i < steps; i++) {
 				hatchVertical([
@@ -100,6 +82,36 @@
 					pt(i * depth, (i + 1) * height, 1),
 				]);
 			}
+
+			// Outline
+			ct.strokeStyle = '#000';
+			ct.lineWidth = 1;
+			let front = [pt(0, 0, 0)];
+			let back = [pt(0, 0, 1)];
+			for (let i = 0; i < steps; i++) {
+				front.push(pt(i * depth, (i + 1) * height, 0), pt((i + 1) * depth, (i + 1) * height, 0));
+				back.push(pt(i * depth, (i + 1) * height, 1), pt((i + 1) * depth, (i + 1) * height, 1));
+			}
+			for (let i = 1; i < front.length; i++) {
+				line(front[i - 1], front[i]);
+				line(back[i - 1], back[i]);
+				line(front[i], back[i]);
+			}
+			line(front[0], back[0]);
+
+			// Bottom floor extension
+			let bLeftFront = pt(-0.5 * depth, 0, 0);
+			let bLeftBack = pt(-0.5 * depth, 0, 1);
+			line(bLeftFront, front[0]);
+			line(bLeftBack, back[0]);
+			line(bLeftFront, bLeftBack);
+
+			// Top floor extension
+			let tRightFront = pt((steps + 0.5) * depth, steps * height, 0);
+			let tRightBack = pt((steps + 0.5) * depth, steps * height, 1);
+			line(front[front.length - 1], tRightFront);
+			line(back[back.length - 1], tRightBack);
+			line(tRightFront, tRightBack);
 		};
 
 		NAtask.setTask({
