@@ -11,6 +11,10 @@
 		let answer = steps * height * width + (steps - 1) * depth * width;
 
 		let paint = function (ct) {
+			// ВАЖНО: Устанавливаем белый фон
+			ct.fillStyle = '#fff';
+			ct.fillRect(0, 0, 480, 260);
+			
 			let alpha = Math.PI / 9;
 			let cosA = Math.cos(alpha);
 			let sinA = Math.sin(alpha);
@@ -35,6 +39,8 @@
 			};
 
 			let line = function (p1, p2) {
+				ct.lineWidth = 1;
+				ct.strokeStyle = '#000';
 				ct.drawLine(p1[0], p1[1], p2[0], p2[1]);
 			};
 
@@ -45,6 +51,8 @@
 				let xMin = Math.min.apply(null, xs);
 				let xMax = Math.max.apply(null, xs);
 				let stepPx = 4;
+				ct.strokeStyle = om.secondaryBrandColors.iz();
+				ct.lineWidth = 1;
 				for (let x = xMin + stepPx / 2; x < xMax; x += stepPx) {
 					let ys = [];
 					for (let i = 0; i < 4; i++) {
@@ -64,8 +72,7 @@
 				}
 			};
 
-			// Hatching
-			ct.strokeStyle = om.secondaryBrandColors.iz();
+			// Сначала штриховка
 			for (let i = 0; i < steps; i++) {
 				hatchVertical([
 					pt(i * depth, i * height, 0),
@@ -83,9 +90,7 @@
 				]);
 			}
 
-			// Outline
-			ct.strokeStyle = '#000';
-			ct.lineWidth = 1;
+			// Затем контуры
 			let front = [pt(0, 0, 0)];
 			let back = [pt(0, 0, 1)];
 			for (let i = 0; i < steps; i++) {
@@ -99,14 +104,13 @@
 			}
 			line(front[0], back[0]);
 
-			// Bottom floor extension
+			// Площадки
 			let bLeftFront = pt(-0.5 * depth, 0, 0);
 			let bLeftBack = pt(-0.5 * depth, 0, 1);
 			line(bLeftFront, front[0]);
 			line(bLeftBack, back[0]);
 			line(bLeftFront, bLeftBack);
 
-			// Top floor extension
 			let tRightFront = pt((steps + 0.5) * depth, steps * height, 0);
 			let tRightBack = pt((steps + 0.5) * depth, steps * height, 1);
 			line(front[front.length - 1], tRightFront);
