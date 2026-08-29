@@ -1,11 +1,15 @@
 (function () {
     'use strict';
     retryWhileError(function () {
+        let key = 'inf2026oge_10';
+        let preference = ['findMin', 'findMax'];
+        let rand = getSelectedPreferenceFromList(key, preference);
+        
         let n1 = sl(50, 500);
         let n2 = slKrome(n1, 50, 500);
         let n3 = slKrome([n1, n2], 50, 500);
         
-        let isMin = sl1();
+        let isMin = (rand === 0);
         let target = isMin ? Math.min(n1, n2, n3) : Math.max(n1, n2, n3);
         let targetWord = isMin ? 'наименьшее' : 'наибольшее';
         
@@ -16,7 +20,7 @@
         NAtask.setTask({
             text: text,
             answers: target,
-            preference: ['differentBasesComparison', 'findMinMax'],
+            preference: preference,
         });
     }, 100);
 })();
