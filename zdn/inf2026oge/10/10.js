@@ -2,11 +2,8 @@
     'use strict';
     retryWhileError(function () {
         let n1 = sl(50, 500);
-        let n2 = sl(50, 500);
-        let n3 = sl(50, 500);
-        
-        while (n2 === n1) { n2 = sl(50, 500); }
-        while (n3 === n1 || n3 === n2) { n3 = sl(50, 500); }
+        let n2 = slKrome(n1, 50, 500);
+        let n3 = slKrome([n1, n2], 50, 500);
         
         let isMin = sl1();
         let target = isMin ? Math.min(n1, n2, n3) : Math.max(n1, n2, n3);
@@ -19,7 +16,7 @@
         NAtask.setTask({
             text: text,
             answers: target,
+            preference: ['differentBasesComparison', 'findMinMax'],
         });
-        NAtask.modifiers.assertSaneDecimals();
     }, 100);
 })();
