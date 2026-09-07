@@ -1,29 +1,38 @@
-(function () {
+(function() {
 	'use strict';
-	retryWhileError(function () {
+	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		
-		let name = ['Андрей', 'Борис', 'Виктор', 'Глеб', 'Дмитрий', 'Сергей', 'Павел', 'Олег'].iz();
-		let instrNom = ['гитара', 'скрипка', 'флейта', 'балалайка', 'домра', 'виолончель'].iz();
-		let instrVin = instrNom.replace('а', 'у').replace('я', 'ю');
-		let instrTvor = instrNom.replace('а', 'ой').replace('я', 'ей');
-		let instrRod = instrNom.replace('а', 'ы').replace('я', 'и');
-		
-		let activity1 = ['на концертах', 'на выступлениях', 'на соревнованиях'].iz();
-		let activity2 = ['в поход', 'на рыбалку', 'в поездку', 'на дачу'].iz();
-		
+
+		let name = om.maleNames.iz();
+		let instrNom = sklonlxkand(['гитара', 'скрипка', 'флейта', 'балалайка', 'домра', 'виолончель'].iz());
+		let instrVin = instrNom.ve;
+		let instrTvor = instrNom.te;
+		let instrRod = instrNom.re;
+
+		let randActity = sl1();
+		let activityM = ['на концертах', 'на соревнованиях'][randActity];
+		let activityE = ['на концерте', 'на соревновании'][randActity];
+		let randPreposition = sl1();
+		let preposition = ['в', 'на'][randPreposition];
+		let activity2 = sklonlxkand([
+			['поход', 'поездка'].iz(), ['дача', 'рыбалка'].iz()
+		][randPreposition]);
+		let days = sklonlxkand(['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'].iz());
+
+		let activityPred = `${preposition} ${activity2.pe}`;
+
 		let correct = [
-			`Если ${name} без ${instrRod}, значит, он не ${activity2}.`,
-			`Если в субботу ${name} будет выступать ${activity1}, то он в субботу будет со своей ${instrTvor}.`
+			`Если ${name} без ${instrRod}, значит, он не ${activityPred}.`,
+			`Если в ${days.ve} ${name} будет выступать ${activityE}, то он в ${days.ve} будет со своей ${instrTvor}.`
 		];
-		
+
 		let wrong = [
-			`Каждый раз, когда ${name} берёт с собой ${instrVin}, он будет выступать ${activity1}.`,
-			`В любое время, когда ${name} не ${activity2}, у него нет с собой ${instrVin}.`
+			`Каждый раз, когда ${name} берёт с собой ${instrVin}, он будет выступать ${activityE}.`,
+			`В любое время, когда ${name} не ${activityPred}, у него нет с собой ${instrRod}.`
 		];
 
 		NAtask.setTask({
-			text: `Музыкант ${name} выступает ${activity1} только со своей ${instrTvor}. Также ${name} обязательно берёт с собой ${instrVin} ${activity2}. Выберите утверждения, которые верны при приведённых условиях. В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов.`,
+			text: `Музыкант ${name} выступает ${activityM} только со своей ${instrTvor}. Также ${name} обязательно берёт с собой ${instrVin} ${preposition} ${activity2.ve}. Выберите утверждения, которые верны при приведённых условиях. В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов.`,
 			answers: correct,
 			wrongAnswers: wrong,
 		});
