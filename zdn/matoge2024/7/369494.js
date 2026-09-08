@@ -5,15 +5,15 @@
 		let key = '369494';
 		
 		let preference1 = ['decimalFrac', 'ordinalyFrac'];
-		let useFractions = getSelectedPreferenceFromList(key, preference1);
+		let isOrdinaryFrac = getSelectedPreferenceFromList(key, preference1) === 1;
 		let preference2 = ['chooseLetter', 'chooseNumber'];
-		let randChoose = getSelectedPreferenceFromList(key, preference2);
+		let isChooseLetter = getSelectedPreferenceFromList(key, preference2) === 0;
 		
 		let nums = [];
 		let letters = ['A', 'B', 'C', 'D'];
 		let formattedNums = [];
 
-		if (useFractions) {
+		if (isOrdinaryFrac) {
 			let minDistance = 0.1;
 			while (nums.length < 4) {
 				let denominator = sl(2, 10);
@@ -38,7 +38,7 @@
 				}
 			}
 			let formatNum = function(n) {
-				return parseFloat(n.toFixed(4)).toString().replace('.', ',');
+				return parseFloat(n.toFixed(4));
 			};
 			formattedNums = nums.map(formatNum);
 		}
@@ -50,7 +50,6 @@
 		formattedNums = pairs.map(p => p.str);
 
 		let idx = sl(0, 3);
-		let isChooseLetter = randChoose === 'chooseLetter';
 	
 		let answers = isChooseLetter ? letters[idx] : formattedNums[idx];
 		let wrongAnswers = isChooseLetter 
@@ -78,7 +77,7 @@
 
 		NAtask.setTask({
 			text: 'На координатной прямой точки $A$, $B$, $C$ и $D$ ' + ['соответствуют числам $' + formattedNums.join('; ') + '$. Какой точке соответствует число $' + formattedNums[idx] + '$',
-			'отмечены числа. Какому числу соответствует точка $' + letters[idx] + '$'][randChoose] + '?',
+			'отмечены числа. Какому числу соответствует точка $' + letters[idx] + '$'][isChooseLetter ? 0 : 1] + '?',
 			answers: answers,
 			wrongAnswers: wrongAnswers,
 			preference: [preference1, preference2]
@@ -86,13 +85,15 @@
 
 		AtoB(3, {autoLaTeX: true});
 
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 500,
 			height: 100,
 			paint: paint
 		});
 
-		NAtask.modifiers.allDecimalsToStandard();
+		if (!isOrdinaryFrac) {
+			NAtask.modifiers.allDecimalsToStandard();
+		}
 	}, 1000);
 })();
 // https://oge.sdamgia.ru/test?likes=317102
