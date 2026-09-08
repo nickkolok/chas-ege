@@ -3,11 +3,11 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 		let key = '369494';
-		let preference1 = ['decimalFrac', 'ordinalyFrac'];
-		let useFractions = getSelectedPreferenceFromList(key, preference1) === 'ordinalyFrac';
 		
+		let preference1 = ['decimalFrac', 'ordinalyFrac'];
+		let useFractions = getSelectedPreferenceFromList(key, preference1);
 		let preference2 = ['chooseLetter', 'chooseNumber'];
-		let choose = getSelectedPreferenceFromList(key, preference2);
+		let randChoose = getSelectedPreferenceFromList(key, preference2);
 		
 		let nums = [];
 		let letters = ['A', 'B', 'C', 'D'];
@@ -43,34 +43,19 @@
 			formattedNums = nums.map(formatNum);
 		}
 
-		// Сортируем пары (число, строка) по возрастанию числа
 		let pairs = nums.map((n, i) => ({ val: n, str: formattedNums[i] }));
 		pairs.sort((a, b) => a.val - b.val);
 		
 		nums = pairs.map(p => p.val);
 		formattedNums = pairs.map(p => p.str);
 
-		let text, answers, wrongAnswers, correctIndexForAtoB;
-
-		if (choose === 'chooseLetter') {
-			let correctIndex = sl(0, 3);
-			let correctFormatted = formattedNums[correctIndex];
-			let correctLetter = letters[correctIndex];
-
-			text = 'На координатной прямой точки A, B, C и D соответствуют числам $' + formattedNums.join('; ') + '$. Какой точке соответствует число $' + correctFormatted + '$?';
-			answers = correctLetter;
-			wrongAnswers = letters.filter(l => l !== correctLetter);
-			correctIndexForAtoB = letters.indexOf(correctLetter);
-		} else {
-			let targetIndex = sl(0, 3);
-			let targetLetter = letters[targetIndex];
-			let correctFormatted = formattedNums[targetIndex];
-			
-			text = 'На координатной прямой точками A, B, C и D отмечены числа. Какому числу соответствует точка ' + targetLetter + '?';
-			answers = correctFormatted;
-			wrongAnswers = formattedNums.filter((_, i) => i !== targetIndex);
-			correctIndexForAtoB = targetIndex;
-		}
+		let idx = sl(0, 3);
+		let isChooseLetter = randChoose === 'chooseLetter';
+	
+		let answers = isChooseLetter ? letters[idx] : formattedNums[idx];
+		let wrongAnswers = isChooseLetter 
+			? letters.filter(l => l !== letters[idx]) 
+			: formattedNums.filter((_, i) => i !== idx);
 
 		let paint = function (ct) {
 			let minVal = Math.floor(nums[0] * 10) / 10 - 0.1;
@@ -92,13 +77,14 @@
 		};
 
 		NAtask.setTask({
-			text: text,
+			text: 'На координатной прямой точки $A$, $B$, $C$ и $D$ ' + ['соответствуют числам $' + formattedNums.join('; ') + '$. Какой точке соответствует число $' + formattedNums[idx] + '$',
+			'отмечены числа. Какому числу соответствует точка $' + letters[idx] + '$'][randChoose] + '?',
 			answers: answers,
 			wrongAnswers: wrongAnswers,
 			preference: [preference1, preference2]
 		});
 
-		AtoB(3, correctIndexForAtoB);
+		AtoB(3, {autoLaTeX: true});
 
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
@@ -109,5 +95,5 @@
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
-//https://oge.sdamgia.ru/test?likes=317102
-//https://oge.sdamgia.ru/problem?id=369494
+// https://oge.sdamgia.ru/test?likes=317102
+// https://oge.sdamgia.ru/problem?id=369494
