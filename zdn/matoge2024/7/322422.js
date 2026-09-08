@@ -3,12 +3,17 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
+		let key = '322422';
+		let preference = ['positive', 'negative'];
+		let rand = getSelectedPreferenceFromList(key, preference);
+		let isPositive = (rand === 0);
+
 		// 1. Генерация чисел: val1 < val2 < val3
 		let val1 = sl(-10, -3);
 		let val2 = sl(val1 + 1, val1 + 4);
 		let val3 = sl(val2 + 1, val2 + 4);
 
-		// 2. Рандомизация букв (чтобы были не только a, b, c)
+		// 2. Рандомизация букв
 		let letters = ['a', 'b', 'c', 'x', 'y', 'z', 'm', 'n', 'p', 'k'].shuffle().slice(0, 3);
 		let l1 = letters[0], l2 = letters[1], l3 = letters[2];
 
@@ -22,8 +27,7 @@
 			{ expr: l3 + '-' + l2, val: val3 - val2 }
 		];
 
-		// 4. Вариантивность вопроса: положительная или отрицательная разность
-		let isPositive = sl(0, 1) === 1;
+		// 4. Фильтрация по условию
 		let targetCondition = isPositive ? (d => d.val > 0) : (d => d.val < 0);
 		let wrongCondition = isPositive ? (d => d.val < 0) : (d => d.val > 0);
 
@@ -31,15 +35,13 @@
 		let wrongPool = allDiffs.filter(wrongCondition);
 
 		// 5. Выбор ответов
-		let correctDiff = correctPool.iz(); // случайная правильная разность
-		let wrongDiffs = wrongPool.shuffle().slice(0, 3); // 3 случайные неправильные
+		let correctDiff = correctPool.iz();
+		let wrongDiffs = wrongPool.shuffle().slice(0, 3);
 
-		// 6. Формирование списка вариантов и перемешивание
+		// 6. Формирование списка вариантов
 		let options = [correctDiff, ...wrongDiffs].shuffle();
-		let correctOptionNumber = (options.indexOf(correctDiff) + 1).toString();
-		let wrongOptionNumbers = ["1", "2", "3", "4"].filter(n => n !== correctOptionNumber);
-
-		let optionsText = options.map((d, i) => `${i + 1}) ${d.expr}`).join(', ');
+		let correctExpr = correctDiff.expr;
+		let wrAns = options.filter(d => d.expr !== correctExpr).map(d => d.expr);
 
 		// 7. Отрисовка
 		let paint = function (ct) {
@@ -59,10 +61,13 @@
 
 		// 8. Установка задачи
 		NAtask.setTask({
-			text: `На координатной прямой отмечены числа ${l1}, ${l2} и ${l3}. Какая из разностей ${isPositive ? 'положительна' : 'отрицательна'}? <br>В ответе укажите номер правильного варианта: ${optionsText}`,
-			answers: correctOptionNumber,
-			wrongAnswers: wrongOptionNumbers
+			text: `На координатной прямой отмечены числа ${l1}, ${l2} и ${l3}. Какая из разностей ${isPositive ? 'положительна' : 'отрицательна'}?`,
+			answers: correctExpr,
+			wrongAnswers: wrAns,
+			preference: preference,
 		});
+
+		AtoB(3, { autoLaTeX: true });
 
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
