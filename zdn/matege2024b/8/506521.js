@@ -9,7 +9,7 @@
 		let nWrong = 4 - nCorrect;
 		let heavyAnimal = sklonlxkand(['буйвол', 'слон', 'жираф', 'бегемот', 'гиппопотам', 'носорог'].iz());
 		let mediumAnimal = sklonlxkand(['лев', 'медведь', 'тигр', 'волк', 'пантера', 'барсук',].iz(2));
-		let lightAnimal = sklonlxkand(['рысь', 'лиса', 'кошка', 'фламинго', 'выдра', 'тушканчик',].iz());
+		let lightAnimal = sklonlxkand(['лиса', 'кошка', 'фламинго', 'выдра', 'тушканчик',].iz());
 
 		let correct = [
 			`${heavyAnimal.ie.toZagl()} самый тяжёлый из всех этих животных.`,
