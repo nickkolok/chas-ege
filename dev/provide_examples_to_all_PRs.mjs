@@ -247,12 +247,19 @@ async function main() {
     }
 
     let currentGitStatus = 'unknown';
-    const gitStatusContent = await getFileContent('dist/gitstatus.txt', 'devel', token);
-    if (gitStatusContent) {
+    try {
+        const gitStatusPath = path.join(projectRoot, 'dist', 'gitstatus.txt');
+        const gitStatusContent = fs.readFileSync(gitStatusPath, 'utf8');
         currentGitStatus = gitStatusContent.split('\n')[0].trim();
+    } catch (e) {
+        console.warn('Could not read dist/gitstatus.txt:', e.message);
     }
 
     for (const pr of prs) {
+        if (currentGitStatus === 'unknown') {
+            console.log(`⚠️ Current git status is unknown. Skipping PR #${pr.number} to avoid infinite regeneration.`);
+            continue;
+        }
         console.log(`\n--- Checking PR #${pr.number} ---`);
         try {
             const files = await fetchAllPRFiles(pr.number, token);
