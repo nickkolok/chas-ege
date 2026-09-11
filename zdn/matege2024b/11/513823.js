@@ -43,11 +43,27 @@
 			ct.lineTo(0.6, -0.6);
 			ct.lineTo(0, -0.6);
 			ct.stroke();
+			
+			// Подписи вершин для варианта withABCD
+			if (rand === 1) {
+				ct.fillStyle = 'black';
+				ct.font = '0.5px liberation_sans';
+				ct.textAlign = 'center';
+				ct.textBaseline = 'middle';
+				// A — вершина с прямым углом (начало координат)
+				ct.fillText('A', -0.5, 0.1);
+				// B — нижняя левая вершина
+				ct.fillText('B', x2 - 0.1, y2 + 0.5);
+				// C — правая вершина
+				ct.fillText('C', x1 + 0.5, y1 + 0.1);
+				// D — верхняя вершина
+				ct.fillText('D', x3 - 0.4, y3 - 0.4);
+			}
 		};
 
 		NAtask.setTask({
 			text: 'В треугольной пирамиде ' + ['три', '$ABCD$'][rand] + ' ребра ' + ['', '$AB$, $AC$ и $AD$'][rand] + ' взаимно перпендикулярны' +
-			[', а их длины равны $' + length + '$, $' + width + '$ и $' + height + '$', ''][rand] + '. Найдите объём этой пирамиды'+['.', ', если $AB=' + length + '$, $AC=' + width + '$ и $AD=' + width + '$.'][rand],
+			[', а их длины равны $' + length + '$, $' + width + '$ и $' + height + '$', ''][rand] + '. Найдите объём этой пирамиды'+['.', ', если $AB=' + length + '$, $AC=' + width + '$ и $AD=' + height + '$.'][rand],
 			answers: volume,
 			preference: preference,
 		});
