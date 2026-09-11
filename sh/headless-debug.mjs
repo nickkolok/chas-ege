@@ -45,6 +45,7 @@ let iterations = 1;
 let headless = false; // Default to visible mode
 let browserPath = '';
 let tempProfile = false;
+let userDataDir = null;
 
 for (let i = 0; i < args.length; i++) {
     if (args[i] === '--filepath' && args[i + 1]) {
@@ -57,6 +58,9 @@ for (let i = 0; i < args.length; i++) {
         headless = true;
     } else if (args[i] === '--browser' && args[i + 1]) {
         browserPath = args[i + 1];
+        i++;
+    } else if (args[i] === '--user-data-dir' && args[i + 1]) {
+        userDataDir = args[i + 1];
         i++;
     } else if (args[i] === '--temp-profile') {
         tempProfile = true;
@@ -96,7 +100,9 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         launchOptions.executablePath = browserPath;
     }
 
-    if (tempProfile) {
+    if (userDataDir) {
+        launchOptions.userDataDir = userDataDir;
+    } else if (tempProfile) {
         tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'puppeteer_dev_profile-'));
         launchOptions.userDataDir = tempDir;
     }

@@ -2,6 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { execFile } from 'child_process';
 import util from 'util';
 import { fileURLToPath } from 'url';
@@ -236,7 +237,12 @@ async function main() {
         process.exit(1);
     }
 
-    const recentDevelCommits = await checkDevelCommits(token);
+    // Создаём уникальную временную директорию для профилей Chromium на весь прогон
+    const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'taskexamples-'));
+    console.log(`Created temporary user data directory: ${userDataDir}`);
+
+    try {
+        const recentDevelCommits = await checkDevelCommits(token);
     console.log(`Recent non-zdn/md/doc devel commits: ${recentDevelCommits}`);
 
     let prs = await fetchAllOpenPRs(token);
@@ -303,7 +309,7 @@ async function main() {
 
             if (exampleComments.length === 0) {
                 console.log(`PR #${pr.number} has no ПРИМЕРЫ_ЗАДАЧ comment. Generating examples.`);
-                await runProvideScript(pr.number, filteredArgs);
+                await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
                 continue;
             }
 
@@ -313,7 +319,7 @@ async function main() {
             const match = commentBody.match(/ПРИМЕРЫ_ЗАДАЧ\s+([^\s]+)\s+([0-9a-f]+)\s+сборка\s+([0-9a-f]+)/);
             if (!match) {
                 console.log(`Could not parse ПРИМЕРЫ_ЗАДАЧ comment in PR #${pr.number}. Generating.`);
-                await runProvideScript(pr.number, filteredArgs);
+                await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
                 continue;
             }
 
@@ -344,9 +350,9 @@ async function main() {
                         
                         if (shouldEditLast) {
                             console.log(`Editing last comment for PR #${pr.number}`);
-                            await runProvideScript(pr.number, [...filteredArgs, '--edit-last']);
+                            await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir, '--edit-last']);
                         } else {
-                            await runProvideScript(pr.number, filteredArgs);
+                            await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
                         }
                         continue;
                     }
@@ -354,7 +360,7 @@ async function main() {
                     const errorText = await compareResp.text();
                     console.log(`Failed to compare commits. Status: ${compareResp.status} ${compareResp.statusText}. Response: ${errorText.substring(0, 500)}`);
                     console.log(`Debug: buildCommit=${buildCommit}, currentGitStatus=${currentGitStatus}`);
-                    await runProvideScript(pr.number, filteredArgs);
+                    await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
                     continue;
                 }
             }
@@ -364,13 +370,21 @@ async function main() {
             
             if (currentFileContent !== oldFileContent) {
                 console.log(`File ${commentedFile} differs. Generating.`);
-                await runProvideScript(pr.number, filteredArgs);
+                await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
             } else {
                 console.log(`File ${commentedFile} is identical. Skipping.`);
             }
 
         } catch (e) {
             console.error(`Error processing PR #${pr.number}:`, e.message);
+        }
+    } finally {
+        // Удаляем временную директорию в конце
+        try {
+            fs.rmSync(userDataDir, { recursive: true, force: true });
+            console.log('Cleaned up temporary directory.');
+        } catch (e) {
+            console.warn(`Failed to clean up temporary directory: ${e.message}`);
         }
     }
 }
