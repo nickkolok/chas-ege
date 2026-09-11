@@ -54,7 +54,7 @@
 				' (по одной цифре на каждой карточке). В выражении $\\square + \\square\\square + \\square\\square\\square$ ' +
 				'вместо каждого квадратика положили карточку из данного набора. Оказалось, что полученная сумма ' +
 				rule.text + '. В ответе укажите какую-нибудь одну такую сумму.',
-			answers: Array.from(validSums),
+			answers: Array.from(validSums).sort((a, b) => a - b),
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000);
