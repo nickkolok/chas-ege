@@ -2,11 +2,14 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
+		let key = '513823';
+		let preference = ['withoutABCD', 'withABCD'];
+		let rand = getSelectedPreferenceFromList(key, preference);
 
-		let a = sl(1, 10);
-		let b = sl(1, 10);
-		let c = 6 * sl(1, 5);
-		let V = a * b * (c / 6);
+		let length = sl(1, 10);
+		let width = sl(1, 10);
+		let height = 6 * sl(1, 5);
+		let volume = length * width * (height / 6);
 
 		let paint1 = function (ct) {
 			ct.translate(180, 220);
@@ -43,8 +46,10 @@
 		};
 
 		NAtask.setTask({
-			text: 'В треугольной пирамиде три ребра взаимно перпендикулярны, а их длины равны $' + a + '$, $' + b + '$ и $' + c + '$. Найдите объём этой пирамиды.',
-			answers: V,
+			text: 'В треугольной пирамиде ' + ['три', '$ABCD$'][rand] + ' ребра ' + ['', '$AB$, $AC$ и $AD$'][rand] + ' взаимно перпендикулярны' +
+			[', а их длины равны $' + length + '$, $' + width + '$ и $' + height + '$', ''][rand] + '. Найдите объём этой пирамиды'+['.', ', если $AB=' + length + '$, $AC=' + width + '$ и $AD=' + width + '$.'][rand],
+			answers: volume,
+			preference: preference,
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
