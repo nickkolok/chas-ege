@@ -51,7 +51,7 @@
 
 		NAtask.setTask({
 			text: 'На шести карточках написаны цифры ' + sortedDigits.join('; ') +
-				' (по одной цифре на каждой карточке). В выражении $square + squaresquare + squaresquaresquare$ ' +
+				' (по одной цифре на каждой карточке). В выражении $\\square + \\square\\square + \\square\\square\\square$ ' +
 				'вместо каждого квадратика положили карточку из данного набора. Оказалось, что полученная сумма ' +
 				rule.text + '. В ответе укажите какую-нибудь одну такую сумму.',
 			answers: Array.from(validSums),
