@@ -243,140 +243,141 @@ async function main() {
 
     try {
         const recentDevelCommits = await checkDevelCommits(token);
-    console.log(`Recent non-zdn/md/doc devel commits: ${recentDevelCommits}`);
+        console.log(`Recent non-zdn/md/doc devel commits: ${recentDevelCommits}`);
 
-    let prs = await fetchAllOpenPRs(token);
-    if (recentDevelCommits) {
-        prs.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
-    } else {
-        prs.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-    }
-
-    let currentGitStatus = 'unknown';
-    try {
-        const gitStatusPath = path.join(projectRoot, 'dist', 'gitstatus.txt');
-        const gitStatusContent = fs.readFileSync(gitStatusPath, 'utf8');
-        currentGitStatus = gitStatusContent.split('\n')[0].trim();
-    } catch (e) {
-        console.warn('Could not read dist/gitstatus.txt:', e.message);
-    }
-
-    for (const pr of prs) {
-        if (currentGitStatus === 'unknown') {
-            console.log(`⚠️ Current git status is unknown. Skipping PR #${pr.number} to avoid infinite regeneration.`);
-            continue;
+        let prs = await fetchAllOpenPRs(token);
+        if (recentDevelCommits) {
+            prs.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
+        } else {
+            prs.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
         }
-        console.log(`\n--- Checking PR #${pr.number} ---`);
+
+        let currentGitStatus = 'unknown';
         try {
-            const files = await fetchAllPRFiles(pr.number, token);
-            
-            let validFiles = files.filter(f => {
-                if (f.status === 'removed' || f.status === 'renamed') return false;
-                if (f.filename.startsWith('md/') || f.filename.startsWith('doc/')) return false;
-                if (/^zdn\/[^\/]+\/[^\/]+\/(main|fipi)\.js$/.test(f.filename)) return false;
-                if (/^zdn\/[^\/]+\/[^\/]+\.js$/.test(f.filename)) return false;
-                return true;
-            });
-            
-            let symlinkChecked = await Promise.all(validFiles.map(async f => {
-                const url = `https://api.github.com/repos/${owner}/${repo}/contents/${f.filename}?ref=${pr.head.sha}`;
-                try {
-                    const resp = await fetch(url, {
+            const gitStatusPath = path.join(projectRoot, 'dist', 'gitstatus.txt');
+            const gitStatusContent = fs.readFileSync(gitStatusPath, 'utf8');
+            currentGitStatus = gitStatusContent.split('\n')[0].trim();
+        } catch (e) {
+            console.warn('Could not read dist/gitstatus.txt:', e.message);
+        }
+
+        for (const pr of prs) {
+            if (currentGitStatus === 'unknown') {
+                console.log(`⚠️ Current git status is unknown. Skipping PR #${pr.number} to avoid infinite regeneration.`);
+                continue;
+            }
+            console.log(`\n--- Checking PR #${pr.number} ---`);
+            try {
+                const files = await fetchAllPRFiles(pr.number, token);
+                
+                let validFiles = files.filter(f => {
+                    if (f.status === 'removed' || f.status === 'renamed') return false;
+                    if (f.filename.startsWith('md/') || f.filename.startsWith('doc/')) return false;
+                    if (/^zdn\/[^\/]+\/[^\/]+\/(main|fipi)\.js$/.test(f.filename)) return false;
+                    if (/^zdn\/[^\/]+\/[^\/]+\.js$/.test(f.filename)) return false;
+                    return true;
+                });
+                
+                let symlinkChecked = await Promise.all(validFiles.map(async f => {
+                    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${f.filename}?ref=${pr.head.sha}`;
+                    try {
+                        const resp = await fetch(url, {
+                            headers: {
+                                'Accept': 'application/vnd.github.v3+json',
+                                'User-Agent': 'chas-ege-provide-examples-all-prs',
+                                'Authorization': `token ${token}`
+                            }
+                        });
+                        if (resp.ok) {
+                            const data = await resp.json();
+                            return data.type === 'symlink';
+                        }
+                    } catch(e) {}
+                    return false;
+                }));
+                
+                validFiles = validFiles.filter((f, i) => !symlinkChecked[i]);
+                validFiles = validFiles.filter(f => /^zdn\/[^\/]+\/[^\/]+\/[^\/]+\.js$/.test(f.filename));
+
+                if (validFiles.length < 1 || validFiles.length > 4) {
+                    console.log(`PR #${pr.number} has ${validFiles.length} valid zdn/*/*/*.js files. Skipping.`);
+                    continue;
+                }
+
+                const comments = await fetchPRComments(pr.number, token);
+                const exampleComments = comments.filter(c => c.body.includes('ПРИМЕРЫ_ЗАДАЧ'));
+
+                if (exampleComments.length === 0) {
+                    console.log(`PR #${pr.number} has no ПРИМЕРЫ_ЗАДАЧ comment. Generating examples.`);
+                    await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
+                    continue;
+                }
+
+                const lastComment = exampleComments[exampleComments.length - 1];
+                const commentBody = lastComment.body;
+                
+                const match = commentBody.match(/ПРИМЕРЫ_ЗАДАЧ\s+([^\s]+)\s+([0-9a-f]+)\s+сборка\s+([0-9a-f]+)/);
+                if (!match) {
+                    console.log(`Could not parse ПРИМЕРЫ_ЗАДАЧ comment in PR #${pr.number}. Generating.`);
+                    await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
+                    continue;
+                }
+
+                const [, commentedFile, commitHash, buildCommit] = match;
+
+                if (buildCommit !== currentGitStatus) {
+                    const compareUrl = `https://api.github.com/repos/${owner}/${repo}/compare/${buildCommit}...${currentGitStatus}`;
+                    const compareResp = await fetch(compareUrl, {
                         headers: {
                             'Accept': 'application/vnd.github.v3+json',
                             'User-Agent': 'chas-ege-provide-examples-all-prs',
                             'Authorization': `token ${token}`
                         }
                     });
-                    if (resp.ok) {
-                        const data = await resp.json();
-                        return data.type === 'symlink';
-                    }
-                } catch(e) {}
-                return false;
-            }));
-            
-            validFiles = validFiles.filter((f, i) => !symlinkChecked[i]);
-            validFiles = validFiles.filter(f => /^zdn\/[^\/]+\/[^\/]+\/[^\/]+\.js$/.test(f.filename));
-
-            if (validFiles.length < 1 || validFiles.length > 4) {
-                console.log(`PR #${pr.number} has ${validFiles.length} valid zdn/*/*/*.js files. Skipping.`);
-                continue;
-            }
-
-            const comments = await fetchPRComments(pr.number, token);
-            const exampleComments = comments.filter(c => c.body.includes('ПРИМЕРЫ_ЗАДАЧ'));
-
-            if (exampleComments.length === 0) {
-                console.log(`PR #${pr.number} has no ПРИМЕРЫ_ЗАДАЧ comment. Generating examples.`);
-                await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
-                continue;
-            }
-
-            const lastComment = exampleComments[exampleComments.length - 1];
-            const commentBody = lastComment.body;
-            
-            const match = commentBody.match(/ПРИМЕРЫ_ЗАДАЧ\s+([^\s]+)\s+([0-9a-f]+)\s+сборка\s+([0-9a-f]+)/);
-            if (!match) {
-                console.log(`Could not parse ПРИМЕРЫ_ЗАДАЧ comment in PR #${pr.number}. Generating.`);
-                await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
-                continue;
-            }
-
-            const [, commentedFile, commitHash, buildCommit] = match;
-
-            if (buildCommit !== currentGitStatus) {
-                const compareUrl = `https://api.github.com/repos/${owner}/${repo}/compare/${buildCommit}...${currentGitStatus}`;
-                const compareResp = await fetch(compareUrl, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3+json',
-                        'User-Agent': 'chas-ege-provide-examples-all-prs',
-                        'Authorization': `token ${token}`
-                    }
-                });
-                if (compareResp.ok) {
-                    const compareData = await compareResp.json();
-                    const diffFiles = compareData.files || [];
-                    const hasNonZdnMdDoc = diffFiles.some(f => !f.filename.startsWith('zdn/') && !f.filename.startsWith('md/') && !f.filename.startsWith('doc/'));
-                    if (hasNonZdnMdDoc) {
-                        console.log(`Build commit differs from current not only by zdn/md/doc. Generating.`);
-                        
-                        // Check if we should edit last comment
-                        let shouldEditLast = false;
-                        if (editLastFlag && validFiles.length === 1) {
-                            const reviewComments = await fetchPRReviewComments(pr.number, token);
-                            shouldEditLast = await isLastCommentInPR(comments, reviewComments, lastComment.id);
+                    if (compareResp.ok) {
+                        const compareData = await compareResp.json();
+                        const diffFiles = compareData.files || [];
+                        const hasNonZdnMdDoc = diffFiles.some(f => !f.filename.startsWith('zdn/') && !f.filename.startsWith('md/') && !f.filename.startsWith('doc/'));
+                        if (hasNonZdnMdDoc) {
+                            console.log(`Build commit differs from current not only by zdn/md/doc. Generating.`);
+                            
+                            // Check if we should edit last comment
+                            let shouldEditLast = false;
+                            if (editLastFlag && validFiles.length === 1) {
+                                const reviewComments = await fetchPRReviewComments(pr.number, token);
+                                shouldEditLast = await isLastCommentInPR(comments, reviewComments, lastComment.id);
+                            }
+                            
+                            if (shouldEditLast) {
+                                console.log(`Editing last comment for PR #${pr.number}`);
+                                await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir, '--edit-last']);
+                            } else {
+                                await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
+                            }
+                            continue;
                         }
-                        
-                        if (shouldEditLast) {
-                            console.log(`Editing last comment for PR #${pr.number}`);
-                            await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir, '--edit-last']);
-                        } else {
-                            await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
-                        }
+                    } else {
+                        const errorText = await compareResp.text();
+                        console.log(`Failed to compare commits. Status: ${compareResp.status} ${compareResp.statusText}. Response: ${errorText.substring(0, 500)}`);
+                        console.log(`Debug: buildCommit=${buildCommit}, currentGitStatus=${currentGitStatus}`);
+                        await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
                         continue;
                     }
-                } else {
-                    const errorText = await compareResp.text();
-                    console.log(`Failed to compare commits. Status: ${compareResp.status} ${compareResp.statusText}. Response: ${errorText.substring(0, 500)}`);
-                    console.log(`Debug: buildCommit=${buildCommit}, currentGitStatus=${currentGitStatus}`);
-                    await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
-                    continue;
                 }
-            }
 
-            const currentFileContent = await getFileContent(commentedFile, pr.head.sha, token);
-            const oldFileContent = await getFileContent(commentedFile, commitHash, token);
-            
-            if (currentFileContent !== oldFileContent) {
-                console.log(`File ${commentedFile} differs. Generating.`);
-                await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
-            } else {
-                console.log(`File ${commentedFile} is identical. Skipping.`);
-            }
+                const currentFileContent = await getFileContent(commentedFile, pr.head.sha, token);
+                const oldFileContent = await getFileContent(commentedFile, commitHash, token);
+                
+                if (currentFileContent !== oldFileContent) {
+                    console.log(`File ${commentedFile} differs. Generating.`);
+                    await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
+                } else {
+                    console.log(`File ${commentedFile} is identical. Skipping.`);
+                }
 
-        } catch (e) {
-            console.error(`Error processing PR #${pr.number}:`, e.message);
+            } catch (e) {
+                console.error(`Error processing PR #${pr.number}:`, e.message);
+            }
         }
     } finally {
         // Удаляем временную директорию в конце
