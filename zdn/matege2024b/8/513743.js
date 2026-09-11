@@ -26,7 +26,7 @@
 		let specialClothing = ['парадный', 'строгий', 'деловой', 'праздничный', 'торжественный',].iz();
 
 		let task = [`${fullName} был в отпуске ${chislitlx(days, 'день', '$')}  и каждый день ходил куда-нибудь гулять. ${chislitlx(spotA, 'раз', '$')} он ходил на ${spotName[0].ve} и ${chislitlx(spotB, 'раз', '$')} ходил на ${spotName[1].ve} ` +
-			`(за день ${fullName} мог сходить и на ${spotName[0].ve}, и на ${spotName[1].ve}, а мог никуда не ходить, но дважды в день в одно и то же место не ходил).`,
+			`(за день ${fullName} мог сходить и на ${spotName[0].ve}, и на ${spotName[1].ve}, а мог никуда не ходить из этих мест, но дважды в день в одно и то же место не ходил).`,
 		`${fullName} часто ездит на работу на ${transport.pe}. Он не ездит на ${transport.pe} в те дни, когда на улице ${badWeather[0].ie} или ${badWeather[1].ie}, а также по ${specialDay.dm}, когда надевает ${specialClothing} костюм.`][randTask];	
 
 		let correct = [
