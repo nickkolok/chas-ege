@@ -3,6 +3,22 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
+		let rules = [
+			{
+				text: 'делится на 20',
+				check: (s) => s % 20 === 0
+			},
+			{
+				text: 'делится на 10, но не делится на 20',
+				check: (s) => s % 10 === 0 && s % 20 !== 0
+			},
+			{
+				text: 'делится на 10',
+				check: (s) => s % 10 === 0
+			}
+		];
+		let rule = rules[sl(0, rules.length - 1)];
+
 		let digits = [];
 		for (let i = 0; i < 6; i++) {
 			digits.push(sl(1, 9));
@@ -16,7 +32,7 @@
 				let B = p[1] * 10 + p[2];
 				let C = p[3] * 100 + p[4] * 10 + p[5];
 				let S = A + B + C;
-				if (S % 20 === 0) {
+				if (rule.check(S)) {
 					validSums.add(S);
 				}
 			} else {
@@ -35,9 +51,9 @@
 
 		NAtask.setTask({
 			text: 'На шести карточках написаны цифры ' + sortedDigits.join('; ') +
-				' (по одной цифре на каждой карточке). В выражении $\\square + \\square\\square + \\square\\square\\square$ ' +
-				'вместо каждого квадратика положили карточку из данного набора. Оказалось, что полученная сумма делится на 20. ' +
-				'В ответе укажите какую-нибудь одну такую сумму.',
+				' (по одной цифре на каждой карточке). В выражении $square + squaresquare + squaresquaresquare$ ' +
+				'вместо каждого квадратика положили карточку из данного набора. Оказалось, что полученная сумма ' +
+				rule.text + '. В ответе укажите какую-нибудь одну такую сумму.',
 			answers: Array.from(validSums),
 		});
 		NAtask.modifiers.allDecimalsToStandard();
