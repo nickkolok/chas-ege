@@ -69,3 +69,4 @@
         });
     }, 2000);
 })();
+// https://oge.sdamgia.ru/problem?id=356704
