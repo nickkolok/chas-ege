@@ -1,7 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		
+
 		let key = "26592";
 		let preference = ['first_worker', 'second_worker'];
 		let v = getSelectedPreferenceFromList(key, preference);
@@ -20,14 +20,15 @@
 		let kolvo=[[['медленнее','дольше'].iz(),'меньше'],['быстрее','больше']];
 
 		NAtask.setTask({
-			text: ['Заказ на','Задание на изготовление'].iz()+' '+chislitlx(A, detail.ie,'r')+' '+rab_num[v1]+' '+rab.ie+' выполняет на '+chislitlx(n, 'час')+' '+kolvo[1-v1][0]+', чем '+rab_num[1-v1]+'. '+
-				['Сколько '+detail.rm+' '+['в','за'].iz()+' час делает '+rab_num[v]+' '+rab.ie+', если известно, что '+rab_num[1-v]+' '+['в','за'].iz()+' час делает на '+chislitlx(b, detail.ie,'r')+' '+kolvo[v][1]+'?',
+			text: ['Заказ на','Задание на изготовление'].iz()+' '+chislitlx(A, detail.ie,'v')+' '+rab_num[v1]+' '+rab.ie+' выполняет на '+chislitlx(n, 'час')+' '+kolvo[1-v1][0]+', чем '+rab_num[1-v1]+'. '+
+				['Сколько '+detail.rm+' '+['в','за'].iz()+' час делает '+rab_num[v]+' '+rab.ie+', если известно, что '+rab_num[1-v]+' '+['в','за'].iz()+' час делает на '+chislitlx(b, detail.ie,'v')+' '+kolvo[v][1]+'?',
 				'Сколько '+detail.rm+' '+['в','за'].iz()+' час делает '+rab_num[v]+' '+rab.ie+', если известно, что он '+['в','за'].iz()+' час делает на '+chislitlx(b, detail.ie,'r')+' '+kolvo[1-v][1]+', чем '+rab_num[1-v]+'?'].iz(),
 			answers: v==1 ? x : x+b,
 			authors: ['Aisse-258'],
 			preference: preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.assertSaneDecimals();
 	}, 2000000);
 })();
 
