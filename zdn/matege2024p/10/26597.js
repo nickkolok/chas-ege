@@ -1,16 +1,16 @@
-(function() {
-	retryWhileError(function() {
+(function () {
+	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		
+
 		let key = "26597";
 		let preference = ['first_hose', 'second_hose'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		let A = sl(30,900);//объем резервуара (базовый)
-		let b = sl(1,[A/30,29].minE(),0.01);//объем (разница)
-		let x = sl(b+1,100,0.01);//объем (ответ)
-		let n = (A*b)/(x*(x+b));//время заполнения (разница)
-		genAssertZ1000(n,'Время слишком дробное: '+n);
+		let A = sl(30, 900);//объем резервуара (базовый)
+		let b = sl(1, [A / 30, 29].minE(), 0.01);//объем (разница)
+		let x = sl(b + 1, 100, 0.01);//объем (ответ)
+		let n = (A * b) / (x * (x + b));//время заполнения (разница)
+		genAssertZ1000(n, 'Время слишком дробное: ' + n);
 
 		let liquid = sklonlxkand(['вода','жидкость'].iz());
 		let tub_naz = sklonlxkand(['труба','шланг'].iz());
