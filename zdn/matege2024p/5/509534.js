@@ -20,7 +20,7 @@
 
 		// 4. Координаты точек внутри прямоугольника
 		// Распределяем точки так, чтобы они не накладывались (шаг 1.5 по X)
-		let coords = [arrayOfUniqueValues(n, -8, 7, 1.5), arrayOfUniqueValues(n, -6, 6)].T();
+		let coords = [arrayOfUniqueValues(n, -7, 7, 1.5), arrayOfUniqueValues(n, -6, 6)].T();
 
 		// 5. Выбор целевого значения для вопроса
 		let targetX = uniqueValues.iz();
