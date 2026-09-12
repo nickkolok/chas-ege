@@ -14,13 +14,10 @@
         let typeOfWater = ['горячей', 'холодной'].iz();
         let waterAcc = typeOfWater === 'горячей' ? 'горячую' : 'холодную';
 
-        let monthsGen = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-        let monthsAcc = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
-
         let monthIndex = sl(0, 10, 1);
-        let month1Gen = monthsGen[monthIndex];
-        let month2Gen = monthsGen[monthIndex + 1];
-        let month1Acc = monthsAcc[monthIndex];
+        let month1Gen = mesiacy.re[monthIndex];
+        let month2Gen = mesiacy.re[monthIndex + 1];
+        let month1Acc = om.months[monthIndex];
 
         let priceInRuble = sl(10, 300, 1);
         let dopPriceInKopeki = sl(0, 1, 1) ? sl(1, 9, 1) * 10 : 0;
