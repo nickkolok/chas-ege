@@ -3,7 +3,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		
 		let key = "26597";
-		let v2=getListedPreference(key, [{
+		let v2=getSelectedPreferenceFromList(key, [{
 			preference: 'first_hose',
 			preferenceValue: 0,
 		}, {
