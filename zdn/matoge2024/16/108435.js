@@ -38,7 +38,7 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectionMatrix);
-			ctx.drawArc(0, 0, new Point(0, 0).distanceTo(new Point(points[0].x, points[0].y))[0], 0, 2 * Math.PI);
+			ctx.drawCircle(Math.hypot(points[0].x, points[0].y));
 			ctx.fillKrug(0, 0, 2);
 
 			ctx.scale(1, -1);
