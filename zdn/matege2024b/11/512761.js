@@ -2,14 +2,13 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-
 		let key = '512761';
 		let preference = ['cube', 'parallelepiped'];
 		let variant = getSelectedPreferenceFromList(key, preference);
 
 		let a, b, c, volumeLiters;
 
-		if (variant === 'cube') {
+		if (variant === 0) {
 			// Куб: сторона кратна 10, чтобы объём в литрах был целым числом
 			let x = sl(1, 5, 1);
 			a = 10 * x;
@@ -48,11 +47,10 @@
 			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
-		let shapeText = (variant === 'cube') ? 'куба' : 'прямоугольного параллелепипеда';
-		let dimensionsText = (variant === 'cube') ? 'со стороной $' + a + '$ см' : 'с размерами $' + a + '$ см $\\times$ $' + b + '$ см $\\times$ $' + c + '$ см';
-
 		NAtask.setTask({
-			text: 'Аквариум имеет форму ' + shapeText + ' ' + dimensionsText + '. Сколько литров составляет объём аквариума? В одном литре 1000 кубических сантиметров.',
+			text: 'Аквариум имеет форму ' + ['куба','прямоугольного параллелепипеда'][variant] + ' ' + 
+			[ 'со стороной $' + a + '$ см','с размерами $' + a + '$ см $\\times$ $' + b + '$ см $\\times$ $' + c + '$ см'][variant] + 
+			'. Сколько литров составляет объём аквариума? В одном литре $1000$ кубических сантиметров.',
 			answers: volumeLiters,
 			preference: preference,
 		});
