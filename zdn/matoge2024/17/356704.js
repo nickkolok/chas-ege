@@ -2,6 +2,10 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
+        let key = '356704';
+        let preference = ['noMidline', 'drawMidline'];
+        let rand = getSelectedPreferenceFromList(key, preference);
+
         let AB = sl(3, 15);
         let CD = sl(2, AB - 1);
 
@@ -36,12 +40,25 @@
             ctx.lineWidth = 2;
             ctx.drawFigure(points, trp.connectionMatrix);
 
+            if (rand === 1) {
+                let mBC = {
+                    x: (points[1].x + points[2].x) / 2,
+                    y: (points[1].y + points[2].y) / 2
+                };
+                let mAD = {
+                    x: (points[0].x + points[3].x) / 2,
+                    y: (points[0].y + points[3].y) / 2
+                };
+                ctx.drawLine(mBC.x, mBC.y, mAD.x, mAD.y);
+            }
+
         };
 
         NAtask.setTask({
             text: `Основания трапеции равны $${trp.lengthAB}$ и $${trp.lengthCD}$, а высота равна $${trp.lengthHeightACD}$. Найдите среднюю линию этой трапеции.`,
             answers: 0.5 * (trp.lengthCD + trp.lengthAB),
             authors: ['Александра Суматохина'],
+            preference: preference,
         });
         NAtask.modifiers.allDecimalsToStandard(true);
 
@@ -52,4 +69,3 @@
         });
     }, 2000);
 })();
-// https://oge.sdamgia.ru/problem?id=356704
