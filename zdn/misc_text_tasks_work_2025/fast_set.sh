@@ -59,6 +59,5 @@ for element in "${array[@]}"; do
     else
         printf "window.nabor.preferences['%s'] = [%s];\n" "$type" "$descriptions" >> main.js;
     fi
-    printf "chas2.task.setMinimaxFunctionTask.forbidOpenEnds = true;\n" >> main.js;
     cd ..;
 done
