@@ -3,7 +3,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		
 		let key = "26592";
-		let v=getListedPreference(key, [{
+		let v=getSelectedPreferenceFromList(key, [{
 			preference: 'first_worker',
 			preferenceValue: 0,
 		}, {
