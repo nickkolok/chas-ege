@@ -3,13 +3,8 @@
 		NAinfo.requireApiVersion(0, 2);
 		
 		let key = "26592";
-		let v=getSelectedPreferenceFromList(key, [{
-			preference: 'first_worker',
-			preferenceValue: 0,
-		}, {
-			preference: 'second_worker',
-			preferenceValue: 1,
-		}], sl1());
+		let preference = ['first_worker', 'second_worker'];
+		let v = getSelectedPreferenceFromList(key, preference);
 
 		let A = sl(10,600);//кол-во деталей (базовое)
 		let b = sl(1,[A/4-1,30].minE(),0.01);//кол-во деталей (разница)
@@ -29,7 +24,8 @@
 				['Сколько '+detail.rm+' '+['в','за'].iz()+' час делает '+rab_num[v]+' '+rab.ie+', если известно, что '+rab_num[1-v]+' '+['в','за'].iz()+' час делает на '+chislitlx(b, detail.ie,'r')+' '+kolvo[v][1]+'?',
 				'Сколько '+detail.rm+' '+['в','за'].iz()+' час делает '+rab_num[v]+' '+rab.ie+', если известно, что он '+['в','за'].iz()+' час делает на '+chislitlx(b, detail.ie,'r')+' '+kolvo[1-v][1]+', чем '+rab_num[1-v]+'?'].iz(),
 			answers: v==1 ? x : x+b,
-			authors: ['Aisse-258']
+			authors: ['Aisse-258'],
+			preference: preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000000);
