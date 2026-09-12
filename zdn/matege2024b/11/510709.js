@@ -48,3 +48,4 @@
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
+https://mathb-ege.sdamgia.ru/problem?id=510709
