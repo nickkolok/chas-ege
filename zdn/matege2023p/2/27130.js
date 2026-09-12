@@ -27,7 +27,7 @@
 			ct.lineWidth = 2 / 15;
 			let cubeEdge = 12;
 			ct.strokeStyle = "#8080ff";
-			if ([measurements[0].name, measurements[1].name].includes('объём')) {
+			if (measurements.some(m => m.name === 'объём')) {
 				ct.setLineDash([1, 0.5]);
 				ct.translate(44 / 15, 71 / 15);
 				ct.drawParallelepiped({
