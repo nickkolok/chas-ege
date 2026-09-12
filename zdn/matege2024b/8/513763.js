@@ -26,7 +26,7 @@
 		];
 		let wrong = [
 			`Всякий день, когда ученик  ${classNumber} «${letter}» берёт с собой в школу ${item.ve}, не является ${days[0].te} и ${days[1].te}.`,
-			`Каждый день, отличный от ${days[0].dm} и ${days[1].dm}, ученикам  ${classNumber} «${letter}» ${item.ve} можно в школу не брать.`,
+			`Каждый день, отличный от ${days[0].re} и ${days[2].re}, ученикам  ${classNumber} «${letter}» ${item.ve} можно в школу не брать.`,
 			`${item.ie.toZagl()} ${['нужен','нужна'][item.rod]} каждый день.`,
 			`Только по ${days[0].dm} и ${days[2].dm} требуется ${item.ie}.`
 		];
