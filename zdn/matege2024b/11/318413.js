@@ -1,21 +1,48 @@
-(function() {
-    const m1 = sl(0, 10); // индекс месяца от 0 (январь) до 10 (ноябрь), чтобы m1+1 не вышел за пределы
-    const month1Gen = mesiacy.re[m1];
-    const month2Gen = mesiacy.re[m1 + 1];
-    const month1Nom = om.months[m1];
-    
-    const n1 = (sl(100, 9000) + sl(0, 9)) / 10; // начальные показания, например, 76.1
-    const consumption = sl(1, 30); // расход воды за месяц
-    const n2 = n1 + consumption; // конечные показания
-    
-    const costRub = sl(15, 150);
-    const costKop = sl(0, 9) * 10; // 00, 10, 20, ..., 90
-    
-    const waterType = sluchiz(['холодной', 'горячей']);
+(function () {
+    'use strict';
+    retryWhileError(function () {
+        NAinfo.requireApiVersion(0, 2);
 
-    NAtask.setTask({
-        text: `В квартире установлен прибор учёта расхода ${waterType} воды (счётчик). 1 ${month1Gen} счётчик показывал ${n1} куб. м воды, а 1 ${month2Gen} — ${n2} куб. м. Сколько нужно заплатить за ${waterType} воду за ${month1Nom}, если стоимость 1 куб. м ${waterType} воды составляет ${costRub} руб. ${String(costKop).padStart(2, '0')} коп.? Ответ дайте в рублях.`,
-        answers: (consumption * (costRub * 100 + costKop)) / 100,
-    });
+        let reading1 = sl(10, 999, 1);
+        let reading2 = reading1 + sl(2, 20, 1);
+
+        let hasDecimal = sl(0, 1, 1);
+        let decDigit = hasDecimal ? sl(1, 9, 1) : '';
+        let reading1Str = reading1 + (hasDecimal ? ',' + decDigit : '');
+        let reading2Str = reading2 + (hasDecimal ? ',' + decDigit : '');
+
+        let typeOfWater = ['горячей', 'холодной'].iz();
+        let waterAcc = typeOfWater === 'горячей' ? 'горячую' : 'холодную';
+
+        let monthsGen = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+        let monthsAcc = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
+
+        let monthIndex = sl(0, 10, 1);
+        let month1Gen = monthsGen[monthIndex];
+        let month2Gen = monthsGen[monthIndex + 1];
+        let month1Acc = monthsAcc[monthIndex];
+
+        let priceInRuble = sl(10, 300, 1);
+        let dopPriceInKopeki = sl(0, 1, 1) ? sl(1, 9, 1) * 10 : 0;
+
+        let numberOfLiters = reading2 - reading1;
+        let paymentForPurchase = numberOfLiters * (priceInRuble * 100 + dopPriceInKopeki) / 100;
+
+        let priceText = priceInRuble + ' руб.';
+        if (dopPriceInKopeki > 0) {
+            priceText += ' ' + dopPriceInKopeki + ' коп.';
+        }
+
+        NAtask.setTask({
+            text: 'В квартире установлен прибор учёта расхода ' + typeOfWater + ' воды (счётчик). Показания счётчика 1 ' + month1Gen +
+            ' составляли $' + reading1Str + '$ куб. м воды, а 1 ' + month2Gen + ' — $' + reading2Str + '$ куб. м. ' +
+            'Сколько нужно заплатить за ' + waterAcc + ' воду за ' + month1Acc + ', если стоимость 1 куб. м ' + typeOfWater +
+            ' воды составляет ' + priceText + '? Ответ дайте в рублях.',
+            answers: paymentForPurchase,
+        });
+
+        NAtask.modifiers.allDecimalsToStandard();
+    }, 100);
 })();
-// Обзад 318413
+//https://ege.sdamgia.ru/problem?id=318413
+//chas-ege-selena
