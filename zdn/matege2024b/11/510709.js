@@ -21,9 +21,27 @@
 
 		let aStr = String(a).replace('.', ',');
 
+		// Статичная иллюстрация: правильная четырёхугольная пирамида,
+		// невидимые рёбра (левое и заднее рёбра основания, заднее боковое) — пунктиром
+		let paint1 = function (ct) {
+			ct.translate(12, 72);
+			ct.scale(20, -20);
+			ct.lineWidth = 2 / 20;
+			ct.drawRightPyramid4({
+				edge: 5,
+				height: 6.5,
+			}, [1, 3, 6], [5 / 20, 2 / 20]);
+		};
+
 		NAtask.setTask({
 			text: 'Пирамида Хефрена имеет форму правильной четырехугольной пирамиды, сторона основания которой равна ' + A + ' м, а высота — ' + H + ' м. Сторона основания точной музейной копии этой пирамиды равна ' + aStr + ' см. Найдите высоту музейной копии. Ответ дайте в сантиметрах.',
 			answers: ans,
+		});
+
+		NAtask.modifiers.addCanvasIllustration({
+			width: 220,
+			height: 190,
+			paint: paint1,
 		});
 
 		NAtask.modifiers.allDecimalsToStandard();
