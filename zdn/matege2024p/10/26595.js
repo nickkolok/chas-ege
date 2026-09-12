@@ -3,13 +3,8 @@
 		NAinfo.requireApiVersion(0, 2);
 		
 		let key = "26595";
-		let v=getSelectedPreferenceFromList(key, [{
-			preference: 'first_worker',
-			preferenceValue: 0,
-		}, {
-			preference: 'second_worker',
-			preferenceValue: 1,
-		}], sl1());
+		let preference = ['first_worker', 'second_worker'];
+		let v = getSelectedPreferenceFromList(key, preference);
 
 		let A = sl(10,600);//кол-во деталей1
 		let B = sl([A/2,10].maxE(),[1.5*A,600].minE());//кол-во деталей2
@@ -33,7 +28,8 @@
 				'. Известно, что первый '+rab.ie+' '+['в','за'].iz()+' час делает на '+chislitlx(k, detail.ie,'v')+' больше, чем второй.'+
 				' Сколько '+detail.rm+' '+['в','за'].iz()+' час делает '+rab_num[v]+' '+rab.ie+'?',
 			answers: v==1 ? x : x+k,
-			authors: ['Aisse-258']
+			authors: ['Aisse-258'],
+			preference: preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000000);
