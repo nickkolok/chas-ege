@@ -20,12 +20,13 @@
 		let tub_num = ['перв' + ['ый', 'ая', 'ое', 'ые'][tub_naz.rod], 'втор' + ['ой', 'ая', 'ое', 'ые'][tub_naz.rod]];
 		let dol = [[['медленнее', 'дольше'].iz(), 'меньше'], ['быстрее', 'больше']];
 		let esli = [', если известно, что ', ', если '].iz();
+		let ono = ['он' + ['', 'а', 'о', 'и'][tub_naz.rod]];
 
 		NAtask.setTask({
-			text: tub_num[rand].toZagl()+' '+tub_naz.ie+' '+prop+' на '+chislitlx(b, 'литр','r')+' в минуту '+dol[rand][1]+', чем '+tub_num[1-rand]+'. '+
-				'Сколько литров '+liquid.re+' в минуту '+prop+' '+tub_num[1-v1]+' '+tub_naz.ie+esli+rez.ve+' объёмом '+chislitlx(A, 'литр','r')+
-				[' она '+['заполняет','опустошает'].iz()+' на '+chislitlx(n, 'минута','r')+' '+dol[1-v1][0]+', чем '+tub_num[v1]+' '+tub_naz.ie+'?',
-				 ' '+tub_num[v1]+' '+tub_naz.ie+' '+['заполняет','опустошает'].iz()+' на '+chislitlx(n, 'минута','r')+' '+dol[v1][0]+'?'].iz(),
+			text: tub_num[rand].toZagl() + ' ' + tub_naz.ie + ' ' + prop + ' на ' + chislitlx(b, 'литр', 'v') + ' в минуту ' + dol[rand][1] + ', чем ' + tub_num[1 - rand] + '. ' +
+				'Сколько литров ' + liquid.re + ' в минуту ' + prop + ' ' + tub_num[1 - v1] + ' ' + tub_naz.ie + esli + rez.ve + ' объёмом ' + chislitlx(A, 'литр', 'r') + ' ' +
+				[ono + ' ' + ['заполняет', 'опустошает'].iz() + ' на ' + chislitlx(n, 'минута', 'v') + ' ' + dol[1 - v1][0] + ', чем ' + tub_num[v1] + ' ' + tub_naz.ie + '?',
+				' ' + tub_num[v1] + ' ' + tub_naz.ie + ' ' + ['заполняет', 'опустошает'].iz() + ' на ' + chislitlx(n, 'минута', 'v') + ' ' + dol[v1][0] + '?'].iz(),
 			answers: v1 == 1 ? x : x + b,
 			authors: ['Aisse-258'],
 			preference: preference,
