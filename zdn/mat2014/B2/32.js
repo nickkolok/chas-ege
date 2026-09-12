@@ -9,7 +9,7 @@ NAinfo.requireApiVersion(0, 0);
 	var client=['покупатель','школьник','ученик'].iz();                // покупатель
 	var build=['киоск','ларёк','магазин'].iz();                          // заведение
 	if (sumd<sum){
-		var m=(cost*sum*(1-discount/100)).ceil() ;   //чтобы лишний раз не пересчитывать
+		var m=(cost*sum*(1-discount/100)).ceil();   //чтобы лишний раз не пересчитывать
 	}else{
 		var m=(cost*sum).ceil();
 	}
