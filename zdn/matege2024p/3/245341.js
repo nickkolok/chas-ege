@@ -62,7 +62,7 @@
 			ctx.translate(h / 2, w / 2);
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.primaryBrandColors[0];
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawFigure(point2DPar, matrixPrism);
 			ctx.font = "25px liberation_sans";
 
