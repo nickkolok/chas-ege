@@ -31,7 +31,7 @@
 
 		let correct = [
 			[`Не может оказаться, что ${fullName} ${chislitlx(maxBoth + 1, 'день', '$')} ходил и на ${spotName[0].ve}, и на ${spotName[1].ve}.`,
-			`Было ${chislitlx(minNone, 'день', '$')}, когда ${fullName} не ходил ни на ${spotName[0].ve}, ни на ${spotName[1].ve}.`,
+			`Был${minNone == 1? '': 'о'} ${chislitlx(minNone, 'день', '$')}, когда ${fullName} не ходил ни на ${spotName[0].ve}, ни на ${spotName[1].ve}.`,
 			`Максимум ${chislitlx(maxBoth, 'день', '$')} он был и там, и там.`,
 			`Минимум ${chislitlx(minNone, 'день', '$')} он никуда не ходил.`,
 			],
