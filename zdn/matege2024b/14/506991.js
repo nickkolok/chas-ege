@@ -10,7 +10,6 @@
         let e=sl(1,50);
         let f=[e+sl(1,49),sl(1,99)];
         let wholeNumE=sl(1,9);
-        let div=[10,100];
 
         genAssertIrreducible(a,b[0]);
         genAssertIrreducible(c,d[0]);
@@ -22,8 +21,7 @@
         // Создаем три части выражения
         let part1 = '('+['','-'].iz()+[
             'mixed('+wholeNumA+','+a+','+b[0]+')',
-            '('+a+'/'+b[1]+')',
-            sl(1,999)/div.iz()
+            '('+a+'/'+b[1]+')'
         ].iz()+')'+['+','-'].iz()+
         ['(','forceBrackets(-'].iz()+[
             'mixed('+wholeNumC+','+c+','+d[0]+')',
@@ -32,15 +30,14 @@
         
         let part2 = '('+['','-'].iz()+[
             'mixed('+wholeNumE+','+e+','+f[0]+')',
-            '('+e+'/'+f[1]+')',
-            sl(1,999)/div.iz()
+            '('+e+'/'+f[1]+')'
         ].iz()+')';
         
         // Перемешиваем части
         let parts = [part1, part2].shuffle();
         
         // Для первого множителя всегда обычные скобки
-        // Для второго и третьего - forceBrackets добавит скобки только если отрицательное
+        // Для второго множителя forceBrackets добавит скобки только если он отрицательный
         for (let i = 1; i < parts.length; i++) {
             if (parts[i].indexOf('(-') === 0) {
                 // Отрицательное число - оборачиваем в forceBrackets
