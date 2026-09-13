@@ -3,28 +3,57 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let validNumbers = [];
-		for (let n = 6001; n < 8000; n++) {
-			if (n % 18 === 0) {
+		// Разрешённые делители, основанные на школьных признаках делимости
+		let divisors = [12, 15, 18, 20, 24, 25, 30, 36, 40, 45, 50, 60, 75, 90];
+		let divisor = divisors.iz();
+		
+		// Направление изменения цифр: true - возрастание, false - убывание
+		let isIncreasing = sl(0, 1) === 1;
+		let directionText = isIncreasing ? 'больше предыдущей' : 'меньше предыдущей';
+
+		// 1. Находим все валидные четырёхзначные числа для выбранных условий
+		let allValidNumbers = [];
+		for (let n = 1000; n < 10000; n++) {
+			if (n % divisor === 0) {
 				let s = String(n);
-				let isDecreasing = true;
-				for (let i = 0; i < s.length - 1; i++) {
-					if (parseInt(s[i]) <= parseInt(s[i+1])) {
-						isDecreasing = false;
-						break;
+				let isValid = true;
+				for (let i = 0; i < 3; i++) {
+					if (isIncreasing) {
+						if (parseInt(s[i]) >= parseInt(s[i+1])) {
+							isValid = false;
+							break;
+						}
+					} else {
+						if (parseInt(s[i]) <= parseInt(s[i+1])) {
+							isValid = false;
+							break;
+						}
 					}
 				}
-				if (isDecreasing) {
-					validNumbers.push(n);
+				if (isValid) {
+					allValidNumbers.push(n);
 				}
 			}
 		}
 
-		genAssert(validNumbers.length > 0, 'Нет решений');
+		genAssert(allValidNumbers.length > 0, `Нет решений для делителя ${divisor} и направления ${isIncreasing ? 'возрастание' : 'убывание'}`);
+
+		// 2. Выбираем одно из валидных чисел и формируем вокруг него реалистичный диапазон
+		let targetNumber = allValidNumbers.iz();
+		let thousands = Math.floor(targetNumber / 1000);
+		let minVal = thousands * 1000;
+		let maxVal = Math.min(10000, (thousands + 2) * 1000);
+
+		// 3. Фильтруем ответы, чтобы они попадали в выбранный диапазон
+		let validNumbersInRange = allValidNumbers.filter(n => n > minVal && n < maxVal);
+		
+		genAssert(validNumbersInRange.length > 0, `Нет решений в диапазоне ${minVal}-${maxVal}`);
 
 		NAtask.setTask({
-			text: 'Найдите четырёхзначное число, большее 6000, но меньшее 8000, которое делится на 18 и каждая следующая цифра которого меньше предыдущей. В ответе укажите какое-нибудь одно такое число.',
-			answers: validNumbers,
+			text: 'Найдите четырёхзначное число, большее ' + minVal + ', но меньшее ' + maxVal + 
+			      ', которое делится на ' + divisor + 
+			      ' и каждая следующая цифра которого ' + directionText + '. В ответе укажите какое-нибудь одно такое число.',
+			answers: validNumbersInRange,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000);
