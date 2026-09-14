@@ -15,8 +15,8 @@
 		let correct = [
 			`Любая кошка, помимо указанных, которая весит меньше ${names[2].re}, весит также меньше ${names[0].re}.`,
 			`Среди указанных кошек нет кошек тяжелее ${names[0].re}.`,
-			`${names[0].ie} тяжелее ${names[1].re} на ${weightFirst} кг.`,
-			`${names[2].ie} легче ${names[1].re} на ${weightSecond} кг.`
+			`${names[0].ie} тяжелее ${names[1].re} на ${chislitlx(weightFirst, 'килограмм','v')}.`,
+			`${names[2].ie} легче ${names[1].re} на ${chislitlx(weightSecond, 'килограмм','v')}.`
 		];
 		let wrong = [
 			`Любая кошка, помимо указанных, которая весит меньше ${names[0].re}, весит также меньше ${names[2].re}.`,
