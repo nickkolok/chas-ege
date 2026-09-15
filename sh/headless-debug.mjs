@@ -205,7 +205,7 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
                 return window.vopr && window.vopr.preference ? window.vopr.preference : null;
             });
             if (preference && Array.isArray(preference) && preference.length > 0) {
-                console.error(`\n[PRESENCE DETECTED] Task has preferences: ${JSON.stringify(preference, null, 2)}`);
+                console.error(`\n[PREFERENCE DETECTED] Task has preferences: ${JSON.stringify(preference, null, 2)}`);
             } else {
                 console.error(`\n[NO PREFERENCE] Task has no preferences defined.`);
             }
