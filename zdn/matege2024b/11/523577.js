@@ -3,30 +3,72 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let k2, k1, ans;
+		let widthRatio, heightRatio, volumeRatio;
 		do {
-			k2 = sl(2, 6); // во сколько раз вторая коробка шире первой
-			k1 = sl(15, 60) / 10; // во сколько раз первая коробка выше второй (от 1.5 до 6.0)
-			ans = (k2 * k2) / k1;
-		} while (Math.round(ans * 10) !== ans * 10 || ans > 20);
+			widthRatio = sl(2, 6);   // во сколько раз вторая коробка шире первой
+			heightRatio = sl(15, 60) / 10;  // во сколько раз первая коробка выше второй (1.5 – 6.0)
+			volumeRatio = (widthRatio * widthRatio) / heightRatio;  // V2 / V1
+		} while (Math.round(volumeRatio * 10) !== volumeRatio * 10 || volumeRatio > 20);
 
-		let raz = function(n) {
-			if (n % 1 !== 0) return 'раза'; // для дробных чисел (1.5 раза, 2.5 раза)
-			let m = Math.floor(n);
-			let r10 = m % 10;
-			let r100 = m % 100;
-			if (r100 >= 11 && r100 <= 14) return 'раз';
-			if (r10 === 1) return 'раз';
-			if (r10 >= 2 && r10 <= 4) return 'раза';
+		// Склонение слова «раз» в зависимости от числительного
+		let razForm = function(number) {
+			if (number % 1 !== 0) return 'раза';  // дробные: 1.5 раза, 2.5 раза
+			let intValue = Math.floor(number);
+			let lastDigit = intValue % 10;
+			let lastTwoDigits = intValue % 100;
+			if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'раз';
+			if (lastDigit === 1) return 'раз';
+			if (lastDigit >= 2 && lastDigit <= 4) return 'раза';
 			return 'раз';
 		};
 
-		let text = 'Даны две коробки, имеющие форму правильной четырёхугольной призмы, стоящей на основании. Первая коробка в {k1} {r1} выше второй, а вторая в {k2} {r2} шире первой. Во сколько раз объём второй коробки больше объёма первой?';
-		text = text.replace('{k1}', k1).replace('{r1}', raz(k1)).replace('{k2}', k2).replace('{r2}', raz(k2));
+		let taskText = 'Даны две коробки, имеющие форму правильной четырёхугольной призмы, стоящей на основании. Первая коробка в {heightRatio} {heightRaz} выше второй, а вторая в {widthRatio} {widthRaz} шире первой. Во сколько раз объём второй коробки больше объёма первой?';
+		taskText = taskText
+			.replace('{heightRatio}', heightRatio)
+			.replace('{heightRaz}', razForm(heightRatio))
+			.replace('{widthRatio}', widthRatio)
+			.replace('{widthRaz}', razForm(widthRatio));
+
+		// Функция рисования двух коробок
+		let paintBoxes = function (ct) {
+			ct.translate(40, 30);
+			ct.scale(20, 20);
+			ct.lineWidth = 2 / 20;
+
+			// Первая коробка — высокая и узкая (слева)
+			ct.drawParallelepiped({
+				width: 3,
+				height: 9,
+				depth: 3,
+				angle: 30,
+				strokeStyle: om.primaryBrandColors,
+			}, [0, 0, 0], false, [0.5, 0.3]);
+
+			// Смещаем контекст для второй коробки: правее и вниз
+			ct.save();
+			ct.translate(7, 3);  // сдвиг вправо на 18 и вниз на 4 единицы
+
+			// Вторая коробка — низкая и широкая (справа)
+			ct.drawParallelepiped({
+				width: 8,
+				height: 3,
+				depth: 8,
+				angle: 30,
+				strokeStyle: om.primaryBrandColors,
+			}, [0, 0, 0], false, [0.5, 0.3]);
+
+			ct.restore();
+		};
 
 		NAtask.setTask({
-			text: text,
-			answers: ans,
+			text: taskText,
+			answers: volumeRatio,
+		});
+
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 300,
+			paint: paintBoxes,
 		});
 
 		NAtask.modifiers.allDecimalsToStandard();
