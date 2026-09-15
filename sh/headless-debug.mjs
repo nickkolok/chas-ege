@@ -240,28 +240,37 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         console.error(`\n[NO PREFERENCE] Task has no preferences defined.`);
     }
     
-    // Determine total runs: combinations if present, otherwise iterations
-    const totalRuns = combinations.length > 0 ? combinations.length : iterations;
+    // Determine total runs: if preferences exist, generate `iterations` examples for each combination
+    const totalRuns = combinations.length > 0 ? combinations.length * iterations : iterations;
     
     for (let i = 0; i < totalRuns; i++) {
+        let comboIdx = 0;
+        let iterIdx = i;
+        
+        if (combinations.length > 0) {
+            comboIdx = Math.floor(i / iterations);
+            iterIdx = i % iterations;
+        }
+        
         const runLabel = combinations.length > 0 
-            ? `Combination ${i + 1}/${combinations.length} [${JSON.stringify(combinations[i])}]`
-            : `Iteration ${i + 1}/${iterations}`;
+            ? `Combination ${comboIdx + 1}/${combinations.length} [${JSON.stringify(combinations[comboIdx])}], Example ${iterIdx + 1}/${iterations}`
+            : `Example ${i + 1}/${iterations}`;
         console.log(`\n=== ${runLabel} ===`);
         
         if (combinations.length > 0) {
-            // Set current combination and regenerate
+            // Set current combination
             await page.evaluate((combo) => {
                 window.__currentPreferences = combo;
-                createFromFile();
-            }, combinations[i]);
-        } else if (i > 0) {
-            // No preferences - regenerate for subsequent iterations
+            }, combinations[comboIdx]);
+        }
+        
+        // Regenerate task (except for the very first generation which already happened)
+        if (i > 0) {
             await page.evaluate(() => {
                 createFromFile();
             });
         }
-        // i === 0 without preferences: first generation already done
+        // i === 0: first generation already done (auto-started by otladka.js)
         
         // Wait for question to be generated
         try {
