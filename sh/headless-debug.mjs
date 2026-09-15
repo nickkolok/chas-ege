@@ -198,6 +198,18 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         } catch (error) {
             console.log('Timeout waiting for question generation, continuing...');
         }
+
+        // Check for preference after first generation
+        if (i === 0) {
+            const preference = await page.evaluate(() => {
+                return window.vopr && window.vopr.preference ? window.vopr.preference : null;
+            });
+            if (preference && Array.isArray(preference) && preference.length > 0) {
+                console.error(`\n[PRESENCE DETECTED] Task has preferences: ${JSON.stringify(preference, null, 2)}`);
+            } else {
+                console.error(`\n[NO PREFERENCE] Task has no preferences defined.`);
+            }
+        }
         
         // Wait for MathJax
         await new Promise(resolve => setTimeout(resolve, 1500));
