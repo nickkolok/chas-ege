@@ -199,9 +199,11 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
             console.log('Timeout waiting for question generation, continuing...');
         }
 
+        let preference = null;
+
         // Check for preference after first generation
         if (i === 0) {
-            const preference = await page.evaluate(() => {
+            preference = await page.evaluate(() => {
                 return window.vopr && window.vopr.preference ? window.vopr.preference : null;
             });
             if (preference && Array.isArray(preference) && preference.length > 0) {
@@ -209,22 +211,23 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
             } else {
                 console.error(`\n[NO PREFERENCE] Task has no preferences defined.`);
             }
-        }
-        // Compute and display Cartesian product of preferences
-        if (i === 0 && preference && Array.isArray(preference) && preference.length > 0) {
-            function cartesianProduct(arr) {
-                if (!Array.isArray(arr) || arr.length === 0) return [[]];
-                const normalized = arr.map(item => Array.isArray(item) ? item : [item]);
-                return normalized.reduce((acc, curr) => {
-                    return acc.flatMap(a => curr.map(c => [...a, c]));
-                }, [[]]);
-            }
 
-            const combinations = cartesianProduct(preference);
-            console.error(`\n[CARTESIAN PRODUCT] Total combinations: ${combinations.length}`);
-            combinations.forEach((combo, idx) => {
-                console.error(`  Combination ${idx + 1}: ${JSON.stringify(combo)}`);
-            });
+            // Compute and display Cartesian product of preferences
+            if (preference && Array.isArray(preference) && preference.length > 0) {
+                function cartesianProduct(arr) {
+                    if (!Array.isArray(arr) || arr.length === 0) return [[]];
+                    const normalized = arr.map(item => Array.isArray(item) ? item : [item]);
+                    return normalized.reduce((acc, curr) => {
+                        return acc.flatMap(a => curr.map(c => [...a, c]));
+                    }, [[]]);
+                }
+
+                const combinations = cartesianProduct(preference);
+                console.error(`\n[CARTESIAN PRODUCT] Total combinations: ${combinations.length}`);
+                combinations.forEach((combo, idx) => {
+                    console.error(`  Combination ${idx + 1}: ${JSON.stringify(combo)}`);
+                });
+            }
         }
         
         // Wait for MathJax
