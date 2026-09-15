@@ -214,16 +214,31 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
 
             // Compute and display Cartesian product of preferences
             if (preference && Array.isArray(preference) && preference.length > 0) {
-                function cartesianProduct(arr) {
-                    if (!Array.isArray(arr) || arr.length === 0) return [[]];
-                    const normalized = arr.map(item => Array.isArray(item) ? item : [item]);
-                    return normalized.reduce((acc, curr) => {
-                        return acc.flatMap(a => curr.map(c => [...a, c]));
-                    }, [[]]);
+                // generateVariations from lib/func.js - handles both flat and nested arrays
+                function generateVariations(arrays) {
+                    if (!arrays || arrays.length === 0) return [];
+                    
+                    // Flat array (single preference): each value is a separate combination
+                    if (!Array.isArray(arrays[0])) {
+                        return arrays.map(item => [item]);
+                    }
+                    
+                    // Nested arrays (multiple preferences): Cartesian product
+                    let result = arrays[0].map(item => [item]);
+                    for (let i = 1; i < arrays.length; i++) {
+                        const temp = [];
+                        for (let existingComb of result) {
+                            for (let newElement of arrays[i]) {
+                                temp.push([...existingComb, newElement]);
+                            }
+                        }
+                        result = temp;
+                    }
+                    return result;
                 }
 
-                const combinations = cartesianProduct(preference);
-                console.error(`\n[CARTESIAN PRODUCT] Total combinations: ${combinations.length}`);
+                const combinations = generateVariations(preference);
+                console.error(`\n[VARIATIONS] Total combinations: ${combinations.length}`);
                 combinations.forEach((combo, idx) => {
                     console.error(`  Combination ${idx + 1}: ${JSON.stringify(combo)}`);
                 });
