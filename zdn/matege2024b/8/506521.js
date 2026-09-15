@@ -8,7 +8,7 @@
 		let nCorrect = sl(1, 3);
 		let nWrong = 4 - nCorrect;
 		let heavyAnimal = sklonlxkand(['буйвол', 'слон', 'жираф', 'бегемот', 'гиппопотам', 'носорог'].iz());
-		let mediumAnimal = sklonlxkand(['лев', 'медведь', 'тигр', 'волк', 'пантера', 'барсук',].iz(2));
+		let mediumAnimal = sklonlxkand(['медведь', 'тигр', 'волк', 'пантера', 'барсук',].iz(2));
 		let lightAnimal = sklonlxkand(['лиса', 'кошка', 'фламинго', 'выдра', 'тушканчик',].iz());
 
 		let correct = [
