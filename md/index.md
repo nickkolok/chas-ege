@@ -16,3 +16,8 @@
 [Делаем *пачку команд* для вставки в консоль](make_cli_bunch.md)
 
 [Как скачать проект, если не работает `git clone`](download_without_git.md)
+
+## Перенесённые документы
+
+- Random
+- Vocabulary
