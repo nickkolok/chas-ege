@@ -33,7 +33,7 @@
 
         genAssertZ1000(dano[1 - rand][1]);
 
-        triangle.addVertexToConnectionMatrix([{ x: triangle.pointA[0].x - triangle.lengthAB * 0.15, y: triangle.pointA[0].y }, { x: triangle.pointC[0].x, y: triangle.pointC[0].y + triangle.lengthBC * 0.15 }][angleAC], ['A', 'C'][angleAC]);
+        triangle.addVertexToConnectionMatrix([{ x: triangle.pointA[0].x - triangle.lengthAB * 0.32, y: triangle.pointA[0].y }, { x: triangle.pointC[0].x, y: triangle.pointC[0].y + triangle.lengthBC * 0.32 }][angleAC], ['A', 'C'][angleAC]);
 
         let points = autoScale(triangle.vertices, {
             x: 0,
