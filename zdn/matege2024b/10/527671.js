@@ -6,10 +6,10 @@
         let preference = ['find_post', 'find_slide'];
         let rand = getSelectedPreferenceFromList(key, preference);
 
-        // Высота столба h от 1.0 до 2.0 с шагом 0.1
-        let h = sl(10, 20, 1) / 10;
-        // Высота горки H = 2 * h
-        let H = 2 * h;
+        // Высота горки H от 2.0 до 4.0 м с шагом 0.1 (включая 2.5 м из оригинала)
+        let H = sl(20, 40, 1) / 10;
+        // Высота столба h = H / 2 (будет с шагом 0.05, например, 1.25)
+        let h = H / 2;
         
         let text, result;
         if (rand === 0) {
