@@ -290,6 +290,11 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         // Wait for MathJax
         await new Promise(resolve => setTimeout(resolve, 1500));
         
+        
+        // Output preference marker before LaTeX block
+        if (combinations.length > 0) {
+            console.log(`=== PREFERENCE: ${JSON.stringify(combinations[comboIdx])} ===`);
+        }
         // Click LaTeX export button
         await page.evaluate(() => {
             window.__latexExported = false;
