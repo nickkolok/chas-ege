@@ -85,7 +85,12 @@ chas2.task = {
 		 */
 		unfoldTask : function(o) {
 			if (o.questions) {
-				let question = o.questions.iz();
+				let question;
+				if (Array.isArray(o.questions)) {
+				    question = o.questions.iz();
+				} else {
+				    question = o.questions; 
+				}
 				if (! ('answer' in question) ){
 					question.answer = question.answers;
 				}
@@ -339,6 +344,8 @@ chas2.task = {
 		if (taskOptions === undefined) {
 			taskOptions = {};
 		}
+		
+		taskOptions.preference = (o.preference || []);
 
 		//Применяем обёртку - ДО преобразований
 		if (o.wrapper) {
@@ -937,6 +944,7 @@ chas2.task = {
 	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
 	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
 	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
+	 * @param {Function}  o.domain функция области допустимых значений: принимает x и возвращает Boolean
 	 */
 	setLocalExtremumTask: function (o) {
 		let expr = math.parse(o.expr);
@@ -971,6 +979,16 @@ chas2.task = {
 			//o.extremums = roots.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
 		}
 
+
+		let domain = (typeof o.domain === 'function') ? o.domain : function(){ return true; };
+		o.extremums = o.extremums.filter(function(e){
+			try {
+				var x = eval(''+e);
+				return !!domain(x);
+			} catch (err) {
+				return false;
+			}
+		});
 
 		let sortedExtremums = {min:[], max:[], not:[]};
 
@@ -1007,6 +1025,9 @@ chas2.task = {
 		let theExtremum = sortedExtremums[whatToFind];
 
 		theExtremum = eval(theExtremum);
+		if (typeof domain === 'function') {
+			genAssert(domain(theExtremum), 'Точка экстремума не принадлежит области допустимых значений');
+		}
 		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
 
 		let extremumName = {min: 'минимум', max: 'максимум'}[whatToFind];

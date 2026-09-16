@@ -2,9 +2,11 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-
+        let key = '26643';
+        let preference = ['afterDeductionTax', 'beforeDeductionTax', 'taxPercent'];
+        let counrtyRand = sl(0, 10);
+        let randQuestion = getSelectedPreferenceFromList(key, preference);
         let rand = sl1();
-        let counrtyRand = sl(0, 10, 1);
         let country = sklonlxkand(['Россия', 'Франция', 'Германия', 'Мексика', 'Австралия', 'Сингапур', 'Дания', 'Япония', 'Норвегия', 'Канада', 'Китай'][counrtyRand]);
         let name = sklonlxkand([om.maleNames.iz(), om.femaleNames.iz()][rand]);
         let mw = ['', 'а'][rand];
@@ -19,7 +21,7 @@
         NAtask.setTask({
             text:
                 name.ie + ' проживает в ' + country.pe + '. ',
-            questions: [
+            questions: [[
                 {
                     text: 'Налог на доходы в этой стране составляет ' + percent + '% от заработной платы. ' +
                         'Заработная плата ' + name.re + inRublesText + ' равна ' + prise + russianVariant + '. ' +
@@ -38,8 +40,9 @@
                         'Сколько процентов составляет налог на доходы в этом государстве?',
                     answers: percent,
                 },
-            ],
+            ][randQuestion]],
             postquestion: '',
+            preference: preference,
         });
     }, 100);
 })();

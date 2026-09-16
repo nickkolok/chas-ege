@@ -2,9 +2,11 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-
-        let rand = sl1();
-        let randUpgrade = sl1();
+        let key = '506446';
+        let preference1 = ['firstCulture', 'secondCulture'];
+        let preference2 = ['result', 'howManyHectares'];
+        let rand = getSelectedPreferenceFromList(key, preference1);
+        let randUpgrade = getSelectedPreferenceFromList(key, preference2);
         let nameOfCompany = ['Вершки да Корешки', 'Одичалая Ягода', 'Вкуснее некуда', 'по Ведёрочку', 'Винни и Бинни', 'Сладкая Жизнь', 'Как у Бабушки', 'Счастливый Дачник', 'Крестьянская Революция', 'Как в Союзе!', 'Новые Технологии', 'Вегатерианец', 'Сто Пудов'].iz();
         let nameOfCulture = sklonlxkand(['пшеница', 'рожь', 'кукуруза', 'овёс', 'ячмень', 'горох', 'фасоль', 'свекла'].iz(2));
         let firstCulture = sl(1, 10, 1);
@@ -21,6 +23,7 @@
                 [' Сколько гектаров занимает ' + [nameOfCulture[0].ie, nameOfCulture[1].ie][rand] + '?', ' Сколько гектаров занимает поле, если площадь земель, отведённых под посадку '
                     + [nameOfCulture[0].re, nameOfCulture[1].re][rand] + ', составляет ' + result + ' га?'][randUpgrade],
             answers: [result, howManyHectares][randUpgrade],
+            preference: [preference1, preference2],
         });
     }, 100);
 })();
