@@ -46,13 +46,6 @@
 		let moreThan = Math.max(start, A - lowerOffset);
 		let lessThan = Math.min(end, A + upperOffset);
 
-		if (moreThan >= A) {
-			moreThan = A - 1;
-		}
-		if (lessThan <= A) {
-			lessThan = A + 1;
-		}
-
 		let validAnswers = [];
 		for (let v of allValidForD) {
 			if (v > moreThan && v < lessThan) {
