@@ -4,12 +4,11 @@
         NAinfo.requireApiVersion(0, 2);
         
         let width = sl(2, 9, 0.1);
-        let length = sl(2, 9);
+        let length = sl(2, 9, 0.1);
         let S = length * width;
         let delta = sl(0.1, 3, 0.1);
-        let newS = Math.round((S + delta) * 10) / 10;
+        let newS = S + delta;
         
-        // Гарантируем чистые числа без артефактов плавающей точки для отображения
         let displayWidth = Math.round(width * 10) / 10;
         let displayLength = Math.round(length * 10) / 10;
    
