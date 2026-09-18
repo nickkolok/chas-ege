@@ -38,8 +38,64 @@
 			answers: answer,
 			preference: preference,
 		});
-		
+
 		NAtask.modifiers.allDecimalsToStandard();
+
+		NAtask.modifiers.addCanvasIllustration({
+			width: 320,
+			height: 340,
+			paint: function(ctx){
+				let R = 120;                 // горизонтальный радиус основания, px
+				let ry = 30;                 // вертикальный радиус основания (перспектива), px
+				let cx = 160;                // ось конуса по горизонтали
+				let apexY = 20;              // вершина конуса
+				let baseY = 300;             // центр основания
+				let H = baseY - apexY;       // высота конуса, px
+
+				// Сечение подобно основанию с коэффициентом m/n - чертёж пропорционален условию
+				let k = m / n;
+				let cutY = apexY + H * k;
+				let rCut = R * k;
+				let ryCut = ry * k;
+
+				ctx.lineWidth = 2;
+				ctx.strokeStyle = 'black';
+
+				// --- ОСНОВАНИЕ: задняя дуга пунктиром (скрыта), передняя сплошная ---
+				ctx.setLineDash([7, 5]);
+				ctx.drawEllipse(cx, baseY, R, ry, 0, Math.PI, 2 * Math.PI);
+				ctx.setLineDash([]);
+				ctx.drawEllipse(cx, baseY, R, ry, 0, 0, Math.PI);
+
+				// --- ОБРАЗУЮЩИЕ ---
+				ctx.drawLine(cx, apexY, cx - R, baseY);
+				ctx.drawLine(cx, apexY, cx + R, baseY);
+
+				// --- СЕКУЩАЯ ПЛОСКОСТЬ: заливка + контур в стиле основания ---
+				ctx.beginPath();
+				ctx.ellipse(cx, cutY, rCut, ryCut, 0, 0, 2 * Math.PI);
+				ctx.fillStyle = om.transparentBrandColors.iz();
+				ctx.fill();
+
+				ctx.strokeStyle = om.secondaryBrandColors[0];
+				ctx.setLineDash([7, 5]);
+				ctx.drawEllipse(cx, cutY, rCut, ryCut, 0, Math.PI, 2 * Math.PI);
+				ctx.setLineDash([]);
+				ctx.drawEllipse(cx, cutY, rCut, ryCut, 0, 0, Math.PI);
+
+				// --- ОСЬ (высота) конуса пунктиром ---
+				ctx.strokeStyle = 'black';
+				ctx.setLineDash([7, 5]);
+				ctx.drawLine(cx, apexY, cx, baseY);
+				ctx.setLineDash([]);
+
+				// --- Центр основания ---
+				ctx.beginPath();
+				ctx.arc(cx, baseY, 2.5, 0, 2 * Math.PI);
+				ctx.fillStyle = 'black';
+				ctx.fill();
+			},
+		});
 	}, 20000);
 })();
 //chas-ege-selena
