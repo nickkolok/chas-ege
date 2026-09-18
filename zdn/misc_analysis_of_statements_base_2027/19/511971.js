@@ -14,7 +14,7 @@
 		let wordMix = [cheap[0].ve, medium.ve, cheap[1].ve, expensive.ve].shuffle();
 
 		let correct = [
-			`${cheap[0].ie.toZagl()} стоил` + ['', 'a'][cheap[0].rod] + ` дешевле ${expensive.re}.`,
+			`${cheap[0].ie.toZagl()} стоил` + ['', 'а'][cheap[0].rod] + ` дешевле ${expensive.re}.`,
 			`${expensive.ie.toZagl()} — самая дорогая из покупок.`,
 			`${medium.ie.toZagl()} дороже ${cheap[1].re}, но дешевле ${expensive.re}.`,
 			`${cheap[0].ie.toZagl()} дешевле ${medium.re}.`
@@ -27,8 +27,8 @@
 		];
 
 		NAtask.setTask({
-			text: `Хозяйка к празднику купила ${wordMix.joinLast(', ', ' и ')}. ${medium.ie.toZagl()} стоил` + ['', 'a', 'о'][medium.rod] + 
-				` дороже ${cheap[1].re}, но дешевле ${expensive.re}, ${cheap[0].ie} стоил` + ['', 'a'][cheap[0].rod] + ` дешевле ${medium.re}. Выберите утверждения, которые ` +
+			text: `Хозяйка к празднику купила ${wordMix.joinLast(', ', ' и ')}. ${medium.ie.toZagl()} стоил` + ['', 'а', 'о'][medium.rod] + 
+				` дороже ${cheap[1].re}, но дешевле ${expensive.re}, ${cheap[0].ie} стоил` + ['', 'а'][cheap[0].rod] + ` дешевле ${medium.re}. Выберите утверждения, которые ` +
 				(rand ? 'неверны' : 'верны') +
 				` при указанных условиях. В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов. Если ответов несколько, записывайте их номера в порядке возрастания.`,
 			answers: rand ? wrong : correct,
