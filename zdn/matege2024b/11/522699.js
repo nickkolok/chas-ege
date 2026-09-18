@@ -3,17 +3,21 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let r1 = sl(2, 10, 1);
-		let l1 = sl(r1 + 1, 15, 1);
-		let r2 = sl(1, 8, 1);
-		let l2 = sl(r2 + 1, 12, 1);
+		let key = '522699';
+		let preference1 = ['firstGreater', 'secondGreater'];
+		let v = getSelectedPreferenceFromList(key, preference1);
 
-		let s1 = r1 * l1;
-		let s2 = r2 * l2;
+		let rB = sl(2, 10, 1);
+		let lB = sl(rB + 1, 15, 1);
+		let rS = sl(1, 8, 1);
+		let lS = sl(rS + 1, 12, 1);
 
-		if (s1 <= s2) throw new Error('s1 must be greater than s2');
+		let sB = rB * lB;
+		let sS = rS * lS;
 
-		let ratio = s1 / s2;
+		if (sB <= sS) throw new Error('The bigger cone must actually be bigger');
+
+		let ratio = sB / sS;
 
 		let ratioTimes10 = ratio * 10;
 		if (Math.abs(ratioTimes10 - Math.round(ratioTimes10)) > 1e-9) throw new Error('Ratio is not nice');
@@ -22,8 +26,18 @@
 
 		genAssertZ1000(ratio);
 
-		let h1 = Math.sqrt(l1 * l1 - r1 * r1);
-		let h2 = Math.sqrt(l2 * l2 - r2 * r2);
+		let cones = [
+			{ r: rB, l: lB, s: sB, h: Math.sqrt(lB * lB - rB * rB) },
+			{ r: rS, l: lS, s: sS, h: Math.sqrt(lS * lS - rS * rS) },
+		];
+		if (v)
+			cones.reverse();
+
+		let r1 = cones[0].r, l1 = cones[0].l, s1 = cones[0].s, h1 = cones[0].h;
+		let r2 = cones[1].r, l2 = cones[1].l, s2 = cones[1].s, h2 = cones[1].h;
+
+		let biggerWord = ['первого', 'второго'][v];
+		let smallerWord = ['второго', 'первого'][v];
 
 		let paint1 = function (ct) {
 			let w = 400;
@@ -62,12 +76,13 @@
 		};
 
 		NAtask.setTask({
-			text: `Даны два конуса. Радиус основания и образующая первого конуса равны соответственно $${r1}$ и $${l1}$, а второго — $${r2}$ и $${l2}$. Во сколько раз площадь боковой поверхности первого конуса больше площади боковой поверхности второго?`,
+			text: `Даны два конуса. Радиус основания и образующая первого конуса равны соответственно $${r1}$ и $${l1}$, а второго — $${r2}$ и $${l2}$. Во сколько раз площадь боковой поверхности ${biggerWord} конуса больше площади боковой поверхности ${smallerWord} конуса?`,
 			answers: ratio,
 			analys: `Площадь боковой поверхности конуса вычисляется по формуле $S = \\pi r l$, где $r$ — радиус основания, $l$ — образующая. ` +
 				`Площадь боковой поверхности первого конуса: $S_1 = \\pi \\cdot ${r1} \\cdot ${l1} = ${s1}\\pi$. ` +
 				`Площадь боковой поверхности второго конуса: $S_2 = \\pi \\cdot ${r2} \\cdot ${l2} = ${s2}\\pi$. ` +
-				`Найдём отношение площадей: $\\frac{S_1}{S_2} = \\frac{${s1}\\pi}{${s2}\\pi} = \\frac{${s1}}{${s2}} = ${ratio}$.`
+				`Отношение площадей: $\\frac{S_${v + 1}}{S_${2 - v}} = \\frac{${cones[v].s}\\pi}{${cones[1 - v].s}\\pi} = \\frac{${cones[v].s}}{${cones[1 - v].s}} = ${ratio}$.`,
+			preference: [preference1],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
