@@ -15,6 +15,7 @@
 		let vk = sl(5, total - 2);
 		let minBoth = Math.max(0, ok + vk - total);
 		let maxBoth = Math.min(ok, vk);
+		genAssert(minBoth > 0, 'Чтобы не было утверждения вида "Минимальное число пользователей обеих сетей — 0"');
 
 		let correct = [
 			`В этой компании найдётся хотя бы ${chislitlx(minBoth,'человек','v')}, пользующихся обеими сетями.`,
