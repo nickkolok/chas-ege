@@ -13,7 +13,7 @@
 		let spotB = sl(2, 5);
 		let minBoth = 0;
 		let maxBoth = Math.min(spotA, spotB);
-		let minNone = days - (spotA + spotB - minBoth);
+		let minNone = Math.max(0, days - (spotA + spotB - minBoth));
 		let name = om.maleNames.iz();
 		let surname = ['Сергеевич','Иванович','Николаевич','Валерьевич','Петрович','Александрович','Юрьевич','Михайлович','Евгеньевич','Васильевич','Валентинович','Никитич','Антонович','Кириллович','Борисович','Викторович','Владимирович','Фёдорович','Егорович',].iz();
 		let fullName = `${name} ${surname}`;
