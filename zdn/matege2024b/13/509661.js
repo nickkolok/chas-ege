@@ -3,6 +3,8 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 		let key = '509661';
+		let preference = ['findRadius', 'findHeight'];
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		// Генерируем радиус и высоту так, чтобы объём был целым числом при делении на 3
 		let R = sl(3, 15);
@@ -31,12 +33,12 @@
 			let y0 = (Ry - H) / 2; // центр основания
 			let yApex = y0 + H;    // вершина
 
-			// видимая (передняя) половина основания — сплошная
+			// видимая (передняя) половина основания - сплошная
 			ctx.beginPath();
 			ctx.ellipse(0, y0, Rx, Ry, 0, Math.PI, 2 * Math.PI);
 			ctx.stroke();
 
-			// скрытая (задняя) половина основания — штриховая
+			// скрытая (задняя) половина основания - штриховая
 			ctx.beginPath();
 			ctx.setLineDash([7, 5]);
 			ctx.ellipse(0, y0, Rx, Ry, 0, 0, Math.PI);
@@ -55,13 +57,13 @@
 			let px = Rx * Math.cos(t);
 			let py = y0 + Ry * Math.sin(t);
 
-			// образующая до этой точки — сплошная
+			// образующая до этой точки - сплошная
 			ctx.beginPath();
 			ctx.moveTo(0, yApex);
 			ctx.lineTo(px, py);
 			ctx.stroke();
 
-			// высота и радиус — штриховые
+			// высота и радиус - штриховые
 			ctx.beginPath();
 			ctx.setLineDash([7, 5]);
 			ctx.moveTo(0, yApex);
@@ -71,10 +73,23 @@
 			ctx.setLineDash([]);
 		};
 
+		let text;
+		let answer;
+		if (rand === 0) {
+			// как в образце: даны объём и высота, найти радиус
+			text = `Объём конуса равен ${V_pi}π, а его высота равна ${h}. Найдите радиус основания конуса.`;
+			answer = R;
+		} else {
+			// перевёртыш: даны объём и радиус, найти высоту
+			text = `Объём конуса равен ${V_pi}π, а радиус его основания равен ${R}. Найдите высоту конуса.`;
+			answer = h;
+		}
+
 		NAtask.setTask({
-			text: `Объём конуса равен ${V_pi}π, а его высота равна ${h}. Найдите радиус основания конуса.`,
-			answers: [R],
+			text: text,
+			answers: answer,
 			authors: ['Селена'],
+			preference: preference,
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 340,
@@ -84,3 +99,4 @@
 	}, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=509661
+// https://mathb-ege.sdamgia.ru/problem?id=506339
