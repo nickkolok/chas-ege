@@ -4,19 +4,37 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '536908';
-		let preference = ['cutCone', 'frustum'];
-		let questionType = getSelectedPreferenceFromList(key, preference);
+		let preferenceQuestion = ['cutCone', 'frustum'];
+		let preferencePoint = ['ratioPoint', 'midpoint'];
+		let questionType = getSelectedPreferenceFromList(key, preferenceQuestion);
+		let pointType = getSelectedPreferenceFromList(key, preferencePoint);
 
-		//Точка делит высоту конуса в отношении a : b (несократимом),
-		//d = a + b - знаменатель коэффициента подобия отсекаемого конуса
-		let d = sl(2, 5);
-		let a = sl(1, d - 1);
-		genAssert(a.nod(d) == 1, 'Отношение частей высоты должно быть несократимым');
-		let b = d - a;
+		let d; //знаменатель коэффициента подобия отсекаемого конуса
+		let a;
+		let b;
+		let k; //числитель коэффициента подобия отсекаемого конуса
+		let pointText;
 
-		let fromVertex = sl1(); //1 - считая от вершины, 0 - считая от основания
-		let k = fromVertex ? a : b; //числитель коэффициента подобия отсекаемого конуса
-		genAssert(4 * k <= 3 * d, 'Сечение не должно проходить слишком близко к основанию');
+		if (pointType) {
+			//плоскость через середину высоты: коэффициент подобия 1/2
+			d = 2;
+			a = 1;
+			b = 1;
+			k = 1;
+			pointText = 'Через середину высоты конуса проведена плоскость, параллельная основанию.';
+		} else {
+			//точка делит высоту в несократимом отношении a : b
+			d = sl(3, 5);
+			a = sl(1, d - 1);
+			genAssert(a.nod(d) == 1, 'Отношение частей высоты должно быть несократимым');
+			b = d - a;
+			let fromVertex = sl1(); //1 - считая от вершины, 0 - считая от основания
+			k = fromVertex ? a : b;
+			genAssert(4 * k <= 3 * d, 'Сечение не должно проходить слишком близко к основанию');
+			pointText = 'Через точку, делящую высоту конуса в отношении ' + a + ' : ' + b +
+				', считая от ' + ['основания', 'вершины'][fromVertex] +
+				', проведена плоскость, параллельная основанию.';
+		}
 
 		let n = sl(1, 9);
 		let V = n * d.pow(3); //объём данного конуса - всегда целое
@@ -74,16 +92,13 @@
 			analys += ' Объём оставшейся части конуса равен $' + V + '-' + smallCone + '=' + restPart + '$.';
 
 		NAtask.setTask({
-			text: 'Объём данного конуса равен ' + V +
-				'. Через точку, делящую высоту конуса в отношении ' + a + ' : ' + b +
-				', считая от ' + ['основания', 'вершины'][fromVertex] +
-				', проведена плоскость, параллельная основанию. ' +
+			text: 'Объём данного конуса равен ' + V + '. ' + pointText + ' ' +
 				['Найдите объём конуса, отсекаемого от данного конуса проведённой плоскостью.',
 					'Найдите объём оставшейся части конуса.'][questionType],
 			analys: analys,
 			answers: [smallCone, restPart][questionType],
 			authors: ['chas-ege-selena'],
-			preference: preference,
+			preference: [preferenceQuestion, preferencePoint],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
