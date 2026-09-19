@@ -12,11 +12,10 @@
 
 		let people = sklonlxkand(['школьник','ученик','ученица','учитель','преподаватель','преподавательница',].iz());
 		let town =['Твери','Казани','Волгограда','Астрахани','Ярославля','Ростова','Воронежа','Липецка','Уфы','Саратова'].iz();
-		let group = ' из ' + town;
 		let rod = people.rod;
 		let registration = selectParticipleGender('зарегистрирован', rod);
-		let peopleImGroup = (people.im + group);
-		let peopleTeGroup = (people.te + group);
+		let peopleImGroup = people.im + ' из ' + town;
+		let peopleTeGroup = people.te + ' из ' + town;
 
 		let correct = [
 			`Среди ${people.rm + group} есть те, кто зарегистрирован в «${pairs[0]}».`,
