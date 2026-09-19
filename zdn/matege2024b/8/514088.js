@@ -15,11 +15,13 @@
 		let maxBoth = Math.min(firstLang, secondLang);
 		let lang = ['португальский', 'французский', 'китайский', 'немецкий', 'польский', 'английский', 'корейский', 'испанский'].iz(2);
 		let moreOrLess = firstLang > secondLang ? 'больше' : 'меньше';
+		let smallerLang = firstLang < secondLang ? lang[0] : lang[1];
+		let largerLang = firstLang > secondLang ? lang[0] : lang[1];
 
 		let correct = [
 			`В этой фирме хотя бы ${chislitM(minBoth, 'человека', 'человека', 'человек')} ${chislit(minBoth, 'знает', 'знают', 'знают')} и ${lang[0]}, и ${lang[1]} языки.`,
 			`Не более ${chislitM(maxBoth, 'человека', 'человека', 'человек')} из этой фирмы ${chislit(maxBoth, 'знает', 'знают', 'знают')} и ${lang[0]}, и ${lang[1]} языки.`,
-			`Если все, кто знает ${lang[1]}, также знают ${lang[0]}, то двуязычных — ${maxBoth}.`,
+			`Если все, кто знает ${smallerLang}, также знают ${largerLang}, то двуязычных — ${maxBoth}.`,
 			`Знающих только ${lang[0]} на ${chislitM((firstLang - secondLang).abs(), 'человека', 'человека', 'человек')} ${moreOrLess}, чем тех, кто знает только ${lang[1]}.`,
 		];
 		let wrong = [
