@@ -3,31 +3,31 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
+		let key = '513037';
+		let preference = ['faces', 'edges']; // спрашиваем про грани или про рёбра
+		let rand = getSelectedPreferenceFromList(key, preference);
+
 		let variants = [
 			{
 				text: 'К правильной треугольной призме со стороной основания, равной 1, приклеили правильную треугольную пирамиду со стороной основания, равной 1, так, что основания совпали.',
-				faces: 7,
 				baseSides: 3,
 				prismHeight: 0.6,
 				pyramidHeight: 0.7,
 			},
 			{
 				text: 'К кубу с ребром, равным 1, приклеили правильную четырёхугольную пирамиду со стороной основания, равной 1, так, что квадратные грани совпали.',
-				faces: 9,
 				baseSides: 4,
 				prismHeight: 0.8,
 				pyramidHeight: 0.6,
 			},
 			{
 				text: 'К правильной пятиугольной призме со стороной основания, равной 1, приклеили правильную пятиугольную пирамиду со стороной основания, равной 1, так, что основания совпали.',
-				faces: 11,
 				baseSides: 5,
 				prismHeight: 0.7,
 				pyramidHeight: 0.65,
 			},
 			{
 				text: 'К правильной шестиугольной призме со стороной основания, равной 1, приклеили правильную шестиугольную пирамиду со стороной основания, равной 1, так, что основания совпали.',
-				faces: 13,
 				baseSides: 6,
 				prismHeight: 0.65,
 				pyramidHeight: 0.7,
@@ -35,9 +35,16 @@
 		];
 
 		let v = variants.iz();
+		let n = v.baseSides;
+
+		// У n-угольной призмы n+2 грани и 3n рёбер,
+		// у n-угольной пирамиды n+1 грань и 2n рёбер.
+		// При склеивании по n-угольнику исчезают 2 грани,
+		// а n рёбер призмы и n рёбер пирамиды совпадают:
+		// граней: (n+2)+(n+1)-2 = 2n+1, рёбер: 3n+2n-n = 4n
+		let answers = [2 * n + 1, 4 * n];
 
 		let paint1 = function (ct) {
-			let n = v.baseSides;
 			let prismH = v.prismHeight;
 			let pyramidH = v.pyramidHeight;
 			let gap = 0.3; // зазор между призмой и пирамидой, как на рисунке-образце
@@ -127,8 +134,10 @@
 		};
 
 		NAtask.setTask({
-			text: v.text + ' Сколько граней у получившегося многогранника (невидимые рёбра на рисунке не изображены)?',
-			answers: v.faces,
+			text: v.text + ' ' + ['Сколько граней', 'Сколько рёбер'][rand] +
+				' у получившегося многогранника (невидимые рёбра на рисунке не изображены)?',
+			answers: answers[rand],
+			preference: [preference],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
