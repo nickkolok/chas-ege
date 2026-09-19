@@ -4,7 +4,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		let key = '369494';
 		
-		let preference1 = ['decimalFrac', 'ordinalyFrac'];
+		let preference1 = ['decimalFrac', 'ordinaryFrac'];
 		let isOrdinaryFrac = getSelectedPreferenceFromList(key, preference1) === 1;
 		let preference2 = ['chooseLetter', 'chooseNumber'];
 		let isChooseLetter = getSelectedPreferenceFromList(key, preference2) === 0;
