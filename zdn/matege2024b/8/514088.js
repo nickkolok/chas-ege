@@ -15,19 +15,14 @@
 		let maxBoth = Math.min(firstLang, secondLang);
 		let lang = ['португальский', 'французский', 'китайский', 'немецкий', 'польский', 'английский', 'корейский', 'испанский'].iz(2);
 		let moreOrLess = firstLang > secondLang ? 'больше' : 'меньше';
-
-		function verbEnding(number, text) {
-			if (number % 10 === 1 && number % 100 !== 11) {
-				return text.replace('ют', 'ет',);
-			}
-			return text;
-		}
+		let smallerLang = firstLang < secondLang ? lang[0] : lang[1];
+		let largerLang = firstLang > secondLang ? lang[0] : lang[1];
 
 		let correct = [
-			`В этой фирме хотя бы ${chislitlx(minBoth, 'человек', 'r')} ${verbEnding(minBoth, 'знают')} и ${lang[0]}, и ${lang[1]} языки.`,
-			`Не более ${chislitlx(maxBoth, 'человек', 'r')} из этой фирмы  ${verbEnding(maxBoth, 'знают')} и ${lang[0]}, и ${lang[1]} языки.`,
-			`Если все, кто знает ${lang[1]}, также знают ${lang[0]}, то двуязычных — ${maxBoth}.`,
-			`Людей, знающих только ${lang[0]}, на ${(firstLang - secondLang).abs()} ${moreOrLess}, чем тех, кто знает только ${lang[1]}.`,
+			`В этой фирме хотя бы ${chislitM(minBoth, 'человека', 'человека', 'человек')} ${chislit(minBoth, 'знает', 'знают', 'знают')} и ${lang[0]}, и ${lang[1]} языки.`,
+			`Не более ${chislitM(maxBoth, 'человека', 'человека', 'человек')} из этой фирмы ${chislit(maxBoth, 'знает', 'знают', 'знают')} и ${lang[0]}, и ${lang[1]} языки.`,
+			`Если все, кто знает ${smallerLang}, также знают ${largerLang}, то двуязычных — ${maxBoth}.`,
+			`Знающих только ${lang[0]} на ${chislitM((firstLang - secondLang).abs(), 'человека', 'человека', 'человек')} ${moreOrLess}, чем тех, кто знает только ${lang[1]}.`,
 		];
 		let wrong = [
 			`Нет ни одного человека в этой фирме, знающего и ${lang[0]}, и ${lang[1]} языки.`,
@@ -37,7 +32,7 @@
 		];
 
 		NAtask.setTask({
-			text: `В фирме работает ${chislitlx(total, 'человек', 'r')}, из них ${chislitlx(firstLang, 'человек')}  ${verbEnding(firstLang, 'знают')} ${lang[0]} язык, а ${chislitlx(secondLang, 'человек', 'r')} — ${lang[1]}. Выберите одно или несколько утверждений, которые ` +
+			text: `В фирме работает ${chislitM(total, 'человек', 'человека', 'человек')}, из них ${chislitM(firstLang, 'человек', 'человека', 'человек')} ${chislit(firstLang, 'знает', 'знают', 'знают')} ${lang[0]} язык, а ${chislitM(secondLang, 'человек', 'человека', 'человек')} — ${lang[1]}. Выберите одно или несколько утверждений, которые ` +
 				(rand ? 'неверны' : 'верны') + ` при указанных условиях. В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов. Если ответов несколько, записывайте их номера в порядке возрастания.`,
 			answers: rand ? wrong : correct,
 			wrongAnswers: rand ? correct : wrong,
