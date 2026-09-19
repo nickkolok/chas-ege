@@ -14,8 +14,9 @@
 		let town =['Твери','Казани','Волгограда','Астрахани','Ярославля','Ростова','Воронежа','Липецка','Уфы','Саратова'].iz();
 		let rod = people.rod;
 		let registration = selectParticipleGender('зарегистрирован', rod);
-		let peopleImGroup = people.im + ' из ' + town;
-		let peopleTeGroup = people.te + ' из ' + town;
+		let group = ' из ' + town;
+		let peopleImGroup = people.im + group;
+		let peopleTeGroup = people.te + group;
 
 		let correct = [
 			`Среди ${people.rm + group} есть те, кто зарегистрирован в «${pairs[0]}».`,
