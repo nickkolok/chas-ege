@@ -33,6 +33,12 @@
 
 		let text = "Через точку, делящую высоту конуса в отношении " + k1 + " : " + k2 + ", считая от вершины, проведена плоскость, параллельная основанию. " + questionText;
 
+		// Цвета чертежа выбираем на этапе генерации - отрисовка детерминирована
+		let mainColor = om.secondaryBrandColors[0];
+		let cutColorIdx = sl(0, om.primaryBrandColors.length - 1);
+		let cutOutline = om.primaryBrandColors[cutColorIdx];
+		let cutFill = om.transparentBrandColors[cutColorIdx];
+
 		NAtask.setTask({
 			text: text,
 			answers: answer,
@@ -59,40 +65,39 @@
 				let ryCut = ry * k;
 
 				ctx.lineWidth = 2;
-				ctx.strokeStyle = 'black';
+				ctx.strokeStyle = mainColor;
 
-				// --- ОСНОВАНИЕ: задняя дуга пунктиром (скрыта), передняя сплошная ---
+				// Основание: дальняя дуга пунктиром (скрыта), ближняя - сплошная
 				ctx.setLineDash([7, 5]);
 				ctx.drawEllipse(cx, baseY, R, ry, 0, Math.PI, 2 * Math.PI);
 				ctx.setLineDash([]);
 				ctx.drawEllipse(cx, baseY, R, ry, 0, 0, Math.PI);
 
-				// --- ОБРАЗУЮЩИЕ ---
+				// Образующие
 				ctx.drawLine(cx, apexY, cx - R, baseY);
 				ctx.drawLine(cx, apexY, cx + R, baseY);
 
-				// --- СЕКУЩАЯ ПЛОСКОСТЬ: заливка + контур в стиле основания ---
+				// Секущая плоскость: заливка и контур в парном брендовом оттенке
 				ctx.beginPath();
 				ctx.ellipse(cx, cutY, rCut, ryCut, 0, 0, 2 * Math.PI);
-				ctx.fillStyle = om.transparentBrandColors.iz();
+				ctx.fillStyle = cutFill;
 				ctx.fill();
-
-				ctx.strokeStyle = om.secondaryBrandColors[0];
+				ctx.strokeStyle = cutOutline;
 				ctx.setLineDash([7, 5]);
 				ctx.drawEllipse(cx, cutY, rCut, ryCut, 0, Math.PI, 2 * Math.PI);
 				ctx.setLineDash([]);
 				ctx.drawEllipse(cx, cutY, rCut, ryCut, 0, 0, Math.PI);
 
-				// --- ОСЬ (высота) конуса пунктиром ---
-				ctx.strokeStyle = 'black';
+				// Ось (высота) конуса - пунктиром
+				ctx.strokeStyle = mainColor;
 				ctx.setLineDash([7, 5]);
 				ctx.drawLine(cx, apexY, cx, baseY);
 				ctx.setLineDash([]);
 
-				// --- Центр основания ---
+				// Центр основания
 				ctx.beginPath();
 				ctx.arc(cx, baseY, 2.5, 0, 2 * Math.PI);
-				ctx.fillStyle = 'black';
+				ctx.fillStyle = mainColor;
 				ctx.fill();
 			},
 		});
