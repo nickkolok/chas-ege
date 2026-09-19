@@ -14,21 +14,21 @@
 		let town =['Твери','Казани','Волгограда','Астрахани','Ярославля','Ростова','Воронежа','Липецка','Уфы','Сатарова'].iz();
 		let group = ' из ' + town;
 		let rod = people.rod;
-		let last = ['', 'а'][rod];
-		let peopleImGroup = (people.im + group).replace('учители', 'учителя');
-		let peopleTeGroup = (people.te + group).replace('преподавательницой', 'преподавательницей').replace('ученицой', 'ученицей');
+		let registration = selectParticipleGender('зарегистрирован', rod);
+		let peopleImGroup = (people.im + group);
+		let peopleTeGroup = (people.te + group);
 
 		let correct = [
 			`Среди ${people.rm + group} есть те, кто зарегистрирован в «${pairs[0]}».`,
 			`Хотя бы один из зарегистрированных в «${pairs[1]}» является ${peopleTeGroup}.`,
 			`Некоторые из зарегистрированных в «${pairs[0]}» — это ${peopleImGroup}.`,
-			`Существует ${people.ie + group}, котор${['ый','ая'][rod]} зарегистрирован${last} в «${pairs[0]}».`
+			`Существует ${people.ie + group}, котор${['ый','ая'][rod]} ${registration} в «${pairs[0]}».`
 		];
 		
 		let wrong = [
 			`Все ${peopleImGroup} не зарегистрированы ни в «${pairs[0]}», ни в «${pairs[1]}».`,
-			`Среди ${people.rm + group} нет ${['тех', 'той'][rod]}, кто зарегистрирован${last} в «${pairs[0]}».`,
-			`Ни ${['один', 'одна'][rod]} ${people.ie + group} не зарегистрирован${last} в «${pairs[1]}».`,
+			`Среди ${people.rm + group} нет ${['тех', 'той'][rod]}, кто ${registration} в «${pairs[0]}».`,
+			`Ни ${['один', 'одна'][rod]} ${people.ie + group} не ${registration} в «${pairs[1]}».`,
 			`Все зарегистрированные в «${pairs[1]}» не являются ${people.tm + group}.`
 		];
 
