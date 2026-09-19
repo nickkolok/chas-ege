@@ -3,12 +3,12 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
+		let key = '529741';
+		let preference = ['isDecreasing', 'isIncreasing'];
+		let isIncreasing = getSelectedPreferenceFromList(key, preference);
+
 		// Разрешённые делители, основанные на школьных признаках делимости
-		let divisors = [12, 15, 18, 20, 24, 25, 30, 36, 40, 45, 50, 60, 75, 90];
-		let divisor = divisors.iz();
-		
-		// Направление изменения цифр: true - возрастание, false - убывание
-		let isIncreasing = sl(0, 1) === 1;
+		let divisor = [12, 15, 18, 20, 24, 25, 30, 36, 40, 45, 50, 60, 75, 90].iz();		
 		let directionText = isIncreasing ? 'больше предыдущей' : 'меньше предыдущей';
 
 		// 1. Находим все валидные четырёхзначные числа для выбранных условий
@@ -54,6 +54,7 @@
 			      ', которое делится на ' + divisor + 
 			      ' и каждая следующая цифра которого ' + directionText + '. В ответе укажите какое-нибудь одно такое число.',
 			answers: validNumbersInRange,
+			preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000);
