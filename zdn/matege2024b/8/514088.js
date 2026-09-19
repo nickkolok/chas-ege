@@ -12,7 +12,7 @@
 		let firstLang = sl(total / 2, total - 10);
 		let secondLang = slKrome([firstLang], 30, total - 10);
 		let minBoth = Math.max(0, firstLang + secondLang - total);
-		let maxBoth = Math.min(firstLang, secondLang); 
+		let maxBoth = Math.min(firstLang, secondLang);
 		let lang = ['португальский', 'французский', 'китайский', 'немецкий', 'польский', 'английский', 'корейский', 'испанский'].iz(2);
 		let moreOrLess = firstLang > secondLang ? 'больше' : 'меньше';
 
