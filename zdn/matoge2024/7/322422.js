@@ -51,7 +51,15 @@
 		let options = [correctExpr, ...wrAns].shuffle();
 		wrAns = options.filter(o => o !== correctExpr);
 
-		// 6. Отрисовка
+		// 6. Форматируем для отображения: математические выражения оборачиваем в $...$
+		let formatOption = (opt) => {
+			if (opt === 'ни одна из них') {
+				return opt; // оставляем как текст
+			}
+			return '$' + opt + '$'; // оборачиваем математику
+		};
+
+		// 7. Отрисовка
 		let paint = function (ct) {
 			coordAxis_drawAuto(ct, {
 				min: val1 - 1,
@@ -67,15 +75,15 @@
 			});
 		};
 
-		// 7. Установка задачи
+		// 8. Установка задачи
 		NAtask.setTask({
 			text: 'На координатной прямой отмечены числа $' + l1 + '$, $' + l2 + '$ и $' + l3 + '$. Какая из разностей ' + selectedDiffs.map(d => '$' + d.expr + '$').join(', ') + ' ' + ['положительна', 'отрицательна'][rand] + '?',
-			answers: correctExpr,
-			wrongAnswers: wrAns,
+			answers: formatOption(correctExpr),
+			wrongAnswers: wrAns.map(formatOption),
 			preference: preference,
 		});
 
-		AtoB(3, { autoLaTeX: true });
+		AtoB(3); // без autoLaTeX, так как мы уже отформатировали
 
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
