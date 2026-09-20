@@ -47,7 +47,6 @@
 		let paint1 = function (ct) {
 			let prismH = v.prismHeight;
 			let pyramidH = v.pyramidHeight;
-			let gap = 0.3; // зазор между призмой и пирамидой, как на рисунке-образце
 			let radius = 0.8;
 			let flat = 0.45; // сплющивание основания для наглядности
 			let angle = 30;
@@ -60,6 +59,14 @@
 					sin: Math.sin(a),
 				};
 			}
+						// Вертикальный зазор между призмой и пирамидой: заведомо больше
+			// вертикального разброса точек основания, чтобы фигуры не
+			// накладывались друг на друга, плюс небольшой просвет
+			let offsets = [];
+			for (let i = 0; i < n; i++) {
+				offsets.push(Math.sin((angle + 360 / n * i) * Math.PI / 180) * radius * flat);
+			}
+			let gap = Math.max.apply(null, offsets) - Math.min.apply(null, offsets) + 0.2;
 
 			let bottomVerts = [];
 			let topVerts = [];
