@@ -17,8 +17,8 @@
 		let letters = ['a', 'b', 'c', 'x', 'y', 'z', 'm', 'n', 'p', 'k'].shuffle().slice(0, 3);
 		let l1 = letters[0], l2 = letters[1], l3 = letters[2];
 
-		// 3. Все возможные разности и их значения
-		let allDiffs = [
+		// 3. Выбираем 3 конкретные разности (как в оригинале)
+		let allPossibleDiffs = [
 			{ expr: l1 + '-' + l2, val: val1 - val2 },
 			{ expr: l2 + '-' + l1, val: val2 - val1 },
 			{ expr: l1 + '-' + l3, val: val1 - val3 },
@@ -26,24 +26,32 @@
 			{ expr: l2 + '-' + l3, val: val2 - val3 },
 			{ expr: l3 + '-' + l2, val: val3 - val2 }
 		];
+		
+		let selectedDiffs = allPossibleDiffs.shuffle().slice(0, 3);
 
-		// 4. Фильтрация по условию
+		// 4. Проверяем, есть ли среди выбранных удовлетворяющая условию
 		let targetCondition = isPositive ? (d => d.val > 0) : (d => d.val < 0);
-		let wrongCondition = isPositive ? (d => d.val < 0) : (d => d.val > 0);
+		let matchingDiffs = selectedDiffs.filter(targetCondition);
 
-		let correctPool = allDiffs.filter(targetCondition);
-		let wrongPool = allDiffs.filter(wrongCondition);
+		let correctExpr, wrAns;
+		
+		if (matchingDiffs.length > 0) {
+			// Есть правильный ответ среди предложенных
+			correctExpr = matchingDiffs[0].expr;
+			wrAns = selectedDiffs.filter(d => d.expr !== correctExpr).map(d => d.expr);
+			// Добавляем вариант "ни одна из них" как неправильный
+			wrAns.push('ни одна из них');
+		} else {
+			// Ни одна из предложенных не подходит
+			correctExpr = 'ни одна из них';
+			wrAns = selectedDiffs.map(d => d.expr);
+		}
 
-		// 5. Выбор ответов
-		let correctDiff = correctPool.iz();
-		let wrongDiffs = wrongPool.shuffle().slice(0, 3);
+		// 5. Перемешиваем варианты
+		let options = [correctExpr, ...wrAns].shuffle();
+		wrAns = options.filter(o => o !== correctExpr);
 
-		// 6. Формирование списка вариантов
-		let options = [correctDiff, ...wrongDiffs].shuffle();
-		let correctExpr = correctDiff.expr;
-		let wrAns = options.filter(d => d.expr !== correctExpr).map(d => d.expr);
-
-		// 7. Отрисовка
+		// 6. Отрисовка
 		let paint = function (ct) {
 			coordAxis_drawAuto(ct, {
 				min: val1 - 1,
@@ -59,9 +67,9 @@
 			});
 		};
 
-		// 8. Установка задачи
+		// 7. Установка задачи
 		NAtask.setTask({
-			text: 'На координатной прямой отмечены числа $' + l1 + '$, $' + l2 + '$ и $' + l3 + '$. Какая из разностей ' + ['положительна', 'отрицательна'][rand] + '?',
+			text: 'На координатной прямой отмечены числа $' + l1 + '$, $' + l2 + '$ и $' + l3 + '$. Какая из разностей ' + selectedDiffs.map(d => '$' + d.expr + '$').join(', ') + ' ' + ['положительна', 'отрицательна'][rand] + '?',
 			answers: correctExpr,
 			wrongAnswers: wrAns,
 			preference: preference,
