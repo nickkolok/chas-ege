@@ -49,12 +49,18 @@
 		nums = pairs.map(p => p.val);
 		formattedNums = pairs.map(p => p.str);
 
+		let shuffledFormattedNums = formattedNums.slice().shuffle();
 		let idx = sl(0, 3);
 	
 		let answers = isChooseLetter ? letters[idx] : formattedNums[idx];
 		let wrongAnswers = isChooseLetter 
 			? letters.filter(l => l !== letters[idx]) 
 			: formattedNums.filter((_, i) => i !== idx);
+
+		let text = 'На координатной прямой ' + [
+			'точки $A$, $B$, $C$ и $D$ соответствуют числам $' + shuffledFormattedNums.join('; ') + '$. Какой точке соответствует число $' + formattedNums[idx] + '$',
+			'отмечены точки $A$, $B$, $C$ и $D$, соответствующие числам $' + shuffledFormattedNums.join('; ') + '$. Какому числу соответствует точка $' + letters[idx] + '$'
+		][isChooseLetter ? 0 : 1] + '?';
 
 		let paint = function (ct) {
 			let minVal = Math.floor(nums[0] * 10) / 10 - 0.1;
@@ -76,10 +82,10 @@
 		};
 
 		NAtask.setTask({
-			text: 'На координатной прямой точки $A$, $B$, $C$ и $D$ ' + ['соответствуют числам $' + formattedNums.join('; ') + '$. Какой точке соответствует число $' + formattedNums[idx] + '$',
-			'отмечены числа. Какому числу соответствует точка $' + letters[idx] + '$'][isChooseLetter ? 0 : 1] + '?',
+			text: text,
 			answers: answers,
 			wrongAnswers: wrongAnswers,
+			analys: 'Точка $A$ соответствует числу $' + formattedNums[0] + '$, точка $B$ — $' + formattedNums[1] + '$, точка $C$ — $' + formattedNums[2] + '$, точка $D$ — $' + formattedNums[3] + '.$',
 			preference: [preference1, preference2]
 		});
 
