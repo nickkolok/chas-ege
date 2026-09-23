@@ -20,6 +20,7 @@ var tasksInLaTeX = {};
 var preparedImages = {};
 
 var options = {};
+window.parsedJSON = window.parsedJSON || {};
 
 
 var largeFontStyle = 'div.z{font-size:128%}\n .MathJax_SVG_Display {font-size: 128%;}'.vTag('style');
@@ -391,6 +392,17 @@ var startShell = function () {
 	$('#zadaniya').html(sozdKolvoHtml('pech'));
 	$('#readiness-message').hide();
 	galkiKat('#galki_kat', 'pech');
+	
+	if (window.parsedJSON.autostart) {
+		var autostartInterval = setInterval(function() {
+			try {
+				zapusk();				
+				clearInterval(autostartInterval);
+			} catch (e) {
+				console.log('Не удалось выполнить автозапуск');
+			}
+		}, 1000);
+	}
 }
 
 
@@ -585,21 +597,30 @@ function refreshLaTeXarchive() {
 	for (var i in preparedImages) {
 		img.file(i + ".png", preparedImages[i], { base64: true });
 	}
-	zip.generateAsync({ type: "base64" }).then(function (base64) {
-		$('#latex-archive-placeholder').show();
-		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
+	zip.generateAsync({ type: "blob" }).then(function (blob) {
+		var link = $('#latex-archive-placeholder')[0];
+		$(link).show();
+		link.href = URL.createObjectURL(blob);
+		var archiveName =
+			options.variantPrefix + variantsGenerated[0] +
+			('_and_' + (variantsGenerated.length - 1) + '_more').esli(variantsGenerated.length > 1);
+		link.download = archiveName + '.zip';
+		link.click();
+		setTimeout(function(){ URL.revokeObjectURL(link.href); }, 1000);
 	});
 }
 
 function processArbitraryCodeFiles() {
 	const files = $('#arbitraryCodeInput')[0].files;
 
-	if (!files.length) {
+	var urlFiles = (window.parsedJSON.preloadFiles && Array.isArray(window.parsedJSON.preloadFiles)) ? window.parsedJSON.preloadFiles : [];
+
+	if (!files.length && !urlFiles.length) {
 		console.log('Не найдено файлов для запуска произвольного кода.');
 		return Promise.resolve(); // resolve immediately if no files
 	}
 
-	console.log('Файлов для запуска произвольного кода: ' + files.length);
+	console.log('Файлов для запуска произвольного кода: ' + (files.length + urlFiles.length));
 
 	const promises = Array.from(files).map(file => {
 		return new Promise((resolve, reject) => {
@@ -624,6 +645,24 @@ function processArbitraryCodeFiles() {
 
 			reader.readAsText(file);
 		});
+	});
+
+	urlFiles.forEach(fileUrl => {
+		promises.push(
+			new Promise((resolve, reject) => {
+				const script = document.createElement('script');
+				script.src = fileUrl;
+				script.onload = () => {
+					console.log(`Исполнен файл ${fileUrl}`);
+					resolve();
+				};
+				script.onerror = () => {
+					console.error(`Не удалось загрузить файл ${fileUrl}`);
+					resolve();
+				};
+				document.head.appendChild(script);
+			})
+		);
 	});
 
 	// Return a Promise that resolves when all files are processed
