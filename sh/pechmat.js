@@ -524,7 +524,7 @@ function replaceCanvasWithImgInTask(element, text, taskCategory) {
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
-		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.4\\linewidth]{'+imageName+'}');
+		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[\\size{'+taskCategory+'}][\\scale{'+taskCategory+'}]{'+imageName+'}');
 	}
 	if (canvases.length) {
 		text =
