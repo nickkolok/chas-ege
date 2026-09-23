@@ -3,11 +3,13 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
+        let key = '506736';
+        let preference1 = ['winner', 'loser'];
+        let preference2 = ['numberOfPeopleWhoVotedThatWeNeed', 'numberOfParticipants'];
+        let rand = getSelectedPreferenceFromList(key, preference1);
+        let randUpgrade = getSelectedPreferenceFromList(key, preference2);
         let post = ['председателя', 'заместителя председателя', 'секретаря'].iz();
         let educationPlace = ['школьного', 'университетского'].iz();
-
-        let rand = sl1();
-        let randUpgrade = sl1();
 
         let winOrLose = ['победитель', 'проигравший'][rand];
         let numberOfParticipants = sl(70, 200, 1);
@@ -26,6 +28,7 @@
                 ' Голоса между кандидатами распределились в отношении ' + '$' + loserRatio + ':' + winnerRatio + '$' + ['. Сколько голосов получил ' + winOrLose,
                 '. Сколько голосов было изначально, если ' + winOrLose + ' получил ' + chislitlx(numberOfPeopleWhoVotedThatWeNeed, 'голос', '$')][randUpgrade] + '?',
             answers: [numberOfPeopleWhoVotedThatWeNeed, numberOfParticipants][randUpgrade],
+            preference: [preference1, preference2],
         });
     }, 100);
 })();

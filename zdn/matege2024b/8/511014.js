@@ -1,0 +1,42 @@
+(function () {
+	'use strict';
+	retryWhileError(function () {
+		NAinfo.requireApiVersion(0, 2);
+		let key = '511014';
+		let preference = ['findTrue', 'findFalse'];
+		let rand = getSelectedPreferenceFromList(key, preference);
+		let nCorrect = sl(1, 3);
+		let nWrong = 4 - nCorrect;
+
+		let subject = ['экономике', 'английскому языку', 'математике', 'физике', 'китайскому языку',
+			'обществознанию', 'биологии', 'немецкому языку', 'истории', 'биологии', 'географии'].iz();
+		let students = sl(15, 30);
+		let minScore = sl(30, 60);
+		let maxScore = sl(minScore + 10, 100);
+		let wrongMin = minScore - sl(5, 25);
+
+		let correct = [
+			`Среди этих выпускников есть человек, который получил ${chislitlx(maxScore, 'балл', 'r$')} за ЕГЭ по ${subject}.`,
+			`Баллы за ЕГЭ по ${subject} любого из этих ${students} человек не ниже ${minScore - sl(1, 15)}.`,
+			`Минимальный балл строго больше ${minScore - sl(1, 15)}.`,
+			`Все баллы находятся в диапазоне от ${minScore} до ${maxScore}.`,
+			`Ни один выпускник не получил меньше ${minScore} баллов.`
+		];
+		let wrong = [
+			`Среди этих выпускников есть ${chislitlx(students, 'человек', 'r')} с равными баллами за ЕГЭ по ${subject}.`,
+			`Среди этих выпускников есть человек, получивший ${chislitlx(wrongMin, 'балл', 'r$')} за ЕГЭ по ${subject}.`,
+			`Все выпускники получили одинаковые баллы.`,
+			`Найдётся выпускник с баллом выше ${maxScore}.`
+		];
+
+		NAtask.setTask({
+			text: `${chislitlx(students, `выпускник`)} одного из одиннадцатых классов сдавали ЕГЭ по ${subject}. Самый низкий балл, полученный в этом классе, был равен ${minScore}, а самый высокий — ${maxScore}. Выберите одно или несколько утверждений, которые ` +
+				(rand ? 'неверны' : 'верны') + ` при указанных условиях. В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов. Если ответов несколько, записывайте их номера в порядке возрастания.`,
+			answers: rand ? wrong : correct,
+			wrongAnswers: rand ? correct : wrong,
+			preference: preference,
+		});
+		AtoB2(nCorrect, nWrong);
+	}, 1000);
+})();
+// https://mathb-ege.sdamgia.ru/problem?id=511014

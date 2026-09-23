@@ -3,7 +3,10 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
+        let key = '506346';
+        let preference = ['howManySpend', 'howManyWasBefore', 'howManyPercent'];
         let rand = sl1();
+        let randQuestion = getSelectedPreferenceFromList(key, preference);
 
         let mlnRuble = slKrome([100], 10, 200, 1);
         let persent = sl(10, 50, 1);
@@ -11,7 +14,7 @@
         let result = mlnRuble * persent / 100;
         NAtask.setTask({
             text: '',
-            questions: [
+            questions: [[
                 {
                     text: 'Городской бюджет составляет ' + '$' + mlnRuble + '$' + ' млн рублей, а расходы на одну из его статей составили ' + '$' + persent + '$' + '%.' +
                         ' Сколько ' + ['миллионов', ''][rand] + ' рублей потрачено на эту статью бюджета',
@@ -28,8 +31,9 @@
                         ' Сколько процентов от всего городского бюджета потрачено на эту статью',
                     answers: persent,
                 },
-            ],
+            ][randQuestion]],
             postquestion: '?',
+            preference: preference,
         });
     }, 100);
 })();

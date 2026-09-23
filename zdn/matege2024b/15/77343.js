@@ -2,8 +2,11 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-
-        let rand = sl1();
+        let key = '77343';
+        let preference1 = ['priseExpensive', 'priseCheap'];
+        let preference2 = ['answerResult', 'answerPercent', 'answerNumberOfNotebooks','answerPrise'];
+        let rand = getSelectedPreferenceFromList(key, preference1);
+        let randQuestion = getSelectedPreferenceFromList(key, preference2);
         let priseExpensive = sl(60, 200, 1);
         let priseCheap = sl(3, 50, 1);
         let prise = [priseExpensive, priseCheap][rand];
@@ -20,7 +23,7 @@
 
         NAtask.setTask({
             text: '',
-            questions: [
+            questions: [[
                 {
                     text: item.ie.toZagl() + ' стоит ' + prise + ' р. ' +
                         'Сколько рублей заплатит покупатель за ' + chislitlx(numberOfNotebooks, item) + ', ' +
@@ -46,8 +49,9 @@
                         '. Покупатель заплатил за покупку ' + chislitlx(numberOfNotebooks, item) + ' ' + result + ' р. Сколько стоит 1 ' + item.ie,
                     answers: prise,
                 },
-            ],
+            ][randQuestion]],
             postquestion: '?',
+            preference: [preference1, preference2],
         });
         NAtask.modifiers.allDecimalsToStandard();
     }, 100);

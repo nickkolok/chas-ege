@@ -57,14 +57,16 @@
 		while (wrongAnswers.size < 3) {
 			let perm = values.shuffle();
 			let variant = perm.map(x => x[0]).join(", ");
-			if (variant !== correct) wrongAnswers.add(variant);
+			if (variant !== correct) {
+				wrongAnswers.add(variant);
+			}
 		}
 
 		NAtask.setTask({
 			text: 'Расположите в порядке ' + ['убывания', 'возрастания'][rand] + ' числа.',
 			answers: correct,
-			wrongAnswers: Array.from(wrongAnswers),
-			preference: preference,
+			wrongAnswers,
+			preference,
 		});
 
 		AtoB(3);
