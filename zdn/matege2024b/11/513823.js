@@ -62,7 +62,7 @@
 		};
 
 		NAtask.setTask({
-			text: 'В треугольной пирамиде ' + ['три', '$ABCD$'][rand] + ' ребра ' + ['', '$AB$, $AC$ и $AD$'][rand] + ' взаимно перпендикулярны' +
+			text: 'В треугольной пирамиде ' + ['три', '$ABCD$'][rand] + ' ребра' + [' ', ' $AB$, $AC$ и $AD$ '][rand] + 'взаимно перпендикулярны' +
 			[', а их длины равны $' + length + '$, $' + width + '$ и $' + height + '$', ''][rand] + '. Найдите объём этой пирамиды'+['.', ', если $AB=' + length + '$, $AC=' + width + '$ и $AD=' + height + '$.'][rand],
 			answers: volume,
 			preference: preference,
