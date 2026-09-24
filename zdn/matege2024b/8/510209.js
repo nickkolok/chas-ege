@@ -13,8 +13,9 @@
 		let people = sklonlxkand(['школьник','ученик','ученица','учитель','преподаватель','преподавательница',].iz());
 		let town =['Твери','Казани','Волгограда','Астрахани','Ярославля','Ростова','Воронежа','Липецка','Уфы','Саратова'].iz();
 		let rod = people.rod;
-		let registration = selectParticipleGender('зарегистрирован', rod);
 		let group = ' из ' + town;
+		let isFemale = (rod === 1);
+		let registration = isFemale ? 'зарегистрирована' : 'зарегистрирован';
 		let peopleImGroup = people.im + group;
 		let peopleTeGroup = people.te + group;
 
