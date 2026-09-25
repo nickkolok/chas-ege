@@ -68,3 +68,4 @@
 		});
 	}, 20000);
 })();
+//https://mathb-ege.sdamgia.ru/problem?id=510181
