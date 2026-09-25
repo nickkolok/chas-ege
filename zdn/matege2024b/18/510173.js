@@ -37,7 +37,7 @@
 		}
 
 		let n = slKrome(0, -3, 3);
-		let valueTex = n > 0 ? '' + (2).pow(n) : 'frac{1}{' + (2).pow(-n) + '}';
+		let valueTex = n > 0 ? '' + (2).pow(n) : '\\frac{1}{' + (2).pow(-n) + '}';
 
 		let variants = [
 			{ base: '0,5', sign: 'geq', tochka: -n, napravo: false },
