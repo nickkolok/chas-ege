@@ -1,6 +1,6 @@
 window.nomer=[
 	506380,
-	510173
+	510181
 ].iz();
 
 window.comment = 'Неревенства';
