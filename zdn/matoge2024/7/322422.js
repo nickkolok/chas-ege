@@ -40,10 +40,10 @@
 			correctExpr = matchingDiffs[0].expr;
 			wrAns = selectedDiffs.filter(d => d.expr !== correctExpr).map(d => d.expr);
 			// Добавляем вариант "невозможно определить" как неправильный
-			wrAns.push('невозможно определить');
+			wrAns.push('ни одна из них');
 		} else {
 			// Ни одна из предложенных не подходит
-			correctExpr = 'невозможно определить';
+			correctExpr = 'ни одна из них';
 			wrAns = selectedDiffs.map(d => d.expr);
 		}
 
@@ -53,7 +53,7 @@
 
 		// 6. Форматируем для отображения: математические выражения оборачиваем в $...$
 		let formatOption = (opt) => {
-			if (opt === 'невозможно определить') {
+			if (opt === 'ни одна из них') {
 				return opt; // оставляем как текст
 			}
 			return '$' + opt + '$'; // оборачиваем математику
