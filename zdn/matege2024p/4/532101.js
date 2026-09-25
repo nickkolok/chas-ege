@@ -102,8 +102,4 @@ ${table}
 		authors: ['Селена'],
 	});
 
-	chas2.task.setAnalytics({
-		best: 532101,
-	});
-
 })();
