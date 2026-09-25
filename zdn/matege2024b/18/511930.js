@@ -60,31 +60,40 @@
 			postText: 'Впишите в приведённую в ответе таблицу под каждой буквой соответствующий отрезку номер.',
 		});
 
+		// Формируем точки для координатной оси:
+		// 1) Засечки с подписями для целых чисел
+		let tickPoints = [];
+		for (let tick = -4; tick <= 4; tick++) {
+			tickPoints.push({
+				value: tick,
+				label: tick.toString(),
+				mark: 'line',
+				labelPos: 'underAxis',
+			});
+		}
+		// 2) Точки m и n с подписями
+		let mPoint = {
+			value: m,
+			label: 'm',
+			mark: 'dot',
+			labelPos: 'overAxis',
+		};
+		let nPoint = {
+			value: n,
+			label: 'n',
+			mark: 'dot',
+			labelPos: 'overAxis',
+		};
+
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
-			height: 70,
-			paint: function (ctx) {
-				let unit = 40;
-				let axisY = 30;
-				let toX = (value) => 160 + unit * value;
-
-				ctx.strokeStyle = 'black';
-				ctx.fillStyle = 'black';
-				ctx.lineWidth = 1;
-				ctx.textAlign = 'center';
-
-				ctx.drawArrow(toX(-3) - 25, axisY, toX(4) + 25, axisY);
-
-				ctx.font = '16px liberation_sans';
-				for (let tick = -3; tick <= 4; tick++) {
-					ctx.drawLine(toX(tick), axisY - 5, toX(tick), axisY + 5);
-					ctx.fillText(tick < 0 ? '−' + (-tick) : '' + tick, toX(tick), axisY + 22);
-				}
-
-				ctx.font = 'italic 20px serif';
-				[[m, 'm'], [n, 'n']].forEach(([value, letter]) => {
-					ctx.fillKrug(toX(value), axisY, 3);
-					ctx.fillText(letter, toX(value), axisY - 10);
+			height: 100,
+			paint: function (ct) {
+				coordAxis_drawAuto(ct, {
+					points: tickPoints.concat([mPoint, nPoint]),
+					width: 400,
+					height: 100,
+					margin: 20,
 				});
 			},
 		});
