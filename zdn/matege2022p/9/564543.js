@@ -15,6 +15,7 @@ retryWhileUndefined(function() {
 	let b = sluchch(2, 5).pm();
 	let c = sl1().pm();
 	let d = sl(-5, 5);
+	// Чтобы график помещался в заданные границы minY: -6, maxY: 5
 	if (a.abs() + d.abs() > 6)
 		return;
 	let factor = sl(0.5, 1.5, 0.5).pm();
