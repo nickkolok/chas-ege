@@ -21,13 +21,11 @@ retryWhileUndefined(function() {
 	if (factor * c == 2)
 		return;
 	let formula = 'a\\' + trigfuncs + '(\\frac{\\pi}{b}x+' + (factor).texfracpi(1) + ' c)+d';
-	if (trigfuncs == 'sin') {
-		let variant = [
-			['a', a.ts()],
-			['b', b.ts()],
-		].iz();
-		formula = formula.replace(variant[0], variant[1]);
-	}
+	let variant = [
+		['a', a.ts()],
+		['b', b.ts()],
+	].iz();
+	formula = formula.replace(variant[0], variant[1]);
 	let sign = '<';
 	if (a > 0)
 		sign = '>';
