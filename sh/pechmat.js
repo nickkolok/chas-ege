@@ -136,8 +136,7 @@ function konecSozd() {
 		for (var id in generatedTasks) {
 			tasksInLaTeX[id] = roughHTML2LaTeX(replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
-				generatedTasks[id].txt,
-				generatedTasks[id].taskCategory
+				generatedTasks[id].txt
 			));
 		}
 	}
@@ -403,7 +402,7 @@ function grabCurrentTask(){
 	generatedTasks[vopr.taskId] = vopr.clone();
 	generatedTasks[vopr.taskId].address =
 		window.nabor.adres + dvig.getzadname(nZ) + '/' + window.nomer;
-		generatedTasks[vopr.taskId].taskCategory = vopr.taskCategory;
+
 }
 
 function renewTask() {
@@ -428,7 +427,7 @@ function renewTask() {
 		convertCanvasToImagesIfNeeded();
 		grabCurrentTask();
 		if (options.prepareLaTeX) {
-			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt, window.vopr.taskCategory);
+			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
 			refreshLaTeXarchive();
 		}
 		MathJax.Hub.Typeset(taskHtml[0]);
@@ -514,7 +513,7 @@ function createLaTeXbunchAnswers(variantN) {
 	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
 }
 
-function replaceCanvasWithImgInTask(element, text, taskCategory) {
+function replaceCanvasWithImgInTask(element, text) {
 	if (!(/<canvas/i.test(text))) {
 		// Nothing to do
 		return text;
