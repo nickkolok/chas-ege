@@ -10,13 +10,7 @@
 		let pair = pairs[sl(0, pairs.length - 1)];
 		let A = pair[0];
 		let B = pair[1];
-		let LCM = A * B;
-		let minR = 1;
-		let maxR = Math.min(A, B) - 1;
 
-		genAssert(minR <= maxR, 'Invalid pair');
-
-		let r = sl(minR, maxR);
 
 		let conditionType = ['middle', 'last', 'first'][sl(0, 2)];
 
@@ -41,9 +35,9 @@
 			}
 		}
 
-		let validNumbers = validDigits.filter(x => x % LCM === r);
+		let validNumbers = validDigits.filter(x => x % A === x % B && x % A > 0);
 
-		genAssert(validNumbers.length > 0, 'Не найдено чисел для LCM=' + LCM + ', r=' + r);
+		genAssert(validNumbers.length > 0, 'Не найдено чисел для A=' + A + ', B=' + B);
 
 		let answers = [];
 		let textPrefix = '';
