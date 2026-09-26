@@ -4,10 +4,7 @@
         let key = '8';
         let preference = ['area', 'diagonal'];
 
-        let rand = getListedPreference(key, preference.map((pref, index) => ({
-            preference: pref,
-            preferenceValue: index
-        })), sl(preference.length - 1));
+        let rand = getSelectedPreferenceFromList(key, preference);
 
         let question = ['площадь', 'диагональ'];
 
