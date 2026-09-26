@@ -52,7 +52,7 @@
 			validNumbers = validNumbers.filter(x => x > 500);
 			genAssert(validNumbers.length > 0, 'Нет чисел > 500');
 			answers = validNumbers;
-			textPrefix = 'Приведите пример трёхзначного натурального числа большего 500';
+			textPrefix = 'Приведите пример трёхзначного натурального числа, большего 500';
 			textSuffix = '. В ответе укажите какое-нибудь одно такое число';
 		} else if (rand === 3) { // lt500
 			validNumbers = validNumbers.filter(x => x < 500);
