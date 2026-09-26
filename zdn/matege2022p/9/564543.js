@@ -47,14 +47,17 @@ retryWhileUndefined(function() {
 		let x1 = sl(5, 10).pm();
 		question = '$f(' + x1 + ')$';
 		answ = f(x1);
-		if (answ.isZ())
-			break;
+		if (!answ.isZ())
+			return;
+		break;
 	case 2:
 		let x2 = sl(5, 10).pm();
 		question = '$f(f(' + x2 + '))$';
-		answ = f(f(x2));
-		if (answ.isZ())
-			break;
+		let fx2 = f(x2);
+		answ = f(fx2);
+		if (!answ.isZ() || !fx2.isZ())
+			return;
+		break;
 	case 3:
 		let st = [
 			['произведение', a * b * c * d],
