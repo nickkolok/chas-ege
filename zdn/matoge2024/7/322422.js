@@ -83,7 +83,13 @@
 			preference: preference,
 		});
 
-		AtoB(3); // без autoLaTeX, так как мы уже отформатировали
+		AtoB(3, {
+			sortingFunction: (a, b) => {
+				if (a === 'ни одна из них') return 1;
+				if (b === 'ни одна из них') return -1;
+				return 0;
+			}
+		}); // вариант "ни одна из них" всегда последний
 
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
