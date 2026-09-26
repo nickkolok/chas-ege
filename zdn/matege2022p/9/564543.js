@@ -64,7 +64,7 @@ retryWhileUndefined(function() {
 			['сумму', a + b + c + d]
 		].iz();
 		answ = st[1];
-		question = st[0] + ' всех коэффициентов';
+		question = st[0] + ' коэффициентов $a, b, c, d$';
 		if (c > 0)
 			limits = ', $0 \\leq c \\leq 1$';
 		else
