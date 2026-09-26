@@ -29,6 +29,11 @@
         );
 
         let points = autoScale(trp.vertices);
+        let letters = latbukv.slice(0, 4);
+
+        let key = '27821';
+        let preference = ['noLetters', 'withLetters'];
+        let randLetters = getSelectedPreferenceFromList(key, preference);
 
         let paint1 = function (ctx) {
             let h = 400;
@@ -43,12 +48,23 @@
             ctx.drawFigure(points, trp.connectionMatrix);
 
             ctx.strokeStyle = om.primaryBrandColors.iz();
+
+            if (randLetters == 1) {
+                ctx.scale(1, -1);
+                ctx.font = "20px liberation_sans";
+                points.slice(0, 4).forEach((elem, i) => {
+                    let offsetX = (i == 0 || i == 3) ? -15 : 5;
+                    let offsetY = (i < 2) ? 25 : -5;
+                    ctx.fillText(letters[i], elem.x + offsetX, -elem.y + offsetY);
+                });
+            }
         };
 
         NAtask.setTask({
             text: `Основания трапеции равны $${trp.lengthAB}$ и $${trp.lengthCD}$. Найдите ${[`больший`, `меньший`][rand]} из отрезков, на которые делит среднюю линию этой трапеции одна из её диагоналей.`,
             answers: answ,
             authors: ['Александра Суматохина'],
+            preference
         });
 
         NAtask.modifiers.addCanvasIllustration({
