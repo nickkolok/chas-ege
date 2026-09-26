@@ -33,7 +33,7 @@
 				ct.drawParallelepiped({
 					width: cubeEdge / 1.5,
 					height: cubeEdge / 1.5,
-					depth: cubeEdge / (2.5 * 1.5),
+					depth: cubeEdge / 2.5 / 1.5,
 					angle: 40
 				}, [0, 2, 3, 4, 6], true, [0.5, 0.2]);
 				ct.translate(-44 / 15, -71 / 15);
@@ -43,7 +43,7 @@
 			ct.drawParallelepiped({
 				width: cubeEdge,
 				height: cubeEdge,
-				depth: cubeEdge / (2.5),
+				depth: cubeEdge / 2.5,
 				angle: 40
 			}, [0, 3, 4], true, [0.5, 0.2]);
 
