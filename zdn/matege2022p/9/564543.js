@@ -8,6 +8,8 @@ retryWhileUndefined(function() {
 			return a * Math.sin(angle) + d;
 		case 'cos':
 			return a * Math.cos(angle) + d;
+		default:
+			return 0;
 		}
 	}
 	let trigfuncs = ['sin', 'cos'].iz();
