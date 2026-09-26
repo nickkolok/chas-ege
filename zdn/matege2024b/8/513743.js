@@ -13,9 +13,10 @@
 		let days = sl(7, 14);
 		let spotA = sl(1, 3);
 		let spotB = sl(2, 5);
-		let minBoth = 0;
+		let minBoth = Math.max(0, spotA + spotB - days);
 		let maxBoth = Math.min(spotA, spotB);
 		let minNone = days - (spotA + spotB - minBoth);
+		let maxNone = days - (spotA + spotB - maxBoth);
 		genAssert(minNone > 0, 'Минимум дней без посещений должен быть больше нуля');
 		let name = om.maleNames.iz();
 		let surname = ['Сергеевич', 'Иванович', 'Николаевич', 'Валерьевич', 'Петрович', 'Александрович', 'Юрьевич', 'Михайлович', 'Евгеньевич', 'Васильевич', 'Валентинович', 'Никитич', 'Антонович', 'Кириллович', 'Борисович', 'Викторович', 'Владимирович', 'Фёдорович', 'Егорович',].iz();
@@ -32,14 +33,14 @@
 
 		let correct = [
 			[`Не может оказаться, что ${fullName} ${chislitlx(maxBoth + 1, 'день', '$')} ходил и на ${spotName[0].ve}, и на ${spotName[1].ve}.`,
-			`${chislit(minNone, "Был", "Было", "Было")} ${chislitlx(minNone, 'день', '$')}, когда ${fullName} не ходил ни на ${spotName[0].ve}, ни на ${spotName[1].ve}.`,
+			`Минимум ${chislitlx(minNone, 'день', '$')} ${fullName} не ходил ни на ${spotName[0].ve}, ни на ${spotName[1].ve}.`,
 			`Максимум ${chislitlx(maxBoth, 'день', '$')} он был и там, и там.`,
-			`Минимум ${chislitlx(minNone, 'день', '$')} он никуда не ходил.`,
+			`Максимум ${chislitlx(maxNone, 'день', '$')} он никуда не ходил.`
 			],
 			[`Сегодня ${fullName} приехал на работу на ${transport.pe}, значит, сегодня нет ${badWeather[0].re}.`,
-			`Каждый раз, когда на улице  ${badWeather[1].ie}, ${fullName} добирается до работы не на ${transport.pe}.`,
-			`${fullName} добирается до работы не на ${transport.pe}, если сегодня он надел ${specialClothing} костюм.`,
-			`${fullName} добирается до работы не на ${transport.pe}, если сегодня ${specialDay.ie}.`
+			`Каждый раз, когда на улице ${badWeather[1].ie}, ${fullName} добирается до работы не на ${transport.pe}.`,
+			`${fullName} добирается до работы не на ${transport.pe}, если сегодня ${specialDay.ie} и он надел ${specialClothing} костюм.`,
+			`Если сегодня ${specialDay.ie} и ${fullName} приехал на работу на ${transport.pe}, значит, сегодня он не надевал ${specialClothing} костюм.`
 			]][randTask];
 		let wrong = [
 			[`${chislit(spotA, "Был", "Было", "Было")} ${chislitlx(spotA, 'день', '$')}, когда ${fullName} ходил и на ${spotName[0].ve}, и на ${spotName[1].ve}.`,
