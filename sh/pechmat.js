@@ -3,7 +3,7 @@
 var vr1 = chas.mode.svinta ? 100 : 200;
 var vr2 = chas.mode.svinta ? 100 : 1500;
 
-var variantNumber;
+var variantNumber = 0;
 var nV = 1;
 var nZ = 1;
 var aZ = [];
@@ -33,14 +33,11 @@ function vse0() {
 	$('#cV').val(1);
 }
 
-function zapusk() {
-	//Сохраняем параметры генерации
-	chasStorage.domData.save();
-
-	//Читаем настройки
+function readOptions() {
 	options.editable = $('#redakt').is(':checked');
 	options.largeFont = $('#largeFont').is(':checked');
 	options.customNumber = $('#customNumber').is(':checked');
+	options.variantPrefix = $('#variantPrefix').val();
 	options.vanishVariants = $('#vanishVariants').is(':checked');
 	options.nopagebreak = $('#nopagebreak').is(':checked');
 	options.compactAnswers = $('#compact-answers').is(':checked');
@@ -53,14 +50,36 @@ function zapusk() {
 	options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
+	options.forceIntegers = $('#forceIntegers').is(':checked');
+	options.onlyIntegers = $('#onlyIntegers').is(':checked');
+	options.randomSeed = $('#randomSeed').val();
+	if (options.randomSeed === '') {
+		options.randomSeed = Date.now();
+	}
 
-	if (customNumber) {
+	if (options.customNumber) {
 		variantNumber = $('#start-number').val() - 1;
 	}
+
+	sluchch.forceIntegers = !!options.forceIntegers;
+	sluchch.onlyIntegers = !!options.onlyIntegers;
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
 	}
+}
+
+
+async function zapusk() {
+	//Если файлы подгружены, то запускаем их сразу
+	//Например, чтобы выставить ими количество вариантов.
+	await processArbitraryCodeFiles();
+
+	//Сохраняем параметры генерации
+	chasStorage.domData.save();
+
+	//Читаем настройки
+	readOptions();
 
 	//Читаем количество заданий
 	aV = nV = 1 * $('#cV').val();
@@ -76,12 +95,12 @@ function zapusk() {
 	iZ = aZ.slice();
 	nZ = 0;
 	$('#panel').html('Тесты составляются, подождите...');
-	$('#gotov').show();
+	$('#readiness-message').show();
 	zadan();
 }
 
 function testGotov() {
-	$('#gotov').hide();
+	$('#readiness-message').hide();
 	if (options.editable) {
 		$('#rez, #otv, #rsh').attr('contenteditable', 'true');
 	}
@@ -115,13 +134,11 @@ function konecSozd() {
 	convertCanvasToImagesIfNeeded();
 	if (options.prepareLaTeX) {
 		for (var id in generatedTasks) {
-			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
+			tasksInLaTeX[id] = roughHTML2LaTeX(replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
-				generatedTasks[id].txt
-			).
-				// Escape LaTeX comments,
-				// but don't ruin if they've been already escaped!
-				replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\');
+				generatedTasks[id].txt,
+				generatedTasks[id].taskCategory
+			));
 		}
 	}
 
@@ -155,7 +172,7 @@ function bumpVariantNumber() {
 
 function appendVariantTasksCaption() {
 	if (!options.vanishVariants) {
-		strVopr += '<h2 class="d">Вариант №' + variantNumber + '</h2>';
+		strVopr += '<h2 class="d">Вариант №' + options.variantPrefix + variantNumber + '</h2>';
 	}
 }
 
@@ -166,17 +183,17 @@ function appendVariantTasksEnding() {
 
 function appendVariantAnswersCaption() {
 	strOtv +=
-		'<table ' +
-		'class="normtabl tablpech pech-answers-table" ' +
-		'id="pech-answers-table-variant-' + variantNumber +
+		'<table '+
+			'class="normtabl tablpech pech-answers-table" ' +
+			'id="pech-answers-table-variant-' + variantNumber +
 		'">';
 
 	if (!options.vanishVariants) {
 		strOtv += '<tr><th colspan="10">';
 		if (options.compactAnswers) {
-			strOtv += 'Вар. ' + variantNumber;
+			strOtv += 'Вар. ' + options.variantPrefix + variantNumber;
 		} else {
-			strOtv += 'Ответы к варианту<br/>№' + variantNumber;
+			strOtv += 'Ответы к варианту<br/>№' + options.variantPrefix + variantNumber;
 		}
 		strOtv += '</th></tr>';
 	}
@@ -191,6 +208,9 @@ function endCurrentVariant() {
 	nZ = 0;
 	appendVariantTasksEnding();
 	appendVariantAnswersEnding();
+	if(options.uniqueAnswersOnlyInOneVariant){
+		unqDict={};
+	}
 	zadan();
 }
 
@@ -220,8 +240,14 @@ function zadan() {
 			nZ++;
 			zadan();
 		} else {
+			let tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
+			// Именно в этой точке происходит подсидовка -
+			// использование предсказуемых псевдослучайных чисел вместо встроенных случайных,
+			// позволяющее перегенерировать только отдельные задания из варианта
+			let seed = options.randomSeed + "__" + variantsGenerated.length + "__" + tasksReadyInCurrentVariant;
+			Math.seedrandom(seed);
+
 			if (options.splitAnswerTables) {
-				var tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
 				if (tasksReadyInCurrentVariant && (tasksReadyInCurrentVariant % options.splitAnswersNumber === 0)) {
 					appendVariantAnswersEnding();
 					appendVariantAnswersCaption();
@@ -229,7 +255,6 @@ function zadan() {
 			}
 			iZ[nZ]--;
 			dvig.zadan(obnov, nZ);
-
 		}
 		return;
 	}
@@ -244,31 +269,33 @@ function createHtmlForTask(nazvzad) {
 
 	return {
 		txt:
-			'<div class="d" data-task-id="' + taskId + '" data-task-number="' + nZ + '">' +
-			'<div class="b">' + nazvzad + '</div>' +
-			'<div class="z">' +
-			window.vopr.txt +
-			'<button class="noprint renewbutton" title="Заменить задание на похожее"' +
-			'>' +
-			'&#x27F3;' +
-			'</button>' +
-			'</div>' +
-			'<div class="grid-for-writing"></div>' +
+			'<div class="d" data-task-id="'+taskId+'" data-task-number="'+nZ+'" data-variant-number="'+variantNumber+'">'+
+				'<div class="b">'+nazvzad+'</div>'+
+				'<div class="z">'+
+					window.vopr.txt+
+					'<button class="noprint renewbutton" title="Заменить задание на похожее"'+
+					'>' +
+						'&#x27F3;' +
+					'</button>'+
+				'</div>'+
+				'<div class="grid-for-writing"></div>'+
 			'</div>',
 		ver:
 			'<tr class="answer-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
-			('<td>' + variantNumber + '</td>').esli(!options.vanishVariants) +
+			('<td>' + options.variantPrefix + variantNumber + '</td>').esli(!options.vanishVariants) +
 			'<td>' + nazvzad + '</td>' +
 			'<td>' + window.vopr.ver.join('; ') + '</td>' +
 			('<td>' + window.vopr.rsh + '</td>').esli(options.solutionsIntoAnswers) +
 			'</tr>',
 		rsh:
-			'<div class="solution-container" data-task-id="' + variantNumber + '-' + nazvzad + '">' +
-			(
-				'<h3>' + ('Вариант №' + variantNumber + ', ').esli(!options.vanishVariants) +
-				'задача ' + nazvzad + '</h3><br/>' +
-				vopr.rsh
-			).esli(vopr.rsh) +
+			'<div class="solution-container" data-task-id="'+variantNumber+'-'+nazvzad+'">'+
+				(
+					'<h3>'+
+						('Вариант №'+options.variantPrefix+variantNumber+', ').esli(!options.vanishVariants) +
+						'задача '+nazvzad+
+					'</h3><br/>'+
+					vopr.rsh
+				).esli(vopr.rsh)+
 			'</div>',
 		unq:
 			[vopr.ver.join('; '), vopr.rsh, vopr.unq].join(' [:////:] '), // Да, это служебная комбинация символов "баян"
@@ -298,10 +325,10 @@ function obnov() {
 	unqDict[html.unq] = true;
 
 	strVopr += html.txt;
-	strOtv += html.ver;
+	strOtv  += html.ver;
 	strResh += html.rsh;
 
-	generatedTasks[vopr.taskId] = vopr.clone();
+	grabCurrentTask();
 
 	var sdel = aZ.sum() * (aV - nV + 1) - iZ.sum();
 	var w = sdel / kZ;
@@ -363,13 +390,20 @@ function optimcopyd(n) {
 var startShell = function () {
 	window.vopr.txt = '';
 	$('#zadaniya').html(sozdKolvoHtml('pech'));
-	$('#gotov').hide();
+	$('#readiness-message').hide();
 	galkiKat('#galki_kat', 'pech');
 }
 
 
 function getTaskTextContainerByTaskId(taskId) {
 	return $('div.d[data-task-id="' + taskId + '"]')[0];
+}
+
+function grabCurrentTask(){
+	generatedTasks[vopr.taskId] = vopr.clone();
+	generatedTasks[vopr.taskId].address =
+		window.nabor.adres + dvig.getzadname(nZ) + '/' + window.nomer;
+		generatedTasks[vopr.taskId].taskCategory = vopr.taskCategory;
 }
 
 function renewTask() {
@@ -379,6 +413,7 @@ function renewTask() {
 	console.log(wrapper);
 	var taskId = wrapper.attr('data-task-id');
 	var taskNumber = wrapper.attr('data-task-number');
+	variantNumber = wrapper.attr('data-variant-number');
 	var answerRow = $('tr.answer-container[data-task-id=' + taskId + ']');
 	var solution = $('div.solution-container[data-task-id=' + taskId + ']');
 
@@ -386,14 +421,14 @@ function renewTask() {
 	dvig.zadan(function () {
 		console.log(wrapper);
 		var taskHtml = createHtmlForTask(nazvzad);
-		wrapper.replaceWith(taskHtml.txt);
+		wrapper  .replaceWith(taskHtml.txt);
 		answerRow.replaceWith(taskHtml.ver);
-		solution.replaceWith(taskHtml.rsh);
+		solution .replaceWith(taskHtml.rsh);
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
-		generatedTasks[vopr.taskId] = vopr.clone();
+		grabCurrentTask();
 		if (options.prepareLaTeX) {
-			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
+			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt, window.vopr.taskCategory);
 			refreshLaTeXarchive();
 		}
 		MathJax.Hub.Typeset(taskHtml[0]);
@@ -407,16 +442,16 @@ function insertGridFields() {
 	$('#grid-svg-template')[0].style.minHeight = fieldHeight + 'cm';
 
 	var cellSize = $('#grid-cell-size').val();
-	$('#grid-pattern')[0].setAttribute('width', cellSize);
-	$('#grid-pattern')[0].setAttribute('height', cellSize);
+	$('#grid-pattern')[0].setAttribute('width' ,cellSize);
+	$('#grid-pattern')[0].setAttribute('height',cellSize);
 
-	$('#grid-pattern-line-1')[0].setAttribute('x1', cellSize / 2);
-	$('#grid-pattern-line-1')[0].setAttribute('x2', cellSize / 2);
-	$('#grid-pattern-line-1')[0].setAttribute('y2', cellSize);
+	$('#grid-pattern-line-1')[0].setAttribute('x1',cellSize/2);
+	$('#grid-pattern-line-1')[0].setAttribute('x2',cellSize/2);
+	$('#grid-pattern-line-1')[0].setAttribute('y2',cellSize  );
 
-	$('#grid-pattern-line-2')[0].setAttribute('y1', cellSize / 2);
-	$('#grid-pattern-line-2')[0].setAttribute('y2', cellSize / 2);
-	$('#grid-pattern-line-2')[0].setAttribute('x2', cellSize);
+	$('#grid-pattern-line-2')[0].setAttribute('y1',cellSize/2);
+	$('#grid-pattern-line-2')[0].setAttribute('y2',cellSize/2);
+	$('#grid-pattern-line-2')[0].setAttribute('x2',cellSize  );
 
 
 	var svg = $('#grid-svg-container').html();
@@ -424,12 +459,12 @@ function insertGridFields() {
 
 
 	$('#grid-style-placeholder').html(
-		'<style>' +
-		'.grid-for-writing { ' +
-		'display: block;' +
-		'min-height: ' + fieldHeight + 'cm;' +
-		'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
-		'}' +
+		'<style>'+
+			'.grid-for-writing { ' +
+				'display: block;' +
+				'min-height: ' + fieldHeight + 'cm;' +
+				'background-image: ' + 'url(data:image/svg+xml;base64,' + svgCode + ');' +
+			'}'+
 		'</style>'
 	);
 
@@ -444,63 +479,73 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = '\n\\hline\n';
-	return (
-		'\n\\begin{tabular}{*{' + (kZ / 50).ceil() + '}l}' +//TODO: надо как-то узнать количество всех заданий и сколько оно делится на 50(тк 50 ответов обычно влазит на страницу(вообще в идеале 47)) и только l поставить
-		'\n\\begin{tabular}[t]{' + (new Array(cellsInFirstRow)).fill('|l').join('') + '|' + '}' +
-		'\n\\hline\n' +
-		answersParsedToTeX.join(hline) +
-		hline +
-		'\\end{tabular}' +
-		'\\end{tabular}' +
-		'\n\n\n'
-	);
+	const maxRows = options.splitAnswersNumber || 60;
+	const hline = "\n\\\\\n\\hline\n";
+	const colFormat = (new Array(cellsInFirstRow)).fill('|l').join('') + '|';
+
+	let res = '';
+	for (let i = 0; i < answersParsedToTeX.length; i += maxRows) {
+		const chunk = answersParsedToTeX.slice(i, i + maxRows);
+		res += '\\begin{tabular}{' + colFormat + '}' +
+			'\n\\hline\n' +
+			chunk.join(hline) +
+			hline +
+			'\\end{tabular}' +
+			'\n\n\n';
+	}
+	return res;
 }
 
-function getAnswersTableLaTeX(variantN) {
+
+function createLaTeXbunchAnswers(variantN) {
 
 	var answerRows = $('table#pech-answers-table-variant-' + variantN + ' tr');
 
 	var answersParsedToTeX = [];
 	// The first row may be the caption, so...
 	var cellsInFirstRow = (answerRows[2] || answerRows[1] || answerRows[0]).getElementsByTagName('td').length;
-	let count = 0;
 	for (var row of Array.from(answerRows)) {
-		count++;
 		var tdCells = row.getElementsByTagName('td');
 		if (tdCells.length) {
 			//TODO: reverse-decode LaTeX from MathJax
-			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & ')+'\\\\');
-			if (count % 50 == 0&&count<kZ)
-				answersParsedToTeX.push('\\end{tabular}&\\begin{tabular}[t]{'+ (new Array(cellsInFirstRow)).fill('|l').join('') + '|' +'}')
+			answersParsedToTeX.push(Array.from(tdCells).map(x => x.innerHTML).join(' & '));
 		}
 	}
 	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
 }
 
-function replaceCanvasWithImgInTask(element, text) {
+function replaceCanvasWithImgInTask(element, text, taskCategory) {
 	if (!(/<canvas/i.test(text))) {
 		// Nothing to do
 		return text;
 	}
+	console.log(element);
 	var canvases = Array.from(element.getElementsByTagName('canvas'));
-	console.log(canvases);
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
-		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.25\\textwidth]{images/'+imageName+'}');
+		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.4\\linewidth]{'+imageName+'}');
 	}
+	if (canvases.length) {
+		text =
+			'\\ifdefined\\OnBeforeIllustratedTask\\OnBeforeIllustratedTask\\fi\n' +
+			text.trim() +
+			'\n\\ifdefined\\OnAfterIllustratedTask\\OnAfterIllustratedTask\\fi' +
+		'';
+	}
+
 	return text;
 }
 
-function createLaTeXbunch(variantN) {
-	var bunchText = '';
+function createLaTeXbunchTasks(variantN) {
+	var bunchText = "";
 	for (var taskId in tasksInLaTeX) {
 		if (generatedTasks[taskId].variantNumber == variantN) {
 			bunchText +=
 				'\n' +
 				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
-				tasksInLaTeX[taskId] + '\n' +
+					'% ' + generatedTasks[taskId].address + '\n' +
+					tasksInLaTeX[taskId] + '\n' +
 				'\\end{taskBN}' + '\n';
 		}
 
@@ -508,22 +553,34 @@ function createLaTeXbunch(variantN) {
 	return bunchText;
 }
 
+
 function refreshLaTeXarchive() {
 	if (!options.prepareLaTeX) {
 		return;
 	}
 	var zip = new JSZip();
-	var bunch = "";
-	for (var variantN of variantsGenerated) {
-		bunch += createLaTeXbunch(variantN);
+	var bunchTasks = "";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>6)?6:variantsGenerated.length)+"}";
+
+	for(var variantN of variantsGenerated){
+		var head =
+			'\n\n' +
+			'\\ifdefined\\OnBeforeVariant\\OnBeforeVariant\\fi\n' +
+			'\\def\\examvart{\\varianttitle ' + options.variantPrefix + variantN + '}\n' +
+			'\\ifdefined\\OnStartVariant\\OnStartVariant\\fi' +
+			'\n\n';
+		var tail =
+			'\\ifdefined\\OnAfterVariant\\OnAfterVariant\\fi';
+		bunchTasks += head + createLaTeXbunchTasks(variantN) + tail;
+		answers += createLaTeXbunchAnswers(variantN);
 	}
 
-	//zip.file("task.tex", preambula+'\n\n\\begin{document}'+bunch+'\n\\end{document}');
+	answers += "\n\n\\end{multicols}\n\n\\end{document}";
 
-	zip.file("task"+ ".tex", preambula + '\n\n\\begin{document}' + bunch + '\n\\newpage\n '+ getAnswersTableLaTeX(variantN) + '\n' + '\\end{document}');
+	bunchTasks += "\n\n%Random seed:" + options.randomSeed;
 
-
-	zip.file("task_watermark.tex", preambula + watermark + hyperref + '\n\n\\begin{document}' + bunch + '\\end{document}');
+	zip.file("tasks.tex", bunchTasks);
+	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
 
 	var img = zip.folder("images");
 	for (var i in preparedImages) {
@@ -535,8 +592,45 @@ function refreshLaTeXarchive() {
 	});
 }
 
-var preambula = ['\\documentclass[4apaper]{article}\n\\usepackage{dashbox}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{graphicx}\n\\DeclareGraphicsExtensions{.pdf,.png,.jpg}\n\n\\linespread{1.15}\n\n\\usepackage{../egetask_ver}\n\n\\def\\examyear{2023}\n\\usepackage[colorlinks,linkcolor=blue]{hyperref}']
+function processArbitraryCodeFiles() {
+	const files = $('#arbitraryCodeInput')[0].files;
 
-var hyperref = '\\def\\lfoottext{Источник \\href{https://vk.com/egemathika}{https://vk.com/egemathika}}';
+	if (!files.length) {
+		console.log('Не найдено файлов для запуска произвольного кода.');
+		return Promise.resolve(); // resolve immediately if no files
+	}
 
-var watermark = '\\usepackage{draftwatermark}\n\\SetWatermarkLightness{0.9}\n\\SetWatermarkText{https://vk.com/egemathika}\n\\SetWatermarkScale{ 0.4 }\n';
+	console.log('Файлов для запуска произвольного кода: ' + files.length);
+
+	const promises = Array.from(files).map(file => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+
+			reader.onload = function (e) {
+				const content = e.target.result;
+				try {
+					eval(content);
+					console.log(`Исполнен файл ${file.name}`);
+					resolve();
+				} catch (err) {
+					console.error(`Не удалось исполнить файл ${file.name}:`, err);
+					resolve(); // or reject(err); depending on whether you want to halt on errors
+				}
+			};
+
+			reader.onerror = function () {
+				console.error(`Не удалось прочитать файл  ${file.name}`);
+				resolve(); // or reject() if you want to handle errors differently
+			};
+
+			reader.readAsText(file);
+		});
+	});
+
+	// Return a Promise that resolves when all files are processed
+	return Promise.all(promises);
+}
+
+function clearArbitraryCodeInput() {
+	document.getElementById('arbitraryCodeInput').value = '';
+}
