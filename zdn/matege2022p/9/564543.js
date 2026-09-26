@@ -19,7 +19,7 @@ retryWhileUndefined(function() {
 	if (a.abs() + d.abs() > 6)
 		return;
 	let factor = sl(0.5, 1.5, 0.5).pm();
-	if (factor * c == 2)
+	if (Math.abs(factor * c - 2) < 1e-6)
 		return;
 	let formula = 'a\\' + trigfuncs + '(\\frac{\\pi}{b}x+' + (factor).texfracpi(1) + ' c)+d';
 	let variant = [
