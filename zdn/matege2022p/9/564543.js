@@ -66,9 +66,9 @@ retryWhileUndefined(function() {
 		answ = st[1];
 		question = st[0] + ' всех коэффициентов';
 		if (c > 0)
-			limits = ', $0 \\leq c' + ['<2', '\\leq 1 '].iz() + '$';
+			limits = ', $0 \\leq c \\leq 1$';
 		else
-			limits = ', $' + ['-1 \\leq ', '-2 < '].iz() + 'c \\leq 0 $';
+			limits = ', $-1 \\leq c \\leq 0$';
 		break;
 	}
 	let paint1 = function(ct) {
