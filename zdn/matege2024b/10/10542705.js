@@ -21,7 +21,7 @@
 		let y = triple.y;
 		let L = triple.L;
 
-		let minH = sl(1, 20 - y);
+		let minH = sl(1, 10);
 		let maxH = minH + y;
 
 		let h1 = minH;
@@ -32,6 +32,9 @@
 			h1 = h2;
 			h2 = temp;
 		}
+
+		genAssert(h1 > 0 && h2 > 0, 'Высоты креплений должны быть положительными');
+		genAssert(Math.abs(h1 - h2) === y, 'Перепад высот должен быть равен y');
 
 		NAtask.setTask({
 			text: 'Между зданиями завода и склада, находящимися друг от друга на расстоянии ' + x + ' м, ' +
