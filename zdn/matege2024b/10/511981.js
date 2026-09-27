@@ -24,18 +24,21 @@
 				let cy = 110;
 				let R = 100;
 
+				let primaryColor = om.primaryBrandColors[0];
+				let secondaryColor = om.secondaryBrandColors[0];
+
 				ct.fillStyle = 'white';
 				ct.fillRect(0, 0, 220, 220);
 
 				// Циферблат
-				ct.strokeStyle = 'black';
+				ct.strokeStyle = primaryColor;
 				ct.lineWidth = 2;
 				ct.beginPath();
 				ct.arc(cx, cy, R, 0, 2 * Math.PI);
 				ct.stroke();
 
 				// Цифры 1–12 по кругу
-				ct.fillStyle = 'black';
+				ct.fillStyle = secondaryColor;
 				ct.font = '17px serif';
 				ct.textAlign = 'center';
 				ct.textBaseline = 'middle';
@@ -75,7 +78,6 @@
 				drawHand(hourOnClock, R - 46, 3); // часовая стрелка
 
 				// точка в центре
-				ct.fillStyle = 'black';
 				ct.beginPath();
 				ct.arc(cx, cy, 3, 0, 2 * Math.PI);
 				ct.fill();
