@@ -27,7 +27,7 @@
 		];
 
 		// 4. Выбираем знак и формируем варианты
-		let isPositive = rand === 0 ? true : rand === 1 ? false : sl1();
+		let isPositive = (rand === 0) || (rand === 2 && sl1() === 1);
 		let matchingDiffs = allPossibleDiffs.filter(d => isPositive ? d.val > 0 : d.val < 0);
 		let oppositeDiffs = allPossibleDiffs.filter(d => isPositive ? d.val < 0 : d.val > 0);
 		let correctExpr, selectedDiffs, wrAns;
