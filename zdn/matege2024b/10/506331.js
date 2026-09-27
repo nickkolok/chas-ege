@@ -4,8 +4,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let borderSide = sl(25, 40, 5); // длина общей границы участков, м
-		let widthSide = sl(15, 30, 5); // ширина участка (перпендикулярно границе), м
-		genAssert(widthSide !== borderSide, 'стороны не должны совпадать');
+		let widthSide = slKrome(borderSide, 15, 30, 5); // ширина участка (перпендикулярно границе), м
 		let pondArea = 2 * sl(30, 80, 5); // площадь пруда, кв. м (чётная)
 
 		let plotArea = borderSide * widthSide;
