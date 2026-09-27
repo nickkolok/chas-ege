@@ -85,7 +85,12 @@ chas2.task = {
 		 */
 		unfoldTask : function(o) {
 			if (o.questions) {
-				let question = o.questions.iz();
+				let question;
+				if (Array.isArray(o.questions)) {
+				    question = o.questions.iz();
+				} else {
+				    question = o.questions; 
+				}
 				if (! ('answer' in question) ){
 					question.answer = question.answers;
 				}
@@ -339,6 +344,8 @@ chas2.task = {
 		if (taskOptions === undefined) {
 			taskOptions = {};
 		}
+		
+		taskOptions.preference = (o.preference || []);
 
 		//Применяем обёртку - ДО преобразований
 		if (o.wrapper) {
@@ -498,6 +505,40 @@ chas2.task = {
 	},
 
 
+	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference }) {
+
+		left.shuffle();
+		let shuffledSolutions = [...right].shuffle();
+		let leftCol = '';
+		for (let i = 0; i < left.length; i++) {
+			let letter = String.fromCharCode(65 + i);
+			let the$ = '$'.esli(autoLaTeXLeft && (left[i].expr.search('\\$') === -1));
+			leftCol += letter + ') ' + the$ + left[i].expr + the$ + '<br>';
+		}
+		let rightCol = '';
+		let solutionToIndex = {};
+		for (let i = 0; i < shuffledSolutions.length; i++) {
+			let num = i + 1;
+			let the$ = '$'.esli(autoLaTeXRight && (shuffledSolutions[i].search('\\$') === -1));
+			rightCol += num + ') ' + the$ + shuffledSolutions[i] + the$ + '<br>';
+			solutionToIndex[shuffledSolutions[i]] = num;
+		}
+		let answerSequence = left.map(item => solutionToIndex[item.solution]);
+
+		chas2.task.setTask({
+			text: text + '<br><br>' +
+				'<table style="border-collapse: collapse; width: 100%;"><tr>' +
+				'<td style="vertical-align: top; padding-right: 20px;"><strong>' + leftHeader + '</strong><br>' + leftCol + '</td>' +
+				'<td style="vertical-align: top;"><strong>' + rightHeader + '</strong><br>' + rightCol + '</td>' +
+				'</tr></table><br>' +
+				'<span style="font-family: monospace; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>' +
+				postText,
+			answers: answerSequence.join(''),
+			preference,
+		});
+	},
+
+
 	/** @function NApi.task.setDilationTask
 	 * Составить задание о растяжении геометрической фигуры
 	 */
@@ -618,6 +659,7 @@ chas2.task = {
 
 		o.forbiddenAnswers = o.forbiddenAnswers || [];
 		genAssert(!o.forbiddenAnswers.hasElem(answer), 'Ответ находится в списке запрещённых');
+		genAssert(!o.forbiddenAnswers.hasElem(answer.ts()), 'Ответ находится в списке запрещённых');
 
 		if(!o.askAboutFraction){
 			genAssertZ1000(answer, 'Ответ существенно нецелый');
@@ -902,6 +944,7 @@ chas2.task = {
 	 * @param {Boolean}  o.simplifyConstant упростить константы силами mathjs - численно
 	 * @param {Boolean}  o.keepFractionsIrreduced не сокращать дроби
 	 * @param {Boolean}  o.keepSumOrder не изменять порядок слагаемых
+	 * @param {Function}  o.domain функция области допустимых значений: принимает x и возвращает Boolean
 	 */
 	setLocalExtremumTask: function (o) {
 		let expr = math.parse(o.expr);
@@ -936,6 +979,16 @@ chas2.task = {
 			//o.extremums = roots.toString().replace(/^\[/,'').replace(/\]$/,'').split(',');
 		}
 
+
+		let domain = (typeof o.domain === 'function') ? o.domain : function(){ return true; };
+		o.extremums = o.extremums.filter(function(e){
+			try {
+				var x = eval(''+e);
+				return !!domain(x);
+			} catch (err) {
+				return false;
+			}
+		});
 
 		let sortedExtremums = {min:[], max:[], not:[]};
 
@@ -972,6 +1025,9 @@ chas2.task = {
 		let theExtremum = sortedExtremums[whatToFind];
 
 		theExtremum = eval(theExtremum);
+		if (typeof domain === 'function') {
+			genAssert(domain(theExtremum), 'Точка экстремума не принадлежит области допустимых значений');
+		}
 		genAssertZ1000(theExtremum, 'Бесконечные десятичные дроби запрещены');
 
 		let extremumName = {min: 'минимум', max: 'максимум'}[whatToFind];

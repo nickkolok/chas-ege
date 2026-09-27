@@ -1,3 +1,5 @@
+window.parsedJSON = window.parsedJSON || {};
+
 dvig.dgn=0;//Отключаем диагностический режим движка. Под корень.
 var flAce=0;
 var editor;
@@ -231,6 +233,24 @@ var startShell = function (){
 	if ($("#textarea-script").val() == "") {
 		$("#textarea-script").val(templateTemplate);
 		chasStorage.domData.save();
+	}
+	
+	if (window.parsedJSON.filepath) {
+		$('#filepath').val(window.parsedJSON.filepath);
+	}
+	
+	if (window.parsedJSON.autostartFile) {
+		var autostartInterval = setInterval(function() {
+			try {
+				if (window.parsedJSON.filepath) {
+					$('#filepath').val(window.parsedJSON.filepath);
+				}
+				createFromFile();
+				clearInterval(autostartInterval);
+			} catch (e) {
+				console.log('Не удалось выполнить автозапуск: ' + e.message);
+			}
+		}, 1000);
 	}
 }
 
