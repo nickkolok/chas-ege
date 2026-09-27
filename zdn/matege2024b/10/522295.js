@@ -14,15 +14,28 @@
 		let rotate = sl(0, 359) * Math.PI / 180;
 		let radius = 140;
 
-		let paint = function(ctx) {
+		let paint = function (ctx) {
+			let primaryColor = om.primaryBrandColors[0];
+			let secondaryColor = om.secondaryBrandColors[0];
+
 			ctx.translate(150, 150);
 			ctx.scale(1, -1);
+
+			ctx.strokeStyle = primaryColor;
 			ctx.lineWidth = 2;
 			ctx.drawCircle(radius);
+
+			// Спицы — дополнительный брендовый цвет
+			ctx.strokeStyle = secondaryColor;
+			ctx.lineWidth = 2;
+
 			for (let i = 0; i < nShown; i++) {
 				let a = rotate + i * 2 * Math.PI / nShown;
 				ctx.drawLine(0, 0, radius * Math.cos(a), radius * Math.sin(a));
 			}
+
+			ctx.fillStyle = primaryColor;
+			ctx.fillKrug(0, 0, 4);
 		};
 
 		NAtask.setTask({
