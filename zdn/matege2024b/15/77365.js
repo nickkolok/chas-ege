@@ -2,8 +2,11 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-
-        let rand = sl1();
+        let key = '77365';
+        let preference1 = ['expensive', 'cheap'];
+        let preference2 = ['howMuchToPay', 'howMuchPercents', 'howMuchCost'];
+        let rand = getSelectedPreferenceFromList(key, preference1);
+        let randQuestion = getSelectedPreferenceFromList(key, preference2);
         let priseExpensive = sl(800, 3000, 10);
         let priseCheap = sl(100, 700, 10);
         let prise = [priseExpensive, priseCheap][rand];
@@ -16,7 +19,7 @@
 
         NAtask.setTask({
             text: 'Держатели дисконтной карты книжного магазина получают при покупке скидку',
-            questions: [
+            questions: [[
                 {
                     text: ' ' + percent + '%. ' + item.ie.toZagl() + ' стоит ' + prise + ' р. Сколько рублей заплатит держатель дисконтной карты за ' + item.ve,
                     answers: result,
@@ -31,8 +34,9 @@
                         'Сколько стоит ' + item.ie,
                     answers: prise,
                 },
-            ],
+            ][randQuestion]],
             postquestion: '?',
+            preference: [preference1, preference2],
         });
         NAtask.modifiers.allDecimalsToStandard();
     }, 100);
