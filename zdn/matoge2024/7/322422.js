@@ -33,6 +33,10 @@
 		let targetCondition = isPositive ? (d => d.val > 0) : (d => d.val < 0);
 		let matchingDiffs = selectedDiffs.filter(targetCondition);
 
+		if (matchingDiffs.length > 1) {
+			throw new Error('More than one matching diff');
+		}
+
 		let correctExpr, wrAns;
 		
 		if (matchingDiffs.length > 0) {
