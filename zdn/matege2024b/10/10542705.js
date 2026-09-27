@@ -62,7 +62,9 @@
 			let oy = h - marginBottom;     // линия земли
 			let ly = oy - h1 * scale;      // верх левой стены
 			let ry = oy - h2 * scale;      // верх правой стены
-
+				
+			ct.strokeStyle = om.primaryBrandColors[0];
+			ct.fillStyle = om.primaryBrandColors[0];
 			ct.lineWidth = 2;
 			ct.drawLine(ox, oy, ox, ly);   // левая стена
 			ct.drawLine(tx, oy, tx, ry);   // правая стена
@@ -80,6 +82,7 @@
 			}
 
 			// знак вопроса над серединой транспортёра
+			ct.fillStyle = om.secondaryBrandColors[0];
 			ct.font = 'italic 20px serif';
 			ct.textAlign = 'center';
 			ct.fillText('?', (ox + tx) / 2, (ly + ry) / 2 - 10);
