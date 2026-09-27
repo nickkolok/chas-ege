@@ -98,7 +98,7 @@
 			}
 		}); // вариант "ни одна из них" всегда последний
 
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 500,
 			height: 100,
 			paint: paint
