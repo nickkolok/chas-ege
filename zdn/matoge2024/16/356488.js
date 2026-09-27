@@ -5,6 +5,7 @@
         let preference = ['radius', 'side'];
         let rand = getSelectedPreferenceFromList(key, preference);
 
+        // Окружность по центру и точке: центр в (0,0), радиус задан явно
         let circle = new Circle(new Point(0, 0), sl(1, 20) * [1, (3).sqrt()][rand]);
 
         let AB = circle.chordByAngles(90, 210, {
@@ -33,7 +34,7 @@
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, connectionMatrix);
-            ctx.drawArc(0, 0, new Point(0, 0).distanceTo(new Point(points[0].x, points[0].y))[0], 0, 2 * Math.PI);
+            ctx.drawCircle(Math.hypot(points[0].x, points[0].y));
         };
 
         NAtask.setTask({
