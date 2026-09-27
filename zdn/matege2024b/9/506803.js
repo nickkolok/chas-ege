@@ -27,7 +27,7 @@
             shiftCoordinate: false
         };
 
-        let square = new Rectangle({
+        let square = new Trapezoid({
             points,
             supplementary
         });
@@ -48,7 +48,7 @@
         };
 
         NAtask.setTask({
-            text: `План местности разбит на клетки. Каждая клетка обозначает квадрат $${cellSize} \\text{ м} \\times ${cellSize} \\text{ м}$. Найдите площадь участка, выделенного на плане. Ответ дайте в квадратных метрах.`,
+            text: `План местности разбит на клетки. Каждая клетка обозначает квадрат $${cellSize} \text{ м} \times ${cellSize} \text{ м}$. Найдите площадь участка, выделенного на плане. Ответ дайте в квадратных метрах.`,
             answers: square.area()*cellSize.pow(2),
             authors: ['Александра Суматохина'],
             preference,
@@ -64,3 +64,4 @@
 
 })();
 //https://mathb-ege.sdamgia.ru/problem?id=506803
+
