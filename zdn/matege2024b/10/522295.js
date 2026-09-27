@@ -6,6 +6,7 @@
 		//а угол должен быть конечной десятичной дробью, поэтому 3600 делится на nSpokes
 		let nSpokes = slKrome(x => 3600 % x !== 0, 8, 45);
 		let angle = 360 / nSpokes;
+		genAssertAlmostInteger(angle, 'Угол не целый');
 
 		//А столько спиц нарисовано на рисунке-примере
 		let nShown = slKrome([nSpokes], 5, 10);
