@@ -89,7 +89,7 @@
 
 				// Подписи
 				ctx.fillStyle = secondaryColor;
-				ctx.font = '16px italic liberation_sans';
+				ctx.font = 'italic 16px liberation_serif';
 				ctx.textBaseline = 'middle';
 
 				ctx.textAlign = 'right';
