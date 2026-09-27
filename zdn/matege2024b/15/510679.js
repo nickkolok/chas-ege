@@ -3,7 +3,9 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let rand = sl(0, 1);
+        let key = '510679';
+        let preference = ['increase', 'decrease'];
+        let rand = getSelectedPreferenceFromList(key, preference);
         let howMuchIncreased = sl(2, 10, 0.1);
         let howMuchDecreased = [2, 4, 5, 10, 20, 25, 50].iz();
 
@@ -17,6 +19,7 @@
                 'Число посетителей сайта ' + increasedOrDecreased + ' за месяц в ' + chislitlx(ByHowMuchGet, 'раз', '$') +
                 '. На сколько процентов ' + increasedOrDecreased + ' число посетителей сайта за этот месяц?',
             answers: result,
+            preference: preference,
         });
     }, 100);
 })();

@@ -27,6 +27,7 @@
                 ' раствор' + 'а'.esli(!rand) + '?',
             answers: [finalProcent, firstProcent][rand],
             authors: ['Александра Суматохина'],
+            preference: preference,
         });
         NAtask.modifiers.allDecimalsToStandard( /*true*/);
     }, 2000);

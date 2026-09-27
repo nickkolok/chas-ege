@@ -3,7 +3,10 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
+        let key = '506426';
+        let preference = ['howManyWasBefore', 'howManyPercent', 'howManyOnSale'];
         let rand = sl1();
+        let randQuestion = getSelectedPreferenceFromList(key, preference);
 
         let clotherMR = sklonlxkand(['свитер', 'халат', 'плащ', 'дождевик', 'товар'].iz());
         let clotherWR = sklonlxkand(['рубашка', 'футболка', 'куртка', 'кофта'].iz());
@@ -21,7 +24,7 @@
         NAtask.setTask({
             text:
                 clothers.ve.toZagl() + ' на распродаже уценили',
-            questions: [
+            questions: [[
                 {
                     text: ' на ' + '$' + percent + '$' + '%, при этом он' + mw + ' ' + hasBecome + ' стоить ' + '$' + result + '$' + ' р. ' +
                         'Сколько рублей ' + cost + ' ' + clothers.ie + ' до распродажи',
@@ -38,8 +41,9 @@
                     answers: result,
                 },
 
-            ],
+            ][randQuestion]],
             postquestion: '?',
+            preference: preference,
         });
         NAtask.modifiers.allDecimalsToStandard();
     }, 100);

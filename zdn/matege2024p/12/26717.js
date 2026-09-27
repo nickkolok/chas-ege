@@ -9,9 +9,9 @@
 			k = 0;
 			a = 1;
 		}
-		let l = -b - 1 - sl(0, 1.5, 0.5);
-		let arr1 = ['+', '-'];
-		arr1.shuffle();
+		let l = sl(-b + 1, -0.5, 0.5);
+		let arr1 = ['+', '-'].shuffle();	
+
 		NAtask.setMinimaxFunctionTask({
 			expr: arr1[0] + [a + 'log(x+' + b + ')', 'log((x+' + b + ')^' + c + ')'].iz() + '+' + arr1[1] + c + 'x+' + k,
 			leftEnd: '' + l,
