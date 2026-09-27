@@ -51,74 +51,459 @@
 		NAtask.modifiers.allDecimalsToStandard();
 
 		let labelColumn = ['?', t.column + ' м', t.column + ' м'][rand];
-		let labelShadow = ['тень: ' + t.shadow + ' м', '?', 'тень: ' + t.shadow + ' м'][rand];
+		let labelShadow = [t.shadow + ' м', '?', t.shadow + ' м'][rand];
 		let labelDistance = [t.distance + ' м', t.distance + ' м', '?'][rand];
 		let labelPerson = t.person.ts() + ' м';
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 620,
 			height: 320,
-			paint: function (ctx) {
+			paint: function(ctx) {
 				let width = 620;
 				let height = 320;
-				let left = 80;
-				let right = 40;
-				let top = 25;
-				let bottom = 65;
-				let k = Math.min((width - left - right) / (t.distance + t.shadow), (height - top - bottom) / t.column);
-				let px = function (x) { return left + x * k; };
-				let groundY = height - bottom;
-				let py = function (y) { return groundY - y * k; };
 
-				ctx.strokeStyle = 'black';
-				ctx.fillStyle = 'black';
+				let primaryColor = om.primaryBrandColors[0];
+				let secondaryColor = om.secondaryBrandColors[0];
+
+				// =====================================================
+				// ПОЛЯ И РАБОЧАЯ ОБЛАСТЬ
+				// =====================================================
+
+				// Основная геометрия начинается здесь
+				let columnX = 80;
+				let groundY = 230;
+
+				// Границы, за которые не должна выходить геометрия
+				let topLimit = 20;
+				let rightLimit = width - 55;
+
+				// personDimX должен находиться на 5 px правее конца тени
+				let personDimGap = 5;
+
+				// Поэтому конец тени должен закончиться раньше rightLimit
+				let maxShadowEndX = rightLimit - personDimGap;
+
+				// =====================================================
+				// ЕДИНЫЙ МАСШТАБ ВСЕЙ ГЕОМЕТРИИ
+				// =====================================================
+
+				let totalLength = t.distance + t.shadow;
+
+				// Ограничение масштаба по горизонтали
+				let kHorizontal =
+					(maxShadowEndX - columnX) / totalLength;
+
+				// Ограничение масштаба по вертикали
+				let kVertical =
+					(groundY - topLimit) / t.column;
+
+				// Единый масштаб:
+				// 1 метр = k пикселей
+				let k = Math.min(
+					kHorizontal,
+					kVertical
+				);
+
+				// =====================================================
+				// КООРДИНАТЫ ФИЗИЧЕСКИХ ВЕЛИЧИН
+				// =====================================================
+
+				let columnHeightPx = t.column * k;
+				let distancePx = t.distance * k;
+				let shadowPx = t.shadow * k;
+				let personHeightPx = t.person * k;
+
+				let columnTopY =
+					groundY - columnHeightPx;
+
+				let personX =
+					columnX + distancePx;
+
+				let shadowEndX =
+					personX + shadowPx;
+
+				let personHeadY =
+					groundY - personHeightPx;
+
+				// Размер роста всегда ровно на 5 px
+				// правее конца тени
+				let personDimX =
+					shadowEndX + personDimGap;
+
+				// =====================================================
+				// ЗАЩИТА ОТ ВЫХОДА ЗА ХОЛСТ
+				// =====================================================
+
+				genAssert(
+					columnTopY >= topLimit,
+					'Рисунок вышел за верхнюю границу холста'
+				);
+
+				genAssert(
+					shadowEndX <= maxShadowEndX,
+					'Конец тени вышел за правую границу холста'
+				);
+
+				genAssert(
+					personDimX <= rightLimit,
+					'Размерная линия роста вышла за правую границу холста'
+				);
+
+				genAssert(
+					personHeadY >= columnTopY &&
+					personHeadY <= groundY,
+					'Некорректное положение человека'
+				);
+
+				// =====================================================
+				// ОСНОВНАЯ ГЕОМЕТРИЯ
+				// =====================================================
+
+				ctx.strokeStyle = primaryColor;
+				ctx.fillStyle = primaryColor;
 				ctx.lineWidth = 2;
 
-				ctx.drawLine(px(0) - 15, groundY, px(t.distance + t.shadow) + 25, groundY);
-				ctx.drawLine(px(0), groundY, px(0), py(t.column));
-				ctx.fillKrug(px(0), py(t.column), 4);
-				ctx.setLineDash([12, 10]);
-				ctx.drawLine(px(0), py(t.column), px(t.distance + t.shadow), groundY);
-				ctx.setLineDash([]);
-				let headR = 5;
-				ctx.fillKrug(px(t.distance), py(t.person) + headR, headR);
-				ctx.drawLine(px(t.distance), py(t.person) + 2 * headR, px(t.distance), groundY - 12);
-				ctx.drawLine(px(t.distance), groundY - 12, px(t.distance) - 6, groundY);
-				ctx.drawLine(px(t.distance), groundY - 12, px(t.distance) + 6, groundY);
-				ctx.drawLine(px(t.distance) - 7, py(t.person) + 18, px(t.distance) + 7, py(t.person) + 18);
+				// Столб
+				ctx.drawLine(
+					columnX,
+					columnTopY,
+					columnX,
+					groundY
+				);
 
-				ctx.lineWidth = 1;
+				// Земля
+				ctx.drawLine(
+					columnX,
+					groundY,
+					shadowEndX,
+					groundY
+				);
+
+				// =====================================================
+				// ЛУЧ СВЕТА
+				// =====================================================
+
+				ctx.setLineDash([7, 5]);
+
+				// Фонарь -> голова -> конец тени
+				ctx.drawLine(
+					columnX,
+					columnTopY,
+					shadowEndX,
+					groundY
+				);
+
+				// Горизонтальный пунктир от головы
+				// до размерной линии роста
+				ctx.drawLine(
+					personX,
+					personHeadY,
+					personDimX,
+					personHeadY
+				);
+
+				ctx.setLineDash([]);
+
+				// =====================================================
+				// ЧЕЛОВЕК
+				// Все части пропорциональны его реальной высоте
+				// =====================================================
+
+				// Радиус головы — доля общей высоты
+				let headR = personHeightPx * 0.07;
+
+				// Ограничиваем только от экстремально маленького
+				// или огромного отображения
+				headR = Math.max(
+					2.5,
+					Math.min(headR, 7)
+				);
+
+				// Центр головы немного ниже верхней точки роста,
+				// чтобы верх головы совпадал с personHeadY
+				let headCenterY =
+					personHeadY + headR;
+
+				ctx.fillKrug(
+					personX,
+					headCenterY,
+					headR
+				);
+
+				// Шея начинается под головой
+				let neckTopY =
+					headCenterY + headR;
+
+				// Плечи
+				let shoulderY =
+					personHeadY + personHeightPx * 0.20;
+
+				// Таз
+				let hipY =
+					personHeadY + personHeightPx * 0.62;
+
+				// Полуширина плеч
+				let shoulderHalfWidth =
+					personHeightPx * 0.10;
+
+				// Размах стоп
+				let footHalfWidth =
+					personHeightPx * 0.07;
+
+				// -------------------------
+				// Шея
+				// -------------------------
+
+				ctx.drawLine(
+					personX,
+					neckTopY,
+					personX,
+					shoulderY
+				);
+
+				// -------------------------
+				// Туловище
+				// -------------------------
+
+				ctx.drawLine(
+					personX,
+					shoulderY,
+					personX,
+					hipY
+				);
+
+				// -------------------------
+				// Руки
+				// -------------------------
+
+				let handY =
+					personHeadY + personHeightPx * 0.46;
+
+				ctx.drawLine(
+					personX,
+					shoulderY,
+					personX - shoulderHalfWidth,
+					handY
+				);
+
+				ctx.drawLine(
+					personX,
+					shoulderY,
+					personX + shoulderHalfWidth,
+					handY
+				);
+
+				// -------------------------
+				// Ноги
+				// -------------------------
+
+				ctx.drawLine(
+					personX,
+					hipY,
+					personX - footHalfWidth,
+					groundY
+				);
+
+				ctx.drawLine(
+					personX,
+					hipY,
+					personX + footHalfWidth,
+					groundY
+				);
+
+				// =====================================================
+				// РАЗМЕРНЫЕ ЛИНИИ
+				// =====================================================
+
+				ctx.strokeStyle = secondaryColor;
+				ctx.fillStyle = secondaryColor;
+				ctx.lineWidth = 1.5;
 				ctx.font = '16px liberation_sans';
 
-				let yDim = groundY + 22;
-				ctx.drawLine(px(0), groundY, px(0), yDim + 8);
-				ctx.drawLine(px(t.distance), groundY, px(t.distance), yDim + 8);
-				ctx.drawLine(px(t.distance + t.shadow), groundY, px(t.distance + t.shadow), yDim + 8);
-				ctx.drawLine(px(0), yDim, px(t.distance), yDim);
-				ctx.drawArrow(px(t.distance), yDim, px(0), yDim);
-				ctx.drawArrow(px(0), yDim, px(t.distance), yDim);
-				ctx.drawLine(px(t.distance), yDim, px(t.distance + t.shadow), yDim);
-				ctx.drawArrow(px(t.distance + t.shadow), yDim, px(t.distance), yDim);
-				ctx.drawArrow(px(t.distance), yDim, px(t.distance + t.shadow), yDim);
-				ctx.textAlign = 'center';
-				ctx.fillText(labelDistance, (px(0) + px(t.distance)) / 2, yDim + 22);
-				ctx.fillText(labelShadow, (px(t.distance) + px(t.distance + t.shadow)) / 2, yDim + 22);
+				// =====================================================
+				// ВЫСОТА СТОЛБА
+				// =====================================================
 
-				let xDimC = px(0) - 35;
-				ctx.drawLine(xDimC, groundY, xDimC, py(t.column));
-				ctx.drawArrow(xDimC, groundY, xDimC, py(t.column));
-				ctx.drawArrow(xDimC, py(t.column), xDimC, groundY);
-				ctx.drawLine(px(0), py(t.column), xDimC - 6, py(t.column));
+				let columnDimX =
+					columnX - 25;
+
+				ctx.drawLine(
+					columnDimX,
+					columnTopY,
+					columnDimX,
+					groundY
+				);
+
+				ctx.drawArrow(
+					columnDimX,
+					groundY,
+					columnDimX,
+					columnTopY
+				);
+
+				ctx.drawArrow(
+					columnDimX,
+					columnTopY,
+					columnDimX,
+					groundY
+				);
+
+				// Засечки
+				ctx.drawLine(
+					columnDimX - 6,
+					columnTopY,
+					columnX,
+					columnTopY
+				);
+
+				ctx.drawLine(
+					columnDimX - 6,
+					groundY,
+					columnX,
+					groundY
+				);
+
 				ctx.textAlign = 'right';
-				ctx.fillText(labelColumn, xDimC - 6, (groundY + py(t.column)) / 2 + 5);
 
-				let xDimP = px(t.distance) - 22;
-				ctx.drawLine(xDimP, groundY, xDimP, py(t.person));
-				ctx.drawArrow(xDimP, groundY, xDimP, py(t.person));
-				ctx.drawArrow(xDimP, py(t.person), xDimP, groundY);
-				ctx.drawLine(px(t.distance), py(t.person), xDimP - 6, py(t.person));
-				ctx.fillText(labelPerson, xDimP - 6, (groundY + py(t.person)) / 2 + 5);
+				ctx.fillText(
+					labelColumn,
+					columnDimX - 6, (columnTopY + groundY) / 2 + 5
+				);
+
+				// =====================================================
+				// РОСТ ЧЕЛОВЕКА
+				// =====================================================
+
+				// Всегда на 5 px правее конца тени
+				ctx.drawLine(
+					personDimX,
+					personHeadY,
+					personDimX,
+					groundY
+				);
+
+				ctx.drawArrow(
+					personDimX,
+					groundY,
+					personDimX,
+					personHeadY
+				);
+
+				ctx.drawArrow(
+					personDimX,
+					personHeadY,
+					personDimX,
+					groundY
+				);
+
 				ctx.textAlign = 'left';
+
+				ctx.fillText(
+					labelPerson,
+					personDimX + 7, (personHeadY + groundY) / 2 + 5
+				);
+
+				// =====================================================
+				// ГОРИЗОНТАЛЬНЫЕ РАЗМЕРЫ
+				// =====================================================
+
+				let dimY =
+					groundY + 20;
+
+				// Засечки
+				ctx.drawLine(
+					columnX,
+					groundY,
+					columnX,
+					dimY + 5
+				);
+
+				ctx.drawLine(
+					personX,
+					groundY,
+					personX,
+					dimY + 5
+				);
+
+				ctx.drawLine(
+					shadowEndX,
+					groundY,
+					shadowEndX,
+					dimY + 5
+				);
+
+				// =====================================================
+				// РАССТОЯНИЕ ДО ЧЕЛОВЕКА
+				// =====================================================
+
+				ctx.drawLine(
+					columnX,
+					dimY,
+					personX,
+					dimY
+				);
+
+				ctx.drawArrow(
+					columnX,
+					dimY,
+					personX,
+					dimY
+				);
+
+				ctx.drawArrow(
+					personX,
+					dimY,
+					columnX,
+					dimY
+				);
+
+				ctx.textAlign = 'center';
+
+				ctx.fillText(
+					labelDistance, (columnX + personX) / 2,
+					dimY + 21
+				);
+
+				// =====================================================
+				// ДЛИНА ТЕНИ
+				// =====================================================
+
+				ctx.drawLine(
+					personX,
+					dimY,
+					shadowEndX,
+					dimY
+				);
+
+				ctx.drawArrow(
+					personX,
+					dimY,
+					shadowEndX,
+					dimY
+				);
+
+				ctx.drawArrow(
+					shadowEndX,
+					dimY,
+					personX,
+					dimY
+				);
+
+				ctx.fillText(
+					labelShadow, (personX + shadowEndX) / 2,
+					dimY + 21
+				);
+
+				ctx.textAlign = 'left';
+
+				// =====================================================
+				// ФИНАЛЬНАЯ ПРОВЕРКА ВЕРТИКАЛЬНЫХ ГРАНИЦ
+				// =====================================================
+
+				genAssert(
+					dimY + 25 < height,
+					'Нижние размеры вышли за пределы холста'
+				);
 			},
 		});
 	}, 20000);
