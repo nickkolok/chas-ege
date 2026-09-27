@@ -4,9 +4,8 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '322422';
-		let preference = ['positive', 'negative'];
+		let preference = ['positive', 'negative', 'noneOfThem'];
 		let rand = getSelectedPreferenceFromList(key, preference);
-		let isPositive = (rand === 0);
 
 		// 1. Генерация чисел: val1 < val2 < val3
 		let val1 = sl(-10, -3);
@@ -26,36 +25,28 @@
 			{ expr: l2 + '-' + l3, val: val2 - val3 },
 			{ expr: l3 + '-' + l2, val: val3 - val2 }
 		];
-		
-		let selectedDiffs = allPossibleDiffs.shuffle().slice(0, 3);
 
-		// 4. Проверяем, есть ли среди выбранных удовлетворяющая условию
-		let targetCondition = isPositive ? (d => d.val > 0) : (d => d.val < 0);
-		let matchingDiffs = selectedDiffs.filter(targetCondition);
+		// 4. Выбираем знак и формируем варианты
+		let isPositive = rand === 0 ? true : rand === 1 ? false : sl1();
+		let matchingDiffs = allPossibleDiffs.filter(d => isPositive ? d.val > 0 : d.val < 0);
+		let oppositeDiffs = allPossibleDiffs.filter(d => isPositive ? d.val < 0 : d.val > 0);
+		let correctExpr, selectedDiffs, wrAns;
 
-		if (matchingDiffs.length > 1) {
-			throw new Error('More than one matching diff');
-		}
-
-		let correctExpr, wrAns;
-		
-		if (matchingDiffs.length > 0) {
-			// Есть правильный ответ среди предложенных
-			correctExpr = matchingDiffs[0].expr;
-			wrAns = selectedDiffs.filter(d => d.expr !== correctExpr).map(d => d.expr);
-			// Добавляем вариант "ни одна из них" как неправильный
-			wrAns.push('ни одна из них');
-		} else {
-			// Ни одна из предложенных не подходит
+		if (rand === 2) {
+			selectedDiffs = oppositeDiffs.shuffle();
 			correctExpr = 'ни одна из них';
 			wrAns = selectedDiffs.map(d => d.expr);
+		} else {
+			let correctDiff = matchingDiffs.iz();
+			let wrongDiffs = oppositeDiffs.shuffle().slice(0, 2);
+
+			selectedDiffs = [correctDiff, ...wrongDiffs].shuffle();
+			correctExpr = correctDiff.expr;
+			wrAns = wrongDiffs.map(d => d.expr);
+			wrAns.push('ни одна из них');
 		}
 
-		// 5. Перемешиваем варианты
-		let options = [correctExpr, ...wrAns].shuffle();
-		wrAns = options.filter(o => o !== correctExpr);
-
-		// 6. Форматируем для отображения: математические выражения оборачиваем в $...$
+		// 5. Форматируем для отображения: математические выражения оборачиваем в $...$
 		let formatOption = (opt) => {
 			if (opt === 'ни одна из них') {
 				return opt; // оставляем как текст
@@ -63,7 +54,7 @@
 			return '$' + opt + '$'; // оборачиваем математику
 		};
 
-		// 7. Отрисовка
+		// 6. Отрисовка
 		let paint = function (ct) {
 			coordAxis_drawAuto(ct, {
 				min: val1 - 1,
@@ -79,9 +70,9 @@
 			});
 		};
 
-		// 8. Установка задачи
+		// 7. Установка задачи
 		NAtask.setTask({
-			text: 'На координатной прямой отмечены числа $' + l1 + '$, $' + l2 + '$ и $' + l3 + '$. Какая из разностей ' + selectedDiffs.map(d => '$' + d.expr + '$').join(', ') + ' ' + ['положительна', 'отрицательна'][rand] + '?',
+			text: 'На координатной прямой отмечены числа $' + l1 + '$, $' + l2 + '$ и $' + l3 + '$. Какая из разностей ' + selectedDiffs.map(d => '$' + d.expr + '$').join(', ') + ' ' + (isPositive ? 'положительна' : 'отрицательна') + '?',
 			answers: formatOption(correctExpr),
 			wrongAnswers: wrAns.map(formatOption),
 			preference: preference,
