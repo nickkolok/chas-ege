@@ -65,4 +65,4 @@
 		});
 	}, 2000);
 })();
-//https://mathb-ege.sdamgia.ru/problem?id=522610
+//https://mathb-ege.sdamgia.ru/problem?id=506331
