@@ -4,8 +4,13 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '322422';
-		let preference = ['positive', 'negative', 'noneOfThem'];
-		let rand = getSelectedPreferenceFromList(key, preference);
+		let prefSign = ['positive', 'negative'];
+		let prefAns = ['matching', 'noneOfThem'];
+		
+		let isPositive = getSelectedPreferenceFromList(key, prefSign) === 0;
+		let isNoneOfThem = getSelectedPreferenceFromList(key, prefAns) === 1;
+
+		let preference = ['positive', 'negative', 'matching', 'noneOfThem'];
 
 		// 1. Генерация чисел: val1 < val2 < val3
 		let val1 = sl(-10, -3);
@@ -27,12 +32,11 @@
 		];
 
 		// 4. Выбираем знак и формируем варианты
-		let isPositive = (rand === 0) || (rand === 2 && sl1() === 1);
 		let matchingDiffs = allPossibleDiffs.filter(d => isPositive ? d.val > 0 : d.val < 0);
 		let oppositeDiffs = allPossibleDiffs.filter(d => isPositive ? d.val < 0 : d.val > 0);
 		let correctExpr, selectedDiffs, wrAns;
 
-		if (rand === 2) {
+		if (isNoneOfThem) {
 			selectedDiffs = oppositeDiffs.shuffle();
 			correctExpr = 'ни одна из них';
 			wrAns = selectedDiffs.map(d => d.expr);
