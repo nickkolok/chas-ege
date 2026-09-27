@@ -1,6 +1,6 @@
-(function () {
+(function() {
 	'use strict';
-	retryWhileError(function () {
+	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
 		/**
@@ -16,35 +16,79 @@
 			let right = width - 26;
 			let px = (left + right) / 2 + 6;
 
+			let primaryColor = om.primaryBrandColors[0];
+			let secondaryColor = om.secondaryBrandColors[0];
+
 			let hatch = '';
 			let hatchStart = napravo ? px : left + 2;
 			let hatchEnd = napravo ? right - 6 : px;
+
 			for (let x = hatchStart; x <= hatchEnd; x += 5) {
 				hatch +=
 					'<line x1="' + x + '" y1="' + (axisY - 1) +
 					'" x2="' + (x + 6) + '" y2="' + (axisY - 9) +
-					'" stroke="black" stroke-width="1"/>';
+					'" stroke="' + secondaryColor + '" stroke-width="1"/>';
 			}
 
 			return '<svg width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg">' +
-				'<line x1="' + left + '" y1="' + axisY + '" x2="' + right + '" y2="' + axisY + '" stroke="black" stroke-width="1.5"/>' +
-				'<polygon points="' + right + ',' + (axisY - 4) + ' ' + (right + 10) + ',' + axisY + ' ' + right + ',' + (axisY + 4) + '" fill="black"/>' +
+
+				// Ось — primary
+				'<line x1="' + left + '" y1="' + axisY +
+				'" x2="' + right + '" y2="' + axisY +
+				'" stroke="' + primaryColor + '" stroke-width="1.5"/>' +
+
+				// Стрелка — primary
+				'<polygon points="' +
+				right + ',' + (axisY - 4) + ' ' +
+				(right + 10) + ',' + axisY + ' ' +
+				right + ',' + (axisY + 4) +
+				'" fill="' + primaryColor + '"/>' +
+
+				// Штриховка — secondary
 				hatch +
-				'<circle cx="' + px + '" cy="' + axisY + '" r="3.5" fill="black"/>' +
-				'<text x="' + px + '" y="' + (axisY + 18) + '" font-size="15" text-anchor="middle" font-family="serif">' + tochka + '</text>' +
-				'<text x="' + (right + 4) + '" y="' + (axisY + 18) + '" font-size="15" font-style="italic" font-family="serif">x</text>' +
+
+				// Точка — secondary
+				'<circle cx="' + px + '" cy="' + axisY +
+				'" r="3.5" fill="' + secondaryColor + '"/>' +
+
+				// Подпись точки — secondary
+				'<text x="' + px + '" y="' + (axisY + 18) +
+				'" font-size="15" text-anchor="middle" font-family="serif"' +
+				' fill="' + secondaryColor + '">' +
+				tochka + '</text>' +
+
+				// x — secondary
+				'<text x="' + (right + 4) + '" y="' + (axisY + 18) +
+				'" font-size="15" font-style="italic" font-family="serif"' +
+				' fill="' + secondaryColor + '">x</text>' +
+
 				'</svg>';
 		}
 
 		let n = slKrome(0, -3, 3);
 		let valueTex = n > 0 ? '' + (2).pow(n) : '\\frac{1}{' + (2).pow(-n) + '}';
 
-		let variants = [
-			{ base: '0,5', sign: 'geq', tochka: -n, napravo: false },
-			{ base: '2', sign: 'geq', tochka: n, napravo: true },
-			{ base: '0,5', sign: 'leq', tochka: -n, napravo: true },
-			{ base: '2', sign: 'leq', tochka: n, napravo: false },
-		];
+		let variants = [{
+			base: '0,5',
+			sign: 'geq',
+			tochka: -n,
+			napravo: false
+		}, {
+			base: '2',
+			sign: 'geq',
+			tochka: n,
+			napravo: true
+		}, {
+			base: '0,5',
+			sign: 'leq',
+			tochka: -n,
+			napravo: true
+		}, {
+			base: '2',
+			sign: 'leq',
+			tochka: n,
+			napravo: false
+		}, ];
 
 		let left = [];
 		let right = [];
