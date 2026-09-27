@@ -27,7 +27,7 @@
             shiftCoordinate: false
         };
 
-        let square = new Trapezoid({
+        let square = new Rectangle({
             points,
             supplementary
         });
