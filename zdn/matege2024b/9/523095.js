@@ -2,7 +2,7 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let key = "510130";
+        let key = "523095";
         let preference = ['cellSizeIsOne', 'cellSizeIsNotOne'];
         let rand = getSelectedPreferenceFromList(key, preference);
 
