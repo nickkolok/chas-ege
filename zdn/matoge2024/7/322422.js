@@ -39,7 +39,7 @@
 			// Есть правильный ответ среди предложенных
 			correctExpr = matchingDiffs[0].expr;
 			wrAns = selectedDiffs.filter(d => d.expr !== correctExpr).map(d => d.expr);
-			// Добавляем вариант "невозможно определить" как неправильный
+			// Добавляем вариант "ни одна из них" как неправильный
 			wrAns.push('ни одна из них');
 		} else {
 			// Ни одна из предложенных не подходит
@@ -84,10 +84,13 @@
 		});
 
 		AtoB(3, {
-			sortingFunction: (a, b) => {
-				if (a === 'ни одна из них') return 1;
-				if (b === 'ни одна из них') return -1;
-				return 0;
+			sortingFunction: (options, ver) => {
+				let noneOfThemIndex = options.indexOf('ни одна из них');
+				if (noneOfThemIndex !== -1 && noneOfThemIndex !== options.length - 1) {
+					let item = options.splice(noneOfThemIndex, 1)[0];
+					options.push(item);
+				}
+				return options;
 			}
 		}); // вариант "ни одна из них" всегда последний
 
