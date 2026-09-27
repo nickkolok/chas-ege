@@ -45,8 +45,8 @@
 				let py = function (y) { return groundY - y * k; };
 				let xDim = px(a) + 34;
 
-				ctx.strokeStyle = 'black';
-				ctx.fillStyle = 'black';
+				ctx.strokeStyle = om.primaryBrandColors[0];
+				ctx.fillStyle = om.primaryBrandColors[0];
 				ctx.lineWidth = 2;
 
 				// Земля и стена дома с крышей
@@ -57,6 +57,7 @@
 				ctx.drawLine(px(a) - 16, wallTop, px(a) + 55, wallTop - 30);
 
 				// Лестница: несущая линия со ступеньками
+				ctx.strokeStyle = om.secondaryBrandColors[0];
 				let fx = px(0);
 				let fy = groundY;
 				let tx = px(a);
@@ -76,11 +77,14 @@
 				}
 
 				// Подпись длины лестницы
+				ctx.fillStyle = om.secondaryBrandColors[0];
 				ctx.font = '16px liberation_sans';
 				ctx.textAlign = 'right';
 				ctx.fillText(c + ' м', (fx + tx) / 2 - 14, (fy + ty) / 2 + 5);
 
 				// Горизонтальная размерная линия: расстояние от стены
+				ctx.strokeStyle = om.primaryBrandColors[0];
+				ctx.fillStyle = om.secondaryBrandColors[0];
 				ctx.lineWidth = 1;
 				let yDim = groundY + 24;
 				ctx.drawLine(px(0), groundY, px(0), yDim + 8);
@@ -92,10 +96,12 @@
 				ctx.fillText(a + ' м', (px(0) + px(a)) / 2, yDim + 22);
 
 				// Вертикальная размерная линия: искомая высота
+				ctx.strokeStyle = om.primaryBrandColors[0];
 				ctx.drawLine(xDim, groundY, xDim, py(b));
 				ctx.drawArrow(xDim, groundY, xDim, py(b));
 				ctx.drawArrow(xDim, py(b), xDim, groundY);
 				ctx.drawLine(px(a), py(b), xDim + 6, py(b));
+				ctx.fillStyle = om.secondaryBrandColors[0];
 				ctx.textAlign = 'left';
 				ctx.fillText('? м', xDim + 10, (groundY + py(b)) / 2 + 5);
 			},
