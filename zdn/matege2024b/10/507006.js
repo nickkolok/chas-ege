@@ -36,14 +36,14 @@
 		genAssert(corridorLengthTwo > room1W, 'Коридор должен иметь корректную длину');
 
 		let answers = [
-			roomW * topH,
-			corridorLengthOne * bottomH,
-			kitchenW * topH,
-			bathW * bottomH,
-			kitchenW * topH,
-			room2W * topH,
-			room1W * topH,
-			kitchenW * topH,
+			(roomW * topH).ts(),
+			(corridorLengthOne * bottomH).ts(),
+			(kitchenW * topH).ts(),
+			(bathW * bottomH).ts(),
+			(kitchenW * topH).ts(),
+			(room2W * topH).ts(),
+			(room1W * topH).ts(),
+			(kitchenW * topH).ts(),
 		];
 
 		let analys = [
@@ -97,6 +97,8 @@
 			analys: analys,
 			preference: preference,
 		});
+
+		NAtask.modifiers.allDecimalsToStandard(true);
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
@@ -164,26 +166,26 @@
 				ct.textAlign = 'center';
 				ct.textBaseline = 'alphabetic';
 
-				ct.fillText(kitchenW, x0 + kitchenW * k / 2, y0 - 8);
+				ct.fillText(kitchenW.ts(), x0 + kitchenW * k / 2, y0 - 8);
 
 				if (!isTwoRooms) {
-					ct.fillText(roomW, xKitchen + roomW * k / 2, y0 - 8);
+					ct.fillText(roomW.ts(), xKitchen + roomW * k / 2, y0 - 8);
 				} else {
 					let xRoom1 = xKitchen + room1W * k;
 
-					ct.fillText(room1W, xKitchen + room1W * k / 2, y0 - 8);
-					ct.fillText(room2W, xRoom1 + room2W * k / 2, y0 - 8);
+					ct.fillText(room1W.ts(), xKitchen + room1W * k / 2, y0 - 8);
+					ct.fillText(room2W.ts(), xRoom1 + room2W * k / 2, y0 - 8);
 				}
 
 				ct.textAlign = 'right';
 				ct.textBaseline = 'middle';
-				ct.fillText(topH, x0 - 8, y0 + topH * k / 2);
-				ct.fillText(bottomH, x0 - 8, ySplit + bottomH * k / 2);
+				ct.fillText(topH.ts(), x0 - 8, y0 + topH * k / 2);
+				ct.fillText(bottomH.ts(), x0 - 8, ySplit + bottomH * k / 2);
 
 				ct.textAlign = 'center';
 				ct.textBaseline = 'top';
-				ct.fillText(bathW, x0 + bathW * k / 2, y0 + drawH + 8);
-				ct.fillText(isTwoRooms ? corridorLengthTwo : corridorLengthOne, xBath + (drawW - bathW * k) / 2, y0 + drawH + 8);
+				ct.fillText(bathW.ts(), x0 + bathW * k / 2, y0 + drawH + 8);
+				ct.fillText((isTwoRooms ? corridorLengthTwo : corridorLengthOne).ts(), xBath + (drawW - bathW * k) / 2, y0 + drawH + 8);
 			},
 		});
 	}, 20000);
