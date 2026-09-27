@@ -9,9 +9,9 @@
 		let nWrong = 4 - nCorrect;
 
 		let colors = om.trickyColors.iz(3);
-		let colorsRM = colors.slice(0,3).map(c => c.replace('ий', 'их').replace('ый', 'ых').replace('ой', 'ых'));
-		let colorsRE = colors.slice(0,3).map(c => c.replace('ий', 'его').replace('ый', 'ого').replace('ой', 'ого'));
-		let colorsVM = colors.slice(0,3).map(c => c.replace('ий', 'ие').replace('ый', 'ые').replace('ой', 'ые'));
+		let colorsRM = colors.slice(0,3).map(c => c.replace(/ый$/, 'ых').replace(/ий$/, 'их').replace(/ой$/, 'ых'));
+		let colorsRE = colors.slice(0,3).map(c => c.replace(/ый$/, 'ого').replace(/ий$/, 'его').replace(/ой$/, 'ого'));
+		let colorsVM = colors.slice(0,3).map(c => c.replace(/ый$/, 'ые').replace(/ий$/, 'ие').replace(/ой$/, 'ые'));
 		let name = sklonlxkand(om.femaleNames.iz());
 		let count1 = sl(5, 15);
 		let count2 = sl(6, 15);
@@ -21,7 +21,7 @@
 		let correct = [
 			'Найдётся ' + chislitlx(Math.max(1, count2 - drawn), 'шарик', '$', (' '+colorsRM[1]+' ')) + ' без рисунков.',
 			'Не найдётся ' + chislitlx(drawn + sl(1, 5), 'шарик', '$', (' '+colorsRM[1]+' ')) + ' с рисунками.',
-			'Среди нарисованных шариков может не быть ни одного ' + colorsRE[2] + '.',
+			'Среди нарисованных шариков может не быть ни одного ' + colorsRE[0] + '.',
 			'Максимум ' + chislitlx(count2, 'шарик', '$', (' '+colorsRM[1]+' ')) + ' без рисунков.'
 		];
 
