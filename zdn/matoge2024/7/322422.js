@@ -10,8 +10,6 @@
 		let isPositive = getSelectedPreferenceFromList(key, prefSign) === 0;
 		let isNoneOfThem = getSelectedPreferenceFromList(key, prefAns) === 1;
 
-		let preference = ['positive', 'negative', 'matching', 'noneOfThem'];
-
 		// 1. Генерация чисел: val1 < val2 < val3
 		let val1 = sl(-10, -3);
 		let val2 = sl(val1 + 1, val1 + 4);
@@ -79,7 +77,7 @@
 			text: 'На координатной прямой отмечены числа $' + l1 + '$, $' + l2 + '$ и $' + l3 + '$. Какая из разностей ' + selectedDiffs.map(d => '$' + d.expr + '$').join(', ') + ' ' + (isPositive ? 'положительна' : 'отрицательна') + '?',
 			answers: formatOption(correctExpr),
 			wrongAnswers: wrAns.map(formatOption),
-			preference: preference,
+			preference: [['positive', 'negative'],['matching', 'noneOfThem']],
 		});
 
 		AtoB(3, {
