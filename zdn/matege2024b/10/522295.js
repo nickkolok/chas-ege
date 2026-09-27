@@ -6,14 +6,8 @@
 		let preference = ['findSpokes', 'findAngle'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		let spokesVariants = [
-			5, 8, 9, 10, 12, 15, 16, 18, 20,
-			24, 25, 30, 32, 36, 40, 45
-		];
-
-		let nSpokes = spokesVariants.iz();
+		let nSpokes = slKrome(x => 1440 % x !== 0 && 3600 % x !== 0, 5, 45);
 		let angle = 360 / nSpokes;
-		genAssertAlmostInteger(angle, 'Угол не целый');
 
 		let nShown = rand === 0 ? slKrome([nSpokes], 5, 10) : nSpokes;
 
