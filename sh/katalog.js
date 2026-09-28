@@ -38,6 +38,56 @@ function generateHtmlForTask(category, taskNumber, actionsArray) {
 }
 
 
+
+// ============================================================================
+// ФУНКЦИИ ДЛЯ РАБОТЫ С ПРЕДПОЧТЕНИЯМИ ВАРИАНТОВ
+// ============================================================================
+
+/**
+ * Получает варианты предпочтений для задания
+ * @param {string} taskNumber - Номер задания
+ * @returns {Array} Массив вариантов предпочтений
+ */
+function getTaskVariants(taskNumber) {
+	let variants = [null];
+	const hasExplicitPreferences = window.nabor.preferences && window.nabor.preferences[taskNumber];
+
+	if (vopr.preference && Array.isArray(vopr.preference) && vopr.preference.length > 0) {
+		if (hasExplicitPreferences) {
+			variants = [window.nabor.preferences[taskNumber]];
+		} else {
+			variants = generateVariations(vopr.preference);
+		}
+	}
+
+	return variants;
+}
+
+/**
+ * Применяет предпочтения для конкретного варианта
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Предпочтения варианта
+ */
+function applyVariantPreferences(taskNumber, variant) {
+	if (variant !== null) {
+		window.nabor.preferences = window.nabor.preferences || {};
+		window.nabor.preferences[taskNumber] = variant;
+	}
+}
+
+/**
+ * Восстанавливает состояние предпочтений
+ * @param {string} taskNumber - Номер задания
+ * @param {any} originalPreference - Оригинальные предпочтения
+ */
+function restoreVariantState(taskNumber, originalPreference) {
+	if (originalPreference !== undefined) {
+		window.nabor.preferences = window.nabor.preferences || {};
+		window.nabor.preferences[taskNumber] = originalPreference;
+	}
+}
+
+
 // ============================================================================
 // ОСНОВНЫЕ ФУНКЦИИ ГЕНЕРАЦИИ КАТАЛОГА
 // ============================================================================
