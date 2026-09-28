@@ -7,7 +7,41 @@
  * @param {Array} actionsArray - Массив действий.
  * @returns {string} - HTML-код задания.
  */
-function generateHtmlForTask(category, taskNumber, actionsArray, alreadyGenerated) {
+
+/**
+ * Создает информацию о варианте, если их несколько или есть явные предпочтения
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Текущий вариант
+ * @param {number} totalVariants - Общее количество вариантов
+ * @returns {string} HTML
+ */
+function createVariantInfoIfNeeded(taskNumber, variant, totalVariants) {
+    const hasExplicitPreferences = window.nabor.preferences && window.nabor.preferences[taskNumber];
+    
+    if (totalVariants > 1 || hasExplicitPreferences) {
+        const variation = formatVariantInfo(taskNumber, variant);
+        return `<div class="variant-info">Вариация: '${variation}'</div>`;
+    }
+    return '';
+}
+
+/**
+ * Форматирует информацию о варианте в специальном синтаксисе
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Текущий вариант
+ * @returns {string} Отформатированная строка
+ */
+function formatVariantInfo(taskNumber, variant) {
+    const parts = [taskNumber];
+    if (Array.isArray(variant)) {
+        parts.push(variant.join('_'), variant.join(' '));
+    } else {
+        parts.push(variant, variant);
+    }
+    return parts.join(' ');
+}
+
+function generateHtmlForTask(category, taskNumber, actionsArray, alreadyGenerated, variant = null, totalVariants = 1) {
 	try {
 		let htmlContent = '';
 		if (!alreadyGenerated) {
@@ -27,6 +61,7 @@ function generateHtmlForTask(category, taskNumber, actionsArray, alreadyGenerate
 
 		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
 		htmlContent += currentTaskPath.vTag('h2');
+		htmlContent += createVariantInfoIfNeeded(taskNumber, variant, totalVariants);
 		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
 		vopr.taskNumber = category;
 		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
@@ -132,7 +167,7 @@ function generateKatalog() {
 					vopr.podg();
 					nabor.upak[kat][zdn]();
 				}
-				rez += generateHtmlForTask(kat, zdn, masdey, true);
+				rez += generateHtmlForTask(kat, zdn, masdey, true, variant, variants.length);
 			}
 		}
 		rez += '</div>';
