@@ -44,10 +44,9 @@ function formatVariantInfo(taskNumber, variant) {
 function generateHtmlForTask(category, taskNumber, actionsArray, alreadyGenerated, variant = null, totalVariants = 1) {
 	try {
 		let htmlContent = '';
-		if (!alreadyGenerated) {
-			vopr.podg();
-			nabor.upak[category][taskNumber]();
-		}
+		// Always regenerate the task to ensure correct vopr state
+		vopr.podg();
+		nabor.upak[category][taskNumber]();
 		const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
 
 		// === ВРЕМЕННЫЕ ЛОГИ ДЛЯ ОТЛАДКИ ===
