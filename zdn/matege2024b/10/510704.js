@@ -7,34 +7,26 @@
 		let preference = ['findHeight', 'findWidth'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		// Генерация пифагоровой тройки с помощью формулы Евклида
-		// a = m^2 - n^2, b = 2mn, c = m^2 + n^2
+		// Генерация пифагоровой тройки перебором катетов.
+		// Это даёт гораздо более вариативную генерацию, включая не только
+		// примитивные тройки, но и все их кратные (например, 30-40-50, 15-20-25),
+		// что делает размеры экранов более реалистичными и разнообразными.
 		let a, b, c;
+		let attempts = 0;
 		do {
-			let m = sl(2, 9);
-			let n = sl(1, m - 1);
-			// m и n должны быть взаимно простыми и не оба нечётными
-			if (m.nod(n) !== 1) continue;
-			if (m % 2 === 1 && n % 2 === 1) continue;
-
-			let x = m * m - n * n;
-			let y = 2 * m * n;
-			let z = m * m + n * n;
-
-			// Упорядочиваем катеты по возрастанию
-			a = Math.min(x, y);
-			b = Math.max(x, y);
-			c = z;
-
-			// Масштабируем для получения разумных размеров экрана
-			let k = sl(1, 4);
-			a *= k;
-			b *= k;
-			c *= k;
-
-			// Фильтруем: диагональ от 20 до 120 см, разумное соотношение сторон,
-			// минимальный катет не менее 10 см
-		} while (c < 20 || c > 120 || b > 3 * a || a < 10);
+			a = sl(10, 120);
+			// Соотношение сторон от 1:1 до 2.5:1 (реалистично для телевизоров и мониторов)
+			b = sl(a, Math.floor(2.5 * a));
+			c = Math.sqrt(a * a + b * b);
+			attempts++;
+		} while (!(Math.abs(c - Math.round(c)) < 1e-9) || c < 20 || c > 150 || attempts > 2000);
+		
+		if (attempts > 2000) {
+			// Fallback на случай, если генератор зашёл в тупик
+			a = 30; b = 40; c = 50;
+		} else {
+			c = Math.round(c);
+		}
 
 		let height;
 		let width;
@@ -57,8 +49,8 @@
 		];
 
 		let analys = [
-			`По теореме Пифагора высота экрана равна $\\sqrt{${diagonal}^2-${width}^2}=\\sqrt{${diagonal * diagonal}-${width * width}}=\\sqrt{${height * height}}=${height}$ см.`,
-			`По теореме Пифагора ширина экрана равна $\\sqrt{${diagonal}^2-${height}^2}=\\sqrt{${diagonal * diagonal}-${height * height}}=\\sqrt{${width * width}}=${width}$ см.`,
+			`По теореме Пифагора высота экрана равна $sqrt{${diagonal}^2-${width}^2}=sqrt{${diagonal * diagonal}-${width * width}}=sqrt{${height * height}}=${height}$ см.`,
+			`По теореме Пифагора ширина экрана равна $sqrt{${diagonal}^2-${height}^2}=sqrt{${diagonal * diagonal}-${height * height}}=sqrt{${width * width}}=${width}$ см.`,
 		][rand];
 
 		NAtask.setTask({
