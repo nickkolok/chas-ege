@@ -41,12 +41,9 @@
             {text: (Vmax + 90) + ' и более', count: counts[10], fine: 7500}
         ];
 
-        let table = '| Скорость, км/ч | Количество ТС |
-|---|---|
-';
+        let table = '| Скорость, км/ч | Количество ТС |\n|---|---|\n';
         for(let r of rows){
-            table += `| ${r.text} | ${r.count} |
-`;
+            table += `| ${r.text} | ${r.count} |\n`;
         }
 
         let fineSpeed = 0;
@@ -81,13 +78,12 @@
             }
         ];
         let otherVio = otherViolations.iz();
-        let maxNother = Math.max(1, Math.round(Ntotal * 0.05));
+        let maxNother = Math.max(1, Math.round(Ntotal * 0.10));
         let N_other;
         let totalFine;
         let expectedValue;
         
-        for(let iter = 0; iter < 10000; iter++){
-            let candidate_N = sl(1, maxNother, 1);
+        for(let candidate_N = 1; candidate_N <= maxNother; candidate_N++){
             let candidate_totalFine = fineSpeed + candidate_N * otherVio.fine;
             let val = candidate_totalFine * 100 / Ntotal;
             if (Math.abs(val - Math.round(val)) < 1/1024/1024) {
@@ -153,7 +149,7 @@ ${table}
 
 ${transition}камера зафиксировала ${chislitlx(N_other, 'случай')} ${otherVio.textGen}. Это нарушение наказывается штрафом в размере ${otherVio.fine} рублей (${otherVio.article}).
 
-Каково математическое ожидание штрафа, выписанного каждому из ${Ntotal} транспортных средств? Ответ выразите в рублях и при необходимости округлите до сотых.
+Каково математическое ожидание штрафа, приходящегося на одно случайно выбранное транспортное средство из этой группы? Ответ выразите в рублях и при необходимости округлите до сотых.
 `;
 
         let analys = `
