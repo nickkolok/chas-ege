@@ -13,6 +13,15 @@ function generateHtmlForTask(category, taskNumber, actionsArray) {
 		vopr.podg();
 		const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
 
+		// === ВРЕМЕННЫЕ ЛОГИ ДЛЯ ОТЛАДКИ ===
+		const hasPreference = vopr.preference && Array.isArray(vopr.preference) && vopr.preference.length > 0;
+		if (hasPreference) {
+			console.log(`[DEBUG] Задание ${category}/${taskNumber} имеет preference:`, vopr.preference);
+		} else {
+			console.log(`[DEBUG] Задание ${category}/${taskNumber} не имеет preference`);
+		}
+		// === КОНЕЦ ВРЕМЕННЫХ ЛОГОВ ===
+
 		// Execute the task generator
 		nabor.upak[category][taskNumber]();
 		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
