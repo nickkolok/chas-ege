@@ -7,10 +7,13 @@
  * @param {Array} actionsArray - Массив действий.
  * @returns {string} - HTML-код задания.
  */
-function generateHtmlForTask(category, taskNumber, actionsArray) {
+function generateHtmlForTask(category, taskNumber, actionsArray, alreadyGenerated) {
 	try {
 		let htmlContent = '';
-		vopr.podg();
+		if (!alreadyGenerated) {
+			vopr.podg();
+			nabor.upak[category][taskNumber]();
+		}
 		const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
 
 		// === ВРЕМЕННЫЕ ЛОГИ ДЛЯ ОТЛАДКИ ===
@@ -22,8 +25,6 @@ function generateHtmlForTask(category, taskNumber, actionsArray) {
 		}
 		// === КОНЕЦ ВРЕМЕННЫХ ЛОГОВ ===
 
-		// Execute the task generator
-		nabor.upak[category][taskNumber]();
 		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
 		htmlContent += currentTaskPath.vTag('h2');
 		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
@@ -116,7 +117,23 @@ function generateKatalog() {
 		toc += buildCategoryTocLink(kat, br);
 
 		for(var zdn of getIncludableTasksForCategory(kat)) {
-			rez += generateHtmlForTask(kat,zdn,masdey);
+			// Сначала генерируем задание, чтобы получить vopr.preference
+			vopr.podg();
+			nabor.upak[kat][zdn]();
+
+			// Получаем варианты предпочтений
+			const variants = getTaskVariants(zdn);
+
+			// Для каждого варианта генерируем задание
+			for (var variant of variants) {
+				if (variants.length > 1) {
+					// Если вариантов несколько, применяем предпочтение и пересгенерируем
+					applyVariantPreferences(zdn, variant);
+					vopr.podg();
+					nabor.upak[kat][zdn]();
+				}
+				rez += generateHtmlForTask(kat, zdn, masdey, true);
+			}
 		}
 		rez += '</div>';
 	}
