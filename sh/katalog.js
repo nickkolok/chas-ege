@@ -1,5 +1,81 @@
 'use strict';
 
+
+/**
+ * Получает варианты задания на основе предпочтений
+ * @param {string} taskNumber - Номер задания
+ * @returns {Array} Массив вариантов (каждый вариант - массив предпочтений или null)
+ */
+function getTaskVariants(taskNumber) {
+	let variants = [null];
+	const hasExplicitPreferences = window.nabor && window.nabor.preferences && window.nabor.preferences[taskNumber];
+	
+	if (vopr.preference && Array.isArray(vopr.preference) && vopr.preference.length > 0) {
+		if (hasExplicitPreferences) {
+			variants = [window.nabor.preferences[taskNumber]];
+		} else {
+			variants = generateVariations(vopr.preference);
+		}
+	}
+	return variants;
+}
+
+/**
+ * Сохраняет текущее состояние перед генерацией варианта
+ * @param {string} taskNumber - Номер задания
+ * @returns {Object} Сохраненное состояние
+ */
+function saveTaskState(taskNumber) {
+	return {
+		originalPreferences: window.nabor && window.nabor.preferences ? {...window.nabor.preferences} : {},
+		originalVopr: {...vopr}
+	};
+}
+
+/**
+ * Восстанавливает состояние после генерации варианта
+ * @param {string} taskNumber - Номер задания
+ * @param {Object} state - Ранее сохраненное состояние
+ */
+function restoreTaskState(taskNumber, state) {
+	if (window.nabor && window.nabor.preferences) {
+		window.nabor.preferences[taskNumber] = state.originalPreferences[taskNumber];
+	}
+	
+	Object.keys(state.originalVopr).forEach(key => {
+		vopr[key] = state.originalVopr[key];
+	});
+}
+
+/**
+ * Применяет предпочтения для конкретного варианта
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Предпочтения варианта
+ */
+function applyVariantPreferences(taskNumber, variant) {
+	if (variant !== null) {
+		window.nabor = window.nabor || {};
+		window.nabor.preferences = window.nabor.preferences || {};
+		window.nabor.preferences[taskNumber] = variant;
+	}
+}
+
+/**
+ * Форматирует информацию о варианте для отображения
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Текущий вариант
+ * @returns {string} Отформатированная строка
+ */
+function formatVariantInfo(taskNumber, variant) {
+	const parts = [taskNumber];
+	if (Array.isArray(variant)) {
+		parts.push(variant.join('_'), variant.join(' '));
+	} else {
+		parts.push(variant, variant);
+	}
+	return parts.join(' ');
+}
+
 /**
  * Генерирует HTML для задания.
  * @param {string} category - Категория задания.
@@ -9,28 +85,51 @@
  */
 function generateHtmlForTask(category, taskNumber, actionsArray) {
 	try {
+		const variants = getTaskVariants(taskNumber);
 		let htmlContent = '';
-		vopr.podg();
-		const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
-
-		// Execute the task generator
-		nabor.upak[category][taskNumber]();
-		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
-		htmlContent += currentTaskPath.vTag('h2');
-		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
-		vopr.taskNumber = category;
-		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
-		htmlContent+=(
-			(
-				generateTaskControls() +
-				'Ответ: '+vopr.ver.join('или')
-			).vTag('div') +
-			'<br/>'
-		);
-		actionsArray.push(vopr.dey);
-		htmlContent += createSolutionSection();
-		htmlContent += createAuthorsSection();
-		htmlContent += '</div>';
+		
+		for (let i = 0; i < variants.length; i++) {
+			const state = saveTaskState(taskNumber);
+			
+			try {
+				applyVariantPreferences(taskNumber, variants[i]);
+				
+				let variantHtml = '';
+				vopr.podg();
+				const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
+				
+				// Execute the task generator
+				nabor.upak[category][taskNumber]();
+				variantHtml += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
+				
+				// Показываем информацию о варианте, если их несколько
+				if (variants.length > 1 || variants[i] !== null) {
+					const variationInfo = formatVariantInfo(taskNumber, variants[i]);
+					variantHtml += `<div class="variant-info">Вариация: '${variationInfo}'</div>`;
+				}
+				
+				variantHtml += currentTaskPath.vTag('h2');
+				vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
+				vopr.taskNumber = category;
+				variantHtml += ('<br/>'+vopr.txt.vTag('div')+'<br/>');
+				variantHtml += (
+					(
+						generateTaskControls() +
+						'Ответ: '+vopr.ver.join('или')
+					).vTag('div') +
+					'<br/>'
+				);
+				actionsArray.push(vopr.dey);
+				variantHtml += createSolutionSection();
+				variantHtml += createAuthorsSection();
+				variantHtml += '</div>';
+				
+				htmlContent += variantHtml;
+			} finally {
+				restoreTaskState(taskNumber, state);
+			}
+		}
+		
 		return htmlContent;
 	} catch(e) {
 		return handleTaskError(category, taskNumber, e);
