@@ -59,7 +59,8 @@ function generateHtmlForTask(category, taskNumber, actionsArray, alreadyGenerate
 		}
 		// === КОНЕЦ ВРЕМЕННЫХ ЛОГОВ ===
 
-		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
+		const variantJson = encodeURIComponent(JSON.stringify(variant));
+		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}" data-variant="${variantJson}" data-total-variants="${totalVariants}">`;
 		htmlContent += currentTaskPath.vTag('h2');
 		htmlContent += createVariantInfoIfNeeded(taskNumber, variant, totalVariants);
 		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
@@ -355,7 +356,18 @@ function renewTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.task-wrapper')[0];
 	var actions = [];
-	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
+	
+	// Read variant info from task-wrapper
+	var variantJson = decodeURIComponent(wrapper.getAttribute('data-variant'));
+	var variant = variantJson ? JSON.parse(variantJson) : null;
+	var totalVariants = parseInt(wrapper.getAttribute('data-total-variants')) || 1;
+	
+	// If there's a specific variant, apply it before regenerating
+	if (variant !== null) {
+		applyVariantPreferences(wrapper.getAttribute('data-tasknumber'), variant);
+	}
+	
+	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions, true, variant, totalVariants));
 	$(wrapper).replaceWith(taskHtml);
 	actions[0]();
 	triggerMathJaxRendering(taskHtml[0]);
@@ -366,7 +378,18 @@ function addTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.task-wrapper')[0];
 	var actions = [];
-	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
+	
+	// Read variant info from task-wrapper
+	var variantJson = decodeURIComponent(wrapper.getAttribute('data-variant'));
+	var variant = variantJson ? JSON.parse(variantJson) : null;
+	var totalVariants = parseInt(wrapper.getAttribute('data-total-variants')) || 1;
+	
+	// If there's a specific variant, apply it before regenerating
+	if (variant !== null) {
+		applyVariantPreferences(wrapper.getAttribute('data-tasknumber'), variant);
+	}
+	
+	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions, true, variant, totalVariants));
 	taskHtml.insertAfter(wrapper);
 	actions[0]();
 	triggerMathJaxRendering(taskHtml[0]);
