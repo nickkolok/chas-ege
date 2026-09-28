@@ -352,12 +352,12 @@ function copyTask() {
 	});
 }
 
-function renewTask() {
-	console.log(this);
-	var wrapper = $(this).parents('div.task-wrapper')[0];
-	var actions = [];
-	
-	// Read variant info from task-wrapper
+/**
+ * Извлекает информацию о варианте из task-wrapper и применяет преференсы
+ * @param {HTMLElement} wrapper - элемент task-wrapper
+ * @returns {Object} объект с variant и totalVariants
+ */
+function extractAndApplyVariant(wrapper) {
 	var variantJson = decodeURIComponent(wrapper.getAttribute('data-variant'));
 	var variant = variantJson ? JSON.parse(variantJson) : null;
 	var totalVariants = parseInt(wrapper.getAttribute('data-total-variants')) || 1;
@@ -366,6 +366,16 @@ function renewTask() {
 	if (variant !== null) {
 		applyVariantPreferences(wrapper.getAttribute('data-tasknumber'), variant);
 	}
+	
+	return {variant, totalVariants};
+}
+
+function renewTask() {
+	console.log(this);
+	var wrapper = $(this).parents('div.task-wrapper')[0];
+	var actions = [];
+	
+	var {variant, totalVariants} = extractAndApplyVariant(wrapper);
 	
 	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions, true, variant, totalVariants));
 	$(wrapper).replaceWith(taskHtml);
@@ -379,15 +389,7 @@ function addTask() {
 	var wrapper = $(this).parents('div.task-wrapper')[0];
 	var actions = [];
 	
-	// Read variant info from task-wrapper
-	var variantJson = decodeURIComponent(wrapper.getAttribute('data-variant'));
-	var variant = variantJson ? JSON.parse(variantJson) : null;
-	var totalVariants = parseInt(wrapper.getAttribute('data-total-variants')) || 1;
-	
-	// If there's a specific variant, apply it before regenerating
-	if (variant !== null) {
-		applyVariantPreferences(wrapper.getAttribute('data-tasknumber'), variant);
-	}
+	var {variant, totalVariants} = extractAndApplyVariant(wrapper);
 	
 	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions, true, variant, totalVariants));
 	taskHtml.insertAfter(wrapper);
