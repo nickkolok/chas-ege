@@ -41,7 +41,7 @@
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, connectionMatrix);
-            ctx.drawCircle(circle.center.x, circle.center.y, circle.r);
+            ctx.drawCircle(circle.pc.x, circle.pc.y, circle.r);
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
