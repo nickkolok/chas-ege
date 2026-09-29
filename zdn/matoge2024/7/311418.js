@@ -66,7 +66,7 @@
             answers: [correct, wrong][rand],
             wrongAnswers: [wrong, correct][rand]
         });
-        AtoB(3);
+        AtoB(3, {autoLaTeX: true});
 
         chas2.task.modifiers.addCanvasIllustration({
             width: 700,
