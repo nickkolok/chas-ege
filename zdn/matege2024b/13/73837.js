@@ -7,7 +7,7 @@
 		let b = sl(2, 12);
 		let h = sl(2, 12);
 		let V = (a * b * h) / 3;
-		genAssertZ1000(V, 'должно юыть не более 3-х знаков');
+		genAssertZ1000(V, 'Объём должен быть хорошей десятичной дробью');
 		
 		let paint = function (ct) {
 			ct.translate(200, 180);
