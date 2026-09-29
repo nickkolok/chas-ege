@@ -22,26 +22,32 @@
 			[frac1, frac2] = [frac2, frac1];
 			[text1, text2] = [text2, text1];
 		}
-		let correctVal = ((frac1 + frac2) / 2);
-		let correct = correctVal.toFixed(1);
 
+		const epsilon = 0.01;
+
+		let correctVal = ((frac1 + frac2) / 2);
+		let correct = +correctVal.toFixed(1);
+		genAssert((correct - frac1).abs() >= epsilon && (correct - frac2).abs() >= epsilon,
+			"правильный ответ не должен совпадать с концом промежутка");
 
 		let wrong = new Set();
 		while (wrong.size < 3) {
 			let noise = slKrome([0], -7, 7) * 0.1;
 			let candidate = +(correctVal + noise).toFixed(1);
 
+			if (candidate <= 0 || candidate > frac1 && candidate < frac2 || candidate === correct) {
+				continue;
+			}
 
-			if (candidate <= 0 || candidate > frac1 && candidate < frac2 || candidate === +correctVal.toFixed(1)) {
-				continue
-			};
+			genAssert((candidate - frac1).abs() >= epsilon && (candidate - frac2).abs() >= epsilon,
+				"вариант ответа не должен совпадать с концом промежутка");
 
 			wrong.add(candidate.toFixed(1));
 		}
 
 		NAtask.setTask({
 			text: 'Какое из следующих чисел заключено между числами ${' + text1 + '}$ и ${' + text2 + '}$? В ответе укажите номер правильного варианта.',
-			answers: correct,
+			answers: correct.toFixed(1),
 			wrongAnswers: Array.from(wrong)
 		});
 
