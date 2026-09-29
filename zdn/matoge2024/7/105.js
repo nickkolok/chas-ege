@@ -26,8 +26,16 @@
 				closestIndex = i;
 			}
 		}
-		//сажаем «ответную» точку ровно в значение корня, чтобы чертёж не врал
-		positions[closestIndex] = root;
+		//сажаем «ответную» точку в значение корня, но не даём сливаться с целой засечкой
+		let frac = root - Math.floor(root);
+		//«неприлипайка»: не даём точке сливаться с целой засечкой
+		if (frac < 0.1) {
+			frac = 0.1;
+		}
+		if (frac > 0.9) {
+			frac = 0.9;
+		}
+		positions[closestIndex] = Math.floor(root) + frac;
 		let correctLetter = ['A', 'B', 'C', 'D'][closestIndex];
 
 		let paint = function (ct) {
@@ -52,7 +60,7 @@
 		};
 
 		NAtask.setTask({
-			text: 'На координатной прямой отмечены точки $A$, $B$, $C$, $D$. Одна из них соответствует числу $\sqrt{' + numForRoot + '}$. Какая это точка?',
+			text: 'На координатной прямой отмечены точки $A$, $B$, $C$, $D$. Одна из них соответствует числу $\\sqrt{' + numForRoot + '}$. Какая это точка?',
 			answers: correctLetter,
 			wrongAnswers: ['A', 'B', 'C', 'D'].filter(l => l !== correctLetter)
 		});
