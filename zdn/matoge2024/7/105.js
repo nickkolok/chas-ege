@@ -52,7 +52,7 @@
 		};
 
 		NAtask.setTask({
-			text: 'На координатной прямой отмечены точки $A$, $B$, $C$, $D$. Одна из них соответствует числу $\\sqrt{' + numForRoot + '}$. Какая это точка?',
+			text: 'На координатной прямой отмечены точки $A$, $B$, $C$, $D$. Одна из них соответствует числу $\sqrt{' + numForRoot + '}$. Какая это точка?',
 			answers: correctLetter,
 			wrongAnswers: ['A', 'B', 'C', 'D'].filter(l => l !== correctLetter)
 		});
