@@ -1,7 +1,7 @@
 if (!window.nabor)
 	window.nabor = {};
 window.nabor.importFrom({
-	nZad: 17,
+	nZad: 15,
  	adres: '../zdn/misc_numberComparison_oge2027/',
 	name: 'misc_numberComparison_oge2027',
 });
@@ -23,7 +23,5 @@ window.nabor.importFrom({
 // - 322422 negative_noneOfThem negative noneOfThem
 // - 322422 positive_matching positive matching
 // - 322422 positive_noneOfThem positive noneOfThem
-// - 337301
-// - 317179
 // forbidOpenEnds answer: n
 // forbidDecimalFractions answer: n
