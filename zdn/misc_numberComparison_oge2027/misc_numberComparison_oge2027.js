@@ -2,8 +2,8 @@ if (!window.nabor)
 	window.nabor = {};
 window.nabor.importFrom({
 	nZad: 17,
- 	adres: '../zdn/misc_OGEMathTask7_ClassificationbyShiryaeva2027/',
-	name: 'misc_OGEMathTask7_ClassificationbyShiryaeva2027',
+ 	adres: '../zdn/misc_numberComparison_oge2027/',
+	name: 'misc_numberComparison_oge2027',
 });
 
 // fast_set metadata
