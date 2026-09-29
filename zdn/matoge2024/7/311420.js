@@ -36,7 +36,7 @@
 				continue
 			};
 
-			wrong.add(candidate);
+			wrong.add(candidate.toFixed(1));
 		}
 
 		NAtask.setTask({
