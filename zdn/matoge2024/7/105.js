@@ -11,14 +11,14 @@
 		let root = Math.sqrt(numForRoot);
 
 		// Корень не должен быть слишком близко к целому (чтобы не слипался с засечкой)
-		genAssert(Math.min(root % 1, 1 - root % 1) >= 0.1, "корень слишком близко к целому");
+		genAssert(Math.abs(root - Math.round(root)) >= 0.1, "корень слишком близко к целому");
 
 		// Расставляем три неправильные точки
 		let wrongs = [];
 		let candidates = [];
 		for (let k = 1; k <= 19; k++) {
 			let p = leftEdge + k / 10;
-			if (Math.min(p % 1, 1 - p % 1) < 0.1) continue;  // липнет к засечке
+			if (Math.abs(p - Math.round(p)) < 0.1) continue;  // липнет к засечке
 			if (Math.abs(p - root) < 0.25) continue;		   // липнет к правильной
 			candidates.push(p);
 		}
