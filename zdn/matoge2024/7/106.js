@@ -13,11 +13,11 @@
 		while (true) {
 			numerator = sl(leftEdge * denominator + 1, (leftEdge + 2) * denominator - 1);
 			val = numerator / denominator;
-			if (Math.min(val % 1, 1 - val % 1) >= 0.1 && Math.abs(val - Math.round(val)) > 0.01) {
+			if (Math.abs(val - Math.round(val)) >= 0.1) {
 				break;
 			}
 		}
-		genAssert(Math.min(val % 1, 1 - val % 1) >= 0.1, "дробь слишком близко к целому");
+		genAssert(Math.abs(val - Math.round(val)) >= 0.1, "дробь слишком близко к целому");
 
 		let correctLatex = numerator.texfrac(denominator);
 
@@ -26,7 +26,7 @@
 		let candidates = [];
 		for (let k = 1; k <= 19; k++) {
 			let p = leftEdge + k / 10;
-			if (Math.min(p % 1, 1 - p % 1) < 0.1) continue;  // липнет к засечке
+			if (Math.abs(p - Math.round(p)) < 0.1) continue;  // липнет к засечке
 			if (Math.abs(p - val) < 0.25) continue;		   // липнет к правильной
 			candidates.push(p);
 		}
