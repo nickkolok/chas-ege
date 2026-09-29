@@ -23,7 +23,7 @@
 			[text1, text2] = [text2, text1];
 		}
 		let correctVal = ((frac1 + frac2) / 2);
-		let correct = correctVal.toFixed(1).ts();
+		let correct = correctVal.toFixed(1);
 
 
 		let wrong = new Set();
@@ -36,7 +36,7 @@
 				continue
 			};
 
-			wrong.add(candidate.ts());
+			wrong.add(candidate);
 		}
 
 		NAtask.setTask({
