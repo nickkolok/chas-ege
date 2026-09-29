@@ -46,6 +46,7 @@
 		});
 
 		AtoB(3, { autoLaTeX: true });
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 
