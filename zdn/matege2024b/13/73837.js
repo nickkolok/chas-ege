@@ -10,9 +10,9 @@
 		genAssertZ1000(V, 'Объём должен быть хорошей десятичной дробью');
 		
 		let paint = function (ct) {
-			ct.translate(200, 180);
-			ct.scale(28, 28);
-			ct.lineWidth = 1.5 / 28;
+			ct.translate(156, 283);
+			ct.scale(60, 60);
+			ct.lineWidth = 1.5 / 60;
 			ct.strokeStyle = '#000';
 
 			let baseWidth = 2.5;
