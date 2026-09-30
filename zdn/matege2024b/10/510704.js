@@ -51,11 +51,6 @@
 
 		let device = ['телевизора', 'ноутбука', 'монитора'].iz();
 
-		let answers = [
-			height,
-			width,
-		];
-
 		let analys = [
 			`По теореме Пифагора высота экрана равна $\\sqrt{${diagonal}^2-${width}^2}=\\sqrt{${diagonal * diagonal}-${width * width}}=\\sqrt{${height * height}}=${height}$ см.`,
 			`По теореме Пифагора ширина экрана равна $\\sqrt{${diagonal}^2-${height}^2}=\\sqrt{${diagonal * diagonal}-${height * height}}=\\sqrt{${width * width}}=${width}$ см.`,
@@ -66,10 +61,10 @@
 			questions: [
 				[{
 					text: `ширина экрана – ${width} см. Найдите высоту экрана`,
-					answers: answers[0],
+					answers: height,
 				}, {
 					text: `высота экрана – ${height} см. Найдите ширину экрана`,
-					answers: answers[1],
+					answers: width,
 				}][rand]
 			],
 			postquestion: `. Ответ дайте в сантиметрах.`,
