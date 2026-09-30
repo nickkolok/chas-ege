@@ -27,14 +27,9 @@
 		let rightX = 335;
 		let middleX = (leftX + rightX) / 2;
 
-		let minTopY = 215;
-		let maxTopY = 105;
-
-		let k = (minTopY - maxTopY) / (t.h2 - t.h1);
-
-		let h1Y = groundY - t.h1 * k;
-		let h2Y = groundY - t.h2 * k;
-		let lY = groundY - t.l * k;
+		let h1Y = 215;
+		let h2Y = 105;
+		let lY = (h1Y + h2Y) / 2;
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
