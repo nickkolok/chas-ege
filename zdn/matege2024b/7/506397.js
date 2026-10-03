@@ -74,7 +74,9 @@
             let wasConst = intervals.map(interval => lengthConst(interval) > 1);
             
             let index = wasConst.indexOf(true);
-            let text = 'автомобиль ровно ' + chislitlx(lengthOfZeroInterval(intervals[index]) * 15, 'минута'+ ' ехал с постоянной скоростью');
+            let text = 'автомобиль ровно ' +
+                chislitlx((lengthConst(intervals[index]) - 1) * 15, 'секунда') +
+                ' ехал с постоянной скоростью';
 
             if (hasNoDuplicateValue(wasConst, true)) {
                 answ[index].solution.push(text);
@@ -123,7 +125,7 @@
 
         let listOfIntervals = intervals.map((interval, i) => {
             return {
-                expr: (beginTime + i * 2) * 15 + '-' + (beginTime + i * 2 + 2) * 15 + 'c',
+                expr: (beginTime + i * 2) * 15 + '–' + (beginTime + i * 2 + 2) * 15 + ' с',
                 solution: []
             };
         });
@@ -227,8 +229,8 @@
             left: listOfIntervals,
             rightHeader: 'ХАРАКТЕРИСТИКИ',
             right: solutions,
-            postText: 'Пользуясь графиком, поставьте в соответствие каждому интервалу времени характеристику движения автомобиля на этом интервале.<br/><br/> ВРЕМЕННЫЕ ОТВЕТЫ <br/>' +
-                listView.join('<br/>'),
+            postText: 'Пользуясь графиком, поставьте в соответствие каждому интервалу времени характеристику движения автомобиля на этом интервале.',
+            analys: listView.join('<br/>'),
         });
         NAtask.modifiers.allDecimalsToStandard( /*true*/);
         NAtask.modifiers.addCanvasIllustration({
@@ -236,6 +238,6 @@
             height: 600,
             paint: paint1,
         });
-    }, 100);
+    }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=506397
