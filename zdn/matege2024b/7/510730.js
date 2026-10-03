@@ -17,8 +17,13 @@
         }
 
         function answAboutMax(intervals, answ) {
-            let maxIndex = findMaxInIntervals(intervals, value);
-            let wasMax = intervals.map((_, i) => i === maxIndex);
+            let maxValue = value.maxE();
+            let firstMaxIndex = value.indexOf(maxValue);
+            let wasMax = intervals.map((_, i) => {
+                let startIndex = beginTime + i * 4;
+                let endIndex = startIndex + 4;
+                return firstMaxIndex >= startIndex && firstMaxIndex <= endIndex;
+            });
             addUniqueAnsw(wasMax, answ, 'скорость погружения впервые достигла максимума за всё время погружения');
         }
 
@@ -123,7 +128,7 @@
 
         let listOfIntervals = intervals.map((interval, i) => {
             return {
-                expr: (beginTime + i * 4) * 15 + '-' + (beginTime + i * 4 + 4) * 15 + 'c',
+                expr: (beginTime + i * 4) * 15 + '–' + (beginTime + i * 4 + 4) * 15 + ' с',
                 solution: []
             };
         });
