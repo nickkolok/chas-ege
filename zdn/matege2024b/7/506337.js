@@ -18,18 +18,9 @@
         }
 
         function answAboutConst(intervals, answ, flag) {
-            let wasConst = intervals.map(interval => {
-                let indexes = indexConst(interval);
-                return indexes.length === 3;
-            });
-            let wasConstTwoFirst = intervals.map(interval => {
-                let indexes = indexConst(interval);
-                return indexes.length === 2 && indexes.includes(0);
-            });
-            let wasConstTwoLast = intervals.map(interval => {
-                let indexes = indexConst(interval);
-                return indexes.length === 2 && !indexes.includes(0);
-            });
+            let wasConst = intervals.map(interval => interval[0] === interval[1] && interval[1] === interval[2]);
+            let wasConstTwoFirst = intervals.map(interval => interval[0] === interval[1] && interval[1] !== interval[2]);
+            let wasConstTwoLast = intervals.map(interval => interval[0] !== interval[1] && interval[1] === interval[2]);
 
             let genderConst = gender[flag].rm;
 
@@ -68,8 +59,8 @@
         function answAboutDeltaMWOneMonth(intervals, answ, delta) {
             let deltas = intervals[0].map((interval, i) => {
                 let differences = interval.map((val, j) => (val - intervals[1][i][j]).abs());
-                let hasSignificant = differences.some(diff => diff >= delta);
-                let allSignificant = differences.every(diff => diff >= delta);
+                let hasSignificant = differences.some(diff => diff > delta);
+                let allSignificant = differences.every(diff => diff > delta);
 
                 return hasSignificant && !allSignificant;
             });
