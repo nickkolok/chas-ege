@@ -52,15 +52,22 @@
         }
 
         function answAboutMaxMinDelta(intervals, answ) {
-            let deltaP = intervals.map(int => int[int.length - 1] - int[0]);
+            let deltaP = intervals.map(interval =>
+                interval.slice(1).map((value, i) => value - interval[i])
+            );
 
-            let maxEI = deltaP.maxE();
-            let minED = deltaP.minE();
+            let maxRise = deltaP.map(delta => delta.maxE());
+            let maxFall = deltaP.map(delta => delta.minE());
 
-            let wasMaxRise = intervals.map((_, i) => deltaP[i] === maxEI);
-            let wasMinFall = intervals.map((_, i) => deltaP[i] === minED);
+            let maxEI = maxRise.maxE();
+            let minED = maxFall.minE();
+
+            let wasMaxRise = maxRise.map(delta => delta === maxEI);
+            let wasMinFall = maxFall.map(delta => delta === minED);
 
             if (sl1()) {
+                let sortedRise = maxRise.slice().sort((a, b) => b - a);
+                genAssert(sortedRise[0] - sortedRise[1] >= 0.1, 'Недостаточный разрыв для самого быстрого роста');
                 addUniqueAnsw(wasMaxRise, answ, 'при увеличении числа оборотов самый быстрый рост крутящего момента');
             } else {
                 addUniqueAnsw(wasMinFall, answ, 'при увеличении числа оборотов самое быстрое падение крутящего момента');
