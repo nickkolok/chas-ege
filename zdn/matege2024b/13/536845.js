@@ -16,22 +16,27 @@
 		let V_total = X * n**3;
 		let V_frustum = V_total - V_small;
 
-		let questionText, answer;
-		if (rand == 0) {
-			questionText = "Найдите объём данного конуса, если объём конуса, отсечённого проведённой плоскостью, равен " + V_small + ".";
-			answer = V_total;
-		} else if (rand == 1) {
-			questionText = "Найдите объём конуса, отсечённого проведённой плоскостью, если объём данного конуса равен " + V_total + ".";
-			answer = V_small;
-		} else if (rand == 2) {
-			questionText = "Найдите объём данного конуса, если объём усечённого конуса, отсечённого проведённой плоскостью, равен " + V_frustum + ".";
-			answer = V_total;
-		} else if (rand == 3) {
-			questionText = "Найдите объём усечённого конуса, отсечённого проведённой плоскостью, если объём данного конуса равен " + V_total + ".";
-			answer = V_frustum;
-		}
+		// Варианты формулировок вопросов и ответы к ним
+		let questions = [
+			"Найдите объём данного конуса, если объём конуса, отсечённого проведённой плоскостью, равен " + V_small + ".",
+			"Найдите объём конуса, отсечённого проведённой плоскостью, если объём данного конуса равен " + V_total + ".",
+			"Найдите объём данного конуса, если объём усечённого конуса, отсечённого проведённой плоскостью, равен " + V_frustum + ".",
+			"Найдите объём усечённого конуса, отсечённого проведённой плоскостью, если объём данного конуса равен " + V_total + ".",
+		];
+		let answers = [V_total, V_small, V_total, V_frustum];
 
-		let text = "Через точку, делящую высоту конуса в отношении " + k1 + " : " + k2 + ", считая от вершины, проведена плоскость, параллельная основанию. " + questionText;
+		let text = "Через точку, делящую высоту конуса в отношении " + k1 + " : " + k2 + ", считая от вершины, проведена плоскость, параллельная основанию. " + questions[rand];
+
+		// Создаём объекты конусов для хранения геометрических параметров
+		let mainConeRadius = sl(4, 8);
+		let mainConeHeight = sl(8, 15);
+		let mainCone = new Cone({ radius: mainConeRadius, height: mainConeHeight });
+		
+		let k = m / n;
+		let cutCone = new Cone({ 
+			radius: mainCone.radius * k, 
+			height: mainCone.height * k 
+		});
 
 		// Цвета чертежа выбираем на этапе генерации - отрисовка детерминирована
 		let mainColor = om.secondaryBrandColors[0];
@@ -41,7 +46,7 @@
 
 		NAtask.setTask({
 			text: text,
-			answers: answer,
+			answers: answers[rand],
 			preference: preference,
 		});
 
@@ -59,7 +64,6 @@
 				let H = baseY - apexY;       // высота конуса, px
 
 				// Сечение подобно основанию с коэффициентом m/n - чертёж пропорционален условию
-				let k = m / n;
 				let cutY = apexY + H * k;
 				let rCut = R * k;
 				let ryCut = ry * k;
