@@ -344,6 +344,8 @@ chas2.task = {
 		if (taskOptions === undefined) {
 			taskOptions = {};
 		}
+		
+		taskOptions.preference = (o.preference || []);
 
 		//Применяем обёртку - ДО преобразований
 		if (o.wrapper) {
