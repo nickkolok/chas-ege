@@ -82,10 +82,11 @@
         }
 
         let time = [0].zapMonot(10, 0, 1, 1); // шкала времени
-        let production = [sl(0, 4)]; // шкала добычи
+        let production = [sl(2, 4)]; // шкала добычи
         let count = 0;
+        let maxAttempts = 100;
 
-        for (; production.length <= time.length;) {
+        for (; production.length <= time.length && count < maxAttempts;) {
             let interI = ((time.length / (sl(3, 8, 0.5))).floor());
             for (let j = 0; j < interI; j++) {
                 let lastProduction = production[production.length - 1];
@@ -97,6 +98,9 @@
             }
             count++;
         }
+
+        genAssert(production.length > time.length, 'Не удалось сгенерировать значения объёма добычи');
+
         let beginYear = sl1();
 
         let intervals = Array.from({
