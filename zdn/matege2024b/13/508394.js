@@ -22,6 +22,21 @@
 		let power = pointed ? 3 : 1;
 
 		let N = sl(2, 4);
+		let k = 1 / N;
+
+		// Геометрия сосуда задаётся классами из lib/figure.js
+		let figure;
+		if (type === 'cone')
+			figure = new Cone({ radius: 140, height: 270 });
+		else if (type === 'cyl')
+			figure = new Cylinder({ radius: 140, height: 270 });
+		else if (type === 'pyr3')
+			figure = new RegularPyramid({ height: 160, baseSide: 100, numberSide: 3 });
+		else if (type === 'pyr4')
+			figure = new RegularPyramid({ height: 160, baseSide: 100, numberSide: 4 });
+		else
+			figure = new Parallelepiped({ height: 160, width: 100, depth: 70 });
+
 		let fractionText = `\\frac{1}{${N}}`;
 		let text = '';
 		let answers = 0;
@@ -49,29 +64,14 @@
 		let paint1 = function(ctx) {
 			let w = 360;
 			let h = 360;
-			let cx = w / 2;
-			let topY = 60;
-			let botY = 330;
-			let H = botY - topY;
-			let k = 1 / N;
-			let yL = botY - k * H;
-			let R = 140;
-			let e = 36;
-
 			let lineColor = om.secondaryBrandColors.iz();
-			let fillColor = om.primaryBrandColors.iz();
+			let liquidColor = om.transparentBrandColors.iz();
+			let COS = Math.cos(Math.PI / 6);
+			let SIN = Math.sin(Math.PI / 6);
 
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = lineColor;
 
-			let fillPoly = function(pts) {
-				ctx.beginPath();
-				ctx.moveTo(pts[0][0], pts[0][1]);
-				for (let i = 1; i < pts.length; i++)
-					ctx.lineTo(pts[i][0], pts[i][1]);
-				ctx.closePath();
-				ctx.fill();
-			};
 			let strokeSeg = function(a, b, dash) {
 				if (dash)
 					ctx.setLineDash([6, 4]);
@@ -83,79 +83,106 @@
 				for (let i = 0; i < pts.length; i++)
 					strokeSeg(pts[i], pts[(i + 1) % pts.length], dashedIdx.includes(i));
 			};
-			let rimPoly = function() {
-				if (type === 'pyr3')
-					return [[cx - R, topY + e * 0.6], [cx + R, topY + e * 0.6], [cx, topY - e * 0.9]];
-				return [[cx - R, topY + e * 0.7], [cx + R, topY + e * 0.7], [cx + R * 0.55, topY - e * 0.7], [cx - R * 0.55, topY - e * 0.7]];
-			};
 
-			// --- заливка жидкости ---
-			ctx.save();
-			ctx.globalAlpha = 0.35;
-			ctx.fillStyle = fillColor;
-			if (pointed) {
-				let apex = [cx, botY];
+			// ===== Многогранники: система координат lib/canvas.js =====
+			if (type === 'pyr3' || type === 'pyr4' || type === 'par') {
+				let rim, apex = null, basePts = null, surfPts;
+				if (type === 'pyr3') {
+					let E = figure.baseSide, Hv = figure.height;
+					rim = [[0, -E], [E, -E], [COS * E, -SIN * E]];
+					apex = [(COS * E + E) / 3, (-SIN * E - 2 * E) / 3 + Hv];
+					surfPts = rim.map((p) => [apex[0] + k * (p[0] - apex[0]), apex[1] + k * (p[1] - apex[1])]);
+				} else if (type === 'pyr4') {
+					let E = figure.baseSide, Hv = figure.height;
+					rim = [[0, -E], [E, -E], [E + COS * E, -SIN * E], [COS * E, -SIN * E]];
+					apex = [(E + COS * E) / 2, (-E - SIN * E) / 2 + Hv];
+					surfPts = rim.map((p) => [apex[0] + k * (p[0] - apex[0]), apex[1] + k * (p[1] - apex[1])]);
+				} else {
+					let d = figure.depth, wP = figure.width, hP = figure.height;
+					let dc = COS * d;
+					rim = [[dc, d / 2], [0, 0], [wP, 0], [dc + wP, d / 2]];
+					basePts = rim.map((p) => [p[0], p[1] + hP]);
+					surfPts = rim.map((p) => [p[0], p[1] + (1 - k) * hP]);
+				}
+
+				// Центрирование и автомасштаб по габаритному прямоугольнику каркаса
+				let outline = rim.concat(apex ? [apex] : basePts);
+				let xs = outline.map((p) => p[0]);
+				let ys = outline.map((p) => p[1]);
+				let minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+				let minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+				let scale = Math.min((w - 60) / (maxX - minX), (h - 60) / (maxY - minY));
+				ctx.translate(w / 2, h / 2);
+				ctx.scale(scale, scale);
+				ctx.translate(-(minX + maxX) / 2, -(minY + maxY) / 2);
+				ctx.lineWidth = 2 / scale;
+
+				// Заливка жидкости нашей функцией drawSection
+				ctx.drawSection(surfPts, liquidColor);
+				if (apex) {
+					for (let i = 0; i < surfPts.length; i++)
+						ctx.drawSection([surfPts[i], surfPts[(i + 1) % surfPts.length], apex], liquidColor);
+				} else {
+					ctx.drawSection(basePts, liquidColor);
+					for (let i = 0; i < surfPts.length; i++)
+						ctx.drawSection([surfPts[i], surfPts[(i + 1) % surfPts.length], basePts[(i + 1) % basePts.length], basePts[i]], liquidColor);
+				}
+
+				// Контуры сосуда — наши функции из lib/canvas.js
+				if (type === 'pyr3')
+					ctx.drawRightPyramid3({ edge: figure.baseSide, height: figure.height }, [], [6, 4], false, false);
+				else if (type === 'pyr4')
+					ctx.drawRightPyramid4({ edge: figure.baseSide, height: figure.height, strokeStyle: lineColor }, [], [6, 4], false, false);
+				else
+					ctx.drawParallelepiped({ width: figure.width, height: figure.height, depth: figure.depth, strokeStyle: lineColor }, [], false, [6, 4]);
+
+				// Поверхность жидкости: заднее ребро пунктиром
+				strokePoly(surfPts, type === 'par' ? [1] : [0]);
+
+				// Ось сосуда и точка в центре верхнего основания
+				let center = rim.reduce((acc, p) => [acc[0] + p[0] / rim.length, acc[1] + p[1] / rim.length], [0, 0]);
+				let bottom = apex ? apex : basePts.reduce((acc, p) => [acc[0] + p[0] / basePts.length, acc[1] + p[1] / basePts.length], [0, 0]);
+				ctx.setLineDash([6, 4]);
+				ctx.drawLine(center[0], center[1], bottom[0], bottom[1]);
+				ctx.setLineDash([]);
+				ctx.fillStyle = lineColor;
+				ctx.fillKrug(center[0], center[1], 3 / scale);
+
+			// ===== Тела вращения: конус и цилиндр =====
+			} else {
+				let cx = w / 2;
+				let topY = (h - figure.height) / 2;
+				let botY = topY + figure.height;
+				let yL = botY - k * figure.height;
+				let R = figure.radius;
+				let e = R * 0.26;
+
 				if (type === 'cone') {
 					let Rl = k * R;
 					let el = k * e;
+					ctx.fillStyle = liquidColor;
 					ctx.beginPath();
 					ctx.ellipse(cx, yL, Rl, el, 0, 0, 2 * Math.PI);
 					ctx.fill();
-					fillPoly([[cx - Rl, yL], [cx + Rl, yL], apex]);
-				} else {
-					let rim = rimPoly();
-					let liq = rim.map((p) => [apex[0] + k * (p[0] - apex[0]), apex[1] + k * (p[1] - apex[1])]);
-					fillPoly(liq);
-					for (let i = 0; i < liq.length; i++)
-						fillPoly([liq[i], liq[(i + 1) % liq.length], apex]);
-				}
-			} else {
-				let dy = yL - topY;
-				if (type === 'cyl') {
-					ctx.beginPath();
-					ctx.ellipse(cx, yL, R, e, 0, 0, 2 * Math.PI);
-					ctx.fill();
-					ctx.beginPath();
-					ctx.ellipse(cx, botY, R, e, 0, 0, 2 * Math.PI);
-					ctx.fill();
-					fillPoly([[cx - R, yL], [cx + R, yL], [cx + R, botY], [cx - R, botY]]);
-				} else {
-					let rim = rimPoly();
-					let surf = rim.map((p) => [p[0], p[1] + dy]);
-					let base = rim.map((p) => [p[0], p[1] + H]);
-					fillPoly(surf);
-					fillPoly(base);
-					for (let i = 0; i < rim.length; i++)
-						fillPoly([surf[i], surf[(i + 1) % surf.length], base[(i + 1) % base.length], base[i]]);
-				}
-			}
-			ctx.restore();
+					ctx.drawSection([[cx - Rl, yL], [cx + Rl, yL], [cx, botY]], liquidColor);
 
-			// --- контуры сосуда и поверхности жидкости ---
-			if (pointed) {
-				let apex = [cx, botY];
-				if (type === 'cone') {
-					strokeSeg([cx - R, topY], apex, false);
-					strokeSeg([cx + R, topY], apex, false);
+					strokeSeg([cx - R, topY], [cx, botY], false);
+					strokeSeg([cx + R, topY], [cx, botY], false);
 					ctx.drawEllipse(cx, topY, R, e);
-					let Rl = k * R;
-					let el = k * e;
 					ctx.drawEllipse(cx, yL, Rl, el, 0, 0, Math.PI);
 					ctx.setLineDash([6, 4]);
 					ctx.drawEllipse(cx, yL, Rl, el, 0, Math.PI, 2 * Math.PI);
 					ctx.setLineDash([]);
 				} else {
-					let rim = rimPoly();
-					let liq = rim.map((p) => [apex[0] + k * (p[0] - apex[0]), apex[1] + k * (p[1] - apex[1])]);
-					strokePoly(rim);
-					for (let i = 0; i < rim.length; i++)
-						strokeSeg(rim[i], apex, false);
-					let dashedIdx = (type === 'pyr3') ? [1, 2] : [2];
-					for (let i = 0; i < liq.length; i++)
-						strokeSeg(liq[i], liq[(i + 1) % liq.length], dashedIdx.includes(i));
-				}
-			} else {
-				if (type === 'cyl') {
+					ctx.fillStyle = liquidColor;
+					ctx.beginPath();
+					ctx.ellipse(cx, yL, R, e, 0, 0, 2 * Math.PI);
+					ctx.fill();
+					ctx.drawSection([[cx - R, yL], [cx + R, yL], [cx + R, botY], [cx - R, botY]], liquidColor);
+					ctx.beginPath();
+					ctx.ellipse(cx, botY, R, e, 0, 0, Math.PI);
+					ctx.fill();
+
 					strokeSeg([cx - R, topY], [cx - R, botY], false);
 					strokeSeg([cx + R, topY], [cx + R, botY], false);
 					ctx.drawEllipse(cx, topY, R, e);
@@ -165,25 +192,14 @@
 					ctx.drawEllipse(cx, botY, R, e, 0, Math.PI, 2 * Math.PI);
 					ctx.setLineDash([]);
 					ctx.drawEllipse(cx, botY, R, e, 0, 0, Math.PI);
-				} else {
-					let rim = rimPoly();
-					let dy = yL - topY;
-					let surf = rim.map((p) => [p[0], p[1] + dy]);
-					let base = rim.map((p) => [p[0], p[1] + H]);
-					strokePoly(rim);
-					for (let i = 0; i < rim.length; i++)
-						strokeSeg(rim[i], base[i], false);
-					strokePoly(surf, [2]);
-					strokePoly(base, [2]);
 				}
-			}
 
-			// --- ось сосуда и точка в центре верхнего основания ---
-			ctx.setLineDash([6, 4]);
-			ctx.drawLine(cx, topY, cx, botY);
-			ctx.setLineDash([]);
-			ctx.fillStyle = lineColor;
-			ctx.fillKrug(cx, topY, 3);
+				ctx.setLineDash([6, 4]);
+				ctx.drawLine(cx, topY, cx, botY);
+				ctx.setLineDash([]);
+				ctx.fillStyle = lineColor;
+				ctx.fillKrug(cx, topY, 3);
+			}
 		};
 
 		NAtask.setTask({
