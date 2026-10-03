@@ -14,10 +14,15 @@
 			r2 = sl(2, 9);
 			h2 = sl(1, 9);
 			
-			V1 = r1 * r1 * h1;
-			V2 = r2 * r2 * h2;
-			S1 = r1 * h1;
-			S2 = r2 * h2;
+			// Используем класс Cylinder из lib/figure.js
+			let cylinder1 = new Cylinder({ radius: r1, height: h1 });
+			let cylinder2 = new Cylinder({ radius: r2, height: h2 });
+			
+			// Вычисляем отношения (делим на π и 2π для получения целых чисел)
+			V1 = cylinder1.volume / Math.PI;  // r1²·h1
+			V2 = cylinder2.volume / Math.PI;  // r2²·h2
+			S1 = cylinder1.sideSurfaceArea / (2 * Math.PI);  // r1·h1
+			S2 = cylinder2.sideSurfaceArea / (2 * Math.PI);  // r2·h2
 			
 			validOptions = [];
 			
