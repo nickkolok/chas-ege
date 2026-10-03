@@ -23,7 +23,7 @@
         }
 
         function answAboutLess(intervals, answ, value) {
-            let wasNonMore = intervals.map(interval => isMore(interval, value));
+            let wasNonMore = intervals.map(interval => isLess(interval, value));
             addUniqueAnsw(wasNonMore, answ, 'температура была ниже ' + convert(value) + ' на всём интервале');
         }
 
@@ -61,17 +61,19 @@
         }
 
         function answAboutMaxMinDelta(intervals, answ) {
-            let deltaP = intervals.map(int => int[int.length - 1] - int[0]);
+            let deltaP = intervals.map(int => (int[int.length - 1] - int[0]) / (int.length - 1));
+            let riseDelta = deltaP.filter((_, i) => isIncreasing(intervals[i]));
+            let fallDelta = deltaP.filter((_, i) => isDecreasing(intervals[i]));
 
-            let maxEI = deltaP.maxE();
-            let minEI = deltaP.minE();
-            let maxED = deltaP.maxE();
-            let minED = deltaP.minE();
+            let maxEI = riseDelta.maxE();
+            let minEI = riseDelta.minE();
+            let maxED = fallDelta.maxE();
+            let minED = fallDelta.minE();
 
-            let wasMaxRise = intervals.map((_, i) => deltaP[i] === maxEI);
-            let wasMinRise = intervals.map((_, i) => deltaP[i] === minEI);
-            let wasMaxFall = intervals.map((_, i) => deltaP[i] === maxED);
-            let wasMinFall = intervals.map((_, i) => deltaP[i] === minED);
+            let wasMaxRise = intervals.map((interval, i) => isIncreasing(interval) && deltaP[i] === maxEI);
+            let wasMinRise = intervals.map((interval, i) => isIncreasing(interval) && deltaP[i] === minEI);
+            let wasMaxFall = intervals.map((interval, i) => isDecreasing(interval) && deltaP[i] === maxED);
+            let wasMinFall = intervals.map((interval, i) => isDecreasing(interval) && deltaP[i] === minED);
 
             if (sl1()) {
                 addUniqueAnsw(wasMaxRise, answ, 'самый быстрый рост температуры');
