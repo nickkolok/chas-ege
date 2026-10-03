@@ -42,11 +42,15 @@
 		let restPart = V - smallCone; //объём оставшейся части
 		let kk = k / d; //коэффициент подобия для чертежа
 
+		//создаём объекты конусов через класс Cone из lib/figure.js
+		let mainCone = new Cone({ radius: d, height: d.pow(3) / (Math.PI * d.pow(2) / 3) });
+		let cutCone = new Cone({ radius: k, height: k.pow(3) / (Math.PI * k.pow(2) / 3) });
+
 		let paint1 = function (ct) {
 			let w = 400;
 			let h = 400;
-			let H = 230; //высота конуса на чертеже
-			let R = 130; //радиус основания на чертеже
+			let H = 230; //высота конуса на чертеже (пропорциональна mainCone.height)
+			let R = 130; //радиус основания на чертеже (пропорционален mainCone.radius)
 			let ry = 36; //перспективное сжатие основания
 
 			ct.translate(w / 2, h / 2 + 60);
@@ -63,9 +67,9 @@
 			ct.drawLine(0, -H, -R, 0);
 			ct.drawLine(0, -H, R, 0);
 
-			//сечение, параллельное основанию
+			//сечение, параллельное основанию (пропорционально cutCone.radius и cutCone.height)
 			let ys = -H * (1 - kk);
-			let rs = R * kk;
+			let rs = R * kk; //радиус сечения пропорционален cutCone.radius
 			let rys = ry * kk;
 			let savedFill = ct.fillStyle;
 			ct.fillStyle = om.transparentBrandColors.iz();
