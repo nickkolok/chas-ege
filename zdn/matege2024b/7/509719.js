@@ -176,7 +176,7 @@
             ctx.lineWidth = 2 / 40;
 
             let step = 0.1;
-            for (let i = 0; i < time.length - 1 - step; i += step) {
+            for (let i = 0; i < time.length - 1; i += step) {
                 ctx.drawLine(i, func(i), i + step, func(i + step));
             }
         };
