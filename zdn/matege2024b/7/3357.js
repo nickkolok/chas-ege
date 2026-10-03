@@ -154,6 +154,6 @@
             height: 400,
             paint: paint1,
         });
-    }, 100);
+    }, 1000);
 })();
 // https://ege314.ru/14-analiz-grafikov-i-diagramm/reshenie-3357/
