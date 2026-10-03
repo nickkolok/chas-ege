@@ -13,23 +13,27 @@
 		let generator = sl(3, 18);
 		let square = chord * generator;
 
+		// Используем класс Cylinder для хранения параметров
+		let cylinder = new Cylinder({ radius: radius, height: generator });
+
 		NAtask.setTask({
 			text:
-				'Радиус основания цилиндра равен $' + radius + '$, а его образующая равна $' + generator + '$. ' +
+				'Радиус основания цилиндра равен $' + cylinder.radius + '$, а его образующая равна $' + cylinder.height + '$. ' +
 				'Сечение, параллельное оси цилиндра, удалено от неё на расстояние, равное $' + distance + '$. ' +
 				'Найдите площадь этого сечения.',
 			analys:
 				'Сечение цилиндра плоскостью, параллельной оси, — прямоугольник, ' +
-				'стороны которого равны образующей $' + generator + '$ и хорде основания. ' +
+				'стороны которого равны образующей $' + cylinder.height + '$ и хорде основания. ' +
 				'Расстояние от оси до хорды равно $' + distance + '$, ' +
-				'поэтому половина хорды равна $\\sqrt{' + radius + '^2-' + distance + '^2}=' + halfChord + '$, ' +
+				'поэтому половина хорды равна $\\sqrt{' + cylinder.radius + '^2-' + distance + '^2}=' + halfChord + '$, ' +
 				'а вся хорда равна $' + chord + '$. ' +
-				'Площадь сечения равна $' + chord + '\\cdot' + generator + '=' + square + '$.',
+				'Площадь сечения равна $' + chord + '\\cdot' + cylinder.height + '=' + square + '$.',
 			answers: square,
 			authors: ['chas-ege-selena'],
 		});
 
 		// --- Чертёж: цилиндр с сечением, параллельным оси ---
+		// Класс Cylinder не предоставляет метод verticesOfFigure, поэтому строим точки вручную
 		let N = 48; // число точек на окружность основания
 		let flatten = 0.35; // сплюснутость эллипса основания
 		let camera = {
@@ -43,39 +47,39 @@
 		};
 
 		let pts3D = [];
-		for (let z of [generator, 0])
+		for (let z of [cylinder.height, 0])
 			for (let i = 0; i < N; i++) {
 				let t = 2 * Math.PI * i / N;
 				pts3D.push({
-					x: radius * Math.cos(t),
-					y: radius * Math.sin(t),
+					x: cylinder.radius * Math.cos(t),
+					y: cylinder.radius * Math.sin(t),
 					z: z,
 				});
 			}
 
 		let iSil = pts3D.length; // силуэтные образующие
 		pts3D.push(
-			{ x: -radius, y: 0, z: 0 },
-			{ x: -radius, y: 0, z: generator },
-			{ x: radius, y: 0, z: generator },
-			{ x: radius, y: 0, z: 0 }
+			{ x: -cylinder.radius, y: 0, z: 0 },
+			{ x: -cylinder.radius, y: 0, z: cylinder.height },
+			{ x: cylinder.radius, y: 0, z: cylinder.height },
+			{ x: cylinder.radius, y: 0, z: 0 }
 		);
 		let iAxis = pts3D.length; // ось цилиндра
 		pts3D.push(
 			{ x: 0, y: 0, z: 0 },
-			{ x: 0, y: 0, z: generator }
+			{ x: 0, y: 0, z: cylinder.height }
 		);
 		let iDist = pts3D.length; // расстояние от оси до плоскости сечения
 		pts3D.push(
-			{ x: 0, y: 0, z: generator / 2 },
-			{ x: 0, y: distance, z: generator / 2 }
+			{ x: 0, y: 0, z: cylinder.height / 2 },
+			{ x: 0, y: distance, z: cylinder.height / 2 }
 		);
 		let iSec = pts3D.length; // вершины сечения
 		pts3D.push(
 			{ x: -halfChord, y: distance, z: 0 },
 			{ x: halfChord, y: distance, z: 0 },
-			{ x: halfChord, y: distance, z: generator },
-			{ x: -halfChord, y: distance, z: generator }
+			{ x: halfChord, y: distance, z: cylinder.height },
+			{ x: -halfChord, y: distance, z: cylinder.height }
 		);
 
 		let pts = autoScale(pts3D, camera);
