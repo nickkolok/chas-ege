@@ -100,7 +100,7 @@
             count++;
         }
 
-        value = value.slice(0, 8);
+        value = value.slice(0, time.length - 1);
         value.push(sl(1, 2, 0.5));
 
         let spline = new Spline(time, value);
