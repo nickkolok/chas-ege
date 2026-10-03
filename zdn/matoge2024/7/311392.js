@@ -2,6 +2,9 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
+		let key = '311392';
+		let preference = ['hideNumbers', 'showNumbers'];
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let denominatorA = sl(10, 90);
 		let numeratorA = sl(1, denominatorA - 1);
@@ -57,11 +60,13 @@
 			usedNumerators.push(wrongNumerator);
 			wrAns.push(wrongNumerator.texfrac(denominatorA));
 		}
+		let numbersList = [correct, ...wrAns].join(', ');
 
 		NAtask.setTask({
-			text: 'Одно из чисел отмечено на прямой точкой $A$. Какое это число?',
+			text: 'Одно из чисел ' + ['', '$' + numbersList + '$'][rand] + ' отмечено на прямой точкой $A$. Какое это число?',
 			answers: '$' + correct + '$',
 			wrongAnswers: wrAns.map(e => '$' + e + '$'),
+			preference: preference,
 		});
 		AtoB(3);
 
