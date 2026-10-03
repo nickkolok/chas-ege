@@ -53,7 +53,7 @@
         }
 
         function answAboutMaxMinDelta(intervals, answ) {
-            let deltaP = intervals.map(int => int[1] - int[0]);
+            let deltaP = intervals.map(int => int[int.length - 1] - int[0]);
 
             let maxEI = deltaP.maxE();
             let minED = deltaP.minE();
