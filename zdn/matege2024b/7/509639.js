@@ -7,6 +7,10 @@
             return P * 100 + 100;
         }
 
+        function convertDelta(delta) {
+            return delta * 100;
+        }
+
         function answAboutMax(intervals, answ) {
             let maxIndex = findMaxInIntervals(intervals, production);
             let wasMax = intervals.map((_, i) => i === maxIndex);
@@ -14,18 +18,9 @@
         }
         
         function answAboutConst(intervals, answ) {
-            let wasConst = intervals.map(interval => {
-                let indexes = indexConst(interval);
-                return indexes.length === 3;
-            });
-            let wasConstTwoFirst = intervals.map(interval => {
-                let indexes = indexConst(interval);
-                return indexes.length === 2 && indexes.includes(0);
-            });
-            let wasConstTwoLast = intervals.map(interval => {
-                let indexes = indexConst(interval);
-                return indexes.length === 2 && !indexes.includes(0);
-            });
+            let wasConst = intervals.map(interval => interval[0] === interval[1] && interval[1] === interval[2]);
+            let wasConstTwoFirst = intervals.map(interval => interval[0] === interval[1] && interval[1] !== interval[2]);
+            let wasConstTwoLast = intervals.map(interval => interval[0] !== interval[1] && interval[1] === interval[2]);
 
             if (sl1()) {
                 addUniqueAnsw(wasConstTwoFirst, answ, 'продажи за первый и второй месяцы периода совпадают');
@@ -54,7 +49,7 @@
                     for (let i = 1; i < interval.length; i++) {
                         delta.push(interval[i] - interval[i - 1]);
                     }
-                    return delta.every(d => d < 0.5);
+                    return delta.every(d => d <= 0.5);
                 } else {
                     return false;
                 }
@@ -73,7 +68,7 @@
 
             let maxEI = incr.maxE();
             let wasMaxDeltaI = intervals.map((_, i) => incr[i] === maxEI);
-            addUniqueAnsw(wasMaxDeltaI, answ, 'за этот период ежемесячный объём продаж увеличился на ' + convert(maxEI - 1) + ' холодильников');
+            addUniqueAnsw(wasMaxDeltaI, answ, 'за этот период ежемесячный объём продаж увеличился на ' + convertDelta(maxEI) + ' холодильников');
         }
 
         function answAboutMaxDeltaD(intervals, answ) {
@@ -87,7 +82,7 @@
 
             let maxED = decr.maxE();
             let wasMaxDeltaD = intervals.map((_, i) => decr[i] === maxED);
-            addUniqueAnsw(wasMaxDeltaD, answ, 'за этот период ежемесячный объём продаж уменьшился на ' + convert(maxED - 1) + ' холодильников');
+            addUniqueAnsw(wasMaxDeltaD, answ, 'за этот период ежемесячный объём продаж уменьшился на ' + convertDelta(maxED) + ' холодильников');
         }
 
         let month = om.months;
