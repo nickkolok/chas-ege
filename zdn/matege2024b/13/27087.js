@@ -9,63 +9,16 @@
 		let V = a * a * m;
 
 		let paintPyramid = function (ct) {
-			ct.translate(200, 100);
+			ct.translate(200, 280);
 			ct.scale(40, 40);
 			ct.lineWidth = 1.5 / 40;
 			
-			// Coordinates for triangular pyramid
-			// Front-left vertex of base
-			let x1 = -1.5, y1 = 3;
-			// Front-right vertex of base
-			let x2 = 1.5, y2 = 3;
-			// Back vertex of base (hidden)
-			let x3 = 0, y3 = 1.5;
-			// Top vertex
-			let topX = 0, topY = 0;
-			
-			// Draw back edge of base (dashed - hidden)
-			ct.save();
-			ct.setLineDash([0.1, 0.1]);
-			ct.strokeStyle = '#666';
-			ct.lineWidth = 1.5 / 40;
-			ct.beginPath();
-			ct.moveTo(x1, y1);
-			ct.lineTo(x3, y3);
-			ct.stroke();
-			ct.restore();
-			
-			ct.save();
-			ct.setLineDash([0.1, 0.1]);
-			ct.strokeStyle = '#666';
-			ct.beginPath();
-			ct.moveTo(x3, y3);
-			ct.lineTo(x2, y2);
-			ct.stroke();
-			ct.restore();
-			
-			// Draw front edge of base (solid - visible)
-			ct.strokeStyle = '#000';
-			ct.lineWidth = 1.5 / 40;
-			ct.beginPath();
-			ct.moveTo(x1, y1);
-			ct.lineTo(x2, y2);
-			ct.stroke();
-			
-			// Draw lateral edges (solid - visible)
-			ct.beginPath();
-			ct.moveTo(x1, y1);
-			ct.lineTo(topX, topY);
-			ct.stroke();
-			
-			ct.beginPath();
-			ct.moveTo(x2, y2);
-			ct.lineTo(topX, topY);
-			ct.stroke();
-			
-			ct.beginPath();
-			ct.moveTo(x3, y3);
-			ct.lineTo(topX, topY);
-			ct.stroke();
+			// Используем библиотечную функцию для отрисовки правильной треугольной пирамиды
+			ct.drawRightPyramid3({
+				edge: 2,
+				height: 2.5,
+				angle: Math.PI / 6
+			}, [1, 2], [0.1, 0.1]); // Рёбра 1 и 2 (задние боковые) пунктиром
 		};
 
 		NAtask.setTask({
