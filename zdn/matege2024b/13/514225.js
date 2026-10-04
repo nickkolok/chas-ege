@@ -3,77 +3,74 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		// Фиксированные параметры для рисунка
-		let drawSide = 24;   // сторона для отрисовки
-		let drawHeight = 25; // уменьшенная высота для менее вытянутого рисунка
-		
 		// Набор пифагоровых троек для генерации вариантов задачи
+		// (полусторона, апофема, боковое ребро)
 		let triples = [
 			{ halfBase: 5, apothem: 12, edge: 13 },
 			{ halfBase: 8, apothem: 15, edge: 17 },
 			{ halfBase: 7, apothem: 24, edge: 25 },
 			{ halfBase: 12, apothem: 35, edge: 37 },
-			{ halfBase: 9, apothem: 40, edge: 41 },
-			{ halfBase: 20, apothem: 21, edge: 29 }
+			{ halfBase: 9, apothem: 40, edge: 41 }
 		];
 
 		let t = triples.iz();
-		let a = t.halfBase * 2;
-		let l = t.edge;
-		let h = t.apothem;
+		let a = t.halfBase * 2;  // сторона основания
+		let l = t.edge;          // боковое ребро
 
-		let S_bok = 6 * 0.5 * a * h;
+		// Высота пирамиды: для правильного шестиугольника R = a, поэтому H = sqrt(l^2 - a^2)
+		let H = Math.sqrt(l * l - a * a);
 
+		// Пирамида для вычислений (класс из lib/figure.js)
+		let pyramid = new RegularPyramid({
+			height: H,
+			baseSide: a,
+			numberSide: 6
+		});
+
+		// Площадь боковой поверхности — через getter класса
+		let S_bok = pyramid.sideSurfaceArea;
+
+		// Фиксированная пирамида для иллюстрации: рисунок всегда одинаковый
+		let drawPyramid = new RegularPyramid({
+			height: Math.sqrt(37 * 37 - 24 * 24),
+			baseSide: 24,
+			numberSide: 6
+		});
+
+		// Камера: вид спереди и сверху, без поворота вбок (симметричный рисунок)
+		let camera = {
+			x: 0,
+			y: 0,
+			z: 0,
+			rotationX: -2.1,
+			rotationY: 0,
+			rotationZ: 0,
+			scale: 6          // увеличенный масштаб рисунка
+		};
+
+		// Проецируем 3D-вершины в 2D (lib/project3DTo2D.js)
+		let vertices2D = drawPyramid.verticesOfFigure.map(v => project3DTo2D(v, camera));
+
+		// Центрируем фигуру на канвасе 400x350
+		let xs = vertices2D.map(p => p.x);
+		let ys = vertices2D.map(p => p.y);
+		let cx = (Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2;
+		let cy = (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2;
+		vertices2D = vertices2D.map(p => ({ x: p.x - cx + 200, y: p.y - cy + 175 }));
+
+		// Матрица смежности из класса; помечаем невидимые рёбра пунктиром
+		let matrix = drawPyramid.connectionMatrix;
+		matrix[0][0] = [4, 2]; // ребро основания 0-1 (заднее правое)
+		matrix[1][1] = [4, 2]; // ребро основания 1-2 (заднее, горизонтальное)
+		matrix[2][2] = [4, 2]; // ребро основания 2-3 (заднее левое)
+		matrix[5][1] = [4, 2]; // боковое ребро к задней вершине 1
+		matrix[5][2] = [4, 2]; // боковое ребро к задней вершине 2
+
+		// Отрисовка через drawFigure (lib/canvas.js)
 		let paint1 = function (ct) {
-			ct.translate(200, 190);
-			ct.scale(6, 6);
-			ct.lineWidth = 1.5 / 6;
-
-			let side = drawSide;
-			let height = drawHeight;
-			let k = Math.sqrt(3) / 2;
-
-			let p1 = [-side / 2, side * 0.2];
-			let p2 = [-side / 4, side * 0.2 + side * k * 0.5];
-			let p3 = [side / 4, side * 0.2 + side * k * 0.5];
-			let p4 = [side / 2, side * 0.2];
-			let p5 = [side / 4, side * 0.2 - side * k * 0.5];
-			let p6 = [-side / 4, side * 0.2 - side * k * 0.5];
-			let apex = [0, -height + side * 0.2];
-
-			// Невидимые рёбра (пунктир) - только задние
-			ct.setLineDash([3 / 6, 2 / 6]);
-			ct.beginPath();
-			ct.moveTo(p6[0], p6[1]); ct.lineTo(apex[0], apex[1]);
-			ct.moveTo(p5[0], p5[1]); ct.lineTo(apex[0], apex[1]);
-			ct.stroke();
-			ct.setLineDash([]);
-
-			// Видимый контур основания
-			ct.beginPath();
-			ct.moveTo(p1[0], p1[1]);
-			ct.lineTo(p2[0], p2[1]);
-			ct.lineTo(p3[0], p3[1]);
-			ct.lineTo(p4[0], p4[1]);
-			ct.stroke();
-			
-			// Невидимая часть основания (пунктир)
-			ct.setLineDash([3 / 6, 2 / 6]);
-			ct.beginPath();
-			ct.moveTo(p4[0], p4[1]);
-			ct.lineTo(p5[0], p5[1]);
-			ct.lineTo(p6[0], p6[1]);
-			ct.lineTo(p1[0], p1[1]);
-			ct.stroke();
-			ct.setLineDash([]);
-
-			// Видимые боковые рёбра (включая левое p1)
-			ct.beginPath();
-			ct.moveTo(p1[0], p1[1]); ct.lineTo(apex[0], apex[1]);
-			ct.moveTo(p2[0], p2[1]); ct.lineTo(apex[0], apex[1]);
-			ct.moveTo(p3[0], p3[1]); ct.lineTo(apex[0], apex[1]);
-			ct.moveTo(p4[0], p4[1]); ct.lineTo(apex[0], apex[1]);
-			ct.stroke();
+			ct.lineWidth = 1.5;
+			ct.strokeStyle = '#000';
+			ct.drawFigure(vertices2D, matrix);
 		};
 
 		NAtask.setTask({
