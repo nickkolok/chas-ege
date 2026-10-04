@@ -10,9 +10,14 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			ct.translate(120, 60);
-			ct.scale(20, 20);
-			ct.lineWidth = 2 / 20;
+			// Перемещаем начало координат в центр canvas
+			ct.translate(200, 200);
+			
+			// Масштабируем для удобного отображения
+			let maxDim = Math.max(a, b, c);
+			let scale = 80 / maxDim;
+			ct.scale(scale, scale);
+			ct.lineWidth = 2 / scale;
 			
 			// Создаём параллелепипед с заданными размерами
 			let parallelepiped = new Parallelepiped({
@@ -29,11 +34,11 @@
 			let camera = {
 				x: 0,
 				y: 0,
-				z: 20,
-				rotationX: 0.3,
-				rotationY: -0.5,
+				z: 30,
+				rotationX: 0.4,
+				rotationY: -0.6,
 				rotationZ: 0,
-				scale: 0.4
+				scale: 1
 			};
 			
 			// Проецируем 3D вершины в 2D
