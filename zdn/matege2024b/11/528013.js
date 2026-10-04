@@ -2,7 +2,7 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let key = '512761';
+		let key = '528013';
 		let preference = ['cube', 'parallelepiped'];
 		let variant = getSelectedPreferenceFromList(key, preference);
 
@@ -64,4 +64,4 @@
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=512761
+// https://mathb-ege.sdamgia.ru/problem?id=528013
