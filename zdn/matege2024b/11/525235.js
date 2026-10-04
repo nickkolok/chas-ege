@@ -14,20 +14,26 @@
 		let a = sl([1, 1, 3, 5][b], 6);
 		let height = 20 * b;
 		let square = 50 * a;
-		let volume = a * b;
+		
+		// Используем класс Cylinder из lib/figure.js
+		let radius = Math.sqrt(square / Math.PI);
+		let cylinder = new Cylinder({ radius: radius, height: height });
+		let volume = Math.round(cylinder.volume / 1000);
 
 		let paint = function (ct) {
-			let R = Math.sqrt(square / Math.PI);
-			let k = Math.min(220 / height, 110 / R);
-			let r = R * k;
-			let H = height * k;
+			let r = Math.min(220 / cylinder.height, 110 / cylinder.radius) * cylinder.radius;
+			let H = Math.min(220 / cylinder.height, 110 / cylinder.radius) * cylinder.height;
 			let ry = 0.3 * r;
 			ct.translate(150, 170);
 			ct.lineWidth = 2;
+			// Верхнее основание (целиком видимо)
 			ct.drawEllipse(0, -H / 2, r, ry);
+			// Боковые стороны
 			ct.drawLine(-r, -H / 2, -r, H / 2);
 			ct.drawLine(r, -H / 2, r, H / 2);
+			// Нижнее основание (видимая часть - верхняя дуга)
 			ct.drawEllipse(0, H / 2, r, ry, 0, 0, Math.PI);
+			// Нижнее основание (невидимая часть - нижняя дуга, пунктир)
 			ct.setLineDash([6, 4]);
 			ct.drawEllipse(0, H / 2, r, ry, 0, Math.PI, 2 * Math.PI);
 			ct.setLineDash([]);
