@@ -14,19 +14,34 @@
 			ct.scale(20, 20);
 			ct.lineWidth = 2 / 20;
 			
-			let maxDim = Math.max(a, b, c);
-			let scale = 8 / maxDim;
-			let drawA = a * scale;
-			let drawB = b * scale;
-			let drawC = c * scale;
-
-			ct.drawParallelepiped({
-				width: drawA,
-				height: drawC,
-				depth: drawB,
-				angle: 30,
-				strokeStyle: om.secondaryBrandColors,
-			}, [0, 3, 4], false, [0.5, 0.2]);
+			// Создаём параллелепипед с заданными размерами
+			let parallelepiped = new Parallelepiped({
+				width: a,
+				height: c,
+				depth: b
+			});
+			
+			// Получаем 3D вершины и матрицу связей
+			let vertices3D = parallelepiped.verticesOfFigure;
+			let connectionMatrix = parallelepiped.connectionMatrix;
+			
+			// Настраиваем камеру для проекции 3D в 2D
+			let camera = {
+				x: 0,
+				y: 0,
+				z: 20,
+				rotationX: 0.3,
+				rotationY: -0.5,
+				rotationZ: 0,
+				scale: 0.4
+			};
+			
+			// Проецируем 3D вершины в 2D
+			let vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
+			
+			// Рисуем фигуру с использованием матрицы связей
+			ct.strokeStyle = om.secondaryBrandColors.iz();
+			ct.drawFigure(vertices2D, connectionMatrix);
 		};
 
 		NAtask.setTask({
