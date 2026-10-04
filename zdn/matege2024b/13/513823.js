@@ -12,52 +12,82 @@
 		let volume = length * width * (height / 6);
 
 		let paint1 = function (ct) {
-			ct.translate(180, 220);
-			ct.scale(40, 40);
-			ct.lineWidth = 3 / 40;
-			
-			let x1 = 3.5, y1 = 0;
-			let x2 = -2, y2 = 2.5;
-			let x3 = 0, y3 = -3.5;
-			
-			ct.beginPath();
-			ct.moveTo(0, 0);
-			ct.lineTo(x1, y1);
-			ct.moveTo(0, 0);
-			ct.lineTo(x2, y2);
-			ct.moveTo(0, 0);
-			ct.lineTo(x3, y3);
-			
-			ct.moveTo(x1, y1);
-			ct.lineTo(x2, y2);
-			ct.moveTo(x2, y2);
-			ct.lineTo(x3, y3);
-			ct.moveTo(x3, y3);
-			ct.lineTo(x1, y1);
-			
-			ct.strokeStyle = om.secondaryBrandColors;
-			ct.stroke();
-			
-			ct.beginPath();
-			ct.moveTo(0.6, 0);
-			ct.lineTo(0.6, -0.6);
-			ct.lineTo(0, -0.6);
-			ct.stroke();
-			
-			// Подписи вершин для варианта withABCD
+			// Класс из lib/figure.js: три взаимно перпендикулярных ребра из вершины 0
+			let pyramid = new RectangularPyramidWithRightAngledTriangleAtBase({
+				height: height,
+				sideA: length,
+				sideB: width
+			});
+
+			// Косоугольная проекция 3D -> 2D
+			let angle = Math.PI / 6;
+			let vertices2D = pyramid.verticesOfFigure.map(p => ({
+				x: p.x - p.z * Math.cos(angle) * 0.7,
+				y: -(p.y - p.z * Math.sin(angle) * 0.7)
+			}));
+
+			// Центрирование и автомасштаб по габаритам фигуры
+			let xs = vertices2D.map(p => p.x);
+			let ys = vertices2D.map(p => p.y);
+			let minX = Math.min.apply(null, xs);
+			let maxX = Math.max.apply(null, xs);
+			let minY = Math.min.apply(null, ys);
+			let maxY = Math.max.apply(null, ys);
+			let w = (maxX - minX) || 1;
+			let h = (maxY - minY) || 1;
+			let scale = Math.min(280 / w, 280 / h, 40);
+			let cx = (minX + maxX) / 2;
+			let cy = (minY + maxY) / 2;
+
+			ct.translate(200 - scale * cx, 200 - scale * cy);
+			ct.scale(scale, scale);
+			ct.lineWidth = 2 / scale;
+			ct.strokeStyle = om.secondaryBrandColors[0] || om.secondaryBrandColors;
+
+			let dotted = [4 / scale, 3 / scale];
+
+			// Вершина 0 (прямой угол) находится за гранью 1-2-3:
+			// рёбра из неё — пунктиром, рёбра передней грани — сплошными
+			let drawMatrix = [
+				[dotted],          // 1-0 — невидимое
+				[dotted, 1],       // 2-0 — невидимое, 2-1 — видимое
+				[dotted, 1, 1]     // 3-0 — невидимое, 3-1 и 3-2 — видимые
+			];
+
+			ct.drawFigure(vertices2D, drawMatrix);
+
+			// Маркер прямого угла при вершине 0
+			let v0 = vertices2D[0];
+			let v1 = vertices2D[1];
+			let v2 = vertices2D[2];
+			let len1 = Math.hypot(v1.x - v0.x, v1.y - v0.y);
+			let len2 = Math.hypot(v2.x - v0.x, v2.y - v0.y);
+			let s = 12 / scale;
+			if (len1 > 0 && len2 > 0) {
+				let vec1 = { x: (v1.x - v0.x) / len1 * s, y: (v1.y - v0.y) / len1 * s };
+				let vec2 = { x: (v2.x - v0.x) / len2 * s, y: (v2.y - v0.y) / len2 * s };
+				ct.beginPath();
+				ct.moveTo(v0.x + vec1.x, v0.y + vec1.y);
+				ct.lineTo(v0.x + vec1.x + vec2.x, v0.y + vec1.y + vec2.y);
+				ct.lineTo(v0.x + vec2.x, v0.y + vec2.y);
+				ct.stroke();
+			}
+
+			// Подписи вершин для варианта withABCD (смещение наружу от центра фигуры)
 			if (rand === 1) {
 				ct.fillStyle = 'black';
-				ct.font = '0.5px liberation_sans';
+				ct.font = (14 / scale) + 'px liberation_sans';
 				ct.textAlign = 'center';
 				ct.textBaseline = 'middle';
-				// A — вершина с прямым углом (начало координат)
-				ct.fillText('A', -0.5, 0.1);
-				// B — нижняя левая вершина
-				ct.fillText('B', x2 - 0.1, y2 + 0.5);
-				// C — правая вершина
-				ct.fillText('C', x1 + 0.5, y1 + 0.1);
-				// D — верхняя вершина
-				ct.fillText('D', x3 - 0.4, y3 - 0.4);
+
+				let labels = ['A', 'B', 'C', 'D'];
+				let off = 16 / scale;
+				for (let i = 0; i < 4; i++) {
+					let dx = vertices2D[i].x - cx;
+					let dy = vertices2D[i].y - cy;
+					let d = Math.hypot(dx, dy) || 1;
+					ct.fillText(labels[i], vertices2D[i].x + dx / d * off, vertices2D[i].y + dy / d * off);
+				}
 			}
 		};
 
