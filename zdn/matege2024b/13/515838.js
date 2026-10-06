@@ -10,57 +10,22 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			// Создаём параллелепипед
-			let parallelepiped = new Parallelepiped({
-				width: a,
-				height: c,
-				depth: b
-			});
+			// Увеличиваем размеры для лучшего отображения
+			let drawWidth = a * 2;
+			let drawHeight = c * 2;
+			let drawDepth = b * 2;
 			
-			// Получаем 3D вершины и матрицу связей
-			let vertices3D = parallelepiped.verticesOfFigure;
-			let connectionMatrix = parallelepiped.connectionMatrix;
-			
-			// Настраиваем камеру для проекции
-			let camera = {
-				x: 0,
-				y: 0,
-				z: 20,
-				rotationX: 0.3,
-				rotationY: -0.5,
-				rotationZ: 0,
-				scale: 1
-			};
-			
-			// Проецируем 3D вершины в 2D
-			let vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
-			
-			// Находим границы для autoScale
-			let minX = Math.min(...vertices2D.map(v => v.x));
-			let maxX = Math.max(...vertices2D.map(v => v.x));
-			let minY = Math.min(...vertices2D.map(v => v.y));
-			let maxY = Math.max(...vertices2D.map(v => v.y));
-			
-			let width = maxX - minX;
-			let height = maxY - minY;
-			
-			// Масштабируем и центрируем
-			let canvasSize = 400;
-			let padding = 50;
-			let scale = (canvasSize - 2 * padding) / Math.max(width, height);
-			
-			let centerX = canvasSize / 2;
-			let centerY = canvasSize / 2;
-			
-			vertices2D = vertices2D.map(v => ({
-				x: (v.x - (minX + maxX) / 2) * scale + centerX,
-				y: (v.y - (minY + maxY) / 2) * scale + centerY
-			}));
-			
-			// Рисуем фигуру
-			ct.strokeStyle = om.secondaryBrandColors.iz();
-			ct.lineWidth = 2;
-			ct.drawFigure(vertices2D, connectionMatrix);
+			ct.translate(100, 50);
+			ct.scale(15, 15);
+			ct.lineWidth = 0.15;
+
+			ct.drawParallelepiped({
+				width: drawWidth,
+				height: drawHeight,
+				depth: drawDepth,
+				angle: 40,
+				strokeStyle: om.secondaryBrandColors,
+			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
 		NAtask.setTask({
