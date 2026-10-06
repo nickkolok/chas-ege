@@ -14,10 +14,11 @@
 			ct.scale(20, 20);
 			ct.lineWidth = 2 / 20;
 
+			// Увеличиваем размеры в 3 раза для лучшего отображения
 			ct.drawParallelepiped({
-				width: a,
-				height: c,
-				depth: b,
+				width: a * 3,
+				height: c * 3,
+				depth: b * 3,
 				angle: 40,
 				strokeStyle:om.secondaryBrandColors,
 			}, [0, 3, 4], false, [0.5, 0.2]);
