@@ -23,6 +23,12 @@
  *   --json              машинный вывод: JSON-массив результатов
  *   --quiet             не транслировать console.log из недр библиотек
  *
+ * Канвасы: если установлен npm-пакет «canvas» (node-canvas), jsdom получает
+ * настоящие 2D-контексты: vopr.dey() рисует, а <canvas> в тексте задания
+ * заменяются на <img src="data:image/png;base64,…"> — ровно как в
+ * sh/chas-ege_to_reshuege.js, — и LaTeX-экспорт идёт с иллюстрациями.
+ * Без пакета генерация работает, экспорт — без иллюстраций (фолбэка нет).
+ *
  * Код возврата: 0 — все шаблоны отработали, 1 — хотя бы один упал.
  */
 
@@ -75,6 +81,15 @@ if (!opts.filepaths.length) {
 
 const t0 = Date.now();
 const log = opts.json ? () => {} : console.log;
+
+// Бэкенд канвасов: на данном этапе — только gold standard node-canvas
+// (jsdom подхватывает npm-пакет «canvas» автоматически). Фолбэка нет:
+// без пакета шаблоны с <canvas> генерируются, но экспорт идёт без иллюстраций.
+let canvasBackend = 'none';
+try {
+	require.resolve('canvas');
+	canvasBackend = 'node-canvas';
+} catch (e) { /* остаёмся без канвасов */ }
 
 // ---------------------------------------------------------------------------
 // 2. jsdom-окружение (приём обкатан в dev/run-node-tests.js)
@@ -150,9 +165,17 @@ evalInWindow(`
 	};
 	window.alert = function (msg) { console.log('[alert] ' + msg); };
 	// lib/canvas.js расширяет CanvasRenderingContext2D.prototype при загрузке.
+	// С npm-пакетом «canvas» jsdom даёт настоящие 2D-контексты, но сам класс на
+	// window не выставляет — достаём его через пробный контекст, иначе
+	// методы-расширения (drawLine, setka, fillKrug…) не встанут на прототип.
+	if ('${canvasBackend}' !== 'none') {
+		var __probe = document.createElement('canvas');
+		var __probeCtx = __probe.getContext('2d');
+		if (__probeCtx) window.CanvasRenderingContext2D = __probeCtx.constructor;
+	}
 	// В jsdom без npm-пакета «canvas» этого класса нет — даём пустой прототип
-	// (тот же приём, что в dev/run-node-tests.js). Рисование (vopr.dey) в Node
-	// не вызывается, а генерация тегов <canvas> — чисто строковая.
+	// (тот же приём, что в dev/run-node-tests.js). Рисование (vopr.dey) без
+	// бэкенда не вызывается, а генерация тегов <canvas> — чисто строковая.
 	if (!window.CanvasRenderingContext2D) {
 		window.CanvasRenderingContext2D = function () {};
 		window.CanvasRenderingContext2D.prototype = {};
@@ -198,6 +221,44 @@ if (opts.seed !== null) {
 }
 
 // ---------------------------------------------------------------------------
+// 3.5. Канвасы: рисование и подмена canvas→img (бэкенд node-canvas)
+// ---------------------------------------------------------------------------
+
+/** Повторяет связку updateQuestion() (sh/otladka.js) +
+ *  replaceCanvasWithImgInTaskAndHTML() (sh/chas-ege_to_reshuege.js):
+ *  вставляем vopr.txt в #question, вызываем vopr.dey() (рисование на
+ *  <canvas>), затем каждый <canvas>…</canvas> в тексте заменяем на <img>
+ *  с реальным PNG из toDataURL() — дальше roughHTML2LaTeX сам превратит
+ *  его в процентированный тег, как в браузерном экспорте.
+ *  Без бэкенда канвасов — no-op. */
+function renderAndSwapCanvases(snapshot) {
+	snapshot.canvasBackend = canvasBackend;
+	snapshot.canvasImages = 0;
+	if (canvasBackend === 'none' || !/<canvas/i.test(snapshot.txt)) return snapshot;
+	window.__snap = snapshot;
+	evalInWindow(`
+		(function () {
+			var v = window.__snap;
+			var q = document.getElementById('question');
+			q.innerHTML = v.txt;
+			try { window.vopr.dey(); } catch (e) {
+				console.log('[dey] ' + (e && e.message ? e.message : e));
+			}
+			var canvases = q.getElementsByTagName('canvas');
+			for (var i = 0; i < canvases.length; i++) {
+				var img = document.createElement('img');
+				img.src = canvases[i].toDataURL();
+				img.width = canvases[i].width;
+				img.height = canvases[i].height;
+				v.txt = v.txt.replace(/<canvas.*?<\\/canvas>/, img.outerHTML + '\\n');
+				v.canvasImages++;
+			}
+		})();
+	`, '<render-canvases>');
+	return snapshot;
+}
+
+// ---------------------------------------------------------------------------
 // 4. Генерация по одному шаблону
 // ---------------------------------------------------------------------------
 
@@ -212,13 +273,13 @@ function runOnce(templateCode, filename, isCpp) {
 	if (window.vopr.err) {
 		throw new Error('Задание не прошло валидацию движка (vopr.err=1)');
 	}
-	return {
+	return renderAndSwapCanvases({
 		txt: String(window.vopr.txt),
 		ver: window.vopr.ver.slice(),
 		nev: window.vopr.nev.slice(),
 		rsh: String(window.vopr.rsh),
 		preference: window.vopr.preference,
-	};
+	});
 }
 
 /** LaTeX-экспорт — ровно как startQuickExportToTex() из otladka.js, но
@@ -253,6 +314,9 @@ function processTemplate(filepath) {
 	const isCpp = /\.cpp$/i.test(absoluteFilepath);
 	const templateCode = fs.readFileSync(absoluteFilepath, 'utf8');
 
+	// Предупреждение: шаблон рисует на <canvas>, а бэкенда нет (фолбэка на
+	// данном этапе не предусмотрено) — иллюстрации в экспорт не попадут.
+
 	// Сброс состояния preferences после предыдущего шаблона
 	evalInWindow('window.nabor.preferences = window.__originalNaborPreferences || {};', '<reset-prefs>');
 
@@ -263,6 +327,9 @@ function processTemplate(filepath) {
 		console.error('[' + filepath + '] Ошибка выполнения шаблона: ' + (e && e.message ? e.message : e));
 		hadFailures = true;
 		return;
+	}
+	if (canvasBackend === 'none' && /<canvas/i.test(first.txt)) {
+		console.error('[' + filepath + '] предупреждение: шаблон рисует на <canvas>, но npm-пакет «canvas» не установлен — экспорт пойдёт без иллюстраций (фолбэк на данном этапе не предусмотрен).');
 	}
 
 	// Комбинации preferences — та же логика, что в headless-debug.mjs, но
