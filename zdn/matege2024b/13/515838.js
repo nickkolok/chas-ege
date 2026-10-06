@@ -12,15 +12,15 @@
 		let paint1 = function (ct) {
 			ct.save();
 			
-			// Перемещаем начало координат в центр canvas (200, 200)
+			// Перемещаем начало координат в центр canvas
 			ct.translate(200, 200);
 			
 			// Масштабируем для хорошей видимости
 			let maxDim = Math.max(a, b, c);
-			let scale = 20 / maxDim;
+			let scale = 18 / maxDim;
 			ct.scale(scale, scale);
 			
-			// Используем проверенную функцию drawParallelepiped из canvas.js
+			// Используем встроенную функцию drawParallelepiped из canvas.js
 			ct.drawParallelepiped({
 				width: a,
 				height: c,
