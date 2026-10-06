@@ -15,13 +15,12 @@
 			// Перемещаем начало координат в центр canvas (200, 200)
 			ct.translate(200, 200);
 			
-			// Масштабируем для хорошей видимости
+			// Масштабируем для хорошей видимости (очень крупно)
 			let maxDim = Math.max(a, b, c);
-			let scale = 25 / maxDim;
+			let scale = 35 / maxDim;
 			ct.scale(scale, scale);
 			
 			// Используем встроенную функцию drawParallelepiped из canvas.js
-			// Эта функция автоматически центрирует и правильно отображает параллелепипед
 			ct.drawParallelepiped({
 				width: a,
 				height: c,
