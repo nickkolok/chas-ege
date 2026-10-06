@@ -10,8 +10,8 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			// Используем те же трансформации, что и в рабочем коде
-			ct.translate(120, 60);
+			// Увеличиваем смещение для центрирования
+			ct.translate(150, 80);
 			ct.scale(20, 20);
 			ct.lineWidth = 2 / 20;
 			
@@ -23,8 +23,6 @@
 			});
 			
 			// Используем встроенную функцию отрисовки с параметрами из класса
-			// ВАЖНО: angle должен быть в градусах, а не в радианах!
-			// ВАЖНО: strokeStyle должен быть массивом, а не одним цветом!
 			ct.drawParallelepiped({
 				width: parallelepiped.width,
 				height: parallelepiped.height,
