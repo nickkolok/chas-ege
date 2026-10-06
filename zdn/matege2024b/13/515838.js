@@ -10,51 +10,34 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			// Создаём параллелепипед с заданными размерами
+			ct.save();
+			
+			// Центрируем начало координат
+			ct.translate(200, 200);
+			
+			// Масштабируем для хорошей видимости (canvas 400x400)
+			let maxDim = Math.max(a, b, c);
+			let scale = 100 / maxDim;
+			ct.scale(scale, scale);
+			
+			// Создаём параллелепипед для получения параметров
 			let parallelepiped = new Parallelepiped({
 				width: a,
 				height: c,
 				depth: b
 			});
 			
-			// Получаем 3D вершины и матрицу связей
-			let vertices3D = parallelepiped.verticesOfFigure;
-			let connectionMatrix = parallelepiped.connectionMatrix;
+			// Используем старую проверенную функцию drawParallelepiped
+			ct.drawParallelepiped({
+				width: a,
+				height: c,
+				depth: b,
+				angle: Math.PI / 6,
+				strokeStyle: om.secondaryBrandColors.iz(),
+				scale: 1
+			});
 			
-			// Фиксированный масштаб для хорошей видимости
-			let scale = 20;
-			
-			// Настраиваем камеру для проекции 3D в 2D
-			let camera = {
-				x: 0,
-				y: 0,
-				z: 50,
-				rotationX: 0.3,
-				rotationY: -0.5,
-				rotationZ: 0,
-				scale: scale
-			};
-			
-			// Проецируем 3D вершины в 2D
-			let vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
-			
-			// Вычисляем центр фигуры
-			let minX = Math.min(...vertices2D.map(v => v.x));
-			let maxX = Math.max(...vertices2D.map(v => v.x));
-			let minY = Math.min(...vertices2D.map(v => v.y));
-			let maxY = Math.max(...vertices2D.map(v => v.y));
-			
-			let centerX = (minX + maxX) / 2;
-			let centerY = (minY + maxY) / 2;
-			
-			// Смещаем начало координат в центр canvas (200, 200)
-			// и затем смещаем обратно на центр фигуры
-			ct.translate(200 - centerX, 200 - centerY);
-			
-			// Рисуем фигуру с использованием матрицы связей
-			ct.lineWidth = 2;
-			ct.strokeStyle = om.secondaryBrandColors.iz();
-			ct.drawFigure(vertices2D, connectionMatrix);
+			ct.restore();
 		};
 
 		NAtask.setTask({
