@@ -10,38 +10,20 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			// Создаём параллелепипед
-			let parallelepiped = new Parallelepiped({
+			// Используем transform для точного контроля над масштабированием и позиционированием
+			// transform(a, b, c, d, e, f) где:
+			// a, d - масштабирование по X и Y
+			// e, f - смещение по X и Y
+			ct.transform(18, 0, 0, 18, 80, 60);
+			ct.lineWidth = 2 / 18;
+
+			ct.drawParallelepiped({
 				width: a,
 				height: c,
-				depth: b
-			});
-			
-			// Получаем 3D вершины и матрицу связей
-			let vertices3D = parallelepiped.verticesOfFigure;
-			let connectionMatrix = parallelepiped.connectionMatrix;
-			
-			// Настраиваем камеру для проекции
-			let camera = {
-				x: 0,
-				y: 0,
-				z: 25,
-				rotationX: 0.3,
-				rotationY: -0.5,
-				rotationZ: 0,
-				scale: 1
-			};
-			
-			// Проецируем 3D вершины в 2D
-			let vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
-			
-			// Используем autoScale для автоматического масштабирования и центрирования
-			autoScale(ct, vertices2D, 400, 400, 50);
-			
-			// Рисуем фигуру
-			ct.strokeStyle = om.secondaryBrandColors.iz();
-			ct.lineWidth = 2;
-			ct.drawFigure(vertices2D, connectionMatrix);
+				depth: b,
+				angle: 40,
+				strokeStyle: om.secondaryBrandColors,
+			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
 		NAtask.setTask({
