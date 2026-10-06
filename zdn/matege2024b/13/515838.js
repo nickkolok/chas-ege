@@ -10,33 +10,15 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			// Масштаб для отображения (canvas 400x400, размеры от 2 до 9)
-			let scale = 20;
-			
-			// Вычисляем размеры параллелепипеда с учётом масштаба
-			let scaledWidth = a * scale;
-			let scaledHeight = c * scale;
-			let scaledDepth = b * scale;
-			
-			// Вычисляем смещение для центрирования
-			// Параллелепипед имеет ширину примерно scaledWidth + scaledDepth*cos(angle)
-			// и высоту scaledHeight + scaledDepth/2
-			let offsetX = 200 - (scaledWidth + scaledDepth * Math.cos(Math.PI / 6)) / 2;
-			let offsetY = 200 - (scaledHeight + scaledDepth / 2) / 2;
-			
-			ct.save();
-			ct.translate(offsetX, offsetY);
-			
 			// Используем встроенную функцию drawParallelepiped из canvas.js
+			// Эта функция уже правильно центрирует и отображает параллелепипед
 			ct.drawParallelepiped({
-				width: scaledWidth,
-				height: scaledHeight,
-				depth: scaledDepth,
+				width: a,
+				height: c,
+				depth: b,
 				angle: Math.PI / 6,
 				strokeStyle: om.secondaryBrandColors.iz()
 			});
-			
-			ct.restore();
 		};
 
 		NAtask.setTask({
