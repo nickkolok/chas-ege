@@ -14,13 +14,12 @@
 			ct.scale(20, 20);
 			ct.lineWidth = 2 / 20;
 
-			// Увеличиваем размеры в 1.5 раза для лучшего отображения
 			ct.drawParallelepiped({
-				width: a * 1.5,
-				height: c * 1.5,
-				depth: b * 1.5,
+				width: a,
+				height: c,
+				depth: b,
 				angle: 40,
-				strokeStyle: om.secondaryBrandColors,
+				strokeStyle:om.secondaryBrandColors,
 			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
