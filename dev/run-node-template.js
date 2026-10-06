@@ -391,6 +391,12 @@ function processTemplate(filepath) {
 		console.log('--- Ответ ---');
 		console.log(snapshot.ver.join(' ИЛИ '));
 		if (opts.tex) {
+			// Маркер непосредственно перед блоком: extractLatex() из
+			// dev/provide_examples_to_PR.mjs привязывает preference к блоку
+			// только если строка === PREFERENCE … === стоит прямо перед START.
+			if (combinations.length > 0) {
+				console.log('=== PREFERENCE: ' + JSON.stringify(combinations[comboIdx]) + ' ===');
+			}
 			console.log('=== LaTeX CODE START ===');
 			console.log(toLatex(snapshot));
 			console.log('=== LaTeX CODE END ===');
