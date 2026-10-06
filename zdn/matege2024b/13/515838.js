@@ -10,9 +10,9 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			// Применяем трансформацию: смещение + масштабирование + инверсия Y
-			// (0, 0) будет в точке (100, 300) пикселей, Y направлен вверх
-			ct.transform(20, 0, 0, -20, 100, 300);
+			// Используем те же трансформации, что и в рабочем коде
+			ct.translate(120, 60);
+			ct.scale(20, 20);
 			ct.lineWidth = 2 / 20;
 			
 			// Создаём параллелепипед с заданными размерами
@@ -23,12 +23,14 @@
 			});
 			
 			// Используем встроенную функцию отрисовки с параметрами из класса
+			// ВАЖНО: angle должен быть в градусах, а не в радианах!
+			// ВАЖНО: strokeStyle должен быть массивом, а не одним цветом!
 			ct.drawParallelepiped({
 				width: parallelepiped.width,
 				height: parallelepiped.height,
 				depth: parallelepiped.depth,
-				angle: Math.PI/6,
-				strokeStyle: om.secondaryBrandColors.iz(),
+				angle: 40,
+				strokeStyle: om.secondaryBrandColors,
 			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
