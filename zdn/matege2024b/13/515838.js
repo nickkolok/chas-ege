@@ -30,17 +30,22 @@
 				rotationX: 0.3,
 				rotationY: -0.5,
 				rotationZ: 0,
-				scale: 150 / maxDim
+				scale: 300 / maxDim
 			};
 			
 			// Проецируем 3D вершины в 2D
 			let vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
 			
 			// Вычисляем центр фигуры для центрирования на canvas
-			let centerX = vertices2D.reduce((sum, v) => sum + v.x, 0) / vertices2D.length;
-			let centerY = vertices2D.reduce((sum, v) => sum + v.y, 0) / vertices2D.length;
+			let minX = Math.min(...vertices2D.map(v => v.x));
+			let maxX = Math.max(...vertices2D.map(v => v.x));
+			let minY = Math.min(...vertices2D.map(v => v.y));
+			let maxY = Math.max(...vertices2D.map(v => v.y));
 			
-			// Смещаем вершины так, чтобы центр фигуры был в центре canvas
+			let centerX = (minX + maxX) / 2;
+			let centerY = (minY + maxY) / 2;
+			
+			// Смещаем вершины так, чтобы центр фигуры был в центре canvas (200, 200)
 			vertices2D = vertices2D.map(v => ({
 				x: v.x - centerX + 200,
 				y: v.y - centerY + 200
