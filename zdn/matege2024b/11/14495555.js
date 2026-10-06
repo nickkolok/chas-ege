@@ -6,9 +6,10 @@
 		let a = 6 * sl(1, 4); // длина ребра куба (кратна 6, чтобы ответ был целым)
 		let half = a / 2;
 
+		let letters = ['A', 'B', 'C', 'D', 'K', 'P'];
 		let bottom = ['A', 'B', 'C', 'D']; // нижние вершины по циклу
 		let edgeNames = ['AB', 'BC', 'CD', 'AD']; // ребро i соединяет bottom[i] и bottom[(i+1)%4]
-		let edgeHidden = [1, 1, 0, 0]; // грани на AB и BC невидимы (левая и задняя)
+		let edgeHidden = [1, 1, 0, 0]; // рёбра AB и BC находятся на невидимых гранях
 		let corner = sl(3); // вершина, у которой берём середины выходящих рёбер
 		let i1 = (corner + 3) % 4;
 		let i2 = corner;
@@ -31,68 +32,118 @@
 			answers: vol,
 		});
 
+		NAtask.modifiers.variativeABC(letters);
+
 		NAtask.modifiers.addCanvasIllustration({
 			width: 380,
 			height: 330,
 			paint: function (ct) {
-				let p = {
-					A: [70, 280], D: [250, 280], C: [310, 235], B: [130, 235],
-					A1: [70, 100], D1: [250, 100], C1: [310, 55], B1: [130, 55],
+				let cube = new Cube(a);
+				let vertices = cube.verticesOfFigure;
+				let camera = {
+					x: 0,
+					y: 0,
+					z: 0,
+					scale: 180 / a,
+					rotationX: -Math.PI / 2 + Math.PI / 11,
+					rotationY: 0,
+					rotationZ: 1.5*Math.PI -Math.PI/ 10,
 				};
-				let edgeVerts = {
-					AB: ['A', 'B'], BC: ['B', 'C'], CD: ['C', 'D'], AD: ['A', 'D'],
-				};
-				let mid = function (pair) {
-					return [(p[pair[0]][0] + p[pair[1]][0]) / 2, (p[pair[0]][1] + p[pair[1]][1]) / 2];
-				};
-				p.K = mid(edgeVerts[e1]);
-				p.P = mid(edgeVerts[e2]);
+				let vertex2D = vertices.map(function (point) {
+					return project3DTo2D(point, camera);
+				});
+				let minX = Math.min.apply(null, vertex2D.map(point => point.x));
+				let maxX = Math.max.apply(null, vertex2D.map(point => point.x));
+				let minY = Math.min.apply(null, vertex2D.map(point => point.y));
+				let maxY = Math.max.apply(null, vertex2D.map(point => point.y));
+				let offsetX = 190 - (minX + maxX) / 2;
+				let offsetY = 165 - (minY + maxY) / 2;
 
-				let line = function (u, v, dashed) {
+				vertex2D = vertex2D.map(function (point) {
+					return {
+						x: point.x + offsetX,
+						y: point.y + offsetY,
+					};
+				});
+
+				let bottomIndices = [0, 1, 2, 3];
+				let topIndices = [5, 6, 7, 4];
+				let midpoint3D = function (index1, index2) {
+					return {
+						x: (vertices[index1].x + vertices[index2].x) / 2,
+						y: (vertices[index1].y + vertices[index2].y) / 2,
+						z: (vertices[index1].z + vertices[index2].z) / 2,
+					};
+				};
+				let projectPoint = function (point) {
+					let projected = project3DTo2D(point, camera);
+					return {
+						x: projected.x + offsetX,
+						y: projected.y + offsetY,
+					};
+				};
+
+				let k3D = midpoint3D(bottomIndices[i1], bottomIndices[(i1 + 1) % 4]);
+				let p3D = midpoint3D(bottomIndices[i2], bottomIndices[(i2 + 1) % 4]);
+				let K = projectPoint(k3D);
+				let P = projectPoint(p3D);
+				let top = vertex2D[topIndices[corner]];
+
+				let connections = cube.connectionMatrix.map(function (row) {
+					return row.slice();
+				});
+				let makeDashed = function (index1, index2) {
+					let maxIndex = Math.max(index1, index2);
+					let minIndex = Math.min(index1, index2);
+					connections[maxIndex - 1][minIndex] = [6, 4];
+				};
+
+				makeDashed(0, 1);
+				makeDashed(1, 2);
+				makeDashed(1, 6);
+
+				ct.lineWidth = 1.5;
+				ct.strokeStyle = om.secondaryBrandColors.iz();
+				ct.drawFigure(vertex2D, connections);
+
+				ct.strokeStyle = om.primaryBrandColors.iz();
+				let drawPyramidEdge = function (point1, point2, dashed) {
 					ct.setLineDash(dashed ? [6, 4] : []);
-					ct.drawLine(p[u][0], p[u][1], p[v][0], p[v][1]);
+					ct.drawLine(point1.x, point1.y, point2.x, point2.y);
 					ct.setLineDash([]);
 				};
 
-				ct.lineWidth = 1.5;
-				// видимые рёбра куба
-				[
-					['A', 'D'], ['D', 'C'], ['C', 'C1'], ['C1', 'D1'], ['D1', 'A1'],
-					['A1', 'B1'], ['B1', 'C1'], ['A', 'A1'], ['D', 'D1'],
-				].forEach(function (e) {
-					line(e[0], e[1], 0);
-				});
-				// невидимые рёбра куба
-				[['A', 'B'], ['B', 'C'], ['B', 'B1']].forEach(function (e) {
-					line(e[0], e[1], 1);
-				});
+				drawPyramidEdge(top, K, edgeHidden[i1]);
+				drawPyramidEdge(top, P, edgeHidden[i2]);
+				drawPyramidEdge(K, P, 1);
 
-				// пирамида: отрезок к середине ребра пунктирен, если лежит на невидимой грани
-				line(vrt + '1', 'K', edgeHidden[i1]);
-				line(vrt + '1', 'P', edgeHidden[i2]);
-				line('K', 'P', 1);
+				ct.fillStyle = om.primaryBrandColors.iz();
+				ct.fillKrug(K.x, K.y, 3);
+				ct.fillKrug(P.x, P.y, 3);
 
-				ct.fillStyle = 'black';
-				ct.fillKrug(p.K[0], p.K[1], 2);
-				ct.fillKrug(p.P[0], p.P[1], 2);
-
-				let shift = {
-					A: [-18, 16], D: [4, 18], C: [10, 6], B: [-6, -8],
-					A1: [-28, 4], D1: [2, -10], C1: [8, -6], B1: [-12, -10],
-					K: [-16, 16], P: [4, 18],
+				let center = {
+					x: (minX + maxX) / 2 + offsetX,
+					y: (minY + maxY) / 2 + offsetY,
 				};
-				ct.font = 'italic 20px liberation_sans';
-				let put = function (name) {
-					let x = p[name][0] + shift[name][0];
-					let y = p[name][1] + shift[name][1];
-					ct.fillText(name[0], x, y);
-					if (name.length > 1) {
-						ct.font = 'italic 14px liberation_sans';
-						ct.fillText(name.slice(1), x + 11, y + 4);
-						ct.font = 'italic 20px liberation_sans';
+				let put = function (point, letter, subscript) {
+					let dx = point.x < center.x ? -20 : 8;
+					let dy = point.y < center.y ? -8 : 18;
+					let x = point.x + dx;
+					let y = point.y + dy;
+
+					ct.font = '20px liberation_sans';
+					ct.fillText(letter, x, y);
+					if (subscript) {
+						ct.fillText(subscript, x + 11, y + 4);
 					}
 				};
-				['A', 'B', 'C', 'D', 'A1', 'B1', 'C1', 'D1', 'K', 'P'].forEach(put);
+
+				for (let i = 0; i < 4; i++) {
+					put(vertex2D[bottomIndices[i]], letters[i]);
+					put(vertex2D[topIndices[i]], letters[i], '₁');
+				}
+				put(K, letters[4]);
+				put(P, letters[5]);
 			},
 		});
 
