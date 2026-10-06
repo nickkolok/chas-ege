@@ -56,7 +56,7 @@
 		let paint = function (ct) {
 			ct.translate(200, 185);
 			ct.lineWidth = 2;
-			ct.strokeStyle = '#000';
+			ct.strokeStyle = om.secondaryBrandColors.iz();
 
 			// Рёбра пирамиды (пунктир задаётся матрицей связей)
 			ct.drawFigure(vertices2D, matrix);
