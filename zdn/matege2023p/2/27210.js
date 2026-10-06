@@ -1,85 +1,77 @@
-(function() {
-	retryWhileError(function() {
-			NAinfo.requireApiVersion(0, 2);
-			let a = sl(7, 13);
-			let b = sl(2, 8);
-			let c = sl(5, 7);
-			let d = sl(2, 10);
-			let f = sl(a, 17);
-			let k = sl(2, 6);
+(function () {
+	'use strict';
+	retryWhileError(function () {
+		NAinfo.requireApiVersion(0, 2);
 
-			let rand = sl1();
-			let question = ['объём', 'площадь поверхности'][rand];
-			let answ = [f * k * (d + b) + a * b * c, 2 * (k * (b + d) + k * f + f * (b + d)) + 2 * (a * c + c * b)][rand];
+		let widthRatio, heightRatio, volumeRatio;
+		do {
+			widthRatio = sl(2, 6);   // во сколько раз вторая коробка шире первой
+			heightRatio = sl(15, 60) / 10;  // во сколько раз первая коробка выше второй (1.5 – 6.0)
+			volumeRatio = (widthRatio * widthRatio) / heightRatio;  // V2 / V1
+		} while (Math.round(volumeRatio * 10) !== volumeRatio * 10 || volumeRatio > 20);
 
+		// Склонение слова «раз» в зависимости от числительного
+		let razForm = function(number) {
+			if (number % 1 !== 0) return 'раза';  // дробные: 1.5 раза, 2.5 раза
+			let intValue = Math.floor(number);
+			let lastDigit = intValue % 10;
+			let lastTwoDigits = intValue % 100;
+			if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'раз';
+			if (lastDigit === 1) return 'раз';
+			if (lastDigit >= 2 && lastDigit <= 4) return 'раза';
+			return 'раз';
+		};
 
-			let paint1 = function(ctx) {
-				ctx.translate(115, 50);
-				let koefA = (a > 11 && c > 10) ? 10 : 15;
-				a *= koefA;
-				f *= koefA;
-				let depth = 80;
-				c *= koefA;
-				angle = -Math.PI - Math.PI / 3;
-				ctx.drawParallelepiped({
-					width: a,
-					height: c,
-					depth: depth,
-					angle: angle
-				}, [0, 3, 4], false, [4, 5]);
+		let taskText = 'Даны две коробки, имеющие форму правильной четырёхугольной призмы, стоящей на основании. Первая коробка в {heightRatio} {heightRaz} выше второй, а вторая в {widthRatio} {widthRaz} шире первой. Во сколько раз объём второй коробки больше объёма первой?';
+		taskText = taskText
+			.replace('{heightRatio}', heightRatio)
+			.replace('{heightRaz}', razForm(heightRatio))
+			.replace('{widthRatio}', widthRatio)
+			.replace('{widthRaz}', razForm(widthRatio));
 
+		// Функция рисования двух коробок
+		let paintBoxes = function (ct) {
+			ct.translate(40, 30);
+			ct.scale(20, 20);
+			ct.lineWidth = 2 / 20;
 
-				ctx.translate(0, c);
-				ctx.drawParallelepiped({
-					width: f,
-					height: c,
-					depth: depth * 2,
-					angle: angle
-				}, [0, 2, 3, 4, 6], false, [4, 5]);
+			// Первая коробка — высокая и узкая (слева)
+			ct.drawParallelepiped({
+				width: 3,
+				height: 9,
+				depth: 3,
+				angle: 30,
+				strokeStyle: om.primaryBrandColors[0],
+			}, [0, 3, 4], false, [0.5, 0.3]);
 
-				//возрат к начальной точке
-				ctx.translate(0, -c);
-				ctx.drawLine(a, c, f, c);
-				ctx.drawLine(depth * angle.cos(), c - depth * angle.cos(), 2 * depth * angle.cos(), c - 2 * depth * angle.cos());
+			// Смещаем контекст для второй коробки: правее и вниз
+			ct.save();
+			ct.translate(7, 3);  // сдвиг вправо на 18 и вниз на 4 единицы
 
-				//цифорки
-				ctx.beginPath();
-				ctx.font = "20px serif";
-				ctx.fillText(a / koefA, a / 2, -5, 15); //a
-				ctx.stroke();
-				ctx.moveTo(0, 0);
-				ctx.fillText(b, depth * angle.cos() / 2 - 18, -depth * angle.cos() / 2, 15); //b
-				ctx.fillText(c / koefA, depth * angle.cos() - 18, c / 2 - depth * angle.cos(), 15); //c
+			// Вторая коробка — низкая и широкая (справа)
+			ct.drawParallelepiped({
+				width: 8,
+				height: 3,
+				depth: 8,
+				angle: 30,
+				strokeStyle: om.primaryBrandColors[0],
+			}, [0, 3, 4], false, [0.5, 0.3]);
 
-				ctx.stroke();
+			ct.restore();
+		};
 
-				ctx.beginPath();
-				ctx.translate(depth * angle.cos(), c - depth * angle.cos());
-				ctx.moveTo(0, 0);
-				ctx.fillText(d, depth * angle.cos() / 2 - 15, -depth * angle.cos() / 2, 15); //d
-				ctx.stroke();
+		NAtask.setTask({
+			text: taskText,
+			answers: volumeRatio,
+		});
 
-				ctx.beginPath();
-				ctx.translate(depth * angle.cos(), -depth * angle.cos());
-				ctx.moveTo(0, 0);
-				ctx.fillText(k, -18, c / 2, 15); //k
-				if (a != f)
-					ctx.fillText(f / koefA, f / 2 - depth * angle.cos(), k + c + 15, 15); //k
-				ctx.stroke();
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
+			paint: paintBoxes,
+		});
 
-			};
-			NAtask.setTask({
-				text: 'Найдите ' + question +
-					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
-				answers: answ,
-			});
-			NAtask.modifiers.addCanvasIllustration({
-				width: 400,
-				height: 400,
-				paint: paint1,
-			});
-		},
-		1000);
-
+		NAtask.modifiers.allDecimalsToStandard();
+	}, 1000);
 })();
-// 27210 25871 25875 25873 25877 25879
+// https://mathb-ege.sdamgia.ru/problem?id=523577
