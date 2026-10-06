@@ -10,25 +10,31 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
+			let angle = Math.PI / 6;
+			
+			// Вычисляем реальные размеры параллелепипеда на экране
+			let parallelepipedWidth = a + b * Math.cos(angle);
+			let parallelepipedHeight = c + b / 2;
+			
+			// Масштабируем размеры для хорошей видимости на canvas 400x400
+			let scale = 25;
+			let scaledWidth = parallelepipedWidth * scale;
+			let scaledHeight = parallelepipedHeight * scale;
+			
+			// Вычисляем смещение для центрирования
+			let offsetX = (400 - scaledWidth) / 2;
+			let offsetY = (400 - scaledHeight) / 2;
+			
 			ct.save();
-			
-			// Перемещаем начало координат в центр canvas (200, 200)
-			ct.translate(200, 200);
-			
-			// Масштабируем для хорошей видимости
-			let maxDim = Math.max(a, b, c);
-			let scale = 20 / maxDim;
+			ct.translate(offsetX, offsetY);
 			ct.scale(scale, scale);
-			
-			// Смещаем параллелепипед так, чтобы его центр был в (0, 0)
-			ct.translate(-a / 2, -c / 2);
 			
 			// Используем встроенную функцию drawParallelepiped из canvas.js
 			ct.drawParallelepiped({
 				width: a,
 				height: c,
 				depth: b,
-				angle: Math.PI / 6,
+				angle: angle,
 				strokeStyle: om.secondaryBrandColors.iz()
 			});
 			
