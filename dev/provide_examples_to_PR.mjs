@@ -103,9 +103,13 @@ function extractLatex(output) {
     if (output.includes('ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ')) {
         return 'ЗАДАЧА_НЕ_ГЕНЕРИРУЕТСЯ';
     }
-    const regex = /=== LaTeX CODE START ===\r?\n([\s\S]*?)\r?\n=== LaTeX CODE END ===/g;
+    // Match optional PREFERENCE marker before each LaTeX block
+    const regex = /(?:=== PREFERENCE: (.+) ===\r?\n)?=== LaTeX CODE START ===\r?\n([\s\S]*?)\r?\n=== LaTeX CODE END ===/g;
     const matches = [...output.matchAll(regex)];
-    return matches.map((m, i) => `## Пример ${i + 1}\n\n${m[1].trim()}`).filter(text => text.length > 0).join('\n\n---\n\n');
+    return matches.map((m, i) => {
+        const preference = m[1] ? ` (${m[1]})` : '';
+        return `## Пример ${i + 1}${preference}\n\n${m[2].trim()}`;
+    }).filter(text => text.length > 0).join('\n\n---\n\n');
 }
 
 function formatForGitHub(latexText) {
