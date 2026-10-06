@@ -35,11 +35,12 @@
 			let newLevel = V_cm3 * k;
 			let answer = newLevel - V_cm3;
 
-			// Для чертежа подберём площадь основания и уровни так, чтобы пропорции совпадали
-			S = sl(4, 10) * 10;
-			h1 = V_cm3 / S;
+			// Параметры S и h1 нужны только для пропорционального чертежа.
+			// Выбираем разумную высоту воды и восстанавливаем площадь основания.
+			h1 = sl(5, 8) * 10;
+			S = V_cm3 / h1;
 			dh = h1 * (k - 1);
-			hRest = sl(4, 8);
+			hRest = sl(2, 4) * 5;
 			H = h1 + dh + hRest;
 
 			text = 'В бак, имеющий форму цилиндра, налито $' + V_liters + '$ л воды. После полного погружения в воду детали ' +
@@ -61,34 +62,62 @@
 			let yL = yBottom - h1 * kScale;
 			let yN = yBottom - (h1 + dh) * kScale;
 
+			let edgeColor = om.secondaryBrandColors.iz();
+			let liquidColor = om.transparentBrandColors.iz();
+
 			ct.lineWidth = 2;
-			ct.strokeStyle = om.secondaryBrandColors.iz();
+			ct.strokeStyle = edgeColor;
 
-			ct.fillStyle = om.transparentBrandColors.iz();
+			// Жидкость заливается одним контуром,
+			// чтобы полупрозрачный цвет нигде не накладывался сам на себя.
+			ct.fillStyle = liquidColor;
 			ct.beginPath();
-			ct.ellipse(cx, yL, R, e, 0, 0, 2 * Math.PI);
-			ct.fill();
-			ct.beginPath();
-			ct.rect(cx - R, yL, 2 * R, yBottom - yL);
-			ct.fill();
-			ct.beginPath();
-			ct.ellipse(cx, yBottom, R, e, 0, 0, 2 * Math.PI);
+			ct.moveTo(cx - R, yL);
+			ct.ellipse(cx, yL, R, e, 0, Math.PI, 0);
+			ct.lineTo(cx + R, yBottom);
+			ct.ellipse(cx, yBottom, R, e, 0, 0, Math.PI);
+			ct.closePath();
 			ct.fill();
 
+			// Боковые стенки бака.
 			ct.drawLine(cx - R, yTop, cx - R, yBottom);
 			ct.drawLine(cx + R, yTop, cx + R, yBottom);
+
+			// Верхняя кромка бака.
 			ct.drawEllipse(cx, yTop, R, e);
 
-			[yBottom, yL, yN].forEach(function (y) {
-				ct.beginPath();
-				ct.ellipse(cx, y, R, e, 0, 0, Math.PI);
-				ct.stroke();
-				ct.setLineDash([6, 4]);
-				ct.beginPath();
-				ct.ellipse(cx, y, R, e, 0, Math.PI, 2 * Math.PI);
-				ct.stroke();
-				ct.setLineDash([]);
-			});
+			// Поверхность жидкости.
+			ct.beginPath();
+			ct.ellipse(cx, yL, R, e, 0, 0, Math.PI);
+			ct.stroke();
+
+			ct.setLineDash([6, 4]);
+			ct.beginPath();
+			ct.ellipse(cx, yL, R, e, 0, Math.PI, 2 * Math.PI);
+			ct.stroke();
+			ct.setLineDash([]);
+
+			// Новый уровень после погружения детали.
+			ct.beginPath();
+			ct.ellipse(cx, yN, R, e, 0, 0, Math.PI);
+			ct.stroke();
+
+			ct.setLineDash([6, 4]);
+			ct.beginPath();
+			ct.ellipse(cx, yN, R, e, 0, Math.PI, 2 * Math.PI);
+			ct.stroke();
+			ct.setLineDash([]);
+
+			// Нижнее основание.
+			ct.beginPath();
+			ct.ellipse(cx, yBottom, R, e, 0, 0, Math.PI);
+			ct.stroke();
+
+			ct.setLineDash([6, 4]);
+			ct.beginPath();
+			ct.ellipse(cx, yBottom, R, e, 0, Math.PI, 2 * Math.PI);
+			ct.stroke();
+			ct.setLineDash([]);
 		};
 
 		NAtask.setTask({
