@@ -10,15 +10,17 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			// Пробуем без трансформаций - посмотрим, как работает drawParallelepiped
+			ct.translate(120, 60);
+			ct.scale(20, 20);
+			ct.lineWidth = 2 / 20;
+
+			// Увеличиваем размеры в 1.5 раза для лучшего отображения
 			ct.drawParallelepiped({
-				width: a,
-				height: c,
-				depth: b,
+				width: a * 1.5,
+				height: c * 1.5,
+				depth: b * 1.5,
 				angle: 40,
 				strokeStyle: om.secondaryBrandColors,
-				scale: 20,
-				lengthOfEdge: true,
 			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
