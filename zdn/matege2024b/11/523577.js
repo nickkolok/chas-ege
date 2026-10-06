@@ -41,8 +41,8 @@
 				height: 9,
 				depth: 3,
 				angle: 30,
-				strokeStyle: om.primaryBrandColors[0],
-			}, [0, 3, 4], false, [0.5, 0.3]);
+				strokeStyle: om.primaryBrandColors,
+			}, [0, 0, 0], false, [0.5, 0.3]);
 
 			// Смещаем контекст для второй коробки: правее и вниз
 			ct.save();
@@ -54,8 +54,8 @@
 				height: 3,
 				depth: 8,
 				angle: 30,
-				strokeStyle: om.primaryBrandColors[0],
-			}, [0, 3, 4], false, [0.5, 0.3]);
+				strokeStyle: om.primaryBrandColors,
+			}, [0, 0, 0], false, [0.5, 0.3]);
 
 			ct.restore();
 		};
@@ -67,7 +67,7 @@
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
-			height: 400,
+			height: 300,
 			paint: paintBoxes,
 		});
 
