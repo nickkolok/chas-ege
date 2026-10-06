@@ -10,35 +10,23 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			let angle = Math.PI / 6;
+			ct.translate(120, 60);
+			ct.scale(20, 20);
+			ct.lineWidth = 2 / 20;
 			
-			// Вычисляем реальные размеры параллелепипеда на экране
-			let parallelepipedWidth = a + b * Math.cos(angle);
-			let parallelepipedHeight = c + b / 2;
-			
-			// Масштабируем размеры для хорошей видимости на canvas 400x400
-			let scale = 25;
-			let scaledWidth = parallelepipedWidth * scale;
-			let scaledHeight = parallelepipedHeight * scale;
-			
-			// Вычисляем смещение для центрирования
-			let offsetX = (400 - scaledWidth) / 2;
-			let offsetY = (400 - scaledHeight) / 2;
-			
-			ct.save();
-			ct.translate(offsetX, offsetY);
-			ct.scale(scale, scale);
-			
-			// Используем встроенную функцию drawParallelepiped из canvas.js
+			let maxDim = Math.max(a, b, c);
+			let scale = 8 / maxDim;
+			let drawA = a * scale;
+			let drawB = b * scale;
+			let drawC = c * scale;
+
 			ct.drawParallelepiped({
-				width: a,
-				height: c,
-				depth: b,
-				angle: angle,
-				strokeStyle: om.secondaryBrandColors.iz()
-			});
-			
-			ct.restore();
+				width: drawA,
+				height: drawC,
+				depth: drawB,
+				angle: 30,
+				strokeStyle: om.secondaryBrandColors,
+			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
 		NAtask.setTask({
