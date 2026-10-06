@@ -10,63 +10,22 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			// Масштабируем размеры для лучшего отображения
-			let scale = 25;
-			let width = a * scale;
-			let height = c * scale;
-			let depth = b * scale * 0.6;
-			
-			// Угол для 3D эффекта
-			let angle = 30 * Math.PI / 180;
-			let depthX = depth * Math.cos(angle);
-			let depthY = depth * Math.sin(angle);
-			
-			// Центрируем фигуру
-			let offsetX = 200 - (width + depthX) / 2;
-			let offsetY = 200 - (height + depthY) / 2;
-			
-			// Вершины параллелепипеда
-			let vertices = [
-				[offsetX, offsetY + height],                    // 0: нижний левый ближний
-				[offsetX + width, offsetY + height],            // 1: нижний правый ближний
-				[offsetX + width + depthX, offsetY + height - depthY],  // 2: нижний правый дальний
-				[offsetX + depthX, offsetY + height - depthY],  // 3: нижний левый дальний
-				[offsetX, offsetY],                              // 4: верхний левый ближний
-				[offsetX + width, offsetY],                      // 5: верхний правый ближний
-				[offsetX + width + depthX, offsetY - depthY],   // 6: верхний правый дальний
-				[offsetX + depthX, offsetY - depthY]             // 7: верхний левый дальний
-			];
-			
-			// Рёбра (соединения между вершинами)
-			let edges = [
-				[0, 1], [1, 2], [2, 3], [3, 0],  // нижняя грань
-				[4, 5], [5, 6], [6, 7], [7, 4],  // верхняя грань
-				[0, 4], [1, 5], [2, 6], [3, 7]   // боковые рёбра
-			];
-			
-			// Скрытые рёбра (пунктиром)
-			let hiddenEdges = [0, 3, 7];
-			
-			ct.strokeStyle = om.secondaryBrandColors.iz();
-			ct.lineWidth = 2;
-			
-			// Рисуем все рёбра
-			edges.forEach((edge, index) => {
-				let [start, end] = edge;
-				ct.beginPath();
-				ct.moveTo(vertices[start][0], vertices[start][1]);
-				ct.lineTo(vertices[end][0], vertices[end][1]);
-				
-				if (hiddenEdges.includes(index)) {
-					ct.setLineDash([5, 3]);
-				} else {
-					ct.setLineDash([]);
-				}
-				
-				ct.stroke();
-			});
-			
-			ct.setLineDash([]);
+			ct.translate(100, 80);
+			ct.scale(25, 25);
+			ct.lineWidth = 2 / 25;
+
+			// Используем фиксированные большие размеры для лучшего отображения
+			let drawWidth = 8;
+			let drawHeight = 8;
+			let drawDepth = 5;
+
+			ct.drawParallelepiped({
+				width: drawWidth,
+				height: drawHeight,
+				depth: drawDepth,
+				angle: 40,
+				strokeStyle:om.secondaryBrandColors,
+			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
 		NAtask.setTask({
