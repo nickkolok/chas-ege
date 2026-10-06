@@ -35,13 +35,19 @@
 			// Проецируем 3D вершины в 2D
 			let vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
 			
-			// Используем autoScale для автоматического масштабирования и центрирования
-			autoScale(ct, vertices2D);
+			// Применяем autoScale для автоматического масштабирования
+			let points = autoScale(vertices2D);
+			
+			// Центрируем и инвертируем Y
+			let h = 400;
+			let w = 400;
+			ct.translate(w / 2, h / 2);
+			ct.scale(1, -1);
 			
 			// Рисуем фигуру
-			ct.strokeStyle = om.secondaryBrandColors.iz();
+			ct.strokeStyle = om.secondaryBrandColors;
 			ct.lineWidth = 2;
-			ct.drawFigure(vertices2D, connectionMatrix);
+			ct.drawFigure(points, connectionMatrix);
 		};
 
 		NAtask.setTask({
