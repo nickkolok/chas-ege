@@ -2,30 +2,6 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		function simplifySqrt(n) {
-			let k = 1;
-			for (let i = 2; i * i <= n; i++) {
-				while (n % (i * i) === 0) {
-					k *= i;
-					n /= (i * i);
-				}
-			}
-			return [k, n];
-		}
-
-		function sqrtLatex(n) {
-			let pair = simplifySqrt(n);
-			let k = pair[0];
-			let m = pair[1];
-			if (m === 1) {
-				return '' + k;
-			}
-			if (k === 1) {
-				return '\\sqrt{' + m + '}';
-			}
-			return k + '\\sqrt{' + m + '}';
-		}
-
 		let key = '526994';
 		let preference = ['two_legs', 'leg_and_hypotenuse'];
 		let rand = getSelectedPreferenceFromList(key, preference);
@@ -52,13 +28,13 @@
 			sideB: b,
 		});
 
-		// Площадь и объём считаем напрямую, без формулы Герона: без погрешностей плавающей точки
-		let S = Math.round(a * b / 2);
-		let V = Math.round(S * h);
+		// Запрашиваем площадь и объём из класса (округляем для избежания погрешностей)
+		let S = Math.round(prism.baseArea);
+		let V = Math.round(prism.volume);
 
 		// Гипотенуза нужна только второму варианту, но считаем один раз
 		let c2 = a * a + b * b;
-		let cLatex = sqrtLatex(c2);
+		let cLatex = c2.texsqrt(true, true);
 
 		let textOptions = [
 			`В основании прямой призмы лежит прямоугольный треугольник, катеты которого равны $${[a, b].shuffle().join('$ и $')}$. `,
@@ -81,37 +57,25 @@
 				x: 0,
 				y: 0,
 				z: 0,
+				scale: 1,
 				rotationX: 0.3,
 				rotationY: 0.5,
 				rotationZ: 0,
-				scale: 15,
 			};
 
-			// Проецируем 3D-вершины на 2D
-			let points2D = vertices.map(function(v) {
-				return project3DTo2D(v, camera);
+			// Автомасштабирование: проекция 3D→2D + подбор масштаба
+			let points2D = autoScale(vertices, camera, [], {
+				startX: -180,
+				finishX: 180,
+				startY: -180,
+				finishY: 180,
+				step: 0.5,
+				maxScale: 50,
 			});
-
-			// Автомасштабирование
-			let xs = points2D.map(function(p) {
-				return p.x;
-			});
-			let ys = points2D.map(function(p) {
-				return p.y;
-			});
-			let centerX = (Math.min(...xs) + Math.max(...xs)) / 2;
-			let centerY = (Math.min(...ys) + Math.max(...ys)) / 2;
-			let scale = Math.min(
-				360 / (Math.max(...xs) - Math.min(...xs)),
-				360 / (Math.max(...ys) - Math.min(...ys))
-			);
 
 			ctx.translate(200, 200);
-			ctx.scale(scale, -scale);
-			ctx.translate(-centerX, -centerY);
-
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
-			ctx.lineWidth = 2 / scale;
+			ctx.lineWidth = 2;
 
 			// Рисуем фигуру по матрице смежности
 			ctx.drawFigure(points2D, connectionMatrix);
@@ -150,6 +114,14 @@
 				y: v0.y + t * dir2.y,
 				z: v0.z,
 			}, camera);
+
+			// Масштабируем точки отметки прямого угла
+			q1.x *= camera.scale;
+			q1.y *= camera.scale;
+			q2.x *= camera.scale;
+			q2.y *= camera.scale;
+			q3.x *= camera.scale;
+			q3.y *= camera.scale;
 
 			ctx.drawLine(q1.x, q1.y, q2.x, q2.y);
 			ctx.drawLine(q2.x, q2.y, q3.x, q3.y);
