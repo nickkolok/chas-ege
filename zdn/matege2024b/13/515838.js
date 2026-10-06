@@ -15,9 +15,9 @@
 			// Перемещаем начало координат в центр canvas (200, 200)
 			ct.translate(200, 200);
 			
-			// Масштабируем для хорошей видимости (очень крупно)
+			// Увеличенный масштаб для лучшей видимости
 			let maxDim = Math.max(a, b, c);
-			let scale = 35 / maxDim;
+			let scale = 50 / maxDim;
 			ct.scale(scale, scale);
 			
 			// Используем встроенную функцию drawParallelepiped из canvas.js
