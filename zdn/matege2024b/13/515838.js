@@ -12,29 +12,21 @@
 		let paint1 = function (ct) {
 			ct.save();
 			
-			// Центрируем начало координат
+			// Перемещаем начало координат в центр canvas (200, 200)
 			ct.translate(200, 200);
 			
-			// Масштабируем для хорошей видимости (canvas 400x400)
+			// Масштабируем для хорошей видимости
 			let maxDim = Math.max(a, b, c);
-			let scale = 100 / maxDim;
+			let scale = 20 / maxDim;
 			ct.scale(scale, scale);
 			
-			// Создаём параллелепипед для получения параметров
-			let parallelepiped = new Parallelepiped({
-				width: a,
-				height: c,
-				depth: b
-			});
-			
-			// Используем старую проверенную функцию drawParallelepiped
+			// Используем проверенную функцию drawParallelepiped из canvas.js
 			ct.drawParallelepiped({
 				width: a,
 				height: c,
 				depth: b,
 				angle: Math.PI / 6,
-				strokeStyle: om.secondaryBrandColors.iz(),
-				scale: 1
+				strokeStyle: om.secondaryBrandColors.iz()
 			});
 			
 			ct.restore();
