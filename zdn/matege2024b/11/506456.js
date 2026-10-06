@@ -14,52 +14,73 @@
 		let volume = [length * length * height, 100 * litres * m][rand];
 		
 		let paint1 = function (ct) {
-			// Иллюстрация статична и одинакова для всех вариаций задачи
-			ct.lineWidth = 1;
-			ct.strokeStyle = 'black';
+			let edgeColor = om.secondaryBrandColors.iz();
+			let randColor = sl1();
+			let liquidColor = om.transparentBrandColors[randColor];
+			let liquidSurfaceColor = om.primaryBrandColors[randColor];
 
-			let line = function (x1, y1, x2, y2, dotted) {
-				ct.setLineDash(dotted ? [5, 3] : []);
-				ct.drawLine(x1, y1, x2, y2);
-				ct.setLineDash([]);
-			};
+			let width = 120;
+			let tankHeight = 160;
+			let depth = 80;
+			let angle = Math.acos(5 / 8);
+			let liquidHeight = 110;
+			let depthX = depth * angle.cos();
+			let depthY = depth / 2;
 
-			// жидкость: передняя грань и правая боковая ниже уровня
-			ct.fillStyle = '#cccccc';
-			ct.beginPath();
-			ct.moveTo(65, 140);
-			ct.lineTo(185, 140);
-			ct.lineTo(185, 250);
-			ct.lineTo(65, 250);
-			ct.closePath();
-			ct.fill();
-			ct.beginPath();
-			ct.moveTo(185, 140);
-			ct.lineTo(235, 100);
-			ct.lineTo(235, 210);
-			ct.lineTo(185, 250);
-			ct.closePath();
-			ct.fill();
+			ct.save();
+			ct.translate(65, 250);
+			ct.scale(1, -1);
 
-			// видимые рёбра бака
-			line(65, 90, 185, 90);
-			line(185, 90, 185, 250);
-			line(185, 250, 65, 250);
-			line(65, 250, 65, 90);
-			line(65, 90, 115, 50);
-			line(115, 50, 235, 50);
-			line(235, 50, 185, 90);
-			line(235, 50, 235, 210);
-			line(235, 210, 185, 250);
-			// видимая часть поверхности жидкости
-			line(65, 140, 185, 140);
-			line(185, 140, 235, 100);
-			// невидимые рёбра поверхности жидкости и бака
-			line(65, 140, 115, 100, 1);
-			line(115, 100, 235, 100, 1);
-			line(65, 250, 115, 210, 1);
-			line(115, 210, 235, 210, 1);
-			line(115, 50, 115, 210, 1);
+			// Передняя грань жидкости.
+			ct.drawSection([
+				[0, 0],
+				[width, 0],
+				[width, liquidHeight],
+				[0, liquidHeight],
+			], liquidColor);
+
+			// Правая боковая грань жидкости.
+			ct.drawSection([
+				[width, 0],
+				[width + depthX, depthY],
+				[width + depthX, depthY + liquidHeight],
+				[width, liquidHeight],
+			], liquidColor);
+
+			// Рёбра бака.
+			ct.drawParallelepiped({
+				width: width,
+				height: tankHeight,
+				depth: depth,
+				angle: angle,
+				strokeStyle: edgeColor,
+			}, [6, 8, 10], false, [5, 3]);
+
+			// Видимая часть поверхности жидкости.
+			ct.strokeStyle = liquidSurfaceColor;
+			ct.lineWidth = 2;
+			ct.drawLine(0, liquidHeight, width, liquidHeight);
+			ct.drawLine(
+				width,
+				liquidHeight,
+				width + depthX,
+				liquidHeight + depthY
+			);
+
+			// Невидимая часть поверхности жидкости.
+			ct.setLineDash([5, 3]);
+			ct.drawLine(
+				0,
+				liquidHeight,
+				depthX,
+				liquidHeight + depthY
+			);
+			ct.drawLine(
+				depthX,
+				liquidHeight + depthY,
+				width + depthX,
+				liquidHeight + depthY
+			);
 		};
 
 		NAtask.setTask({
