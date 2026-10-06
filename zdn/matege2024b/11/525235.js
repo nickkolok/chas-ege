@@ -26,6 +26,7 @@
 			let ry = 0.3 * r;
 			ct.translate(150, 170);
 			ct.lineWidth = 2;
+			ct.strokeStyle = om.secondaryBrandColors.iz();
 			// Верхнее основание (целиком видимо)
 			ct.drawEllipse(0, -H / 2, r, ry);
 			// Боковые стороны
