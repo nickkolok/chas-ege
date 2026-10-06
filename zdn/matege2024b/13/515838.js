@@ -10,20 +10,16 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			ct.save();
-			ct.translate(50, 50);
-			ct.scale(15, 15);
-			ct.lineWidth = 0.15;
-
+			// Пробуем без трансформаций - посмотрим, как работает drawParallelepiped
 			ct.drawParallelepiped({
 				width: a,
 				height: c,
 				depth: b,
 				angle: 40,
 				strokeStyle: om.secondaryBrandColors,
+				scale: 20,
+				lengthOfEdge: true,
 			}, [0, 3, 4], false, [0.5, 0.2]);
-			
-			ct.restore();
 		};
 
 		NAtask.setTask({
