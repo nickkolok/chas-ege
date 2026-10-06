@@ -507,5 +507,38 @@ module.exports = function(grunt) {
 	);
 	// --- /gitstatus.txt ---
 
+
+	grunt.registerTask(
+		'build-if-hash-differs',
+		'Сверяет хэш текущего коммита с тем, что в dist/gitstatus.txt. Если совпадает - радуется, если нет - запускает default.',
+		function() {
+			var gitstatusFile = path.join('dist', 'gitstatus.txt');
+			var currentHash = '';
+			try {
+				currentHash = runGit(['rev-parse', 'HEAD']);
+			} catch (err) {
+				grunt.log.error('Не удалось получить текущий хэш коммита: ' + err.message);
+				grunt.log.writeln('Запускаю полную сборку...');
+				grunt.task.run('default');
+				return;
+			}
+
+			var savedHash = '';
+			if (grunt.file.exists(gitstatusFile)) {
+				var content = grunt.file.read(gitstatusFile);
+				// Хэш обычно в первой строке
+				savedHash = content.split('\n')[0].trim();
+			}
+
+			if (savedHash && savedHash === currentHash) {
+				grunt.log.ok('Радость! Хэш текущего коммита (' + currentHash + ') совпадает с сохранённым в ' + gitstatusFile + '. Сборка не требуется.');
+			} else {
+				grunt.log.writeln('Хэш текущего коммита (' + currentHash + ') не совпадает с сохранённым (' + (savedHash || 'отсутствует') + ') или файл не найден.');
+				grunt.log.writeln('Запускаю полную сборку...');
+				grunt.task.run('default');
+			}
+		}
+	);
+
 	grunt.registerTask('default', ['build-except-ext', 'process-ext', 'process-unit-test']);
 };

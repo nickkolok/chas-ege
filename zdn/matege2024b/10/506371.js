@@ -1,0 +1,103 @@
+(function() {
+	retryWhileError(function() {
+		NAinfo.requireApiVersion(0, 2);
+
+		let key = '506371';
+
+		let h1 = sl(70, 125, 5) / 100;
+		let h2 = sl(150, 225, 5) / 100;
+		let l = (h1 + h2) / 2;
+
+		let t = {h1, h2, l};
+
+		NAtask.setTask({
+			text: `Перила лестницы дачного дома для надёжности укреплены посередине вертикальным столбом. `,
+			questions: [{
+				text: `Найдите высоту $l$ этого столба, если наименьшая высота $h_1$ перил равна ${t.h1.ts()} м, а наибольшая высота $h_2$ равна ${t.h2.ts()} м`,
+				answers: t.l,
+			}],
+			postquestion: `. Ответ дайте в метрах.`,
+			analys: `Высота среднего столба является средней линией трапеции, поэтому $l=\\frac{h_1+h_2}{2}=\\frac{${t.h1.ts()}+${t.h2.ts()}}{2}=${t.l.ts()}$ м.`,
+		});
+
+		NAtask.modifiers.allDecimalsToStandard();
+
+		let groundY = 300;
+		let leftX = 65;
+		let rightX = 335;
+		let middleX = (leftX + rightX) / 2;
+
+		let h1Y = 215;
+		let h2Y = 105;
+		let lY = (h1Y + h2Y) / 2;
+
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
+			paint: function(ctx) {
+				let primaryColor = om.primaryBrandColors[0];
+				let secondaryColor = om.secondaryBrandColors[0];
+
+				ctx.strokeStyle = primaryColor;
+				ctx.fillStyle = primaryColor;
+				ctx.lineWidth = 2;
+
+				// Земля
+				ctx.drawLine(40, groundY, 365, groundY);
+
+				// Левая стойка h1
+				ctx.drawLine(leftX, groundY, leftX, h1Y);
+
+				// Правая стойка h2
+				ctx.drawLine(rightX, groundY, rightX, h2Y);
+
+				// Наклонные перила
+				ctx.drawLine(leftX, h1Y, rightX, h2Y);
+
+				// Средний вертикальный столб
+				ctx.drawLine(middleX, groundY, middleX, lY);
+
+				// Лестница
+				let stairX = 92;
+				let stairY = groundY;
+				let stairWidth = 34;
+				let stairHeight = 20;
+				let stairCount = 7;
+
+				for (let i = 0; i < stairCount; i++) {
+					ctx.drawLine(
+						stairX + i * stairWidth,
+						stairY - i * stairHeight,
+						stairX + i * stairWidth,
+						stairY - (i + 1) * stairHeight
+					);
+
+					let x2 = i === stairCount - 1 ? rightX : stairX + (i + 1) * stairWidth;
+
+					ctx.drawLine(
+						stairX + i * stairWidth,
+						stairY - (i + 1) * stairHeight,
+						x2,
+						stairY - (i + 1) * stairHeight
+					);
+				}
+
+				// Подписи
+				ctx.fillStyle = secondaryColor;
+				ctx.font = 'italic 16px liberation_serif';
+				ctx.textBaseline = 'middle';
+
+				ctx.textAlign = 'right';
+				ctx.fillText('h₁', leftX - 10, (groundY + h1Y) / 2);
+
+				ctx.textAlign = 'left';
+				ctx.fillText('h₂', rightX + 10, (groundY + h2Y) / 2);
+
+				ctx.textAlign = 'right';
+				ctx.fillText('l', middleX - 8, (groundY + lY) / 2);
+			},
+		});
+	}, 1000);
+})();
+
+// https://mathb-ege.sdamgia.ru/test?likes=506371
