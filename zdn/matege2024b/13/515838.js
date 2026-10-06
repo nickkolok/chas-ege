@@ -21,8 +21,10 @@
 			let vertices3D = parallelepiped.verticesOfFigure;
 			let connectionMatrix = parallelepiped.connectionMatrix;
 			
+			// Фиксированный масштаб для хорошей видимости
+			let scale = 20;
+			
 			// Настраиваем камеру для проекции 3D в 2D
-			let maxDim = Math.max(a, b, c);
 			let camera = {
 				x: 0,
 				y: 0,
@@ -30,13 +32,13 @@
 				rotationX: 0.3,
 				rotationY: -0.5,
 				rotationZ: 0,
-				scale: 300 / maxDim
+				scale: scale
 			};
 			
 			// Проецируем 3D вершины в 2D
 			let vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
 			
-			// Вычисляем центр фигуры для центрирования на canvas
+			// Вычисляем центр фигуры
 			let minX = Math.min(...vertices2D.map(v => v.x));
 			let maxX = Math.max(...vertices2D.map(v => v.x));
 			let minY = Math.min(...vertices2D.map(v => v.y));
@@ -45,11 +47,9 @@
 			let centerX = (minX + maxX) / 2;
 			let centerY = (minY + maxY) / 2;
 			
-			// Смещаем вершины так, чтобы центр фигуры был в центре canvas (200, 200)
-			vertices2D = vertices2D.map(v => ({
-				x: v.x - centerX + 200,
-				y: v.y - centerY + 200
-			}));
+			// Смещаем начало координат в центр canvas (200, 200)
+			// и затем смещаем обратно на центр фигуры
+			ct.translate(200 - centerX, 200 - centerY);
 			
 			// Рисуем фигуру с использованием матрицы связей
 			ct.lineWidth = 2;
