@@ -6,70 +6,91 @@
 		let ans = sl(10, 50, 1);
 		let h = ans * 4;
 
-		// Статичная иллюстрация: сосуд с водой и отметка уровня h
 		let paint1 = function (ct) {
-			let w = 150;    // ширина передней грани, px
-			let hgt = 140;  // высота сосуда, px
-			let dc = 55;    // смещение глубины по x, px
-			let d2 = 35;    // смещение глубины по y, px
-			let wy = hgt - 70; // линия воды на передней грани, px
+			let edgeColor = om.secondaryBrandColors.iz();
+			let colorRand = sl1();
+			let waterColor = om.transparentBrandColors[colorRand];
+			let waterLineColor = om.primaryBrandColors[colorRand];
 
-			ct.translate(60, 120);
-			ct.lineWidth = 1.5;
-			ct.strokeStyle = '#000000';
+			let width = 150;
+			let vesselHeight = 140;
+			let depth = 65;
+			let angle = Math.acos(55 / 65);
+			let waterHeight = 70;
+			let depthX = depth * angle.cos();
+			let depthY = depth * angle.sin();
 
-			// ВОДА: закрашиваем все три видимые части
-			ct.fillStyle = '#cccccc';
-			// передняя грань столба воды
-			ct.fillRect(0, wy, w, hgt - wy);
-			// боковая (правая) грань столба воды
-			ct.beginPath();
-			ct.moveTo(w, wy);
-			ct.lineTo(w + dc, wy - d2);
-			ct.lineTo(w + dc, hgt - d2);
-			ct.lineTo(w, hgt);
-			ct.closePath();
-			ct.fill();
-			// поверхность воды
-			ct.beginPath();
-			ct.moveTo(0, wy);
-			ct.lineTo(w, wy);
-			ct.lineTo(w + dc, wy - d2);
-			ct.lineTo(dc, wy - d2);
-			ct.closePath();
-			ct.fill();
+			ct.save();
+			ct.translate(60, 260);
+			ct.scale(1, -1);
 
-			// невидимые рёбра — пунктиром
+			ct.drawSection([
+				[0, 0],
+				[width, 0],
+				[width, waterHeight],
+				[0, waterHeight],
+			], waterColor);
+
+			ct.drawSection([
+				[width, 0],
+				[width + depthX, depthY - 1],
+				[width + depthX, depthY + waterHeight],
+				[width, waterHeight],
+			], waterColor);
+
+			ct.drawSection([
+				[0, waterHeight],
+				[width, waterHeight],
+				[width + depthX, depthY + waterHeight],
+				[depthX, depthY + waterHeight],
+			], waterColor);
+
+			ct.drawParallelepiped({
+				width: width,
+				height: vesselHeight,
+				depth: depth,
+				angle: angle,
+				strokeStyle: edgeColor,
+			}, [6, 8, 10], false, [5, 4]);
+
+			ct.strokeStyle = waterLineColor;
+			ct.lineWidth = 2;
+
+			ct.drawLine(0, waterHeight, width, waterHeight);
+			ct.drawLine(
+				width,
+				waterHeight,
+				width + depthX,
+				waterHeight + depthY
+			);
+
 			ct.setLineDash([5, 4]);
-			ct.beginPath();
-			ct.moveTo(dc, -d2);      ct.lineTo(dc, hgt - d2);      // заднее левое вертикальное
-			ct.moveTo(dc, hgt - d2); ct.lineTo(w + dc, hgt - d2);  // заднее нижнее
-			ct.moveTo(0, hgt);       ct.lineTo(dc, hgt - d2);      // левое нижнее ребро глубины
-			ct.stroke();
+			ct.drawLine(
+				0,
+				waterHeight,
+				depthX,
+				waterHeight + depthY
+			);
+			ct.drawLine(
+				depthX,
+				waterHeight + depthY,
+				width + depthX,
+				waterHeight + depthY
+			);
 			ct.setLineDash([]);
 
-			// видимый контур сосуда и линии воды
-			ct.beginPath();
-			ct.rect(0, 0, w, hgt);                            // передняя грань
-			ct.moveTo(0, 0);       ct.lineTo(dc, -d2);        // верхнее левое ребро глубины
-			ct.moveTo(w, 0);       ct.lineTo(w + dc, -d2);    // верхнее правое ребро глубины
-			ct.moveTo(dc, -d2);    ct.lineTo(w + dc, -d2);    // заднее верхнее
-			ct.moveTo(w, hgt);     ct.lineTo(w + dc, hgt - d2); // нижнее правое ребро глубины
-			ct.moveTo(w + dc, -d2); ct.lineTo(w + dc, hgt - d2); // заднее правое вертикальное
-			// линии уровня воды
-			ct.moveTo(0, wy);  ct.lineTo(w, wy);              // передняя линия воды
-			ct.moveTo(w, wy);  ct.lineTo(w + dc, wy - d2);    // правая линия воды
-			ct.moveTo(dc, wy - d2); ct.lineTo(w + dc, wy - d2); // задняя линия воды
-			ct.moveTo(0, wy);  ct.lineTo(dc, wy - d2);        // левая линия воды
-			ct.stroke();
+			let arrowX = width + depthX + 18;
 
-			// двунаправленная стрелка уровня h
-			let ax = w + dc + 18;
-			ct.drawArrow(ax, wy, ax, hgt);
-			ct.drawArrow(ax, hgt, ax, wy);
+			ct.strokeStyle = edgeColor;
+			ct.fillStyle = edgeColor;
+			ct.drawArrow(arrowX, depthY + waterHeight,arrowX, depthY);
+			ct.drawArrow(arrowX, depthY, arrowX, depthY + waterHeight);
+
+			ct.scale(1, -1);
 			ct.font = 'italic 20px serif';
-			ct.fillStyle = '#000000';
-			ct.fillText('h', ax + 8, (wy + hgt) / 2 + 7);
+			ct.fillText('h', arrowX + 8, -depthY - waterHeight / 2 + 7);
+
+			ct.restore();
 		};
 
 		NAtask.setTask({
@@ -81,7 +102,7 @@
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
-			height: 300,
+			height: 400,
 			paint: paint1,
 		});
 
