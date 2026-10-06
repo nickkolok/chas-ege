@@ -188,9 +188,16 @@ evalInWindow(`
 //    (= chas-lib + jQuery + mathjs + nerdamer + core_vopr + core_nabor +
 //       core_dvig + src/chas2/* + …; тот же список, что грузит otladka.html)
 // ---------------------------------------------------------------------------
-const bundlePath = path.join(projectRoot, 'build', 'lib', 'chas-uijs.js');
-if (!fs.existsSync(bundlePath)) {
-	console.error('Не найден ' + bundlePath + ' — сначала выполните `grunt`.');
+// Раннер может работать и из репозитория (dev/), и из своей копии в build/
+// (build/dev/ — туда его кладёт grunt copy:nodeRunner): во втором случае
+// бандл лежит рядом в build/lib/, а node_modules — уровнем выше.
+const bundleCandidates = [
+	path.join(projectRoot, 'build', 'lib', 'chas-uijs.js'),
+	path.join(projectRoot, 'lib', 'chas-uijs.js'),
+];
+const bundlePath = bundleCandidates.find((p) => fs.existsSync(p));
+if (!bundlePath) {
+	console.error('Не найден бандл chas-uijs.js (искал: ' + bundleCandidates.join(', ') + ') — сначала выполните `grunt`.');
 	process.exit(1);
 }
 try {
@@ -211,7 +218,16 @@ if (opts.seed !== null) {
 	// В dev-репозитории ext/seedrandom.min.js отсутствует (concat молча его
 	// пропускает), зато seedrandom@3 есть в dependencies — грузим в окно:
 	// UMD без module сам навесит Math.seedrandom (как urljson.js и ожидает).
-	const seedrandomPath = path.join(projectRoot, 'node_modules', 'seedrandom', 'seedrandom.min.js');
+	const seedrandomCandidates = [
+		path.join(projectRoot, 'node_modules', 'seedrandom', 'seedrandom.min.js'),
+		// для копии раннера в build/: node_modules лежит в корне репозитория
+		path.join(projectRoot, '..', 'node_modules', 'seedrandom', 'seedrandom.min.js'),
+	];
+	const seedrandomPath = seedrandomCandidates.find((p) => fs.existsSync(p));
+	if (!seedrandomPath) {
+		console.error('Не найден seedrandom.min.js (искал: ' + seedrandomCandidates.join(', ') + ') — выполните `npm install`.');
+		process.exit(1);
+	}
 	evalInWindow(fs.readFileSync(seedrandomPath, 'utf8'), 'seedrandom.min.js');
 	if (typeof window.Math.seedrandom !== 'function') {
 		console.error('Не удалось инициализировать seedrandom');
