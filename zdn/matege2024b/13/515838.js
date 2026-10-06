@@ -10,14 +10,10 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			// Перемещаем начало координат в центр canvas
-			ct.translate(200, 200);
-			
-			// Масштабируем для удобного отображения
-			let maxDim = Math.max(a, b, c);
-			let scale = 80 / maxDim;
-			ct.scale(scale, scale);
-			ct.lineWidth = 2 / scale;
+			// Перемещаем начало координат в центр рабочей области
+			ct.translate(100, 100);
+			ct.scale(20, 20);
+			ct.lineWidth = 2 / 20;
 			
 			// Создаём параллелепипед с заданными размерами
 			let parallelepiped = new Parallelepiped({
@@ -26,27 +22,14 @@
 				depth: b
 			});
 			
-			// Получаем 3D вершины и матрицу связей
-			let vertices3D = parallelepiped.verticesOfFigure;
-			let connectionMatrix = parallelepiped.connectionMatrix;
-			
-			// Настраиваем камеру для проекции 3D в 2D
-			let camera = {
-				x: 0,
-				y: 0,
-				z: 30,
-				rotationX: 0.4,
-				rotationY: -0.6,
-				rotationZ: 0,
-				scale: 1
-			};
-			
-			// Проецируем 3D вершины в 2D
-			let vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
-			
-			// Рисуем фигуру с использованием матрицы связей
-			ct.strokeStyle = om.secondaryBrandColors.iz();
-			ct.drawFigure(vertices2D, connectionMatrix);
+			// Используем встроенную функцию отрисовки с параметрами из класса
+			ct.drawParallelepiped({
+				width: parallelepiped.width,
+				height: parallelepiped.height,
+				depth: parallelepiped.depth,
+				angle: Math.PI/6,
+				strokeStyle: om.secondaryBrandColors.iz(),
+			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
 		NAtask.setTask({
