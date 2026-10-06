@@ -10,17 +10,46 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			ct.translate(120, 60);
-			ct.scale(20, 20);
-			ct.lineWidth = 2 / 20;
-
-			ct.drawParallelepiped({
+			// Создаём параллелепипед с заданными размерами
+			let parallelepiped = new Parallelepiped({
 				width: a,
 				height: c,
-				depth: b,
-				angle: 40,
-				strokeStyle:om.secondaryBrandColors,
-			}, [0, 3, 4], false, [0.5, 0.2]);
+				depth: b
+			});
+			
+			// Получаем 3D вершины и матрицу связей
+			let vertices3D = parallelepiped.verticesOfFigure;
+			let connectionMatrix = parallelepiped.connectionMatrix;
+			
+			// Настраиваем камеру для проекции 3D в 2D
+			let maxDim = Math.max(a, b, c);
+			let camera = {
+				x: 0,
+				y: 0,
+				z: 50,
+				rotationX: 0.3,
+				rotationY: -0.5,
+				rotationZ: 0,
+				scale: 150 / maxDim
+			};
+			
+			// Проецируем 3D вершины в 2D
+			let vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
+			
+			// Вычисляем центр фигуры для центрирования на canvas
+			let centerX = vertices2D.reduce((sum, v) => sum + v.x, 0) / vertices2D.length;
+			let centerY = vertices2D.reduce((sum, v) => sum + v.y, 0) / vertices2D.length;
+			
+			// Смещаем вершины так, чтобы центр фигуры был в центре canvas
+			vertices2D = vertices2D.map(v => ({
+				x: v.x - centerX + 200,
+				y: v.y - centerY + 200
+			}));
+			
+			// Рисуем фигуру с использованием матрицы связей
+			ct.lineWidth = 2;
+			ct.strokeStyle = om.secondaryBrandColors.iz();
+			ct.drawFigure(vertices2D, connectionMatrix);
 		};
 
 		NAtask.setTask({
