@@ -10,23 +10,14 @@
 		let S = 2 * (a * b + b * c + a * c);
 
 		let paint1 = function (ct) {
-			// Увеличиваем смещение для центрирования
-			ct.translate(150, 80);
+			ct.translate(120, 60);
 			ct.scale(20, 20);
 			ct.lineWidth = 2 / 20;
-			
-			// Создаём параллелепипед с заданными размерами
-			let parallelepiped = new Parallelepiped({
+
+			ct.drawParallelepiped({
 				width: a,
 				height: c,
-				depth: b
-			});
-			
-			// Используем встроенную функцию отрисовки с параметрами из класса
-			ct.drawParallelepiped({
-				width: parallelepiped.width,
-				height: parallelepiped.height,
-				depth: parallelepiped.depth,
+				depth: b,
 				angle: 40,
 				strokeStyle: om.secondaryBrandColors,
 			}, [0, 3, 4], false, [0.5, 0.2]);
