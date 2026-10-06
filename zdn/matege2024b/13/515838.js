@@ -12,15 +12,16 @@
 		let paint1 = function (ct) {
 			ct.save();
 			
-			// Перемещаем начало координат в центр canvas
+			// Перемещаем начало координат в центр canvas (200, 200)
 			ct.translate(200, 200);
 			
 			// Масштабируем для хорошей видимости
 			let maxDim = Math.max(a, b, c);
-			let scale = 18 / maxDim;
+			let scale = 25 / maxDim;
 			ct.scale(scale, scale);
 			
 			// Используем встроенную функцию drawParallelepiped из canvas.js
+			// Эта функция автоматически центрирует и правильно отображает параллелепипед
 			ct.drawParallelepiped({
 				width: a,
 				height: c,
