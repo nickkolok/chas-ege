@@ -35,19 +35,24 @@
 		// --- Чертёж: цилиндр с сечением, параллельным оси ---
 		// Класс Cylinder не предоставляет метод verticesOfFigure, поэтому строим точки вручную
 		let N = 48; // число точек на окружность основания
-		let flatten = 0.35; // сплюснутость эллипса основания
+		let flatten = 0.35; // сплюснутость эллипса основания (отношение малой оси к большой)
+		
+		// Параметры камеры: смотрим немного сверху под углом
 		let camera = {
 			x: 0,
 			y: 0,
 			z: 0,
 			scale: 1,
-			rotationX: Math.acos(-flatten),
+			rotationX: Math.PI / 2 - Math.acos(flatten), // угол наклона сверху
 			rotationY: 0,
 			rotationZ: 0,
 		};
 
 		let pts3D = [];
-		for (let z of [cylinder.height, 0])
+		
+		// Генерируем точки оснований: сначала нижнее (z=0), потом верхнее (z=height)
+		// Точки идут против часовой стрелки, если смотреть сверху
+		for (let z of [0, cylinder.height]) {
 			for (let i = 0; i < N; i++) {
 				let t = 2 * Math.PI * i / N;
 				pts3D.push({
@@ -56,25 +61,29 @@
 					z: z,
 				});
 			}
+		}
 
-		let iSil = pts3D.length; // силуэтные образующие
+		let iSil = pts3D.length; // индексы силуэтных образующих (крайние слева и справа)
 		pts3D.push(
 			{ x: -cylinder.radius, y: 0, z: 0 },
 			{ x: -cylinder.radius, y: 0, z: cylinder.height },
 			{ x: cylinder.radius, y: 0, z: cylinder.height },
 			{ x: cylinder.radius, y: 0, z: 0 }
 		);
+		
 		let iAxis = pts3D.length; // ось цилиндра
 		pts3D.push(
 			{ x: 0, y: 0, z: 0 },
 			{ x: 0, y: 0, z: cylinder.height }
 		);
+		
 		let iDist = pts3D.length; // расстояние от оси до плоскости сечения
 		pts3D.push(
 			{ x: 0, y: 0, z: cylinder.height / 2 },
 			{ x: 0, y: distance, z: cylinder.height / 2 }
 		);
-		let iSec = pts3D.length; // вершины сечения
+		
+		let iSec = pts3D.length; // вершины сечения (прямоугольник)
 		pts3D.push(
 			{ x: -halfChord, y: distance, z: 0 },
 			{ x: halfChord, y: distance, z: 0 },
@@ -86,7 +95,7 @@
 
 		let paint = function (ctx) {
 			ctx.translate(200, 200);
-			ctx.scale(1, -1);
+			ctx.scale(1, -1); // инвертируем Y для правильной ориентации
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors[0];
 
@@ -99,26 +108,33 @@
 					ctx.closePath();
 				ctx.stroke();
 			};
+			
 			let segment = function (a, b) {
 				ctx.drawLine(pts[a].x, pts[a].y, pts[b].x, pts[b].y);
 			};
 
-			// сечение — заштрихованный прямоугольник
+			// Сечение — заштрихованный прямоугольник
 			ctx.drawSection([iSec, iSec + 1, iSec + 2, iSec + 3].map((i) => [pts[i].x, pts[i].y]), om.transparentBrandColors[0]);
 
-			// верхнее основание целиком и ближняя (видимая) половина нижнего
-			polyline(0, N - 1, true);
-			polyline(N, N + N / 2, false);
-			// дальняя половина нижнего основания, ось и расстояние до сечения — пунктиром
+			// Верхнее основание (z=height) рисуем целиком — оно полностью видимо
+			polyline(N, 2 * N - 1, true);
+			
+			// Нижнее основание (z=0): ближняя половина сплошная, дальняя пунктиром
+			// При camera.rotationX > 0 видимая часть — это точки с y > 0 (первая половина)
+			polyline(0, N / 2 - 1, false); // ближняя половина (видимая)
+			
+			// Дальняя половина нижнего основания, ось и расстояние до сечения — пунктиром
 			ctx.setLineDash([5, 2]);
-			polyline(N + N / 2, 2 * N - 1, false);
+			polyline(N / 2, N - 1, false); // дальняя половина (невидимая)
 			segment(iAxis, iAxis + 1);
 			segment(iDist, iDist + 1);
 			ctx.setLineDash([]);
 
-			// силуэтные образующие и контур сечения
-			segment(iSil, iSil + 1);
-			segment(iSil + 2, iSil + 3);
+			// Силуэтные образующие (крайние слева и справа)
+			segment(iSil, iSil + 1);     // левая образующая
+			segment(iSil + 2, iSil + 3); // правая образующая
+			
+			// Контур сечения
 			segment(iSec, iSec + 1);
 			segment(iSec + 1, iSec + 2);
 			segment(iSec + 2, iSec + 3);
