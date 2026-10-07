@@ -61,8 +61,12 @@
 
 			let drawMug = function (c, r, h, ry) {
 				ct.drawEllipse(c, h, r, ry); // верхний ободок
+				// Дно: видимая (нижняя на экране) половина сплошная,
+				// невидимая верхняя половина пунктирная. После scale(s, -s)
+				// ось y направлена вверх, поэтому видимая половина - углы PI..2*PI.
+				ct.drawEllipse(c, 0, r, ry, 0, Math.PI, 2 * Math.PI);
 				ct.setLineDash([6 / s, 4 / s]);
-				ct.drawEllipse(c, 0, r, ry); // дно (невидимый край)
+				ct.drawEllipse(c, 0, r, ry, 0, 0, Math.PI);
 				ct.setLineDash([]);
 				ct.drawLine(c - r, 0, c - r, h); // стенки
 				ct.drawLine(c + r, 0, c + r, h);
