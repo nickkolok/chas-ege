@@ -62,6 +62,7 @@
 			ct.translate((ct.canvas.width - s * totalW) / 2, (ct.canvas.height - s * totalH) / 2 + s * yTop);
 			ct.scale(s, -s);
 			ct.lineWidth = 2 / s;
+			ct.strokeStyle = om.secondaryBrandColors.iz();
 
 			let drawMug = function (c, r, h, ry) {
 				ct.drawEllipse(c, h, r, ry); // верхний ободок
