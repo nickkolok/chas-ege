@@ -32,118 +32,67 @@
 			authors: ['chas-ege-selena'],
 		});
 
-		// --- Чертёж: цилиндр с сечением, параллельным оси ---
-		// Класс Cylinder не предоставляет метод verticesOfFigure, поэтому строим точки вручную
-		let N = 48; // число точек на окружность основания
-		let flatten = 0.35; // сплюснутость эллипса основания (отношение малой оси к большой)
-		
-		// Параметры камеры: смотрим немного сверху под углом
-		let camera = {
-			x: 0,
-			y: 0,
-			z: 0,
-			scale: 1,
-			rotationX: Math.PI / 2 - Math.acos(flatten), // угол наклона сверху
-			rotationY: 0,
-			rotationZ: 0,
-		};
-
-		let pts3D = [];
-		
-		// Генерируем точки оснований: сначала нижнее (z=0), потом верхнее (z=height)
-		// Точки идут против часовой стрелки, если смотреть сверху
-		for (let z of [0, cylinder.height]) {
-			for (let i = 0; i < N; i++) {
-				let t = 2 * Math.PI * i / N;
-				pts3D.push({
-					x: cylinder.radius * Math.cos(t),
-					y: cylinder.radius * Math.sin(t),
-					z: z,
-				});
-			}
-		}
-
-		let iSil = pts3D.length; // индексы силуэтных образующих (крайние слева и справа)
-		pts3D.push(
-			{ x: -cylinder.radius, y: 0, z: 0 },
-			{ x: -cylinder.radius, y: 0, z: cylinder.height },
-			{ x: cylinder.radius, y: 0, z: cylinder.height },
-			{ x: cylinder.radius, y: 0, z: 0 }
-		);
-		
-		let iAxis = pts3D.length; // ось цилиндра
-		pts3D.push(
-			{ x: 0, y: 0, z: 0 },
-			{ x: 0, y: 0, z: cylinder.height }
-		);
-		
-		let iDist = pts3D.length; // расстояние от оси до плоскости сечения
-		pts3D.push(
-			{ x: 0, y: 0, z: cylinder.height / 2 },
-			{ x: 0, y: distance, z: cylinder.height / 2 }
-		);
-		
-		let iSec = pts3D.length; // вершины сечения (прямоугольник)
-		pts3D.push(
-			{ x: -halfChord, y: distance, z: 0 },
-			{ x: halfChord, y: distance, z: 0 },
-			{ x: halfChord, y: distance, z: cylinder.height },
-			{ x: -halfChord, y: distance, z: cylinder.height }
-		);
-
-		let pts = autoScale(pts3D, camera);
-
-		let paint = function (ctx) {
-			ctx.translate(200, 200);
-			ctx.scale(1, -1); // инвертируем Y для правильной ориентации
-			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.secondaryBrandColors[0];
-
-			let polyline = function (from, to, close) {
-				ctx.beginPath();
-				ctx.moveTo(pts[from].x, pts[from].y);
-				for (let i = from + 1; i <= to; i++)
-					ctx.lineTo(pts[i].x, pts[i].y);
-				if (close)
-					ctx.closePath();
-				ctx.stroke();
-			};
+		let paint = function (ct) {
+			let scale = Math.min(120 / cylinder.radius, 120 / cylinder.height);
+			let r = cylinder.radius * scale;
+			let H = cylinder.height * scale;
+			let ry = 0.3 * r;
 			
-			let segment = function (a, b) {
-				ctx.drawLine(pts[a].x, pts[a].y, pts[b].x, pts[b].y);
-			};
-
-			// Сечение — заштрихованный прямоугольник
-			ctx.drawSection([iSec, iSec + 1, iSec + 2, iSec + 3].map((i) => [pts[i].x, pts[i].y]), om.transparentBrandColors[0]);
-
-			// Верхнее основание (z=height) рисуем целиком — оно полностью видимо
-			polyline(N, 2 * N - 1, true);
+			ct.translate(150, 150 + ry / 2);
+			ct.lineWidth = 2;
+			ct.strokeStyle = om.secondaryBrandColors.iz();
 			
-			// Нижнее основание (z=0): ближняя половина сплошная, дальняя пунктиром
-			// При camera.rotationX > 0 видимая часть — это точки с y > 0 (первая половина)
-			polyline(0, N / 2 - 1, false); // ближняя половина (видимая)
+			let yProjOffset = ry * distance / cylinder.radius;
+			let a = halfChord * scale;
 			
-			// Дальняя половина нижнего основания, ось и расстояние до сечения — пунктиром
-			ctx.setLineDash([5, 2]);
-			polyline(N / 2, N - 1, false); // дальняя половина (невидимая)
-			segment(iAxis, iAxis + 1);
-			segment(iDist, iDist + 1);
-			ctx.setLineDash([]);
-
-			// Силуэтные образующие (крайние слева и справа)
-			segment(iSil, iSil + 1);     // левая образующая
-			segment(iSil + 2, iSil + 3); // правая образующая
+			// 1. Невидимая (задняя) часть нижнего основания
+			ct.setLineDash([6, 4]);
+			ct.drawEllipse(0, H / 2, r, ry, 0, Math.PI, 2 * Math.PI);
+			
+			// 2. Ось цилиндра (невидимая внутри)
+			ct.drawLine(0, -H / 2, 0, H / 2);
+			
+			// 3. Сечение (полупрозрачный прямоугольник)
+			let rectPoints = [
+				[-a, H / 2 + yProjOffset],
+				[a, H / 2 + yProjOffset],
+				[a, -H / 2 + yProjOffset],
+				[-a, -H / 2 + yProjOffset]
+			];
+			ct.setLineDash([]);
+			ct.drawSection(rectPoints, om.transparentBrandColors.iz());
 			
 			// Контур сечения
-			segment(iSec, iSec + 1);
-			segment(iSec + 1, iSec + 2);
-			segment(iSec + 2, iSec + 3);
-			segment(iSec + 3, iSec);
+			ct.beginPath();
+			ct.moveTo(rectPoints[0][0], rectPoints[0][1]);
+			for (let i = 1; i < rectPoints.length; i++) {
+				ct.lineTo(rectPoints[i][0], rectPoints[i][1]);
+			}
+			ct.closePath();
+			ct.stroke();
+			
+			// 4. Видимая (передняя) часть нижнего основания
+			ct.drawEllipse(0, H / 2, r, ry, 0, 0, Math.PI);
+			
+			// 5. Верхнее основание (видимо целиком)
+			ct.drawEllipse(0, -H / 2, r, ry);
+			
+			// 6. Силуэтные образующие
+			ct.drawLine(-r, -H / 2, -r, H / 2);
+			ct.drawLine(r, -H / 2, r, H / 2);
+			
+			// 7. Расстояние от оси до сечения (на верхнем основании)
+			ct.drawLine(0, -H / 2, 0, -H / 2 + yProjOffset);
+			
+			// Засечки для обозначения расстояния
+			let tickSize = 5;
+			ct.drawLine(-tickSize, -H / 2, tickSize, -H / 2);
+			ct.drawLine(-tickSize, -H / 2 + yProjOffset, tickSize, -H / 2 + yProjOffset);
 		};
 
 		NAtask.modifiers.addCanvasIllustration({
-			width: 400,
-			height: 400,
+			width: 300,
+			height: 300,
 			paint: paint,
 		});
 	}, 100);
