@@ -54,35 +54,36 @@
 			ct.fillStyle = 'rgba(173, 216, 230, 0.6)';
 			ct.fill();
 			
-			// Стрелка с обозначением h
+			// Стрелка с обозначением h: охватывает столб жидкости,
+			// т.е. от поверхности воды до дна сосуда
 			let arrowX = cx + radiusX + 30;
 			ct.lineWidth = 2;
 			ct.strokeStyle = '#000';
 			
 			// Вертикальная линия стрелки
 			ct.beginPath();
-			ct.moveTo(arrowX, topY);
-			ct.lineTo(arrowX, waterY);
+			ct.moveTo(arrowX, waterY);
+			ct.lineTo(arrowX, bottomY);
 			ct.stroke();
 			
-			// Стрелка вверх
+			// Стрелка вверх (к поверхности воды)
 			ct.beginPath();
-			ct.moveTo(arrowX - 5, topY + 8);
-			ct.lineTo(arrowX, topY);
-			ct.lineTo(arrowX + 5, topY + 8);
+			ct.moveTo(arrowX - 5, waterY + 8);
+			ct.lineTo(arrowX, waterY);
+			ct.lineTo(arrowX + 5, waterY + 8);
 			ct.stroke();
 			
-			// Стрелка вниз
+			// Стрелка вниз (ко дну)
 			ct.beginPath();
-			ct.moveTo(arrowX - 5, waterY - 8);
-			ct.lineTo(arrowX, waterY);
-			ct.lineTo(arrowX + 5, waterY - 8);
+			ct.moveTo(arrowX - 5, bottomY - 8);
+			ct.lineTo(arrowX, bottomY);
+			ct.lineTo(arrowX + 5, bottomY - 8);
 			ct.stroke();
 			
 			// Буква h
 			ct.fillStyle = '#000';
 			ct.font = '20px sans-serif';
-			ct.fillText('h', arrowX + 10, (topY + waterY) / 2 + 7);
+			ct.fillText('h', arrowX + 10, (waterY + bottomY) / 2 + 7);
 		};
 
 		NAtask.setTask({
