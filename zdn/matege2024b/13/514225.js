@@ -34,6 +34,11 @@
 		let text = 'Сторона основания правильной шестиугольной пирамиды равна $' + a +
 			'$, боковое ребро равно $' + l +
 			'$. Найдите площадь боковой поверхности этой пирамиды.';
+		let analys = 'Апофема правильной пирамиды - высота боковой грани. Из прямоугольного треугольника ' +
+			'с гипотенузой-боковым ребром $' + l + '$ и катетом, равным половине стороны основания $' + t.halfBase +
+			'$: апофема равна $\\sqrt{' + l + '^2-' + t.halfBase + '^2}=\\sqrt{' + (l * l - t.halfBase * t.halfBase) +
+			'}=' + apothem + '$. Площадь боковой поверхности равна половине произведения периметра основания ' +
+			'на апофему: $S=\\frac{1}{2}\\cdot' + (6 * a) + '\\cdot' + apothem + '=' + S_bok + '$.';
 
 		// Фиксированная пирамида для иллюстрации: рисунок всегда одинаковый
 		let drawPyramid = new RegularPyramid({
@@ -117,7 +122,9 @@
 
 		NAtask.setTask({
 			text: text,
+			analys: analys,
 			answers: S_bok,
+			authors: ['Zer00Player', 'chas-ege-selena'],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
@@ -129,4 +136,6 @@
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
+//514225
+//Zer00Player, chas-ege-selena
 //https://mathb-ege.sdamgia.ru/problem?id=514225
