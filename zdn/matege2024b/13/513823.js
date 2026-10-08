@@ -3,13 +3,22 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 		let key = '513823';
-		let preference = ['withoutABCD', 'withABCD'];
-		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let length = sl(1, 10);
 		let width = sl(1, 10);
 		let height = 6 * sl(1, 5);
 		let volume = length * width * (height / 6);
+		genAssertAlmostInteger(volume, 'Объём пирамиды должен быть целым');
+
+		// Обозначения вершин: прямой угол трёх взаимно перпендикулярных рёбер - в A
+		let letters = latbukv.slice(0, 4);
+		let ab = letters[0] + letters[1];
+		let ac = letters[0] + letters[2];
+		let ad = letters[0] + letters[3];
+
+		let text = 'В треугольной пирамиде $' + letters.join('') + '$ рёбра $' + ab + '$, $' + ac +
+			'$ и $' + ad + '$ взаимно перпендикулярны, $' + ab + ' = ' + length + '$, $' + ac + ' = ' + width +
+			'$, $' + ad + ' = ' + height + '$. Найдите объём этой пирамиды.';
 
 		let paint1 = function (ct) {
 			// Класс из lib/figure.js: три взаимно перпендикулярных ребра из вершины 0
@@ -73,31 +82,29 @@
 				ct.stroke();
 			}
 
-			// Подписи вершин для варианта withABCD (смещение наружу от центра фигуры)
-			if (rand === 1) {
-				ct.fillStyle = 'black';
-				ct.font = (14 / scale) + 'px liberation_sans';
-				ct.textAlign = 'center';
-				ct.textBaseline = 'middle';
-
-				let labels = ['A', 'B', 'C', 'D'];
-				let off = 16 / scale;
-				for (let i = 0; i < 4; i++) {
-					let dx = vertices2D[i].x - cx;
-					let dy = vertices2D[i].y - cy;
-					let d = Math.hypot(dx, dy) || 1;
-					ct.fillText(labels[i], vertices2D[i].x + dx / d * off, vertices2D[i].y + dy / d * off);
-				}
+			// Подписи вершин - всегда, а не только в одном из вариантов:
+			// рисунок и условие обязаны обозначать точки одинаково
+			ct.fillStyle = 'black';
+			ct.font = (14 / scale) + 'px liberation_sans';
+			ct.textAlign = 'center';
+			ct.textBaseline = 'middle';
+			let off = 16 / scale;
+			for (let i = 0; i < 4; i++) {
+				let dx = vertices2D[i].x - cx;
+				let dy = vertices2D[i].y - cy;
+				let d = Math.hypot(dx, dy) || 1;
+				ct.fillText(letters[i], vertices2D[i].x + dx / d * off, vertices2D[i].y + dy / d * off);
 			}
 		};
 
 		NAtask.setTask({
-			text: 'В треугольной пирамиде ' + ['три', '$ABCD$'][rand] + ' ребра' + [' ', ' $AB$, $AC$ и $AD$ '][rand] + 'взаимно перпендикулярны' +
-			[', а их длины равны $' + length + '$, $' + width + '$ и $' + height + '$', ''][rand] + '. Найдите объём этой пирамиды'+['.', ', если $AB=' + length + '$, $AC=' + width + '$ и $AD=' + height + '$.'][rand],
+			text: text,
 			answers: volume,
-			preference: preference,
 		});
 
+		// Буквы вершин перемешиваются и в условии, и на чертеже одинаково;
+		// E, I, K, O, V, Z не берём - их исключает проектный массив latbukv
+		NAtask.modifiers.variativeABC(letters, { preserve: ['E', 'I', 'K', 'O', 'V', 'Z'] });
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
