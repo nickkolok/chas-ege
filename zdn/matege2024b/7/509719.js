@@ -7,11 +7,102 @@
             return value * 20 + 40 + ' уд./мин.';
         }
 
-        function answAboutMax(intervals, answ, values) {
+        function isIncreasing(arr) {
+            for (let i = 0; i < arr.length - 1; i++) {
+                if (arr[i] >= arr[i + 1] - 1e-9) return false;
+            }
+            return true;
+        }
+
+        function isDecreasing(arr) {
+            for (let i = 0; i < arr.length - 1; i++) {
+                if (arr[i] <= arr[i + 1] + 1e-9) return false;
+            }
+            return true;
+        }
+
+        function isNotLess(arr, val) {
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] < val - 1e-7) return false;
+            }
+            return true;
+        }
+
+        function isNotMore(arr, val) {
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] > val + 1e-7) return false;
+            }
+            return true;
+        }
+
+        function isDecreasingAfterIsIncreasing(arr) {
+            let peak = -1;
+            for (let i = 0; i < arr.length - 1; i++) {
+                if (arr[i] >= arr[i + 1] - 1e-9) {
+                    peak = i;
+                    break;
+                }
+            }
+            if (peak === -1 || peak === 0) return false;
+            for (let i = peak; i < arr.length - 1; i++) {
+                if (arr[i] <= arr[i + 1] + 1e-9) return false;
+            }
+            return true;
+        }
+
+        function isIncreasingAfterIsDecreasing(arr) {
+            let valley = -1;
+            for (let i = 0; i < arr.length - 1; i++) {
+                if (arr[i] <= arr[i + 1] + 1e-9) {
+                    valley = i;
+                    break;
+                }
+            }
+            if (valley === -1 || valley === 0) return false;
+            for (let i = valley; i < arr.length - 1; i++) {
+                if (arr[i] >= arr[i + 1] - 1e-9) return false;
+            }
+            return true;
+        }
+
+        function findMaximums(func, minX, maxX) {
+            let maxVal = -Infinity;
+            let step = 0.1;
+            for (let x = minX; x <= maxX; x += step) {
+                let y = func(x);
+                if (y > maxVal) maxVal = y;
+            }
+            return [[0, maxVal]];
+        }
+
+        function findMaxInIntervals(intervals) {
+            let maxVal = -Infinity;
+            let maxIndex = -1;
+            for (let i = 0; i < intervals.length; i++) {
+                let localMax = intervals[i].maxE();
+                if (localMax > maxVal) {
+                    maxVal = localMax;
+                    maxIndex = i;
+                }
+            }
+            return maxIndex;
+        }
+
+        function addUniqueAnsw(was, answ, text) {
+            for (let i = 0; i < was.length; i++) {
+                if (was[i]) {
+                    if (!answ[i].solution.includes(text)) {
+                        answ[i].solution.push(text);
+                    }
+                }
+            }
+        }
+
+        function answAboutMax(intervals, answ) {
             let max1 = findMaximums(func, 0, 4)[0][1];
             let max2 = findMaximums(func, 4, 8)[0][1];
-            if ((max1 - max2).abs() > 0.5) {
-                let maxIndex = findMaxInIntervals(intervals, values);
+            if (Math.abs(max1 - max2) > 0.5) {
+                let maxIndex = findMaxInIntervals(intervals);
                 let wasMax = intervals.map((_, i) => i === maxIndex);
                 addUniqueAnsw(wasMax, answ, 'частота пульса достигла максимума за всё время выступления и после него');
             }
@@ -38,18 +129,18 @@
         }
 
         function answAboutDecreasingDroppedBelow(intervals, answ, below) {
-            let wasDecreasing = intervals.map(interval => isDecreasing(interval) && interval.some(value => value < below));
+            let wasDecreasing = intervals.map(interval => isDecreasing(interval) && interval.some(value => value < below - 1e-7));
             addUniqueAnsw(wasDecreasing, answ, 'частота пульса упала ниже ' + convert(below));
         }
 
         function answAboutDecreasingDroppedBelowN(intervals, answ, belowN) {
-            let wasDecreasing = intervals.map(interval => isDecreasing(interval) && interval.some(value => value === belowN) && interval.every(value => value >= belowN));
+            let wasDecreasing = intervals.map(interval => isDecreasing(interval) && interval.some(value => value <= belowN + 1e-7));
             addUniqueAnsw(wasDecreasing, answ, 'частота пульса упала до ' + convert(belowN));
         }
 
         function answAboutIncreasingNonLess(intervals, answ, more) {
             let wasCondition = intervals.map(interval => isIncreasing(interval) && isNotLess(interval, more));
-            addUniqueAnsw(wasCondition, answ, 'частота пульса росла на всём интервале и была не ниже  ' + convert(more));
+            addUniqueAnsw(wasCondition, answ, 'частота пульса росла на всём интервале и была не ниже ' + convert(more));
         }
 
         function answAboutMaxMinDelta(intervals, answ) {
@@ -58,8 +149,8 @@
             let maxEI = deltaP.maxE();
             let minED = deltaP.minE();
 
-            let wasMaxRise = intervals.map((_, i) => deltaP[i] === maxEI);
-            let wasMinFall = intervals.map((_, i) => deltaP[i] === minED);
+            let wasMaxRise = intervals.map((_, i) => Math.abs(deltaP[i] - maxEI) < 1e-7);
+            let wasMinFall = intervals.map((_, i) => Math.abs(deltaP[i] - minED) < 1e-7);
 
             if (sl1()) {
                 addUniqueAnsw(wasMaxRise, answ, ' наибольший рост частоты пульса');
@@ -78,33 +169,34 @@
             addUniqueAnsw(wasCondition, answ, 'частота пульса сначала росла, а затем падала');
         }
 
-        let time = [0].zapMonot(9, 0, 1, 1); // шкала времени
-        let value = [1, sl(3, 4)]; // шкала пульса
-
-        let count = 0;
-
-        for (; value.length < time.length - 1;) {
-            let interI = sl(2, (time.length / 4).floor());
-            for (let j = 0; j < interI; j++) {
-                let currentValue = value[value.length - 1] + sl(0.1, 2, 0.1) * (-1).pow(count);
-                while (!currentValue.mzhd(1, 5, true)) {
-                    if (currentValue < 1) {
-                        currentValue += 0.1;
-                    }
-                    if (currentValue > 5) {
-                        currentValue -= 0.1;
-                    }
+        let time = [0].zapMonot(9, 0, 1, 1);
+        
+        // Генерируем значения пульса так, чтобы были разные характеристики
+        let value = [sl(1, 3, 0.5)];
+        for (let i = 1; i < time.length; i++) {
+            let nextVal = value[i - 1] + sl(-1.5, 1.5, 0.5);
+            let tries = 0;
+            while (!nextVal.mzhd(1, 5, true)) {
+                if (nextVal < 1) nextVal += 0.5;
+                if (nextVal > 5) nextVal -= 0.5;
+                tries++;
+                if (tries > 20) {
+                    nextVal = value[i - 1];
+                    break;
                 }
-                value.push(currentValue);
             }
-            count++;
+            value.push(nextVal);
         }
 
-        value = value.slice(0, time.length - 1);
-        value.push(sl(1, 2, 0.5));
-
-        let spline = new Spline(time, value);
-        let func = (x) => spline.at(x);
+        let func = (x) => {
+            for (let i = 0; i < time.length - 1; i++) {
+                if (x >= time[i] && x <= time[i + 1]) {
+                    let ratio = (x - time[i]) / (time[i + 1] - time[i]);
+                    return value[i] + (value[i + 1] - value[i]) * ratio;
+                }
+            }
+            return value[value.length - 1];
+        };
 
         let intervals = Array.from({
             length: 4
@@ -135,7 +227,7 @@
         let moreV = sl(3, 4);
         let below = slKrome(lessV, 1, 2);
 
-        answAboutMax(intervals, listOfIntervals, intervals.flat());
+        answAboutMax(intervals, listOfIntervals);
         answAboutNonMore(intervals, listOfIntervals, moreV);
         answAboutNonLess(intervals, listOfIntervals, lessV);
         answAboutIncreasing(intervals, listOfIntervals);
@@ -147,7 +239,10 @@
         answAboutDecreasingDroppedBelow(intervals, listOfIntervals, below);
         answAboutDecreasingDroppedBelowN(intervals, listOfIntervals, below);
 
-        listOfIntervals.forEach(item => item.solution = item.solution.iz());
+        listOfIntervals.forEach(item => {
+            genAssertNonempty(item.solution, 'Решение не найдено для интервала');
+            item.solution = item.solution.iz();
+        });
 
         let solutions = listOfIntervals.map(item => item.solution);
         solutions.forEach(item => genAssertNonempty(item));
