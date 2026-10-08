@@ -2,13 +2,14 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
+
 		let key = '513823';
 
-		let length = sl(1, 10);
-		let width = sl(1, 10);
-		let height = 6 * sl(1, 5);
-		let volume = length * width * (height / 6);
-		genAssertAlmostInteger(volume, 'Объём пирамиды должен быть целым');
+		let a = sl(1, 10);
+		let b = sl(1, 10);
+		let h = 6 * sl(1, 5);
+		let V = a * b * h / 6;
+		genAssertAlmostInteger(V, 'Объём пирамиды должен быть целым');
 
 		// Обозначения вершин: прямой угол трёх взаимно перпендикулярных рёбер - в A
 		let letters = latbukv.slice(0, 4);
@@ -17,91 +18,140 @@
 		let ad = letters[0] + letters[3];
 
 		let text = 'В треугольной пирамиде $' + letters.join('') + '$ рёбра $' + ab + '$, $' + ac +
-			'$ и $' + ad + '$ взаимно перпендикулярны, $' + ab + ' = ' + length + '$, $' + ac + ' = ' + width +
-			'$, $' + ad + ' = ' + height + '$. Найдите объём этой пирамиды.';
+			'$ и $' + ad + '$ взаимно перпендикулярны, $' + ab + ' = ' + a + '$, $' + ac + ' = ' + b +
+			'$, $' + ad + ' = ' + h + '$. Найдите объём этой пирамиды.';
+		let analys = 'Треугольник $' + letters[0] + letters[1] + letters[2] + '$ прямоугольный с катетами $' +
+			ab + ' = ' + a + '$ и $' + ac + ' = ' + b + '$, его площадь равна $\\frac{' + a + ' \\cdot ' + b +
+			'}{2} = ' + (a * b / 2) + '$. Ребро $' + ad + '$ перпендикулярно двум пересекающимся прямым $' +
+			ab + '$ и $' + ac + '$ плоскости основания, значит, перпендикулярно самой плоскости и является ' +
+			'высотой пирамиды: $V = \\frac{1}{3} \\cdot ' + (a * b / 2) + ' \\cdot ' + h + ' = ' + V + '$.';
 
-		let paint1 = function (ct) {
-			// Класс из lib/figure.js: три взаимно перпендикулярных ребра из вершины 0
-			let pyramid = new RectangularPyramidWithRightAngledTriangleAtBase({
-				height: height,
-				sideA: length,
-				sideB: width
-			});
+		// Класс из lib/figure.js: три взаимно перпендикулярных ребра выходят из вершины 0.
+		// Вершины 0, 1, 2 - основание (прямой угол в 0), вершина 3 - над вершиной 0.
+		let pyramid = new RectangularPyramidWithRightAngledTriangleAtBase({
+			height: h,
+			sideA: a,
+			sideB: b,
+		});
 
-			// Косоугольная проекция 3D -> 2D
-			let angle = Math.PI / 6;
-			let vertices2D = pyramid.verticesOfFigure.map(p => ({
-				x: p.x - p.z * Math.cos(angle) * 0.7,
-				y: -(p.y - p.z * Math.sin(angle) * 0.7)
-			}));
+		// Вершины берём у класса, но высоту восстанавливаем: findTriangleVertices()
+		// сдвигает основание на z центра описанной окружности вместе с z, из-за чего
+		// основание оказывается в z=0, а вершина - в z=+height/2, и высота пирамиды на
+		// чертеже выходит вдвое меньше заданной (см. issue про findTriangleVertices).
+		// Чертёж обязан быть пропорционален условию (md/task_geometry.md).
+		let vertices = pyramid.verticesOfFigure.map((vertex, index) =>
+			({ x: vertex.x, y: vertex.y, z: (index < 3 ? -0.5 : 0.5) * h }));
 
-			// Центрирование и автомасштаб по габаритам фигуры
-			let xs = vertices2D.map(p => p.x);
-			let ys = vertices2D.map(p => p.y);
-			let minX = Math.min.apply(null, xs);
-			let maxX = Math.max.apply(null, xs);
-			let minY = Math.min.apply(null, ys);
-			let maxY = Math.max.apply(null, ys);
-			let w = (maxX - minX) || 1;
-			let h = (maxY - minY) || 1;
-			let scale = Math.min(280 / w, 280 / h, 40);
-			let cx = (minX + maxX) / 2;
-			let cy = (minY + maxY) / 2;
+		let camera = {
+			x: 0,
+			y: 0,
+			z: 0,
+			scale: 5,
+			rotationX: -Math.PI / 2 + Math.PI / 9,
+			rotationY: 0,
+			rotationZ: Math.PI / 10,
+		};
+		autoScale(vertices, camera, vertices.map((vertex) => project3DTo2D(vertex, camera)), {
+			startX: -150,
+			finishX: 150,
+			startY: -150,
+			finishY: 150,
+			maxScale: 200,
+		});
+		let points2D = vertices.map((vertex) => project3DTo2D(vertex, camera));
 
-			ct.translate(200 - scale * cx, 200 - scale * cy);
-			ct.scale(scale, scale);
-			ct.lineWidth = 2 / scale;
-			ct.strokeStyle = om.secondaryBrandColors[0] || om.secondaryBrandColors;
-
-			let dotted = [4 / scale, 3 / scale];
-
-			// Вершина 0 (прямой угол) находится за гранью 1-2-3:
-			// рёбра из неё — пунктиром, рёбра передней грани — сплошными
-			let drawMatrix = [
-				[dotted],          // 1-0 — невидимое
-				[dotted, 1],       // 2-0 — невидимое, 2-1 — видимое
-				[dotted, 1, 1]     // 3-0 — невидимое, 3-1 и 3-2 — видимые
-			];
-
-			ct.drawFigure(vertices2D, drawMatrix);
-
-			// Маркер прямого угла при вершине 0
-			let v0 = vertices2D[0];
-			let v1 = vertices2D[1];
-			let v2 = vertices2D[2];
-			let len1 = Math.hypot(v1.x - v0.x, v1.y - v0.y);
-			let len2 = Math.hypot(v2.x - v0.x, v2.y - v0.y);
-			let s = 12 / scale;
-			if (len1 > 0 && len2 > 0) {
-				let vec1 = { x: (v1.x - v0.x) / len1 * s, y: (v1.y - v0.y) / len1 * s };
-				let vec2 = { x: (v2.x - v0.x) / len2 * s, y: (v2.y - v0.y) / len2 * s };
-				ct.beginPath();
-				ct.moveTo(v0.x + vec1.x, v0.y + vec1.y);
-				ct.lineTo(v0.x + vec1.x + vec2.x, v0.y + vec1.y + vec2.y);
-				ct.lineTo(v0.x + vec2.x, v0.y + vec2.y);
-				ct.stroke();
+		// Видимость граней tetraэдра - по знаку ориентированной площади проекции
+		// (приём откалиброван на одобренном 509658.js). Нормаль грани ориентируем
+		// наружу по центру тяжести: у выпуклого тела внешняя нормаль сонаправлена
+		// с вектором из центра тела в центр грани.
+		let centroid = {
+			x: vertices.reduce((s, v) => s + v.x, 0) / 4,
+			y: vertices.reduce((s, v) => s + v.y, 0) / 4,
+			z: vertices.reduce((s, v) => s + v.z, 0) / 4,
+		};
+		let faceIndices = [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]];
+		let facesVisible = faceIndices.map(function (f) {
+			let p0 = vertices[f[0]], p1 = vertices[f[1]], p2 = vertices[f[2]];
+			let u = { x: p1.x - p0.x, y: p1.y - p0.y, z: p1.z - p0.z };
+			let w = { x: p2.x - p0.x, y: p2.y - p0.y, z: p2.z - p0.z };
+			let n = { x: u.y * w.z - u.z * w.y, y: u.z * w.x - u.x * w.z, z: u.x * w.y - u.y * w.x };
+			let fc = {
+				x: (p0.x + p1.x + p2.x) / 3 - centroid.x,
+				y: (p0.y + p1.y + p2.y) / 3 - centroid.y,
+				z: (p0.z + p1.z + p2.z) / 3 - centroid.z,
+			};
+			if (n.x * fc.x + n.y * fc.y + n.z * fc.z < 0) {
+				n = { x: -n.x, y: -n.y, z: -n.z };
 			}
+			let q0 = points2D[f[0]], q1 = points2D[f[1]], q2 = points2D[f[2]];
+			let area = (q1.x - q0.x) * (q2.y - q0.y) - (q2.x - q0.x) * (q1.y - q0.y);
+			return area > 0;
+		});
+		// Ребро невидимо, если невидимы обе смежные грани
+		let tetraEdges = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]];
+		let isHidden = function (edge) {
+			return !faceIndices.some(function (f, k) {
+				return facesVisible[k] && f.includes(edge[0]) && f.includes(edge[1]);
+			});
+		};
+
+		// Матрица в формате drawFigure: строка i, столбец j - ребро между точками i+1 и j
+		let matrix = [
+			[1],
+			[1, 1],
+			[1, 1, 1],
+		];
+		let dash = [7, 5];
+		tetraEdges.forEach(function (edge) {
+			if (isHidden(edge)) {
+				matrix[Math.max(edge[0], edge[1]) - 1][Math.min(edge[0], edge[1])] = dash;
+			}
+		});
+
+		let paint1 = function (ctx) {
+			ctx.translate(200, 200);
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.lineWidth = 2;
+
+			ctx.drawFigure(points2D, matrix);
+
+			// Прямой угол при вершине A между рёбрами AB и AC. Штрих отметки берём
+			// таким же, как у ребра AB: если вершина A окажется скрытой, отметка
+			// станет пунктирной вместе с её рёбрами, если видимой - сплошной.
+			if (isHidden(tetraEdges[0])) {
+				ctx.setLineDash(dash);
+			}
+			ctx.arcBetweenSegments([
+				points2D[1].x, points2D[1].y,
+				points2D[0].x, points2D[0].y,
+				points2D[2].x, points2D[2].y,
+			], 14, true);
+			ctx.setLineDash([]);
 
 			// Подписи вершин - всегда, а не только в одном из вариантов:
 			// рисунок и условие обязаны обозначать точки одинаково
-			ct.fillStyle = 'black';
-			ct.font = (14 / scale) + 'px liberation_sans';
-			ct.textAlign = 'center';
-			ct.textBaseline = 'middle';
-			let off = 16 / scale;
-			for (let i = 0; i < 4; i++) {
-				let dx = vertices2D[i].x - cx;
-				let dy = vertices2D[i].y - cy;
-				let d = Math.hypot(dx, dy) || 1;
-				ct.fillText(letters[i], vertices2D[i].x + dx / d * off, vertices2D[i].y + dy / d * off);
-			}
+			ctx.fillStyle = om.secondaryBrandColors.iz();
+			ctx.font = '20px liberation_sans';
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			let center = {
+				x: points2D.reduce((sum, point) => sum + point.x, 0) / points2D.length,
+				y: points2D.reduce((sum, point) => sum + point.y, 0) / points2D.length,
+			};
+			points2D.forEach(function (point, i) {
+				let dx = point.x - center.x;
+				let dy = point.y - center.y;
+				let length = Math.sqrt(dx * dx + dy * dy) || 1;
+				ctx.fillText(letters[i], point.x + 20 * dx / length, point.y + 20 * dy / length);
+			});
 		};
 
 		NAtask.setTask({
 			text: text,
-			answers: volume,
+			analys: analys,
+			answers: V,
+			authors: ['chas-ege-selena'],
 		});
-
 		// Буквы вершин перемешиваются и в условии, и на чертеже одинаково;
 		// E, I, K, O, V, Z не берём - их исключает проектный массив latbukv
 		NAtask.modifiers.variativeABC(letters, { preserve: ['E', 'I', 'K', 'O', 'V', 'Z'] });
@@ -110,8 +160,9 @@
 			height: 400,
 			paint: paint1,
 		});
-
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=513823
+//513823
+//chas-ege-selena
+//https://mathb-ege.sdamgia.ru/problem?id=513823
