@@ -104,5 +104,6 @@
 		});
 	}, 100);
 })();
-//https://mathb-ege.sdamgia.ru/problem?id=509781
+//509781
 //chas-ege-selena
+//https://mathb-ege.sdamgia.ru/problem?id=509781
