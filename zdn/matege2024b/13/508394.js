@@ -1,6 +1,6 @@
-(function() {
-	retryWhileError(function() {
-		'use strict';
+(function () {
+	'use strict';
+	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '508394';
@@ -116,8 +116,8 @@
 			text: text,
 			analys: analys,
 			answers: answers,
-			authors: ['Селена'],
-			preference: preference,
+			authors: ['chas-ege-selena'],
+			preference: [preference],
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 360,
@@ -127,3 +127,5 @@
 	}, 1000);
 })();
 //508394
+//chas-ege-selena
+//https://mathb-ege.sdamgia.ru/problem?id=508394
