@@ -241,12 +241,35 @@
 
         listOfIntervals.forEach(item => {
             genAssertNonempty(item.solution, 'Решение не найдено для интервала');
-            item.solution = item.solution.iz();
         });
 
-        let solutions = listOfIntervals.map(item => item.solution);
-        solutions.forEach(item => genAssertNonempty(item));
-        genAssert(!solutions.hasDubl(), 'Дубликаты решений');
+        let solutions = [];
+        let items = listOfIntervals.map((item, index) => ({item, index}));
+        let success = false;
+        for (let attempt = 0; attempt < 10; attempt++) {
+            let tempItems = items.slice();
+            tempItems.shuffle();
+            let tempUsed = new Set();
+            let tempSolutions = new Array(4);
+            let canAssign = true;
+            for (let obj of tempItems) {
+                let avail = obj.item.solution.filter(s => !tempUsed.has(s));
+                if (avail.length === 0) {
+                    canAssign = false;
+                    break;
+                }
+                let chosen = avail.iz();
+                tempSolutions[obj.index] = chosen;
+                tempUsed.add(chosen);
+                obj.item.solution = chosen;
+            }
+            if (canAssign) {
+                success = true;
+                solutions = tempSolutions;
+                break;
+            }
+        }
+        genAssert(success, 'Не удалось подобрать уникальные решения');
 
         let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
 
