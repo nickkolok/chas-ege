@@ -31,13 +31,9 @@
 			sideB: b,
 		});
 
-		// Вершины берём у класса, но высоту восстанавливаем: findTriangleVertices()
-		// сдвигает основание на z центра описанной окружности вместе с z, из-за чего
-		// основание оказывается в z=0, а вершина - в z=+height/2, и высота пирамиды на
-		// чертеже выходит вдвое меньше заданной (см. issue про findTriangleVertices).
-		// Чертёж обязан быть пропорционален условию (md/task_geometry.md).
-		let vertices = pyramid.verticesOfFigure.map((vertex, index) =>
-			({ x: vertex.x, y: vertex.y, z: (index < 3 ? -0.5 : 0.5) * h }));
+		// Вершины берём у класса: после #3474 findTriangleVertices() центрирует основание
+		// только в его плоскости, поэтому z основания (-h/2) и вершины (+h/2) верны сами по себе.
+		let vertices = pyramid.verticesOfFigure;
 
 		let camera = {
 			x: 0,
