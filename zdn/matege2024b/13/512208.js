@@ -113,6 +113,7 @@
 		NAtask.setTask({
 			text: 'Даны два цилиндра. Радиус основания и высота первого цилиндра равны соответственно $' + r1 + '$ и $' + h1 + '$, а второго — $' + r2 + '$ и $' + h2 + '$. ' + questionText,
 			answers: ratio,
+			authors: ['chas-ege-selena'],
 			analys: 'Объём цилиндра вычисляется по формуле $V=\\pi r^{2}h$. Площадь боковой поверхности цилиндра вычисляется по формуле $S=2\\pi r h$. '
 				+ 'Объём первого цилиндра равен $V_1=\\pi\\cdot ' + r1 + '^2\\cdot ' + h1 + '=' + V1 + '\\pi$. '
 				+ 'Объём второго цилиндра равен $V_2=\\pi\\cdot ' + r2 + '^2\\cdot ' + h2 + '=' + V2 + '\\pi$. '
@@ -131,4 +132,6 @@
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
+//512208
+//chas-ege-selena
 //https://mathb-ege.sdamgia.ru/test?likes=512208
