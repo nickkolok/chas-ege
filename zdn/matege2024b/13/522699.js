@@ -9,23 +9,30 @@
 		let kind = getSelectedPreferenceFromList(key, preference1);
 		let v = getSelectedPreferenceFromList(key, preference2);
 
+		// Чертёж обязан быть читаемым, поэтому у каждого конуса высота не меньше
+		// радиуса и не больше двух радиусов (md/task_geometry.md: избегать данных,
+		// по которым трудно построить читаемый чертёж). Без этого при l ~= r конус
+		// вырождался в «блин», а при r << h - в «иглу», и пара выглядела криво.
+		let coneParams = function (rMax, lMax) {
+			let r = sl(2, rMax, 1);
+			let l = sl(Math.ceil(r * Math.SQRT2), Math.min(lMax, Math.floor(r * Math.sqrt(5))), 1);
+			genAssert(l > r, 'Образующая конуса должна быть больше радиуса');
+			return { r: r, l: l, h: Math.sqrt(l * l - r * r) };
+		};
+
 		let big, small;
 		if (kind === 0) {
 			// даны радиус и образующая — сравниваем площади боковых поверхностей
-			let rB = sl(2, 10, 1);
-			let lB = sl(rB + 1, 15, 1);
-			let hB = Math.sqrt(lB * lB - rB * rB);
-			let rS = sl(1, 8, 1);
-			let lS = sl(rS + 1, 12, 1);
-			let hS = Math.sqrt(lS * lS - rS * rS);
-			big = new Cone({ radius: rB, height: hB });
-			small = new Cone({ radius: rS, height: hS });
+			let pB = coneParams(10, 15);
+			let pS = coneParams(8, 12);
+			big = new Cone({ radius: pB.r, height: pB.h });
+			small = new Cone({ radius: pS.r, height: pS.h });
 		} else {
 			// даны радиус и высота — сравниваем объёмы
-			let rB = sl(1, 9, 1);
-			let hB = sl(1, 15, 1);
-			let rS = sl(1, 8, 1);
-			let hS = sl(1, 12, 1);
+			let rB = sl(2, 9, 1);
+			let hB = sl(rB, 2 * rB, 1);
+			let rS = sl(2, 8, 1);
+			let hS = sl(rS, 2 * rS, 1);
 			big = new Cone({ radius: rB, height: hB });
 			small = new Cone({ radius: rS, height: hS });
 		}
@@ -81,7 +88,7 @@
 			let cx2 = xLeft + (2 * r1 + gap + r2) * scale;
 
 			ct.lineWidth = 2;
-			ct.strokeStyle = om.secondaryBrandColors;
+			ct.strokeStyle = om.secondaryBrandColors.iz();
 
 			let drawCone = function (cx, r, hh) {
 				let R = r * scale;
