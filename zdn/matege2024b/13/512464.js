@@ -52,8 +52,9 @@
 				edge: edgePx,
 				height: heightPx,
 				angle: angle,
-				strokeStyle: 'black',
+				strokeStyle: om.secondaryBrandColors.iz(),
 			}, [1, 3, 6], [5, 2], true);
+			ct.fillStyle = om.secondaryBrandColors.iz();
 			ct.fillKrug(figX / 2, -edgePx * (1 + Math.sin(angle)) / 2, 2);
 			ct.restore();
 		},
