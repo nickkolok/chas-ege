@@ -51,7 +51,7 @@
         }
         
         function answAboutDeltaMW(intervals, answ, delta) {
-            let deltas = intervals[0].map((interval, i) => interval.every((val, j) => (val - intervals[1][i][j]).abs() <= delta));
+            let deltas = intervals[0].map((interval, i) => interval.every((val, j) => (val - intervals[1][i][j]).abs() <= delta * 5));
             
             addUniqueAnsw(deltas, answ, 'в каждый месяц этого периода число рождений девочек и мальчиков различалось не более чем на ' + delta*5);
         }
@@ -59,8 +59,8 @@
         function answAboutDeltaMWOneMonth(intervals, answ, delta) {
             let deltas = intervals[0].map((interval, i) => {
                 let differences = interval.map((val, j) => (val - intervals[1][i][j]).abs());
-                let hasSignificant = differences.some(diff => diff > delta);
-                let allSignificant = differences.every(diff => diff > delta);
+                let hasSignificant = differences.some(diff => diff > delta * 5);
+                let allSignificant = differences.every(diff => diff > delta * 5);
 
                 return hasSignificant && !allSignificant;
             });
@@ -107,7 +107,7 @@
         let listOfIntervals = intervalsM.map((interval, i) => {
             return {
                 expr: `${month[i * 3]}-${month[i * 3 + 2]}`,
-                solution: ['']
+                solution: []
             };
         });
 
@@ -130,7 +130,10 @@
         answAboutDeltaMWOneMonth(intervals, listOfIntervals, deltaMore);
         
 
-        listOfIntervals.forEach(item => item.solution = item.solution.iz());
+        listOfIntervals.forEach(item => {
+            genAssert(item.solution.length > 0, 'У интервала нет характеристик');
+            item.solution = item.solution.iz();
+        });
 
         let solutions = listOfIntervals.map(item => item.solution);
         solutions.forEach(item => genAssertNonempty(item));
