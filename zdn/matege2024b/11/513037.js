@@ -100,12 +100,7 @@
 				let j = (i + 1) % n;
 				return (bottomVerts[i].sin + bottomVerts[j].sin) / 2 > 0;
 			}
-			function line(p1, p2) {
-				ct.beginPath();
-				ct.moveTo(p1.x, p1.y);
-				ct.lineTo(p2.x, p2.y);
-				ct.stroke();
-			}
+
 
 			// Призма: боковые рёбра и нижнее основание.
 			// Общее основание (стык призмы и пирамиды): видимые рёбра рисуем,
@@ -113,11 +108,11 @@
 			for (let i = 0; i < n; i++) {
 				let j = (i + 1) % n;
 				if (isFrontVertex(i)) {
-					line(bottomVerts[i], topVerts[i]);
+					ct.drawLine(bottomVerts[i].x, bottomVerts[i].y, topVerts[i].x, topVerts[i].y);
 				}
 				if (isFrontEdge(i)) {
-					line(bottomVerts[i], bottomVerts[j]);
-					line(topVerts[i], topVerts[j]);
+					ct.drawLine(bottomVerts[i].x, bottomVerts[i].y, bottomVerts[j].x, bottomVerts[j].y);
+					ct.drawLine(topVerts[i].x, topVerts[i].y, topVerts[j].x, topVerts[j].y);
 				}
 			}
 
@@ -125,10 +120,10 @@
 			for (let i = 0; i < n; i++) {
 				let j = (i + 1) % n;
 				if (isFrontVertex(i)) {
-					line(pyBaseVerts[i], apex);
+					ct.drawLine(pyBaseVerts[i].x, pyBaseVerts[i].y, apex.x, apex.y);
 				}
 				if (isFrontEdge(i)) {
-					line(pyBaseVerts[i], pyBaseVerts[j]);
+					ct.drawLine(pyBaseVerts[i].x, pyBaseVerts[i].y, pyBaseVerts[j].x, pyBaseVerts[j].y);
 				}
 			}
 		};
@@ -137,7 +132,7 @@
 			text: v.text + ' ' + ['Сколько граней', 'Сколько рёбер'][rand] +
 				' у получившегося многогранника (невидимые рёбра на рисунке не изображены)?',
 			answers: answers[rand],
-			preference: [preference],
+			preference: preference,
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
