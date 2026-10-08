@@ -4,7 +4,7 @@
 
 (function() {
 	'use strict';
-	NAinfo.requireApiVersion(0, 0);
+	NAinfo.requireApiVersion(0, 2);
 
 	let a = [2, 4, 6, 8, 12].iz(); //сторона основания
 	let H;
@@ -30,7 +30,7 @@
 		].iz(),
 		answers: V,
 		analys: `Высота правильной пирамиды проходит через центр основания. Диагональ квадратного основания со стороной ${a} равна $${a}\\sqrt{2}$, поэтому половина диагонали равна $${(a * a / 2).texsqrt(true)}$. Из прямоугольного треугольника, образованного высотой, половиной диагонали и боковым ребром, по теореме Пифагора $H=\\sqrt{\\left(${lTex}\\right)^2-\\left(${(a * a / 2).texsqrt(true)}\\right)^2}=\\sqrt{${l2}-${a * a / 2}}=${H}$. Площадь основания равна $${a * a}$, значит, объём пирамиды $V=\\frac{1}{3}\\cdot${a * a}\\cdot${H}=${V}$.`,
-		authors: ['Селена'],
+		authors: ['chas-ege-selena'],
 	});
 
 	let canvasW = 320;
@@ -64,4 +64,5 @@
 	});
 })();
 //512464
-//Селена (chas-ege-selena)
+//chas-ege-selena
+//https://mathb-ege.sdamgia.ru/problem?id=512464
