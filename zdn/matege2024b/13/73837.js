@@ -26,9 +26,20 @@
 			rotationX: -70 * Math.PI / 180,
 			rotationY: 0,
 			rotationZ: 30 * Math.PI / 180,
-			scale: 60,
+			scale: 5,
 		};
+		// Масштаб подбирает autoScale(): при жёстком scale: 60 фигура занимала
+		// лишь около половины холста (замечание «рисунок большой, а пирамидка крохотная»).
+		// После подбора масштаба проекцию пересчитываем (приём из 509658.js).
 		let vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
+		autoScale(vertices3D, camera, vertices2D, {
+			startX: -150,
+			finishX: 150,
+			startY: -150,
+			finishY: 150,
+			maxScale: 200,
+		});
+		vertices2D = vertices3D.map(v => project3DTo2D(v, camera));
 
 		// Самая дальняя вершина основания проецируется выше всех — из неё выходят невидимые рёбра
 		let hidden = 0;
@@ -54,7 +65,7 @@
 		];
 
 		let paint = function (ct) {
-			ct.translate(200, 185);
+			ct.translate(200, 200);
 			ct.lineWidth = 2;
 			ct.strokeStyle = om.secondaryBrandColors.iz();
 
