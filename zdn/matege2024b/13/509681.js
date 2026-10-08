@@ -26,7 +26,9 @@
 			text: 'Даны два шара с радиусами $' + sphereBig.radius + '$ и $' + sphereSmall.radius +
 				'$. Во сколько раз ' + nominative + ' большего шара больше ' + genitive + ' меньшего шара?',
 			answers: answer,
-			authors: ['Селена'],
+			authors: ['chas-ege-selena'],
+			// Список списков - как в соседних шаблонах папки
+			preference: [preference],
 		});
 
 		// Иллюстрация: два шара, размеры на canvas пропорциональны радиусам из условия
@@ -97,3 +99,5 @@
 	}, 1000);
 })();
 //509681
+//chas-ege-selena
+//https://mathb-ege.sdamgia.ru/problem?id=509681
