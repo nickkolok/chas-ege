@@ -45,21 +45,39 @@
 			ct.lineWidth = 2;
 
 			let drawSphere = function(cx, cy, rp) {
+				// Тело шара заливаем полупрозрачным брендовым цветом, контур -
+				// вторым брендовым: чёрных линий на чертеже быть не должно
+				// (замечание «покрасить»).
+				ct.fillStyle = om.transparentBrandColors.iz();
+				ct.beginPath();
+				ct.arc(cx, cy, rp, 0, 2 * Math.PI);
+				ct.fill();
+				ct.closePath();
+				ct.strokeStyle = om.secondaryBrandColors.iz();
+
 				// контур шара (большой круг)
 				ct.beginPath();
 				ct.arc(cx, cy, rp, 0, 2 * Math.PI);
 				ct.stroke();
 				ct.closePath();
 
-				// экватор
+				// Экватор: ближняя к зрителю половина сплошная, дальняя - пунктиром
+				// (замечание «задняя полуокружность должна быть пунктиром»).
+				// Штрих [7, 5] - тот же, что у невидимых рёбер в соседних шаблонах.
+				ct.setLineDash([7, 5]);
 				ct.beginPath();
-				ct.ellipse(cx, cy, rp, 0.3 * rp, 0, 0, 2 * Math.PI);
+				ct.ellipse(cx, cy, rp, 0.3 * rp, 0, Math.PI, 2 * Math.PI);
+				ct.stroke();
+				ct.closePath();
+				ct.setLineDash([]);
+				ct.beginPath();
+				ct.ellipse(cx, cy, rp, 0.3 * rp, 0, 0, Math.PI);
 				ct.stroke();
 				ct.closePath();
 
 				// радиус (пунктиром) — наглядно показывает масштаб шара
 				ct.beginPath();
-				ct.setLineDash([4, 4]);
+				ct.setLineDash([7, 5]);
 				ct.moveTo(cx, cy);
 				ct.lineTo(cx + rp, cy);
 				ct.stroke();
