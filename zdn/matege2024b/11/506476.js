@@ -45,9 +45,6 @@
 			let add = function (p, q) { return { x: p.x + q.x, y: p.y + q.y, z: p.z + q.z }; };
 			let mul = function (p, k) { return { x: p.x * k, y: p.y * k, z: p.z * k }; };
 			let dot = function (p, q) { return p.x * q.x + p.y * q.y + p.z * q.z; };
-			let cross = function (p, q) {
-				return { x: p.y * q.z - p.z * q.y, y: p.z * q.x - p.x * q.z, z: p.x * q.y - p.y * q.x };
-			};
 			let norm = function (p) { return mul(p, 1 / Math.sqrt(dot(p, p))); };
 			let along = function (p, dir, d) { return add(p, mul(dir, d)); };
 
@@ -93,7 +90,7 @@
 			let view = { x: cA, y: sA, z: -1 };
 
 			let faceVisible = faces.map(function (face) {
-				let nrm = cross(sub(P[face[1]], P[face[0]]), sub(P[face[2]], P[face[0]]));
+				let nrm = crossProduct3D(sub(P[face[1]], P[face[0]]), sub(P[face[2]], P[face[0]]));
 				let cent = { x: 0, y: 0, z: 0 };
 				face.forEach(function (k) { cent = add(cent, P[k]); });
 				cent = mul(cent, 1 / face.length);
