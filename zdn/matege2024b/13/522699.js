@@ -126,6 +126,7 @@
 			text: `Даны два конуса. Радиус основания и ${givenWord} первого конуса равны соответственно $${r1}$ и $${given1}$, а второго — $${r2}$ и $${given2}$. Во сколько раз ${subjectNom} ${biggerWord} конуса больше ${subjectGen} ${smallerWord} конуса?`,
 			answers: ratio,
 			analys: analys,
+			authors: ['chas-ege-selena'],
 			preference: [preference1, preference2],
 		});
 
@@ -138,4 +139,6 @@
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
+//522699
+//chas-ege-selena
 //https://mathb-ege.sdamgia.ru/test?likes=522699
