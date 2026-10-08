@@ -3,6 +3,21 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
+		let key = '512208';
+		// Четыре родственных типа вопроса: отношение объёмов (в любую сторону)
+		// и отношение площадей боковых поверхностей (в любую сторону).
+		// Тип выбирается через preference, а не случайно из подошедших:
+		// иначе тренажёр и ревьюер не могут заказать конкретный вариант,
+		// а набор вариантов в выдаче зависит от удачи генератора.
+		let preference = [
+			'volumeSecondBigger',
+			'volumeFirstBigger',
+			'lateralAreaSecondBigger',
+			'lateralAreaFirstBigger',
+		];
+		// getSelectedPreferenceFromList возвращает ИНДЕКС, а не название
+		let chosenOption = preference[getSelectedPreferenceFromList(key, preference)];
+
 		let r1, h1, r2, h2;
 		let V1, V2, S1, S2;
 		let validOptions = [];
@@ -26,24 +41,25 @@
 			
 			validOptions = [];
 			
-			if (V2 % V1 === 0 && V2 / V1 <= 36) {
+			if (V2 % V1 === 0 && V2 / V1 >= 2 && V2 / V1 <= 36) {
 				validOptions.push('volumeSecondBigger');
 			}
-			if (V1 % V2 === 0 && V1 / V2 <= 36) {
+			if (V1 % V2 === 0 && V1 / V2 >= 2 && V1 / V2 <= 36) {
 				validOptions.push('volumeFirstBigger');
 			}
-			if (S2 % S1 === 0 && S2 / S1 <= 36) {
+			if (S2 % S1 === 0 && S2 / S1 >= 2 && S2 / S1 <= 36) {
 				validOptions.push('lateralAreaSecondBigger');
 			}
-			if (S1 % S2 === 0 && S1 / S2 <= 36) {
+			if (S1 % S2 === 0 && S1 / S2 >= 2 && S1 / S2 <= 36) {
 				validOptions.push('lateralAreaFirstBigger');
 			}
 			
 			attempts++;
-			genAssert(attempts < 5000, 'Не удалось подобрать параметры цилиндров');
-		} while (validOptions.length === 0);
-
-		let chosenOption = validOptions.iz();
+			genAssert(
+				attempts < 5000,
+				'Не удалось подобрать параметры цилиндров под выбранный вариант ' + chosenOption
+			);
+		} while (!validOptions.includes(chosenOption));
 		let questionText, ratio, ratioFormula;
 
 		switch (chosenOption) {
@@ -103,6 +119,7 @@
 				+ 'Площадь боковой поверхности первого цилиндра равна $S_1=2\\pi\\cdot ' + r1 + '\\cdot ' + h1 + '=' + (2*S1) + '\\pi$. '
 				+ 'Площадь боковой поверхности второго цилиндра равна $S_2=2\\pi\\cdot ' + r2 + '\\cdot ' + h2 + '=' + (2*S2) + '\\pi$. '
 				+ 'Находим отношение: $' + ratioFormula + '$.',
+			preference: [preference],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
