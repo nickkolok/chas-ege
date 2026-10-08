@@ -81,8 +81,9 @@
 		NAtask.setTask({
 			text: text,
 			answers: answer,
-			authors: ['Селена'],
-			preference: preference,
+			authors: ['chas-ege-selena'],
+			// Список списков - как в соседних шаблонах папки
+			preference: [preference],
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 340,
@@ -91,5 +92,7 @@
 		});
 	}, 1000);
 })();
+//509661
+//chas-ege-selena
 // https://mathb-ege.sdamgia.ru/problem?id=509661
 // https://mathb-ege.sdamgia.ru/problem?id=506339
