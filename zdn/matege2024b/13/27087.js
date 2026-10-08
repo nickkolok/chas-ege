@@ -93,6 +93,10 @@
 		NAtask.setTask({
 			text: 'Сторона основания правильной треугольной пирамиды равна $' + a + '$, а высота пирамиды равна $' + k + '\\sqrt{3}$. Найдите объём этой пирамиды.',
 			answers: V,
+			analys: 'Площадь правильного треугольника со стороной $' + a + '$ равна $S = \\frac{\\sqrt{3}}{4} \\cdot ' + a + '^2$. Высота пирамиды $H = ' + k + '\\sqrt{3}$. ' +
+				'Объём: $V = \\frac{1}{3} \\cdot S \\cdot H = \\frac{1}{3} \\cdot \\frac{\\sqrt{3}}{4} \\cdot ' + a +
+				'^2 \\cdot ' + k + '\\sqrt{3} = \\frac{' + (a * a * k) + '}{4} = ' + V + '$.',
+			authors: ['chas-ege-selena'],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
@@ -102,4 +106,6 @@
 		});
 	}, 1000);
 })();
+//27087
+//chas-ege-selena
 // https://mathb-ege.sdamgia.ru/problem?id=27087
