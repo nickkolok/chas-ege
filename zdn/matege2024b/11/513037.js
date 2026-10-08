@@ -59,24 +59,16 @@
 					sin: Math.sin(a),
 				};
 			}
-						// Вертикальный зазор между призмой и пирамидой: заведомо больше
-			// вертикального разброса точек основания, чтобы фигуры не
-			// накладывались друг на друга, плюс небольшой просвет
-			let offsets = [];
-			for (let i = 0; i < n; i++) {
-				offsets.push(Math.sin((angle + 360 / n * i) * Math.PI / 180) * radius * flat);
-			}
-			let gap = Math.max.apply(null, offsets) - Math.min.apply(null, offsets) + 0.2;
-
+						// Тела склеены по основаниям: основание пирамиды совпадает
+			// с верхним основанием призмы, зазора нет
 			let bottomVerts = [];
 			let topVerts = [];
-			let pyBaseVerts = [];
 			for (let i = 0; i < n; i++) {
 				bottomVerts.push(basePoint(i, 0));
 				topVerts.push(basePoint(i, -prismH));
-				pyBaseVerts.push(basePoint(i, -prismH - gap));
 			}
-			let apex = { x: 0, y: -prismH - gap - pyramidH };
+			let pyBaseVerts = topVerts;
+			let apex = { x: 0, y: -prismH - pyramidH };
 
 			// Габаритный прямоугольник фигуры: по нему подбираем масштаб
 			// и смещение, чтобы рисунок заполнял канвас и был отцентрован
@@ -115,8 +107,9 @@
 				ct.stroke();
 			}
 
-			// Призма: боковые рёбра и нижнее основание;
-			// верхнее основание видно целиком. Невидимые рёбра не рисуем
+			// Призма: боковые рёбра и нижнее основание.
+			// Общее основание (стык призмы и пирамиды): видимые рёбра рисуем,
+			// невидимые - нет, как обещает условие задачи
 			for (let i = 0; i < n; i++) {
 				let j = (i + 1) % n;
 				if (isFrontVertex(i)) {
@@ -124,8 +117,8 @@
 				}
 				if (isFrontEdge(i)) {
 					line(bottomVerts[i], bottomVerts[j]);
+					line(topVerts[i], topVerts[j]);
 				}
-				line(topVerts[i], topVerts[j]);
 			}
 
 			// Пирамида: боковые рёбра и видимые рёбра основания
