@@ -41,14 +41,17 @@
 		let mBig = kind === 0 ? big.radius * big.generatrix : big.radius * big.radius * big.height;
 		let mSmall = kind === 0 ? small.radius * small.generatrix : small.radius * small.radius * small.height;
 
-		if (mBig <= mSmall) throw new Error('The bigger cone must actually be bigger');
+		genAssert(mBig > mSmall, 'Первый конус должен действительно оказаться больше второго');
 
 		let ratio = mBig / mSmall;
 
 		let ratioTimes10 = ratio * 10;
-		if (Math.abs(ratioTimes10 - Math.round(ratioTimes10)) > 1e-9) throw new Error('Ratio is not nice');
+		genAssert(
+			Math.abs(ratioTimes10 - Math.round(ratioTimes10)) < 1e-9,
+			'Отношение должно иметь не более одного знака после запятой'
+		);
 
-		if (ratio > 20) throw new Error('Ratio too large');
+		genAssert(ratio <= 20, 'Отношение не должно превышать 20, иначе ответ неудобочитаем');
 
 		genAssertZ1000(ratio);
 
