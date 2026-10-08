@@ -81,32 +81,6 @@
 			};
 		}
 
-		function getPrismVertices(prism) {
-			let bottom = findVerticesOfRegularPolygon(
-				prism.radiusOfCircumscribedCircle,
-				prism.numberSide,
-				-prism.height / 2
-			);
-
-			return bottom.concat([
-				{
-					x: bottom[2].x,
-					y: bottom[2].y,
-					z: prism.height / 2
-				},
-				{
-					x: bottom[0].x,
-					y: bottom[0].y,
-					z: prism.height / 2
-				},
-				{
-					x: bottom[1].x,
-					y: bottom[1].y,
-					z: prism.height / 2
-				}
-			]);
-		}
-
 		function getFigureData() {
 			if (solid === 'cube') {
 				let figure = new Cube(4);
@@ -149,7 +123,10 @@
 				baseSide: 4,
 				numberSide: 3
 			});
-			let vertices = getPrismVertices(figure);
+			// Вершины берём из библиотеки: verticesOfFigure и connectionMatrix
+			// согласованы (верхняя вершина 3 + i стоит точно над нижней i, #3478),
+			// локальная копия с повёрнутым верхним основанием больше не нужна.
+			let vertices = figure.verticesOfFigure;
 
 			return {
 				figure: figure,
@@ -157,8 +134,8 @@
 				section: [
 					pointOnEdge(vertices[0], vertices[1], 0.45),
 					pointOnEdge(vertices[0], vertices[2], 0.45),
-					pointOnEdge(vertices[4], vertices[3], 0.45),
-					pointOnEdge(vertices[4], vertices[5], 0.45)
+					pointOnEdge(vertices[3], vertices[5], 0.45),
+					pointOnEdge(vertices[3], vertices[4], 0.45)
 				]
 			};
 		}
