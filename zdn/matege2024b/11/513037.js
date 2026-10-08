@@ -87,7 +87,7 @@
 			ct.translate(canvasSize / 2 - scale * (minX + maxX) / 2, canvasSize / 2 - scale * (minY + maxY) / 2);
 			ct.scale(scale, scale);
 			ct.lineWidth = 2 / scale;
-			ct.strokeStyle = '#000';
+			ct.strokeStyle = om.secondaryBrandColors.iz();
 
 			// Спереди то, что ближе к наблюдателю (sin > 0),
 			// плюс крайние слева и справа силуэтные рёбра
