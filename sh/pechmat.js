@@ -50,6 +50,9 @@ function readOptions() {
 	options.uniqueAnswersAndSolutions = $('#uniqueAnswersAndSolutions').is(':checked');
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
+	options.prepareFillword = $('#prepareFillword').is(':checked');
+	options.fillwordShape = $('#fillwordShape').val();
+	options.fillwordDecoys = $('#fillwordDecoys').val();
 	options.forceIntegers = $('#forceIntegers').is(':checked');
 	options.onlyIntegers = $('#onlyIntegers').is(':checked');
 	options.randomSeed = $('#randomSeed').val();
@@ -114,6 +117,13 @@ function udalPanel() {
 }
 
 function konecSozd() {
+	//Филворд: оболочки секций в печатных строках (содержимое подставит refreshFillword)
+	try {
+		appendFillwordSections();
+	} catch (e) {
+		console.error('Не удалось подготовить секции филворда:', e);
+	}
+
 	strOtv = '<h2>Ответы</h2>' + strOtv;
 
 	if (options.largeFont) {
@@ -140,6 +150,13 @@ function konecSozd() {
 				generatedTasks[id].taskCategory
 			));
 		}
+	}
+
+	//Филворд из актуальных ответов (generatedTasks) — в HTML и в .tex
+	try {
+		refreshFillword();
+	} catch (e) {
+		console.error('Не удалось собрать филворд:', e);
 	}
 
 	refreshLaTeXarchive();
@@ -427,6 +444,12 @@ function renewTask() {
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
 		grabCurrentTask();
+		//Задание перегенерировано — ответы другие, филворд пересобираем
+		try {
+			refreshFillword();
+		} catch (e) {
+			console.error('Не удалось пересобрать филворд:', e);
+		}
 		if (options.prepareLaTeX) {
 			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt, window.vopr.taskCategory);
 			refreshLaTeXarchive();
@@ -580,6 +603,10 @@ function refreshLaTeXarchive() {
 	bunchTasks += "\n\n%Random seed:" + options.randomSeed;
 
 	zip.file("tasks.tex", bunchTasks);
+	if (window.fillwordState && fillwordState.tex) {
+		// самодостаточный LaTeX-файл филворда — туда же, где tasks.tex и answers.tex
+		zip.file("fillword.tex", fillwordState.tex);
+	}
 	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
 
 	var img = zip.folder("images");

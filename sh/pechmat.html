@@ -113,6 +113,15 @@
 				Возможность выгрузки в $\LaTeX$ (замедляет генерацию)
 			</label>
 			<br/>
+			<input type="checkbox" id="prepareFillword" checked data-chasstorage-id="pech-prepareFillword"/><label for="prepareFillword">
+				Филворд из числовых ответов (в HTML и в $\LaTeX$-архив)
+			</label>
+			<br/>
+			<label for="fillwordShape">Форма филворда («х» — клетка, «_» — пусто):</label>
+			<textarea id="fillwordShape" rows="5" cols="18" style="font-family:monospace" data-chasstorage-id="pech-fillwordShape"></textarea>
+			<label for="fillwordDecoys">Слова-обманки для филворда (по одному в строке):</label>
+			<textarea id="fillwordDecoys" rows="3" cols="18" style="font-family:monospace" data-chasstorage-id="pech-fillwordDecoys"></textarea>
+			<br/>
 			Зерно ГПСЧ (random seed):
 			<input value="" id="randomSeed" data-chasstorage-id="pech-randomSeed"/>
 			<br/>
@@ -153,10 +162,13 @@
 			<button onclick="removeGridFields()" style="display:none;" id="button-removeGridFields">Убрать сетки-поля</button>
 			<br/>
 			<a id="latex-archive-placeholder" style="display:none;">Скачать $\LaTeX$-файл и иллюстрации в архиве</a>
+			<a id="fillword-tex-placeholder" style="display:none;" download="fillword.tex">Скачать fillword.tex</a>
 		</div>
 	</div>
 	<script src='../ext/jszip.min.js'></script>
+	<script src='../ext/fillword.js'></script>
 	<script src='pechmat.js'></script>
+	<script src='fillword-pech.js'></script>
 	<div id="grid-style-placeholder" style="display:none;">
 	</div>
 	<div id="grid-svg-container" style="display:none;">
