@@ -108,17 +108,23 @@
 			// дальняя половина эллипса поверхности -> боковая образующая до вершины ->
 			// обратно по второй образующей. Тогда полупрозрачный цвет нигде не накладывается
 			// сам на себя и не даёт «двух слоёв».
+			// Контурные образующие касаются эллипсов, а не идут в их крайние точки:
+			// из вершины (она под центром эллипса на расстоянии H) касательная
+			// касается эллипса в точке с параметром alpha (справа) и PI - alpha
+			// (слева), sin(alpha) = e / H; для поверхности жидкости угол тот же
+			// (подобие). Иначе края эллипса поверхности выступали за контур сосуда.
+			let alpha = Math.asin(e / H);
 			ctx.fillStyle = liquidColor;
 			ctx.beginPath();
-			ctx.moveTo(cx - Rl, yL);
-			ctx.ellipse(cx, yL, Rl, el, 0, Math.PI, 0);
+			ctx.moveTo(cx - Rl * Math.cos(alpha), yL + el * Math.sin(alpha));
+			ctx.ellipse(cx, yL, Rl, el, 0, Math.PI - alpha, 2 * Math.PI + alpha);
 			ctx.lineTo(cx, botY);
 			ctx.closePath();
 			ctx.fill();
 
 			// Боковые образующие сосуда
-			ctx.drawLine(cx - R, topY, cx, botY);
-			ctx.drawLine(cx + R, topY, cx, botY);
+			ctx.drawLine(cx - R * Math.cos(alpha), topY + e * Math.sin(alpha), cx, botY);
+			ctx.drawLine(cx + R * Math.cos(alpha), topY + e * Math.sin(alpha), cx, botY);
 
 			// Верхняя кромка сосуда
 			ctx.drawEllipse(cx, topY, R, e);
@@ -153,7 +159,7 @@
 			height: 360,
 			paint: paint1,
 		});
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 //508394
