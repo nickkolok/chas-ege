@@ -1,13 +1,17 @@
 (function () {
 	'use strict';
-	retryWhileError(function () {
-		NAinfo.requireApiVersion(0, 2);
+	NAinfo.requireApiVersion(0, 2);
 
-		let key = '522699';
-		let preference1 = ['lateral', 'volume'];
-		let preference2 = ['firstGreater', 'secondGreater'];
-		let kind = getSelectedPreferenceFromList(key, preference1);
-		let v = getSelectedPreferenceFromList(key, preference2);
+	// Ветки выбираем до retryWhileError: иначе при каждой неудачной попытке они
+	// перевыбирались бы заново, и в случайном режиме боковая поверхность (её реже
+	// отбраковывают) выпадала бы в 62% задач вместо 50%
+	let key = '522699';
+	let preference1 = ['lateral', 'volume'];
+	let preference2 = ['firstGreater', 'secondGreater'];
+	let kind = getSelectedPreferenceFromList(key, preference1);
+	let v = getSelectedPreferenceFromList(key, preference2);
+
+	retryWhileError(function () {
 
 		// Данные - в тех же пределах, что у ФИПИ (1ADCB9, 4AB921, 568EF9, 28D803 -
 		// объём; A6DE08, F199D5 - боковая поверхность): радиусы, высоты и образующие
@@ -48,6 +52,9 @@
 
 		let ratio = mBig / mSmall;
 		genAssert((10 * ratio).isAlmostInteger(), 'Отношение должно иметь не более одного знака после запятой');
+		// У ФИПИ отношение либо равно 1 (равные конусы), либо не меньше 1,5:
+		// ответов «в 1,2 раза», «в 1,4 раза» в банке нет
+		genAssert(ratio === 1 || ratio >= 1.5, 'Отношение должно быть равно 1 или не меньше 1,5');
 		// Наибольшее отношение у ФИПИ - 32 («2 и 3» против «8 и 6»)
 		genAssert(ratio <= 40, 'Отношение не должно превышать 40, иначе ответ неудобочитаем');
 
@@ -140,7 +147,7 @@
 			paint: paint1,
 		});
 
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 10000);
 })();
 //522699
