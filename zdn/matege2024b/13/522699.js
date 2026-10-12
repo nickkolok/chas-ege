@@ -9,66 +9,54 @@
 		let kind = getSelectedPreferenceFromList(key, preference1);
 		let v = getSelectedPreferenceFromList(key, preference2);
 
-		// Чертёж обязан быть читаемым, поэтому у каждого конуса высота не меньше
-		// радиуса и не больше двух радиусов (md/task_geometry.md: избегать данных,
-		// по которым трудно построить читаемый чертёж). Без этого при l ~= r конус
-		// вырождался в «блин», а при r << h - в «иглу», и пара выглядела криво.
-		let coneParams = function (rMax, lMax) {
-			let r = sl(2, rMax, 1);
-			let l = sl(Math.ceil(r * Math.SQRT2), Math.min(lMax, Math.floor(r * Math.sqrt(5))), 1);
-			genAssert(l > r, 'Образующая конуса должна быть больше радиуса');
-			return { r: r, l: l, h: Math.sqrt(l * l - r * r) };
+		// Данные - в тех же пределах, что у ФИПИ (1ADCB9, 4AB921, 568EF9, 28D803 -
+		// объём; A6DE08, F199D5 - боковая поверхность): радиусы, высоты и образующие
+		// от 2 до 9. Высота может быть и меньше радиуса («9 и 2»), и вчетверо больше
+		// («2 и 9»): такие конусы на чертеже ещё читаются, а запрещать их значило бы
+		// отсечь данные открытого банка.
+		let coneParams = function () {
+			// при данной образующей радиус меньше её, поэтому не больше 8
+			let r = sl(2, kind === 0 ? 8 : 9);
+			if (kind === 0) {
+				// даны радиус и образующая; образующая длиннее радиуса
+				let l = sl(r + 1, 9);
+				return { r: r, l: l, h: Math.sqrt(l * l - r * r), given: l, m: r * l };
+			}
+			// даны радиус и высота
+			let h = sl(2, 9);
+			return { r: r, h: h, given: h, m: r * r * h };
 		};
+		let p1 = coneParams();
+		let p2 = coneParams();
 
-		let big, small;
-		if (kind === 0) {
-			// даны радиус и образующая — сравниваем площади боковых поверхностей
-			let pB = coneParams(10, 15);
-			let pS = coneParams(8, 12);
-			big = new Cone({ radius: pB.r, height: pB.h });
-			small = new Cone({ radius: pS.r, height: pS.h });
-		} else {
-			// даны радиус и высота — сравниваем объёмы
-			let rB = sl(2, 9, 1);
-			let hB = sl(rB, 2 * rB, 1);
-			let rS = sl(2, 8, 1);
-			let hS = sl(rS, 2 * rS, 1);
-			big = new Cone({ radius: rB, height: hB });
-			small = new Cone({ radius: rS, height: hS });
-		}
+		// Коэффициенты при pi - целые числа, известные заранее: r * l для боковой
+		// поверхности и r^2 * h (без множителя 1/3) для объёма. Образующую берём
+		// целой из условия, а не из дробного геттера Cone.generatrix.
+		let cone1 = new Cone({ radius: p1.r, height: p1.h });
+		let cone2 = new Cone({ radius: p2.r, height: p2.h });
+		genAssert(Math.abs((kind === 0 ? cone1.sideSurfaceArea : 3 * cone1.volume) - p1.m * Math.PI) < 1e-6,
+			'Коэффициент должен совпасть с вычисленным через класс Cone');
 
-		// Для сравнения используем коэффициенты без π (π сокращается)
-		let mBig = kind === 0 ? big.radius * big.generatrix : big.radius * big.radius * big.height;
-		let mSmall = kind === 0 ? small.radius * small.generatrix : small.radius * small.radius * small.height;
-
-		genAssert(mBig > mSmall, 'Первый конус должен действительно оказаться больше второго');
+		let m1 = p1.m;
+		let m2 = p2.m;
+		let mBig = v ? m2 : m1;
+		let mSmall = v ? m1 : m2;
+		// Отношение не меньше единицы: «больший» конус - тот, о котором спрашивают.
+		// У ФИПИ встречаются и равные конусы (например, «3 и 4» и «2 и 9» для объёма),
+		// но редко - пропускаем такие пары с вероятностью 1/20.
+		genAssert(mBig > mSmall || (mBig === mSmall && sl(19) === 0), 'Конус, о котором спрашивают, должен быть больше');
 
 		let ratio = mBig / mSmall;
+		genAssert((10 * ratio).isAlmostInteger(), 'Отношение должно иметь не более одного знака после запятой');
+		// Наибольшее отношение у ФИПИ - 32 («2 и 3» против «8 и 6»)
+		genAssert(ratio <= 40, 'Отношение не должно превышать 40, иначе ответ неудобочитаем');
 
-		let ratioTimes10 = ratio * 10;
-		genAssert(
-			Math.abs(ratioTimes10 - Math.round(ratioTimes10)) < 1e-9,
-			'Отношение должно иметь не более одного знака после запятой'
-		);
-
-		genAssert(ratio <= 20, 'Отношение не должно превышать 20, иначе ответ неудобочитаем');
-
-		genAssertZ1000(ratio);
-
-		let cones = [big, small];
-		if (v)
-			cones.reverse();
-
-		let r1 = cones[0].radius, h1 = cones[0].height, l1 = cones[0].generatrix;
-		let r2 = cones[1].radius, h2 = cones[1].height, l2 = cones[1].generatrix;
-		let m1 = kind === 0 ? r1 * l1 : r1 * r1 * h1;
-		let m2 = kind === 0 ? r2 * l2 : r2 * r2 * h2;
+		let r1 = p1.r, h1 = p1.h;
+		let r2 = p2.r, h2 = p2.h;
 
 		let biggerWord = ['первого', 'второго'][v];
 		let smallerWord = ['второго', 'первого'][v];
 		let givenWord = kind ? 'высота' : 'образующая';
-		let given1 = kind ? h1 : l1;
-		let given2 = kind ? h2 : l2;
 		let subjectNom = kind ? 'объём' : 'площадь боковой поверхности';
 		let subjectGen = kind ? 'объёма' : 'площади боковой поверхности';
 		let letter = kind ? 'V' : 'S';
@@ -76,19 +64,20 @@
 		let paint1 = function (ct) {
 			let w = 400;
 			let h = 300;
-			let k = 0.3;
-			let gap = 2;
+			let gap = 30; // промежуток между конусами, px
+			// Сплюснутость эллипса основания общая для обоих конусов (один ракурс)
+			// и не больше половины отношения высоты к радиусу: тогда вершина лежит
+			// вне эллипса и из неё можно провести касательные к основанию.
+			let k = Math.min(0.3, 0.5 * Math.min(h1 / r1, h2 / r2));
 
 			let maxR = Math.max(r1, r2);
 			let maxH = Math.max(h1, h2);
-			let totalWidth = 2 * r1 + gap + 2 * r2;
-			let totalHeight = maxH + 2 * k * maxR;
-			let scale = Math.min((w - 40) / totalWidth, (h - 40) / totalHeight);
+			let scale = Math.min((w - 40 - gap) / (2 * r1 + 2 * r2), (h - 40) / (maxH + k * maxR));
 
-			let xLeft = (w - totalWidth * scale) / 2;
-			let y0 = h / 2 + (maxH - k * maxR) * scale / 2;
+			let xLeft = (w - (2 * r1 + 2 * r2) * scale - gap) / 2;
+			let y0 = (h + (maxH - k * maxR) * scale) / 2;
 			let cx1 = xLeft + r1 * scale;
-			let cx2 = xLeft + (2 * r1 + gap + r2) * scale;
+			let cx2 = xLeft + (2 * r1 + r2) * scale + gap;
 
 			ct.lineWidth = 2;
 			ct.strokeStyle = om.secondaryBrandColors.iz();
@@ -97,11 +86,18 @@
 				let R = r * scale;
 				let H = hh * scale;
 				let ry = k * R;
-				ct.drawLine(cx - R, y0, cx, y0 - H);
-				ct.drawLine(cx + R, y0, cx, y0 - H);
-				ct.drawEllipse(cx, y0, R, ry, 0, 0, Math.PI);
-				ct.setLineDash([6, 4]);
-				ct.drawEllipse(cx, y0, R, ry, 0, Math.PI, 2 * Math.PI);
+				// Образующие касаются эллипса основания, а не идут в его крайние
+				// точки: точка касания лежит на параметре t = -alpha (справа)
+				// и PI + alpha (слева), где sin(alpha) = ry / H. Видимая дуга
+				// основания - от одной точки касания до другой через передний край.
+				let alpha = Math.asin(ry / H);
+				let tx = R * Math.cos(alpha);
+				let ty = -ry * Math.sin(alpha);
+				ct.drawLine(cx - tx, y0 + ty, cx, y0 - H);
+				ct.drawLine(cx + tx, y0 + ty, cx, y0 - H);
+				ct.drawEllipse(cx, y0, R, ry, 0, -alpha, Math.PI + alpha);
+				ct.setLineDash([7, 5]);
+				ct.drawEllipse(cx, y0, R, ry, 0, Math.PI + alpha, 2 * Math.PI - alpha);
 				ct.setLineDash([]);
 			};
 
@@ -109,28 +105,32 @@
 			drawCone(cx2, r2, h2);
 		};
 
-		// В отношении числитель - коэффициент БОЛЬШЕГО конуса, знаменатель - меньшего.
-		// При v = 1 («второй больше») массив cones перевёрнут, поэтому m1 и m2 меняются
-		// ролями, а mBig и mSmall от перестановки не зависят. Индексы в левой части
-		// (letter_{v+1} / letter_{2-v}) уже указывают на больший и меньший конусы.
+		// В отношении числитель - коэффициент конуса, о котором спрашивают («большего»),
+		// знаменатель - другого. Индексы в левой части (letter_{v+1} / letter_{2-v})
+		// указывают на эти конусы.
+		let ratioText = 'Отношение ' + (kind ? 'объёмов' : 'площадей') + ': $\\frac{' + letter + '_' + (v + 1) + '}{' + letter + '_' + (2 - v) + '} = ' +
+			(kind ? '' : '\\frac{' + mBig + '\\pi}{' + mSmall + '\\pi} = ') + '\\frac{' + mBig + '}{' + mSmall + '} = ' + ratio + '$.';
 		let analys;
 		if (kind === 0) {
-			analys = `Площадь боковой поверхности конуса вычисляется по формуле $${letter} = \\pi r l$, где $r$ — радиус основания, $l$ — образующая. ` +
-				`Площадь боковой поверхности первого конуса: $${letter}_1 = \\pi \\cdot ${r1} \\cdot ${l1} = ${m1}\\pi$. ` +
-				`Площадь боковой поверхности второго конуса: $${letter}_2 = \\pi \\cdot ${r2} \\cdot ${l2} = ${m2}\\pi$. ` +
-				`Отношение площадей: $\\frac{${letter}_${v + 1}}{${letter}_${2 - v}} = \\frac{${mBig}\\pi}{${mSmall}\\pi} = \\frac{${mBig}}{${mSmall}} = ${ratio}$.`;
+			analys = 'Площадь боковой поверхности конуса вычисляется по формуле $S = \\pi r l$, где $r$ — радиус основания, $l$ — образующая. ' +
+				'Площадь боковой поверхности первого конуса: $S_1 = \\pi \\cdot ' + r1 + ' \\cdot ' + p1.l + ' = ' + m1 + '\\pi$. ' +
+				'Площадь боковой поверхности второго конуса: $S_2 = \\pi \\cdot ' + r2 + ' \\cdot ' + p2.l + ' = ' + m2 + '\\pi$. ' +
+				ratioText;
 		} else {
-			analys = `Объём конуса вычисляется по формуле $${letter} = \\frac{1}{3}\\pi r^2 h$, где $r$ — радиус основания, $h$ — высота. ` +
-				`Объём первого конуса: $${letter}_1 = \\frac{1}{3}\\pi \\cdot ${r1}^2 \\cdot ${h1} = \\frac{1}{3}\\pi \\cdot ${m1}$. ` +
-				`Объём второго конуса: $${letter}_2 = \\frac{1}{3}\\pi \\cdot ${r2}^2 \\cdot ${h2} = \\frac{1}{3}\\pi \\cdot ${m2}$. ` +
-				`Отношение объёмов: $\\frac{${letter}_${v + 1}}{${letter}_${2 - v}} = \\frac{${mBig}}{${mSmall}} = ${ratio}$.`;
+			analys = 'Объём конуса вычисляется по формуле $V = \\frac{1}{3}\\pi r^2 h$, где $r$ — радиус основания, $h$ — высота. ' +
+				'Объём первого конуса: $V_1 = \\frac{1}{3}\\pi \\cdot ' + r1 + '^2 \\cdot ' + h1 + ' = \\frac{1}{3}\\pi \\cdot ' + m1 + '$. ' +
+				'Объём второго конуса: $V_2 = \\frac{1}{3}\\pi \\cdot ' + r2 + '^2 \\cdot ' + h2 + ' = \\frac{1}{3}\\pi \\cdot ' + m2 + '$. ' +
+				ratioText;
 		}
 
 		NAtask.setTask({
-			text: `Даны два конуса. Радиус основания и ${givenWord} первого конуса равны соответственно $${r1}$ и $${given1}$, а второго — $${r2}$ и $${given2}$. Во сколько раз ${subjectNom} ${biggerWord} конуса больше ${subjectGen} ${smallerWord} конуса?`,
+			// Обе формулировки ФИПИ: «...первого конуса?» (1ADCB9) и «...первого?» (4AB921)
+			text: 'Даны два конуса. Радиус основания и ' + givenWord + ' первого конуса равны соответственно $' + r1 + '$ и $' + p1.given +
+				'$, а второго — $' + r2 + '$ и $' + p2.given + '$. Во сколько раз ' + subjectNom + ' ' + biggerWord + ' конуса больше ' +
+				subjectGen + ' ' + smallerWord + [' конуса', ''].iz() + '?',
 			answers: ratio,
 			analys: analys,
-			authors: ['chas-ege-selena'],
+			authors: ['chas-ege-selena', 'Zer00Player'],
 			preference: [preference1, preference2],
 		});
 
@@ -141,8 +141,8 @@
 		});
 
 		NAtask.modifiers.allDecimalsToStandard();
-	}, 1000);
+	}, 10000);
 })();
 //522699
-//chas-ege-selena
+//chas-ege-selena, Zer00Player
 //https://mathb-ege.sdamgia.ru/test?likes=522699
