@@ -1,13 +1,16 @@
 (function () {
 	'use strict';
+	NAinfo.requireApiVersion(0, 2);
+
+	// Ветку выбираем до retryWhileError: иначе при каждой неудачной попытке она
+	// перевыбиралась бы заново, и в случайном режиме чаще выпадала бы ветка,
+	// которую реже отбраковывают («больше» - примерно в 61% задач вместо 50%)
+	let key = '511443';
+	let preference = ['bigger', 'smaller'];
+	let rand = getSelectedPreferenceFromList(key, preference);
+	let bigger = rand === 0;
+
 	retryWhileError(function () {
-		NAinfo.requireApiVersion(0, 2);
-
-		let key = '511443';
-		let preference = ['bigger', 'smaller'];
-		let rand = getSelectedPreferenceFromList(key, preference);
-		let bigger = rand === 0;
-
 		// Кратности - словами, как у ФИПИ (3A0E06, 5F3B21, 850DF9, FA5AD0, 0B53AE,
 		// 5BAF16, 6A8E45, D324CE, CC863D): «в полтора раза», «в два раза», «вдвое»,
 		// «в два с половиной раза», «втрое», «в четыре раза»
@@ -21,20 +24,29 @@
 		let k = multiplier.k;
 		let k2 = k * k;
 
-		// Уровень воды у ФИПИ - от 10 до 90 см, кратен 10
-		let h = 10 * sl(1, 9);
 		// Объём воды не меняется: pi * r^2 * h = pi * (k r)^2 * x, поэтому
-		// в широком сосуде уровень в k^2 раз ниже, в узком - в k^2 раз выше
-		let answer = bigger ? h / k2 : h * k2;
-		genAssertAlmostInteger(answer, 'Новый уровень воды должен быть целым');
-		answer = Math.round(answer);
-		// Сосуды правдоподобного размера: у ФИПИ новый уровень не выше 90 см
-		genAssert(answer <= 100, 'Новый уровень воды не должен превышать 100 см');
+		// в широком сосуде уровень в k^2 раз ниже, в узком - в k^2 раз выше.
+		// У ФИПИ уровень кратен 10 см, но тогда на весь шаблон набирается лишь
+		// 13 задач, а «в два с половиной» и «в четыре раза меньше» не выпадают
+		// вовсе. Поэтому уровень - любое целое число сантиметров от 5 до 95,
+		// при котором новый уровень целый и не больше 100 см (у ФИПИ - до 90).
+		// Уровень выбираем из подходящих, а не перебором: так каждая кратность
+		// выпадает одинаково часто.
+		let levels = [];
+		for (let x = 5; x <= 95; x++) {
+			let y = bigger ? x / k2 : x * k2;
+			if (y.isAlmostInteger() && y >= 5 && y <= 100) {
+				levels.push(x);
+			}
+		}
+		genAssertNonempty(levels, 'Для этой кратности нет подходящего уровня воды');
+		let h = levels.iz();
+		let answer = Math.round(bigger ? h / k2 : h * k2);
 
 		let kTex = String(k).replace('.', '{,}');
 		let analys = 'Объём воды при переливании не меняется. Объём цилиндра равен $\\pi r^2 h$. ' +
 			'Радиус основания второго сосуда в $' + kTex + '$ раза ' + (bigger ? 'больше' : 'меньше') +
-			', поэтому площадь его основания в $' + kTex + '^2 = ' + String(k2).replace('.', '{,}') + '$ раза ' + (bigger ? 'больше' : 'меньше') +
+			', поэтому площадь его основания в $' + kTex + '^2 = ' + String(k2).replace('.', '{,}') + '$ ' + (k2 === 9 || k2 === 16 ? 'раз' : 'раза') + ' ' + (bigger ? 'больше' : 'меньше') +
 			', а уровень воды во столько же раз ' + (bigger ? 'ниже' : 'выше') + ': $' + h + (bigger ? ' : ' : ' \\cdot ') +
 			String(k2).replace('.', '{,}') + ' = ' + answer + '$ см.';
 
@@ -103,10 +115,19 @@
 			ct.drawEllipse(cx1, waterY, R1, ry1, 0, Math.PI, 2 * Math.PI);
 			ct.setLineDash([]);
 
-			// Двунаправленная стрелка h: от поверхности воды до дна
+			// Размерная стрелка h: от поверхности воды до дна. Если столб воды
+			// низкий (уровень во много раз ниже, чем во втором сосуде), наконечники
+			// внутри не помещаются - тогда стрелки подводятся к уровням снаружи
 			let arrowX = cx1 + R1 + 18;
-			ct.drawArrow(arrowX, bottomY, arrowX, waterY);
-			ct.drawArrow(arrowX, waterY, arrowX, bottomY);
+			let columnPx = bottomY - waterY;
+			if (columnPx >= 34) {
+				ct.drawArrow(arrowX, bottomY, arrowX, waterY);
+				ct.drawArrow(arrowX, waterY, arrowX, bottomY);
+			} else {
+				ct.drawLine(arrowX, waterY, arrowX, bottomY);
+				ct.drawArrow(arrowX, waterY - 16, arrowX, waterY);
+				ct.drawArrow(arrowX, bottomY + 16, arrowX, bottomY);
+			}
 			ct.fillStyle = edgeColor;
 			ct.font = 'italic 20px serif';
 			ct.fillText('h', arrowX + 6, (waterY + bottomY) / 2 + 7);
