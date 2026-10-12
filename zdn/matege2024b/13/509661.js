@@ -1,10 +1,14 @@
 (function () {
 	'use strict';
+	NAinfo.requireApiVersion(0, 2);
+	// Ветку выбираем до retryWhileError: иначе при каждой неудачной попытке она
+	// перевыбиралась бы, и «найти радиус» (его реже отбраковывают) выпадало бы
+	// примерно в 56% задач вместо 50%
+	let key = '509661';
+	let preference = ['findRadius', 'findHeight'];
+	let rand = getSelectedPreferenceFromList(key, preference);
+
 	retryWhileError(function () {
-		NAinfo.requireApiVersion(0, 2);
-		let key = '509661';
-		let preference = ['findRadius', 'findHeight'];
-		let rand = getSelectedPreferenceFromList(key, preference);
 
 		// Данные - в тех же пределах, что у ФИПИ. Радиус ищут (34E2FF) при высоте
 		// от 3 до 9 и радиусе от 3 до 9 (высота бывает и меньше радиуса: «64pi, h = 3»).
