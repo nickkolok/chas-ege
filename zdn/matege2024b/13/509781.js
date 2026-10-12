@@ -56,68 +56,104 @@
 			authors: ['chas-ege-selena', 'Zer00Player'],
 		});
 
-		let paint = function (ct) {
-			// Масштаб: цилиндр вместе с эллипсами оснований вписан в 260 x 260
-			let scale = Math.min(130 / cylinder.radius, 260 / (cylinder.height + 0.6 * cylinder.radius));
-			let r = cylinder.radius * scale;
-			let H = cylinder.height * scale;
-			let ry = 0.3 * r;
+		// Чертёж - как в образце задачи: цилиндр видно спереди-сверху, сечение
+		// повёрнуто к зрителю наискосок (одна его вертикальная сторона спереди,
+		// другая сзади), расстояние от оси до сечения - перпендикуляр к середине
+		// хорды на верхнем основании (с отметкой прямого угла) и такой же
+		// пунктир на нижнем, середины хорд соединены пунктиром.
+		// Модель: ось цилиндра вертикальна, точка основания задаётся углом t на
+		// окружности; sin(t) > 0 - задняя половина, sin(t) < 0 - передняя.
+		let flat = 0.3; // сплюснутость эллипсов оснований
+		// Нормаль к хорде - влево и немного вперёд (как в образце); при таком
+		// направлении сечение не смотрит на зрителя ни ребром, ни «в лоб»
+		let phi = Math.PI + 0.4;
+		let halfAngle = Math.acos(distance / cylinder.radius); // полуугол дуги хорды
 
-			ct.translate(150, 150);
+		let paint = function (ct) {
+			let w = 400;
+			let h = 320;
+			let r = cylinder.radius;
+			let H = cylinder.height;
+			let scale = Math.min((w - 40) / (2 * r), (h - 40) / (H + 2 * flat * r));
+			let cx = w / 2;
+			let yTop = (h - H * scale) / 2;
+			let yBottom = yTop + H * scale;
+
+			// Проекция точки основания: angle - угол на окружности, rho - расстояние
+			// от оси (в единицах задачи), y0 - экранная высота основания
+			let onBase = function (angle, rho, y0) {
+				return {
+					x: cx + rho * Math.cos(angle) * scale,
+					y: y0 - flat * rho * Math.sin(angle) * scale,
+				};
+			};
+			let line = function (p, q, dashed) {
+				ct.setLineDash(dashed ? [6, 4] : []);
+				ct.drawLine(p.x, p.y, q.x, q.y);
+				ct.setLineDash([]);
+			};
+
+			let rx = r * scale;
+			let ry = flat * r * scale;
 			ct.lineWidth = 2;
 			ct.strokeStyle = om.secondaryBrandColors.iz();
-			
-			let yProjOffset = ry * distance / cylinder.radius;
-			let a = halfChord * scale;
-			
-			// 1. Невидимая (задняя) часть нижнего основания
+
+			// Концы хорды и середина хорды на обоих основаниях
+			let a1 = phi - halfAngle;
+			let a2 = phi + halfAngle;
+			let top1 = onBase(a1, r, yTop), top2 = onBase(a2, r, yTop);
+			let bot1 = onBase(a1, r, yBottom), bot2 = onBase(a2, r, yBottom);
+			let midTop = onBase(phi, distance, yTop), midBottom = onBase(phi, distance, yBottom);
+			let centerTop = { x: cx, y: yTop }, centerBottom = { x: cx, y: yBottom };
+
+			// Сечение - залитый прямоугольник
+			ct.drawSection([[top1.x, top1.y], [top2.x, top2.y], [bot2.x, bot2.y], [bot1.x, bot1.y]],
+				om.transparentBrandColors.iz());
+
+			// Цилиндр: верхнее основание видно целиком, у нижнего задняя половина
+			// невидима; контурные образующие
+			ct.drawEllipse(cx, yTop, rx, ry);
+			ct.drawEllipse(cx, yBottom, rx, ry, 0, 0, Math.PI);
 			ct.setLineDash([6, 4]);
-			ct.drawEllipse(0, H / 2, r, ry, 0, Math.PI, 2 * Math.PI);
-			
-			// 2. Ось цилиндра (невидимая внутри)
-			ct.drawLine(0, -H / 2, 0, H / 2);
-			
-			// 3. Сечение (полупрозрачный прямоугольник)
-			let rectPoints = [
-				[-a, H / 2 + yProjOffset],
-				[a, H / 2 + yProjOffset],
-				[a, -H / 2 + yProjOffset],
-				[-a, -H / 2 + yProjOffset]
-			];
+			ct.drawEllipse(cx, yBottom, rx, ry, 0, Math.PI, 2 * Math.PI);
 			ct.setLineDash([]);
-			ct.drawSection(rectPoints, om.transparentBrandColors.iz());
-			
-			// Контур сечения
-			ct.beginPath();
-			ct.moveTo(rectPoints[0][0], rectPoints[0][1]);
-			for (let i = 1; i < rectPoints.length; i++) {
-				ct.lineTo(rectPoints[i][0], rectPoints[i][1]);
-			}
-			ct.closePath();
-			ct.stroke();
-			
-			// 4. Видимая (передняя) часть нижнего основания
-			ct.drawEllipse(0, H / 2, r, ry, 0, 0, Math.PI);
-			
-			// 5. Верхнее основание (видимо целиком)
-			ct.drawEllipse(0, -H / 2, r, ry);
-			
-			// 6. Силуэтные образующие
-			ct.drawLine(-r, -H / 2, -r, H / 2);
-			ct.drawLine(r, -H / 2, r, H / 2);
-			
-			// 7. Расстояние от оси до сечения (на верхнем основании)
-			ct.drawLine(0, -H / 2, 0, -H / 2 + yProjOffset);
-			
-			// Засечки для обозначения расстояния
-			let tickSize = 5;
-			ct.drawLine(-tickSize, -H / 2, tickSize, -H / 2);
-			ct.drawLine(-tickSize, -H / 2 + yProjOffset, tickSize, -H / 2 + yProjOffset);
+			ct.drawLine(cx - rx, yTop, cx - rx, yBottom);
+			ct.drawLine(cx + rx, yTop, cx + rx, yBottom);
+
+			// Стороны сечения: хорда верхнего основания видна, нижнего - нет;
+			// боковая сторона видна, если лежит на передней половине поверхности
+			line(top1, top2, false);
+			line(bot1, bot2, true);
+			line(top1, bot1, Math.sin(a1) > 0);
+			line(top2, bot2, Math.sin(a2) > 0);
+
+			// Ось, расстояние от оси до сечения на обоих основаниях
+			// и отрезок, соединяющий середины хорд
+			line(centerTop, centerBottom, true);
+			line(centerTop, midTop, false);
+			line(centerBottom, midBottom, true);
+			line(midTop, midBottom, true);
+
+			// Прямой угол между перпендикуляром и хордой на верхнем основании
+			// Сторона отметки - 12 px, но не больше половины перпендикуляра и полухорды
+			let mark = Math.min(12 / scale, 0.5 * distance, 0.5 * halfChord);
+			let toAxis = function (k) { // точка на перпендикуляре от середины к оси
+				return onBase(phi, distance - k, yTop);
+			};
+			let alongChord = function (p, k) { // сдвиг вдоль хорды к концу top2
+				return { x: p.x + (top2.x - midTop.x) * k / halfChord, y: p.y + (top2.y - midTop.y) * k / halfChord };
+			};
+			let m1 = toAxis(mark);
+			let m2 = alongChord(m1, mark);
+			let m3 = alongChord(midTop, mark);
+			ct.lineWidth = 1.5;
+			line(m1, m2, false);
+			line(m2, m3, false);
 		};
 
 		NAtask.modifiers.addCanvasIllustration({
-			width: 300,
-			height: 300,
+			width: 400,
+			height: 320,
 			paint: paint,
 		});
 	}, 1000);
