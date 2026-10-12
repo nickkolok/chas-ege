@@ -17,15 +17,24 @@ const projectRoot = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
 
 if (args.length === 0 || isNaN(parseInt(args[0], 10))) {
-    console.error('Usage: node dev/provide_examples_to_PR.mjs <PR_NUMBER> [headless-debug options...]');
+    console.error('Usage: node dev/provide_examples_to_PR.mjs <PR_NUMBER> [--bare-nodejs] [headless-debug options...]');
     console.error('Example: node dev/provide_examples_to_PR.mjs 1234 --headless --browser /usr/bin/chromium');
+    console.error('         node dev/provide_examples_to_PR.mjs 1234 --bare-nodejs   # вместо puppeteer — dev/run-node-template.js (jsdom[+node-canvas])');
     process.exit(1);
 }
 
 const prNumber = args[0];
 const debugArgs = args.slice(1);
 
-if (!debugArgs.includes('--headless')) {
+// --bare-nodejs: гоняем шаблоны нашим «голым» Node-раннером вместо
+// headless-debug.mjs (puppeteer). Формат stdout у раннера совпадает
+// (=== PREFERENCE … === / === LaTeX CODE START === …), поэтому весь
+// остальной конвейер (extractLatex, загрузка картинок, коммент) не меняется.
+const bareIdx = debugArgs.indexOf('--bare-nodejs');
+const bareNodejs = bareIdx >= 0;
+if (bareNodejs) debugArgs.splice(bareIdx, 1);
+
+if (!bareNodejs && !debugArgs.includes('--headless')) {
     debugArgs.unshift('--headless');
 }
 
@@ -83,17 +92,30 @@ async function fetchRaw(url) {
 }
 
 async function runDebug(filepath, extraArgs) {
-    const scriptPath = path.join(projectRoot, 'sh', 'headless-debug.mjs');
-    const args = ['--filepath', filepath, ...extraArgs];
+    const scriptPath = path.join(projectRoot, bareNodejs ? 'dev' : 'sh',
+        bareNodejs ? 'run-node-template.js' : 'headless-debug.mjs');
+    // В bare-режиме из отладочных аргументов осмысленны только --iterations и
+    // --seed: остальные (--headless, --browser, --temp-profile…) — опции puppeteer.
+    const args = ['--filepath', filepath];
+    if (bareNodejs) {
+        for (let i = 0; i < extraArgs.length; i++) {
+            if (extraArgs[i] === '--iterations' || extraArgs[i] === '--seed') {
+                args.push(extraArgs[i], extraArgs[i + 1]);
+                i++;
+            }
+        }
+    } else {
+        args.push(...extraArgs);
+    }
 
     try {
         const { stdout, stderr } = await execFileAsync('node', [scriptPath, ...args], {
             maxBuffer: 1024 * 1024 * 20 
         });
-        if (stderr) console.warn(`stderr from headless-debug.mjs:\n${stderr}`);
+        if (stderr) console.warn(`stderr from ${path.basename(scriptPath)}:\n${stderr}`);
         return stdout;
     } catch (error) {
-        console.error(`headless-debug.mjs failed for ${filepath}:`);
+        console.error(`${path.basename(scriptPath)} failed for ${filepath}:`);
         if (error.stderr) console.error(`stderr: ${error.stderr}`);
         return error.stdout || '';
     }
