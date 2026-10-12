@@ -1,25 +1,27 @@
 (function () {
 	'use strict';
+	NAinfo.requireApiVersion(0, 2);
+
+	let key = '512208';
+	// Четыре родственных типа вопроса: отношение объёмов (в любую сторону)
+	// и отношение площадей боковых поверхностей (в любую сторону).
+	// Тип выбирается через preference, а не случайно из подошедших:
+	// иначе тренажёр и ревьюер не могут заказать конкретный вариант,
+	// а набор вариантов в выдаче зависит от удачи генератора. Выбираем его
+	// до retryWhileError, чтобы ветки с разной частотой отбраковки выпадали
+	// одинаково часто.
+	let preference = [
+		'volumeSecondBigger',
+		'volumeFirstBigger',
+		'lateralAreaSecondBigger',
+		'lateralAreaFirstBigger',
+	];
+	// getSelectedPreferenceFromList возвращает ИНДЕКС, а не название
+	let chosenOption = preference[getSelectedPreferenceFromList(key, preference)];
+	let isVolume = chosenOption.startsWith('volume');
+	let secondBigger = chosenOption.endsWith('SecondBigger');
+
 	retryWhileError(function () {
-		NAinfo.requireApiVersion(0, 2);
-
-		let key = '512208';
-		// Четыре родственных типа вопроса: отношение объёмов (в любую сторону)
-		// и отношение площадей боковых поверхностей (в любую сторону).
-		// Тип выбирается через preference, а не случайно из подошедших:
-		// иначе тренажёр и ревьюер не могут заказать конкретный вариант,
-		// а набор вариантов в выдаче зависит от удачи генератора.
-		let preference = [
-			'volumeSecondBigger',
-			'volumeFirstBigger',
-			'lateralAreaSecondBigger',
-			'lateralAreaFirstBigger',
-		];
-		// getSelectedPreferenceFromList возвращает ИНДЕКС, а не название
-		let chosenOption = preference[getSelectedPreferenceFromList(key, preference)];
-		let isVolume = chosenOption.startsWith('volume');
-		let secondBigger = chosenOption.endsWith('SecondBigger');
-
 		// Диапазоны - по данным ФИПИ: в задачах на объём (C59471, 360E23, FF0AD7,
 		// F565D3) радиусы от 2 до 9, высоты от 1 до 9; в задачах на боковую
 		// поверхность (F6B2EA) радиусы до 15 и высоты до 18.
@@ -93,18 +95,23 @@
 			let rs = [r1, r2];
 			let hs = [h1, h2];
 			// Общий масштаб для обоих цилиндров: пропорции сохраняются и внутри
-			// каждого цилиндра, и между ними, а пара занимает весь холст
+			// каждого цилиндра, и между ними, а пара занимает весь холст.
+			// Нижние основания стоят на одной прямой, поэтому над ней выступает
+			// max(h + k r) (высота и полуось верхнего эллипса), а под ней - max(k r).
+			// Раньше габарит считался как max(h + 2 k r): если высокий цилиндр
+			// узкий, а широкий - низкий, верхнее основание уходило за край холста.
+			let above = Math.max(h1 + k * r1, h2 + k * r2);
+			let below = k * Math.max(r1, r2);
 			let scale = Math.min(
 				(w - 40 - gap) / (2 * r1 + 2 * r2),
-				(h - 40) / (Math.max(h1 + 2 * k * r1, h2 + 2 * k * r2))
+				(h - 40) / (above + below)
 			);
 			let totalW = (2 * r1 + 2 * r2) * scale + gap;
 			let xs = [
 				(w - totalW) / 2 + r1 * scale,
 				(w - totalW) / 2 + 2 * r1 * scale + gap + r2 * scale,
 			];
-			let maxH = Math.max(h1 + 2 * k * r1, h2 + 2 * k * r2) * scale;
-			let baseY = (h + maxH) / 2 - k * Math.max(r1, r2) * scale;
+			let baseY = (h - (above + below) * scale) / 2 + above * scale;
 			ct.lineWidth = 2;
 			ct.strokeStyle = om.secondaryBrandColors.iz();
 			for (let i = 0; i < 2; i++) {
@@ -137,7 +144,7 @@
 			paint: paint1,
 		});
 
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 10000);
 })();
 //512208
