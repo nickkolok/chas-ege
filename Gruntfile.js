@@ -59,6 +59,16 @@ module.exports = function(grunt) {
 			}
 		},
 		copy: {
+			nodeRunner: {
+				// Раннер копируется в build/, чтобы сборку с одной ветки можно
+				// было использовать для прогона шаблонов с другой ветки:
+				//   node build/dev/run-node-template.js --filepath zdn/…
+				// (бандл берётся рядом: build/lib/, node_modules — уровнем выше;
+				// пути шаблонов считаются от CWD, т.е. от «другой» ветки).
+				files: [
+					{ src: 'dev/run-node-template.js', dest: 'build/dev/run-node-template.js' },
+				],
+			},
 			pagesJs: {
 				files: [
 					{ expand: true, src: ['sh/*.js', 'c2/*.js'], dest: 'dist/' },
@@ -394,7 +404,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('make-init', ['concat:init', 'uglify:init']);
 	grunt.registerTask('make-head', ['uglify:head']);
 	grunt.registerTask('make-chas-lib', ['concat:chasLib', 'uglify:chasLib']);
-	grunt.registerTask('make-chas-uijs', ['concat:chasUijs', /*'unify-use-strict-chas-uijs', 'uglify:chasUijs',*/]);
+	grunt.registerTask('make-chas-uijs', ['concat:chasUijs', /*'unify-use-strict-chas-uijs', 'uglify:chasUijs',*/ 'copy:nodeRunner']);
 
 	grunt.registerTask('process-html', ['make-head', 'swigtemplates', 'htmlmin', 'newer:copy:otherHtml']);
 	grunt.registerTask('process-pages-js', ['newer:copy:pagesJs']);
