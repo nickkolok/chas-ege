@@ -7,12 +7,16 @@
 		let preference = ['grani', 'rebra', 'vershiny'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
+		// Формулы ниже верны для призм: в каждой вершине сходятся ровно три ребра.
+		// angleOffset - поворот призмы для чертежа: подобран так, чтобы ни одна
+		// боковая грань не смотрела на зрителя ребром (иначе у края рисунка
+		// появляются узкие «щепки»)
 		let shapes = [
-			{ name: 'деревянного кубика', pos: 'его', F: 6, V: 8, E: 12, n: 4, angleOffset: Math.PI / 4 },
-			{ name: 'деревянной правильной треугольной призмы', pos: 'её', F: 5, V: 6, E: 9, n: 3, angleOffset: 0 },
+			{ name: 'деревянного кубика', pos: 'его', F: 6, V: 8, E: 12, n: 4, angleOffset: Math.PI / 4, cube: true },
+			{ name: 'деревянной правильной треугольной призмы', pos: 'её', F: 5, V: 6, E: 9, n: 3, angleOffset: -Math.PI / 4 },
 			{ name: 'деревянной правильной четырёхугольной призмы', pos: 'её', F: 6, V: 8, E: 12, n: 4, angleOffset: Math.PI / 4 },
-			{ name: 'деревянной правильной пятиугольной призмы', pos: 'её', F: 7, V: 10, E: 15, n: 5, angleOffset: 0 },
-			{ name: 'деревянной правильной шестиугольной призмы', pos: 'её', F: 8, V: 12, E: 18, n: 6, angleOffset: 0 },
+			{ name: 'деревянной правильной пятиугольной призмы', pos: 'её', F: 7, V: 10, E: 15, n: 5, angleOffset: -Math.PI / 14 },
+			{ name: 'деревянной правильной шестиугольной призмы', pos: 'её', F: 8, V: 12, E: 18, n: 6, angleOffset: -Math.PI / 9 },
 		];
 
 		let shape = shapes.iz();
@@ -25,17 +29,22 @@
 
 		let questionText = ['граней', 'рёбер', 'вершин'][rand];
 
+		let V0 = shape.V, E0 = shape.E, F0 = shape.F;
+		let analys = 'У исходного многогранника $' + F0 + '$ граней, $' + E0 + '$ рёбер и $' + V0 + '$ вершин; ' +
+			'в каждой вершине сходятся три ребра. Спил вершины заменяет её треугольной гранью: ' + [
+				'добавляется по одной грани на каждую вершину, поэтому граней становится $' + F0 + ' + ' + V0 + ' = ' + answers[0] + '$.',
+				'исходные рёбра сохраняются (укорачиваются), и у каждой спиленной вершины добавляются три ребра треугольника, ' +
+					'поэтому рёбер становится $' + E0 + ' + 3 \\cdot ' + V0 + ' = ' + answers[1] + '$.',
+				'вместо каждой вершины появляются три вершины треугольника, поэтому вершин становится $3 \\cdot ' + V0 + ' = ' + answers[2] + '$.',
+			][rand] + ' Проверка по формуле Эйлера: $' + answers[2] + ' - ' + answers[1] + ' + ' + answers[0] + ' = 2$.';
+
 		// Рисуем усечённый многогранник: у призмы спилены все вершины
 		let paint1 = function (ct) {
-			ct.translate(200, 248);
-			ct.scale(1.6, 1.6);
-			ct.lineWidth = 2 / 1.6;
-			ct.strokeStyle = om.secondaryBrandColors.iz();
-
 			let n = shape.n;
 			let R = 40;
-			let H = 60;
 			let baseEdge = 2 * R * Math.sin(Math.PI / n);
+			// У кубика высота равна стороне основания - это настоящий куб
+			let H = shape.cube ? baseEdge : 60;
 			let t = Math.min(0.3 * baseEdge, 0.45 * H); // глубина спила
 			let alpha = Math.PI / 6;
 			let cA = Math.cos(alpha);
@@ -109,24 +118,39 @@
 				}
 			});
 
+			// Проекция и автомасштаб: фигура вписывается в холст 400 x 400
+			// с полями 30 px и центрируется (раньше стояли жёсткие translate и scale)
+			let proj = function (p) {
+				return { x: p.x + p.z * cA, y: -(p.y + p.z * sA) };
+			};
+			let pts = names.map(function (k) { return proj(P[k]); });
+			let minX = Math.min(...pts.map((p) => p.x)), maxX = Math.max(...pts.map((p) => p.x));
+			let minY = Math.min(...pts.map((p) => p.y)), maxY = Math.max(...pts.map((p) => p.y));
+			let scale = Math.min(340 / (maxX - minX), 340 / (maxY - minY));
+			ct.translate(200 - scale * (minX + maxX) / 2, 200 - scale * (minY + maxY) / 2);
+			ct.scale(scale, scale);
+			ct.lineWidth = 2 / scale;
+			ct.strokeStyle = om.secondaryBrandColors.iz();
+
 			// Невидимые рёбра не изображаем (как в эталоне)
 			Object.keys(edgeFaces).forEach(function (key) {
 				let vis = edgeFaces[key].some(function (fi) { return faceVisible[fi]; });
 				if (!vis)
 					return;
 				let kk = key.split('|');
-				let p1 = P[kk[0]], p2 = P[kk[1]];
-				ct.beginPath();
-				ct.moveTo(p1.x + p1.z * cA, -(p1.y + p1.z * sA));
-				ct.lineTo(p2.x + p2.z * cA, -(p2.y + p2.z * sA));
-				ct.stroke();
+				let p1 = proj(P[kk[0]]), p2 = proj(P[kk[1]]);
+				ct.drawLine(p1.x, p1.y, p2.x, p2.y);
 			});
 		};
 
 		NAtask.setTask({
-			text: 'От ' + shape.name + ' отпилили все ' + shape.pos + ' вершины (см. рис.). Сколько ' + questionText + ' у получившегося многогранника (невидимые рёбра на рисунке не изображены)?',
+			// «(см. рис.)» и «(см. рисунок)» - обе формы встречаются у ФИПИ
+			text: 'От ' + shape.name + ' отпилили все ' + shape.pos + ' вершины ' + ['(см. рис.)', '(см. рисунок)'].iz() +
+				'. Сколько ' + questionText + ' у получившегося многогранника (невидимые рёбра на рисунке не изображены)?',
 			answers: answers[rand],
-			preference: preference,
+			analys: analys,
+			authors: ['Zer00Player', 'chas-ege-selena'],
+			preference: [preference],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
@@ -137,5 +161,6 @@
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
-//zer00player
+//506476
+//Zer00Player, chas-ege-selena
 //https://mathb-ege.sdamgia.ru/test?likes=506476
