@@ -3,17 +3,21 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
+		// Высота пирамиды равна k * sqrt(3), объём (sqrt(3) / 4) * a^2 * k * sqrt(3) / 3 = a^2 * k / 4.
+		// Целостность объёма обеспечивается выбором a, а не кратностью k четырём:
+		// у ФИПИ (E58000) k от 2 до 9 при a = 2, 4, 6 и k = 4 при a = 3, 5,
+		// а также «32 sqrt(3)» при a = 1.
 		let a = sl(1, 6);
-		let m = sl(1, 15);
-		let k = 4 * m;
-		let V = a * a * m;
+		let k = (a == 1) ? [4, 8, 12, 16, 20, 24, 28, 32].iz() : sl(2, 10);
+		genAssert(a * a * k % 4 === 0, 'Объём пирамиды должен быть целым');
+		let V = a * a * k / 4;
 
 		let paintPyramid = function (ct) {
-			// Чертёж схематический, с фиксированными пропорциями (приём одобренного
-			// zdn/matege2024b/13/73837.js): при данных задачи высота H = 4m*sqrt(3)
-			// может превышать сторону основания более чем вдесятеро, и пропорциональный
-			// чертёж был бы нечитаемой иглой.
-			let pyramid = new RegularPyramid({ height: 2.5, baseSide: 2, numberSide: 3 });
+			// Чертёж пропорционален условию, пока высота превышает сторону основания
+			// не более чем втрое. Более высокие пирамиды (вплоть до «a = 1, H = 32 sqrt(3)»
+			// из ФИПИ) рисуются схематически с отношением 3 : 1, иначе чертёж стал бы
+			// нечитаемой иглой (md/task_geometry.md).
+			let pyramid = new RegularPyramid({ height: Math.min(k * Math.sqrt(3) / a, 3), baseSide: 1, numberSide: 3 });
 			let vertices = pyramid.verticesOfFigure;
 
 			let camera = {
@@ -23,7 +27,10 @@
 				scale: 5,
 				rotationX: -Math.PI / 2 + Math.PI / 9,
 				rotationY: 0,
-				rotationZ: Math.PI / 2,
+				// При rotationZ = PI/2 переднее боковое ребро проецировалось ровно на
+				// высоту, и пирамида выглядела плоским «воздушным змеем». Поворот на
+				// PI/9 разводит ребро и высоту, а основание читается треугольником.
+				rotationZ: Math.PI / 2 + Math.PI / 9,
 			};
 			autoScale(vertices, camera, vertices.map((vertex) => project3DTo2D(vertex, camera)), {
 				startX: -150,
@@ -33,9 +40,13 @@
 				maxScale: 200,
 			});
 			let points2D = vertices.map((vertex) => project3DTo2D(vertex, camera));
+			// Центрируем проекцию на холсте
+			let shiftX = (Math.min(...points2D.map((p) => p.x)) + Math.max(...points2D.map((p) => p.x))) / 2;
+			let shiftY = (Math.min(...points2D.map((p) => p.y)) + Math.max(...points2D.map((p) => p.y))) / 2;
+			points2D = points2D.map((p) => ({ x: p.x - shiftX, y: p.y - shiftY }));
 
 			// Видимость граней - по знаку ориентированной площади проекции при внешнем
-			// обходе (приём откалиброван на одобренном 509658.js); нормаль ориентируем
+			// обходе (приём откалиброван на одобренном 513803.js); нормаль ориентируем
 			// наружу по центру тяжести. Ребро пунктирно, если невидимы обе смежные грани.
 			let centroid = {
 				x: vertices.reduce((sum, vertex) => sum + vertex.x, 0) / vertices.length,
@@ -55,7 +66,7 @@
 				};
 				// Знак площади берём от обхода, согласованного с ВНЕШНЕЙ нормалью:
 				// если обход грани даёт нормаль внутрь, площадь берём с минусом.
-				// Признак откалиброван на одобренном 509658.js (скрытое ребро 0-1).
+				// Признак откалиброван на одобренном 513803.js (скрытое ребро 0-1).
 				let orient = (n.x * fc.x + n.y * fc.y + n.z * fc.z) < 0 ? -1 : 1;
 				let q0 = points2D[face[0]], q1 = points2D[face[1]], q2 = points2D[face[2]];
 				return orient * ((q1.x - q0.x) * (q2.y - q0.y) - (q2.x - q0.x) * (q1.y - q0.y)) > 0;
