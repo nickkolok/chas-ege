@@ -10,13 +10,13 @@
 
 		let name = sklonlxkand(om.childFemaleNames.iz(3));
 		let diffAgeFirst = sl(1, 3);
-		let diffAgeSecnd = diffAgeFirst + sl(1, 3);
+		let diffAgeSecond = diffAgeFirst + sl(1, 3);
 
 		let correct = [
 			`Среди указанных девочек нет никого младше ${name[2].re}.`,
 			`Любая девочка, помимо указанных, которая старше ${name[0].re}, также старше ${name[2].re}.`,
 			`${name[1].ie} старше ${name[0].re}, а ${name[0].ie} старше ${name[2].re}.`,
-			`Разница между возрастом ${name[1].re} и ${name[2].re} составляет ${chislitlx(diffAgeSecnd + diffAgeFirst, `год`, `$`)}.`
+			`Разница между возрастом ${name[1].re} и ${name[2].re} составляет ${chislitM(diffAgeSecond + diffAgeFirst, `год`, `года`, `лет`, true)}.`
 		];
 		let wrong = [
 			`Любая девочка, помимо указанных, которая старше ${name[2].re}, также старше ${name[0].re}.`,
@@ -26,7 +26,7 @@
 		];
 
 		NAtask.setTask({
-			text: `${name[0].ie} младше ${name[1].re} на ${chislitlx(diffAgeFirst, `год`, `$`)}, но старше ${name[2].re} на ${chislitlx(diffAgeSecnd, `год`, `$`)}. Выберите утверждения, которые ` + (rand ? 'неверны' : 'верны') + ` при указанных условиях.` +
+			text: `${name[0].ie} младше ${name[1].re} на ${chislitM(diffAgeFirst, `год`, `года`, `лет`, true)}, но старше ${name[2].re} на ${chislitM(diffAgeSecond, `год`, `года`, `лет`, true)}. Выберите утверждения, которые ` + (rand ? 'неверны' : 'верны') + ` при указанных условиях.` +
 				` В ответе запишите номера выбранных утверждений без пробелов, запятых и других дополнительных символов. Если ответов несколько, записывайте их номера в порядке возрастания.`,
 			answers: rand ? wrong : correct,
 			wrongAnswers: rand ? correct : wrong,
