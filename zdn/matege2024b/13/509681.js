@@ -6,8 +6,10 @@
 		let preference = ['volume', 'surface'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		let k = sl(2, 5);
-		let r2 = sl(1, 10);
+		// Отношение радиусов k = R / r: у ФИПИ (148474, BE0C42, 68DF40) от 2 до 9,
+		// например, «радиусами 9 и 1». Больший радиус - не более 12, как у ФИПИ.
+		let k = sl(2, 9);
+		let r2 = sl(1, Math.floor(12 / k));
 		let r1 = k * r2;
 
 		// Стереометрическая модель: используем класс Sphere из lib/figure.js
@@ -17,16 +19,29 @@
 		let nominative = rand === 0 ? 'объём' : 'площадь поверхности';
 		let genitive   = rand === 0 ? 'объёма' : 'площади поверхности';
 
-		// Ответ считаем честно через методы Sphere (гарантированно целое k^3 или k^2)
-		let answer = rand === 0
+		// Отношение - степень k: считаем его целым числом, а не делением дробных
+		// геттеров класса (так в ответ не попадает погрешность вроде 26.999999999999996)
+		let answer = rand === 0 ? k * k * k : k * k;
+		genAssert(Math.abs(answer - (rand === 0
 			? sphereBig.volume / sphereSmall.volume
-			: sphereBig.surfaceArea / sphereSmall.surfaceArea;
+			: sphereBig.surfaceArea / sphereSmall.surfaceArea)) < 1e-6, 'Отношение должно совпасть с вычисленным через класс Sphere');
+
+		let power = rand === 0 ? 3 : 2;
+		let formula = rand === 0 ? 'V = \\frac{4}{3}\\pi R^3' : 'S = 4\\pi R^2';
+		let letter = rand === 0 ? 'V' : 'S';
 
 		NAtask.setTask({
+			// Обе формулировки ФИПИ: «...меньшего шара?» (148474) и «...меньшего?» (BE0C42)
 			text: 'Даны два шара с радиусами $' + sphereBig.radius + '$ и $' + sphereSmall.radius +
-				'$. Во сколько раз ' + nominative + ' большего шара больше ' + genitive + ' меньшего шара?',
+				'$. Во сколько раз ' + nominative + ' большего шара больше ' + genitive + ' меньшего' +
+				[' шара', ''].iz() + '?',
 			answers: answer,
-			authors: ['chas-ege-selena'],
+			analys: (rand === 0 ? 'Объём шара радиуса $R$ равен' : 'Площадь поверхности шара радиуса $R$ равна') + ' $' + formula +
+				'$, то есть ' + (rand === 0 ? 'пропорционален кубу' : 'пропорциональна квадрату') + ' радиуса. ' +
+				'Радиус большего шара в $' + sphereBig.radius + ' : ' + sphereSmall.radius + ' = ' + k +
+				'$ ' + (k <= 4 ? 'раза' : 'раз') + ' больше радиуса меньшего, поэтому $\\frac{' + letter + '_1}{' + letter + '_2} = ' +
+				k + '^' + power + ' = ' + answer + '$.',
+			authors: ['chas-ege-selena', 'Zer00Player'],
 			// Список списков - как в соседних шаблонах папки
 			preference: [preference],
 		});
@@ -45,17 +60,20 @@
 
 		let paint = function(ct) {
 			ct.lineWidth = 2;
+			// Цвета выбираем один раз: оба шара должны выглядеть одинаково
+			let fillColor = om.transparentBrandColors.iz();
+			let strokeColor = om.secondaryBrandColors.iz();
 
 			let drawSphere = function(cx, cy, rp) {
 				// Тело шара заливаем полупрозрачным брендовым цветом, контур -
 				// вторым брендовым: чёрных линий на чертеже быть не должно
 				// (замечание «покрасить»).
-				ct.fillStyle = om.transparentBrandColors.iz();
+				ct.fillStyle = fillColor;
 				ct.beginPath();
 				ct.arc(cx, cy, rp, 0, 2 * Math.PI);
 				ct.fill();
 				ct.closePath();
-				ct.strokeStyle = om.secondaryBrandColors.iz();
+				ct.strokeStyle = strokeColor;
 
 				// контур шара (большой круг)
 				ct.beginPath();
@@ -99,5 +117,5 @@
 	}, 1000);
 })();
 //509681
-//chas-ege-selena
+//chas-ege-selena, Zer00Player
 //https://mathb-ege.sdamgia.ru/problem?id=509681
