@@ -3,47 +3,54 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		// Набор пифагоровых троек для генерации вариантов задачи
-		// (полусторона, апофема, боковое ребро)
-		let triples = [
-			{ halfBase: 5, apothem: 12, edge: 13 },
-			{ halfBase: 8, apothem: 15, edge: 17 },
-			{ halfBase: 7, apothem: 24, edge: 25 },
-			{ halfBase: 12, apothem: 35, edge: 37 },
-			{ halfBase: 9, apothem: 40, edge: 41 },
-		];
+		// Боковая грань - равнобедренный треугольник: половина стороны основания,
+		// апофема и боковое ребро образуют пифагорову тройку. Перебираем все тройки
+		// (и кратные примитивным) с гипотенузой до 101: так достижимы все наборы
+		// ФИПИ, включая 20, 99, 101 и 11, 60, 61. Пирамида существует, только если
+		// боковое ребро длиннее радиуса описанной окружности основания, то есть
+		// стороны основания a = 2 * halfBase. Ограничение высоты снизу (H >= 0,35a)
+		// не даёт пирамиде сплющиться в блин: у самой плоской из ФИПИ (16 и 17) H : a = 0,36.
+		let triples = [];
+		for (let halfBase = 1; halfBase <= 50; halfBase++) {
+			for (let apothem = 1; apothem <= 100; apothem++) {
+				let edge = Math.sqrt(halfBase * halfBase + apothem * apothem);
+				if (edge <= 101 && edge.isAlmostInteger()) {
+					edge = Math.round(edge);
+					let h2 = edge * edge - 4 * halfBase * halfBase;
+					if (h2 >= 0.35 * 0.35 * 4 * halfBase * halfBase) {
+						triples.push({ halfBase: halfBase, apothem: apothem, edge: edge });
+					}
+				}
+			}
+		}
 
 		let t = triples.iz();
 		let a = t.halfBase * 2;  // сторона основания
 		let l = t.edge;          // боковое ребро
+		let apothem = t.apothem; // целая по построению: берём из тройки, а не из геттера
 
 		// Высота пирамиды: для правильного шестиугольника R = a, поэтому H = sqrt(l^2 - a^2)
 		let H = Math.sqrt(l * l - a * a);
 
-		// Пирамида для вычислений (класс из lib/figure.js)
-		let pyramid = new RegularPyramid({
-			height: H,
-			baseSide: a,
-			numberSide: 6,
-		});
-
-		// Площадь боковой поверхности и апофема - через getter'ы класса
-		let S_bok = pyramid.sideSurfaceArea;
-		let apothem = pyramid.apothem;
+		// Площадь боковой поверхности: шесть граней по a * apothem / 2
+		let S_bok = 3 * a * apothem;
 
 		let text = 'Сторона основания правильной шестиугольной пирамиды равна $' + a +
 			'$, боковое ребро равно $' + l +
 			'$. Найдите площадь боковой поверхности этой пирамиды.';
-		let analys = 'Апофема правильной пирамиды - высота боковой грани. Из прямоугольного треугольника ' +
-			'с гипотенузой-боковым ребром $' + l + '$ и катетом, равным половине стороны основания $' + t.halfBase +
-			'$: апофема равна $\\sqrt{' + l + '^2-' + t.halfBase + '^2}=\\sqrt{' + (l * l - t.halfBase * t.halfBase) +
+		let analys = 'Апофема правильной пирамиды — высота боковой грани. Боковая грань — равнобедренный треугольник ' +
+			'с боковыми сторонами $' + l + '$ и основанием $' + a + '$, поэтому апофема — катет прямоугольного треугольника ' +
+			'с гипотенузой $' + l + '$ (боковым ребром) и другим катетом $' + t.halfBase +
+			'$ (половиной стороны основания): $\\sqrt{' + l + '^2-' + t.halfBase + '^2}=\\sqrt{' + (l * l - t.halfBase * t.halfBase) +
 			'}=' + apothem + '$. Площадь боковой поверхности равна половине произведения периметра основания ' +
 			'на апофему: $S=\\frac{1}{2}\\cdot' + (6 * a) + '\\cdot' + apothem + '=' + S_bok + '$.';
 
-		// Фиксированная пирамида для иллюстрации: рисунок всегда одинаковый
+		// Пирамида для иллюстрации пропорциональна условию (класс из lib/figure.js).
+		// Сторону основания берём единичной: autoScale() начинает с масштаба 5
+		// и отбраковывает фигуру, если она уже на старте не помещается в холст.
 		let drawPyramid = new RegularPyramid({
-			height: Math.sqrt(37 * 37 - 24 * 24),
-			baseSide: 24,
+			height: H / a,
+			baseSide: 1,
 			numberSide: 6,
 		});
 		let vertices = drawPyramid.verticesOfFigure;
@@ -67,9 +74,13 @@
 			maxScale: 200,
 		});
 		let points2D = vertices.map((vertex) => project3DTo2D(vertex, camera));
+		// Центрируем проекцию на холсте
+		let shiftX = (Math.min(...points2D.map((p) => p.x)) + Math.max(...points2D.map((p) => p.x))) / 2;
+		let shiftY = (Math.min(...points2D.map((p) => p.y)) + Math.max(...points2D.map((p) => p.y))) / 2;
+		points2D = points2D.map((p) => ({ x: p.x - shiftX, y: p.y - shiftY }));
 
 		// Видимость граней - по знаку ориентированной площади проекции при обходе,
-		// согласованном с внешней нормалью (признак откалиброван на одобренном 509658.js).
+		// согласованном с внешней нормалью (признак откалиброван на одобренном 513803.js).
 		// Ребро пунктирно, когда невидимы обе смежные грани.
 		let n = vertices.length;
 		let centroid = { x: 0, y: 0, z: 0 };
