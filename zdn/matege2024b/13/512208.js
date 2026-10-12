@@ -17,94 +17,107 @@
 		];
 		// getSelectedPreferenceFromList возвращает ИНДЕКС, а не название
 		let chosenOption = preference[getSelectedPreferenceFromList(key, preference)];
+		let isVolume = chosenOption.startsWith('volume');
+		let secondBigger = chosenOption.endsWith('SecondBigger');
 
-		let r1, h1, r2, h2;
-		let V1, V2, S1, S2;
-		let validOptions = [];
-		let attempts = 0;
+		// Диапазоны - по данным ФИПИ: в задачах на объём (C59471, 360E23, FF0AD7,
+		// F565D3) радиусы от 2 до 9, высоты от 1 до 9; в задачах на боковую
+		// поверхность (F6B2EA) радиусы до 15 и высоты до 18.
+		let rMax = isVolume ? 9 : 15;
+		let hMax = isVolume ? 9 : 18;
+		let r1 = sl(2, rMax);
+		let h1 = sl(1, hMax);
+		let r2 = sl(2, rMax);
+		let h2 = sl(1, hMax);
+		// Цилиндр не должен вырождаться ни в «блин», ни в «иглу» (md/task_geometry.md):
+		// отношение высоты к радиусу - от 0,2 до 4,5, как у самых крайних цилиндров ФИПИ
+		// (9 и 2; 2 и 9; 4 и 18).
+		[[r1, h1], [r2, h2]].forEach(function (rh) {
+			genAssert(rh[1] >= 0.2 * rh[0] && rh[1] <= 4.5 * rh[0], 'Цилиндр не должен быть блином или иглой');
+		});
 
-		do {
-			r1 = sl(2, 9);
-			h1 = sl(1, 9);
-			r2 = sl(2, 9);
-			h2 = sl(1, 9);
-			
-			// Используем класс Cylinder из lib/figure.js
-			let cylinder1 = new Cylinder({ radius: r1, height: h1 });
-			let cylinder2 = new Cylinder({ radius: r2, height: h2 });
-			
-			// Вычисляем отношения (делим на π и 2π для получения целых чисел)
-			V1 = cylinder1.volume / Math.PI;  // r1²·h1
-			V2 = cylinder2.volume / Math.PI;  // r2²·h2
-			S1 = cylinder1.sideSurfaceArea / (2 * Math.PI);  // r1·h1
-			S2 = cylinder2.sideSurfaceArea / (2 * Math.PI);  // r2·h2
-			
-			validOptions = [];
-			
-			if (V2 % V1 === 0 && V2 / V1 >= 2 && V2 / V1 <= 36) {
-				validOptions.push('volumeSecondBigger');
-			}
-			if (V1 % V2 === 0 && V1 / V2 >= 2 && V1 / V2 <= 36) {
-				validOptions.push('volumeFirstBigger');
-			}
-			if (S2 % S1 === 0 && S2 / S1 >= 2 && S2 / S1 <= 36) {
-				validOptions.push('lateralAreaSecondBigger');
-			}
-			if (S1 % S2 === 0 && S1 / S2 >= 2 && S1 / S2 <= 36) {
-				validOptions.push('lateralAreaFirstBigger');
-			}
-			
-			attempts++;
-			genAssert(
-				attempts < 5000,
-				'Не удалось подобрать параметры цилиндров под выбранный вариант ' + chosenOption
-			);
-		} while (!validOptions.includes(chosenOption));
-		let questionText, ratio, ratioFormula;
+		// Объём и боковая поверхность без множителя pi - целые числа:
+		// V = pi * r^2 * h, S = 2 * pi * r * h. Считаем их напрямую в целых,
+		// а не делением дробных геттеров класса Cylinder на Math.PI.
+		let cylinder1 = new Cylinder({ radius: r1, height: h1 });
+		let cylinder2 = new Cylinder({ radius: r2, height: h2 });
+		let V1 = r1 * r1 * h1;
+		let V2 = r2 * r2 * h2;
+		let S1 = 2 * r1 * h1;
+		let S2 = 2 * r2 * h2;
+		genAssert(Math.abs(cylinder1.volume - V1 * Math.PI) < 1e-6 && Math.abs(cylinder2.sideSurfaceArea - S2 * Math.PI) < 1e-6,
+			'Коэффициенты должны совпасть с вычисленными через класс Cylinder');
 
-		switch (chosenOption) {
-			case 'volumeSecondBigger':
-				questionText = 'Во сколько раз объём второго цилиндра больше объёма первого цилиндра?';
-				ratio = V2 / V1;
-				ratioFormula = '\\frac{V_2}{V_1}=\\frac{\\pi\\cdot ' + r2 + '^2\\cdot ' + h2 + '}{\\pi\\cdot ' + r1 + '^2\\cdot ' + h1 + '}=\\frac{' + V2 + '\\pi}{' + V1 + '\\pi}=' + ratio;
-				break;
-			case 'volumeFirstBigger':
-				questionText = 'Во сколько раз объём первого цилиндра больше объёма второго цилиндра?';
-				ratio = V1 / V2;
-				ratioFormula = '\\frac{V_1}{V_2}=\\frac{\\pi\\cdot ' + r1 + '^2\\cdot ' + h1 + '}{\\pi\\cdot ' + r2 + '^2\\cdot ' + h2 + '}=\\frac{' + V1 + '\\pi}{' + V2 + '\\pi}=' + ratio;
-				break;
-			case 'lateralAreaSecondBigger':
-				questionText = 'Во сколько раз площадь боковой поверхности второго цилиндра больше площади боковой поверхности первого цилиндра?';
-				ratio = S2 / S1;
-				ratioFormula = '\\frac{S_2}{S_1}=\\frac{2\\pi\\cdot ' + r2 + '\\cdot ' + h2 + '}{2\\pi\\cdot ' + r1 + '\\cdot ' + h1 + '}=\\frac{' + S2 + '}{' + S1 + '}=' + ratio;
-				break;
-			case 'lateralAreaFirstBigger':
-				questionText = 'Во сколько раз площадь боковой поверхности первого цилиндра больше площади боковой поверхности второго цилиндра?';
-				ratio = S1 / S2;
-				ratioFormula = '\\frac{S_1}{S_2}=\\frac{2\\pi\\cdot ' + r1 + '\\cdot ' + h1 + '}{2\\pi\\cdot ' + r2 + '\\cdot ' + h2 + '}=\\frac{' + S1 + '}{' + S2 + '}=' + ratio;
-				break;
-		}
+		let m1 = isVolume ? V1 : S1;
+		let m2 = isVolume ? V2 : S2;
+		let mBig = secondBigger ? m2 : m1;
+		let mSmall = secondBigger ? m1 : m2;
+		let ratio = mBig / mSmall;
+		// У ФИПИ отношение бывает дробным (10,5; 4,5; 7,5), но не более одного знака
+		// после запятой; наибольшее - 32
+		genAssert((10 * ratio).isAlmostInteger(), 'Отношение должно иметь не более одного знака после запятой');
+		genAssert(ratio >= 2 && ratio <= 36, 'Отношение должно быть от 2 до 36');
+
+		let subjectNom = isVolume ? 'объём' : 'площадь боковой поверхности';
+		let subjectGen = isVolume ? 'объёма' : 'площади боковой поверхности';
+		let bigWord = secondBigger ? 'второго' : 'первого';
+		let smallWord = secondBigger ? 'первого' : 'второго';
+		// Обе формулировки ФИПИ: «...первого цилиндра?» (C59471) и «...первого?» (360E23)
+		let questionText = 'Во сколько раз ' + subjectNom + ' ' + bigWord + ' цилиндра больше ' +
+			subjectGen + ' ' + smallWord + [' цилиндра', ''].iz() + '?';
+
+		let letter = isVolume ? 'V' : 'S';
+		let iBig = secondBigger ? 2 : 1;
+		let iSmall = 3 - iBig;
+		let rBig = secondBigger ? r2 : r1, hBig = secondBigger ? h2 : h1;
+		let rSmall = secondBigger ? r1 : r2, hSmall = secondBigger ? h1 : h2;
+		let ratioFormula = isVolume ?
+			'\\frac{V_' + iBig + '}{V_' + iSmall + '}=\\frac{\\pi\\cdot ' + rBig + '^2\\cdot ' + hBig + '}{\\pi\\cdot ' + rSmall + '^2\\cdot ' +
+				hSmall + '}=\\frac{' + mBig + '}{' + mSmall + '}=' + ratio :
+			'\\frac{S_' + iBig + '}{S_' + iSmall + '}=\\frac{2\\pi\\cdot ' + rBig + '\\cdot ' + hBig + '}{2\\pi\\cdot ' + rSmall + '\\cdot ' +
+				hSmall + '}=\\frac{' + mBig / 2 + '}{' + mSmall / 2 + '}=' + ratio;
+		let analys = isVolume ?
+			'Объём цилиндра вычисляется по формуле $V=\\pi r^{2}h$. ' +
+				'Объём первого цилиндра равен $V_1=\\pi\\cdot ' + r1 + '^2\\cdot ' + h1 + '=' + V1 + '\\pi$, ' +
+				'объём второго цилиндра равен $V_2=\\pi\\cdot ' + r2 + '^2\\cdot ' + h2 + '=' + V2 + '\\pi$. ' :
+			'Площадь боковой поверхности цилиндра вычисляется по формуле $S=2\\pi r h$. ' +
+				'Площадь боковой поверхности первого цилиндра равна $S_1=2\\pi\\cdot ' + r1 + '\\cdot ' + h1 + '=' + S1 + '\\pi$, ' +
+				'второго — $S_2=2\\pi\\cdot ' + r2 + '\\cdot ' + h2 + '=' + S2 + '\\pi$. ';
+		analys += 'Находим отношение: $' + ratioFormula + '$.';
 
 		let paint1 = function (ct) {
-			let scale = 13;
-			let baseY = 250;
-			let xs = [150, 410];
+			let w = 560;
+			let h = 300;
+			let k = 0.3; // сплюснутость эллипсов оснований
+			let gap = 40; // промежуток между цилиндрами, px
 			let rs = [r1, r2];
 			let hs = [h1, h2];
-			let colors = [om.secondaryBrandColors.iz(), om.primaryBrandColors.iz()];
+			// Общий масштаб для обоих цилиндров: пропорции сохраняются и внутри
+			// каждого цилиндра, и между ними, а пара занимает весь холст
+			let scale = Math.min(
+				(w - 40 - gap) / (2 * r1 + 2 * r2),
+				(h - 40) / (Math.max(h1 + 2 * k * r1, h2 + 2 * k * r2))
+			);
+			let totalW = (2 * r1 + 2 * r2) * scale + gap;
+			let xs = [
+				(w - totalW) / 2 + r1 * scale,
+				(w - totalW) / 2 + 2 * r1 * scale + gap + r2 * scale,
+			];
+			let maxH = Math.max(h1 + 2 * k * r1, h2 + 2 * k * r2) * scale;
+			let baseY = (h + maxH) / 2 - k * Math.max(r1, r2) * scale;
 			ct.lineWidth = 2;
+			ct.strokeStyle = om.secondaryBrandColors.iz();
 			for (let i = 0; i < 2; i++) {
 				let x = xs[i];
 				let rPix = rs[i] * scale;
 				let hPix = hs[i] * scale;
-				let ry = rPix * 0.3;
+				let ry = rPix * k;
 				let topY = baseY - hPix;
-				ct.strokeStyle = colors[i];
 				ct.drawLine(x - rPix, baseY, x - rPix, topY);
 				ct.drawLine(x + rPix, baseY, x + rPix, topY);
 				ct.drawEllipse(x, topY, rPix, ry);
 				ct.drawEllipse(x, baseY, rPix, ry, 0, 0, Math.PI);
-				ct.setLineDash([5, 4]);
+				ct.setLineDash([7, 5]);
 				ct.drawEllipse(x, baseY, rPix, ry, 0, Math.PI, 2 * Math.PI);
 				ct.setLineDash([]);
 			}
@@ -113,13 +126,8 @@
 		NAtask.setTask({
 			text: 'Даны два цилиндра. Радиус основания и высота первого цилиндра равны соответственно $' + r1 + '$ и $' + h1 + '$, а второго — $' + r2 + '$ и $' + h2 + '$. ' + questionText,
 			answers: ratio,
-			authors: ['chas-ege-selena'],
-			analys: 'Объём цилиндра вычисляется по формуле $V=\\pi r^{2}h$. Площадь боковой поверхности цилиндра вычисляется по формуле $S=2\\pi r h$. '
-				+ 'Объём первого цилиндра равен $V_1=\\pi\\cdot ' + r1 + '^2\\cdot ' + h1 + '=' + V1 + '\\pi$. '
-				+ 'Объём второго цилиндра равен $V_2=\\pi\\cdot ' + r2 + '^2\\cdot ' + h2 + '=' + V2 + '\\pi$. '
-				+ 'Площадь боковой поверхности первого цилиндра равна $S_1=2\\pi\\cdot ' + r1 + '\\cdot ' + h1 + '=' + (2*S1) + '\\pi$. '
-				+ 'Площадь боковой поверхности второго цилиндра равна $S_2=2\\pi\\cdot ' + r2 + '\\cdot ' + h2 + '=' + (2*S2) + '\\pi$. '
-				+ 'Находим отношение: $' + ratioFormula + '$.',
+			authors: ['chas-ege-selena', 'Zer00Player'],
+			analys: analys,
 			preference: [preference],
 		});
 
@@ -130,8 +138,8 @@
 		});
 
 		NAtask.modifiers.allDecimalsToStandard();
-	}, 1000);
+	}, 10000);
 })();
 //512208
-//chas-ege-selena
+//chas-ege-selena, Zer00Player
 //https://mathb-ege.sdamgia.ru/test?likes=512208
