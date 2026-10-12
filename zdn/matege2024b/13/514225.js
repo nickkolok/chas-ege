@@ -17,7 +17,10 @@
 				if (edge <= 101 && edge.isAlmostInteger()) {
 					edge = Math.round(edge);
 					let h2 = edge * edge - 4 * halfBase * halfBase;
-					if (h2 >= 0.35 * 0.35 * 4 * halfBase * halfBase) {
+					// Площадь боковой поверхности 6 * halfBase * apothem - не больше
+					// 12000: у ФИПИ наибольший ответ 11880 (40 и 101), а без этого
+					// ограничения 62% ответов превышали 5000 (до 18720)
+					if (h2 >= 0.35 * 0.35 * 4 * halfBase * halfBase && 6 * halfBase * apothem <= 12000) {
 						triples.push({ halfBase: halfBase, apothem: apothem, edge: edge });
 					}
 				}
@@ -62,7 +65,10 @@
 			y: 0,
 			z: 0,
 			scale: 5,
-			rotationX: -Math.PI / 2 + Math.PI / 7,
+			// У плоских пирамид (у ФИПИ H : a до 0,36) при взгляде под углом PI/7
+			// вершина проецировалась ниже задних вершин основания, и пирамида
+			// читалась как плоский шестиугольник - для них смотрим положе
+			rotationX: -Math.PI / 2 + Math.min(Math.PI / 7, Math.atan(0.75 * H / a)),
 			rotationY: 0,
 			rotationZ: Math.PI / 12,
 		};
