@@ -24,6 +24,7 @@
     "mathjax-chas-ege-unofficial": "2.1.0",
     "mathjs": "^11.5.1",
     "nerdamer": "^1.1.13",
+    "puppeteer": "23.11.1",
     "qunit": "^2.26.0",
     "seedrandom": "^3.0.5"
   },
