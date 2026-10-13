@@ -16,8 +16,11 @@
 			let radiusY = 15;
 			let waterY = 140;
 
+			let edgeColor = om.secondaryBrandColors.iz();
+			let liquidColor = om.transparentBrandColors.iz();
+
 			ct.lineWidth = 2;
-			ct.strokeStyle = '#000';
+			ct.strokeStyle = edgeColor;
 
 			// Заливка воды одним контуром, чтобы полупрозрачный цвет
 			// нигде не накладывался сам на себя (приём из 514063)
@@ -28,7 +31,7 @@
 			ct.lineTo(cx + radiusX, waterY);
 			ct.ellipse(cx, waterY, radiusX, radiusY, 0, 0, Math.PI, true);
 			ct.closePath();
-			ct.fillStyle = 'rgba(173, 216, 230, 0.6)';
+			ct.fillStyle = liquidColor;
 			ct.fill();
 
 			// Верхний эллипс (открытый верх)
@@ -61,13 +64,13 @@
 			// Двунаправленная стрелка с обозначением h: охватывает столб
 			// жидкости, т.е. от поверхности воды до дна сосуда
 			let arrowX = cx + radiusX + 30;
-			ct.strokeStyle = '#000';
+			ct.strokeStyle = edgeColor;
 			ct.drawArrow(arrowX, bottomY, arrowX, waterY);
 			ct.drawArrow(arrowX, waterY, arrowX, bottomY);
 
 			// Буква h
-			ct.fillStyle = '#000';
-			ct.font = '20px sans-serif';
+			ct.fillStyle = edgeColor;
+			ct.font = 'italic 20px serif';
 			ct.fillText('h', arrowX + 10, (waterY + bottomY) / 2 + 7);
 		};
 
