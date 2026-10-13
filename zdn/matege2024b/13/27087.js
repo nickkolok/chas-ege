@@ -3,124 +3,29 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		// Высота пирамиды равна k * sqrt(3), объём (sqrt(3) / 4) * a^2 * k * sqrt(3) / 3 = a^2 * k / 4.
-		// Целостность объёма обеспечивается выбором a, а не кратностью k четырём:
-		// у ФИПИ (E58000) k от 2 до 9 при a = 2, 4, 6 и k = 4 при a = 3, 5,
-		// а также «32 sqrt(3)» при a = 1.
-		// Сторону выбираем сразу, а k - только из подходящих к ней значений: при
-		// отбраковке пары (a, k) целиком a = 3 и a = 5 (подходят лишь k = 4, 8)
-		// выпадали в несколько раз реже чётных сторон. Сторона 1 у ФИПИ - одна
-		// задача из 14, и чертёж для неё всегда схематический (H : a от 7 до 55),
-		// поэтому она в списке один раз, а остальные стороны - по два.
-		let a = [1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6].iz();
-		let k;
-		if (a === 1) {
-			k = [4, 8, 12, 16, 20, 24, 28, 32].iz();
-		} else if (a % 2) {
-			k = [4, 8].iz();
-		} else {
-			k = sl(2, 10);
-		}
-		genAssert(a * a * k % 4 === 0, 'Объём пирамиды должен быть целым');
-		let V = a * a * k / 4;
+		let a = sl(1, 6);
+		let m = sl(1, 15);
+		let k = 4 * m;
+		let V = a * a * m;
 
 		let paintPyramid = function (ct) {
-			// Чертёж пропорционален условию, пока высота превышает сторону основания
-			// не более чем втрое. Более высокие пирамиды (вплоть до «a = 1, H = 32 sqrt(3)»
-			// из ФИПИ) рисуются схематически с отношением 3 : 1, иначе чертёж стал бы
-			// нечитаемой иглой (md/task_geometry.md).
-			let pyramid = new RegularPyramid({ height: Math.min(k * Math.sqrt(3) / a, 3), baseSide: 1, numberSide: 3 });
-			let vertices = pyramid.verticesOfFigure;
+			// Отражение по Y: вершина пирамиды сверху, основание снизу.
+			// Угол PI/4 даёт невырожденную проекцию: задняя вершина основания
+			// не лежит на боковом ребре (при PI/6 чертёж вырождался в треугольник).
+			ct.translate(110, 141);
+			ct.scale(90, -90);
+			ct.lineWidth = 2 / 90;
 
-			let camera = {
-				x: 0,
-				y: 0,
-				z: 0,
-				scale: 5,
-				rotationX: -Math.PI / 2 + Math.PI / 9,
-				rotationY: 0,
-				// При rotationZ = PI/2 переднее боковое ребро проецировалось ровно на
-				// высоту, и пирамида выглядела плоским «воздушным змеем». Поворот на
-				// PI/9 разводит ребро и высоту, а основание читается треугольником.
-				rotationZ: Math.PI / 2 + Math.PI / 9,
-			};
-			autoScale(vertices, camera, vertices.map((vertex) => project3DTo2D(vertex, camera)), {
-				startX: -150,
-				finishX: 150,
-				startY: -150,
-				finishY: 150,
-				// Низкие пирамиды (H : a около 0,6) при пределе 200 занимали меньше половины холста
-				maxScale: 260,
-			});
-			let points2D = vertices.map((vertex) => project3DTo2D(vertex, camera));
-			// Центрируем проекцию на холсте
-			let shiftX = (Math.min(...points2D.map((p) => p.x)) + Math.max(...points2D.map((p) => p.x))) / 2;
-			let shiftY = (Math.min(...points2D.map((p) => p.y)) + Math.max(...points2D.map((p) => p.y))) / 2;
-			points2D = points2D.map((p) => ({ x: p.x - shiftX, y: p.y - shiftY }));
-
-			// Видимость граней - по знаку ориентированной площади проекции при внешнем
-			// обходе (приём откалиброван на одобренном 513803.js); нормаль ориентируем
-			// наружу по центру тяжести. Ребро пунктирно, если невидимы обе смежные грани.
-			let centroid = {
-				x: vertices.reduce((sum, vertex) => sum + vertex.x, 0) / vertices.length,
-				y: vertices.reduce((sum, vertex) => sum + vertex.y, 0) / vertices.length,
-				z: vertices.reduce((sum, vertex) => sum + vertex.z, 0) / vertices.length,
-			};
-			let faceIndices = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [2, 0, 3]];
-			let facesVisible = faceIndices.map(function (face) {
-				let p0 = vertices[face[0]], p1 = vertices[face[1]], p2 = vertices[face[2]];
-				let u = { x: p1.x - p0.x, y: p1.y - p0.y, z: p1.z - p0.z };
-				let w = { x: p2.x - p0.x, y: p2.y - p0.y, z: p2.z - p0.z };
-				let n = { x: u.y * w.z - u.z * w.y, y: u.z * w.x - u.x * w.z, z: u.x * w.y - u.y * w.x };
-				let fc = {
-					x: (p0.x + p1.x + p2.x) / 3 - centroid.x,
-					y: (p0.y + p1.y + p2.y) / 3 - centroid.y,
-					z: (p0.z + p1.z + p2.z) / 3 - centroid.z,
-				};
-				// Знак площади берём от обхода, согласованного с ВНЕШНЕЙ нормалью:
-				// если обход грани даёт нормаль внутрь, площадь берём с минусом.
-				// Признак откалиброван на одобренном 513803.js (скрытое ребро 0-1).
-				let orient = (n.x * fc.x + n.y * fc.y + n.z * fc.z) < 0 ? -1 : 1;
-				let q0 = points2D[face[0]], q1 = points2D[face[1]], q2 = points2D[face[2]];
-				return orient * ((q1.x - q0.x) * (q2.y - q0.y) - (q2.x - q0.x) * (q1.y - q0.y)) > 0;
-			});
-			let edges = [[0, 1], [1, 2], [2, 0], [0, 3], [1, 3], [2, 3]];
-			let matrix = [
-				[1],
-				[1, 1],
-				[1, 1, 1],
-			];
-			let dash = [7, 5];
-			edges.forEach(function (edge) {
-				let hidden = !faceIndices.some(function (face, k) {
-					return facesVisible[k] && face.includes(edge[0]) && face.includes(edge[1]);
-				});
-				if (hidden) {
-					matrix[Math.max(edge[0], edge[1]) - 1][Math.min(edge[0], edge[1])] = dash;
-				}
-			});
-
-			ct.translate(200, 200);
-			ct.lineWidth = 2;
-			ct.strokeStyle = om.secondaryBrandColors.iz();
-			ct.drawFigure(points2D, matrix);
-
-			// Высота пирамиды - пунктиром от вершины к центру основания
-			let baseCenter = {
-				x: (points2D[0].x + points2D[1].x + points2D[2].x) / 3,
-				y: (points2D[0].y + points2D[1].y + points2D[2].y) / 3,
-			};
-			ct.setLineDash(dash);
-			ct.drawLine(points2D[3].x, points2D[3].y, baseCenter.x, baseCenter.y);
-			ct.setLineDash([]);
+			ct.drawRightPyramid3({
+				edge: 2,
+				height: 2.5,
+				angle: Math.PI / 4
+			}, [5], [5 / 90, 2 / 90]); // пунктиром скрытое боковое ребро (задняя вершина - вершина)
 		};
+
 		NAtask.setTask({
 			text: 'Сторона основания правильной треугольной пирамиды равна $' + a + '$, а высота пирамиды равна $' + k + '\\sqrt{3}$. Найдите объём этой пирамиды.',
 			answers: V,
-			analys: 'Площадь правильного треугольника со стороной $' + a + '$ равна $S = \\frac{\\sqrt{3}}{4} \\cdot ' + a + '^2$. Высота пирамиды $H = ' + k + '\\sqrt{3}$. ' +
-				'Объём: $V = \\frac{1}{3} \\cdot S \\cdot H = \\frac{1}{3} \\cdot \\frac{\\sqrt{3}}{4} \\cdot ' + a +
-				'^2 \\cdot ' + k + '\\sqrt{3} = \\frac{' + (a * a * k) + '}{4} = ' + V + '$.',
-			authors: ['chas-ege-selena'],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
@@ -130,6 +35,4 @@
 		});
 	}, 1000);
 })();
-//27087
-//chas-ege-selena
 // https://mathb-ege.sdamgia.ru/problem?id=27087
