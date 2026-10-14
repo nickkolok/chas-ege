@@ -182,6 +182,8 @@ function fillwordToLaTeX(result, variantNumber) {
 	tex += '\\section*{Филворд' + fillwordEscapeTeX(label) + '}\n\n';
 	tex += FILLWORD_INTRO_TEX + '\n';
 	tex += '\\begin{center}\n' + fillwordTabularTeX(result, true) + '\\end{center}\n\n';
+	// листок ученика и листок учителя печатаются раздельно
+	tex += '\\newpage\n\n';
 	tex += '\\section*{Филворд' + fillwordEscapeTeX(label) + ': ключ для учителя}\n\n';
 	tex += 'Расположение слов (ключ не предназначен для печати в варианте ученика):\n\n';
 	tex += fillwordKeyTeX(result) + '\n';
