@@ -117,13 +117,6 @@ function udalPanel() {
 }
 
 function konecSozd() {
-	//Филворд: оболочки секций в печатных строках (содержимое подставит refreshFillword)
-	try {
-		appendFillwordSections();
-	} catch (e) {
-		console.error('Не удалось подготовить секции филворда:', e);
-	}
-
 	strOtv = '<h2>Ответы</h2>' + strOtv;
 
 	if (options.largeFont) {
@@ -225,6 +218,12 @@ function endCurrentVariant() {
 	nZ = 0;
 	appendVariantTasksEnding();
 	appendVariantAnswersEnding();
+	//Вариант дописан: добавляем ему собственные оболочки филворда
+	try {
+		appendFillwordVariantPlaceholders(variantNumber);
+	} catch (e) {
+		console.error('Не удалось добавить оболочки филворда:', e);
+	}
 	if(options.uniqueAnswersOnlyInOneVariant){
 		unqDict={};
 	}
@@ -444,9 +443,9 @@ function renewTask() {
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
 		grabCurrentTask();
-		//Задание перегенерировано — ответы другие, филворд пересобираем
+		//Задание перегенерировано — ответы другие: пересобираем филворд ТОЛЬКО этого варианта
 		try {
-			refreshFillword();
+			refreshFillword(1 * variantNumber);
 		} catch (e) {
 			console.error('Не удалось пересобрать филворд:', e);
 		}
@@ -603,9 +602,18 @@ function refreshLaTeXarchive() {
 	bunchTasks += "\n\n%Random seed:" + options.randomSeed;
 
 	zip.file("tasks.tex", bunchTasks);
-	if (window.fillwordState && fillwordState.tex) {
-		// самодостаточный LaTeX-файл филворда — туда же, где tasks.tex и answers.tex
-		zip.file("fillword.tex", fillwordState.tex);
+	if (window.fillwordState && options.prepareFillword) {
+		// Самодостаточные LaTeX-файлы филвордов — туда же, где tasks.tex и answers.tex:
+		// по одному на вариант, в порядке следования вариантов в архиве.
+		// Наружу отдельной ссылкой филворд не отдаётся.
+		var fwIndex = 0;
+		for (var vvi = 0; vvi < variantsGenerated.length; vvi++) {
+			var fwRec = fillwordState.byVariant[variantsGenerated[vvi]];
+			if (fwRec && fwRec.tex) {
+				fwIndex++;
+				zip.file('fillword-variant-' + fwIndex + '.tex', fwRec.tex);
+			}
+		}
 	}
 	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
 

@@ -3,27 +3,43 @@
 /* =====================================================================
  * Интеграция филворда в страницу «Создание теста для печати» (sh/pechmat.html).
  *
- * При составлении теста:
- *   1) слова берутся ЦИВИЛИЗОВАННО — из клонов vopr (generatedTasks[id].ver),
- *      а не разбором HTML таблицы ответов;
- *   2) форма филворда и список обманок читаются из textarea на странице
- *      (#fillwordShape, #fillwordDecoys; по умолчанию — сердечко и без обманок);
- *   3) филворд добавляется в печатную HTML-страницу (задание в #rez, ответ в #otv)
- *      и пересобирается при перегенерации отдельного задания (кнопка ⟳);
- *   4) самодостаточный fillword.tex кладётся в LaTeX-архив (рядом с tasks.tex
- *      и answers.tex) и отдаётся отдельной ссылкой.
+ * Принципы:
+ *   - свой филворд на КАЖДЫЙ вариант (слова — числовые ответы именно этого варианта);
+ *   - смысл филворда — косвенная самопроверка: в задании печатается сетка с цифрами
+ *     БЕЗ списка чисел (список равен списку ответов и всё бы испортил);
+ *     список слов есть только в учительском ключе;
+ *   - слова берутся из generatedTasks[id].ver (клоны vopr), без парсинга HTML;
+ *   - форма и обманки читаются из textarea (#fillwordShape, #fillwordDecoys);
+ *   - самодостаточные fillword-variant-N.tex кладутся ВНУТРЬ LaTeX-архива
+ *     (рядом с tasks.tex и answers.tex), отдельной ссылки наружу нет;
+ *   - при перегенерации задания (кнопка ⟳) пересобирается филворд только его варианта.
  * ===================================================================*/
 
 var fillwordState = {
+	byVariant: {},   // variantNumber -> { result, words, decoys, shapeLines, tex }
+	rebuilds: 0,
+	// алиасы для внешнего кода/тестов: последний обработанный вариант
 	result: null,
 	words: [],
 	decoys: [],
-	shapeLines: [],
 	tex: '',
-	rebuilds: 0,
 };
 
 var FILLWORD_DEFAULT_SHAPE = ['_хх_хх_', 'ххххххх', '_ххххх_', '__ххх__', '___х___'];
+
+var FILLWORD_INTRO_HTML =
+	'В сетке ниже спрятаны числа: они читаются по горизонтали (слева направо) и по вертикали ' +
+	'(сверху вниз) и могут пересекаться — в общей клетке стоит одна и та же цифра. ' +
+	'Часть спрятанных чисел совпадает с ответами заданий этого варианта: решив вариант, ' +
+	'вы можете проверить себя, отыскав полученный ответ в сетке. ' +
+	'Список чисел специально не приводится.';
+
+var FILLWORD_INTRO_TEX =
+	'В сетке ниже спрятаны числа: они читаются по горизонтали (слева направо) и по вертикали\n' +
+	'(сверху вниз) и могут пересекаться --- в общей клетке стоит одна и та же цифра.\n' +
+	'Часть спрятанных чисел совпадает с ответами заданий этого варианта: решив вариант,\n' +
+	'вы можете проверить себя, отыскав полученный ответ в сетке.\n' +
+	'Список чисел специально не приводится.\n';
 
 /* ---------- настройки со страницы ---------- */
 
@@ -42,12 +58,16 @@ function fillwordDecoysList() {
 	return String(raw).split(/[\n;|]+/).map(function (s) { return s.trim(); }).filter(Boolean);
 }
 
-/* ---------- слова: из клонов vopr, без парсинга таблицы ---------- */
+/* ---------- слова варианта: из клонов vopr, без парсинга таблицы ---------- */
 
-function fillwordCollectWords() {
+function fillwordCollectWordsFor(variantNumber) {
 	var words = [];
 	for (var id in generatedTasks) {
-		var ver = generatedTasks[id].ver;
+		var task = generatedTasks[id];
+		if (!task || task.variantNumber != variantNumber) {
+			continue;
+		}
+		var ver = task.ver;
 		if (!ver) {
 			continue;
 		}
@@ -69,16 +89,29 @@ function fillwordCollectWords() {
 /* ---------- решение ---------- */
 
 function fillwordBuild(words, decoys, shapeLines, seed) {
-	var fw = new FillWord({
-		seed: seed,
-		hardMaxScale: 6,
-		timeLimit: 4000,
-		attempts: 8,
-		annealIterations: 4000,
-		directionWeight: 3,
-		decoys: decoys,
-	});
-	return fw.solve(words, shapeLines);
+	// До трёх попыток с производными сидами: берём раскладку без случайных
+	// «лишних чтений» (если такая есть на этом наборе слов).
+	var best = null;
+	for (var tryN = 0; tryN < 6; tryN++) {
+		var fw = new FillWord({
+			seed: seed + (tryN ? '-x' + tryN : ''),
+			hardMaxScale: 6,
+			timeLimit: 4000,
+			attempts: 8,
+			annealIterations: 4000,
+			directionWeight: 3,
+			repairExtrasRounds: 8,
+			decoys: decoys,
+		});
+		var r = fw.solve(words, shapeLines);
+		if (!best || r.stats.readings.extra < best.stats.readings.extra) {
+			best = r;
+		}
+		if (best.stats.readings.extra === 0 && best.complete) {
+			break;
+		}
+	}
+	return best;
 }
 
 /* ---------- самодостаточный LaTeX ---------- */
@@ -117,8 +150,26 @@ function fillwordTabularTeX(result, withDigits) {
 	return out;
 }
 
-function fillwordToLaTeX(result, words) {
-	var wordsTeX = words.map(fillwordEscapeTeX).join(', ');
+function fillwordKeyTeX(result) {
+	var out = '\\begin{itemize}\n';
+	for (var i = 0; i < result.placements.length; i++) {
+		var p = result.placements[i];
+		var dir = p.dir === 'h' ? 'по горизонтали' : p.dir === 'v' ? 'по вертикали' : 'по диагонали';
+		out += '\\item ' + fillwordEscapeTeX(p.word) + ' --- ' + dir +
+			', начало в клетке (' + (p.x + 1) + '; ' + (p.y + 1) + ')' +
+			(p.reversed ? ', в обратном порядке' : '') + ';\n';
+	}
+	out += '\\end{itemize}\n';
+	if (result.stats.decoysPlaced) {
+		out += '\nВ сетке также присутствуют числа-обманки (' + result.stats.decoysPlaced +
+			' шт.): они стоят на поле, но к ответам варианта не относятся и в ключе не перечислены.\n';
+	}
+	return out;
+}
+
+function fillwordToLaTeX(result, variantNumber) {
+	var label = (typeof options !== 'undefined' && options.vanishVariants)
+		? '' : ' к варианту №' + (options.variantPrefix || '') + variantNumber;
 	var tex = '';
 	tex += '\\documentclass[a4paper,12pt]{article}\n';
 	tex += '\\usepackage[T2A]{fontenc}\n';
@@ -128,91 +179,93 @@ function fillwordToLaTeX(result, words) {
 	tex += '% Самодостаточный файл: компилируется pdflatex без внешних зависимостей.\n';
 	tex += '% Сгенерировано ЧАС ЕГЭ (fillword), зерно: ' + fillwordEscapeTeX(String(result.seed)) + '\n';
 	tex += '\\begin{document}\n\n';
-	tex += '\\section*{Филворд}\n\n';
-	tex += 'Найдите в сетке следующие числа: ' + wordsTeX + '.\n\n';
-	tex += 'Числа читаются по горизонтали и по вертикали; они могут пересекаться\n';
-	tex += '(в узле пересечения стоит одна и та же цифра). Каждая клетка фигуры\n';
-	tex += 'принадлежит хотя бы одному числу либо заполнена случайной цифрой.\n\n';
-	tex += '\\begin{center}\n' + fillwordTabularTeX(result, false) + '\\end{center}\n\n';
-	tex += '\\section*{Филворд: ответы}\n\n';
+	tex += '\\section*{Филворд' + fillwordEscapeTeX(label) + '}\n\n';
+	tex += FILLWORD_INTRO_TEX + '\n';
 	tex += '\\begin{center}\n' + fillwordTabularTeX(result, true) + '\\end{center}\n\n';
+	tex += '\\section*{Филворд' + fillwordEscapeTeX(label) + ': ключ для учителя}\n\n';
+	tex += 'Расположение слов (ключ не предназначен для печати в варианте ученика):\n\n';
+	tex += fillwordKeyTeX(result) + '\n';
 	tex += '\\end{document}\n';
 	return tex;
 }
 
-/* ---------- вставка в печатные строки и пересборка ---------- */
+/* ---------- оболочки секций и пересборка ---------- */
 
-// Вызывается в konecSozd() до вставки strVopr/strOtv в DOM: готовит оболочки.
-function appendFillwordSections() {
-	fillwordState.result = null;
-	fillwordState.tex = '';
-	if (typeof FillWord === 'undefined') {
-		console.warn('FillWord не загружен — филворд пропущен.');
-		return;
-	}
-	if (!options.prepareFillword) {
-		return;
-	}
-	strVopr += '<h2>Филворд</h2><div id="fillword-question"></div>';
-	strOtv += '<h2>Филворд: ответы</h2><div id="fillword-answers"></div>';
-}
-
-// Вызывается после вставки HTML в DOM и после каждой перегенерации задания:
-// пересобирает филворд из актуальных ответов (generatedTasks уже обновлён).
-function refreshFillword() {
+// Вызывается из endCurrentVariant(): вариант дописан в strVopr/strOtv —
+// добавляем ему собственные оболочки филворда.
+function appendFillwordVariantPlaceholders(vnum) {
 	if (typeof FillWord === 'undefined' || !options.prepareFillword) {
 		return;
 	}
-	var q = document.getElementById('fillword-question');
-	var a = document.getElementById('fillword-answers');
-	if (!q || !a) {
-		return;
-	}
-	var words = fillwordCollectWords();
-	if (words.length > 24) {
-		words = words.slice(0, 24);
-	}
-	var decoys = fillwordDecoysList();
-	if (words.length < 4) {
-		q.innerHTML = '<p>Недостаточно числовых ответов для филворда.</p>';
-		a.innerHTML = '';
-		fillwordState.result = null;
-		fillwordState.tex = '';
-		return;
-	}
-	var shapeLines = fillwordShapeLines();
-	var result;
-	try {
-		result = fillwordBuild(words, decoys, shapeLines, String(options.randomSeed) + '-fillword');
-	} catch (e) {
-		console.error('Филворд не собран:', e);
-		q.innerHTML = '';
-		a.innerHTML = '';
-		return;
-	}
-	fillwordState.result = result;
-	fillwordState.words = words;
-	fillwordState.decoys = decoys;
-	fillwordState.shapeLines = shapeLines;
-	fillwordState.rebuilds++;
+	strVopr +=
+		'<h2>Филворд</h2>' +
+		'<p>' + FILLWORD_INTRO_HTML + '</p>' +
+		'<div id="fillword-question-' + vnum + '"></div>';
+	strOtv +=
+		'<h2>Филворд: ключ' +
+		(options.vanishVariants ? '' : ' к варианту №' + options.variantPrefix + vnum) +
+		'</h2>' +
+		'<div id="fillword-answers-' + vnum + '"></div>';
+}
 
-	q.innerHTML =
-		'<p>Найдите в сетке числа: ' + fillwordEscapeHtml(words.join(', ')) + '. ' +
-		'Числа читаются по горизонтали и вертикали и могут пересекаться ' +
-		'(общая клетка — одна и та же цифра).</p>' +
-		FillWord.renderPuzzleHTML(result, {
-			layout: 'table', cell: 26, gap: 2, showLegend: false, standalone: false,
+// Пересобирает филворды: всех вариантов (конец генерации) или одного (перегенерация).
+function refreshFillword(onlyVariant) {
+	if (typeof FillWord === 'undefined' || !options.prepareFillword) {
+		return;
+	}
+	var variants = (typeof onlyVariant === 'number') ? [onlyVariant] : variantsGenerated.slice();
+	for (var vi = 0; vi < variants.length; vi++) {
+		var vnum = variants[vi];
+		var q = document.getElementById('fillword-question-' + vnum);
+		var a = document.getElementById('fillword-answers-' + vnum);
+		if (!q || !a) {
+			continue;
+		}
+		var words = fillwordCollectWordsFor(vnum);
+		if (words.length > 24) {
+			words = words.slice(0, 24);
+		}
+		var decoys = fillwordDecoysList();
+		if (words.length < 4) {
+			q.innerHTML = '<p>Недостаточно числовых ответов для филворда этого варианта.</p>';
+			a.innerHTML = '';
+			delete fillwordState.byVariant[vnum];
+			continue;
+		}
+		var shapeLines = fillwordShapeLines();
+		var result;
+		try {
+			result = fillwordBuild(words, decoys, shapeLines,
+				String(options.randomSeed) + '-fillword-' + vnum);
+		} catch (e) {
+			console.error('Филворд варианта ' + vnum + ' не собран:', e);
+			q.innerHTML = '';
+			a.innerHTML = '';
+			continue;
+		}
+		fillwordState.byVariant[vnum] = {
+			result: result,
+			words: words,
+			decoys: decoys,
+			shapeLines: shapeLines,
+			tex: fillwordToLaTeX(result, vnum),
+		};
+		fillwordState.rebuilds++;
+		// алиасы последнего результата
+		fillwordState.result = result;
+		fillwordState.words = words;
+		fillwordState.decoys = decoys;
+		fillwordState.tex = fillwordState.byVariant[vnum].tex;
+
+		// Задание: сетка С ЦИФРАМИ, но без списка слов и без цветовой разметки —
+		// ученик ищет свои ответы в сетке, а не получает их списком.
+		q.innerHTML = FillWord.renderSolutionHTML(result, {
+			layout: 'table', cell: 26, gap: 2, colorize: false, showLegend: false, standalone: false,
 		});
-	a.innerHTML = FillWord.renderSolutionHTML(result, {
-		layout: 'table', cell: 22, gap: 2, showLegend: true, standalone: false,
-	});
-
-	fillwordState.tex = fillwordToLaTeX(result, words);
-	var link = document.getElementById('fillword-tex-placeholder');
-	if (link) {
-		link.style.display = '';
-		link.href = 'data:text/x-tex;charset=utf-8,' + encodeURIComponent(fillwordState.tex);
-		link.setAttribute('download', 'fillword.tex');
+		// Ключ: цветовая разметка слов и легенда (для учителя).
+		a.innerHTML = FillWord.renderSolutionHTML(result, {
+			layout: 'table', cell: 22, gap: 2, colorize: true, showLegend: true, standalone: false,
+		});
 	}
 }
 
