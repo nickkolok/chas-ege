@@ -40,5 +40,5 @@
 	}, 2000);
 })();
 //509684, 509724, 510925, 510972, 511932, 511952, 513786, 513806, 525241, 532218, 532245, 532267, 535947
-//https://mathb-ege.sdamgia.ru/problem?id=513744
+//https://mathb-ege.sdamgia.ru/problem?id=509684
 //zer00player
