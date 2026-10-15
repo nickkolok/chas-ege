@@ -4,8 +4,10 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '526994';
-		let preference = ['two_legs', 'leg_and_hypotenuse'];
-		let rand = getSelectedPreferenceFromList(key, preference);
+		let preferenceData = ['two_legs', 'leg_and_hypotenuse'];
+		let preferenceQuestion = ['findVolume', 'findHeight'];
+		let rand = getSelectedPreferenceFromList(key, preferenceData);
+		let questionType = getSelectedPreferenceFromList(key, preferenceQuestion);
 
 		// Данные - в тех же пределах, что у ФИПИ. Даны два катета (C60E1D):
 		// «3 и 16», «13 и 4», «5 и 7», «2 и 18», «11 и 5», высота от 3 до 5.
@@ -42,21 +44,31 @@
 		let c2 = a * a + b * b;
 		let cLatex = c2.texsqrt(true);
 		// Квадрат гипотенузы в решении: целую (3, 4, 5) пишем без скобок
-		let cSquaredLatex = Math.sqrt(c2).isAlmostInteger() ? cLatex + '^2' : '\\left(' + cLatex + '\\right)^2';
+		let cSquaredLatex = Math.sqrt(c2).isAlmostInteger() ? cLatex + '^2' : 'left(' + cLatex + 'right)^2';
 
 		let textOptions = [
 			'В основании прямой призмы лежит прямоугольный треугольник, катеты которого равны $' + a + '$ и $' + b + '$. ',
 			'В основании прямой призмы лежит прямоугольный треугольник, один из катетов которого равен $' + a +
-				'$, а гипотенуза равна $' + cLatex + '$. ',
+				'\$, а гипотенуза равна \$' + cLatex + '\$. ',
 		];
 		let analysOptions = [
-			'Площадь прямоугольного треугольника равна половине произведения катетов: $S = \\frac{' + a + ' \\cdot ' + b + '}{2} = ' + S + '$. ',
-			'По теореме Пифагора второй катет равен $\\sqrt{' + cSquaredLatex + ' - ' + a + '^2} = \\sqrt{' + c2 + ' - ' + a * a +
-				'} = \\sqrt{' + b * b + '} = ' + b + '$. Площадь основания: $S = \\frac{' + a + ' \\cdot ' + b + '}{2} = ' + S + '$. ',
+			'Площадь прямоугольного треугольника равна половине произведения катетов: \$S = \frac{' + a + ' \cdot ' + b + '}{2} = ' + S + '\$. ',
+			'По теореме Пифагора второй катет равен \$\sqrt{' + cSquaredLatex + ' - ' + a + '^2} = \sqrt{' + c2 + ' - ' + a * a +
+				'} = \sqrt{' + b * b + '} = ' + b + '\$. Площадь основания: \$S = \frac{' + a + ' \cdot ' + b + '}{2} = ' + S + '\$. ',
 		];
 
-		let text = textOptions[rand] + 'Найдите объём призмы, если её высота равна $' + h + '$.';
-		let analys = analysOptions[rand] + 'Объём призмы: $V = S \\cdot h = ' + S + ' \\cdot ' + h + ' = ' + V + '$.';
+		let text, analys, answers;
+		if (questionType === 0) {
+			// Найти объём
+			text = textOptions[rand] + 'Найдите объём призмы, если её высота равна \$' + h + '\$.';
+			analys = analysOptions[rand] + 'Объём призмы: \$V = S \cdot h = ' + S + ' \cdot ' + h + ' = ' + V + '\$.';
+			answers = V;
+		} else {
+			// Найти высоту
+			text = textOptions[rand] + 'Найдите высоту призмы, если её объём равен \$' + V + '\$.';
+			analys = analysOptions[rand] + 'Высота призмы: \$h = \frac{V}{S} = \frac{' + V + '}{' + S + '} = ' + h + '\$.';
+			answers = h;
+		}
 
 		// Вершины нормируем на наибольший размер: autoScale() начинает с масштаба 5
 		// и отбраковывает фигуру, которая уже на старте не помещается в холст
@@ -160,9 +172,9 @@
 		NAtask.setTask({
 			text: text,
 			analys: analys,
-			answers: V,
+			answers: answers,
 			authors: ['Zer00Player', 'chas-ege-selena'],
-			preference: [preference],
+			preference: [preferenceData, preferenceQuestion],
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
