@@ -26,6 +26,16 @@
 				closestIndex = i;
 			}
 		}
+		//сажаем «ответную» точку в значение корня, но не даём сливаться с целой засечкой
+		let frac = root - Math.floor(root);
+		//«неприлипайка»: не даём точке сливаться с целой засечкой
+		if (frac < 0.1) {
+			frac = 0.1;
+		}
+		if (frac > 0.9) {
+			frac = 0.9;
+		}
+		positions[closestIndex] = Math.floor(root) + frac;
 		let correctLetter = ['A', 'B', 'C', 'D'][closestIndex];
 
 		let paint = function (ct) {
@@ -55,7 +65,7 @@
 			wrongAnswers: ['A', 'B', 'C', 'D'].filter(l => l !== correctLetter)
 		});
 
-		AtoB(3, ['A', 'B', 'C', 'D'].indexOf(correctLetter));
+		AtoB(3, {autoLaTeX: true});
 
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 400,
