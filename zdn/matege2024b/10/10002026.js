@@ -77,6 +77,7 @@
         // Проверка что результат конечный и разумный
         genAssert(expectedValue > 0, 'матожидание должно быть положительным');
         genAssert(expectedValue < 10000, 'матожидание должно быть разумным');
+        genAssertAlmostInteger(expectedValue);
 
         // Формируем текст таблицы
         let tableHTML = '<table border="1" cellpadding="5" style="border-collapse: collapse; margin: 10px 0;"><thead><tr><th>Интервал скоростей (км/ч)</th><th>Количество ТС</th></tr></thead><tbody>';
