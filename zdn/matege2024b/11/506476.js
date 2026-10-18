@@ -5,7 +5,16 @@
 
 		let key = '506476';
 		let preference = ['grani', 'rebra', 'vershiny'];
+		let preferenceShape = [
+			'cube',
+			'triangular_prism',
+			'quadrangular_prism',
+			'pentagonal_prism',
+			'hexagonal_prism',
+		];
+
 		let rand = getSelectedPreferenceFromList(key, preference);
+		let shapeIndex = getSelectedPreferenceFromList(key, preferenceShape);
 
 		// Формулы ниже верны для призм: в каждой вершине сходятся ровно три ребра.
 		// angleOffset - поворот призмы для чертежа: подобран так, чтобы ни одна
@@ -19,7 +28,7 @@
 			{ name: 'деревянной правильной шестиугольной призмы', pos: 'её', F: 8, V: 12, E: 18, n: 6, angleOffset: -Math.PI / 9 },
 		];
 
-		let shape = shapes.iz();
+		let shape = shapes[shapeIndex];
 
 		let answers = [
 			shape.F + shape.V,
@@ -48,7 +57,7 @@
 			// основания выходила 56,6 - на рисунке она была неотличима от кубика,
 			// поэтому её высота в полтора раза больше стороны основания
 			let H = shape.cube ? baseEdge : (shape.n === 4 ? 1.5 * baseEdge : 60);
-			let t = Math.min(0.3 * baseEdge, 0.45 * H); // глубина спила
+			let t = Math.min(0.3 * baseEdge, 0.45 * H);
 			let alpha = Math.PI / 6;
 			let cA = Math.cos(alpha);
 			let sA = Math.sin(alpha);
@@ -85,75 +94,133 @@
 				top.push('a' + i, 'b' + ((i + 1) % n));
 			}
 			faces.push(bottom, top);
+
 			for (let i = 0; i < n; i++) {
 				let ip = (i + 1) % n;
-				faces.push(['A' + i, 'B' + ip, 'C' + ip, 'c' + ip, 'b' + ip, 'a' + i, 'c' + i, 'C' + i]); // боковая
-				faces.push(['A' + i, 'C' + i, 'B' + i]); // спил снизу
-				faces.push(['a' + i, 'c' + i, 'b' + i]); // спил сверху
+
+				faces.push([
+					'A' + i,
+					'B' + ip,
+					'C' + ip,
+					'c' + ip,
+					'b' + ip,
+					'a' + i,
+					'c' + i,
+					'C' + i
+				]);
+
+				faces.push(['A' + i, 'C' + i, 'B' + i]);
+				faces.push(['a' + i, 'c' + i, 'b' + i]);
 			}
 
 			// Центр многогранника — для ориентации нормалей наружу
 			let names = Object.keys(P);
 			let center = { x: 0, y: 0, z: 0 };
-			names.forEach(function (k) { center = add(center, P[k]); });
+
+			names.forEach(function (k) {
+				center = add(center, P[k]);
+			});
+
 			center = mul(center, 1 / names.length);
 
 			// Направление на наблюдателя для нашей проекции
 			let view = { x: cA, y: sA, z: -1 };
 
 			let faceVisible = faces.map(function (face) {
-				let nrm = crossProduct3D(sub(P[face[1]], P[face[0]]), sub(P[face[2]], P[face[0]]));
+				let nrm = crossProduct3D(
+					sub(P[face[1]], P[face[0]]),
+					sub(P[face[2]], P[face[0]])
+				);
+
 				let cent = { x: 0, y: 0, z: 0 };
-				face.forEach(function (k) { cent = add(cent, P[k]); });
+
+				face.forEach(function (k) {
+					cent = add(cent, P[k]);
+				});
+
 				cent = mul(cent, 1 / face.length);
+
 				if (dot(nrm, sub(cent, center)) < 0)
 					nrm = mul(nrm, -1);
+
 				return dot(nrm, view) > 0;
 			});
 
 			// Рёбра и их смежные грани
 			let edgeFaces = {};
+
 			faces.forEach(function (face, fi) {
 				for (let j = 0; j < face.length; j++) {
-					let k1 = face[j], k2 = face[(j + 1) % face.length];
-					let key = k1 < k2 ? k1 + '|' + k2 : k2 + '|' + k1;
-					(edgeFaces[key] = edgeFaces[key] || []).push(fi);
+					let k1 = face[j];
+					let k2 = face[(j + 1) % face.length];
+					let edgeKey = k1 < k2 ? k1 + '|' + k2 : k2 + '|' + k1;
+
+					(edgeFaces[edgeKey] = edgeFaces[edgeKey] || []).push(fi);
 				}
 			});
 
-			// Проекция и автомасштаб: фигура вписывается в холст 400 x 400
-			// с полями 30 px и центрируется (раньше стояли жёсткие translate и scale)
+			// Проекция и автомасштаб
 			let proj = function (p) {
-				return { x: p.x + p.z * cA, y: -(p.y + p.z * sA) };
+				return {
+					x: p.x + p.z * cA,
+					y: -(p.y + p.z * sA)
+				};
 			};
-			let pts = names.map(function (k) { return proj(P[k]); });
-			let minX = Math.min(...pts.map((p) => p.x)), maxX = Math.max(...pts.map((p) => p.x));
-			let minY = Math.min(...pts.map((p) => p.y)), maxY = Math.max(...pts.map((p) => p.y));
-			let scale = Math.min(340 / (maxX - minX), 340 / (maxY - minY));
-			ct.translate(200 - scale * (minX + maxX) / 2, 200 - scale * (minY + maxY) / 2);
+
+			let pts = names.map(function (k) {
+				return proj(P[k]);
+			});
+
+			let minX = Math.min(...pts.map((p) => p.x));
+			let maxX = Math.max(...pts.map((p) => p.x));
+			let minY = Math.min(...pts.map((p) => p.y));
+			let maxY = Math.max(...pts.map((p) => p.y));
+
+			let scale = Math.min(
+				340 / (maxX - minX),
+				340 / (maxY - minY)
+			);
+
+			ct.translate(
+				200 - scale * (minX + maxX) / 2,
+				200 - scale * (minY + maxY) / 2
+			);
 			ct.scale(scale, scale);
+
 			ct.lineWidth = 2 / scale;
 			ct.strokeStyle = om.secondaryBrandColors.iz();
 
-			// Невидимые рёбра не изображаем (как в эталоне)
-			Object.keys(edgeFaces).forEach(function (key) {
-				let vis = edgeFaces[key].some(function (fi) { return faceVisible[fi]; });
+			// Невидимые рёбра не изображаем
+			Object.keys(edgeFaces).forEach(function (edgeKey) {
+				let vis = edgeFaces[edgeKey].some(function (fi) {
+					return faceVisible[fi];
+				});
+
 				if (!vis)
 					return;
-				let kk = key.split('|');
-				let p1 = proj(P[kk[0]]), p2 = proj(P[kk[1]]);
-				ct.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+				let kk = edgeKey.split('|');
+				let p1 = proj(P[kk[0]]);
+				let p2 = proj(P[kk[1]]);
+
+				ct.drawLine(
+					p1.x,
+					p1.y,
+					p2.x,
+					p2.y
+				);
 			});
 		};
 
 		NAtask.setTask({
-			// «(см. рис.)» и «(см. рисунок)» - обе формы встречаются у ФИПИ
-			text: 'От ' + shape.name + ' отпилили все ' + shape.pos + ' вершины ' + ['(см. рис.)', '(см. рисунок)'].iz() +
-				'. Сколько ' + questionText + ' у получившегося многогранника (невидимые рёбра на рисунке не изображены)?',
+			text: 'От ' + shape.name + ' отпилили все ' + shape.pos + ' вершины ' +
+				['(см. рис.)', '(см. рисунок)'].iz() +
+				'. Сколько ' + questionText +
+				' у получившегося многогранника (невидимые рёбра на рисунке не изображены)?',
 			answers: answers[rand],
 			analys: analys,
 			authors: ['Zer00Player', 'chas-ege-selena'],
-			preference: [preference],
+			preference: [preference, preferenceShape],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
@@ -161,6 +228,7 @@
 			height: 400,
 			paint: paint1,
 		});
+
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
