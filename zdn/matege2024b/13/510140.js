@@ -27,7 +27,7 @@
 		let letters = ['A', 'B', 'C'];
 		let prismName = '$' + letters[0] + letters[1] + letters[2] +
 			letters[0] + '_1' + letters[1] + '_1' + letters[2] + '_1$';
-		let heightTex = (3 * k * k).texsqrt(true, true);
+		let heightTex = (3 * k * k).texsqrt(true);
 
 		let text = [
 			'Сторона основания правильной треугольной призмы ' + prismName + ' равна $' + a +
@@ -141,7 +141,7 @@
 					center.x += point.x / points2D.length;
 					center.y += point.y / points2D.length;
 				});
-				ct.fillStyle = om.primaryBrandColors.iz();
+				ct.fillStyle = "black";
 				ct.font = '20px liberation_sans';
 				let put = function (point, letter, subscript) {
 					let dx = point.x < center.x ? -22 : 8;
