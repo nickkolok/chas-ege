@@ -44,29 +44,29 @@
 		let c2 = a * a + b * b;
 		let cLatex = c2.texsqrt(true);
 		// Квадрат гипотенузы в решении: целую (3, 4, 5) пишем без скобок
-		let cSquaredLatex = Math.sqrt(c2).isAlmostInteger() ? cLatex + '^2' : 'left(' + cLatex + 'right)^2';
+		let cSquaredLatex = Math.sqrt(c2).isAlmostInteger() ? cLatex + '^2' : '\\left(' + cLatex + '\\right)^2';
 
 		let textOptions = [
 			'В основании прямой призмы лежит прямоугольный треугольник, катеты которого равны $' + a + '$ и $' + b + '$. ',
 			'В основании прямой призмы лежит прямоугольный треугольник, один из катетов которого равен $' + a +
-				'\$, а гипотенуза равна \$' + cLatex + '\$. ',
+				'$, а гипотенуза равна $' + cLatex + '$. ',
 		];
 		let analysOptions = [
-			'Площадь прямоугольного треугольника равна половине произведения катетов: \$S = \frac{' + a + ' \cdot ' + b + '}{2} = ' + S + '\$. ',
-			'По теореме Пифагора второй катет равен \$\sqrt{' + cSquaredLatex + ' - ' + a + '^2} = \sqrt{' + c2 + ' - ' + a * a +
-				'} = \sqrt{' + b * b + '} = ' + b + '\$. Площадь основания: \$S = \frac{' + a + ' \cdot ' + b + '}{2} = ' + S + '\$. ',
+			'Площадь прямоугольного треугольника равна половине произведения катетов: $S = \\frac{' + a + ' \\cdot ' + b + '}{2} = ' + S + '$. ',
+			'По теореме Пифагора второй катет равен $\\sqrt{' + cSquaredLatex + ' - ' + a + '^2} = \\sqrt{' + c2 + ' - ' + a * a +
+				'} = \\sqrt{' + b * b + '} = ' + b + '$. Площадь основания: $S = \\frac{' + a + ' \\cdot ' + b + '}{2} = ' + S + '$. ',
 		];
 
 		let text, analys, answers;
 		if (questionType === 0) {
 			// Найти объём
-			text = textOptions[rand] + 'Найдите объём призмы, если её высота равна \$' + h + '\$.';
-			analys = analysOptions[rand] + 'Объём призмы: \$V = S \cdot h = ' + S + ' \cdot ' + h + ' = ' + V + '\$.';
+			text = textOptions[rand] + 'Найдите объём призмы, если её высота равна $' + h + '$.';
+			analys = analysOptions[rand] + 'Объём призмы: $V = S \\cdot h = ' + S + ' \\cdot ' + h + ' = ' + V + '$.';
 			answers = V;
 		} else {
 			// Найти высоту
-			text = textOptions[rand] + 'Найдите высоту призмы, если её объём равен \$' + V + '\$.';
-			analys = analysOptions[rand] + 'Высота призмы: \$h = \frac{V}{S} = \frac{' + V + '}{' + S + '} = ' + h + '\$.';
+			text = textOptions[rand] + 'Найдите высоту призмы, если её объём равен $' + V + '$.';
+			analys = analysOptions[rand] + 'Высота призмы: $h = \\frac{V}{S} = \\frac{' + V + '}{' + S + '} = ' + h + '$.';
 			answers = h;
 		}
 
