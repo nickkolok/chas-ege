@@ -114,80 +114,126 @@ function fillwordBuild(words, decoys, shapeLines, seed) {
 	return best;
 }
 
-/* ---------- самодостаточный LaTeX ---------- */
+/* ---------- самодостаточный LaTeX ----------
+ * Три правила читабельного tex:
+ *   1) размер клетки — ИМЕНОВАННАЯ константа (\fillwordCell), число встречается один раз;
+ *   2) габариты A4 известны: если сетка не влезает, клетка (и шрифт) аккуратно
+ *      уменьшаются (автоматический подгон, но не ниже минимума);
+ *   3) DRY: клетки печатаются макросами \fwcell{…}/\fwempty, спецификация колонок
+ *      через *{N}{…}, обе сетки строит один tabular-билдер, экранирование общее.
+ * ------------------------------------------------ */
 
-function fillwordEscapeTeX(s) {
+var FILLWORD_TEX = {
+	cellCm: 0.62,      // желаемый размер клетки
+	minCellCm: 0.25,   // нижняя граница подгона
+	pageWidthCm: 21,   // A4
+	pageHeightCm: 29.7,
+	marginCm: 1.5,     // поля geometry
+	fboxrulePt: 0.4,   // толщина рамки клетки
+	headCm: 4.5,       // резерв высоты под заголовок и формулировку
+	fontMinPt: 6,
+	fontMaxPt: 12,
+};
+
+function fillwordTexEscape(s) {
 	return String(s).replace(/\\/g, '\\textbackslash{}').replace(/([&%$#_{}])/g, '\\$1');
 }
 
-function fillwordEscapeHtml(s) {
-	return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+/** Сантиметры, которые клетка занимает сверх \makebox: две линейки \fbox. */
+function fillwordTexOverhead() {
+	return 2 * FILLWORD_TEX.fboxrulePt * 2.54 / 72.27;
 }
 
-function fillwordTabularTeX(result, withDigits) {
-	var w = result.width;
-	var h = result.height;
-	var cols = '';
-	for (var x = 0; x < w; x++) {
-		cols += '@{}c@{}';
-	}
-	var out = '\\begin{tabular}{' + cols + '}\n';
-	for (var y = 0; y < h; y++) {
-		var cells = [];
-		for (var x2 = 0; x2 < w; x2++) {
-			var i = y * w + x2;
-			if (!result.mask[i]) {
-				cells.push('\\makebox[0.62cm][c]{}');
-				continue;
-			}
-			var ch = result.rows[y][x2];
-			var body = withDigits && ch != null ? fillwordEscapeTeX(ch) : '';
-			cells.push('\\fbox{\\makebox[0.62cm][c]{\\strut ' + body + '}}');
-		}
-		out += cells.join(' & ') + ' \\\\\n';
-	}
-	out += '\\end{tabular}\n';
-	return out;
+/** Подгон клетки под A4: min(желаемая, по ширине, по высоте), не ниже минимума. */
+function fillwordTexFitCell(result) {
+	var t = FILLWORD_TEX;
+	var over = fillwordTexOverhead();
+	var availW = t.pageWidthCm - 2 * t.marginCm;
+	var availH = t.pageHeightCm - 2 * t.marginCm;
+	var cell = Math.min(
+		t.cellCm,
+		availW / result.width - over,
+		(availH - t.headCm) / result.height - over - 0.15
+	);
+	return Math.max(t.minCellCm, Math.floor(cell * 100) / 100);
 }
 
-function fillwordKeyTeX(result) {
-	var out = '\\begin{itemize}\n';
-	for (var i = 0; i < result.placements.length; i++) {
-		var p = result.placements[i];
-		var dir = p.dir === 'h' ? 'по горизонтали' : p.dir === 'v' ? 'по вертикали' : 'по диагонали';
-		out += '\\item ' + fillwordEscapeTeX(p.word) + ' --- ' + dir +
-			', начало в клетке (' + (p.x + 1) + '; ' + (p.y + 1) + ')' +
-			(p.reversed ? ', в обратном порядке' : '') + ';\n';
-	}
-	out += '\\end{itemize}\n';
-	if (result.stats.decoysPlaced) {
-		out += '\nВ сетке также присутствуют числа-обманки (' + result.stats.decoysPlaced +
-			' шт.): они стоят на поле, но к ответам варианта не относятся и в ключе не перечислены.\n';
-	}
-	return out;
+function fillwordTexFontPt(cellCm) {
+	var t = FILLWORD_TEX;
+	return Math.max(t.fontMinPt, Math.min(t.fontMaxPt, Math.round(cellCm * 28.3465 * 0.45)));
 }
 
 function fillwordToLaTeX(result, variantNumber) {
+	var t = FILLWORD_TEX;
+	var w = result.width;
+	var h = result.height;
+	var cell = fillwordTexFitCell(result);
+	var fontPt = fillwordTexFontPt(cell);
 	var label = (typeof options !== 'undefined' && options.vanishVariants)
 		? '' : ' к варианту №' + (options.variantPrefix || '') + variantNumber;
+
+	function cellMacro(ch) {
+		return ch == null ? '\\fwempty' : '\\fwcell{' + fillwordTexEscape(ch) + '}';
+	}
+	// единый bilдер таблицы: getCh(x, y, i) -> символ или null
+	function tabular(getCh) {
+		var rows = [];
+		for (var y = 0; y < h; y++) {
+			var cols = [];
+			for (var x = 0; x < w; x++) {
+				var i = y * w + x;
+				cols.push(result.mask[i] ? cellMacro(getCh(x, y, i)) : '\\fwempty');
+			}
+			rows.push(cols.join(' & '));
+		}
+		return '\\begin{tabular}{*{' + w + '}{@{}c@{}}}\n' + rows.join(' \\\\\n') + '\n\\end{tabular}\n';
+	}
+
 	var tex = '';
 	tex += '\\documentclass[a4paper,12pt]{article}\n';
 	tex += '\\usepackage[T2A]{fontenc}\n';
 	tex += '\\usepackage[utf8]{inputenc}\n';
 	tex += '\\usepackage[english,russian]{babel}\n';
-	tex += '\\usepackage[left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}\n';
+	tex += '\\usepackage[left=' + t.marginCm + 'cm,right=' + t.marginCm + 'cm,top=' + t.marginCm + 'cm,bottom=' + t.marginCm + 'cm]{geometry}\n';
 	tex += '% Самодостаточный файл: компилируется pdflatex без внешних зависимостей.\n';
-	tex += '% Сгенерировано ЧАС ЕГЭ (fillword), зерно: ' + fillwordEscapeTeX(String(result.seed)) + '\n';
+	tex += '% Сгенерировано ЧАС ЕГЭ (fillword), зерно: ' + fillwordTexEscape(String(result.seed)) + '\n';
+	// --- именованные константы: числовые значения только здесь ---
+	tex += '% --- константы филворда ---\n';
+	tex += '\\newlength{\\fillwordCell}\n';
+	tex += '\\setlength{\\fillwordCell}{' + cell + 'cm} % автоподгон под A4: ' + w + 'x' + h + ' клеток\n';
+	tex += '\\newcommand{\\fillwordFont}{\\fontsize{' + fontPt + '}{' + (fontPt + 2) + '}\\selectfont}\n';
+	tex += '\\newcommand{\\fwempty}{\\makebox[\\fillwordCell][c]{}}\n';
+	tex += '\\newcommand{\\fwcell}[1]{\\fbox{\\makebox[\\fillwordCell][c]{\\strut\\fillwordFont #1}}}\n';
+	tex += '\\setlength{\\fboxsep}{0pt}\n';
 	tex += '\\begin{document}\n\n';
-	tex += '\\section*{Филворд' + fillwordEscapeTeX(label) + '}\n\n';
-	tex += FILLWORD_INTRO_TEX + '\n';
-	tex += '\\begin{center}\n' + fillwordTabularTeX(result, true) + '\\end{center}\n\n';
-	// листок ученика и листок учителя печатаются раздельно
-	tex += '\\newpage\n\n';
-	tex += '\\section*{Филворд' + fillwordEscapeTeX(label) + ': ключ для учителя}\n\n';
+
+	// --- листок ученика: сетка с цифрами, БЕЗ списка чисел ---
+	tex += '\\section*{Филворд' + fillwordTexEscape(label) + '}\n\n';
+	tex += 'В сетке ниже спрятаны числа: они читаются по горизонтали (слева направо) и по вертикали\n';
+	tex += '(сверху вниз) и могут пересекаться --- в общей клетке стоит одна и та же цифра.\n';
+	tex += 'Часть спрятанных чисел совпадает с ответами заданий этого варианта: решив вариант,\n';
+	tex += 'вы можете проверить себя, отыскав полученный ответ в сетке.\n';
+	tex += 'Список чисел специально не приводится.\n\n';
+	tex += '\\begin{center}\n' + tabular(function (x, y) { return result.rows[y][x]; }) + '\\end{center}\n';
+
+	// --- листок учителя: с новой страницы ---
+	tex += '\n\\newpage\n\n';
+	tex += '\\section*{Филворд' + fillwordTexEscape(label) + ': ключ для учителя}\n\n';
 	tex += 'Расположение слов (ключ не предназначен для печати в варианте ученика):\n\n';
-	tex += fillwordKeyTeX(result) + '\n';
-	tex += '\\end{document}\n';
+	tex += '\\begin{itemize}\n';
+	for (var p = 0; p < result.placements.length; p++) {
+		var pl = result.placements[p];
+		var dir = pl.dir === 'h' ? 'по горизонтали' : pl.dir === 'v' ? 'по вертикали' : 'по диагонали';
+		tex += '\\item ' + fillwordTexEscape(pl.word) + ' --- ' + dir +
+			', начало в клетке (' + (pl.x + 1) + '; ' + (pl.y + 1) + ')' +
+			(pl.reversed ? ', в обратном порядке' : '') + ';\n';
+	}
+	tex += '\\end{itemize}\n';
+	if (result.stats && result.stats.decoysPlaced) {
+		tex += '\nВ сетке также присутствуют числа-обманки (' + result.stats.decoysPlaced +
+			' шт.): они стоят на поле, но к ответам варианта не относятся и в ключе не перечислены.\n';
+	}
+	tex += '\n\\end{document}\n';
 	return tex;
 }
 
