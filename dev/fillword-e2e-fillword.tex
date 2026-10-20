@@ -4,7 +4,14 @@
 \usepackage[english,russian]{babel}
 \usepackage[left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
 % Самодостаточный файл: компилируется pdflatex без внешних зависимостей.
-% Сгенерировано ЧАС ЕГЭ (fillword), зерно: fillword-e2e-42-fillword-1-x2
+% Сгенерировано ЧАС ЕГЭ (fillword), зерно: fillword-e2e-42-fillword-1
+% --- константы филворда ---
+\newlength{\fillwordCell}
+\setlength{\fillwordCell}{0.62cm} % автоподгон под A4: 8x8 клеток
+\newcommand{\fillwordFont}{\fontsize{8}{10}\selectfont}
+\newcommand{\fwempty}{\makebox[\fillwordCell][c]{}}
+\newcommand{\fwcell}[1]{\fbox{\makebox[\fillwordCell][c]{\strut\fillwordFont #1}}}
+\setlength{\fboxsep}{0pt}
 \begin{document}
 
 \section*{Филворд к варианту №1}
@@ -16,19 +23,15 @@
 Список чисел специально не приводится.
 
 \begin{center}
-\begin{tabular}{@{}c@{}@{}c@{}@{}c@{}@{}c@{}@{}c@{}@{}c@{}@{}c@{}@{}c@{}@{}c@{}@{}c@{}@{}c@{}@{}c@{}}
-\fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut 3}} \\
-\fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut 6}} & \fbox{\makebox[0.62cm][c]{\strut 3}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut -}} & \fbox{\makebox[0.62cm][c]{\strut 8}} \\
-\fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut ,}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut 6}} & \fbox{\makebox[0.62cm][c]{\strut 5}} & \fbox{\makebox[0.62cm][c]{\strut 9}} \\
-\fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut 3}} & \fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut -}} & \fbox{\makebox[0.62cm][c]{\strut 5}} & \fbox{\makebox[0.62cm][c]{\strut 7}} \\
-\fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 5}} & \fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut 6}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 6}} & \fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut -}} & \fbox{\makebox[0.62cm][c]{\strut 5}} \\
-\fbox{\makebox[0.62cm][c]{\strut 3}} & \fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 5}} & \fbox{\makebox[0.62cm][c]{\strut ,}} & \fbox{\makebox[0.62cm][c]{\strut 3}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut ,}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 3}} \\
-\fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut -}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 4}} \\
-\fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut ,}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut ,}} & \fbox{\makebox[0.62cm][c]{\strut 5}} & \fbox{\makebox[0.62cm][c]{\strut -}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut ,}} & \fbox{\makebox[0.62cm][c]{\strut 1}} \\
-\fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut -}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 5}} & \fbox{\makebox[0.62cm][c]{\strut ,}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut 8}} \\
-\fbox{\makebox[0.62cm][c]{\strut ,}} & \fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut 2}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut 3}} & \fbox{\makebox[0.62cm][c]{\strut ,}} & \fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 5}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 5}} \\
-\fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 6}} & \fbox{\makebox[0.62cm][c]{\strut 1}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 6}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 5}} & \fbox{\makebox[0.62cm][c]{\strut ,}} & \fbox{\makebox[0.62cm][c]{\strut 5}} \\
-\fbox{\makebox[0.62cm][c]{\strut 8}} & \fbox{\makebox[0.62cm][c]{\strut 4}} & \fbox{\makebox[0.62cm][c]{\strut 6}} & \fbox{\makebox[0.62cm][c]{\strut 6}} & \fbox{\makebox[0.62cm][c]{\strut 0}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut -}} & \fbox{\makebox[0.62cm][c]{\strut 5}} & \fbox{\makebox[0.62cm][c]{\strut -}} & \fbox{\makebox[0.62cm][c]{\strut 9}} & \fbox{\makebox[0.62cm][c]{\strut 7}} & \fbox{\makebox[0.62cm][c]{\strut 0}} \\
+\begin{tabular}{*{8}{@{}c@{}}}
+\fwcell{2} & \fwcell{2} & \fwcell{,} & \fwcell{0} & \fwcell{-} & \fwcell{0} & \fwcell{,} & \fwcell{9} \\
+\fwcell{1} & \fwcell{4} & \fwcell{3} & \fwcell{3} & \fwcell{7} & \fwcell{,} & \fwcell{5} & \fwcell{8} \\
+\fwcell{1} & \fwcell{3} & \fwcell{,} & \fwcell{5} & \fwcell{7} & \fwcell{1} & \fwcell{,} & \fwcell{4} \\
+\fwcell{,} & \fwcell{9} & \fwcell{1} & \fwcell{4} & \fwcell{4} & \fwcell{6} & \fwcell{5} & \fwcell{1} \\
+\fwcell{7} & \fwcell{0} & \fwcell{4} & \fwcell{0} & \fwcell{5} & \fwcell{7} & \fwcell{,} & \fwcell{4} \\
+\fwcell{7} & \fwcell{-} & \fwcell{4} & \fwcell{-} & \fwcell{5} & \fwcell{7} & \fwcell{5} & \fwcell{3} \\
+\fwcell{,} & \fwcell{0} & \fwcell{1} & \fwcell{7} & \fwcell{,} & \fwcell{4} & \fwcell{-} & \fwcell{1} \\
+\fwcell{8} & \fwcell{6} & \fwcell{0} & \fwcell{5} & \fwcell{4} & \fwcell{2} & \fwcell{2} & \fwcell{5}
 \end{tabular}
 \end{center}
 
@@ -39,28 +42,21 @@
 Расположение слов (ключ не предназначен для печати в варианте ученика):
 
 \begin{itemize}
-\item 48 --- по вертикали, начало в клетке (9; 4);
-\item 48 --- по горизонтали, начало в клетке (2; 2);
-\item 3142 --- по горизонтали, начало в клетке (2; 4);
-\item 17 --- по вертикали, начало в клетке (8; 10);
-\item 459 --- по горизонтали, начало в клетке (9; 10);
-\item 0,77 --- по горизонтали, начало в клетке (3; 8);
-\item 16968 --- по горизонтали, начало в клетке (5; 5);
-\item 1342 --- по вертикали, начало в клетке (5; 1);
-\item 23 --- по горизонтали, начало в клетке (1; 4);
-\item 25 --- по вертикали, начало в клетке (10; 9);
-\item 13 --- по вертикали, начало в клетке (2; 3);
-\item 2100 --- по горизонтали, начало в клетке (4; 1);
-\item 40 --- по вертикали, начало в клетке (9; 10);
-\item 264 --- по вертикали, начало в клетке (4; 1);
-\item -45,9 --- по горизонтали, начало в клетке (3; 9);
-\item 4416 --- по вертикали, начало в клетке (4; 9);
-\item -7,3 --- по вертикали, начало в клетке (6; 7);
-\item 2413 --- по горизонтали, начало в клетке (3; 10);
-\item 8466 --- по горизонтали, начало в клетке (1; 12);
-\item 8772 --- по горизонтали, начало в клетке (1; 1);
-\item 21,875 --- по вертикали, начало в клетке (5; 4);
-\item 11 --- по горизонтали, начало в клетке (1; 3);
+\item 13 --- по горизонтали, начало в клетке (1; 3);
+\item 8 --- по горизонтали, начало в клетке (1; 8);
+\item 3 --- по горизонтали, начало в клетке (8; 6);
+\item 337,5 --- по горизонтали, начало в клетке (3; 2);
+\item 98 --- по вертикали, начало в клетке (8; 1);
+\item 0,167 --- по вертикали, начало в клетке (6; 1);
+\item 2 --- по горизонтали, начало в клетке (1; 1);
+\item 3,5 --- по горизонтали, начало в клетке (2; 3);
+\item -0,9 --- по горизонтали, начало в клетке (5; 1);
+\item 6 --- по горизонтали, начало в клетке (2; 8);
+\item 225 --- по горизонтали, начало в клетке (6; 8);
+\item 15 --- по вертикали, начало в клетке (8; 7);
+\item 243 --- по вертикали, начало в клетке (2; 1);
+\item 390 --- по вертикали, начало в клетке (2; 3);
+\item -1 --- по горизонтали, начало в клетке (7; 7);
 \end{itemize}
 
 В сетке также присутствуют числа-обманки (2 шт.): они стоят на поле, но к ответам варианта не относятся и в ключе не перечислены.

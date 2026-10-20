@@ -65,7 +65,7 @@ page.on('console', (m) => {
 });
 
 const hash = encodeURIComponent(JSON.stringify({
-	nabor: { zagol: '../zdn/matege2024b/matege2024b.js' },
+	nabor: { zagol: '../zdn/mat2014/mat2014.js' },
 	style: { fon: 'white', pan: '#e9b96e', menuLinkTarget: '_self' },
 }));
 
