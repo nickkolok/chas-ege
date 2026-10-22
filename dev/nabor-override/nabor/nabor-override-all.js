@@ -9,7 +9,7 @@ $('#prepareLaTeX').prop("checked", true);
 // Редактируемый текст 
 $('#redakt').prop("checked", true);
 //Увеличить шрифт 
-$('#largeFont').prop("checked", true);
+$('#largeFont').prop("checked", false);
 //Не разрывать страницу между вариантами 
 $('#nopagebreak').prop("checked", false);
 //Компактные таблицы ответов 
@@ -30,7 +30,7 @@ $('#variantPrefix').val('');
 // Не указывать данные вариантов
 $('#vanishVariants').prop("checked", false);
 // Генерировать преимущественно натуральные числа
-$('#forceIntegers').prop("checked", false);
+$('#forceIntegers').prop("checked", true);
 // Генерировать ТОЛЬКО целые числа
 $('#onlyIntegers').prop("checked", false);
 // Требовать уникальных ответов, решений или сигнатур (осторожно, ответов может не хватить!) 
