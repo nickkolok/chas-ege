@@ -11,7 +11,7 @@
 		let d_2 = sl(10, 25);
 		let d_1 = sl(3, d_2 - 2);
 		let deNum = sl(3, 15);
-		let num = (1, deNum - 1);
+		let num = sl(1, deNum - 1);
 		let S = 0.5 * d_2 * d_1 * (num / deNum);
 
 		genAssertZ1000(S, 'не более 3-х знаков после запятой');
