@@ -16,7 +16,33 @@
  *   5. вводит --text или содержимое --text-file в поле чата;
  *   6. отправляет сообщение и ждет --post-wait (по умолчанию 30) секунд.
  *
- * Селекторы проверены на реальном DOM qwen-chat-fe 0.3.20.
+ * Селекторы проверены на реальном DOM qwen-chat-fe 0.3.20 и 0.3.22.
+ *
+ * ГЛАВНАЯ ЛОВУШКА ЭТОГО САЙТА (найдена и исправлена 2026-10-22):
+ *   qwen-chat-fe рендерит блок выбора режима ДВАЖДЫ. Первый узел ".mode-select-open"
+ *   появляется примерно через 1.2 с после навигации, а ~3 с спустя React пересоздаёт
+ *   его (у <ModeSelect/> меняется key "mode-selector-*" после прихода /api/v2/configs,
+ *   списка моделей и featureStatuses). Первый узел отцепляется от документа, но
+ *   остаётся живым JS-объектом вместе со своим поддеревом, поэтому:
+ *     - handle.boundingBox() возвращает null;
+ *     - handle.evaluate(el => el.click()) НЕ бросает ошибку и НИЧЕГО не делает
+ *       (событие не доходит до корневого слушателя React);
+ *     - в логе это выглядит как "Меню режимов не открылось после клика" без единой
+ *       ошибки - именно так и падал --agent.
+ *   Любой код вида "нашёл элемент -> сохранил handle -> потом кликнул" здесь гонится
+ *   с ремаунтом. Что сделано:
+ *     (а) ждём, пока узел ПЕРЕСТАНЕТ пересоздаваться (waitForStableVisible);
+ *     (б) переразрешаем узел непосредственно перед кликом и проверяем isConnected
+ *         (humanClick больше не кликает по мёртвым узлам и сообщает об этом);
+ *     (в) после клика проверяем СОСТОЯНИЕ страницы, а не факт клика, и при неудаче
+ *         эскалируем стратегию: мышь -> el.click() -> синтетическая последовательность
+ *         pointer/mouse-событий -> onClick из __reactProps$;
+ *     (г) поддержан и десктопный дропдаун, и мобильный drawer (.mode-selector-drawer);
+ *     (д) ожидание переведено внутрь страницы (waitForFunction) - на медленной машине
+ *         прежние циклы evaluateHandle растягивали 21 с ожидания до полутора минут;
+ *     (е) починен --new-chat: [data-testid="sidebar-new-chat-button"] в 0.3.22 больше
+ *         нет, из-за чего скрипт делал лишний полный reload страницы и гарантированно
+ *         попадал в окно ремаунта композера.
  * ------------------------------------------------------------------
  */
 
@@ -30,7 +56,9 @@ const { parseArgs } = require('util');
 const puppeteer = require('puppeteer');
 
 const SITE = 'https://chat.qwen.ai';
-const APP_VERSION_HINT = 'qwen-chat-fe 0.3.20';
+const APP_VERSION_HINT = 'qwen-chat-fe 0.3.20/0.3.22';
+/** Версии фронта, на которых селекторы и поведение проверены вживую. */
+const TESTED_APP_VERSIONS = ['0.3.20', '0.3.22'];
 
 /* ============================ exit codes ============================ */
 const EXIT = {
@@ -444,6 +472,8 @@ class Ctx {
     this.browser = browser;
     this.page = page;
     this.stepNo = 0;
+    /** Версия фронта (qwen-chat-fe), определяется после открытия страницы чата. */
+    this.appVersion = null;
   }
   get t() {
     return this.cfg;
@@ -525,13 +555,28 @@ async function findVisible(page, selectors, timeout = 0) {
   }
 }
 
-/** Клик "по-человечески": скролл в область, движение мыши, пауза, клик по центру. */
+/** Клик "по-человечески": скролл в область, движение мыши, пауза, клик по центру.
+ *  Возвращает true, если клик состоялся, и false - если узел уже мёртв (stale handle).
+ *  ПРОВЕРКА isConnected ОБЯЗАТЕЛЬНА: qwen-chat-fe пересоздаёт узлы композера, и клик по
+ *  отцепленному узлу не бросает ошибку, а молча уходит в никуда (см. шапку файла). */
 async function humanClick(page, handleOrSel, label = '') {
   let handle = handleOrSel;
   if (typeof handleOrSel === 'string') {
     const found = await findVisible(page, [handleOrSel], 0);
-    if (!found) throw new StepError(`Не найден видимый элемент для клика: ${handleOrSel} (${label})`, EXIT.INPUT_NOT_FOUND);
+    if (!found) {
+      log.warn(`не найден видимый элемент для клика: ${handleOrSel} (${label})`);
+      return false;
+    }
     handle = found.handle;
+  }
+  // живой ли узел? отцепленный от документа узел кликом не взять
+  const alive = await handle.evaluate((el) => !!(el && el.isConnected && document.contains(el))).catch(() => false);
+  if (!alive) {
+    log.warn(
+      `элемент "${label || '(без имени)'}" больше не в DOM (stale handle: React пересоздал узел) - ` +
+        'клик отменён, элемент нужно найти заново'
+    );
+    return false;
   }
   try {
     await handle.evaluate((el) => el.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' }));
@@ -553,10 +598,12 @@ async function humanClick(page, handleOrSel, label = '') {
     await sleep(randInt(35, 95));
     await page.mouse.up();
   } else {
+    log.warn(`"${label || 'элемент'}" не дал boundingBox (скрыт/перекрыт/вне вьюпорта) - кликаю программно`);
     await handle.evaluate((el) => el.click());
   }
   if (label) log.debug(`клик: ${label}`);
   await sleep(randInt(80, 200));
+  return true;
 }
 
 /** Набор текста с рваным ритмом (antidetect: ровный интервал - явный признак бота). */
@@ -619,7 +666,7 @@ async function detectCaptcha(page) {
   }
 }
 
-/* ============================ selectors (проверены на 0.3.20) ============================ */
+/* ============================ selectors (проверены на 0.3.20 и 0.3.22) ============================ */
 const SEL = {
   // --- форма авторизации ---
   authRoot: '.qwenchat-page-auth',
@@ -640,16 +687,74 @@ const SEL = {
   textarea: 'textarea.message-input-textarea',
   inputContainer: '.message-input-container',
   sendWrap: '.message-input-right-button-send',
+  // 0.3.22: data-testid из сайдбара исчез, кнопка "New Chat" - это
+  // div.new-chat / [aria-label="New Chat"] (см. startNewChat)
   newChatButton: '[data-testid="sidebar-new-chat-button"]',
-  messageContainer: '.chat-message-container',
+  // 0.3.22: контейнер сообщений - это ID (#chat-message-container), а не класс,
+  // поэтому прежний '.chat-message-container' не матчил ничего и проверка отправки
+  // деградировала до "URL похож на /c/". Сами сообщения: .chat-user-message (наши)
+  // и .chat-response-message (ответы).
+  messageContainer: '#chat-message-container',
+  messageUser: '.chat-user-message',
+  messageResponse: '.chat-response-message',
+  // Кнопка отправки. ВАЖНО: в .message-input-right-button-send при ПУСТОМ поле ввода
+  // лежит кнопка голосового режима (aria-label="Voice mode", .omb__btn), а при тексте -
+  // button.send-button[aria-label="Send"]. Кликаем строго по Send.
+  sendButton:
+    '.message-input-right-button-send button.send-button, .message-input-right-button-send button[aria-label="Send"], .chat-prompt-send-button button',
 
   // --- переключатель режимов ---
+  // Как это устроено в qwen-chat-fe 0.3.20/0.3.22 (проверено на живом DOM):
+  //  * Триггер меню - div.mode-select-open (role="button", aria-label="Select Mode",
+  //    иконка "+"). onClick висит НЕ на нём, а на обёртке
+  //    .qwen-chat-v2-dropdown-menu-trigger, поэтому клик по "+" всплывает до неё.
+  //  * Признаки "меню открыто": класс .mode-select-open-active на триггере,
+  //    .mode-select-dropdown-menu внутри .qwen-chat-v2-dropdown-menu-popup
+  //    (поповер портируется в .message-input-container, а НЕ в body).
+  //  * На мобильной верстке (store.mobile) вместо дропдауна открывается drawer
+  //    .mode-selector-drawer-container с пунктами .mode-selector-drawer-item /
+  //    .mode-selector-drawer-list-item.
+  //  * ".mode-select-current-mode" - чип УЖЕ выбранного режима (иконка + название +
+  //    крестик ".mode-select-current-mode-close"). Клик по нему открывает поповер
+  //    "Add more details", а НЕ список режимов.
+  //  * Кликабельный пункт меню - ".mode-select-common-item" (он же [role="menuitem"],
+  //    базовый класс "qwen-chat-v2-dropdown-menu-item"). Когда пункт недоступен, на нём
+  //    aria-disabled="true" и класс "qwen-chat-v2-dropdown-menu-item-disabled".
+  //  * Название пункта - ".mode-select-dropdown-item-name" (например "Agent Mode"),
+  //    бейдж (например "Beta") - ".mode-select-dropdown-item-tag".
+  //  * ВАЖНО: весь блок .mode-select ПЕРЕСОЗДАЁТСЯ React'ом примерно через 3 с после
+  //    навигации (key "mode-selector-*" меняется после прихода конфигов/моделей).
+  //    Handle, взятый до ремаунта, после него указывает на отцепленный узел: клик по
+  //    нему НЕ бросает ошибку и НИЧЕГО не делает. Поэтому узлы ищем заново прямо перед
+  //    кликом (waitForStableVisible + findModeItemFresh + tryOpenModeMenu).
   modeSelect: '.mode-select',
+  modeOpen: '.mode-select-open',
+  modeOpenActive: '.mode-select-open-active',
+  modeOpenByLabel: '[aria-label="Select Mode"]',
+  modeTriggerWrap: '.mode-select .qwen-chat-v2-dropdown-menu-trigger',
   modeCurrent: '.mode-select-current-mode',
+  modeCurrentClose: '.mode-select-current-mode-close',
   modeDropdownMenu: '.mode-select-dropdown-menu',
-  modeItem: '.mode-select-dropdown-item',
+  modeDropdownPopup: '.qwen-chat-v2-dropdown-menu-popup',
+  modeItem: '.mode-select-common-item',
+  modeItemRole: '[role="menuitem"]',
   modeItemName: '.mode-select-dropdown-item-name',
+  modeItemTag: '.mode-select-dropdown-item-tag',
+  modeItemDisabledClass: 'qwen-chat-v2-dropdown-menu-item-disabled',
   modeSubPopover: '.mode-select-sub-popover-container',
+  modeDrawer: '.mode-selector-drawer-container, .mode-selector-drawer',
+  modeDrawerItem: '.mode-selector-drawer-item, .mode-selector-drawer-list-item',
+
+  // --- то, что может перекрыть клик (модалки, онбординг-тур, куки-баннер) ---
+  blockers: [
+    '.qwen-chat-v2-modal-root',
+    '[class*="welcome-modal"]',
+    '[class*="onboarding"]',
+    '[class*="guide-mask"]',
+    '[class*="tour-"]',
+    '[class*="cookie"][class*="banner"]',
+    '[class*="cookie-confirm"]',
+  ],
 
   // --- капча ---
   captcha: ['#aliyunCaptcha-sliding-slider', '.aliyun-captcha', '.nc-container', '#capture-container'],
@@ -664,6 +769,176 @@ const TXT = {
   agentMode: ['Agent Mode', 'Режим агента', 'Агент'],
   more: ['More', 'Ещё', 'Еще'],
 };
+
+/* ==================== внутристраничные хелперы (window.__qca) ====================
+ * Небольшой набор функций, который инжектится в КАЖДЫЙ документ страницы
+ * (evaluateOnNewDocument). Зачем:
+ *   1) все проверки видимости/живости узла делаются одним вызовом внутри страницы -
+ *      на медленной машине это в разы быстрее, чем цикл evaluateHandle из Node
+ *      (прежний waitForAny на 15 с мог растягиваться до минуты);
+ *   2) узлы ищутся ЗАНОВО в момент клика, поэтому отцепленный (stale) handle
+ *      физически не может быть использован.
+ */
+const QCA_VERSION = 3; // должно совпадать с "ver:" внутри QCA_SRC
+const QCA_SRC = [
+  '(() => {',
+  '  const isVisible = (el) => {',
+  '    if (!el || el.nodeType !== 1) return false;',
+  '    const cs = window.getComputedStyle(el);',
+  '    if (cs.display === "none" || cs.visibility === "hidden" || Number(cs.opacity) === 0) return false;',
+  '    const r = el.getBoundingClientRect();',
+  '    if (r.width < 2 || r.height < 2) return false;',
+  '    if (el.closest(\'[aria-hidden="true"]\')) return false;',
+  '    return true;',
+  '  };',
+  '  const all = (sel) => Array.prototype.slice.call(document.querySelectorAll(sel));',
+  '  const firstVisible = (sels) => {',
+  '    for (let i = 0; i < sels.length; i++) { const list = all(sels[i]); for (let j = 0; j < list.length; j++) { if (isVisible(list[j])) return list[j]; } }',
+  '    return null;',
+  '  };',
+  '  const mkEvent = (type) => {',
+  '    const base = { bubbles: true, cancelable: true, composed: true, view: window };',
+  '    if (type.indexOf("pointer") === 0) {',
+  '      try {',
+  '        return new PointerEvent(type, Object.assign(base, { pointerId: 1, pointerType: "mouse", isPrimary: true, button: 0, buttons: /down$/.test(type) ? 1 : 0 }));',
+  '      } catch (e) { return new MouseEvent(type.replace("pointer", "mouse"), base); }',
+  '    }',
+  '    if (type.indexOf("key") === 0) return new KeyboardEvent(type, Object.assign(base, { key: "Enter", code: "Enter", keyCode: 13, which: 13 }));',
+  '    return new MouseEvent(type, Object.assign(base, { button: 0, buttons: /down$/.test(type) ? 1 : 0 }));',
+  '  };',
+  '  const fire = (el, type) => el.dispatchEvent(mkEvent(type));',
+  '  const clickSeq = (el) => {',
+  '    const seq = ["pointerover", "pointerenter", "mouseover", "mouseenter", "pointerdown", "mousedown", "pointerup", "mouseup", "click"];',
+  '    try { el.focus({ preventScroll: true }); } catch (e) {}',
+  '    for (let i = 0; i < seq.length; i++) fire(el, seq[i]);',
+  '  };',
+  '  const reactProps = (el, maxDepth) => {',
+  '    let cur = el, depth = 0;',
+  '    while (cur && depth <= (maxDepth || 6)) {',
+  '      const keys = Object.keys(cur);',
+  '      for (let i = 0; i < keys.length; i++) {',
+  '        if (keys[i].indexOf("__reactProps") === 0 && cur[keys[i]]) return { node: cur, props: cur[keys[i]], depth: depth };',
+  '      }',
+  '      cur = cur.parentElement; depth++;',
+  '    }',
+  '    return null;',
+  '  };',
+  '  const fakeReactEvent = (target, currentTarget) => ({',
+  '    type: "click", target: target, currentTarget: currentTarget || target, nativeEvent: mkEvent("click"),',
+  '    bubbles: true, cancelable: true, defaultPrevented: false, isTrusted: false,',
+  '    preventDefault() {}, stopPropagation() {}, stopImmediatePropagation() {}, persist() {},',
+  '  });',
+  '  const _ids = new WeakMap();',
+  '  let _n = 0;',
+  '  const idOf = (el) => { if (!el) return 0; let v = _ids.get(el); if (!v) { v = ++_n; _ids.set(el, v); } return v; };',
+  '  const describe = (el) => {',
+  '    if (!el) return null;',
+  '    let cls = el.className;',
+  '    if (cls && typeof cls !== "string") cls = cls.baseVal;',
+  '    return { tag: el.tagName, cls: String(cls || "").trim().split(/\\s+/).slice(0, 4).join("."), id: el.id || "" };',
+  '  };',
+  '  const topAt = (el) => {',
+  '    const r = el.getBoundingClientRect();',
+  '    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;',
+  '    const inVp = cx >= 0 && cy >= 0 && cx <= window.innerWidth && cy <= window.innerHeight;',
+  '    if (!inVp) return { covered: true, by: null, reason: "outside viewport", rect: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)] };',
+  '    const top = document.elementFromPoint(cx, cy);',
+  '    if (!top) return { covered: true, by: null, reason: "elementFromPoint=null" };',
+  '    if (top === el) return { covered: false, by: "self" };',
+  '    if (el.contains(top)) return { covered: false, by: "child" };',
+  '    if (top.contains && top.contains(el)) return { covered: false, by: "parent:" + (describe(top) || {}).cls };',
+  '    return { covered: true, by: describe(top), reason: "another element is on top" };',
+  '  };',
+  '  window.__qca = { ver: 3, isVisible: isVisible, all: all, firstVisible: firstVisible, fire: fire, clickSeq: clickSeq,',
+  '    mkEvent: mkEvent, reactProps: reactProps, fakeReactEvent: fakeReactEvent, idOf: idOf, describe: describe, topAt: topAt };',
+  '})();',
+].join('\n');
+
+/** Гарантируем, что __qca есть в текущем документе (после навигации он ставится сам). */
+async function ensureQca(page) {
+  let ok = false;
+  try {
+    ok = await page.evaluate((v) => !!(window.__qca && window.__qca.ver === v), QCA_VERSION);
+  } catch (_) {}
+  if (!ok) {
+    try {
+      await page.evaluate(QCA_SRC);
+      ok = await page.evaluate((v) => !!(window.__qca && window.__qca.ver === v), QCA_VERSION);
+    } catch (_) {}
+  }
+  if (!ok) log.debug('window.__qca не установился - использую резервные проверки на стороне Node');
+  return ok;
+}
+
+/** Ошибки страницы копим всегда: если React-компонент упал, клик по нему "молча" не сработает. */
+const PAGE_ERRORS = [];
+function rememberPageError(where, msg) {
+  PAGE_ERRORS.push({ where, at: ts(), msg: String(msg).slice(0, 300) });
+  if (PAGE_ERRORS.length > 12) PAGE_ERRORS.shift();
+}
+
+/** Версия фронта, которую реально отдаёт сайт (из URL бандла qwen-chat-fe). */
+async function readAppVersion(page) {
+  try {
+    return await page.evaluate(() => {
+      const srcs = Array.prototype.slice
+        .call(document.querySelectorAll('script[src],link[href]'))
+        .map((e) => e.src || e.href)
+        .filter(Boolean);
+      const hit = srcs.find((u) => /qwen-chat-fe\//.test(u));
+      return hit ? (hit.match(/qwen-chat-fe\/([^/]+)\//) || [])[1] || null : null;
+    });
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Ждём не просто появления элемента, а момента, когда ОДИН И ТОТ ЖЕ узел перестанет
+ * пересоздаваться (продержится stableMs подряд).
+ * Это главная защита от ремаунта композера qwen-chat-fe: handle, взятый до ремаунта,
+ * после него указывает на отцепленный узел, и клик по нему молча уходит в никуда.
+ */
+async function waitForStableVisible(page, selectors, opts = {}) {
+  const list = Array.isArray(selectors) ? selectors : [selectors];
+  const timeout = opts.timeout === undefined ? 15000 : opts.timeout;
+  const stableMs = opts.stableMs === undefined ? 700 : opts.stableMs;
+  const label = opts.label || list[0];
+  const t0 = Date.now();
+  await ensureQca(page);
+  let stable = true;
+  try {
+    await page.waitForFunction(
+      (sels, stableFor) => {
+        const Q = window.__qca;
+        if (!Q) return 0;
+        const el = Q.firstVisible(sels);
+        if (!el) {
+          Q.stab = null;
+          return 0;
+        }
+        const id = Q.idOf(el);
+        if (!Q.stab || Q.stab.id !== id) {
+          Q.stab = { id: id, since: Date.now() };
+          return 0;
+        }
+        return Date.now() - Q.stab.since >= stableFor ? 1 : 0;
+      },
+      { timeout, polling: 120 },
+      list,
+      stableMs
+    );
+  } catch (_) {
+    stable = false;
+    log.debug(`${label}: не дождался стабильного узла за ${timeout} мс (элемента может не быть вовсе)`);
+  }
+  const hit = await findVisible(page, list, 0);
+  if (hit) {
+    const id = await hit.handle.evaluate((el) => (window.__qca ? window.__qca.idOf(el) : 0)).catch(() => 0);
+    log.debug(`${label}: узел #${id} ${stable ? 'стабилен' : 'найден, но не стабилен'}, ждали ${Date.now() - t0} мс`);
+  }
+  return hit;
+}
 
 /* ============================ launch ============================ */
 async function launchBrowser(cfg) {
@@ -743,6 +1018,10 @@ async function launchBrowser(cfg) {
     } catch (_) {}
   });
 
+  /* --- наши внутристраничные хелперы: ставятся в каждый новый документ --- */
+  await page.evaluateOnNewDocument(QCA_SRC).catch(() => {});
+  await ensureQca(page);
+
   /* --- форсируем язык UI (для надежного матчинга по тексту) --- */
   if (cfg.lang) {
     await page
@@ -774,8 +1053,16 @@ async function launchBrowser(cfg) {
 
   if (cfg.verboseLogs) {
     page.on('console', (m) => log.debug(`[page console:${m.type()}] ${humanize(m.text(), 300)}`));
-    page.on('pageerror', (e) => log.debug('[page error] ' + humanize(e.message, 300)));
   }
+  // Ошибки страницы копим ВСЕГДА (а не только в verbose): если React-компонент упал,
+  // клик по нему молча не сработает, и без этой информации причину не установить.
+  page.on('pageerror', (e) => {
+    rememberPageError('pageerror', (e && e.message) || e);
+    if (cfg.verboseLogs) log.debug('[page error] ' + humanize(e.message, 300));
+  });
+  page.on('framenavigated', (f) => {
+    if (f === page.mainFrame()) ensureQca(page).catch(() => {});
+  });
   page.on('dialog', async (d) => {
     log.warn(`диалог страницы (${d.type()}): ${humanize(d.message(), 160)} - принимаю`);
     await d.accept().catch(() => {});
@@ -968,21 +1255,69 @@ async function clickByText(page, texts, scopeSel, label, timeout) {
     if (timeout) throw new StepError(`Не найдена кнопка "${list[0]}" (${label}) за ${timeout} мс`, EXIT.LOGIN_FAILED);
     return null;
   }
-  await humanClick(page, el, label || list[0]);
+  let clicked = await humanClick(page, el, label || list[0]);
+  if (clicked === false) {
+    // узел успели пересоздать (форма логина тоже React) - ищем заново и кликаем ещё раз
+    log.debug(`"${label || list[0]}": клик по stale-узлу, пробую заново`);
+    await sleep(400);
+    const retry = await page.evaluateHandle(
+      (wanted) => {
+        const norm = (t) => (t || '').replace(/\s+/g, ' ').trim().toLowerCase();
+        const cands = Array.prototype.slice.call(document.querySelectorAll('button, [role="button"], a, .qwen-chat-v2-btn'));
+        for (let i = 0; i < wanted.length; i++) {
+          const target = norm(wanted[i]);
+          for (let j = 0; j < cands.length; j++) {
+            const own = norm(cands[j].textContent);
+            if (own && (own === target || own.indexOf(target) === 0) && cands[j].isConnected) return cands[j];
+          }
+        }
+        return null;
+      },
+      list
+    );
+    const el2 = retry.asElement();
+    if (el2) {
+      await humanClick(page, el2, (label || list[0]) + ' (retry)');
+      return el2;
+    }
+  }
   return el;
 }
 
 async function waitForAny(page, selectors, timeout, label) {
-  const deadline = Date.now() + timeout;
-  for (;;) {
-    const hit = await findVisible(page, selectors, 0);
-    if (hit) {
-      log.debug(`${label}: найден ${hit.selector}`);
-      return hit;
-    }
-    if (Date.now() >= deadline) return null;
-    await sleep(250);
+  const list = Array.isArray(selectors) ? selectors : [selectors];
+  // Ждём ВНУТРИ страницы одним вызовом вместо цикла evaluateHandle из Node: на медленной
+  // машине/тяжёлой странице прежний цикл растягивал ожидание в разы (6 с -> 30+ с) и
+  // лишний раз дёргал main thread.
+  try {
+    await page.waitForFunction(
+      (sels) => {
+        const Q = window.__qca;
+        const isVisible = Q
+          ? Q.isVisible
+          : (el) => {
+              if (!el || el.nodeType !== 1) return false;
+              const cs = getComputedStyle(el);
+              if (cs.display === 'none' || cs.visibility === 'hidden' || Number(cs.opacity) === 0) return false;
+              const r = el.getBoundingClientRect();
+              return r.width > 2 && r.height > 2 && !el.closest('[aria-hidden="true"]');
+            };
+        for (let i = 0; i < sels.length; i++) {
+          const nodes = document.querySelectorAll(sels[i]);
+          for (let j = 0; j < nodes.length; j++) if (isVisible(nodes[j])) return true;
+        }
+        return false;
+      },
+      { timeout, polling: 120 },
+      list
+    );
+  } catch (_) {
+    log.debug(`${label}: не появился за ${timeout} мс`);
+    return null;
   }
+  const hit = await findVisible(page, list, 0);
+  if (hit) log.debug(`${label}: найден ${hit.selector}`);
+  return hit;
 }
 
 async function handleCaptchaIfAny(ctx, stageLabel) {
@@ -1221,88 +1556,540 @@ async function performLogin(ctx) {
   );
 }
 
-/* ============================ agent mode ============================ */
+/* ============================ agent mode ============================
+ * Всё, что здесь происходит, написано с учётом двух особенностей qwen-chat-fe:
+ *   1) блок .mode-select ПЕРЕСОЗДАЁТСЯ React'ом через ~3 с после навигации
+ *      (первый узел .mode-select-open появляется на ~1.2 с и к ~4.2 с заменяется
+ *      новым). Клик по "старому" handle молча уходит в никуда: boundingBox() даёт
+ *      null, а el.click() на отцепленном узле не доходит до слушателя React;
+ *   2) onClick висит не на .mode-select-open, а на обёртке
+ *      .qwen-chat-v2-dropdown-menu-trigger, а само меню портируется внутрь
+ *      .message-input-container.
+ * Поэтому: узлы переразрешаются в момент клика, успех определяется по СОСТОЯНИЮ
+ * страницы (.mode-select-open-active / .mode-select-dropdown-menu / drawer),
+ * а при неудаче стратегии клика эскалируются.
+ */
+
+/** Селекторы триггера меню режимов (по убыванию предпочтения). */
+const MODE_TRIGGER_SELS = ['.mode-select-open', '[aria-label="Select Mode"]'];
+/** Селекторы пунктов меню (desktop + mobile). */
+const MODE_ITEM_SELS = [
+  '.mode-select-common-item',
+  '.mode-selector-drawer-list-item',
+  '.mode-selector-drawer-item',
+  '.mode-selector-drawer-control-item',
+  '[role="menuitem"]',
+];
+/** Селекторы названий пунктов (desktop + mobile). */
+const MODE_ITEM_NAME_SELS = [
+  '.mode-select-dropdown-item-name',
+  '.mode-selector-drawer-list-item-title',
+  '.mode-selector-drawer-item-title',
+];
+
 async function getCurrentModeLabel(page) {
-  return page.evaluate((sel) => {
-    const el = document.querySelector(sel);
-    return el ? (el.innerText || '').replace(/\s+/g, ' ').trim() : '';
-  }, SEL.modeCurrent);
+  return page
+    .evaluate((sel) => {
+      const el = document.querySelector(sel);
+      return el ? (el.innerText || '').replace(/\s+/g, ' ').trim() : '';
+    }, SEL.modeCurrent)
+    .catch(() => '');
 }
 
-async function listModeItems(page) {
-  return page.evaluate(
-    (menuSel, itemSel, nameSel) => {
-      const menus = Array.from(document.querySelectorAll(menuSel));
+/** Состояние меню режимов: открыто/закрыто, какой именно вариант, сколько пунктов. */
+async function readModeMenuState(page) {
+  return page
+    .evaluate((itemSels) => {
+      const Q = window.__qca;
+      const vis = Q ? Q.isVisible : (el) => !!el;
+      const fv = (sels) => {
+        for (let i = 0; i < sels.length; i++) {
+          const list = document.querySelectorAll(sels[i]);
+          for (let j = 0; j < list.length; j++) if (vis(list[j])) return list[j];
+        }
+        return null;
+      };
+      const menu = fv(['.mode-select-dropdown-menu']);
+      const drawer = fv(['.mode-selector-drawer-container', '.mode-selector-drawer']);
+      const trigger = fv(['.mode-select-open']);
+      let items = 0;
+      for (let i = 0; i < itemSels.length; i++) {
+        const list = document.querySelectorAll(itemSels[i]);
+        for (let j = 0; j < list.length; j++) if (vis(list[j])) items++;
+      }
+      return {
+        open: !!(menu || drawer || (trigger && /mode-select-open-active/.test(String(trigger.className)))),
+        kind: menu ? 'dropdown' : drawer ? 'drawer' : trigger && /mode-select-open-active/.test(String(trigger.className)) ? 'active-class' : null,
+        visibleItems: items,
+        triggerInDom: !!document.querySelector('.mode-select-open'),
+      };
+    }, MODE_ITEM_SELS)
+    .catch((e) => ({ err: String((e && e.message) || e).slice(0, 140) }));
+}
+
+/** Ждём открытия меню (внутри страницы - дёшево даже на медленной машине). */
+async function waitModeMenuOpen(page, timeout = 3000) {
+  try {
+    await page.waitForFunction(
+      () => {
+        const Q = window.__qca;
+        const vis = Q ? Q.isVisible : (el) => !!el;
+        const fv = (sels) => {
+          for (let i = 0; i < sels.length; i++) {
+            const list = document.querySelectorAll(sels[i]);
+            for (let j = 0; j < list.length; j++) if (vis(list[j])) return list[j];
+          }
+          return null;
+        };
+        if (fv(['.mode-select-dropdown-menu', '.mode-selector-drawer-container', '.mode-selector-drawer'])) return true;
+        const t = fv(['.mode-select-open']);
+        return !!(t && /mode-select-open-active/.test(String(t.className)));
+      },
+      { timeout, polling: 100 }
+    );
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+/** Полная информация о триггере - для логов и диагностики. */
+async function inspectModeTrigger(page) {
+  return page
+    .evaluate(() => {
+      const Q = window.__qca;
+      const el = Q ? Q.firstVisible(['.mode-select-open', '[aria-label="Select Mode"]']) : document.querySelector('.mode-select-open');
+      if (!el) return { exists: false, anyInDom: document.querySelectorAll('.mode-select-open').length };
+      const r = el.getBoundingClientRect();
+      const wrap = el.closest('.qwen-chat-v2-dropdown-menu-trigger');
+      const rp = Q ? Q.reactProps(wrap || el) : null;
+      return {
+        exists: true,
+        nodeId: Q ? Q.idOf(el) : 0,
+        connected: el.isConnected,
+        rect: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)],
+        ariaLabel: el.getAttribute('aria-label'),
+        opacity: getComputedStyle(el).opacity,
+        inlineStyle: el.getAttribute('style'),
+        hasTriggerWrapper: !!wrap,
+        hasReactOnClick: !!(rp && typeof rp.props.onClick === 'function'),
+        reactDepth: rp ? rp.depth : null,
+        hitTest: Q ? Q.topAt(el) : null,
+        activeClass: /mode-select-open-active/.test(String(el.className)),
+      };
+    })
+    .catch((e) => ({ err: String((e && e.message) || e).slice(0, 140) }));
+}
+
+/** Что может перекрывать клик (модалка, тур-онбординг, куки-баннер). */
+async function detectBlockers(page) {
+  return page
+    .evaluate((sels) => {
+      const Q = window.__qca;
+      const vis = Q ? Q.isVisible : (el) => !!el;
       const out = [];
-      const roots = menus.length ? menus : [document];
-      for (const root of roots) {
-        for (const el of Array.from(root.querySelectorAll(itemSel))) {
-          const nameEl = el.querySelector(nameSel);
-          const r = el.getBoundingClientRect();
-          const cls = el.className || '';
+      for (let i = 0; i < sels.length; i++) {
+        const list = document.querySelectorAll(sels[i]);
+        for (let j = 0; j < list.length; j++) {
+          if (!vis(list[j])) continue;
           out.push({
-            text: ((nameEl ? nameEl.innerText : el.innerText) || '').replace(/\s+/g, ' ').trim(),
-            disabled:
-              el.getAttribute('aria-disabled') === 'true' ||
-              /disabled/.test(cls) ||
-              (el.closest('[aria-disabled="true"]') !== null && el.closest('.mode-select-dropdown-item') === null),
-            visible: r.width > 2 && r.height > 2,
-            cls: String(cls).slice(0, 120),
+            sel: sels[i],
+            cls: String(list[j].className || '').slice(0, 90),
+            text: (list[j].innerText || '').replace(/\s+/g, ' ').trim().slice(0, 70),
           });
         }
       }
       return out;
-    },
-    SEL.modeDropdownMenu,
-    SEL.modeItem,
-    SEL.modeItemName
-  );
+    }, SEL.blockers)
+    .catch(() => []);
 }
 
-async function findModeItemHandle(page, wantedTexts) {
-  const handle = await page.evaluateHandle(
-    (itemSel, nameSel, wanted) => {
+/** Аккуратно закрываем то, что может мешать клику. */
+async function dismissBlockers(ctx) {
+  const { page } = ctx;
+  const found = await detectBlockers(page);
+  if (!found.length) return [];
+  log.warn('найдены оверлеи, которые могут перехватывать клики: ' + JSON.stringify(found.slice(0, 4)));
+  await page.keyboard.press('Escape').catch(() => {});
+  await sleep(350);
+  const closed = await page
+    .evaluate(() => {
+      const Q = window.__qca;
+      const vis = Q ? Q.isVisible : (el) => !!el;
+      const closeSels = ['.qwen-chat-v2-modal-close', '[aria-label="Close"]', '[class*="modal"] [class*="close-icon"]', '[class*="tour"] [class*="close"]'];
+      let n = 0;
+      for (let i = 0; i < closeSels.length && n < 2; i++) {
+        const list = document.querySelectorAll(closeSels[i]);
+        for (let j = 0; j < list.length && n < 2; j++) {
+          if (!vis(list[j])) continue;
+          try {
+            list[j].click();
+            n++;
+          } catch (_) {}
+        }
+      }
+      // куки-баннер: жмём только "принять", чтобы не менять настройки пользователя
+      const btns = document.querySelectorAll('button,[role="button"]');
+      for (let j = 0; j < btns.length && n < 3; j++) {
+        const t = (btns[j].innerText || '').trim().toLowerCase();
+        if (!vis(btns[j])) continue;
+        if (/^(accept|agree|ok|got it|принять|согласен|понятно)$/.test(t)) {
+          try {
+            btns[j].click();
+            n++;
+          } catch (_) {}
+        }
+      }
+      return n;
+    })
+    .catch(() => 0);
+  if (closed) {
+    log.debug(`закрыл оверлеев: ${closed}`);
+    await sleep(600);
+  }
+  return found;
+}
+
+/** Список пунктов меню режимов (desktop-дропдаун и mobile-drawer). */
+async function listModeItems(page) {
+  return page
+    .evaluate((itemSels, nameSels, disabledCls) => {
+      const Q = window.__qca;
+      const vis = Q ? Q.isVisible : (el) => !!el;
+      const seen = [];
+      const out = [];
+      const norm = (s) => (s || '').replace(/\s+/g, ' ').trim();
+      for (let i = 0; i < itemSels.length; i++) {
+        const list = document.querySelectorAll(itemSels[i]);
+        for (let j = 0; j < list.length; j++) {
+          const el = list[j];
+          if (seen.indexOf(el) !== -1) continue;
+          seen.push(el);
+          let nameEl = null;
+          for (let k = 0; k < nameSels.length && !nameEl; k++) nameEl = el.querySelector(nameSels[k]);
+          const cls = String(el.className || '');
+          const r = el.getBoundingClientRect();
+          out.push({
+            text: norm(nameEl ? nameEl.innerText : el.innerText).slice(0, 80),
+            tag: norm(el.querySelector('.mode-select-dropdown-item-tag') ? el.querySelector('.mode-select-dropdown-item-tag').innerText : ''),
+            disabled:
+              el.getAttribute('aria-disabled') === 'true' ||
+              cls.split(/\s+/).indexOf(disabledCls) !== -1 ||
+              !!el.querySelector('.' + disabledCls) ||
+              !!el.closest('.' + disabledCls) ||
+              !!el.querySelector('.mode-selector-drawer-item-disabled, .mode-selector-drawer-list-item-disabled'),
+            visible: vis(el) && r.width > 2 && r.height > 2,
+            connected: el.isConnected,
+            cls: cls.slice(0, 120),
+          });
+        }
+      }
+      return out;
+    }, MODE_ITEM_SELS, MODE_ITEM_NAME_SELS, SEL.modeItemDisabledClass)
+    .catch((e) => {
+      log.debug('listModeItems: ' + String((e && e.message) || e).slice(0, 140));
+      return [];
+    });
+}
+
+/**
+ * Находит пункт меню по тексту и возвращает СВЕЖИЙ handle (плюс текст/disabled).
+ * Handle сразу используется для клика - держать его про запас нельзя (ремаунт).
+ */
+async function findModeItemFresh(page, wantedTexts) {
+  const res = await page.evaluateHandle(
+    (itemSels, nameSels, wanted) => {
+      const Q = window.__qca;
+      const vis = Q ? Q.isVisible : (el) => !!el;
       const norm = (s) => (s || '').replace(/\s+/g, ' ').trim().toLowerCase();
-      const items = Array.from(document.querySelectorAll(itemSel));
-      for (const w of wanted) {
-        const t = norm(w);
-        for (const el of items) {
-          const nameEl = el.querySelector(nameSel);
+      const items = [];
+      for (let i = 0; i < itemSels.length; i++) {
+        const list = document.querySelectorAll(itemSels[i]);
+        for (let j = 0; j < list.length; j++) if (vis(list[j]) && items.indexOf(list[j]) === -1) items.push(list[j]);
+      }
+      for (let w = 0; w < wanted.length; w++) {
+        const t = norm(wanted[w]);
+        if (!t) continue;
+        for (let k = 0; k < items.length; k++) {
+          const el = items[k];
+          let nameEl = null;
+          for (let n = 0; n < nameSels.length && !nameEl; n++) nameEl = el.querySelector(nameSels[n]);
           const own = norm(nameEl ? nameEl.innerText : el.innerText);
           if (!own) continue;
-          if (own === t || own.startsWith(t) || own.includes(t)) {
-            const r = el.getBoundingClientRect();
-            if (r.width < 2 || r.height < 2) continue;
-            return el;
-          }
+          if (own === t || own.indexOf(t) === 0 || own.indexOf(t) !== -1) return el;
         }
       }
       return null;
     },
-    SEL.modeItem,
-    SEL.modeItemName,
+    MODE_ITEM_SELS,
+    MODE_ITEM_NAME_SELS,
     wantedTexts
   );
-  return handle.asElement();
+  const handle = res.asElement();
+  if (!handle) return null;
+  const meta = await handle
+    .evaluate((el, nameSels) => {
+      let nameEl = null;
+      for (let n = 0; n < nameSels.length && !nameEl; n++) nameEl = el.querySelector(nameSels[n]);
+      const cls = String(el.className || '');
+      return {
+        text: ((nameEl ? nameEl.innerText : el.innerText) || '').replace(/\s+/g, ' ').trim().slice(0, 80),
+        disabled:
+          el.getAttribute('aria-disabled') === 'true' ||
+          cls.indexOf('qwen-chat-v2-dropdown-menu-item-disabled') !== -1 ||
+          !!el.closest('.qwen-chat-v2-dropdown-menu-item-disabled'),
+        connected: el.isConnected,
+        nodeId: window.__qca ? window.__qca.idOf(el) : 0,
+      };
+    }, MODE_ITEM_NAME_SELS)
+    .catch(() => null);
+  if (!meta || !meta.connected) return null;
+  return { handle, text: meta.text, disabled: meta.disabled, nodeId: meta.nodeId };
 }
 
+/** Клик по пункту меню целиком внутри страницы (узел берётся в момент клика). */
+async function clickModeItemInPage(page, wantedTexts, strategy) {
+  return page
+    .evaluate(
+      (itemSels, nameSels, wanted, strat) => {
+        const Q = window.__qca;
+        if (!Q) return { ok: false, reason: 'window.__qca отсутствует' };
+        const norm = (s) => (s || '').replace(/\s+/g, ' ').trim().toLowerCase();
+        const items = [];
+        for (let i = 0; i < itemSels.length; i++) {
+          const list = document.querySelectorAll(itemSels[i]);
+          for (let j = 0; j < list.length; j++) if (Q.isVisible(list[j]) && items.indexOf(list[j]) === -1) items.push(list[j]);
+        }
+        let el = null;
+        for (let w = 0; w < wanted.length && !el; w++) {
+          const t = norm(wanted[w]);
+          if (!t) continue;
+          for (let k = 0; k < items.length; k++) {
+            let nameEl = null;
+            for (let n = 0; n < nameSels.length && !nameEl; n++) nameEl = items[k].querySelector(nameSels[n]);
+            const own = norm(nameEl ? nameEl.innerText : items[k].innerText);
+            if (own && (own === t || own.indexOf(t) !== -1)) {
+              el = items[k];
+              break;
+            }
+          }
+        }
+        if (!el) return { ok: false, reason: 'пункт не найден', available: items.map((e) => norm(e.innerText).slice(0, 32)).slice(0, 20) };
+        if (!el.isConnected) return { ok: false, reason: 'пункт отцеплен от DOM (stale)' };
+        if (strat === 'native') {
+          el.click();
+          return { ok: true, via: 'native' };
+        }
+        if (strat === 'react') {
+          const rp = Q.reactProps(el);
+          if (!rp || typeof rp.props.onClick !== 'function') return { ok: false, reason: 'onClick в __reactProps не найден' };
+          try {
+            rp.props.onClick(Q.fakeReactEvent(el, rp.node));
+            return { ok: true, via: 'react', depth: rp.depth };
+          } catch (e) {
+            return { ok: false, reason: 'onClick бросил: ' + String((e && e.message) || e).slice(0, 120) };
+          }
+        }
+        Q.clickSeq(el);
+        return { ok: true, via: 'synthetic' };
+      },
+      MODE_ITEM_SELS,
+      MODE_ITEM_NAME_SELS,
+      wantedTexts,
+      strategy
+    )
+    .catch((e) => ({ ok: false, reason: 'exception: ' + String((e && e.message) || e).slice(0, 140) }));
+}
+
+/** Одна попытка открыть меню режимов выбранной стратегией. */
+async function tryOpenModeMenu(ctx, strategy) {
+  const { page } = ctx;
+  if (strategy === 'mouse') {
+    const fresh = await findVisible(page, MODE_TRIGGER_SELS, 0);
+    if (!fresh) return { ok: false, reason: 'триггер не найден' };
+    const info = await inspectModeTrigger(page);
+    if (info.exists && info.connected === false) return { ok: false, reason: 'триггер отцеплен от DOM (stale handle)', info };
+    if (info.hitTest && info.hitTest.covered) {
+      log.warn(`точку клика по "+" перекрывает ${JSON.stringify(info.hitTest.by)} (${info.hitTest.reason}) - клик мышью может не пройти`);
+    }
+    const clicked = await humanClick(page, fresh.handle, 'mode-select trigger (.mode-select-open)');
+    return { ok: clicked !== false, via: 'mouse', info };
+  }
+  return page
+    .evaluate((strat) => {
+      const Q = window.__qca;
+      if (!Q) return { ok: false, reason: 'window.__qca отсутствует' };
+      const open = Q.firstVisible(['.mode-select-open', '[aria-label="Select Mode"]']);
+      if (!open) return { ok: false, reason: 'триггер не найден' };
+      if (!open.isConnected) return { ok: false, reason: 'триггер отцеплен от DOM (stale)' };
+      const wrap = open.closest('.qwen-chat-v2-dropdown-menu-trigger') || open.parentElement || open;
+      if (strat === 'native') {
+        open.click();
+        return { ok: true, via: 'native' };
+      }
+      if (strat === 'synthetic') {
+        Q.clickSeq(open);
+        return { ok: true, via: 'synthetic' };
+      }
+      if (strat === 'react') {
+        const rp = Q.reactProps(wrap) || Q.reactProps(open);
+        if (!rp || typeof rp.props.onClick !== 'function') return { ok: false, reason: 'onClick в __reactProps не найден' };
+        try {
+          rp.props.onClick(Q.fakeReactEvent(open, rp.node));
+          return { ok: true, via: 'react', depth: rp.depth };
+        } catch (e) {
+          return { ok: false, reason: 'onClick бросил: ' + String((e && e.message) || e).slice(0, 120) };
+        }
+      }
+      return { ok: false, reason: 'неизвестная стратегия ' + strat };
+    }, strategy)
+    .catch((e) => ({ ok: false, reason: 'exception: ' + String((e && e.message) || e).slice(0, 140) }));
+}
+
+/**
+ * Открывает меню режимов. Возвращает подпись текущего режима (до переключения).
+ * Бросает StepError(EXIT.AGENT_UNAVAILABLE) с полной диагностикой, если меню так и
+ * не открылось.
+ */
 async function openModeDropdown(ctx) {
   const { page, cfg } = ctx;
-  const trigger = await findVisible(page, [SEL.modeCurrent], cfg.elementTimeout);
-  if (!trigger) {
+  await ensureQca(page);
+
+  const before = await getCurrentModeLabel(page);
+  if (before) log.debug(`текущий режим: "${before}"`);
+
+  let st = await readModeMenuState(page);
+  if (st.open) {
+    log.debug(`меню режимов уже открыто (${st.kind}, пунктов: ${st.visibleItems})`);
+    return before;
+  }
+
+  const waitMs = Math.max(6000, Math.min(cfg.elementTimeout, 20000));
+
+  // 1) Ждём, пока триггер не только появится, но и ПЕРЕСТАНЕТ пересоздаваться.
+  //    Без этого клик приходится на узел, который React вот-вот заменит.
+  let trig = await waitForStableVisible(page, MODE_TRIGGER_SELS, {
+    timeout: waitMs,
+    stableMs: 700,
+    label: 'триггер меню режимов',
+  });
+
+  // 1b) Запасной путь: "+" нет, но есть чип выбранного режима - сбрасываем крестиком.
+  if (!trig) {
+    const chip = await findVisible(page, [SEL.modeCurrent], 0);
+    const close = chip ? await findVisible(page, [SEL.modeCurrentClose], 0) : null;
+    if (close) {
+      log.debug('триггер "+" не найден, но есть чип режима - сбрасываю его крестиком и ищу "+" снова');
+      await humanClick(page, close.handle, 'current-mode close (x)');
+      await settle(ctx, 0.8);
+      trig = await waitForStableVisible(page, MODE_TRIGGER_SELS, {
+        timeout: Math.min(waitMs, 8000),
+        stableMs: 500,
+        label: 'триггер меню режимов (после сброса чипа)',
+      });
+    }
+  }
+
+  if (!trig) {
+    const diag = await inspectModeTrigger(page);
+    const ver = ctx.appVersion || (await readAppVersion(page));
+    await dumpModeDiagnostics(ctx, 'no-trigger');
     throw new StepError(
-      'Не найден переключатель режимов (.mode-select-current-mode) рядом с полем ввода.\n' +
-        'Возможно, профиль не авторизован или верстка изменилась (ожидалась ' + APP_VERSION_HINT + ').',
-      EXIT.AGENT_UNAVAILABLE
+      'Не найден переключатель режимов (кнопка ".mode-select-open" / [aria-label="Select Mode"]) рядом с полем ввода.\n' +
+        `Состояние триггера: ${JSON.stringify(diag)}\n` +
+        `Версия фронта: ${ver || 'не определена'} (проверены: ${TESTED_APP_VERSIONS.join(', ')}).\n` +
+        'Возможные причины: профиль не авторизован, открыта не страница чата, мобильная верстка или верстка изменилась.',
+      EXIT.AGENT_UNAVAILABLE,
+      diag
     );
   }
-  const before = await getCurrentModeLabel(page);
-  log.debug(`текущий режим: "${before}"`);
-  await humanClick(page, trigger.handle, 'mode-select trigger');
-  const menu = await waitForAny(page, [SEL.modeDropdownMenu], cfg.elementTimeout, 'выпадающее меню режимов');
-  if (!menu) throw new StepError('Меню режимов не открылось после клика по переключателю.', EXIT.AGENT_UNAVAILABLE);
-  await sleep(350);
-  return before;
+
+  // 2) Открываем меню, эскалируя стратегии. После каждой - проверяем СОСТОЯНИЕ.
+  const strategies = ['mouse', 'native', 'synthetic', 'react'];
+  const attemptsLog = [];
+  for (let round = 0; round < 2; round++) {
+    if (round === 1) {
+      // второй круг: убираем то, что может мешать, и перечитываем страницу
+      log.warn('меню режимов не открылось ни одной стратегией - убираю оверлеи и перезагружаю страницу чата');
+      await dismissBlockers(ctx);
+      await page.goto(`${SITE}/`, { waitUntil: 'domcontentloaded', timeout: cfg.navTimeout }).catch(() => {});
+      await settle(ctx, 1.2);
+      await waitForComposerReady(ctx);
+      trig = await waitForStableVisible(page, MODE_TRIGGER_SELS, { timeout: waitMs, stableMs: 700, label: 'триггер (после перезагрузки)' });
+      if (!trig) continue;
+    }
+    for (let i = 0; i < strategies.length; i++) {
+      const strategy = strategies[i];
+      const stNow = await readModeMenuState(page);
+      if (stNow.open) {
+        log.debug(`меню режимов открыто (${stNow.kind}) после стратегий: ${attemptsLog.map((a) => a.via || a.strategy).join(',')}`);
+        await sleep(300);
+        return before;
+      }
+      const res = await tryOpenModeMenu(ctx, strategy);
+      attemptsLog.push({ round, strategy, ok: !!res.ok, via: res.via, reason: res.reason });
+      log.debug(`стратегия "${strategy}": ${JSON.stringify({ ok: !!res.ok, via: res.via, reason: res.reason })}`);
+      const opened = await waitModeMenuOpen(page, 2500);
+      if (opened) {
+        const st2 = await readModeMenuState(page);
+        log.ok(`меню режимов открылось (${st2.kind || '?'}, видимых пунктов: ${st2.visibleItems}) - стратегия "${strategy}"`);
+        await sleep(300);
+        return before;
+      }
+      // могло открыться и тут же закрыться (клик мимо/по оверлею) - чуть ждём и пробуем дальше
+      await sleep(250);
+    }
+  }
+
+  // 3) Ничего не помогло - собираем полную диагностику.
+  const diag = await dumpModeDiagnostics(ctx, 'menu-not-opened');
+  throw new StepError(
+    'Меню режимов не открылось после клика по переключателю ".mode-select-open".\n' +
+      `Перепробованы стратегии: ${JSON.stringify(attemptsLog)}.\n` +
+      `Триггер: ${JSON.stringify(diag.trigger)}\n` +
+      `Состояние меню: ${JSON.stringify(diag.menu)}; оверлеи: ${JSON.stringify(diag.blockers || [])}\n` +
+      (diag.pageErrors && diag.pageErrors.length ? `Ошибки страницы: ${JSON.stringify(diag.pageErrors)}\n` : '') +
+      `Версия фронта: ${diag.appVersion || '?'} (проверены: ${TESTED_APP_VERSIONS.join(', ')}).`,
+    EXIT.AGENT_UNAVAILABLE,
+    { attemptsLog, diag }
+  );
+}
+
+/** Подробная диагностика переключателя режимов (пишется в лог при неудаче). */
+async function dumpModeDiagnostics(ctx, stage) {
+  const { page } = ctx;
+  const d = { stage, url: page.url(), at: new Date().toISOString() };
+  try {
+    d.appVersion = ctx.appVersion || (await readAppVersion(page));
+    d.trigger = await inspectModeTrigger(page);
+    d.menu = await readModeMenuState(page);
+    d.items = (await listModeItems(page)).slice(0, 16);
+    d.blockers = await detectBlockers(page);
+    d.pageErrors = PAGE_ERRORS.slice(-6);
+    d.viewport = await page.evaluate(() => ({ w: window.innerWidth, h: window.innerHeight, dpr: window.devicePixelRatio }));
+    d.currentMode = await getCurrentModeLabel(page);
+    d.modeSelectHTML = await page.evaluate(() => {
+      const el = document.querySelector('.mode-select');
+      return el ? el.outerHTML.replace(/\s+/g, ' ').slice(0, 1200) : null;
+    });
+    d.composerHTML = await page.evaluate(() => {
+      const el = document.querySelector('.message-input-container');
+      return el ? el.outerHTML.replace(/\s+/g, ' ').slice(0, 700) : null;
+    });
+    d.hints = await page.evaluate(() => {
+      const out = {};
+      try {
+        out.localStorage = Object.keys(localStorage)
+          .filter((k) => /temporary|thinking|mode|locale/i.test(k))
+          .reduce((acc, k) => ((acc[k] = String(localStorage.getItem(k)).slice(0, 40)), acc), {});
+      } catch (_) {}
+      return out;
+    });
+  } catch (e) {
+    d.dumpError = String((e && e.message) || e).slice(0, 160);
+  }
+  log.error(`диагностика переключателя режимов (${stage})`, d);
+  return d;
 }
 
 async function closeModeDropdown(ctx) {
@@ -1310,59 +2097,96 @@ async function closeModeDropdown(ctx) {
   await sleep(250);
 }
 
+/** Композер готов: поле ввода на месте и блок режимов перестал пересоздаваться. */
+async function waitForComposerReady(ctx, opts = {}) {
+  const { page, cfg } = ctx;
+  await ensureQca(page);
+  const timeout = Math.max(8000, cfg.elementTimeout);
+  const ta = await waitForAny(page, [SEL.textarea, 'textarea[placeholder]', '[contenteditable="true"]'], timeout, 'поле ввода (composer ready)');
+  // главная защита от гонки с ремаунтом: ждём, пока .mode-select устоится
+  await waitForStableVisible(page, [SEL.modeSelect, SEL.inputContainer], {
+    timeout: Math.min(timeout, 15000),
+    stableMs: opts.stableMs === undefined ? 800 : opts.stableMs,
+    label: 'блок режимов (.mode-select)',
+  });
+  return !!ta;
+}
+
 async function enableAgentMode(ctx) {
   const { page, cfg } = ctx;
   log.info('переключаю режим в Agent Mode (--agent)');
 
-  const before = await openModeDropdown(ctx);
-  let items = await listModeItems(page);
-  log.debug('пункты меню режимов', items);
-  await shot(ctx, 'mode-dropdown');
+  // Регулярка для пункта/чипа "Agent Mode" (en + ru). Название пункта в меню приходит
+  // как "Agent Mode" (+ отдельно бейдж "Beta"), поэтому матчим именно "agent mode".
+  const AGENT_RE = /agent\s*mode|режим\s*агента|^агент$/i;
 
-  if (/agent/i.test(before)) {
-    log.ok('Agent Mode уже активен - переключение не требуется');
-    await closeModeDropdown(ctx);
+  // ждём, пока композер отрисуется И устоится (иначе кликнем по узлу, который
+  // React заменит через мгновение)
+  await waitForComposerReady(ctx);
+
+  // 0) Если Agent Mode уже активен - ничего кликать не нужно.
+  const pre = await getCurrentModeLabel(page);
+  if (AGENT_RE.test(pre)) {
+    log.ok(`Agent Mode уже активен (переключатель показывает "${pre}") - переключение не требуется`);
+    await shot(ctx, 'agent-mode-already-active');
     return;
   }
+  if (pre) log.debug(`сейчас выбран режим "${pre}" - переключаю на Agent Mode`);
 
-  let target = items.find((i) => /agent\s*mode|режим агента|^агент$/i.test(i.text));
+  // 1) Открываем меню режимов (с эскалацией стратегий клика).
+  await openModeDropdown(ctx);
+  let items = await listModeItems(page);
+  log.debug('пункты меню режимов', items.filter((i) => i.visible));
+  await shot(ctx, 'mode-dropdown');
 
+  let target = items.find((i) => i.visible && AGENT_RE.test(i.text));
+
+  // 2) Пункт мог уехать в подменю "More" (в основном меню показываются не все фичи).
   if (!target) {
-    // пункт мог уехать в подменю "More" (в меню показывается максимум 8 фич)
-    log.debug('Agent Mode не виден в основном меню - смотрю подменю "More"');
-    const moreEl = await findModeItemHandle(page, TXT.more);
-    if (moreEl) {
-      await humanClick(page, moreEl, 'More submenu');
-      await sleep(500);
-      items = await listModeItems(page);
-      log.debug('пункты после раскрытия "More"', items);
-      target = items.find((i) => /agent\s*mode|режим агента|^агент$/i.test(i.text));
+    log.debug('Agent Mode не виден в основном меню - раскрываю подменю "More"');
+    const moreRes = await clickModeItemInPage(page, TXT.more, 'synthetic');
+    log.debug('клик по "More": ' + JSON.stringify(moreRes));
+    await sleep(700);
+    const moreItems = await listModeItems(page);
+    log.debug(
+      'пункты после раскрытия "More"',
+      moreItems.filter((i) => i.visible)
+    );
+    const inMore = moreItems.find((i) => i.visible && AGENT_RE.test(i.text));
+    if (inMore) {
+      target = inMore;
+      items = items.concat(moreItems);
     }
   }
 
+  // 3) Пункта нет вовсе - фича недоступна этому аккаунту.
   if (!target) {
     await shot(ctx, 'agent-mode-missing');
+    const st = await readModeMenuState(page);
+    const ver = ctx.appVersion || (await readAppVersion(page));
     await closeModeDropdown(ctx);
     throw new StepError(
-      'Agent Mode НЕДОСТУПЕН: пункта "Agent Mode" вообще нет в меню режимов этого аккаунта.\n' +
-        `Доступные пункты: ${JSON.stringify(items.map((i) => i.text).filter(Boolean))}\n` +
-        'Обычно это означает, что фича не включена для учетной записи/региона (featureStatuses из /api/v2 config)\n' +
-        'или аккаунт не подтвержден. Дальше не продолжаю.',
-      EXIT.AGENT_UNAVAILABLE
+      'Agent Mode НЕДОСТУПЕН: пункта "Agent Mode" нет в меню режимов этого аккаунта.\n' +
+        `Доступные пункты (${st.kind || '?'}): ${JSON.stringify(items.filter((i) => i.visible).map((i) => i.text).filter(Boolean))}\n` +
+        'Причина в самом сайте: пункт скрывается, если agent_mode выключен для учетной записи/региона\n' +
+        '(клиентский featureStatuses + флаг agentModeUnavailable), либо включен "temporary chat".\n' +
+        `Версия фронта: ${ver || '?'}. Дальше не продолжаю.`,
+      EXIT.AGENT_UNAVAILABLE,
+      { items }
     );
   }
 
+  // 4) Пункт есть, но неактивен (disabled).
   if (target.disabled) {
     await shot(ctx, 'agent-mode-disabled');
-    // попробуем вытащить подсказку
     let tip = '';
     try {
-      const h = await findModeItemHandle(page, TXT.agentMode);
-      if (h) {
-        await h.hover().catch(() => {});
-        await sleep(700);
+      const found = await findModeItemFresh(page, TXT.agentMode);
+      if (found) {
+        await found.handle.hover().catch(() => {});
+        await sleep(800);
         tip = await page.evaluate(() => {
-          const t = document.querySelector('.ant-tooltip-inner, [role="tooltip"]');
+          const t = document.querySelector('.ant-tooltip-inner, [role="tooltip"], .qwen-chat-v2-tooltip, .qwen-chat-v2-tooltip-inner, .qwen-chat-v2-tooltip-title');
           return t ? (t.innerText || '').trim() : '';
         });
       }
@@ -1371,34 +2195,81 @@ async function enableAgentMode(ctx) {
     throw new StepError(
       'Agent Mode НЕДОСТУПЕН: пункт есть в меню, но он неактивен (disabled).\n' +
         (tip ? `Подсказка сайта: ${tip}\n` : '') +
-        'Частая причина - включен "temporary chat" (Agent Mode is unavailable in temporary chat)\n' +
-        'либо фича выключена для аккаунта. Дальше не продолжаю.',
-      EXIT.AGENT_UNAVAILABLE
+        'Частая причина - включен "temporary chat" ("Agent Mode is unavailable in temporary chat")\n' +
+        'либо фича выключена для аккаунта/модели. Дальше не продолжаю.',
+      EXIT.AGENT_UNAVAILABLE,
+      { tip }
     );
   }
 
-  const targetHandle = await findModeItemHandle(page, TXT.agentMode);
-  if (!targetHandle) throw new StepError('Не удалось получить handle пункта Agent Mode для клика.', EXIT.AGENT_UNAVAILABLE);
-  await humanClick(page, targetHandle, 'Agent Mode item');
-  await settle(ctx, 1.2);
+  // 5) Кликаем по пункту Agent Mode и ПРОВЕРЯЕМ результат (а не факт клика).
+  let after = '';
+  const clickStrategies = ['mouse', 'synthetic', 'native', 'react'];
+  for (let i = 0; i < clickStrategies.length; i++) {
+    const strategy = clickStrategies[i];
+    if (strategy === 'mouse') {
+      const found = await findModeItemFresh(page, TXT.agentMode);
+      if (!found) {
+        log.debug('пункт Agent Mode не найден свежим поиском - пробую следующую стратегию');
+        continue;
+      }
+      log.debug(`кликаю пункт "${found.text}" (узел #${found.nodeId}) мышью`);
+      const clicked = await humanClick(page, found.handle, 'Agent Mode item');
+      if (clicked === false) continue; // stale handle - попробуем ещё раз
+    } else {
+      const res = await clickModeItemInPage(page, TXT.agentMode, strategy);
+      log.debug(`клик по Agent Mode стратегией "${strategy}": ${JSON.stringify(res)}`);
+      if (!res.ok) continue;
+    }
+    await settle(ctx, 1.0);
+
+    after = await getCurrentModeLabel(page);
+    if (/agent/i.test(after)) break;
+
+    // меню могло закрыться без применения режима - открываем заново и пробуем снова
+    log.debug(`после "${strategy}" режим не сменился (чип: "${after || '(пусто)'}") - пробую снова`);
+    const st = await readModeMenuState(page);
+    if (!st.open) {
+      await openModeDropdown(ctx).catch((e) => log.debug('не удалось снова открыть меню: ' + humanize(e.message, 120)));
+    }
+  }
 
   // сайт может открыть новый чат при переключении режима - дожидаемся поля ввода
-  const input = await waitForAny(page, [SEL.textarea], cfg.elementTimeout, 'поле чата после смены режима');
+  const input = await waitForAny(page, [SEL.textarea, 'textarea[placeholder]'], cfg.elementTimeout, 'поле чата после смены режима');
   if (!input) throw new StepError('После выбора Agent Mode пропало поле ввода сообщения.', EXIT.AGENT_UNAVAILABLE);
 
-  const after = await getCurrentModeLabel(page);
+  // Чип режима обновляется не мгновенно: при переключении сайт пересоздаёт композер
+  // (а в Agent Mode ещё и уходит на /c/new-chat). Дочитываем его, чтобы не получить
+  // ложное "не включился".
+  if (!/agent/i.test(after)) {
+    try {
+      await page.waitForFunction(
+        (sel) => {
+          const e = document.querySelector(sel);
+          return !!e && /agent|агент/i.test(e.innerText || '');
+        },
+        { timeout: 6000, polling: 250 },
+        SEL.modeCurrent
+      );
+    } catch (_) {}
+    after = await getCurrentModeLabel(page);
+  }
+
   log.debug(`режим после переключения: "${after}"`);
   if (!/agent/i.test(after)) {
     await shot(ctx, 'agent-mode-not-applied');
     const toasts = await readErrorToasts(page);
+    const diag = await dumpModeDiagnostics(ctx, 'mode-not-applied');
     throw new StepError(
       `Agent Mode НЕ включился: переключатель показывает "${after || '(пусто)'}" вместо Agent Mode.\n` +
         (toasts.length ? `Сообщения сайта: ${JSON.stringify(toasts)}\n` : '') +
+        `Пункты меню: ${JSON.stringify((diag.items || []).filter((i) => i.visible).map((i) => i.text))}\n` +
         'Возможно, аккаунту фича недоступна или переключение требует нового чата.',
-      EXIT.AGENT_UNAVAILABLE
+      EXIT.AGENT_UNAVAILABLE,
+      diag
     );
   }
-  log.ok('Agent Mode включен и подтвержден переключателем режимов');
+  log.ok(`Agent Mode включен и подтвержден переключателем режимов ("${after}")`);
   await shot(ctx, 'agent-mode-active');
 }
 
@@ -1406,13 +2277,37 @@ async function enableAgentMode(ctx) {
 async function startNewChat(ctx) {
   const { page, cfg } = ctx;
   log.info('создаю новый чат (--new-chat)');
-  const btn = await findVisible(page, [SEL.newChatButton, 'a[href="/"]'], 0);
-  if (btn) {
-    await humanClick(page, btn.handle, 'new chat');
-  } else {
+  // 0.3.22: data-testid у кнопки сайдбара больше нет (в DOM вообще не осталось
+  // data-testid), а ссылки на чаты в сайдбаре теперь без href, поэтому прежний fallback
+  // a[href="/"] тоже не срабатывал - скрипт на каждом запуске делал ЛИШНИЙ полный
+  // reload страницы и попадал в окно ремаунта композера (см. шапку файла).
+  const NEW_CHAT_SELS = [
+    '[data-testid="sidebar-new-chat-button"]',
+    '.new-chat',
+    '[aria-label="New Chat"]',
+    '[aria-label="new chat"]',
+    '.sidebar-entry-fixed-list-content[aria-label]',
+    'a[href="/"]',
+  ];
+  let btn = await waitForStableVisible(page, NEW_CHAT_SELS, {
+    timeout: Math.min(cfg.elementTimeout, 10000),
+    stableMs: 500,
+    label: 'кнопка New Chat',
+  });
+  let clicked = false;
+  if (btn) clicked = (await humanClick(page, btn.handle, 'new chat')) !== false;
+  if (!clicked) {
+    const again = await findVisible(page, NEW_CHAT_SELS, 0);
+    if (again) clicked = (await humanClick(page, again.handle, 'new chat (retry)')) !== false;
+  }
+  if (!clicked) {
+    log.debug('кнопку "New Chat" в сайдбаре найти/кликнуть не удалось - перезагружаю страницу чата');
     await page.goto(`${SITE}/`, { waitUntil: 'domcontentloaded', timeout: cfg.navTimeout });
   }
   await settle(ctx, 1.2);
+  // обязательно дожидаемся, пока композер устоится: иначе следующий шаг (Agent Mode)
+  // будет кликать по узлу, который React вот-вот заменит
+  await waitForComposerReady(ctx);
 }
 
 async function ensureChatPage(ctx) {
@@ -1432,7 +2327,7 @@ async function typeMessage(ctx) {
   log.info(`ввожу текст сообщения (${cfg.messageSource}, ${Array.from(cfg.messageText).length} симв.)`);
   log.debug('текст: ' + humanize(cfg.messageText, 200));
 
-  const hit = await waitForAny(page, [SEL.textarea, 'textarea[placeholder]', '[contenteditable="true"]'], cfg.elementTimeout, 'поле ввода чата');
+  let hit = await waitForAny(page, [SEL.textarea, 'textarea[placeholder]', '[contenteditable="true"]'], cfg.elementTimeout, 'поле ввода чата');
   if (!hit) {
     throw new StepError(
       'Не найдено поле ввода сообщения (textarea.message-input-textarea).\n' +
@@ -1442,8 +2337,21 @@ async function typeMessage(ctx) {
   }
   log.debug('поле ввода найдено: ' + hit.selector);
 
-  await humanClick(page, hit.handle, 'chat textarea');
-  await hit.handle.evaluate((el) => el.focus());
+  let clicked = await humanClick(page, hit.handle, 'chat textarea');
+  if (clicked === false) {
+    // узел поля ввода успели пересоздать - ищем заново (иначе набор текста уйдёт в никуда)
+    log.warn('поле ввода оказалось stale - ищу его заново');
+    const fresh = await waitForStableVisible(page, [SEL.textarea, 'textarea[placeholder]'], {
+      timeout: 8000,
+      stableMs: 500,
+      label: 'поле ввода (после stale)',
+    });
+    if (!fresh) throw new StepError('Поле ввода сообщения исчезло (React пересоздал композер).', EXIT.INPUT_NOT_FOUND);
+    hit = fresh;
+    clicked = await humanClick(page, hit.handle, 'chat textarea (retry)');
+    if (clicked === false) log.warn('клик по полю ввода снова не удался - продолжаю через focus()');
+  }
+  await hit.handle.evaluate((el) => el.focus()).catch(() => {});
 
   const readOnly = await hit.handle.evaluate((el) => el.readOnly === true || el.getAttribute('readonly') !== null);
   if (readOnly) throw new StepError('Поле ввода в режиме "только чтение" - отправка невозможна.', EXIT.INPUT_NOT_FOUND);
@@ -1498,22 +2406,50 @@ async function sendMessage(ctx) {
   }
 
   log.info('отправляю сообщение');
-  const beforeCount = await page.evaluate((sel) => document.querySelectorAll(sel).length, SEL.messageContainer);
+  const MSG_SELS = [SEL.messageUser, SEL.messageResponse];
+  const countMsgs = () =>
+    page.evaluate((sels) => {
+      let n = 0;
+      for (let i = 0; i < sels.length; i++) n += document.querySelectorAll(sels[i]).length;
+      return n;
+    }, MSG_SELS);
+  const beforeCount = await countMsgs();
 
-  const sendWrap = await findVisible(page, [SEL.sendWrap], 0);
+  // Ищем именно кнопку Send: в том же контейнере может лежать "Voice mode" (.omb__btn),
+  // клик по ней уводит сценарий в голосовой ввод.
+  let sendBtn = await findVisible(page, [SEL.sendButton], 0);
+  if (!sendBtn) {
+    const sendWrap = await findVisible(page, [SEL.sendWrap], 0);
+    if (sendWrap) {
+      const btn = await sendWrap.handle.evaluateHandle((el) => {
+        const cand = Array.prototype.slice.call(el.querySelectorAll('button,[role="button"]'));
+        const good = cand.filter((b) => {
+          const sig = (b.getAttribute('aria-label') || '') + ' ' + String(b.className || '');
+          return !/voice|omb/i.test(sig);
+        });
+        return good[0] || null;
+      });
+      const el = btn.asElement();
+      if (el) sendBtn = { handle: el, selector: SEL.sendWrap + ' button:not([aria-label="Voice mode"])' };
+    }
+  }
+
   let clicked = false;
-  if (sendWrap) {
-    const btn = await sendWrap.handle.evaluateHandle((el) => el.querySelector('button') || el);
-    const el = btn.asElement();
-    if (el) {
-      const disabled = await el.evaluate((b) => b.disabled === true || b.getAttribute('aria-disabled') === 'true');
-      if (disabled) {
-        log.warn('кнопка отправки неактивна - пробую Enter');
-      } else {
-        await humanClick(page, el, 'send button');
-        clicked = true;
+  if (sendBtn) {
+    const disabled = await sendBtn.handle
+      .evaluate((b) => b.disabled === true || b.getAttribute('aria-disabled') === 'true')
+      .catch(() => true);
+    if (disabled) {
+      log.warn('кнопка отправки неактивна - пробую Enter');
+    } else {
+      clicked = (await humanClick(page, sendBtn.handle, 'send button')) !== false;
+      if (!clicked) {
+        const again = await findVisible(page, [SEL.sendButton], 0);
+        if (again) clicked = (await humanClick(page, again.handle, 'send button (retry)')) !== false;
       }
     }
+  } else {
+    log.warn('кнопка Send не найдена - отправляю через Enter');
   }
   if (!clicked) {
     const ta = await findVisible(page, [SEL.textarea], 0);
@@ -1527,26 +2463,97 @@ async function sendMessage(ctx) {
   }
 
   await sleep(900);
-  const sent = await page.evaluate(
-    (taSel, msgSel, before) => {
-      const ta = document.querySelector(taSel);
-      return {
-        textareaEmpty: ta ? (ta.value || '').trim().length === 0 : null,
-        messageCount: document.querySelectorAll(msgSel).length,
-        before,
-        generating: !!document.querySelector('[class*="loading"], [class*="generating"], [class*="stop"]'),
-        url: location.href,
-      };
-    },
-    SEL.textarea,
-    SEL.messageContainer,
-    beforeCount
-  );
+
+  const readSendState = () =>
+    page.evaluate(
+      (taSel, msgSels, before) => {
+        const ta = document.querySelector(taSel);
+        let count = 0;
+        for (let i = 0; i < msgSels.length; i++) count += document.querySelectorAll(msgSels[i]).length;
+        const stop = document.querySelector(
+          '.message-input-right-button-send button.stop-button, .message-input-right-button-send button[aria-label="Stop"]'
+        );
+        return {
+          textareaEmpty: ta ? (ta.value || '').trim().length === 0 : null,
+          messageCount: count,
+          before,
+          hasMessageBox: !!document.getElementById('chat-message-container'),
+          stopButton: !!stop,
+          generating: !!document.querySelector('[class*="loading"], [class*="generating"], [class*="stop"]'),
+          url: location.href,
+        };
+      },
+      SEL.textarea,
+      MSG_SELS,
+      beforeCount
+    );
+
+  // В Agent Mode подтверждение отправки приходит НЕ сразу: сначала URL становится
+  // "/c/new-chat", через ~2 с - "/c/<uuid>", и лишь к ~4 с очищается поле ввода,
+  // появляются .chat-user-message/.chat-response-message и кнопка Send меняется на
+  // Stop. Прежняя однократная проверка через 900 мс давала ложные срабатывания
+  // (в обычном режиме "проскакивала" по URL, в агентском - вообще не работала,
+  // потому что ".chat-message-container" в 0.3.22 уже не класс, а id).
+  const REAL_CHAT_RE = /\/c\/(?!new-chat)[0-9a-f-]{8,}/i;
+  const hasSignal = (st) =>
+    st.textareaEmpty === true || st.messageCount > st.before || st.hasMessageBox || st.stopButton || REAL_CHAT_RE.test(st.url);
+
+  let sent = await readSendState();
+  if (!hasSignal(sent)) {
+    const verifyTimeout = Math.max(15000, Math.min(cfg.elementTimeout * 1.5, 30000));
+    log.debug(`жду подтверждения отправки (до ${verifyTimeout} мс)...`);
+    try {
+      await page.waitForFunction(
+        (taSel, msgSels, before) => {
+          const ta = document.querySelector(taSel);
+          if (ta && (ta.value || '').trim().length === 0) return true;
+          let count = 0;
+          for (let i = 0; i < msgSels.length; i++) count += document.querySelectorAll(msgSels[i]).length;
+          if (count > before) return true;
+          if (document.getElementById('chat-message-container')) return true;
+          if (document.querySelector('.message-input-right-button-send button.stop-button, .message-input-right-button-send button[aria-label="Stop"]')) return true;
+          return /\/c\/(?!new-chat)[0-9a-f-]{8,}/i.test(location.href);
+        },
+        { timeout: verifyTimeout, polling: 300 },
+        SEL.textarea,
+        MSG_SELS,
+        beforeCount
+      );
+    } catch (_) {
+      log.debug('подтверждения отправки не дождались - фиксирую текущее состояние');
+    }
+    sent = await readSendState();
+  }
+
+  // Если сработал "быстрый" признак (URL/Stop), а сообщения ещё не отрендерились -
+  // дочитываем состояние, чтобы в логе было честное число сообщений.
+  if (hasSignal(sent) && sent.messageCount <= sent.before) {
+    try {
+      await page.waitForFunction(
+        (msgSels, before) => {
+          let count = 0;
+          for (let i = 0; i < msgSels.length; i++) count += document.querySelectorAll(msgSels[i]).length;
+          return count > before;
+        },
+        { timeout: 6000, polling: 250 },
+        MSG_SELS,
+        beforeCount
+      );
+      sent = await readSendState();
+    } catch (_) {}
+  }
 
   log.debug('состояние после отправки', sent);
 
-  const okSignals = [sent.textareaEmpty === true, sent.messageCount > sent.before, /\/c\//.test(sent.url)];
-  if (!okSignals.some(Boolean)) {
+  const okSignals = {
+    textareaCleared: sent.textareaEmpty === true,
+    messagesAdded: sent.messageCount > sent.before,
+    messageBoxAppeared: sent.hasMessageBox,
+    generationStarted: sent.stopButton,
+    chatUrlWithId: REAL_CHAT_RE.test(sent.url),
+  };
+  log.debug('признаки отправки: ' + JSON.stringify(okSignals));
+  if (!Object.keys(okSignals).some((k) => okSignals[k])) {
     await shot(ctx, 'send-failed');
     const toasts = await readErrorToasts(page);
     throw new StepError(
@@ -1557,7 +2564,12 @@ async function sendMessage(ctx) {
     );
   }
 
-  log.ok(`сообщение отправлено (url=${sent.url}, сообщений в DOM: ${sent.before} -> ${sent.messageCount})`);
+  log.ok(
+    `сообщение отправлено (url=${sent.url}, сообщений в DOM: ${sent.before} -> ${sent.messageCount}, ` +
+      `признаки: ${Object.keys(okSignals)
+        .filter((k) => okSignals[k])
+        .join('+') || 'нет'})`
+  );
   await shot(ctx, 'message-sent');
 }
 
@@ -1568,12 +2580,13 @@ async function captureResponse(ctx) {
   let lastText = '';
   let stableSince = Date.now();
   while (Date.now() < deadline) {
-    const txt = await page.evaluate((sel) => {
-      const nodes = Array.from(document.querySelectorAll(sel));
+    const txt = await page.evaluate((sel, fallbackSel) => {
+      let nodes = Array.from(document.querySelectorAll(sel));
+      if (!nodes.length) nodes = Array.from(document.querySelectorAll(fallbackSel));
       if (!nodes.length) return '';
       const last = nodes[nodes.length - 1];
       return (last.innerText || '').replace(/\n{3,}/g, '\n\n').trim();
-    }, SEL.messageContainer);
+    }, SEL.messageResponse, SEL.messageContainer);
     if (txt && txt === lastText) {
       if (Date.now() - stableSince > 4000) break; // 4 с без изменений - считаем готовым
     } else {
@@ -1697,6 +2710,17 @@ async function main() {
     await ensureChatPage(ctx);
     if (cfg.newChat) await startNewChat(ctx);
     await settle(ctx);
+    // КРИТИЧНО: дожидаемся, пока композер отрисуется И перестанет пересоздаваться.
+    // Без этого следующий шаг кликает по узлу, который React заменяет через ~3 с.
+    await waitForComposerReady(ctx);
+    ctx.appVersion = await readAppVersion(ctx.page);
+    if (ctx.appVersion) {
+      const known = TESTED_APP_VERSIONS.indexOf(ctx.appVersion) !== -1;
+      log.info(
+        `версия фронта: qwen-chat-fe ${ctx.appVersion}` +
+          (known ? '' : ` (ВНИМАНИЕ: не входит в список проверенных ${TESTED_APP_VERSIONS.join(', ')} - селекторы могли измениться)`)
+      );
+    }
     log.ok('ЭТАП ПРОЙДЕН: открыта страница чата ' + ctx.page.url());
     await shot(ctx, 'chat-page');
 
@@ -1763,3 +2787,44 @@ if (require.main === module) {
 }
 
 module.exports = { EXIT, sha256hex, SEL, TXT };
+
+/**
+ * Внутренности экспортируются только для тестов/отладки
+ * (require('./qwen-chat-auto.js')._internals) - на поведение CLI не влияют.
+ */
+module.exports._internals = {
+  Ctx,
+  QCA_SRC,
+  QCA_VERSION,
+  ensureQca,
+  readAppVersion,
+  waitForStableVisible,
+  waitForComposerReady,
+  readModeMenuState,
+  waitModeMenuOpen,
+  inspectModeTrigger,
+  listModeItems,
+  findModeItemFresh,
+  clickModeItemInPage,
+  tryOpenModeMenu,
+  openModeDropdown,
+  enableAgentMode,
+  dismissBlockers,
+  detectBlockers,
+  dumpModeDiagnostics,
+  getCurrentModeLabel,
+  typeMessage,
+  sendMessage,
+  startNewChat,
+  ensureChatPage,
+  humanClick,
+  findVisible,
+  waitForAny,
+  MODE_TRIGGER_SELS,
+  MODE_ITEM_SELS,
+  PAGE_ERRORS,
+  log,
+  setLogLevel: (l) => {
+    LOG_LEVEL = l;
+  },
+};
