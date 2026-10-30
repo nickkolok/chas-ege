@@ -2,6 +2,7 @@
 
 echo "Asking Marta to review PR#$1 ..."
 
+# Выбираем случайный профиль Martы
 profile=$(shuf -e \
 	"marta-auto" \
 	"marta-auto-2" \
@@ -9,15 +10,41 @@ profile=$(shuf -e \
 
 echo "Using profile: $profile"
 
-/usr/local/bin/node dev/type-and-submit.mjs \
-  --headless \
-  --no-sandbox \
-  --executable=/snap/bin/chromium \
-  --profile="../chas-ege-chromium-profiles/$profile" \
-  --url="https://chat.qwen.ai" \
-  --check-auth=chat.qwen.ai \
-  --wait-after-load=16000 \
-  --text="https://github.com/nickkolok/chas-ege/pull/$1" \
-  --fast-insert \
-  --hold-open=30000 \
-  --slow-mo=100
+# Путь к профилю
+PROFILE_PATH="../chas-ege-chromium-profiles/$profile"
+
+# Читаем credentials из файла в папке профиля (если существует)
+CREDENTIALS_FILE="$PROFILE_PATH/credentials.json"
+if [ -f "$CREDENTIALS_FILE" ]; then
+    export QWEN_LOGIN=$(jq -r '.login // empty' "$CREDENTIALS_FILE")
+    # Пароль читаем через stdin для безопасности (не попадает в историю команд)
+    JQ_PASSWORD=$(jq -r '.password // empty' "$CREDENTIALS_FILE")
+else
+    echo "WARNING: Credentials file not found at $CREDENTIALS_FILE"
+    echo "Using environment variables or expecting manual login"
+fi
+
+# Формируем текст сообщения
+MESSAGE="https://github.com/nickkolok/chas-ege/pull/$1"
+
+# Запускаем новый обработчик
+if [ -n "$JQ_PASSWORD" ]; then
+    echo "$JQ_PASSWORD" | /usr/local/bin/node dev/qwen-chat-auto.js \
+      --user-data-dir="$PROFILE_PATH" \
+      --login="$QWEN_LOGIN" \
+      --password-stdin \
+      --text="$MESSAGE" \
+      --post-wait=30 \
+      --headless \
+      --executable-path=/snap/bin/chromium \
+      --no-sandbox
+else
+    # Без credentials - полагаемся на существующую сессию в профиле
+    /usr/local/bin/node dev/qwen-chat-auto.js \
+      --user-data-dir="$PROFILE_PATH" \
+      --text="$MESSAGE" \
+      --post-wait=30 \
+      --headless \
+      --executable-path=/snap/bin/chromium \
+      --no-sandbox
+fi
