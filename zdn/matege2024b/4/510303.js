@@ -11,7 +11,7 @@
 		let b = sl(10, 25);
 		let c = sl(3, b - 2);
 		let deNum = sl(3, 15);
-		let num = (1, deNum - 1);
+		let num = sl(1, deNum - 1);
 		let sinA = num / deNum;
 
 		if (rand === 1) {
@@ -41,3 +41,8 @@
 //zer00player
 //https://mathb-ege.sdamgia.ru/problem?id=510303
 //https://mathb-ege.sdamgia.ru/problem?id=520532
+// ФИПИ: сопоставленные позиции категории 4 и все исходные коды.
+// 4.39: F26545, 20F7F6, 031176, 456C15, 321E10, B08CD3, CF9AEF, 4FA43F, 3D9688
+// 4.40: B8EF4A, 7F4C1F
+// 4.41: 6E3B4E, 9897AE
+// 4.42: 0C027D, 5C727C, 555CA6
