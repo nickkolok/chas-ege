@@ -9,7 +9,7 @@ NAtask.setTask({
 	                  'После установки счётчиков ежемесячная оплата воды стала составлять ' + water_coast_after +  ' рублей. ' +
 	                  'Через какое наименьшее количество месяцев экономия по оплате воды превысит затраты ' +
 	                  'на установку счётчиков, если тарифы на воду не изменятся?',
-	answers : (installing_coast / (water_coast_before - water_coast_after)).ceil(),
+	answers : (installing_coast / (water_coast_before - water_coast_after)).floor() + 1,
 });
 })();
 //Обзад 323609
