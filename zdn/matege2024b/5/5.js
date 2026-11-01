@@ -4,9 +4,11 @@
 		NAinfo.requireApiVersion(0, 2);
 		let key = '5';
 		let preference1 = ['first', 'last'];
-		let preference2 = ['threeCountries', 'fourCountries'];
+		let preference2 = ['threeCountries', 'fourCountries', 'fourKnownCountries'];
 		let mode = getSelectedPreferenceFromList(key, preference1);
-		let groups = getSelectedPreferenceFromList(key, preference2) + 3;
+		let dataMode = getSelectedPreferenceFromList(key, preference2);
+		let allKnown = dataMode === 2;
+		let groups = Math.min(dataMode, 1) + 3;
 		let total = sl(20, 100);
 		let counts = [];
 		let remaining = total;
@@ -18,10 +20,10 @@
 		let selected = mode ? groups - 1 : sl(0, groups - 2);
 		genAssertZ1000(counts[selected] / total);
 		let countries = om.strany.re.iz(groups);
-		let descriptions = counts.slice(0, -1).map((n, i) => n + ' из ' + countries[i]);
+		let descriptions = counts.slice(0, allKnown ? groups : groups - 1).map((n, i) => n + ' из ' + countries[i]);
 		NAtask.setTask({
-		    text: 'В чемпионате по ' + om.sport.pe.iz() + ' участвуют ' + chislitlx(total, 'спортсменка') + ': ' + descriptions.join(', ') +
-		        ', остальные — из ' + countries[groups - 1] + '. Порядок выступлений определяется жребием. ' +
+		    text: 'В чемпионате по ' + om.sport.pe.iz() + ' участвуют ' + (allKnown ? 'спортсменки: ' : chislitlx(total, 'спортсменка') + ': ') + descriptions.join(', ') +
+		        (allKnown ? '' : ', остальные — из ' + countries[groups - 1]) + '. Порядок выступлений определяется жребием. ' +
 		        'Найдите вероятность того, что спортсменка, выступающая ' + ['первой', 'последней', 'второй', 'третьей'].iz() +
 		        ', окажется из ' + countries[selected] + '.',
 		    answers: counts[selected] / total, preference: [preference1, preference2],
