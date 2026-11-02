@@ -51,6 +51,56 @@
 			answers: F,
 			analys: analys,
 		});
+
+		// Рисунок: нить, растягиваемая в разные стороны силами F
+		NAtask.modifiers.addCanvasIllustration({
+			width: 460,
+			height: 100,
+			belowText: true,
+			paint: function (ct) {
+				let y = 40;
+				let x1 = 30;
+				let x2 = 430;
+				let dot1 = 130;
+				let dot2 = 330;
+				let headLength = 14;
+				let headWidth = 7;
+
+				// нить
+				ct.strokeStyle = 'black';
+				ct.lineWidth = 3;
+				ct.beginPath();
+				ct.moveTo(x1, y);
+				ct.lineTo(x2, y);
+				ct.stroke();
+
+				// острия стрелок, направленные наружу
+				ct.beginPath();
+				ct.moveTo(x1, y);
+				ct.lineTo(x1 + headLength, y - headWidth);
+				ct.moveTo(x1, y);
+				ct.lineTo(x1 + headLength, y + headWidth);
+				ct.moveTo(x2, y);
+				ct.lineTo(x2 - headLength, y - headWidth);
+				ct.moveTo(x2, y);
+				ct.lineTo(x2 - headLength, y + headWidth);
+				ct.stroke();
+
+				// точки приложения сил
+				ct.fillStyle = 'black';
+				ct.beginPath();
+				ct.arc(dot1, y, 7, 0, 2 * Math.PI);
+				ct.fill();
+				ct.beginPath();
+				ct.arc(dot2, y, 7, 0, 2 * Math.PI);
+				ct.fill();
+
+				// подписи F
+				ct.font = 'italic 22px serif';
+				ct.fillText('F', x1 + 16, y + 36);
+				ct.fillText('F', x2 - 28, y + 36);
+			},
+		});
 	}, 1000);
 })();
 // https://github.com/nickkolok/chas-ege/issues/3489
