@@ -4,18 +4,6 @@
 		'use strict';
 		let key = "509755";
 
-		let variant = getListedPreference(key, [{
-			preference: 'tea',
-			preferenceValue: 0,
-		}, {
-			preference: 'balls',
-			preferenceValue: 1,
-
-		}, {
-			preference: 'birds',
-			preferenceValue: 2,
-		}, ], sl(0, 2));
-
 		let relation = sl(3, 100);
 		let preference1 = ['tea', 'balls', 'birds'];
 		let preference2 = ['minority', 'majority'];
