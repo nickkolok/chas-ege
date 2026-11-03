@@ -74,6 +74,9 @@ async function handlePRWithExamples(pr, token, cachedComments = null, cachedComm
     // Проверка Селены и Полины (независимо от номера PR, перед заглушкой)
     await checkAndAskUser(pr, token, 'chas-ege-selena', 'ask_Selena_to_fix.sh', 'selena.log', comments, commits);
     await checkAndAskUser(pr, token, 'chas-ege-polina', 'ask_Polina_to_fix.sh', 'polina.log', comments, commits);
+    
+    // Проверка Юлии (без ограничений по номеру PR, один раз на коммит)
+    await checkAndAskYuliya(pr, token, comments, commits);
 
     
     // Заглушка: пропускаем PR с номером меньше 3280
@@ -724,4 +727,60 @@ async function fetchPRCommits(prNum, token) {
         }
     }
     return commits;
+}
+
+
+async function checkAndAskYuliya(pr, token, cachedComments = null, cachedCommits = null) {
+    console.log(`🔍 Проверка Юлии для PR #${pr.number}`);
+    try {
+        const userLogin = 'chas-ege-yuliya';
+        const comments = cachedComments || await fetchPRComments(pr.number, token);
+        
+        // 1. Комментарии от Юлии
+        const userComments = comments.filter(c => 
+            c.user && c.user.login === userLogin
+        );
+        const lastUserComment = userComments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+        const lastUserCommentDate = lastUserComment ? new Date(lastUserComment.created_at) : new Date(0);
+        
+        // 2. Коммиты в PR
+        const commits = cachedCommits || await fetchPRCommits(pr.number, token);
+        const lastCommit = commits.sort((a, b) => {
+            const dateA = new Date(a.commit?.committer?.date || a.commit?.author?.date || 0);
+            const dateB = new Date(b.commit?.committer?.date || b.commit?.author?.date || 0);
+            return dateB - dateA;
+        })[0];
+        const lastCommitDate = lastCommit ? new Date(lastCommit.commit?.committer?.date || lastCommit.commit?.author?.date || 0) : new Date(0);
+        
+        // 3. Проверяем условие: Юлия уже комментировала этот (или более поздний) коммит
+        if (lastUserCommentDate >= lastCommitDate) {
+            console.log(`⏭️ PR #${pr.number}: Юлия уже комментировала этот коммит, пропускаем.`);
+            return;
+        }
+        
+        console.log(`🚀 PR #${pr.number}: Есть новый коммит, зовём Юлию!`);
+        const scriptPath = path.join(projectRoot, 'dev', 'ask_Yuliya_to_review.sh');
+        
+        const { stdout, stderr } = await execFileAsync('bash', [scriptPath, pr.number.toString()], {
+            cwd: projectRoot,
+            maxBuffer: 1024 * 1024 * 10
+        });
+        
+        if (stderr) {
+            console.warn(`stderr from ask_Yuliya_to_review.sh:\n${stderr}`);
+        }
+        
+        // Записываем вывод в log
+        const logPath = path.join(projectRoot, 'yuliya.log');
+        const logEntry = `[${new Date().toISOString()}] PR #${pr.number}\n${stdout}\n${stderr ? 'STDERR: ' + stderr : ''}\n${'='.repeat(80)}\n`;
+        fs.appendFileSync(logPath, logEntry);
+        
+        console.log(`✅ PR #${pr.number}: ask_Yuliya_to_review.sh выполнен успешно`);
+        
+    } catch (error) {
+        console.error(`❌ PR #${pr.number}: Ошибка при проверке Юлии:`, error.message);
+        if (error.stderr) {
+            console.error('stderr:', error.stderr);
+        }
+    }
 }
