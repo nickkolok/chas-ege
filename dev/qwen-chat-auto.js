@@ -2682,9 +2682,6 @@ async function main() {
       if (!cfg.hasCreds) {
         throw new StepError(
           'Профиль НЕ залогинен на chat.qwen.ai, а учетные данные не переданы.\n' +
-            'Нужны --login и --password (или переменные окружения $QWEN_LOGIN/$QWEN_PASSWORD,\n' +
-            'или --password-stdin). Без них скрипт не может авторизоваться - выхожу.\n' +
-            'Альтернатива: залогиньтесь в этом профиле руками один раз, дальше сессия будет жить в --user-data-dir.',
           EXIT.NOT_LOGGED_IN
         );
       }
