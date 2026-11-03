@@ -7,7 +7,7 @@ PROFILE_PATH="../chas-ege-chromium-profiles/polina-fix-auto"
 # Читаем credentials
 CREDENTIALS_FILE="$PROFILE_PATH/credentials.json"
 if [ -f "$CREDENTIALS_FILE" ]; then
-    export QWEN_LOGIN=$(jq -r '.login // empty' "$CREDENTIALS_FILE")
+    QWEN_LOGIN=$(jq -r '.login // empty' "$CREDENTIALS_FILE")
     JQ_PASSWORD=$(jq -r '.password // empty' "$CREDENTIALS_FILE")
 else
     echo "WARNING: Credentials file not found at $CREDENTIALS_FILE"
@@ -23,14 +23,12 @@ if [ -n "$JQ_PASSWORD" ]; then
       --text="$MESSAGE" \
       --post-wait=30 \
       --headless \
-      --executable-path=/snap/bin/chromium \
-      --no-sandbox
+      --executable-path=/snap/bin/chromium
 else
     /usr/local/bin/node dev/qwen-chat-auto.js \
       --user-data-dir="$PROFILE_PATH" \
       --text="$MESSAGE" \
       --post-wait=30 \
       --headless \
-      --executable-path=/snap/bin/chromium \
-      --no-sandbox
+      --executable-path=/snap/bin/chromium
 fi
