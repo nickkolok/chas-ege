@@ -145,11 +145,45 @@ export QWEN_PASSWORD="secret-password"
 - --log-file <path> - дублировать лог в файл
 - --verbose-logs - писать console-сообщения страницы в лог
 
+## Логирование пути к профилю
+
+Скрипт всегда выводит путь к профилю Chrome в логах:
+
+### При запуске
+В самом начале работы скрипт логирует путь к профилю на уровне INFO:
+
+[2026-11-03 12:15:00.123] [INFO ] === qwen-chat-auto ===
+[2026-11-03 12:15:00.124] [INFO ] путь к профилю: /root/git/chas-ege-chromium-profiles/marta-auto
+
+Это помогает быстро определить, где находятся credentials.json и другие файлы профиля.
+
+### В диагностических дампах
+При любой ошибке диагностический дамп (FAIL-*.json) содержит поле userDataDir с путём к профилю:
+
+{
+  "name": "exit-3",
+  "at": "2026-11-03T12:15:30.456Z",
+  "userDataDir": "/root/git/chas-ege-chromium-profiles/marta-auto",
+  "url": "https://chat.qwen.ai/",
+  ...
+}
+
+### В сообщениях об ошибках
+При ошибке "профиль не залогинен" (exit code 3) сообщение об ошибке явно указывает путь к профилю:
+
+[ERROR] Профиль НЕ залогинен на chat.qwen.ai, а учетные данные не переданы.
+       Путь к профилю: /root/git/chas-ege-chromium-profiles/marta-auto
+       Нужны --login и --password (или переменные окружения $QWEN_LOGIN/$QWEN_PASSWORD,
+       или --password-stdin). Без них скрипт не может авторизоваться - выхожу.
+       Альтернатива: залогиньтесь в этом профиле руками один раз, дальше сессия будет жить в --user-data-dir.
+
+Это позволяет сразу перейти в нужную папку и создать/обновить credentials.json.
+
 ## Коды выхода
 
 - 0 - успех
 - 2 - ошибки аргументов
-- 3 - не залогинен и нет credentials
+- 3 - не залогинен и нет credentials (в сообщении указан путь к профилю!)
 - 4 - логин не удался
 - 5 - Agent Mode недоступен
 - 6 - не найдено поле ввода
@@ -160,19 +194,25 @@ export QWEN_PASSWORD="secret-password"
 
 ## Troubleshooting
 
-### Скрипт не может авторизоваться
+### Скрипт не может авторизоваться (exit code 3)
 
-1. Проверьте, что файл credentials.json существует:
-   ls -la ../chas-ege-chromium-profiles/marta-auto/credentials.json
+1. Посмотрите в логах путь к профилю:
+   [INFO ] путь к профилю: /root/git/chas-ege-chromium-profiles/marta-auto
 
-2. Проверьте формат JSON:
-   jq . ../chas-ege-chromium-profiles/marta-auto/credentials.json
+2. Проверьте, что файл credentials.json существует:
+   ls -la /root/git/chas-ege-chromium-profiles/marta-auto/credentials.json
 
-3. Проверьте права доступа:
-   stat -c %a ../chas-ege-chromium-profiles/marta-auto/credentials.json
+3. Проверьте формат JSON:
+   jq . /root/git/chas-ege-chromium-profiles/marta-auto/credentials.json
+
+4. Проверьте права доступа:
+   stat -c %a /root/git/chas-ege-chromium-profiles/marta-auto/credentials.json
    # Должно быть 600
 
-4. Проверьте логи скрипта для деталей ошибки
+5. Если файла нет, создайте его:
+   ./manage-credentials.sh create marta-auto user@example.com secret-password
+
+6. Проверьте логи скрипта для деталей ошибки
 
 ### Ошибка: Unknown option '--no-sandbox'
 
