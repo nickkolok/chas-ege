@@ -496,7 +496,7 @@ async function shot(ctx, name, fullPage = false) {
 
 async function dumpDiagnostics(ctx, name) {
   const dir = ctx.cfg.screenshotsDir;
-  const out = { name, at: new Date().toISOString() };
+  const out = { name, at: new Date().toISOString(), userDataDir: ctx.cfg.userDataDir };
   try {
     fs.mkdirSync(dir, { recursive: true });
     out.url = ctx.page.url();
@@ -2612,6 +2612,7 @@ async function main() {
   }
 
   log.info('=== qwen-chat-auto ===');
+  log.info('путь к профилю: ' + path.resolve(cfg.userDataDir));
   log.debug('конфигурация (без секретов)', {
     userDataDir: path.resolve(cfg.userDataDir),
     profileCopy: cfg.profileCopy,
