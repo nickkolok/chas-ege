@@ -7,6 +7,7 @@ profile=$(shuf -e \
 	"marta-auto" \
 	"marta-auto-2" \
 	"marta-auto-4" \
+	"marta-auto-5" \
 -n 1)
 
 echo "Using profile: $profile"
