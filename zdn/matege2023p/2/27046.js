@@ -33,9 +33,9 @@
 			//цилиндр поуже
 			//жидкость
 			ctx.beginPath();
-			ctx.ellipse(100, drawHeight / k, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
 			ctx.lineTo(100 + a, drawHeight);
-			ctx.ellipse(100, drawHeight, b, a, 0.5 * Math.PI, -0.5 * Math.PI, -1.5 * Math.PI);
+			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
 			ctx.fill();
 			ctx.closePath();
 
@@ -45,31 +45,31 @@
 
 			//эллипс верхний
 			ctx.beginPath();
-			ctx.ellipse(100, 10, b, a, 0.5 * Math.PI, 0, 2 * Math.PI);
+			ctx.ellipse(100, 10, b, a, Math.PI / 2, 0, 2 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			//эллипс нижний
 			ctx.beginPath();
-			ctx.ellipse(100, drawHeight, b, a, 0.5 * Math.PI, 1.5 * Math.PI, 0.5 * Math.PI);
+			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, drawHeight, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
 			//эллипс средний
 			ctx.beginPath();
-			ctx.ellipse(100, drawHeight / k, b, a, 0.5 * Math.PI, 1.5 * Math.PI, 0.5 * Math.PI);
+			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, drawHeight / k, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
@@ -81,9 +81,9 @@
 			//жидкость
 			ctx.beginPath();
 			ctx.setLineDash([0, 0]);
-			ctx.ellipse(100, drawHeight / k, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
 			ctx.lineTo(100 + a, drawHeight);
-			ctx.ellipse(100, drawHeight, b, a, 0.5 * Math.PI, -0.5 * Math.PI, -1.5 * Math.PI);
+			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
 			ctx.fill();
 			ctx.closePath();
 
@@ -93,31 +93,31 @@
 
 			//эллипс верхний
 			ctx.beginPath();
-			ctx.ellipse(100, 10, b, a, 0.5 * Math.PI, 0, 2 * Math.PI);
+			ctx.ellipse(100, 10, b, a, Math.PI / 2, 0, 2 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			//эллипс нижний
 			ctx.beginPath();
-			ctx.ellipse(100, drawHeight, b, a, 0.5 * Math.PI, 1.5 * Math.PI, 0.5 * Math.PI);
+			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, drawHeight, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
 			//эллипс средний
 			ctx.beginPath();
-			ctx.ellipse(100, drawHeight / k, b, a, 0.5 * Math.PI, 1.5 * Math.PI, 0.5 * Math.PI);
+			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, drawHeight / k, b, a, 0.5 * Math.PI, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
