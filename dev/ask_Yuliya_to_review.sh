@@ -6,6 +6,7 @@ echo "Asking Yuliya to review PR#$1 ..."
 profile=$(shuf -e \
 	"yuliya-auto-0" \
 	"yuliya-auto-1" \
+	"yuliya-auto-2" \
 -n 1)
 
 echo "Using profile: $profile"
