@@ -5,7 +5,7 @@
 
 		let volume = sl(1, 50) * 100;
 		let height = sluchDel(volume);
-		genAssert(height != 1, '');
+		genAssert(height > 1, 'Сосуд высотой 1 единицу выглядит неправдоподобно');
 
 		let deltaHeight = sl(1, height);
 
@@ -68,11 +68,11 @@
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
-			text: 'В цилиндрический сосуд налили $' + volume + '\\mbox{' + unit + '}^3$ воды. ' +
+			text: 'В цилиндрический сосуд налили $' + volume + '\mbox{' + unit + '}^3$ воды. ' +
 				'Уровень воды при этом достигает высоты $' + height + '$' + unit + '. ' +
 				'В жидкость полностью погрузили деталь. ' +
 				'При этом уровень жидкости в сосуде поднялся ' + change + '. ' +
-				'Чему равен объем детали? Ответ выразите в $\\mbox{' + unit + '}^3$.',
+				'Чему равен объем детали? Ответ выразите в $\mbox{' + unit + '}^3$.',
 			answers: volume * deltaHeight / height,
 			authors: ['Суматохина Александра'],
 		});
