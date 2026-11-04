@@ -64,7 +64,7 @@ async function waitForRateLimitReset(token) {
     }
 }
 
-async function handlePRWithExamples(pr, token, cachedComments = null, cachedCommits = null) {
+async function handlePRWithExamples(pr, token, cachedComments = null, cachedCommits = null, yuliyaAskedCache = null, yuliyaAskedCacheFilePath = null) {
     console.log(`🔍 Обработка PR #${pr.number} (примеры уже есть)`);
     
     // Получаем или используем кэшированные данные
@@ -76,7 +76,7 @@ async function handlePRWithExamples(pr, token, cachedComments = null, cachedComm
     await checkAndAskUser(pr, token, 'chas-ege-polina', 'ask_Polina_to_fix.sh', 'polina.log', comments, commits);
     
     // Проверка Юлии (без ограничений по номеру PR, один раз на коммит)
-    await checkAndAskYuliya(pr, token, comments, commits);
+    await checkAndAskYuliya(pr, token, comments, commits, yuliyaAskedCache, yuliyaAskedCacheFilePath);
 
     
     // Заглушка: пропускаем PR с номером меньше 3280
@@ -390,6 +390,14 @@ async function main() {
             console.log(`Loaded ${generatedExamplesCache.size} entries from generated-examples cache.`);
         }
 
+        const yuliyaAskedCacheFilePath = path.join(projectRoot, '.yuliya-asked.cache');
+        let yuliyaAskedCache = new Set();
+        if (fs.existsSync(yuliyaAskedCacheFilePath)) {
+            const content = fs.readFileSync(yuliyaAskedCacheFilePath, 'utf8');
+            yuliyaAskedCache = new Set(content.split('\n').filter(Boolean));
+            console.log(`Loaded ${yuliyaAskedCache.size} entries from yuliya-asked cache.`);
+        }
+
         const prUpdatedAtCacheFilePath = path.join(projectRoot, '.pr-updated-at-no-action.cache');
         let prUpdatedAtCache = {};
         if (fs.existsSync(prUpdatedAtCacheFilePath)) {
@@ -446,7 +454,7 @@ async function main() {
 
             if (generatedExamplesCache.has(cacheKey)) {
                 console.log(`🎉 PR #${pr.number} уже проверен для текущих хэшей (примеры сгенерированы). Переходим к заглушке.`);
-                await handlePRWithExamples(pr, token, null, null);
+                await handlePRWithExamples(pr, token, null, null, yuliyaAskedCache, yuliyaAskedCacheFilePath);
                 continue;
             }
 
@@ -491,7 +499,7 @@ async function main() {
                     totalGenerationTime += await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
                     generatedExamplesCache.add(cacheKey);
                     fs.appendFileSync(generatedExamplesCacheFilePath, cacheKey + '\n');
-                    await handlePRWithExamples(pr, token, comments, commits);
+                    await handlePRWithExamples(pr, token, comments, commits, yuliyaAskedCache, yuliyaAskedCacheFilePath);
                     continue;
                 }
 
@@ -503,7 +511,7 @@ async function main() {
                     totalGenerationTime += await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
                     generatedExamplesCache.add(cacheKey);
                     fs.appendFileSync(generatedExamplesCacheFilePath, cacheKey + '\n');
-                    await handlePRWithExamples(pr, token, comments, commits);
+                    await handlePRWithExamples(pr, token, comments, commits, yuliyaAskedCache, yuliyaAskedCacheFilePath);
                     continue;
                 }
 
@@ -542,7 +550,7 @@ async function main() {
                             }
                             generatedExamplesCache.add(cacheKey);
                             fs.appendFileSync(generatedExamplesCacheFilePath, cacheKey + '\n');
-                            await handlePRWithExamples(pr, token, comments, commits);
+                            await handlePRWithExamples(pr, token, comments, commits, yuliyaAskedCache, yuliyaAskedCacheFilePath);
                             continue;
                         }
                     } else {
@@ -552,7 +560,7 @@ async function main() {
                         totalGenerationTime += await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
                         generatedExamplesCache.add(cacheKey);
                         fs.appendFileSync(generatedExamplesCacheFilePath, cacheKey + '\n');
-                        await handlePRWithExamples(pr, token, comments, commits);
+                        await handlePRWithExamples(pr, token, comments, commits, yuliyaAskedCache, yuliyaAskedCacheFilePath);
                         continue;
                     }
                 }
@@ -589,12 +597,12 @@ async function main() {
                     totalGenerationTime += await runProvideScript(pr.number, [...filteredArgs, '--user-data-dir', userDataDir]);
                     generatedExamplesCache.add(cacheKey);
                     fs.appendFileSync(generatedExamplesCacheFilePath, cacheKey + '\n');
-                    await handlePRWithExamples(pr, token, comments, commits);
+                    await handlePRWithExamples(pr, token, comments, commits, yuliyaAskedCache, yuliyaAskedCacheFilePath);
                 } else {
                     console.log(`File ${commentedFile} is identical. Skipping generation, but handling as generated.`);
                     generatedExamplesCache.add(cacheKey);
                     fs.appendFileSync(generatedExamplesCacheFilePath, cacheKey + '\n');
-                    await handlePRWithExamples(pr, token, comments, commits);
+                    await handlePRWithExamples(pr, token, comments, commits, yuliyaAskedCache, yuliyaAskedCacheFilePath);
                 }
 
             } catch (e) {
@@ -730,7 +738,7 @@ async function fetchPRCommits(prNum, token) {
 }
 
 
-async function checkAndAskYuliya(pr, token, cachedComments = null, cachedCommits = null) {
+async function checkAndAskYuliya(pr, token, cachedComments = null, cachedCommits = null, yuliyaAskedCache = null, yuliyaAskedCacheFilePath = null) {
     console.log(`🔍 Проверка Юлии для PR #${pr.number}`);
     try {
         const userLogin = 'chas-ege-yuliya';
@@ -752,9 +760,23 @@ async function checkAndAskYuliya(pr, token, cachedComments = null, cachedCommits
         })[0];
         const lastCommitDate = lastCommit ? new Date(lastCommit.commit?.committer?.date || lastCommit.commit?.author?.date || 0) : new Date(0);
         
+        const lastCommitSha = lastCommit ? lastCommit.sha : 'unknown';
+        const cacheKey = `${pr.number}:${lastCommitSha}`;
+
+        // Проверяем кэш: если Юлия уже ответила на этот коммит, пропускаем проверку
+        if (yuliyaAskedCache && yuliyaAskedCache.has(cacheKey)) {
+            console.log(`⏭️ PR #${pr.number}: Юлия уже ответила на коммит ${lastCommitSha.substring(0,7)}, пропускаем.`);
+            return;
+        }
+
         // 3. Проверяем условие: Юлия уже комментировала этот (или более поздний) коммит
         if (lastUserCommentDate >= lastCommitDate) {
             console.log(`⏭️ PR #${pr.number}: Юлия уже комментировала этот коммит, пропускаем.`);
+            // Записываем в кэш, что она ответила на этот коммит
+            if (yuliyaAskedCache && yuliyaAskedCacheFilePath) {
+                yuliyaAskedCache.add(cacheKey);
+                fs.appendFileSync(yuliyaAskedCacheFilePath, cacheKey + '\n');
+            }
             return;
         }
         
