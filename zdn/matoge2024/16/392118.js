@@ -14,7 +14,7 @@
         });
 
         let C = sl(1, 45).pm();
-        let D = sl(45, 134);
+        let D = sl(46, 134);
 
         let CD = circle.chordByAngles(C, D, {
             angleInDegrees: true
