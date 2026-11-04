@@ -11,7 +11,7 @@
 
 		let unit = ['см', 'дм', 'м'].iz();
 
-		let change = ['на $' + deltaHeight + '$' + unit, 'в $' + (deltaHeight + height).texrndfrac(height) + '$ раза']
+		let change = ['на $' + deltaHeight + '~\\mbox{' + unit + '}$', 'в $' + (deltaHeight + height).texrndfrac(height) + '$ раза']
 			.iz();
 
 		let paint1 = function(ctx) {
@@ -68,11 +68,11 @@
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
-			text: 'В цилиндрический сосуд налили $' + volume + '\mbox{' + unit + '}^3$ воды. ' +
-				'Уровень воды при этом достигает высоты $' + height + '$' + unit + '. ' +
+			text: 'В цилиндрический сосуд налили $' + volume + '~\\mbox{' + unit + '}^3$ воды. ' +
+				'Уровень воды при этом достигает высоты $' + height + '~\\mbox{' + unit + '}$. ' +
 				'В жидкость полностью погрузили деталь. ' +
 				'При этом уровень жидкости в сосуде поднялся ' + change + '. ' +
-				'Чему равен объём детали? Ответ выразите в $\mbox{' + unit + '}^3$.',
+				'Чему равен объём детали? Ответ выразите в $~\\mbox{' + unit + '}^3$.',
 			answers: volume * deltaHeight / height,
 			authors: ['Суматохина Александра'],
 		});
