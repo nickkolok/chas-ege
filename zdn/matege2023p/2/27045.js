@@ -17,22 +17,22 @@
 		let paint1 = function(ctx) {
 			ctx.translate(0, 30);
 			ctx.lineWidth = 2;
-			let height = 180;
+			let picHeight = 180;
 			ctx.fillStyle = "#61DC9A";
 
 			let k = sl(1.3, 4, 0.1);
 
 			//жидкость
 			ctx.beginPath();
-			ctx.ellipse(150, height / k, 20, 90, Math.PI / 2, 0.5 * Math.PI, 1.5 * Math.PI);
-			ctx.lineTo(240, height);
-			ctx.ellipse(150, height, 20, 90, Math.PI / 2, -0.5 * Math.PI, -1.5 * Math.PI);
+			ctx.ellipse(150, picHeight / k, 20, 90, Math.PI / 2, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.lineTo(240, picHeight);
+			ctx.ellipse(150, picHeight, 20, 90, Math.PI / 2, -0.5 * Math.PI, -1.5 * Math.PI);
 			ctx.fill();
 			ctx.closePath();
 
 			//высота
-			ctx.drawLine(60, height, 60, 10);
-			ctx.drawLine(240, height, 240, 10);
+			ctx.drawLine(60, picHeight, 60, 10);
+			ctx.drawLine(240, picHeight, 240, 10);
 
 			//эллипс верхний
 			ctx.beginPath();
@@ -42,25 +42,25 @@
 
 			//эллипс нижний
 			ctx.beginPath();
-			ctx.ellipse(150, height, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.ellipse(150, picHeight, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, height, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(150, picHeight, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
 			//эллипс средний
 			ctx.beginPath();
-			ctx.ellipse(150, height / k, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.ellipse(150, picHeight / k, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 			ctx.stroke();
 			ctx.closePath();
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, height / k, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.ellipse(150, picHeight / k, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
