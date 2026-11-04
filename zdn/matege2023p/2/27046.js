@@ -22,7 +22,7 @@
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.fillStyle = om.primaryBrandColors.iz();
 
-			if (!variant)
+			if (variant === 0)
 				ctx.translate(-30, 0);
 
 			let a = [70, 100][variant];
