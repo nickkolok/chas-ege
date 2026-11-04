@@ -16,6 +16,7 @@ const __dirname = path.dirname(__filename);
 
 const yuliyaReviewedCacheFilePath = path.join(projectRoot, '.yuliya-reviewed.cache');
 let yuliyaReviewedCache = new Set();
+
 const args = process.argv.slice(2);
 const editLastFlag = args.includes('--edit-last');
 const filteredArgs = args.filter(a => a !== '--edit-last');
@@ -393,6 +394,12 @@ async function main() {
             console.log(`Loaded ${generatedExamplesCache.size} entries from generated-examples cache.`);
         }
 
+        if (fs.existsSync(yuliyaReviewedCacheFilePath)) {
+            const yuliyaCacheContent = fs.readFileSync(yuliyaReviewedCacheFilePath, 'utf8');
+            yuliyaReviewedCache = new Set(yuliyaCacheContent.split('\n').filter(Boolean));
+            console.log(`Loaded ${yuliyaReviewedCache.size} entries from yuliya-reviewed cache.`);
+        }
+
         const prUpdatedAtCacheFilePath = path.join(projectRoot, '.pr-updated-at-no-action.cache');
         let prUpdatedAtCache = {};
         if (fs.existsSync(prUpdatedAtCacheFilePath)) {
@@ -404,12 +411,6 @@ async function main() {
                 console.warn('Could not parse pr-updated-at-no-action cache:', e.message);
                 prUpdatedAtCache = {};
             }
-        }
-
-        if (fs.existsSync(yuliyaReviewedCacheFilePath)) {
-            const yuliyaCacheContent = fs.readFileSync(yuliyaReviewedCacheFilePath, 'utf8');
-            yuliyaReviewedCache = new Set(yuliyaCacheContent.split('\n').filter(Boolean));
-            console.log(`Loaded ${yuliyaReviewedCache.size} entries from yuliya-reviewed cache.`);
         }
 
         // Фетчим только открытые PR, чтобы не тянуть тысячи закрытых
