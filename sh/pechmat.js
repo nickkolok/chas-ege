@@ -52,6 +52,7 @@ function readOptions() {
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
 	options.forceIntegers = $('#forceIntegers').is(':checked');
 	options.onlyIntegers = $('#onlyIntegers').is(':checked');
+	options.blackPicture = $('#blackPicture').is(':checked');
 	options.randomSeed = $('#randomSeed').val();
 	if (options.randomSeed === '') {
 		options.randomSeed = Date.now();
@@ -63,6 +64,8 @@ function readOptions() {
 
 	sluchch.forceIntegers = !!options.forceIntegers;
 	sluchch.onlyIntegers = !!options.onlyIntegers;
+	
+	window.blackPicture = !!options.blackPicture;
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
