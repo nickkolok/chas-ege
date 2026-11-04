@@ -11,7 +11,7 @@
 
 		let unit = ['см', 'дм', 'м'].iz();
 
-		let change = ['на $' + deltaHeight + '$' + unit + '', 'в $' + (deltaHeight + height).texrndfrac(height) + '$ раза']
+		let change = ['на $' + deltaHeight + '$' + unit, 'в $' + (deltaHeight + height).texrndfrac(height) + '$ раза']
 			.iz();
 
 		let paint1 = function(ctx) {
