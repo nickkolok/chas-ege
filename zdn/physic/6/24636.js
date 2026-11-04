@@ -3,8 +3,23 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let Ax = sl(20, 80);
+		let key = '24636';
+		let preference = ['resultantForce', 'velocity'];
+		let rand = getSelectedPreferenceFromList(key, preference);
+
+		let Ax = sl(-80, 80, 1);
+		if (Ax === 0) Ax = sl1() > 0 ? 10 : -10;
+		
 		let Ay = 120 - 0.01 * Ax * Ax; 
+
+		let questionText, answer;
+		if (rand === 0) {
+			questionText = 'равнодействующая всех сил, действующих на мяч';
+			answer = '1';
+		} else {
+			questionText = 'скорость мяча';
+			answer = '4';
+		}
 
 		let paint1 = function (ctx) {
 			let w = 400;
@@ -44,7 +59,9 @@
 
 			ctx.scale(1, -1);
 			ctx.font = "bold 18px liberation_sans";
-			ctx.fillText("1", Ax + 8, -(Ay - len) + 10);
+			ctx.fillStyle = "black";
+			
+			ctx.fillText("1", Ax + 8, -(Ay - len) + 15);
 			ctx.fillText("2", Ax + 8, -(Ay + len) - 5);
 			ctx.fillText("3", Ax + len + 8, -Ay + 5);
 			ctx.fillText("4", v4x + 8, -v4y + 5);
@@ -53,10 +70,12 @@
 
 		NAtask.setTask({
 			text: 'Мяч брошен под углом к горизонту (см. рисунок). Сопротивление воздуха пренебрежимо мало. ' +
-				'Какому из векторов 1–4 сонаправлена равнодействующая сил, действующих на мяч в точке $A$?',
-			answers: '1',
+				'Какому из векторов 1–4 сонаправлена ' + questionText + ' в точке $A$?',
+			answers: answer,
 			analys: 'На мяч действует только сила тяжести, которая направлена вертикально вниз. ' +
-				'Следовательно, равнодействующая всех сил также направлена вертикально вниз, что соответствует вектору 1.',
+				'Следовательно, равнодействующая всех сил и ускорение мяча направлены вертикально вниз (вектор 1). ' +
+				'Вектор скорости всегда направлен по касательной к траектории движения (вектор 4).',
+			preference: preference,
 		});
 		
 		NAtask.modifiers.addCanvasIllustration({
