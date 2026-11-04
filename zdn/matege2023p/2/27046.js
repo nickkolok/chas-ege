@@ -19,7 +19,7 @@
 			ctx.translate(20, 40);
 			ctx.lineWidth = 2;
 			let height = 250;
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.fillStyle = om.primaryBrandColors.iz();
 
 			if (!variant)
