@@ -1,82 +1,112 @@
 (function () {
 	'use strict';
+	NAinfo.requireApiVersion(0, 2);
+
+	// Ветку выбираем до retryWhileError: иначе при каждой неудачной попытке она
+	// перевыбиралась бы заново, и в случайном режиме чаще выпадала бы ветка,
+	// которую реже отбраковывают («больше» - примерно в 61% задач вместо 50%)
+	let key = '511443';
+	let preference = ['bigger', 'smaller'];
+	let rand = getSelectedPreferenceFromList(key, preference);
+	let bigger = rand === 0;
+
 	retryWhileError(function () {
-		NAinfo.requireApiVersion(0, 2);
+		// Кратности - словами, как у ФИПИ (3A0E06, 5F3B21, 850DF9, FA5AD0, 0B53AE,
+		// 5BAF16, 6A8E45, D324CE, CC863D): «в полтора раза», «в два раза», «вдвое»,
+		// «в два с половиной раза», «втрое», «в четыре раза»
+		let multiplier = [
+			{ k: 1.5, words: ['в полтора раза'] },
+			{ k: 2, words: ['в два раза', 'вдвое'] },
+			{ k: 2.5, words: ['в два с половиной раза'] },
+			{ k: 3, words: ['в три раза', 'втрое'] },
+			{ k: 4, words: ['в четыре раза', 'вчетверо'] },
+		].iz();
+		let k = multiplier.k;
+		let k2 = k * k;
 
-		let k = sl(2, 5);
-		let H = sl(2, 20);
-		let h = H * k * k;
-		let k_word = (k === 2 || k === 3 || k === 4) ? "раза" : "раз";
+		// Объём воды не меняется: pi * r^2 * h = pi * (k r)^2 * x, поэтому
+		// в широком сосуде уровень в k^2 раз ниже, в узком - в k^2 раз выше.
+		// У ФИПИ уровень кратен 10 см, но тогда на весь шаблон набирается лишь
+		// 13 задач, а «в два с половиной» и «в четыре раза меньше» не выпадают
+		// вовсе. Поэтому уровень - любое целое число сантиметров от 5 до 95,
+		// при котором новый уровень целый и не больше 100 см (у ФИПИ - до 90).
+		// Уровень выбираем из подходящих, а не перебором: так каждая кратность
+		// выпадает одинаково часто.
+		let levels = [];
+		for (let x = 5; x <= 95; x++) {
+			let y = bigger ? x / k2 : x * k2;
+			if (y.isAlmostInteger() && y >= 5 && y <= 100) {
+				levels.push(x);
+			}
+		}
+		genAssertNonempty(levels, 'Для этой кратности нет подходящего уровня воды');
+		let h = levels.iz();
+		let answer = Math.round(bigger ? h / k2 : h * k2);
 
+		let kTex = String(k).replace('.', '{,}');
+		let analys = 'Объём воды при переливании не меняется. Объём цилиндра равен $\\pi r^2 h$. ' +
+			'Радиус основания второго сосуда в $' + kTex + '$ раза ' + (bigger ? 'больше' : 'меньше') +
+			', поэтому площадь его основания в $' + kTex + '^2 = ' + String(k2).replace('.', '{,}') + '$ ' + (k2 === 9 || k2 === 16 ? 'раз' : 'раза') + ' ' + (bigger ? 'больше' : 'меньше') +
+			', а уровень воды во столько же раз ' + (bigger ? 'ниже' : 'выше') + ': $' + h + (bigger ? ' : ' : ' \\cdot ') +
+			String(k2).replace('.', '{,}') + ' = ' + answer + '$ см.';
+
+		// Чертёж - один сосуд с уровнем воды h, как у ФИПИ (FA5AD0 и др.).
+		// Второй сосуд не рисуем: его вид подсказывал бы, выше или ниже окажется вода
 		let paintCylinder = function (ct) {
-			let cx = 120;
-			let topY = 50;
-			let bottomY = 200;
-			let radiusX = 60;
-			let radiusY = 15;
-			let waterY = 140;
+			let cx = 170;
+			let R = 75;
+			let ry = 0.25 * R; // сплюснутость эллипсов оснований
+			let topY = 40;
+			let bottomY = 255;
+			let waterY = bottomY - 0.55 * (bottomY - topY);
 
 			let edgeColor = om.secondaryBrandColors.iz();
 			let liquidColor = om.transparentBrandColors.iz();
-
 			ct.lineWidth = 2;
 			ct.strokeStyle = edgeColor;
 
-			// Заливка воды одним контуром, чтобы полупрозрачный цвет
+			// Вода заливается одним контуром, чтобы полупрозрачный цвет
 			// нигде не накладывался сам на себя (приём из 514063)
 			ct.beginPath();
-			ct.moveTo(cx - radiusX, waterY);
-			ct.lineTo(cx - radiusX, bottomY);
-			ct.ellipse(cx, bottomY, radiusX, radiusY, 0, Math.PI, 0, true);
-			ct.lineTo(cx + radiusX, waterY);
-			ct.ellipse(cx, waterY, radiusX, radiusY, 0, 0, Math.PI, true);
+			ct.moveTo(cx - R, waterY);
+			ct.lineTo(cx - R, bottomY);
+			ct.ellipse(cx, bottomY, R, ry, 0, Math.PI, 0, true);
+			ct.lineTo(cx + R, waterY);
+			ct.ellipse(cx, waterY, R, ry, 0, 0, Math.PI, true);
 			ct.closePath();
 			ct.fillStyle = liquidColor;
 			ct.fill();
 
-			// Верхний эллипс (открытый верх)
-			ct.drawEllipse(cx, topY, radiusX, radiusY);
+			// Сосуд: открытый верх, стенки; у дна и поверхности воды
+			// передняя дуга сплошная, задняя пунктирная
+			ct.drawEllipse(cx, topY, R, ry);
+			ct.drawLine(cx - R, topY, cx - R, bottomY);
+			ct.drawLine(cx + R, topY, cx + R, bottomY);
+			[bottomY, waterY].forEach(function (y) {
+				ct.drawEllipse(cx, y, R, ry, 0, 0, Math.PI);
+				ct.setLineDash([6, 4]);
+				ct.drawEllipse(cx, y, R, ry, 0, Math.PI, 2 * Math.PI);
+				ct.setLineDash([]);
+			});
 
-			// Боковые стенки
-			ct.drawLine(cx - radiusX, topY, cx - radiusX, bottomY);
-			ct.drawLine(cx + radiusX, topY, cx + radiusX, bottomY);
-
-			// Поверхность воды: передняя дуга сплошная, задняя пунктирная
-			ct.beginPath();
-			ct.ellipse(cx, waterY, radiusX, radiusY, 0, 0, Math.PI);
-			ct.stroke();
-			ct.setLineDash([5, 3]);
-			ct.beginPath();
-			ct.ellipse(cx, waterY, radiusX, radiusY, 0, Math.PI, 2 * Math.PI);
-			ct.stroke();
-			ct.setLineDash([]);
-
-			// Дно: передняя дуга сплошная, задняя пунктирная
-			ct.beginPath();
-			ct.ellipse(cx, bottomY, radiusX, radiusY, 0, 0, Math.PI);
-			ct.stroke();
-			ct.setLineDash([5, 3]);
-			ct.beginPath();
-			ct.ellipse(cx, bottomY, radiusX, radiusY, 0, Math.PI, 2 * Math.PI);
-			ct.stroke();
-			ct.setLineDash([]);
-
-			// Двунаправленная стрелка с обозначением h: охватывает столб
-			// жидкости, т.е. от поверхности воды до дна сосуда
-			let arrowX = cx + radiusX + 30;
-			ct.strokeStyle = edgeColor;
+			// Размерная стрелка h: от поверхности воды до дна
+			let arrowX = cx + R + 25;
 			ct.drawArrow(arrowX, bottomY, arrowX, waterY);
 			ct.drawArrow(arrowX, waterY, arrowX, bottomY);
-
-			// Буква h
 			ct.fillStyle = edgeColor;
 			ct.font = 'italic 20px serif';
-			ct.fillText('h', arrowX + 10, (waterY + bottomY) / 2 + 7);
+			ct.fillText('h', arrowX + 8, (waterY + bottomY) / 2 + 7);
 		};
 
 		NAtask.setTask({
-			text: 'Вода в сосуде цилиндрической формы находится на уровне $h = ' + h + '$ см. На каком уровне окажется вода, если её перелить в другой цилиндрический сосуд, у которого радиус основания в $' + k + '$ ' + k_word + ' больше, чем у данного? Ответ дайте в сантиметрах.',
-			answers: H,
+			text: 'Вода в сосуде цилиндрической формы находится на уровне $h = ' + h + '$ см. ' +
+				'На каком уровне окажется вода, если её перелить в другой цилиндрический сосуд, ' +
+				'у которого радиус основания ' + multiplier.words.iz() + ' ' + (bigger ? 'больше' : 'меньше') +
+				', чем у данного? Ответ дайте в сантиметрах.',
+			answers: answer,
+			analys: analys,
+			authors: ['chas-ege-selena', 'Zer00Player'],
+			preference: [preference],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
@@ -84,8 +114,8 @@
 			height: 300,
 			paint: paintCylinder,
 		});
-
-		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
+//511443
+//chas-ege-selena, Zer00Player
 //https://mathb-ege.sdamgia.ru/problem?id=511443
