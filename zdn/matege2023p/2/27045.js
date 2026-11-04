@@ -18,7 +18,7 @@
 			ctx.translate(0, 30);
 			ctx.lineWidth = 2;
 			let picHeight = 180;
-			ctx.fillStyle = "#61DC9A";
+			ctx.fillStyle = om.transparentBrandColors.iz();
 
 			let k = sl(1.3, 4, 0.1);
 
