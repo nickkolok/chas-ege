@@ -29,7 +29,7 @@
 			let b = 20;
 
 			let kConst = sl(2.1, 4, 0.1);
-			k = [kConst, kConst / 2][variant];
+			let k = [kConst, kConst / 2][variant];
 			//цилиндр поуже
 			//жидкость
 			ctx.beginPath();
@@ -76,7 +76,7 @@
 			ctx.translate(200, 0);
 
 			a = [70, 100][1 - variant];
-			k = [kConst, kConst / 2][1 - variant];
+			let k = [kConst, kConst / 2][1 - variant];
 			//цилиндр пошире
 			//жидкость
 			ctx.beginPath();
