@@ -5,7 +5,7 @@
 		let height = sl(1, 100);
 		let ratio = height.polnKvadrMnozh();
 
-		genAssert(ratio != 1, 'Соотношение равно единице');
+		genAssert(ratio != 1);
 
 		let name = sklonlxkand(['диаметр', 'радиус'].iz());
 
