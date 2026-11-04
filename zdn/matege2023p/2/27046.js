@@ -124,7 +124,7 @@
 		};
 
 		NAinfo.requireApiVersion(0, 2);
-		NAtask.setTask({
+		chas2.task.setTask({
 			text: 'В цилиндрическом сосуде уровень жидкости достигает ' + height + ' см. ' +
 				'На какой высоте будет находиться уровень жидкости, ' +
 				'если её перелить во второй цилиндрический сосуд, ' +
@@ -133,7 +133,7 @@
 			answers: moreLess[1],
 			authors: ['Суматохина Александра'],
 		});
-		NAtask.modifiers.addCanvasIllustration({
+		chas2.task.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
