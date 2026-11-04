@@ -30,7 +30,7 @@
 
 			let kBase = sl(2.1, 4, 0.1);
 			let k = [kBase, kBase / 2][variant];
-			//цилиндр поуже
+			//первый цилиндр
 			//жидкость
 			ctx.beginPath();
 			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
@@ -77,7 +77,7 @@
 
 			a = [70, 100][1 - variant];
 			let k = [kBase, kBase / 2][1 - variant];
-			//цилиндр пошире
+			//второй цилиндр
 			//жидкость
 			ctx.beginPath();
 			ctx.setLineDash([0, 0]);
