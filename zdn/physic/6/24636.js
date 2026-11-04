@@ -8,9 +8,9 @@
 		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let Ax = sl(-80, 80, 1);
-		if (Ax === 0) Ax = sl1() > 0 ? 10 : -10;
+		genAssert(Math.abs(Ax) >= 35, "Точка A не должна быть слишком близко к вершине траектории, чтобы векторы скорости и горизонт не сливались");
 		
-		let Ay = 120 - 0.01 * Ax * Ax; 
+		let Ay = 90 - 0.01 * Ax * Ax; 
 
 		let questionText, answer;
 		if (rand === 0) {
@@ -30,7 +30,7 @@
 
 			let points = [];
 			for(let x = -109; x <= 109; x += 5) {
-				points.push({x: x, y: 120 - 0.01 * x * x});
+				points.push({x: x, y: 90 - 0.01 * x * x});
 			}
 			
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
@@ -43,14 +43,18 @@
 			ctx.fillStyle = om.primaryBrandColors.iz();
 			ctx.fillKrug(Ax, Ay, 4);
 
-			let len = 60;
+			let len = 45;
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.lineWidth = 2.5;
 			
+			// 1: вниз
 			ctx.drawArrow(Ax, Ay, Ax, Ay - len, true);
+			// 2: вверх
 			ctx.drawArrow(Ax, Ay, Ax, Ay + len, true);
+			// 3: вправо
 			ctx.drawArrow(Ax, Ay, Ax + len, Ay, true);
 			
+			// 4: касательная
 			let slope = -0.02 * Ax;
 			let angle = Math.atan(slope);
 			let v4x = Ax + len * Math.cos(angle);
