@@ -21,105 +21,71 @@
 			let drawHeight = 250;
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.fillStyle = om.primaryBrandColors.iz();
+			ctx.setLineDash([]);
+
+			let drawCylinder = function(a, k) {
+				//жидкость
+				ctx.beginPath();
+				ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
+				ctx.lineTo(100 + a, drawHeight);
+				ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
+				ctx.fill();
+				ctx.closePath();
+
+				//высота
+				ctx.drawLine(100 - a, drawHeight, 100 - a, 10);
+				ctx.drawLine(100 + a, drawHeight, 100 + a, 10);
+
+				//эллипс верхний
+				ctx.beginPath();
+				ctx.ellipse(100, 10, b, a, Math.PI / 2, 0, 2 * Math.PI);
+				ctx.stroke();
+				ctx.closePath();
+
+				//эллипс нижний
+				ctx.beginPath();
+				ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
+				ctx.stroke();
+				ctx.closePath();
+
+				ctx.beginPath();
+				ctx.setLineDash([5, 5]);
+				ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
+				ctx.stroke();
+				ctx.closePath();
+				ctx.setLineDash([]);
+
+				//эллипс средний
+				ctx.beginPath();
+				ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
+				ctx.stroke();
+				ctx.closePath();
+
+				ctx.beginPath();
+				ctx.setLineDash([5, 5]);
+				ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
+				ctx.stroke();
+				ctx.closePath();
+				ctx.setLineDash([]);
+			};
+
+			let b = 20;
+			let kBase = sl(2.1, 4, 0.1);
+
+			let a1 = [70, 100][variant];
+			let k1 = [kBase, kBase / 2][variant];
 
 			if (variant === 0)
 				ctx.translate(-30, 0);
-
-			let a = [70, 100][variant];
-			let b = 20;
-
-			let kBase = sl(2.1, 4, 0.1);
-			let k = [kBase, kBase / 2][variant];
 			//первый цилиндр
-			//жидкость
-			ctx.beginPath();
-			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
-			ctx.lineTo(100 + a, drawHeight);
-			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
-			ctx.fill();
-			ctx.closePath();
-
-			//высота
-			ctx.drawLine(100 - a, drawHeight, 100 - a, 10);
-			ctx.drawLine(100 + a, drawHeight, 100 + a, 10);
-
-			//эллипс верхний
-			ctx.beginPath();
-			ctx.ellipse(100, 10, b, a, Math.PI / 2, 0, 2 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
-
-			//эллипс нижний
-			ctx.beginPath();
-			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
-
-			//эллипс средний
-			ctx.beginPath();
-			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
+			drawCylinder(a1, k1);
 
 			ctx.translate(200, 0);
 
-			a = [70, 100][1 - variant];
-			let k = [kBase, kBase / 2][1 - variant];
+			let a2 = [70, 100][1 - variant];
+			let k2 = [kBase, kBase / 2][1 - variant];
 			//второй цилиндр
-			//жидкость
-			ctx.beginPath();
-			ctx.setLineDash([0, 0]);
-			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
-			ctx.lineTo(100 + a, drawHeight);
-			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
-			ctx.fill();
-			ctx.closePath();
-
-			//высота
-			ctx.drawLine(100 - a, drawHeight, 100 - a, 10);
-			ctx.drawLine(100 + a, drawHeight, 100 + a, 10);
-
-			//эллипс верхний
-			ctx.beginPath();
-			ctx.ellipse(100, 10, b, a, Math.PI / 2, 0, 2 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
-
-			//эллипс нижний
-			ctx.beginPath();
-			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, drawHeight, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
-
-			//эллипс средний
-			ctx.beginPath();
-			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, 3 * Math.PI / 2, Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.setLineDash([5, 5]);
-			ctx.ellipse(100, drawHeight / k, b, a, Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
+			drawCylinder(a2, k2);
 
 		};
 
