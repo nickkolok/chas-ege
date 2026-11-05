@@ -3,9 +3,12 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let depth = sl(25, 40, 5);
+		let preference = ['several_steps', 'specified_step_count'];
+		let variant = getSelectedPreferenceFromList('518403', preference);
+
+		let depth = sl(15, 40, 5);
 		let height = sl(10, 20, 5);
-		let width = sl(80, 100, 10);
+		let width = sl(75, 100, 5);
 		let steps = sl(4, 6);
 
 		let answer = steps * height * width + (steps - 1) * depth * width;
@@ -235,10 +238,11 @@
 		};
 
 		NAtask.setTask({
-			text: 'Несколько ступеней лестницы покрасили в тёмный цвет, как показано на рисунке (штриховкой). ' +
+			text: (variant === 0 ? 'Несколько ступеней' : chislitM(steps, 'ступень', 'ступени', 'ступеней')) + ' лестницы покрасили в тёмный цвет, как показано на рисунке (штриховкой). ' +
 				'Найдите площадь окрашенной поверхности, если глубина каждой ступеньки равна $' + depth + '$ см, ' +
 				'высота — $' + height + '$ см, а ширина — $' + width + '$ см. Ответ дайте в квадратных сантиметрах.',
 			answers: answer,
+			preference: preference,
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
@@ -252,4 +256,4 @@
 })();
 //chas-ege-selena
 //https://mathb-ege.sdamgia.ru/test?likes=518403
-//Аналоги: 518431, 518451, 518475, 535198; ОБЗ: 2C5710 (дубликат), E4A10A
+// E4A10A, 7C98BC, 10D452, B87AC2, 518BE6, 4F3E61, 5AFE6A, 2C5710, 88D8A2, 0B5835, 518431, 518451, 518475, 535198
