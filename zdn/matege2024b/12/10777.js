@@ -4,10 +4,7 @@
 		let key = '10777';
 		let preference = ['area', 'height', 'angle'];
 
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let side = sl(1, 100);
 		let angle = [30, 150].iz();
