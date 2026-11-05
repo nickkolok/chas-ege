@@ -14,7 +14,7 @@
             angleInDegrees: true
         });
 
-        let angleC = sl(30, 150);
+        let angleC = sl(16, 164);
         let PC = circle.pointOnCircle(angleC, {
             angleInDegrees: true
         });
