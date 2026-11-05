@@ -9,11 +9,17 @@
 			preferenceValue: index
 		})), sl(preference.length - 1));
 
+		let side = sl(1, 50);
+		let angle = [30, 150].iz();
+		// Высота ромба с углом 30° равна половине стороны; данные считаются точно, а не по чертежу
+		let height = side / 2;
+		let area = side * height;
+
 		let rhombus = new Rhombus({
-			length: sl(1, 50),
+			length: side,
 			angles: {
 				angle: {
-					angleA: [30, 150].iz()
+					angleA: angle
 				},
 				angleInDegree: true,
 			},
@@ -22,7 +28,6 @@
 			}
 		});
 
-		let angle = rhombus.angleAInDegrees;
 		let randAngle = angle > 90;
 		let desAngle = randAngle ? 'тупой' : 'острый';
 
@@ -59,13 +64,13 @@
 			text: `Найдите `,
 			questions: [
 				[{
-					text: `площадь ромба, если его высота равна $${rhombus.lengthHeightDAB}$, а ${desAngle} угол равен $${angle}^\\circ$`,
-					answers: rhombus.area(),
+					text: `площадь ромба, если его высота равна $${height}$, а ${desAngle} угол равен $${angle}^\\circ$`,
+					answers: area,
 				}, {
-					text: `высоту ромба, если его площадь равна $${rhombus.area()}$, а ${desAngle} угол равен $${angle}^\\circ$`,
-					answers: rhombus.lengthHeightDAB,
+					text: `высоту ромба, если его площадь равна $${area}$, а ${desAngle} угол равен $${angle}^\\circ$`,
+					answers: height,
 				}, {
-					text: `${desAngle} угол ромба, если его площадь равна $${rhombus.area()}$, а высота равна $${rhombus.lengthHeightDAB}$`,
+					text: `${desAngle} угол ромба, если его площадь равна $${area}$, а высота равна $${height}$`,
 					answers: angle,
 				}][rand]
 			],
