@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Скрипт для массового получения комментариев из нескольких пуллреквестов через GitHub API
-и сохранения их в один JSON-файл.
+Скрипт для массового получения ВСЕХ комментариев из нескольких пуллреквестов:
+- Issue comments (общие комментарии к PR)
+- Review comments (inline комментарии к строкам кода)
 
 Использование:
     python fetch_all_pr_comments.py <pr_number1> <pr_number2> ... <pr_numberN>
@@ -21,7 +22,7 @@ import os
 import time
 
 def fetch_pr_comments(pr_number, token, repo="nickkolok/chas-ege"):
-    """Получает комментарии одного пуллреквеста через GitHub API."""
+    """Получает все комментарии одного пуллреквеста через GitHub API."""
     
     headers = {
         "Authorization": f"token {token}",
@@ -38,15 +39,15 @@ def fetch_pr_comments(pr_number, token, repo="nickkolok/chas-ege"):
     
     pr_data = pr_response.json()
     
-    # Get comments
+    # Get issue comments (общие комментарии)
     comments_url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
     comments_response = requests.get(comments_url, headers=headers)
+    issue_comments = comments_response.json() if comments_response.status_code == 200 else []
     
-    if comments_response.status_code != 200:
-        print(f"  ✗ Ошибка при получении комментариев PR #{pr_number}: {comments_response.status_code}")
-        return None
-    
-    comments = comments_response.json()
+    # Get review comments (inline комментарии к коду)
+    review_comments_url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}/comments"
+    review_response = requests.get(review_comments_url, headers=headers)
+    review_comments = review_response.json() if review_response.status_code == 200 else []
     
     # Form JSON structure
     result = {
@@ -56,11 +57,15 @@ def fetch_pr_comments(pr_number, token, repo="nickkolok/chas-ege"):
         "pr_state": pr_data.get('state', ''),
         "pr_created_at": pr_data.get('created_at', ''),
         "pr_updated_at": pr_data.get('updated_at', ''),
-        "total_comments": len(comments),
-        "comments": []
+        "total_issue_comments": len(issue_comments),
+        "total_review_comments": len(review_comments),
+        "total_comments": len(issue_comments) + len(review_comments),
+        "issue_comments": [],
+        "review_comments": []
     }
     
-    for comment in comments:
+    # Add issue comments
+    for comment in issue_comments:
         comment_obj = {
             "id": comment.get('id'),
             "user": comment.get('user', {}).get('login', ''),
@@ -69,7 +74,23 @@ def fetch_pr_comments(pr_number, token, repo="nickkolok/chas-ege"):
             "body": comment.get('body', ''),
             "url": comment.get('html_url', '')
         }
-        result["comments"].append(comment_obj)
+        result["issue_comments"].append(comment_obj)
+    
+    # Add review comments
+    for comment in review_comments:
+        comment_obj = {
+            "id": comment.get('id'),
+            "user": comment.get('user', {}).get('login', ''),
+            "created_at": comment.get('created_at', ''),
+            "updated_at": comment.get('updated_at', ''),
+            "body": comment.get('body', ''),
+            "url": comment.get('html_url', ''),
+            "path": comment.get('path', ''),
+            "line": comment.get('line', None),
+            "original_line": comment.get('original_line', None),
+            "diff_hunk": comment.get('diff_hunk', '')
+        }
+        result["review_comments"].append(comment_obj)
     
     return result
 
@@ -128,7 +149,7 @@ def main():
         
         if result:
             all_prs_data.append(result)
-            print(f"✓ {result['total_comments']} комментариев")
+            print(f"✓ Issue: {result['total_issue_comments']}, Review: {result['total_review_comments']}")
         else:
             print(f"✗ пропущен")
         
@@ -137,8 +158,7 @@ def main():
             time.sleep(0.5)
     
     if not all_prs_data:
-        print("
-Ошибка: Не удалось получить данные ни для одного PR")
+        print("\nОшибка: Не удалось получить данные ни для одного PR")
         sys.exit(1)
     
     # Save to file
@@ -146,18 +166,19 @@ def main():
     with open(output_filename, 'w', encoding='utf-8') as f:
         json.dump(all_prs_data, f, ensure_ascii=False, indent=2)
     
-    print("
-" + "=" * 60)
+    print("\n" + "=" * 60)
     print(f"✓ Создан файл: {output_filename}")
     print(f"  Успешно обработано PRов: {len(all_prs_data)}/{len(pr_numbers)}")
+    print(f"  Всего issue comments: {sum(pr['total_issue_comments'] for pr in all_prs_data)}")
+    print(f"  Всего review comments: {sum(pr['total_review_comments'] for pr in all_prs_data)}")
     print(f"  Всего комментариев: {sum(pr['total_comments'] for pr in all_prs_data)}")
     
     # Summary
-    print("
-=== СВОДКА ===")
+    print("\n=== СВОДКА ===")
     for pr in all_prs_data:
         title = pr['pr_title'][:50] + "..." if len(pr['pr_title']) > 50 else pr['pr_title']
-        print(f"PR #{pr['pr_number']}: {title} ({pr['total_comments']} коммент.)")
+        print(f"PR #{pr['pr_number']}: {title}")
+        print(f"  Issue: {pr['total_issue_comments']}, Review: {pr['total_review_comments']}")
 
 if __name__ == "__main__":
     main()
