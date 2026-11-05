@@ -9,6 +9,10 @@
 	let preference = ['bigger', 'smaller'];
 	let rand = getSelectedPreferenceFromList(key, preference);
 	let bigger = rand === 0;
+	// Запись кратности: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
+	// («в $1{,}5$ раза», «в $2$ раза»)
+	let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
+	let inWords = getSelectedPreferenceFromList(key, preferenceMultiplier) === 0;
 
 	retryWhileError(function () {
 		// Кратности - словами, как у ФИПИ (3A0E06, 5F3B21, 850DF9, FA5AD0, 0B53AE,
@@ -101,12 +105,12 @@
 		NAtask.setTask({
 			text: 'Вода в сосуде цилиндрической формы находится на уровне $h = ' + h + '$ см. ' +
 				'На каком уровне окажется вода, если её перелить в другой цилиндрический сосуд, ' +
-				'у которого радиус основания ' + multiplier.words.iz() + ' ' + (bigger ? 'больше' : 'меньше') +
+				'у которого радиус основания ' + (inWords ? multiplier.words.iz() : 'в $' + kTex + '$ раза') + ' ' + (bigger ? 'больше' : 'меньше') +
 				', чем у данного? Ответ дайте в сантиметрах.',
 			answers: answer,
 			analys: analys,
 			authors: ['chas-ege-selena', 'Zer00Player'],
-			preference: [preference],
+			preference: [preference, preferenceMultiplier],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
