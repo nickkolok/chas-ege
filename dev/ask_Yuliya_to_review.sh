@@ -2,17 +2,20 @@
 
 echo "Asking Yuliya to review PR#$1 ..."
 
-# Выбираем случайный профиль
-profile=$(shuf -e \
-	"yuliya-auto-0" \
-	"yuliya-auto-1" \
-	"yuliya-auto-2" \
--n 1)
+PROFILE_DIR="../chas-ege-chromium-profiles"
+
+# Выбираем случайный профиль из существующих папок yuliya-auto-*
+profile=$(ls "$PROFILE_DIR" 2>/dev/null | grep '^yuliya-auto-' | shuf -n 1)
+
+if [ -z "$profile" ]; then
+    echo "ERROR: No yuliya-auto-* profiles found in $PROFILE_DIR"
+    exit 1
+fi
 
 echo "Using profile: $profile"
 
 # Путь к профилю
-PROFILE_PATH="../chas-ege-chromium-profiles/$profile"
+PROFILE_PATH="$PROFILE_DIR/$profile"
 
 # Читаем credentials из файла в папке профиля (если существует)
 CREDENTIALS_FILE="$PROFILE_PATH/credentials.json"
