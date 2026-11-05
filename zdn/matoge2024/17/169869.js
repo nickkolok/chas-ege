@@ -1,8 +1,9 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
+        let side = sl(1, 50);
         let rhombus = new Rhombus({
-            length: sl(1, 50),
+            length: side,
             angles: {
                 angle: {
                     angleA: [30, 150].iz()
@@ -28,8 +29,8 @@
         };
 
         NAtask.setTask({
-            text: `Периметр ромба равен $${rhombus.perimeter}$, а один из углов равен $30^\\circ$. Найдите площадь ромба.`,
-            answers: rhombus.area(),
+            text: `Периметр ромба равен $${4 * side}$, а один из углов равен $30^\\circ$. Найдите площадь ромба.`,
+            answers: side * side / 2,
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.allDecimalsToStandard(true);
