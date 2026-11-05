@@ -1,7 +1,7 @@
 (function () {
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let key = '356518';
+		let key = '369835';
 		let preference = ['radius', 'side'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
@@ -57,6 +57,7 @@
 				}][rand]
 			],
 			authors: ['Александра Суматохина'],
+			preference: preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.addCanvasIllustration({
