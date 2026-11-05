@@ -4,24 +4,33 @@
 
         let letters = om.latbukv.slice(0, 4);
 
-        let circle = new Circle(new Point(0, 0), 180);
+        let circle = new Circle(new Point(0, 0), 170);
 
-        let A = slKrome(180, 136, 224);
-        let B = A + 90;
+        // Равнобедренная трапеция строится по дугам (в градусах):
+        // боковые стороны AB и CD стягивают равные дуги arcLeg, основание BC — дугу arcBC,
+        // тогда AD || BC, а вписанный угол A равен половине дуги BCD = arcBC + arcLeg.
+        // Каждая дуга не меньше minArc, чтобы вершины не сливались;
+        // угол A не берётся из окрестности 90°, где трапеция вырождается в прямоугольник
+        // (при 90° ровно, т. е. arcBCD = 180°, основания равны).
+        let minArc = 25;
+        let arcBCD = slKrome((x) => (x - 180).abs() < 10, 92, 268);
+        let arcLeg = sl(minArc, Math.min(arcBCD - minArc, 360 - arcBCD - minArc));
+        let arcBC = arcBCD - arcLeg;
 
-        let AB = circle.chordByAngles(A, B, {
+        let phiA = sl(0, 359);
+        let phiB = phiA + arcLeg;
+        let phiC = phiB + arcBC;
+        let phiD = phiC + arcLeg;
+
+        let AB = circle.chordByAngles(phiA, phiB, {
             angleInDegrees: true
         });
 
-        let C = sl(1, 45).pm();
-        let D = C + 90;
-
-        let CD = circle.chordByAngles(C, D, {
+        let CD = circle.chordByAngles(phiC, phiD, {
             angleInDegrees: true
         });
 
-        // Вписанный угол A опирается на дугу BCD от точки B до точки D (через C)
-        let angleA = (D - B + 360) / 2;
+        let angleA = arcBCD / 2;
 
         let connectionMatrix = [
             [1],
@@ -46,7 +55,10 @@
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 3) ? 20 : -5)));
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // Подпись — снаружи окружности, на продолжении радиуса
+            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x * 1.1, -elem.y * 1.1));
         };
 
         NAtask.setTask({
