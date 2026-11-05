@@ -3,16 +3,8 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = "348610";
-		let variant = getListedPreference(key, [{
-			preference: 'A',
-			preferenceValue: 0,
-		}, {
-			preference: 'B',
-			preferenceValue: 1,
-		}, {
-			preference: 'C',
-			preferenceValue: 2,
-		}], sl(0, 2));
+		let preference = ['A', 'B', 'C']; // из какой вершины проведена биссектриса
+		let variant = getSelectedPreferenceFromList(key, preference);
 
 		let letters = om.latbukv.slice(0, 4);
 		let angleGiven = letters.slice(0, 3);
@@ -67,6 +59,7 @@
 		NAtask.setTask({
 			text: `В треугольнике $ABC$ известно, что $\\angle ${angleGiven.randomReverse().join('')} = ${valueAngle}^{\\circ}$, $${centralAngle + letters[3]}$ — биссектриса. Найдите угол $${angleFind}$. Ответ дайте в градусах.`,
 			answers: valueAngle / 2,
+			preference: preference,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.variativeABC(letters);
