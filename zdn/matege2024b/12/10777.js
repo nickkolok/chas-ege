@@ -73,7 +73,7 @@
 			],
 			postquestion: `.`,
 			authors: ['Александра Суматохина'],
-            preference: preference,
+			preference: preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
 
