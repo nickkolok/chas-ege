@@ -9,7 +9,7 @@
         // Вершины строятся по дугам AB, BC, CD, DA (в градусах),
         // каждая не меньше minArc, чтобы вершины на чертеже не сливались
         let minArc = 25;
-        let arcBCD = sl(92, 268); // вписанный угол A опирается на дугу BCD
+        let arcBCD = sl(60, 300); // вписанный угол A опирается на дугу BCD
         let arcBC = sl(minArc, arcBCD - minArc);
         let arcAB = sl(minArc, 360 - arcBCD - minArc);
 
