@@ -30,7 +30,7 @@
 		};
 
 		let sizeWords = {
-			larger: 'бо́льшим',
+			larger: 'большим',
 			smaller: 'меньшим'
 		};
 		// У ФИПИ многогранники сравниваются не только по числу вершин, но и по
@@ -97,62 +97,33 @@
 			};
 		}
 
+		// faces - грани в нумерации вершин библиотечной фигуры (нужны для видимости
+		// рёбер), sectionEdges - рёбра [начало, конец, доля], на которых лежат
+		// вершины сечения
 		function getFigureData() {
+			let figure, faces, sectionEdges;
 			if (solid === 'cube') {
-				let figure = new Cube(4);
-				let vertices = figure.verticesOfFigure;
-
-				return {
-					figure: figure,
-					vertices: vertices,
-					section: [
-						pointOnEdge(vertices[0], vertices[1], 0.45),
-						pointOnEdge(vertices[0], vertices[3], 0.45),
-						pointOnEdge(vertices[5], vertices[4], 0.45),
-						pointOnEdge(vertices[5], vertices[6], 0.45)
-					]
-				};
+				figure = new Cube(4);
+				faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+				sectionEdges = [[0, 1, 0.45], [0, 3, 0.45], [5, 4, 0.45], [5, 6, 0.45]];
+			} else if (solid === 'tetrahedron') {
+				figure = new RegularPyramid({ height: 4, baseSide: 4, numberSide: 3 });
+				faces = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [2, 0, 3]];
+				sectionEdges = [[3, 0, 0.55], [3, 1, 0.55], [3, 2, 0.55]];
+			} else {
+				// verticesOfFigure и connectionMatrix согласованы: верхняя вершина
+				// 3 + i стоит точно над нижней i (#3478)
+				figure = new RegularPrism({ height: 4, baseSide: 4, numberSide: 3 });
+				faces = [[0, 1, 2], [3, 4, 5], [0, 1, 4, 3], [1, 2, 5, 4], [2, 0, 3, 5]];
+				sectionEdges = [[0, 1, 0.45], [0, 2, 0.45], [3, 5, 0.45], [3, 4, 0.45]];
 			}
-
-			if (solid === 'tetrahedron') {
-				let figure = new RegularPyramid({
-					height: 4,
-					baseSide: 4,
-					numberSide: 3
-				});
-				let vertices = figure.verticesOfFigure;
-				let apex = vertices[3];
-
-				return {
-					figure: figure,
-					vertices: vertices,
-					section: [
-						pointOnEdge(apex, vertices[0], 0.55),
-						pointOnEdge(apex, vertices[1], 0.55),
-						pointOnEdge(apex, vertices[2], 0.55)
-					]
-				};
-			}
-
-			let figure = new RegularPrism({
-				height: 4,
-				baseSide: 4,
-				numberSide: 3
-			});
-			// Вершины берём из библиотеки: verticesOfFigure и connectionMatrix
-			// согласованы (верхняя вершина 3 + i стоит точно над нижней i, #3478),
-			// локальная копия с повёрнутым верхним основанием больше не нужна.
 			let vertices = figure.verticesOfFigure;
-
 			return {
 				figure: figure,
 				vertices: vertices,
-				section: [
-					pointOnEdge(vertices[0], vertices[1], 0.45),
-					pointOnEdge(vertices[0], vertices[2], 0.45),
-					pointOnEdge(vertices[3], vertices[5], 0.45),
-					pointOnEdge(vertices[3], vertices[4], 0.45)
-				]
+				faces: faces,
+				sectionEdges: sectionEdges,
+				section: sectionEdges.map((e) => pointOnEdge(vertices[e[0]], vertices[e[1]], e[2])),
 			};
 		}
 
@@ -191,10 +162,9 @@
 
 			// Видимость рёбер. Проекция ортогональная, поэтому направление на
 			// наблюдателя - градиент глубины в project3DTo2D (при rotationY = 0).
-			// Грани многогранника находим как опорные плоскости, проходящие через
-			// три его вершины; грань видна, если её внешняя нормаль смотрит на
-			// наблюдателя. Ребро (и отрезок сечения) видно, если лежит в видимой
-			// грани, иначе рисуется пунктиром - без этого каркас куба читается двояко
+			// Грань видна, если её внешняя нормаль смотрит на наблюдателя; ребро
+			// (и отрезок сечения) видно, если лежит в видимой грани, иначе рисуется
+			// пунктиром - без этого каркас куба читается двояко
 			let view = {
 				x: -Math.sin(camera.rotationX) * Math.sin(camera.rotationZ),
 				y: -Math.sin(camera.rotationX) * Math.cos(camera.rotationZ),
@@ -203,38 +173,27 @@
 			let vs = figureData.vertices;
 			let sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y, z: a.z - b.z });
 			let dot = (a, b) => a.x * b.x + a.y * b.y + a.z * b.z;
-			let cross = (a, b) => ({ x: a.y * b.z - a.z * b.y, y: a.z * b.x - a.x * b.z, z: a.x * b.y - a.y * b.x });
 			let centroid = {
 				x: vs.reduce((t, v) => t + v.x, 0) / vs.length,
 				y: vs.reduce((t, v) => t + v.y, 0) / vs.length,
 				z: vs.reduce((t, v) => t + v.z, 0) / vs.length,
 			};
-			let faces = [];
-			for (let i = 0; i < vs.length; i++) {
-				for (let j = i + 1; j < vs.length; j++) {
-					for (let k = j + 1; k < vs.length; k++) {
-						let n = cross(sub(vs[j], vs[i]), sub(vs[k], vs[i]));
-						let len = Math.sqrt(dot(n, n));
-						if (len < 1e-9) {
-							continue;
-						}
-						n = { x: n.x / len, y: n.y / len, z: n.z / len };
-						if (dot(n, sub(centroid, vs[i])) > 0) {
-							n = { x: -n.x, y: -n.y, z: -n.z };
-						}
-						if (vs.every((v) => dot(n, sub(v, vs[i])) < 1e-6)) {
-							faces.push({ n: n, d: dot(n, vs[i]), front: dot(n, view) > 1e-6 });
-						}
-					}
-				}
-			}
-			let isVisible = function (p, q) {
-				return faces.some((f) => f.front && Math.abs(dot(f.n, p) - f.d) < 1e-6 && Math.abs(dot(f.n, q) - f.d) < 1e-6);
+			let frontFaces = figureData.faces.filter(function (face) {
+				let p0 = vs[face[0]];
+				let n = crossProduct3D(sub(vs[face[1]], p0), sub(vs[face[2]], p0));
+				// Нормаль ориентируем наружу: от центра тяжести многогранника
+				let outward = dot(n, sub(p0, centroid)) > 0 ? 1 : -1;
+				return outward * dot(n, view) > 0;
+			});
+			// Отрезок с концами на указанных вершинах (или рёбрах) виден,
+			// если все они принадлежат одной видимой грани
+			let isVisible = function (vertexIndices) {
+				return frontFaces.some((face) => vertexIndices.every((i) => face.includes(i)));
 			};
 			let dash = [6, 4];
 			let matrix = figureData.figure.connectionMatrix.map(function (row, i) {
 				return row.map(function (connected, j) {
-					return connected && !isVisible(vs[i + 1], vs[j]) ? dash : connected;
+					return connected && !isVisible([i + 1, j]) ? dash : connected;
 				});
 			});
 
@@ -252,7 +211,8 @@
 
 			for (let i = 0; i < section2D.length; i++) {
 				let next = (i + 1) % section2D.length;
-				ct.setLineDash(isVisible(figureData.section[i], figureData.section[next]) ? [] : dash);
+				let edges = figureData.sectionEdges;
+				ct.setLineDash(isVisible([edges[i][0], edges[i][1], edges[next][0], edges[next][1]]) ? [] : dash);
 				ct.drawLine(
 					section2D[i].x,
 					section2D[i].y,
