@@ -56,7 +56,7 @@
             height: 400,
             paint: paint1,
         });
-    }, 20000);
+    }, 1000);
 
 })();
 // https://math-oge.sdamgia.ru/problem?id=348379
