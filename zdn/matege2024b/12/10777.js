@@ -9,7 +9,7 @@
 			preferenceValue: index
 		})), sl(preference.length - 1));
 
-		let side = sl(1, 50);
+		let side = sl(1, 100);
 		let angle = [30, 150].iz();
 		// Высота ромба с углом 30° равна половине стороны; данные считаются точно, а не по чертежу
 		let height = side / 2;
