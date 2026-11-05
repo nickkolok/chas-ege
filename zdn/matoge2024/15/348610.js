@@ -65,7 +65,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ известно, что $\\angle ${angleGiven.randomReverse().join('')} =${valueAngle}^{\\circ}$, $${centralAngle + letters[3]}$ – биссектриса. 
+			text: `В треугольнике $ABC$ известно, что $\\angle ${angleGiven.randomReverse().join('')} =${valueAngle}^{\\circ}$, $${centralAngle + letters[3]}$ — биссектриса. 
 			Найдите угол $${angleFind}$. Ответ дайте в градусах.`,
 			answers: valueAngle / 2,
 			authors: ['Александра Суматохина'],
