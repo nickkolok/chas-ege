@@ -11,6 +11,13 @@
 			{ k: 2, words: ['вдвое', 'в два раза'] },
 			{ k: 3, words: ['втрое', 'в три раза'] },
 		].iz();
+		// Запись кратностей: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
+		// («в $1{,}5$ раза», «в $2$ раза»)
+		let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
+		let inWords = getSelectedPreferenceFromList('512461', preferenceMultiplier) === 0;
+		let multWords = function (m) {
+			return inWords ? m.words.iz() : 'в $' + String(m.k).replace('.', '{,}') + '$ раза';
+		};
 		let k2 = multiplier.k * multiplier.k;
 		let bigger = sl1();
 		let levels = [];
@@ -118,10 +125,11 @@
 		NAtask.setTask({
 			text: 'Вода в сосуде, имеющем форму правильной четырёхугольной призмы, находится на уровне $h = ' + h + '$ см. ' +
 				'На каком уровне окажется вода, если её перелить в другой сосуд, имеющий форму правильной четырёхугольной призмы, ' +
-				'у которого сторона основания ' + multiplier.words.iz() + ' ' + (bigger ? 'больше' : 'меньше') +
+				'у которого сторона основания ' + multWords(multiplier) + ' ' + (bigger ? 'больше' : 'меньше') +
 				', чем у данного? Ответ дайте в сантиметрах.',
 			answers: ans,
 			analys: analys,
+			preference: [preferenceMultiplier],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
