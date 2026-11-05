@@ -26,7 +26,7 @@
 				lengthBC: sl(5, 10),
 			},
 			angles: {
-				angle: sl(30, 80),
+				angle: sl(20, 80),
 				angleInDegree: true
 			},
 			supplementary: {
