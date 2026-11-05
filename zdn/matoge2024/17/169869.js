@@ -1,6 +1,20 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
+
+        let key = '169869';
+        // Как задан угол ромба: один угол 30°, один угол 150°,
+        // сумма двух равных острых (60°) или тупых (300°) углов, разность двух углов (120°)
+        let preference = ['angle30', 'angle150', 'sumAcute', 'sumObtuse', 'difference'];
+        let randAngle = getSelectedPreferenceFromList(key, preference);
+        let angleCondition = [
+            `один из углов равен $30^\\circ$`,
+            `один из углов равен $150^\\circ$`,
+            `сумма двух его углов равна $60^\\circ$`,
+            `сумма двух его углов равна $300^\\circ$`,
+            `разность двух его углов равна $120^\\circ$`,
+        ][randAngle];
+
         let side = sl(1, 50);
         let rhombus = new Rhombus({
             length: side,
@@ -29,9 +43,10 @@
         };
 
         NAtask.setTask({
-            text: `Периметр ромба равен $${4 * side}$, а один из углов равен $30^\\circ$. Найдите площадь ромба.`,
+            text: `Периметр ромба равен $${4 * side}$, а ${angleCondition}. Найдите площадь ромба.`,
             answers: side * side / 2,
             authors: ['Александра Суматохина'],
+            preference: preference,
         });
         NAtask.modifiers.allDecimalsToStandard(true);
 
