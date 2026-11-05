@@ -2,7 +2,7 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let letters = latbukv.slice(0, 4);
+        let letters = om.latbukv.slice(0, 4);
 
         let circle = new Circle(new Point(0, 0), 170);
 
