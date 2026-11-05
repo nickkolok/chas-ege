@@ -4,24 +4,29 @@
 
         let letters = latbukv.slice(0, 4);
 
-        let circle = new Circle(new Point(0, 0), 180);
+        let circle = new Circle(new Point(0, 0), 170);
 
-        let A = slKrome(180, 136, 224);
-        let B = slKrome(270, 226, 314);
+        // Вершины строятся по дугам AB, BC, CD, DA (в градусах),
+        // каждая не меньше minArc, чтобы вершины на чертеже не сливались
+        let minArc = 25;
+        let arcBCD = sl(92, 268); // вписанный угол A опирается на дугу BCD
+        let arcBC = sl(minArc, arcBCD - minArc);
+        let arcAB = sl(minArc, 360 - arcBCD - minArc);
 
-        let AB = circle.chordByAngles(A, B, {
+        let phiA = sl(0, 359);
+        let phiB = phiA + arcAB;
+        let phiC = phiB + arcBC;
+        let phiD = phiB + arcBCD;
+
+        let AB = circle.chordByAngles(phiA, phiB, {
             angleInDegrees: true
         });
 
-        let C = sl(1, 45).pm();
-        let D = sl(46, 134);
-
-        let CD = circle.chordByAngles(C, D, {
+        let CD = circle.chordByAngles(phiC, phiD, {
             angleInDegrees: true
         });
 
-        // Вписанный угол A опирается на дугу BCD от точки B до точки D (через C)
-        let angleA = (D - B + 360) / 2;
+        let angleA = arcBCD / 2;
 
         let connectionMatrix = [
             [1],
@@ -46,7 +51,10 @@
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 3) ? 20 : -5)));
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // Подпись — снаружи окружности, на продолжении радиуса
+            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x * 1.1, -elem.y * 1.1));
         };
 
         NAtask.setTask({
