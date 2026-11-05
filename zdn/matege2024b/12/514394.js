@@ -39,6 +39,10 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, trp.connectionMatrix);
 
+			// Прямые углы при вершинах A и D, как на чертеже-образце
+			ctx.strokeStyle = om.primaryBrandColors.iz();
+			ctx.arcBetweenSegments([points[3].x, points[3].y, points[0].x, points[0].y, points[1].x, points[1].y], 15, true);
+			ctx.arcBetweenSegments([points[0].x, points[0].y, points[3].x, points[3].y, points[2].x, points[2].y], 15, true);
 		};
 
 		NAtask.setTask({
