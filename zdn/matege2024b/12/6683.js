@@ -2,8 +2,11 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
+		// Площадь квадрата — полный квадрат (как в большинстве задач ФИПИ)
+		// или любое целое число (в ФИПИ есть и 34); сторона нужна только для чертежа
+		let squareArea = [sl(1, 50).sqr(), sl(1, 2500)].iz();
 		let rhombus = new Rhombus({
-			length: sl(1, 50),
+			length: squareArea.sqrt(),
 			angles: {
 				angle: {
 					angleA: Math.PI / 6,
@@ -51,8 +54,8 @@
 		};
 
 		NAtask.setTask({
-			text: `Ромб и квадрат имеют равные стороны. Найдите площадь ромба, если его острый угол равен $30^\\circ$, а площадь квадрата равна $${square.area()}$.`,
-			answers: rhombus.area(),
+			text: `Ромб и квадрат имеют равные стороны. Найдите площадь ромба, если его острый угол равен $30^\\circ$, а площадь квадрата равна $${squareArea}$.`,
+			answers: squareArea / 2,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
