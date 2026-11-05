@@ -25,7 +25,7 @@
 			x: -square.lengthAB + 1
 		}));
 
-		let vertex = rhombusP.concat(squareP);
+		let points = rhombusP.concat(squareP);
 
 		let connectM = [
 			[1],
@@ -37,7 +37,7 @@
 			[0, 0, 0, 0, 1, 0, 1],
 		];
 
-		vertex = autoScale(vertex);
+		points = autoScale(points);
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -49,7 +49,7 @@
 			ctx.strokeStyle = om.secondaryBrandColors;
 
 			ctx.lineWidth = 2;
-			ctx.drawFigure(vertex, connectM);
+			ctx.drawFigure(points, connectM);
 
 		};
 
