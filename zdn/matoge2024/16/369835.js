@@ -5,7 +5,10 @@
 		let preference = ['radius', 'side'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		let circle = new Circle(new Point(0, 0), sl(1, 20) * [1, (2).sqrt()][rand]);
+		// Данная величина (сторона или радиус) равна k√2; квадрат её — целое 2k², поэтому
+		// texsqrt выносит множитель из-под корня точно. Ответ: радиус k или сторона 2k.
+		let k = sl(1, 20);
+		let circle = new Circle(new Point(0, 0), k * [1, (2).sqrt()][rand]);
 		let rotate = sl(0, 100).pm();
 
 		let AB = circle.chordByAngles(90 + rotate, 180 + rotate, {
@@ -46,11 +49,11 @@
 			text: ``,
 			questions: [
 				[{
-					text: `Сторона квадрата равна $${AB.length.pow(2).texsqrt(1)}$. Найдите радиус окружности, описанной около этого квадрата.`,
-					answers: circle.r
+					text: `Сторона квадрата равна $${(2 * k * k).texsqrt(1)}$. Найдите радиус окружности, описанной около этого квадрата.`,
+					answers: k
 				}, {
-					text: `Радиус окружности, описанной около квадрата, равен $${circle.r.pow(2).texsqrt(1)}$. Найдите длину стороны этого квадрата.`,
-					answers: AB.length
+					text: `Радиус окружности, описанной около квадрата, равен $${(2 * k * k).texsqrt(1)}$. Найдите длину стороны этого квадрата.`,
+					answers: 2 * k
 				}][rand]
 			],
 			authors: ['Александра Суматохина'],
