@@ -19,6 +19,13 @@
 			{ k: 3, words: ['втрое', 'в три раза'] },
 			{ k: 4, words: ['вчетверо', 'в четыре раза'] },
 		];
+		// Запись кратностей: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
+		// («в $1{,}5$ раза», «в $2$ раза»)
+		let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
+		let inWords = getSelectedPreferenceFromList('510966', preferenceMultiplier) === 0;
+		let multWords = function (m) {
+			return inWords ? m.words.iz() : 'в $' + String(m.k).replace('.', '{,}') + '$ раза';
+		};
 		let kh = heightMultipliers.iz();
 		let kr = widthMultipliers.iz();
 		// Первая кружка выше или ниже второй; вторая шире или у́же первой
@@ -42,8 +49,8 @@
 			['Во сколько раз объём второй кружки больше объёма первой?', 'Во сколько раз объём первой кружки меньше объёма второй?'].iz() :
 			['Во сколько раз объём первой кружки больше объёма второй?', 'Во сколько раз объём второй кружки меньше объёма первой?'].iz();
 
-		let text = 'Даны две кружки цилиндрической формы. Первая кружка ' + kh.words.iz() + ' ' +
-			(firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' + [' ', ' — '].iz() + kr.words.iz() + ' ' +
+		let text = 'Даны две кружки цилиндрической формы. Первая кружка ' + multWords(kh) + ' ' +
+			(firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' + [' ', ' — '].iz() + multWords(kr) + ' ' +
 			(secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
 
 		let fmt = function (x) {
@@ -63,6 +70,7 @@
 			answers: ans,
 			analys: analys,
 			authors: ['chas-ege-selena'],
+			preference: [preferenceMultiplier],
 		});
 
 		let paint1 = function (ct) {
