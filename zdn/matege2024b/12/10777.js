@@ -28,7 +28,7 @@
 		let randAngle = angle > 90;
 		let desAngle = randAngle ? 'тупой' : 'острый';
 
-		rhombus.addVertexToConnectionMatrix(angle > 90 ? rhombus.heightACD.pe : rhombus.heightDAB.pe, 'E');
+		rhombus.addVertexToConnectionMatrix(randAngle ? rhombus.heightACD.pe : rhombus.heightDAB.pe, 'E');
 		rhombus.connectVerticesInConnectionMatrix(
 			randAngle ? [0, 4] : [3, 4]
 		);
