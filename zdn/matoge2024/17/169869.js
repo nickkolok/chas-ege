@@ -47,8 +47,8 @@
 
         NAtask.setTask({
             text: [
-                `Периметр ромба равен $${4 * side}$, а ${angleCondition}. Найдите площадь ромба.`,
-                `Площадь ромба равна $${side * side / 2}$, а ${angleCondition}. Найдите периметр ромба.`,
+                `Периметр ромба равен $${4 * side}$, а ${angleCondition}. Найдите площадь этого ромба.`,
+                `Площадь ромба равна $${side * side / 2}$, а ${angleCondition}. Найдите периметр этого ромба.`,
             ][randFind],
             answers: [side * side / 2, 4 * side][randFind],
             authors: ['Александра Суматохина'],
