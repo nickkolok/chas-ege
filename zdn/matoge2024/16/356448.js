@@ -13,7 +13,7 @@
         // угол A не берётся из окрестности 90°, где трапеция вырождается в прямоугольник
         // (при 90° ровно, т. е. arcBCD = 180°, основания равны).
         let minArc = 25;
-        let arcBCD = slKrome((x) => (x - 180).abs() < 10, 92, 268);
+        let arcBCD = slKrome((x) => (x - 180).abs() < 10, 60, 300);
         let arcLeg = sl(minArc, Math.min(arcBCD - minArc, 360 - arcBCD - minArc));
         let arcBC = arcBCD - arcLeg;
 
