@@ -5,8 +5,11 @@
         let key = '169869';
         // Как задан угол ромба: один угол 30°, один угол 150°,
         // сумма двух равных острых (60°) или тупых (300°) углов, разность двух углов (120°)
-        let preference = ['angle30', 'angle150', 'sumAcute', 'sumObtuse', 'difference'];
-        let randAngle = getSelectedPreferenceFromList(key, preference);
+        let preference1 = ['angle30', 'angle150', 'sumAcute', 'sumObtuse', 'difference'];
+        // Прямая задача (по периметру найти площадь) или обратная (по площади найти периметр)
+        let preference2 = ['findArea', 'findPerimeter'];
+        let randAngle = getSelectedPreferenceFromList(key, preference1);
+        let randFind = getSelectedPreferenceFromList(key, preference2);
         let angleCondition = [
             `один из углов равен $30^\\circ$`,
             `один из углов равен $150^\\circ$`,
@@ -43,10 +46,13 @@
         };
 
         NAtask.setTask({
-            text: `Периметр ромба равен $${4 * side}$, а ${angleCondition}. Найдите площадь ромба.`,
-            answers: side * side / 2,
+            text: [
+                `Периметр ромба равен $${4 * side}$, а ${angleCondition}. Найдите площадь ромба.`,
+                `Площадь ромба равна $${side * side / 2}$, а ${angleCondition}. Найдите периметр ромба.`,
+            ][randFind],
+            answers: [side * side / 2, 4 * side][randFind],
             authors: ['Александра Суматохина'],
-            preference: preference,
+            preference: [preference1, preference2],
         });
         NAtask.modifiers.allDecimalsToStandard(true);
 
