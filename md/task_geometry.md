@@ -30,6 +30,29 @@
 (например, угла в 1 градус в треугольнике).
 
 
+## Невидимые рёбра многогранника
+
+Невидимые рёбра рисуются пунктиром (или не рисуются, если так в образце).
+Какие из них невидимы, считать вручную для каждого ракурса не нужно:
+в `lib/figure.js` есть
+
+* `facesVisibility(vertices, points2D, faces)` - видна ли каждая грань
+  выпуклого многогранника; `vertices` - вершины в пространстве,
+  `points2D` - их проекции (`project3DTo2D()`, можно после `autoScale()`
+  и сдвига), `faces` - номера вершин каждой грани;
+* `isOnVisibleFace(faces, visibility, vertexIndices)` - лежит ли ребро
+  (или отрезок сечения с концами на рёбрах) в видимой грани;
+* `dashHiddenEdges(connectionMatrix, faces, visibility, dash)` - копия матрицы
+  смежности для `drawFigure()` с пунктиром на невидимых рёбрах.
+
+```js
+let faces = [[0, 1, 2], [3, 4, 5], [0, 1, 4, 3], [1, 2, 5, 4], [2, 0, 3, 5]];
+let visibility = facesVisibility(vertices, points2D, faces);
+ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibility, [7, 5]));
+```
+
+Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
+
 ## Примеры
 
 ### Планиметрия
