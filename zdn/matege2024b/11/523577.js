@@ -22,6 +22,13 @@
 			{ k: 3, words: ['втрое', 'в три раза'] },
 			{ k: 4, words: ['вчетверо', 'в четыре раза'] },
 		];
+		// Запись кратностей: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
+		// («в $1{,}5$ раза», «в $2$ раза»)
+		let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
+		let inWords = getSelectedPreferenceFromList('523577', preferenceMultiplier) === 0;
+		let multWords = function (m) {
+			return inWords ? m.words.iz() : 'в $' + String(m.k).replace('.', '{,}') + '$ раза';
+		};
 		let kh = heightMultipliers.iz();
 		let ka = widthMultipliers.iz();
 		// Первая коробка выше или ниже второй; вторая шире или у́же первой
@@ -50,8 +57,8 @@
 			['Во сколько раз объём первой коробки больше объёма второй' + tail + '?', 'Во сколько раз объём второй коробки меньше объёма первой' + tail + '?'].iz();
 
 		let text = 'Даны две коробки, имеющие форму правильной четырёхугольной призмы, стоящей на основании. ' +
-			'Первая коробка ' + kh.words.iz() + ' ' + (firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' +
-			[' ', ' — '].iz() + ka.words.iz() + ' ' + (secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
+			'Первая коробка ' + multWords(kh) + ' ' + (firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' +
+			[' ', ' — '].iz() + multWords(ka) + ' ' + (secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
 
 		let fmt = function (x) {
 			return String(Math.round(x * 100) / 100).replace('.', '{,}');
@@ -78,6 +85,7 @@
 			answers: ans,
 			analys: analys,
 			authors: ['chas-ege-selena'],
+			preference: [preferenceMultiplier],
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 
