@@ -20,7 +20,8 @@
             angleInDegrees: true
         });
 
-        let angleA = new Angle(AB.pe, AB.ps, CD.pe).angleInDegrees;
+        // Вписанный угол A опирается на дугу BCD от точки B до точки D (через C)
+        let angleA = (D - B + 360) / 2;
 
         let connectionMatrix = [
             [1],
