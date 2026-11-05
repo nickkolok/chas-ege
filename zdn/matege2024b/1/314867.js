@@ -1,43 +1,83 @@
-
 (function () {
-    'use strict';
-    retryWhileError(function () {
-        NAinfo.requireApiVersion(0, 2);
+	'use strict';
+	retryWhileError(function () {
+		NAinfo.requireApiVersion(0, 2);
 
-        let firstMonthConsumption = sl(100, 1200, 1);
-        let secondMonthConsumption = firstMonthConsumption + sl(1.5, 15, 0.1);
+		// Две формулировки одной задачи про счётчик воды (раньше - два шаблона,
+		// 314867 и 318413): «В квартире, где проживает Леонид… счётчик показывал
+		// расход… Какую сумму должен заплатить Леонид…» и безличная «Показания
+		// счётчика… составляли… Сколько нужно заплатить…». Данные у каждой - свои,
+		// как было в исходных шаблонах.
+		let key = '314867';
+		let preference = ['personal', 'impersonal'];
+		let personal = getSelectedPreferenceFromList(key, preference) === 0;
 
-        let dopPriceInKopeki = sl(10, 90, 10);
-        let priceInRuble = sl(50, 150, 1);
+		// Всё считаем в целых: показания - в десятых куб. м, цена - в копейках,
+		// чтобы ответ не получал «хвостов» вида 1707,6500000001
+		let reading1, used, rub, kop;
+		if (personal) {
+			// Показание - целое от 100 до 1200, расход - от 1,5 до 15 куб. м с шагом 0,1,
+			// цена - от 50 до 150 руб. и от 10 до 90 коп.
+			reading1 = 10 * sl(100, 1200);
+			used = sl(15, 150);
+			rub = sl(50, 150);
+			kop = sl(1, 9) * 10;
+		} else {
+			// Показания - от 10 до 999 куб. м, возможно с одним знаком после запятой
+			// (одинаковым у обоих), расход - целый, от 2 до 20 куб. м,
+			// цена - от 10 до 300 руб., копейки - не всегда
+			reading1 = 10 * sl(10, 999) + (sl1() ? sl(1, 9) : 0);
+			used = 10 * sl(2, 20);
+			rub = sl(10, 300);
+			kop = sl1() ? sl(1, 9) * 10 : 0;
+		}
+		let reading2 = reading1 + used;
+		let priceKop = 100 * rub + kop;
+		let answer = used * priceKop / 1000;
 
-        let numberOfLiters = secondMonthConsumption - firstMonthConsumption;
-        let paymentForPurchase = (priceInRuble + dopPriceInKopeki / 100) * numberOfLiters;
+		let tenths = function (x) {
+			return String(x / 10).replace('.', '{,}');
+		};
+		let money = function (r, k) {
+			return '$' + r + '$ руб.' + (k ? (personal ? ' и ' : ' ') + '$' + k + '$ коп.' : '');
+		};
 
-        let months = om.months;
-        let firstIndex = sl(0, months.length - 1, 1);
-        let secondIndex = (firstIndex + 1) % months.length;
-        let firstMonth = months[firstIndex];
-        let secondMonth = months[secondIndex];
+		let water = ['горячей', 'холодной'].iz();
+		let monthIndex = sl(0, 11);
+		let month1Gen = mesiacy.re[monthIndex];
+		let month2Gen = mesiacy.re[(monthIndex + 1) % 12];
+		let month1 = om.months[monthIndex];
 
-        let nameOfPerson = om.maleNames.iz();
-        let typeOfWater = ['горячей', 'холодной'].iz();
+		let text;
+		if (personal) {
+			let name = om.maleNames.iz();
+			text = 'В квартире, где проживает ' + name + ', установлен прибор учёта расхода ' + water + ' воды (счётчик). ' +
+				'1 ' + month1Gen + ' счётчик показывал расход $' + tenths(reading1) + '$ куб. м воды, а 1 ' + month2Gen +
+				' — $' + tenths(reading2) + '$ куб. м. Какую сумму должен заплатить ' + name + ' за ' + month1 +
+				', если цена одного куб. м ' + water + ' воды составляет ' + money(rub, kop) + '? Ответ дайте в рублях.';
+		} else {
+			text = 'В квартире установлен прибор учёта расхода ' + water + ' воды (счётчик). ' +
+				'Показания счётчика 1 ' + month1Gen + ' составляли $' + tenths(reading1) + '$ куб. м воды, а 1 ' + month2Gen +
+				' — $' + tenths(reading2) + '$ куб. м. Сколько нужно заплатить за ' + (water === 'горячей' ? 'горячую' : 'холодную') +
+				' воду за ' + month1 + ', если стоимость 1 куб. м ' + water + ' воды составляет ' + money(rub, kop) +
+				'? Ответ дайте в рублях.';
+		}
 
-        NAtask.setTask({
-            text:
-                'В квартире, ' + 'где проживает ' + nameOfPerson +
-                ', установлен прибор учёта расхода ' + typeOfWater + ' воды (счётчик). ' + chislitlx(1, firstMonth, 'r$') +
-                ' счётчик показывал расход ' + '$' + firstMonthConsumption + '$' + ' куб. м воды, ' +
-                'а ' + chislitlx(1, secondMonth, 'r$') + ' — ' + '$' + secondMonthConsumption + '$' + ' куб. м. ' +
-                'Какую сумму должен заплатить ' + nameOfPerson + ' за ' + firstMonth + ', ' +
-                'если цена одного куб. м. ' + typeOfWater + ' воды составляет ' + '$' + priceInRuble + '$' + ' руб. и ' +
-                '$' + dopPriceInKopeki + '$' + ' коп.? Ответ дайте в рублях.',
-            answers: paymentForPurchase,
-        });
+		let price = String(priceKop / 100).replace('.', '{,}');
+		let analys = 'За ' + month1 + ' израсходовано $' + tenths(reading2) + ' - ' + tenths(reading1) + ' = ' + tenths(used) +
+			'$ куб. м воды. Один кубометр стоит $' + price + '$ руб., поэтому заплатить нужно $' + tenths(used) + ' \\cdot ' + price +
+			' = ' + String(answer).replace('.', '{,}') + '$ руб.';
 
-    }, 100);
+		NAtask.setTask({
+			text: text,
+			answers: answer,
+			analys: analys,
+			authors: ['zer00player', 'chas-ege-selena', 'chas-ege-ellariya'],
+			preference: [preference],
+		});
+	}, 100);
 })();
-
+//314867
+//318413
 //https://mathb-ege.sdamgia.ru/test?likes=314867
-//zer00player
-
-
+//zer00player, chas-ege-selena, chas-ege-ellariya
