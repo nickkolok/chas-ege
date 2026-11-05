@@ -26,7 +26,9 @@
 		];
 
 		let points = autoScale([AB.ps, AB.pe, CD.ps, CD.pe]);
-		var radius = new Point(points[0].x, points[0].y).distanceTo(new Point(points[2].x, points[2].y))[0] / 2;
+		// Описанная окружность на чертеже: центр — середина диагонали, проходит через вершину
+		let center = new Point((points[0].x + points[2].x) / 2, (points[0].y + points[2].y) / 2);
+		let radius = center.distanceTo(new Point(points[0].x, points[0].y))[0];
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -40,7 +42,7 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectionMatrix);
 
-			ctx.drawArc(0, 0, radius, 0, 2 * Math.PI);
+			ctx.drawCircle(center.x, center.y, radius);
 		};
 
 		genAssert(radius < 200, 'Окружность вышла за границы спрайта');
