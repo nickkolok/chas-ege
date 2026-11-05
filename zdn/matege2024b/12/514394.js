@@ -2,12 +2,16 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let height = sl(5, 20);
+		// Угол 45° (или 135°) между наклонной боковой стороной и основанием возможен
+		// только при высоте, равной разности оснований, — так и задаём, без перебора
+		let height = sl(1, 10);
+		let smallBase = sl(1, 15);
+		let bases = [smallBase + height, smallBase].shuffle();
 
 		let trp = new Trapezoid({
 			lengths: {
-				lengthAB: sl(5, 20),
-				lengthCD: sl(5, 20),
+				lengthAB: bases[0],
+				lengthCD: bases[1],
 			},
 			height: height,
 			angles: {
@@ -18,9 +22,7 @@
 		});
 
 		let points = autoScale(trp.vertices);
-
-		genAssert(trp.angleCInDegrees.isZ(), 'Данный угол не целый');
-		genAssert(trp.angleCInDegrees != 90, 'Получился прямоугольник');
+		let angleC = bases[0] > bases[1] ? 135 : 45;
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -37,7 +39,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В прямоугольной трапеции основания равны $${trp.lengthAB}$ и $${trp.lengthCD}$, а один из углов равен $${trp.angleCInDegrees}^\\circ$. Найдите меньшую боковую сторону.`,
+			text: `В прямоугольной трапеции основания равны $${bases[0]}$ и $${bases[1]}$, а один из углов равен $${angleC}^\\circ$. Найдите меньшую боковую сторону.`,
 			answers: height,
 			authors: ['Александра Суматохина'],
 		});
