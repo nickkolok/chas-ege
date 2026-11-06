@@ -48,7 +48,7 @@
 			(firstTaller ? '\\frac{1}{' + fmt(kh) + '}' : fmt(kh)) + ' = ' +
 			(secondBigger ? fmt(ans) : '\\frac{1}{' + fmt(ans) + '}') + '$, ' +
 			'то есть объём ' + (secondBigger ? 'второй кружки больше объёма первой' : 'первой кружки больше объёма второй') +
-			' в $' + ans + '$ раз' + (ans % 10 >= 2 && ans % 10 <= 4 && (ans % 100 < 12 || ans % 100 > 14) ? 'а' : '') + '.';
+			' в ' + chislitlx(ans, 'раз', '$') + '.';
 
 		NAtask.setTask({
 			text: text,
