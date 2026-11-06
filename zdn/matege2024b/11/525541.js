@@ -160,42 +160,14 @@
 			ct.save();
 			ct.translate(offsetX, offsetY);
 
-			// Видимость рёбер. Проекция ортогональная, поэтому направление на
-			// наблюдателя - градиент глубины в project3DTo2D (при rotationY = 0).
-			// Грань видна, если её внешняя нормаль смотрит на наблюдателя; ребро
-			// (и отрезок сечения) видно, если лежит в видимой грани, иначе рисуется
-			// пунктиром - без этого каркас куба читается двояко
-			let view = {
-				x: -Math.sin(camera.rotationX) * Math.sin(camera.rotationZ),
-				y: -Math.sin(camera.rotationX) * Math.cos(camera.rotationZ),
-				z: Math.cos(camera.rotationX),
-			};
-			let vs = figureData.vertices;
-			let sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y, z: a.z - b.z });
-			let dot = (a, b) => a.x * b.x + a.y * b.y + a.z * b.z;
-			let centroid = {
-				x: vs.reduce((t, v) => t + v.x, 0) / vs.length,
-				y: vs.reduce((t, v) => t + v.y, 0) / vs.length,
-				z: vs.reduce((t, v) => t + v.z, 0) / vs.length,
-			};
-			let frontFaces = figureData.faces.filter(function (face) {
-				let p0 = vs[face[0]];
-				let n = crossProduct3D(sub(vs[face[1]], p0), sub(vs[face[2]], p0));
-				// Нормаль ориентируем наружу: от центра тяжести многогранника
-				let outward = dot(n, sub(p0, centroid)) > 0 ? 1 : -1;
-				return outward * dot(n, view) > 0;
-			});
-			// Отрезок с концами на указанных вершинах (или рёбрах) виден,
-			// если все они принадлежат одной видимой грани
+			// Невидимые рёбра и отрезки сечения - пунктиром, без этого каркас куба
+			// читается двояко. Отрезок сечения виден, если лежит в видимой грани
+			let visibility = facesVisibility(figureData.vertices, vertices2D, figureData.faces);
 			let isVisible = function (vertexIndices) {
-				return frontFaces.some((face) => vertexIndices.every((i) => face.includes(i)));
+				return isOnVisibleFace(figureData.faces, visibility, vertexIndices);
 			};
 			let dash = [6, 4];
-			let matrix = figureData.figure.connectionMatrix.map(function (row, i) {
-				return row.map(function (connected, j) {
-					return connected && !isVisible([i + 1, j]) ? dash : connected;
-				});
-			});
+			let matrix = dashHiddenEdges(figureData.figure.connectionMatrix, figureData.faces, visibility, dash);
 
 			ct.strokeStyle = om.secondaryBrandColors.iz();
 			ct.lineWidth = 2;
