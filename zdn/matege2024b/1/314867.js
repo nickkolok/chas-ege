@@ -41,20 +41,22 @@
 
 		let water = ['горячей', 'холодной'].iz();
 		let monthIndex = sl(0, 11);
-		let month1Gen = mesiacy.re[monthIndex];
-		let month2Gen = mesiacy.re[(monthIndex + 1) % 12];
 		let month1 = om.months[monthIndex];
+		let month2 = om.months[(monthIndex + 1) % 12];
+		// «$1$ марта», «$1$ апреля»
+		let date1 = chislitlx(1, month1, 'r$');
+		let date2 = chislitlx(1, month2, 'r$');
 
 		let text;
 		if (personal) {
 			let name = om.maleNames.iz();
 			text = 'В квартире, где проживает ' + name + ', установлен прибор учёта расхода ' + water + ' воды (счётчик). ' +
-				'1 ' + month1Gen + ' счётчик показывал расход $' + reading1 / 10 + '$ куб. м воды, а 1 ' + month2Gen +
+				date1 + ' счётчик показывал расход $' + reading1 / 10 + '$ куб. м воды, а ' + date2 +
 				' — $' + reading2 / 10 + '$ куб. м. Какую сумму должен заплатить ' + name + ' за ' + month1 +
 				', если цена одного куб. м ' + water + ' воды составляет ' + money(rub, kop) + '? Ответ дайте в рублях.';
 		} else {
 			text = 'В квартире установлен прибор учёта расхода ' + water + ' воды (счётчик). ' +
-				'Показания счётчика 1 ' + month1Gen + ' составляли $' + reading1 / 10 + '$ куб. м воды, а 1 ' + month2Gen +
+				'Показания счётчика ' + date1 + ' составляли $' + reading1 / 10 + '$ куб. м воды, а ' + date2 +
 				' — $' + reading2 / 10 + '$ куб. м. Сколько нужно заплатить за ' + (water === 'горячей' ? 'горячую' : 'холодную') +
 				' воду за ' + month1 + ', если стоимость 1 куб. м ' + water + ' воды составляет ' + money(rub, kop) +
 				'? Ответ дайте в рублях.';
