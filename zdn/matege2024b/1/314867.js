@@ -35,9 +35,6 @@
 		let priceKop = 100 * rub + kop;
 		let answer = used * priceKop / 1000;
 
-		let tenths = function (x) {
-			return String(x / 10).replace('.', '{,}');
-		};
 		let money = function (r, k) {
 			return '$' + r + '$ руб.' + (k ? (personal ? ' и ' : ' ') + '$' + k + '$ коп.' : '');
 		};
@@ -52,21 +49,21 @@
 		if (personal) {
 			let name = om.maleNames.iz();
 			text = 'В квартире, где проживает ' + name + ', установлен прибор учёта расхода ' + water + ' воды (счётчик). ' +
-				'1 ' + month1Gen + ' счётчик показывал расход $' + tenths(reading1) + '$ куб. м воды, а 1 ' + month2Gen +
-				' — $' + tenths(reading2) + '$ куб. м. Какую сумму должен заплатить ' + name + ' за ' + month1 +
+				'1 ' + month1Gen + ' счётчик показывал расход $' + reading1 / 10 + '$ куб. м воды, а 1 ' + month2Gen +
+				' — $' + reading2 / 10 + '$ куб. м. Какую сумму должен заплатить ' + name + ' за ' + month1 +
 				', если цена одного куб. м ' + water + ' воды составляет ' + money(rub, kop) + '? Ответ дайте в рублях.';
 		} else {
 			text = 'В квартире установлен прибор учёта расхода ' + water + ' воды (счётчик). ' +
-				'Показания счётчика 1 ' + month1Gen + ' составляли $' + tenths(reading1) + '$ куб. м воды, а 1 ' + month2Gen +
-				' — $' + tenths(reading2) + '$ куб. м. Сколько нужно заплатить за ' + (water === 'горячей' ? 'горячую' : 'холодную') +
+				'Показания счётчика 1 ' + month1Gen + ' составляли $' + reading1 / 10 + '$ куб. м воды, а 1 ' + month2Gen +
+				' — $' + reading2 / 10 + '$ куб. м. Сколько нужно заплатить за ' + (water === 'горячей' ? 'горячую' : 'холодную') +
 				' воду за ' + month1 + ', если стоимость 1 куб. м ' + water + ' воды составляет ' + money(rub, kop) +
 				'? Ответ дайте в рублях.';
 		}
 
-		let price = String(priceKop / 100).replace('.', '{,}');
-		let analys = 'За ' + month1 + ' израсходовано $' + tenths(reading2) + ' - ' + tenths(reading1) + ' = ' + tenths(used) +
-			'$ куб. м воды. Один кубометр стоит $' + price + '$ руб., поэтому заплатить нужно $' + tenths(used) + ' \\cdot ' + price +
-			' = ' + String(answer).replace('.', '{,}') + '$ руб.';
+		let price = priceKop / 100;
+		let analys = 'За ' + month1 + ' израсходовано $' + reading2 / 10 + ' - ' + reading1 / 10 + ' = ' + used / 10 +
+			'$ куб. м воды. Один кубометр стоит $' + price + '$ руб., поэтому заплатить нужно $' + used / 10 + ' \\cdot ' + price +
+			' = ' + answer + '$ руб.';
 
 		NAtask.setTask({
 			text: text,
@@ -75,6 +72,8 @@
 			authors: ['zer00player', 'chas-ege-selena', 'chas-ege-ellariya'],
 			preference: [preference],
 		});
+
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 100);
 })();
 //314867
