@@ -489,4 +489,22 @@ module.exports = function registerNodeTests(QUnit) {
         assert.ok(geometry.isOnVisibleFace(prismFaces, rVisibility, [0, 1, 3, 4]),
             'отрезок между точками на рёбрах 0-1 и 3-4 лежит в видимой грани');
     });
+
+    // ============================================================
+    //  Circle  (lib/circle.js)
+    // ============================================================
+    QUnit.module('Circle');
+
+    QUnit.test('Circle.prototype.drawOnto передаёт в drawCircle центр и числовой радиус', function (assert) {
+        var circle = new Circle(new Point(3, -4), 5);
+        var calls = [];
+        var ctx = {
+            drawCircle: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        circle.drawOnto(ctx);
+        assert.equal(calls.length, 1, 'drawCircle вызван ровно один раз');
+        assert.deepEqual(calls[0], [3, -4, 5], 'drawCircle(x центра, y центра, радиус)');
+    });
 };
