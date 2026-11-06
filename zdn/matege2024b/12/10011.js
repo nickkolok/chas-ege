@@ -19,14 +19,11 @@
 		let relation2 = [sl(1, 12), sl(1, 12)];
 		genAssertIrreducible(relation1[0], relation1[1], 'Отношение на стороне AC сократимо');
 		genAssertIrreducible(relation2[0], relation2[1], 'Отношение на стороне BC сократимо');
+		// Меньшая часть — не меньше 1/14 стороны, чтобы точка не сливалась с вершиной на чертеже
+		genAssert(relation1.sum() <= 14 && relation2.sum() <= 14, 'Точка слишком близко к вершине');
 
 		let pointM = [triangle.pointA[0], triangle.pointC[0]].mt_segmentDivisionPoint(relation1[0], relation1[1]);
-		genAssert((pointM.y - triangle.pointA[0].y).abs() > 1, 'Точки M и A слились');
-		genAssert((pointM.y - triangle.pointC[0].y).abs() > 1, 'Точки M и C слились');
-
 		let pointK = [triangle.pointB[0], triangle.pointC[0]].mt_segmentDivisionPoint(relation2[0], relation2[1]);
-		genAssert((pointK.y - triangle.pointC[0].y).abs() > 1, 'Точки K и C слились');
-		genAssert((pointK.y - triangle.pointB[0].y).abs() > 1, 'Точки K и B слились');
 
 		let triangleSmall = new Triangle({
 			points: [pointM, pointK, triangle.pointC[0]]
