@@ -15,14 +15,14 @@
 		let p_2 = primeNumbers.iz();
 		let p_3 = primeNumbers.iz();
 
-		genAssert(p_1 != p_2 && p_1 != p_3, 'Более одного совпадения');
+		genAssert(p_1 != p_2 && p_1 != p_3 && p_2 != p_3, 'Более одного совпадения');
 
 		let number = p_1 * p_2 * p_3;
 		let answer = (p_1 + 1) * (p_2 + 1) * (p_3 + 1);
 
 		NAtask.setTask({
 
-			text: 'Если $p_1$, $p_2$ и $p_3$ – простые числа, ' +
+			text: 'Если $p_1$, $p_2$ и $p_3$ – различные простые числа, ' +
 				'то сумма всех делителей числа $p_1 \\cdot p_2 \\cdot p_3$ равна $(p_1 +1)(p_2 +1)(p_3 +1)$. ' +
 				the_orderToFind.toZagl() + ' сумму всех делителей числа $' + number + ['', ' = ' + p_1 + '\\cdot' + p_2 + '\\cdot' + p_3][rand] + '$.',
 			answers: answer,
@@ -34,3 +34,6 @@
 })();
 //zer00player
 //https://mathb-ege.sdamgia.ru/problem?id=507035
+// ФИПИ: сопоставленные позиции категории 4 и все исходные коды.
+// 4.70: 631193, 381C53
+// 4.71: 6C3D07, 9C9CB9, E897DC, 14AD58, AADBA9, 1B15C9, 3D539E, BFC8EA, AEAC68, F3015B, 78695E, F484E4, 5B7DE6, B57562, 2DC834, 822231
