@@ -3,16 +3,8 @@
 		NAinfo.requireApiVersion(0, 2);
 
         let key = "169853";
-        let variant = getListedPreference(key, [{
-            preference: 'A',
-            preferenceValue: 0,
-        }, {
-            preference: 'B',
-            preferenceValue: 1,
-        }, {
-            preference: 'C',
-            preferenceValue: 2,
-        }], sl(0, 2));
+        let preference = ['A', 'B', 'C']; // из какой вершины проведена высота (только на чертеже)
+        let variant = getSelectedPreferenceFromList(key, preference);
 
         // Сторона и высота к ней задаются напрямую (как в ФИПИ — целые числа);
         // ограничение на их отношение — только ради читаемого чертежа
@@ -57,6 +49,7 @@
         NAtask.setTask({
             text: `Сторона треугольника равна $${side}$, а высота, проведённая к этой стороне, равна $${height}$. Найдите площадь этого треугольника.`,
 			answers: side * height / 2,
+			preference: preference,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.allDecimalsToStandard(/*true*/);
