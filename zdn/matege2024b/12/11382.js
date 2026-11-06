@@ -5,10 +5,7 @@
 		let key = "11382";
 		let letters = latbukv.slice(0, 3).concat('M');
 		let preference = ['length_BC_by_median_and_base', 'median', 'length_BC_by_median_and_area'];
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 
 		// Равнобедренный треугольник с основанием AB: медиана CM — она же высота,
