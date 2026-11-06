@@ -19,28 +19,30 @@
         let centralPoint = sideDano.splice(variant, 1)[0];
         let pointMedian = letters[3];
 
-        let triangle = new Triangle({
-            lengths: {
-                lengthAB: sl(5, 10),
-                lengthBC: sl(5, 10),
-                lengthCA: sl(5, 10),
-            },
-            supplementary: {
-                calculateMedians: true,
-            }
-        });
-        
-        let sides = Object.values(triangle.lengths);
-        genAssert(!sides.hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
+        // Сторона, к которой проведена медиана, и сама медиана задаются напрямую:
+        // медиана в этой задаче — лишнее данное, годится любая длина.
+        // Ограничение на отношение длин — только ради читаемого чертежа.
+        let valueDano = sl(4, 60);
+        let medianLength = sl(3, 60);
+        genAssert(medianLength.mzhd(valueDano / 4, valueDano * 3 / 2), 'Медиана несоразмерна стороне — плохой чертёж');
 
-        let medianLength = Object.values(triangle.medianLengths)[variant];
-        genAssertZ1000(medianLength / 10);
-        
-        let valueDano = sides.permuteCyclic(-1)[variant];
-        
-        triangle.addVertexToConnectionMatrix(Object.values(triangle.medianEndPoints)[variant], ['A', 'B', 'C'][variant]);
+        // Середина стороны M — в начале координат, сторона горизонтальна,
+        // вершина, из которой проведена медиана, — на расстоянии medianLength от M
+        let phi = sl(40, 140) * Math.PI / 180;
+        let medianVertex = { x: medianLength * Math.cos(phi), y: medianLength * Math.sin(phi) };
+        let sideEnds = [{ x: -valueDano / 2, y: 0 }, { x: valueDano / 2, y: 0 }];
+        let vertices = sideEnds.slice();
+        vertices.splice(variant, 0, medianVertex); // вершины A, B, C по порядку
+        vertices.push({ x: 0, y: 0 }); // середина стороны
 
-        let points = autoScale(triangle.vertices);
+        let connectionMatrix = [
+            [1],
+            [1, 1],
+            [0, 1, 2].map((i) => Number(i === variant)),
+        ];
+
+        // По вертикали центрируем: autoScale масштабирует относительно начала координат
+        let points = autoScale(vertices.map((p) => ({ x: p.x, y: p.y - medianVertex.y / 2 })));
 
         let pointsSide = points.slice(0, 3);
         pointsSide.splice(variant, 1)[0];
@@ -55,7 +57,7 @@
             ctx.strokeStyle = om.secondaryBrandColors;
 
             ctx.lineWidth = 2;
-            ctx.drawFigure(points, triangle.connectionMatrix);
+            ctx.drawFigure(points, connectionMatrix);
 
             ctx.strokeStyle = om.primaryBrandColors[1];
             ctx.strokeInMiddleOfSegment(pointsSide[0].x, pointsSide[0].y, points[3].x, points[3].y, 10);
@@ -63,7 +65,8 @@
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
+            // Вершина, из которой проведена медиана, — сверху, подпись над ней; остальные точки — на нижней стороне
+            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x - 6, -elem.y + ((i === variant) ? -8 : 25)));
         };
 
         NAtask.setTask({
