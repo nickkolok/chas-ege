@@ -10,9 +10,11 @@
 	let rand = getSelectedPreferenceFromList(key, preference);
 	let bigger = rand === 0;
 	// Запись кратности: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
-	// («в $1{,}5$ раза», «в $2$ раза»)
+	// («в $1{,}5$ раза», «в $2$ раза»). Без preference - случайно при каждом
+	// использовании (inWords не задано)
 	let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
-	let inWords = getSelectedPreferenceFromList(key, preferenceMultiplier) === 0;
+	let multiplierPref = getSelectedPreferenceFromList(key, preferenceMultiplier, -1);
+	let inWords = multiplierPref === -1 ? undefined : multiplierPref === 0;
 
 	retryWhileError(function () {
 		// Кратности - как у ФИПИ (3A0E06, 5F3B21, 850DF9, FA5AD0, 0B53AE, 5BAF16,
