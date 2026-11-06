@@ -9,11 +9,12 @@
 		let kh = [1.5, 2, 2.5, 3, 4, 4.5].iz(); // по высоте
 		let ka = [1.5, 2, 3, 4].iz(); // по ширине
 		// Запись кратностей: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
-		// («в $1{,}5$ раза», «в $2$ раза»). Без preference - случайно для каждой
-		// кратности отдельно (inWords не задано)
+		// («в $1{,}5$ раза», «в $2$ раза»). preference спрашиваем для каждой кратности
+		// заново: если он не задан, запись каждой выбирается случайно и независимо
 		let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
-		let multiplierPref = getSelectedPreferenceFromList('523577', preferenceMultiplier, -1);
-		let inWords = multiplierPref === -1 ? undefined : multiplierPref === 0;
+		let multInWords = function () {
+			return getSelectedPreferenceFromList('523577', preferenceMultiplier) === 0;
+		};
 		// Первая коробка выше или ниже второй; вторая шире или у́же первой
 		let firstTaller = sl1();
 		let secondWider = sl1();
@@ -40,8 +41,8 @@
 			['Во сколько раз объём первой коробки больше объёма второй' + tail + '?', 'Во сколько раз объём второй коробки меньше объёма первой' + tail + '?'].iz();
 
 		let text = 'Даны две коробки, имеющие форму правильной четырёхугольной призмы, стоящей на основании. ' +
-			'Первая коробка ' + multiplierPhrase(kh, inWords) + ' ' + (firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' +
-			[' ', ' — '].iz() + multiplierPhrase(ka, inWords) + ' ' + (secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
+			'Первая коробка ' + multiplierPhrase(kh, multInWords()) + ' ' + (firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' +
+			[' ', ' — '].iz() + multiplierPhrase(ka, multInWords()) + ' ' + (secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
 
 		let analys = 'Объём правильной четырёхугольной призмы равен $V = a^2 h$, где $a$ — сторона основания, $h$ — высота. ' +
 			'Обозначим сторону основания и высоту первой коробки $a$ и $h$. ' +
