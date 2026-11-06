@@ -14,28 +14,27 @@
             preferenceValue: 2,
         }], sl(0, 2));
 
-        let triangle = new Triangle({
-            lengths: {
-                lengthAB: sl(3, 15),
-                lengthBC: sl(3, 15),
-                lengthCA: sl(3, 15),
-            },
-            supplementary: {
-                calculateHeights: true,
-            }
-        });
+        // Сторона и высота к ней задаются напрямую (как в ФИПИ — целые числа);
+        // ограничение на их отношение — только ради читаемого чертежа
+        let side = sl(2, 40);
+        let height = sl(2, 40);
+        genAssert(height.mzhd(side / 5, side * 4), 'Высота несоразмерна стороне — плохой чертёж');
 
-        let sides = Object.values(triangle.lengths);
-        genAssert(!sides[1].isAlmostEqual(sides[2]), 'Две стороны треугольника должны быть разными');
+        // Сторона горизонтальна, вершина — над ней на высоте height,
+        // основание высоты — внутри стороны (на 15…85% её длины)
+        let foot = side * sl(15, 85) / 100 - side / 2;
+        let apex = { x: foot, y: height / 2 };
+        let vertices = [{ x: -side / 2, y: -height / 2 }, { x: side / 2, y: -height / 2 }];
+        vertices.splice(variant, 0, apex); // вершины A, B, C по порядку
+        vertices.push({ x: foot, y: -height / 2 }); // основание высоты
 
-        [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle < 80, 'Треугольник недостаточно остроугольный'));
+        let connectionMatrix = [
+            [1],
+            [1, 1],
+            [0, 1, 2].map((i) => Number(i === variant)),
+        ];
 
-        triangle.addVertexToConnectionMatrix(Object.values(triangle.heightEndPoints)[variant], ['A', 'B', 'C'][variant]);
-
-        let height = Object.values(triangle.heightLengths).permuteCyclic(1)[variant];
-        genAssertZ1000(height);
-
-        let points = autoScale(triangle.vertices);
+        let points = autoScale(vertices);
         let pointsAngle = points.slice(0, 3);
         let pointCentralAngle = pointsAngle.splice(variant, 1)[0];
 
@@ -49,17 +48,17 @@
             ctx.strokeStyle = om.secondaryBrandColors;
 
             ctx.lineWidth = 2;
-            ctx.drawFigure(points, triangle.connectionMatrix);
+            ctx.drawFigure(points, connectionMatrix);
 
             ctx.strokeStyle = om.primaryBrandColors.iz();
             ctx.arcBetweenSegments([pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y, pointsAngle[0].x, pointsAngle[0].y], 15, true);
         };
 
         NAtask.setTask({
-            text: `Сторона треугольника равна $${sides[variant]}$, 
+            text: `Сторона треугольника равна $${side}$,
 			а высота, проведённая к этой стороне, равна 
 			$${height}$. Найдите площадь этого треугольника.`,
-			answers: triangle.area(),
+			answers: side * height / 2,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.allDecimalsToStandard(/*true*/);
