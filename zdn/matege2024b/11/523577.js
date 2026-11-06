@@ -141,7 +141,7 @@
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
-			height: 260,
+			height: 300,
 			paint: paintBoxes,
 		});
 	}, 1000);
