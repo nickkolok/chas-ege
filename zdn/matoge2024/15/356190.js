@@ -16,8 +16,24 @@
             },
         });
 
-        let points = autoScale(triangle.vertices);
-        genAssert(160 - points[1].x > 20, 'Прямая из угла B не видна');
+        // Продолжение стороны AB за вершину B (для внешнего угла) — на 2/3 длины AB
+        let [pA, pB] = triangle.vertices;
+        let pE = {
+            x: pB.x + (pB.x - pA.x) * 2 / 3,
+            y: pB.y + (pB.y - pA.y) * 2 / 3,
+        };
+        // Центрируем всё по габаритам: autoScale масштабирует относительно начала координат,
+        // и без этого плоский треугольник (угол B около 180°) прижимался к краю и был мелким
+        let figure = triangle.vertices.concat([pE]);
+        let xs = figure.map((p) => p.x);
+        let ys = figure.map((p) => p.y);
+        let shift = {
+            x: -(Math.min(...xs) + Math.max(...xs)) / 2,
+            y: -(Math.min(...ys) + Math.max(...ys)) / 2,
+        };
+        let scaled = autoScale(figure.map((p) => ({ x: p.x + shift.x, y: p.y + shift.y })));
+        let points = scaled.slice(0, 3);
+        let pointExt = scaled[3];
         let letters = latbukv.slice(0, 3);
 
         let paint1 = function (ctx) {
@@ -32,7 +48,7 @@
             ctx.lineWidth = 2;
             ctx.drawFigure(points, triangle.connectionMatrix);
             
-            ctx.drawLine(points[1].x, points[1].y, 160, points[1].y);
+            ctx.drawLine(points[1].x, points[1].y, pointExt.x, pointExt.y);
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
