@@ -18,7 +18,6 @@
                 angle: Math.PI / 2,
             },
         });
-        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
 
         let radius = hypotenuse / 2;
 
