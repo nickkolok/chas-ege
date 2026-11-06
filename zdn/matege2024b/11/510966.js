@@ -38,15 +38,12 @@
 			(firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' + [' ', ' — '].iz() + multiplierPhrase(kr, inWords) + ' ' +
 			(secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
 
-		let fmt = function (x) {
-			return String(Math.round(x * 1000) / 1000).replace('.', '{,}');
-		};
 		let analys = 'Объём цилиндра равен $V = \\pi r^2 h$. Обозначим радиус и высоту первой кружки $r$ и $h$. ' +
-			'Тогда у второй кружки высота равна $' + (firstTaller ? '\\frac{h}{' + fmt(kh) + '}' : fmt(kh) + 'h') +
-			'$, а радиус равен $' + (secondWider ? fmt(kr) + 'r' : '\\frac{r}{' + fmt(kr) + '}') + '$. ' +
-			'Значит, $\\frac{V_2}{V_1} = ' + (secondWider ? fmt(kr) + '^2' : '\\frac{1}{' + fmt(kr) + '^2}') + ' \\cdot ' +
-			(firstTaller ? '\\frac{1}{' + fmt(kh) + '}' : fmt(kh)) + ' = ' +
-			(secondBigger ? fmt(ans) : '\\frac{1}{' + fmt(ans) + '}') + '$, ' +
+			'Тогда у второй кружки высота равна $' + (firstTaller ? '\\frac{h}{' + kh + '}' : kh + 'h') +
+			'$, а радиус равен $' + (secondWider ? kr + 'r' : '\\frac{r}{' + kr + '}') + '$. ' +
+			'Значит, $\\frac{V_2}{V_1} = ' + (secondWider ? kr + '^2' : '\\frac{1}{' + kr + '^2}') + ' \\cdot ' +
+			(firstTaller ? '\\frac{1}{' + kh + '}' : kh) + ' = ' +
+			(secondBigger ? ans : '\\frac{1}{' + ans + '}') + '$, ' +
 			'то есть объём ' + (secondBigger ? 'второй кружки больше объёма первой' : 'первой кружки больше объёма второй') +
 			' в ' + chislitlx(ans, 'раз', '$') + '.';
 
@@ -57,6 +54,7 @@
 			authors: ['chas-ege-selena'],
 			preference: [preferenceMultiplier],
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 
 		let paint1 = function (ct) {
 			// Рисуем в условных единицах (радиус первой кружки = 1), ось y направлена вверх.
