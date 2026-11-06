@@ -148,4 +148,4 @@
 })();
 //523577
 //chas-ege-selena
-//https://mathb-ege.sdamgia.ru/problem?id=523577
+// https://mathb-ege.sdamgia.ru/problem?id=523577
