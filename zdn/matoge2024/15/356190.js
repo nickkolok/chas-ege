@@ -2,18 +2,20 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
+        // Треугольник строится по заданному углу B (в ФИПИ углы от 97° до 177°),
+        // окрестность прямого угла исключена, чтобы на чертеже было видно, острый угол или тупой
+        let angleB = slKrome((x) => (x - 90).abs() < 5, 30, 177);
         let triangle = new Triangle({
             lengths: {
-                lengthAB: sl(2, 5),
-                lengthBC: sl(5, 10),
-                lengthCA: sl(5, 10),
+                lengthAB: sl(3, 8),
+                lengthBC: sl(3, 8),
+            },
+            angles: {
+                angle: angleB,
+                angleInDegree: true,
             },
         });
-        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
-        let angleB = triangle.angleBInDegrees.ceil();
-        genAssert(angleB.mzhd(70, 100), 'Угол B слишком большой, рисунок слишком маленький');
-        genAssert(angleB!=90, 'B - прямой угол');
-        
+
         let points = autoScale(triangle.vertices);
         genAssert(160 - points[1].x > 20, 'Прямая из угла B не видна');
         let letters = latbukv.slice(0, 3);
