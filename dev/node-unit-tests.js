@@ -383,4 +383,22 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(gp.member(2), 6, 'b₂ = 6');
         assert.equal(gp.member(3), 18, 'b₃ = 18');
     });
+
+    // ============================================================
+    //  Circle  (lib/circle.js)
+    // ============================================================
+    QUnit.module('Circle');
+
+    QUnit.test('Circle.prototype.drawOnto передаёт в drawCircle центр и числовой радиус', function (assert) {
+        var circle = new Circle(new Point(3, -4), 5);
+        var calls = [];
+        var ctx = {
+            drawCircle: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        circle.drawOnto(ctx);
+        assert.equal(calls.length, 1, 'drawCircle вызван ровно один раз');
+        assert.deepEqual(calls[0], [3, -4, 5], 'drawCircle(x центра, y центра, радиус)');
+    });
 };
