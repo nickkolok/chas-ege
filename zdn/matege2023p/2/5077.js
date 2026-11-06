@@ -62,7 +62,7 @@
 				'Шар вписан в цилиндр. ' + nameSphere[0].toZagl() + ' шара ' + ['равен', 'равна'][sklonlxkand(
 					nameSphere[0]).rod] + ' $' + nameSphere[1].texpi() +
 				'$. Найдите ' + sklonlxkand(nameCylinder[0]).ve + ' цилиндра.',
-				' Цилиндр, ' + nameCylinder[0] + ' которого ' + ['равен', 'равна'][sklonlxkand(nameCylinder[0]).rod] +
+				'Цилиндр, ' + nameCylinder[0] + ' которого ' + ['равен', 'равна'][sklonlxkand(nameCylinder[0]).rod] +
 				' $' + nameCylinder[1].texpi() + '$, описан около шара. Найдите ' + sklonlxkand(nameSphere[0]).ve + ' шара.'
 			][rand],
 			answers: [nameCylinder[1], nameSphere[1]][rand],
