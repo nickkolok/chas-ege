@@ -60,7 +60,7 @@
             answers: 180 - angleB,
             authors: ['Александра Суматохина'],
         });
-       NAtask.modifiers.variativeABC(letters);
+        NAtask.modifiers.variativeABC(letters);
 
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
