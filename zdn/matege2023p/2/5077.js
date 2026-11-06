@@ -31,7 +31,6 @@
 
 			ctx.lineWidth = 2;
 			ctx.translate(100, 40);
-			ctx.scale = (100, 100);
 			ctx.strokeStyle = om.secondaryBrandColors;
 
 			//верхний эллипс
