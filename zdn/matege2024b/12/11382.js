@@ -3,7 +3,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = "11382";
-		let letters = latbukv.slice(0, 3).concat('M');
+		let letters = om.latbukv.slice(0, 3).concat('M');
 		let preference = ['length_BC_by_median_and_base', 'median', 'length_BC_by_median_and_area'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
