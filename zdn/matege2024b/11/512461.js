@@ -10,9 +10,11 @@
 		// Словами кратность записывается по om.multiplierWords («вдвое», «в три раза»)
 		let k = [2, 3].iz();
 		// Запись кратностей: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
-		// («в $1{,}5$ раза», «в $2$ раза»)
+		// («в $1{,}5$ раза», «в $2$ раза»). Без preference - случайно для каждой
+		// кратности отдельно (inWords не задано)
 		let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
-		let inWords = getSelectedPreferenceFromList('512461', preferenceMultiplier) === 0;
+		let multiplierPref = getSelectedPreferenceFromList('512461', preferenceMultiplier, -1);
+		let inWords = multiplierPref === -1 ? undefined : multiplierPref === 0;
 		let k2 = k * k;
 		let bigger = sl1();
 		let levels = [];
