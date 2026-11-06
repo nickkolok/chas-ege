@@ -3,41 +3,22 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		// Кратности - словами, как у ФИПИ (F2FD33, F68D58, FEA9F4, AE99C1, 5251BA,
-		// 089175, 044EC1, F1F199, 38C38E, 3C4615, 88D3C3): по высоте «в полтора
-		// раза», «вдвое», «в два с половиной раза», «в четыре раза», «вчетверо»,
-		// «в четыре с половиной раза»; по ширине «в полтора раза», «вдвое»,
-		// «в два раза», «втрое», «в четыре раза»
-		let heightMultipliers = [
-			{ k: 1.5, words: ['в полтора раза'] },
-			{ k: 2, words: ['вдвое', 'в два раза'] },
-			{ k: 2.5, words: ['в два с половиной раза'] },
-			{ k: 3, words: ['втрое', 'в три раза'] },
-			{ k: 4, words: ['вчетверо', 'в четыре раза'] },
-			{ k: 4.5, words: ['в четыре с половиной раза'] },
-		];
-		let widthMultipliers = [
-			{ k: 1.5, words: ['в полтора раза'] },
-			{ k: 2, words: ['вдвое', 'в два раза'] },
-			{ k: 3, words: ['втрое', 'в три раза'] },
-			{ k: 4, words: ['вчетверо', 'в четыре раза'] },
-		];
+		// Кратности - как у ФИПИ (F2FD33, F68D58, FEA9F4, AE99C1, 5251BA, 089175,
+		// 044EC1, F1F199, 38C38E, 3C4615, 88D3C3); словами они записываются
+		// по om.multiplierWords («в полтора раза», «вдвое», «вчетверо» и т.д.)
+		let kh = [1.5, 2, 2.5, 3, 4, 4.5].iz(); // по высоте
+		let ka = [1.5, 2, 3, 4].iz(); // по ширине
 		// Запись кратностей: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
 		// («в $1{,}5$ раза», «в $2$ раза»)
 		let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
 		let inWords = getSelectedPreferenceFromList('523577', preferenceMultiplier) === 0;
-		let multWords = function (m) {
-			return inWords ? m.words.iz() : 'в $' + String(m.k).replace('.', '{,}') + '$ раза';
-		};
-		let kh = heightMultipliers.iz();
-		let ka = widthMultipliers.iz();
 		// Первая коробка выше или ниже второй; вторая шире или у́же первой
 		let firstTaller = sl1();
 		let secondWider = sl1();
 
 		// Отношения размеров второй коробки к первой
-		let hRatio = firstTaller ? 1 / kh.k : kh.k; // h2 / h1
-		let aRatio = secondWider ? ka.k : 1 / ka.k; // a2 / a1
+		let hRatio = firstTaller ? 1 / kh : kh; // h2 / h1
+		let aRatio = secondWider ? ka : 1 / ka; // a2 / a1
 		// Объём правильной четырёхугольной призмы V = a^2 h, поэтому
 		// V2 / V1 = (a2 / a1)^2 * (h2 / h1)
 		let ratio = aRatio * aRatio * hRatio;
@@ -57,8 +38,8 @@
 			['Во сколько раз объём первой коробки больше объёма второй' + tail + '?', 'Во сколько раз объём второй коробки меньше объёма первой' + tail + '?'].iz();
 
 		let text = 'Даны две коробки, имеющие форму правильной четырёхугольной призмы, стоящей на основании. ' +
-			'Первая коробка ' + multWords(kh) + ' ' + (firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' +
-			[' ', ' — '].iz() + multWords(ka) + ' ' + (secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
+			'Первая коробка ' + multiplierPhrase(kh, inWords) + ' ' + (firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' +
+			[' ', ' — '].iz() + multiplierPhrase(ka, inWords) + ' ' + (secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
 
 		let fmt = function (x) {
 			return String(Math.round(x * 100) / 100).replace('.', '{,}');
@@ -72,10 +53,10 @@
 		};
 		let analys = 'Объём правильной четырёхугольной призмы равен $V = a^2 h$, где $a$ — сторона основания, $h$ — высота. ' +
 			'Обозначим сторону основания и высоту первой коробки $a$ и $h$. ' +
-			'Тогда у второй коробки высота равна $' + (firstTaller ? '\\frac{h}{' + fmt(kh.k) + '}' : fmt(kh.k) + 'h') +
-			'$, а сторона основания равна $' + (secondWider ? fmt(ka.k) + 'a' : '\\frac{a}{' + fmt(ka.k) + '}') + '$. ' +
-			'Значит, $\\frac{V_2}{V_1} = ' + (secondWider ? fmt(ka.k) + '^2' : '\\frac{1}{' + fmt(ka.k) + '^2}') + ' \\cdot ' +
-			(firstTaller ? '\\frac{1}{' + fmt(kh.k) + '}' : fmt(kh.k)) + ' = ' +
+			'Тогда у второй коробки высота равна $' + (firstTaller ? '\\frac{h}{' + fmt(kh) + '}' : fmt(kh) + 'h') +
+			'$, а сторона основания равна $' + (secondWider ? fmt(ka) + 'a' : '\\frac{a}{' + fmt(ka) + '}') + '$. ' +
+			'Значит, $\\frac{V_2}{V_1} = ' + (secondWider ? fmt(ka) + '^2' : '\\frac{1}{' + fmt(ka) + '^2}') + ' \\cdot ' +
+			(firstTaller ? '\\frac{1}{' + fmt(kh) + '}' : fmt(kh)) + ' = ' +
 			(secondBigger ? fmt(ans) : '\\frac{1}{' + fmt(ans) + '}') + '$, ' +
 			'то есть объём ' + (secondBigger ? 'второй коробки больше объёма первой' : 'первой коробки больше объёма второй') +
 			' в $' + fmt(ans) + '$ ' + razWord(ans) + '.';
