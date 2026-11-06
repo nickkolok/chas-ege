@@ -38,93 +38,71 @@
 		// V в решении - обозначение объёма, а не вершина: её не переставляем
 		NAtask.modifiers.variativeABC(letters, { preserve: ['V'] });
 
-		// Чертёж пропорционален условию. В Parallelepiped вершины основания 0-3
-		// идут по кругу, ребро 0-1 - вдоль оси x (ширина), 1-2 - вдоль оси y
-		// (глубина); над вершиной i стоит вершина top[i]. Ребро xy вдоль оси x,
-		// если x чётная, и вдоль оси y, если нечётная.
-		let size = Math.max(a, b, h);
-		let box = new Parallelepiped({
-			width: (x % 2 === 0 ? a : b) / size,
-			depth: (x % 2 === 0 ? b : a) / size,
-			height: h / size,
-		});
-		let vertices = box.verticesOfFigure;
-		let top = [5, 6, 7, 4];
-		// Ракурс, как у ФИПИ: A спереди слева, B спереди справа, D сзади;
-		// видны верхняя, передняя и правая грани
-		let camera = {
-			x: 0,
-			y: 0,
-			z: 0,
-			scale: 5,
-			rotationX: -Math.PI / 2 + Math.PI / 9,
-			rotationY: 0,
-			rotationZ: Math.PI / 10,
-		};
-		autoScale(vertices, camera, vertices.map((vertex) => project3DTo2D(vertex, camera)), {
-			startX: -150,
-			finishX: 150,
-			startY: -120,
-			finishY: 120,
-			maxScale: 200,
-		});
-		let points2D = vertices.map((vertex) => project3DTo2D(vertex, camera));
-		let shiftX = (Math.min(...points2D.map((p) => p.x)) + Math.max(...points2D.map((p) => p.x))) / 2;
-		let shiftY = (Math.min(...points2D.map((p) => p.y)) + Math.max(...points2D.map((p) => p.y))) / 2;
-		points2D = points2D.map((p) => ({ x: p.x - shiftX, y: p.y - shiftY }));
-
-		let faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
-		let visibility = facesVisibility(vertices, points2D, faces);
-		let dash = [7, 5];
-		let matrix = dashHiddenEdges(box.connectionMatrix, faces, visibility, dash);
-		let diagonalHidden = !isOnVisibleFace(faces, visibility, [x, top[y]]);
+		// Чертёж пропорционален условию; рисует drawParallelepiped(). Ракурс,
+		// как у ФИПИ: A спереди слева, B спереди справа, D сзади; видны верхняя,
+		// передняя и правая грани. Номера вершин drawParallelepiped(): нижнее
+		// основание 5, 6, 7, 4 (A, B, C, D), верхнее 1, 2, 3, 0 (A1, B1, C1, D1).
+		// Ребро AB идёт по ширине, BC - вглубь, поэтому ребро xy - по ширине,
+		// если x чётная, и вглубь, если нечётная.
+		let base = [5, 6, 7, 4];
+		let top = [1, 2, 3, 0];
+		// Глубина в косоугольной проекции сокращена, как в 523577
+		let depthRatio = 0.6;
+		let angle = Math.PI / 4;
 
 		let paint = function (ct) {
-			ct.translate(200, 160);
-			ct.lineWidth = 2;
-			ct.strokeStyle = om.secondaryBrandColors.iz();
-			ct.drawFigure(points2D, matrix);
+			let size = Math.max(a, b, h);
+			let width = (x % 2 === 0 ? a : b) / size;
+			let depth = depthRatio * (x % 2 === 0 ? b : a) / size;
+			let height = h / size;
+			let dx = depth * Math.cos(angle);
+			let dy = depth / 2;
+			// Вершины в тех же координатах, что и в drawParallelepiped()
+			let vertex = [
+				[dx, dy + height], [0, height], [width, height], [dx + width, dy + height],
+				[dx, dy], [0, 0], [width, 0], [dx + width, dy],
+			];
+			let s = Math.min(300 / (width + dx), 240 / (height + dy));
+			let originX = 200 - s * (width + dx) / 2;
+			let originY = 160 + s * (height + dy) / 2;
 
-			// Диагональ боковой грани
+			ct.save();
+			ct.translate(originX, originY);
+			ct.scale(s, -s);
+			ct.lineWidth = 2 / s;
+			// Пунктиром - невидимые рёбра при задней нижней вершине D (6, 8, 10)
+			ct.drawParallelepiped({
+				width: width,
+				height: height,
+				depth: depth,
+				angle: angle,
+				strokeStyle: om.secondaryBrandColors.iz(),
+			}, [6, 8, 10], false, [7 / s, 5 / s]);
+			// Диагональ боковой грани: грани AA1B1B и BB1C1C видны, CC1D1D и DD1A1A - нет
 			ct.strokeStyle = om.primaryBrandColors.iz();
-			ct.setLineDash(diagonalHidden ? dash : []);
-			ct.drawLine(points2D[x].x, points2D[x].y, points2D[top[y]].x, points2D[top[y]].y);
+			ct.setLineDash(x >= 2 ? [7 / s, 5 / s] : []);
+			ct.drawLine(vertex[base[x]][0], vertex[base[x]][1], vertex[top[y]][0], vertex[top[y]][1]);
 			ct.setLineDash([]);
+			ct.restore();
 
-			// Подписи вершин - снаружи, по лучу из центра чертежа. У вершин, чья
-			// проекция внутри контура (задняя нижняя и передняя верхняя), снаружи
-			// места нет: их подписи - вправо-вверх и вправо-вниз от вершины, как у ФИПИ
-			let onHull = function (point) {
-				let others = points2D.filter((q) => q !== point);
-				for (let k = 0; k < 72; k++) {
-					let nx = Math.cos(k * Math.PI / 36);
-					let ny = Math.sin(k * Math.PI / 36);
-					if (others.every((q) => (q.x - point.x) * nx + (q.y - point.y) * ny < -1e-6)) {
-						return true;
-					}
-				}
-				return false;
-			};
+			// Подписи вершин: смещения в пикселях от вершины до начала надписи.
+			// Задняя нижняя D и передняя верхняя B1 - внутри контура, их подписи -
+			// вправо-вверх и вправо-вниз от вершины, как у ФИПИ
+			let labelShift = [[-22, -4], [-22, 4], [6, 22], [6, -4], [6, -6], [-18, 20], [4, 22], [8, 14]];
 			ct.fillStyle = om.secondaryBrandColors.iz();
-			ct.font = '20px liberation_sans';
-			let put = function (point, letter, subscript, isTop) {
-				let len = Math.hypot(point.x, point.y) || 1;
-				let px = point.x + 16 * point.x / len - 7;
-				let py = point.y + 16 * point.y / len + 7;
-				if (!onHull(point)) {
-					px = point.x + 6;
-					py = isTop ? point.y + 22 : point.y - 6;
-				}
+			let put = function (v, letter, subscript) {
+				let px = originX + s * vertex[v][0] + labelShift[v][0];
+				let py = originY - s * vertex[v][1] + labelShift[v][1];
+				ct.font = '20px liberation_sans';
 				ct.fillText(letter, px, py);
 				if (subscript) {
 					ct.font = '14px liberation_sans';
 					ct.fillText(subscript, px + 13, py + 5);
-					ct.font = '20px liberation_sans';
 				}
 			};
 			for (let i = 0; i < 4; i++) {
-				put(points2D[i], letters[i], '', false);
-				put(points2D[top[i]], letters[i], '1', true);
+				put(base[i], letters[i], '');
+				put(top[i], letters[i], '1');
 			}
 		};
 
