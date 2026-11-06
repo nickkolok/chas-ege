@@ -12,7 +12,7 @@ retryWhileUndefined(function() {
 	}
 	let trigfuncs = ['sin', 'cos'].iz();
 	let a = sluchch(1, 6).pm();
-	let b = (1).pm();
+	let b = 1;
 	let c = sl1().pm();
 	let d = sl(-5, 5);
 	if (a.abs() + d.abs() > 6)
@@ -22,11 +22,9 @@ retryWhileUndefined(function() {
 		return;
 	let formula = 'a\\' + trigfuncs + '(b \\pi x+' + (factor).texfracpi(1) + ' c)+d';
 	if (trigfuncs == 'sin') {
-		let variant = [
-			['a', a.ts()],
-			['b', b.ts()],
-		].iz();
-		formula = formula.replace(variant[0], variant[1]);
+		if (sl1()) {
+			formula = formula.replace('a', a.ts());
+		}
 	}
 	let sign = '<';
 	if (a > 0)
