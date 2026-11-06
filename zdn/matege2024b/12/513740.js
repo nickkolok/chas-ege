@@ -31,7 +31,7 @@
 				answers: 4 * side,
 			}][rand]],
 			authors: ['Александра Суматохина'],
-			preference:preference,
+			preference: preference,
 		});
 		NAtask.modifiers.variativeABC();
 		NAtask.modifiers.allDecimalsToStandard(true);
