@@ -8,11 +8,12 @@
 		let kh = [1.5, 2, 3, 4, 4.5].iz(); // по высоте
 		let kr = [1.5, 2, 3, 4].iz(); // по ширине
 		// Запись кратностей: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
-		// («в $1{,}5$ раза», «в $2$ раза»). Без preference - случайно для каждой
-		// кратности отдельно (inWords не задано)
+		// («в $1{,}5$ раза», «в $2$ раза»). preference спрашиваем для каждой кратности
+		// заново: если он не задан, запись каждой выбирается случайно и независимо
 		let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
-		let multiplierPref = getSelectedPreferenceFromList('510966', preferenceMultiplier, -1);
-		let inWords = multiplierPref === -1 ? undefined : multiplierPref === 0;
+		let multInWords = function () {
+			return getSelectedPreferenceFromList('510966', preferenceMultiplier) === 0;
+		};
 		// Первая кружка выше или ниже второй; вторая шире или у́же первой
 		let firstTaller = sl1();
 		let secondWider = sl1();
@@ -34,8 +35,8 @@
 			['Во сколько раз объём второй кружки больше объёма первой?', 'Во сколько раз объём первой кружки меньше объёма второй?'].iz() :
 			['Во сколько раз объём первой кружки больше объёма второй?', 'Во сколько раз объём второй кружки меньше объёма первой?'].iz();
 
-		let text = 'Даны две кружки цилиндрической формы. Первая кружка ' + multiplierPhrase(kh, inWords) + ' ' +
-			(firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' + [' ', ' — '].iz() + multiplierPhrase(kr, inWords) + ' ' +
+		let text = 'Даны две кружки цилиндрической формы. Первая кружка ' + multiplierPhrase(kh, multInWords()) + ' ' +
+			(firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' + [' ', ' — '].iz() + multiplierPhrase(kr, multInWords()) + ' ' +
 			(secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
 
 		let analys = 'Объём цилиндра равен $V = \\pi r^2 h$. Обозначим радиус и высоту первой кружки $r$ и $h$. ' +
