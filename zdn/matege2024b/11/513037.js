@@ -119,29 +119,8 @@
 		let shiftY = (Math.min(...points2D.map((p) => p.y)) + Math.max(...points2D.map((p) => p.y))) / 2;
 		points2D = points2D.map((p) => ({ x: p.x - shiftX, y: p.y - shiftY }));
 
-		// Видимость граней - по знаку ориентированной площади проекции при обходе,
-		// согласованном с внешней нормалью (приём из zdn/matege2024b/13/513823.js)
-		let centroid = { x: 0, y: 0, z: 0 };
-		vertices.forEach(function (p) {
-			centroid.x += p.x / vertices.length;
-			centroid.y += p.y / vertices.length;
-			centroid.z += p.z / vertices.length;
-		});
-		let facesVisible = faces.map(function (f) {
-			let p0 = vertices[f[0]], p1 = vertices[f[1]], p2 = vertices[f[2]];
-			let u = { x: p1.x - p0.x, y: p1.y - p0.y, z: p1.z - p0.z };
-			let w = { x: p2.x - p0.x, y: p2.y - p0.y, z: p2.z - p0.z };
-			let nrm = { x: u.y * w.z - u.z * w.y, y: u.z * w.x - u.x * w.z, z: u.x * w.y - u.y * w.x };
-			let fc = { x: 0, y: 0, z: 0 };
-			f.forEach(function (i) {
-				fc.x += vertices[i].x / f.length;
-				fc.y += vertices[i].y / f.length;
-				fc.z += vertices[i].z / f.length;
-			});
-			let orient = (nrm.x * (fc.x - centroid.x) + nrm.y * (fc.y - centroid.y) + nrm.z * (fc.z - centroid.z)) < 0 ? -1 : 1;
-			let q0 = points2D[f[0]], q1 = points2D[f[1]], q2 = points2D[f[2]];
-			return orient * ((q1.x - q0.x) * (q2.y - q0.y) - (q2.x - q0.x) * (q1.y - q0.y)) > 0;
-		});
+		// Видимость граней - facesVisibility() из lib/figure.js
+		let facesVisible = facesVisibility(vertices, points2D, faces);
 		// Рёбра многогранника - стороны граней; ребро рисуется, если видна хотя бы
 		// одна из смежных граней. Невидимые рёбра не изображаются (как в условии).
 		let visibleEdges = {};
