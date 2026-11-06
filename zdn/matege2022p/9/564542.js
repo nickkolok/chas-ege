@@ -18,8 +18,6 @@ retryWhileUndefined(function() {
 	if (a.abs() + d.abs() > 6)
 		return;
 	let factor = sl(0.5, 1.5, 0.5).pm();
-	if (factor * c == 2)
-		return;
 	let formula = 'a\\' + trigfuncs + '(b \\pi x+' + (factor).texfracpi(1) + ' c)+d';
 	if (trigfuncs == 'sin') {
 		if (sl1()) {
@@ -39,20 +37,16 @@ retryWhileUndefined(function() {
 		return;
 	let question, answ;
 	let limits = '';
-	switch (sl(1, 3)) {
-	case 1:
+	let q = sl(1, 3);
+	if (q == 1) {
 		let x1 = sl(5, 10).pm();
 		question = '$f(' + x1 + ')$';
 		answ = f(x1);
-		if ((answ * 1000).isZ())
-			break;
-	case 2:
+	} else if (q == 2) {
 		let x2 = sl(5, 10).pm();
 		question = '$f(f(' + x2 + '))$';
 		answ = f(f(x2));
-		if ((answ * 1000).isZ())
-			break;
-	case 3:
+	} else {
 		question = '';
 		let mng = [c, d];
 		let st = ['c', 'd'];
