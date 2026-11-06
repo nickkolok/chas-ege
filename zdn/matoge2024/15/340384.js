@@ -3,10 +3,16 @@
         NAinfo.requireApiVersion(0, 2);
         let letters = om.latbukv.slice(0, 3);
 
+        let legAB = sl(3, 40);
+        let legBC = sl(3, 40);
+        // Гипотенуза считается из целых катетов точно, а не по построенному треугольнику
+        let hypotenuse = (legAB * legAB + legBC * legBC).sqrt();
+        genAssert(hypotenuse.isZ(), 'Гипотенуза должна быть целой');
+
         let triangle = new Triangle({
             lengths: {
-                lengthAB: sl(3, 40),
-                lengthBC: sl(3, 40),
+                lengthAB: legAB,
+                lengthBC: legBC,
             },
             angles: {
                 angle: Math.PI / 2,
@@ -14,8 +20,7 @@
         });
         genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
 
-        let radius = triangle.radiusOfCircumscribedCircle;
-        genAssertZ1000(radius / 100);
+        let radius = hypotenuse / 2;
 
         let points = autoScale(triangle.vertices);
 
@@ -41,8 +46,8 @@
 
         NAtask.setTask({
             text: `В треугольнике $ABC$ известно, что 
-				${[`$AB=${triangle.lengthAB}$`,
-                	`$BC=${triangle.lengthBC}$`,
+				${[`$AB=${legAB}$`,
+                	`$BC=${legBC}$`,
                 	`угол $B$ равен $90^{\\circ}$`
                 ].shuffleJoin(`, `)}. 
 				Найдите радиус описанной окружности этого треугольника.`,
