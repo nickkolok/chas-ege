@@ -16,10 +16,12 @@
 			Y = 9999;
 		}
 
+		let min = X + (rand === 0 ? 1 : 0);
+		let max = Y - (rand === 0 ? 1 : 0);
 		let Z, S;
 		let found = false;
 		for (let attempt = 0; attempt < 100; attempt++) {
-			let N = sl(X, Y);
+			let N = sl(min, max);
 			let divs = [];
 			for (let z = 11; z <= 40; z++) {
 				if (N % z === 0) divs.push(z);
@@ -41,7 +43,7 @@
 		}
 
 		let validNumbers = [];
-		for (let A = X; A <= Y; A++) {
+		for (let A = min; A <= max; A++) {
 			if (A % Z === 0 && sumDigits(A) === S) {
 				validNumbers.push(A);
 			}
@@ -49,10 +51,6 @@
 
 		genAssert(validNumbers.length > 0,
 			`Не найдено чисел для Z=${Z}, S=${S}, диапазон [${X}; ${Y}]`);
-
-		if (validNumbers.length > 100) {
-			validNumbers = validNumbers.slice(0, 100);
-		}
 
 		let textBody;
 		if (rand === 0) {
@@ -71,3 +69,4 @@
 })();
 //https://mathb-ege.sdamgia.ru/test?likes=512447
 //Selena
+// 21D3F4, FB4DA9, 69BEE9, A29BB4, 90224A, D15F13, D03FA5, CB1AAA, F5AD3A, EFEECE, 7C4FFB

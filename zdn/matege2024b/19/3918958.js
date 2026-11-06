@@ -27,42 +27,38 @@
 			step = divisor;
 		}
 
-		let found = [];
-		let prodForBounds = null;
+		function digitProduct(number) {
+			return Array.from(String(number), Number).reduce((product, digit) => product * digit, 1);
+		}
 
-		while (
-			(rand2 === 0 && current >= minVal) ||
-			(rand2 === 1 && current <= maxVal)
-		) {
-			let s = String(current);
-			if (!s.includes('0')) {
-				let prod = 1;
-				for (let c of s) {
-					prod *= parseInt(c);
-				}
-				if (prod >= 10 && prod <= 100) {
-					found.push(current);
-					if (prodForBounds === null) {
-						prodForBounds = prod;
-					}
-					if (found.length >= 5) {
-						break;
-					}
-				}
+		let first = current;
+		while (current >= minVal && current <= maxVal) {
+			let product = digitProduct(current);
+			if (product >= 10 && product <= 100) {
+				break;
 			}
 			current += step;
 		}
-
-		genAssert(found.length > 0, 'Не найдено подходящее число, кратное divisor');
-
+		genAssert(current >= minVal && current <= maxVal, 'Не найдено подходящее число');
+		let prodForBounds = digitProduct(current);
 		let range = Math.max(5, Math.floor(prodForBounds / 5));
 		let minProd = Math.max(1, prodForBounds - range);
 		let maxProd = Math.min(300, prodForBounds + range);
 
+		// Проверяем и числа перед первоначальным кандидатом: их произведения
+		// могут попадать в выбранный промежуток, даже если выходят за [10; 100].
+		let answer = first;
+		while (true) {
+			let product = digitProduct(answer);
+			if (product > minProd && product < maxProd) {
+				break;
+			}
+			answer += step;
+		}
 		NAtask.setTask({
 			text: 'Найдите ' + direction + ' ' + digitWord + ' число, кратное $' + divisor + '$, произведение цифр которого больше $' + minProd +
-				'$, но меньше $' + maxProd + '$. В ответе укажите какое-нибудь одно такое число.',
-			answers: found,
+				'$, но меньше $' + maxProd + '$.',
+			answers: answer,
 			preference: [preference1, preference2],
 		});
 		NAtask.modifiers.allDecimalsToStandard();
@@ -70,4 +66,4 @@
 })();
 //zer00player
 //3918958
-//Открытый банк заданий 3BCC6E
+// 3BCC6E, 6DC37A
