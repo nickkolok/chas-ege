@@ -34,7 +34,7 @@
         let scaled = autoScale(figure.map((p) => ({ x: p.x + shift.x, y: p.y + shift.y })));
         let points = scaled.slice(0, 3);
         let pointExt = scaled[3];
-        let letters = latbukv.slice(0, 3);
+        let letters = om.latbukv.slice(0, 3);
 
         let paint1 = function (ctx) {
             let h = 400;
