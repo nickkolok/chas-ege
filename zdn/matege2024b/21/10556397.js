@@ -8,7 +8,9 @@
   var preference = ['bearCookies', 'mashaCookies'];
   var rand = getSelectedPreferenceFromList(key, preference);
   var C = 5 * sluchch(12, 400, 1);
-  var bank = [51, 55, 68, 85, 100, 102, 110, 115, 120, 140, 160];
+  // C = 5*sluchch(12,400,1) всегда кратно 5 и не меньше 60, поэтому из чисел
+  // прототипов банка (A113ED и соседние) достижимы только эти.
+  var bank = [85, 100, 110, 115, 120, 140, 160];
   genAssert(bank.indexOf(C) < 0, 'это число занято прототипом банка');
   var who = rand == 0 ? 'Медведь' : 'Маша';
   NAtask.setTask({
