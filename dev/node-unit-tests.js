@@ -383,4 +383,128 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(gp.member(2), 6, 'b₂ = 6');
         assert.equal(gp.member(3), 18, 'b₃ = 18');
     });
+
+    // ============================================================
+    //  Видимость граней и рёбер  (lib/figure.js)
+    // ============================================================
+    QUnit.module('Видимость граней (facesVisibility, isOnVisibleFace, dashHiddenEdges)');
+
+    // lib/figure.js и lib/project3DTo2D.js в chas-lib.js не отдают свои
+    // функции и классы в global, поэтому загружаем их в отдельный контекст
+    var geometry = (function () {
+        var vm = require('vm');
+        var fs = require('fs');
+        var path = require('path');
+        var context = vm.createContext({ Math: Math });
+        ['figure.js', 'project3DTo2D.js'].forEach(function (file) {
+            vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'lib', file), 'utf8'), context);
+        });
+        vm.runInContext('this.Cube = Cube; this.RegularPyramid = RegularPyramid; this.RegularPrism = RegularPrism;', context);
+        return context;
+    })();
+
+    // Камера, как в шаблонах matege2024b: взгляд сверху-спереди под небольшим углом
+    var camera = {
+        x: 0, y: 0, z: 0, scale: 50,
+        rotationX: -Math.PI / 2 + Math.PI / 11, rotationY: 0, rotationZ: Math.PI / 10,
+    };
+    var project = function (vertices, cam) {
+        return vertices.map(function (v) {
+            return geometry.project3DTo2D(v, cam || camera);
+        });
+    };
+    var count = function (array) {
+        return array.filter(Boolean).length;
+    };
+
+    QUnit.test('Куб: видны ровно три грани, и верхняя среди них', function (assert) {
+        var cube = new geometry.Cube(4);
+        var vertices = cube.verticesOfFigure;
+        // Нумерация Cube: 0-3 - нижнее основание (z < 0), 4-7 - верхнее
+        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var visibility = geometry.facesVisibility(vertices, project(vertices), faces);
+        assert.equal(count(visibility), 3, 'видны три грани');
+        assert.ok(visibility[1], 'верхнее основание видно (взгляд сверху)');
+        assert.notOk(visibility[0], 'нижнее основание не видно');
+        // Противоположные грани не видны одновременно
+        assert.notOk(visibility[2] && visibility[4], 'боковые грани y = 2 и y = -2');
+        assert.notOk(visibility[3] && visibility[5], 'боковые грани x = 2 и x = -2');
+    });
+
+    QUnit.test('Порядок обхода грани и масштаб чертежа не влияют на ответ', function (assert) {
+        var cube = new geometry.Cube(4);
+        var vertices = cube.verticesOfFigure;
+        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var reversed = faces.map(function (face) {
+            return face.slice().reverse();
+        });
+        var points2D = project(vertices);
+        // Сдвиг и растяжение, как после autoScale() и центрирования
+        var moved = points2D.map(function (p) {
+            return { x: 3 * p.x + 100, y: 3 * p.y - 40 };
+        });
+        var visibility = geometry.facesVisibility(vertices, points2D, faces);
+        assert.deepEqual(geometry.facesVisibility(vertices, points2D, reversed), visibility, 'обход в другую сторону');
+        assert.deepEqual(geometry.facesVisibility(vertices, moved, faces), visibility, 'сдвиг и масштаб');
+    });
+
+    QUnit.test('Взгляд снизу: видимость меняется на противоположную', function (assert) {
+        var cube = new geometry.Cube(4);
+        var vertices = cube.verticesOfFigure;
+        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var below = Object.assign({}, camera, { rotationX: -Math.PI / 2 - Math.PI / 11 });
+        var visibility = geometry.facesVisibility(vertices, project(vertices, below), faces);
+        assert.ok(visibility[0], 'нижнее основание видно');
+        assert.notOk(visibility[1], 'верхнее основание не видно');
+    });
+
+    QUnit.test('Тетраэдр и треугольная призма: одна скрытая вершина, три пунктирных ребра', function (assert) {
+        var pyramid = new geometry.RegularPyramid({ height: 4, baseSide: 4, numberSide: 3 });
+        var pv = pyramid.verticesOfFigure;
+        var pyramidFaces = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [2, 0, 3]];
+        var pVisibility = geometry.facesVisibility(pv, project(pv), pyramidFaces);
+        var pMatrix = geometry.dashHiddenEdges(pyramid.connectionMatrix, pyramidFaces, pVisibility, [6, 4]);
+        var dashed = [];
+        pMatrix.forEach(function (row, i) {
+            row.forEach(function (value, j) {
+                if (Array.isArray(value)) {
+                    dashed.push((i + 1) + '-' + j);
+                }
+            });
+        });
+        assert.deepEqual(dashed, ['2-0', '2-1', '3-2'], 'тетраэдр: пунктир - три ребра при вершине 2');
+        assert.deepEqual(pMatrix[0], [1], 'ребро 1-0 сплошное');
+        assert.deepEqual(pyramid.connectionMatrix[1], [1, 1], 'исходная матрица не изменилась');
+
+        var prism = new geometry.RegularPrism({ height: 4, baseSide: 4, numberSide: 3 });
+        var rv = prism.verticesOfFigure;
+        var prismFaces = [[0, 1, 2], [3, 4, 5], [0, 1, 4, 3], [1, 2, 5, 4], [2, 0, 3, 5]];
+        var rVisibility = geometry.facesVisibility(rv, project(rv), prismFaces);
+        // Скрыта задняя нижняя вершина 2, а с ней - нижнее основание и обе
+        // боковые грани при ней; видны верхнее основание и передняя грань 0-1-4-3
+        assert.deepEqual(rVisibility, [false, true, true, false, false], 'призма: видны верхнее основание и грань 0-1-4-3');
+        assert.ok(geometry.isOnVisibleFace(prismFaces, rVisibility, [3, 4]), 'ребро верхнего основания видно');
+        assert.notOk(geometry.isOnVisibleFace(prismFaces, rVisibility, [2, 0]), 'ребро 2-0 скрыто');
+        assert.notOk(geometry.isOnVisibleFace(prismFaces, rVisibility, [2, 5]), 'боковое ребро 2-5 скрыто');
+        assert.ok(geometry.isOnVisibleFace(prismFaces, rVisibility, [0, 1, 3, 4]),
+            'отрезок между точками на рёбрах 0-1 и 3-4 лежит в видимой грани');
+    });
+
+    // ============================================================
+    //  Circle  (lib/circle.js)
+    // ============================================================
+    QUnit.module('Circle');
+
+    QUnit.test('Circle.prototype.drawOnto передаёт в drawCircle центр и числовой радиус', function (assert) {
+        var circle = new Circle(new Point(3, -4), 5);
+        var calls = [];
+        var ctx = {
+            drawCircle: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        circle.drawOnto(ctx);
+        assert.equal(calls.length, 1, 'drawCircle вызван ровно один раз');
+        assert.deepEqual(calls[0], [3, -4, 5], 'drawCircle(x центра, y центра, радиус)');
+    });
 };
