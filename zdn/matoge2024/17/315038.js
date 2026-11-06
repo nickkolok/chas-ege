@@ -1,7 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let letters = latbukv.slice(0, 4);
+		let letters = om.latbukv.slice(0, 4);
 
 		let key = '315038';
 		let preference1 = ['AC', 'BD']; // какая диагональ
