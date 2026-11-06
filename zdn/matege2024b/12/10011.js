@@ -13,8 +13,12 @@
 			},
 		});
 
-		let relation1 = [sl(1, 5), sl(6, 10)].shuffle();
-		let relation2 = [sl(1, 5), sl(6, 10)].shuffle();
+		// Точка делит сторону на части relation[0] и relation[1]; в условии — отношение части ко всей стороне.
+		// Части взаимно просты, чтобы отношение было несократимым (в т. ч. 1:2 при равных частях 1 и 1)
+		let relation1 = [sl(1, 12), sl(1, 12)];
+		let relation2 = [sl(1, 12), sl(1, 12)];
+		genAssertIrreducible(relation1[0], relation1[1], 'Отношение на стороне AC сократимо');
+		genAssertIrreducible(relation2[0], relation2[1], 'Отношение на стороне BC сократимо');
 
 		let pointM = [triangle.pointA[0], triangle.pointC[0]].mt_segmentDivisionPoint(relation1[0], relation1[1]);
 		genAssert((pointM.y - triangle.pointA[0].y).abs() > 1, 'Точки M и A слились');
