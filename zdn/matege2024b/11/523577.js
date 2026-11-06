@@ -72,9 +72,13 @@
 			let h1 = 1.6 * Math.sqrt(aRatio / hRatio);
 			let a2 = a1 * aRatio;
 			let h2 = h1 * hRatio;
-			// Косоугольная проекция: глубина - половина стороны основания под углом 40°
-			let dx = 0.5 * Math.cos(Math.PI * 2 / 9);
-			let dy = 0.5 * Math.sin(Math.PI * 2 / 9);
+			// Коробки рисует drawParallelepiped(): глубина (сторона основания,
+			// уходящая вглубь) сокращена, её проекция - depth * cos(angle) по
+			// горизонтали и depth / 2 по вертикали
+			let depthRatio = 0.6;
+			let angle = Math.PI / 4;
+			let dx = depthRatio * Math.cos(angle);
+			let dy = depthRatio / 2;
 			let gap = 0.35 * Math.max(a1, a2);
 			let margin = 0.1 * Math.max(a1, a2, h1, h2);
 
@@ -87,25 +91,20 @@
 			ct.translate((ct.canvas.width - s * totalW) / 2, (ct.canvas.height + s * totalH) / 2 - s * margin);
 			ct.scale(s, -s);
 			ct.lineWidth = 2 / s;
-			ct.strokeStyle = om.secondaryBrandColors.iz();
 
+			let edgeColor = om.secondaryBrandColors.iz();
 			let drawBox = function (x, a, h) {
-				let ox = a * dx;
-				let oy = a * dy;
-				// Передняя грань
-				ct.strokeRect(x, 0, a, h);
-				// Верхняя и правая боковая грани
-				ct.drawLine(x, h, x + ox, h + oy);
-				ct.drawLine(x + ox, h + oy, x + a + ox, h + oy);
-				ct.drawLine(x + a, h, x + a + ox, h + oy);
-				ct.drawLine(x + a + ox, h + oy, x + a + ox, oy);
-				ct.drawLine(x + a, 0, x + a + ox, oy);
-				// Невидимые рёбра при задней нижней вершине - пунктиром
-				ct.setLineDash([6 / s, 4 / s]);
-				ct.drawLine(x + ox, oy, x, 0);
-				ct.drawLine(x + ox, oy, x + a + ox, oy);
-				ct.drawLine(x + ox, oy, x + ox, h + oy);
-				ct.setLineDash([]);
+				ct.save();
+				ct.translate(x, 0);
+				// Пунктиром - невидимые рёбра при задней нижней вершине (6, 8, 10)
+				ct.drawParallelepiped({
+					width: a,
+					height: h,
+					depth: depthRatio * a,
+					angle: angle,
+					strokeStyle: edgeColor,
+				}, [6, 8, 10], false, [6 / s, 4 / s]);
+				ct.restore();
 			};
 
 			drawBox(x1, a1, h1);
