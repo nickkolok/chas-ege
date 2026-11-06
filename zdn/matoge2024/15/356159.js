@@ -15,40 +15,47 @@
             preferenceValue: 2,
         }], sl(0, 2));
 
-        let triangle = new Triangle({
-            lengths: {
-                lengthAB: sl(5, 20),
-                lengthBC: sl(5, 20),
-                lengthCA: sl(5, 20),
-            },
-            supplementary: {
-                calculateHeights: true,
-            }
-        });
-        genAssert(![triangle.lengthCA, triangle.lengthBC].hasDubl(), 'Все стороны треугольника должны быть разными');
-
-        [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle < 90, 'Треугольник не остроугольный'));
-
-        let sinAngle = sl(0.1, 0.9, 0.1);
+        // Две стороны и синус угла между ними (несократимая дробь, как в ФИПИ) задаются напрямую,
+        // а чертёж строится по ним — так угол на чертеже действительно имеет данный синус
+        let sideFirst = sl(3, 25);
+        let sideSecond = sl(3, 25);
+        let sinDenominator = sl(2, 15);
+        let sinNumerator = sl(1, sinDenominator - 1);
+        genAssertIrreducible(sinNumerator, sinDenominator, 'Синус — сократимая дробь');
+        genAssert(sinNumerator / sinDenominator >= 1 / 4, 'Слишком маленький синус — плохо читаемый чертёж');
+        let area = sideFirst * sideSecond * sinNumerator / sinDenominator / 2;
+        genAssertZ1000(area, 'Площадь — бесконечная дробь или слишком много знаков после запятой');
 
         let angleDano = letters.slice(0, 3).permuteCyclic(variant).randomReverse();
         let sides = [angleDano.slice(0, 2), angleDano.slice(1, 3)].map(elem => elem.join(''));
 
-        sides = sides.map(side => {
-            switch (side) {
-                case 'BA':
-                case 'AB':
-                    return [`${side}=${triangle.lengthAB}`, triangle.lengthAB];
-                case 'CB':
-                case 'BC':
-                    return [`${side}=${triangle.lengthBC}`, triangle.lengthBC];
-                case 'CA':
-                case 'AC':
-                    return [`${side}=${triangle.lengthCA}`, triangle.lengthCA];
-            }
-        });
+        // Вершина данного угла — в начале координат, первая сторона — вдоль оси x,
+        // вторая — под углом с данным синусом (острым или тупым)
+        let angle = Math.asin(sinNumerator / sinDenominator);
+        if (sl1()) {
+            angle = Math.PI - angle;
+        }
+        let vertexByLetter = {};
+        vertexByLetter[angleDano[1]] = { x: 0, y: 0 };
+        vertexByLetter[angleDano[0]] = { x: sideFirst, y: 0 };
+        vertexByLetter[angleDano[2]] = { x: sideSecond * Math.cos(angle), y: sideSecond * Math.sin(angle) };
+        let vertices = letters.map((letter) => vertexByLetter[letter]);
 
-        let points = autoScale(triangle.vertices);
+        // Центрируем по габаритам: autoScale масштабирует относительно начала координат
+        let xs = vertices.map((p) => p.x);
+        let ys = vertices.map((p) => p.y);
+        let shiftX = (Math.min(...xs) + Math.max(...xs)) / 2;
+        let shiftY = (Math.min(...ys) + Math.max(...ys)) / 2;
+        // Поле чуть меньше стандартного — чтобы подписи снаружи вершин не обрезались краем холста
+        let points = autoScale(vertices.map((p) => ({ x: p.x - shiftX, y: p.y - shiftY })), undefined, [], {
+            startX: -165, finishX: 165, startY: -150, finishY: 150,
+        });
+        let connectionMatrix = [
+            [1],
+            [1, 1],
+        ];
+        // Подписи — снаружи треугольника: от центра тяжести через вершину
+        let centroid = { x: points.map((p) => p.x).sum() / 3, y: points.map((p) => p.y).sum() / 3 };
 
         let paint1 = function (ctx) {
             let h = 400;
@@ -60,16 +67,23 @@
             ctx.strokeStyle = om.secondaryBrandColors;
 
             ctx.lineWidth = 2;
-            ctx.drawFigure(points, triangle.connectionMatrix);
+            ctx.drawFigure(points, connectionMatrix);
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            points.forEach((elem, i) => {
+                let dx = elem.x - centroid.x;
+                let dy = elem.y - centroid.y;
+                let len = Math.hypot(dx, dy);
+                ctx.fillText(letters[i], elem.x + dx / len * 16, -(elem.y + dy / len * 16));
+            });
         };
 
         NAtask.setTask({
-            text: `В треугольнике $ABC$ известно, что $${[sides[0][0], sides[1][0]].concat(`\\sin \\angle ${angleDano.join('')} = ${sinAngle.texfrac(1)}`).shuffleJoin('$, $')}$. Найдите площадь треугольника $ABC$.`,
-            answers: 0.5 * sides[0][1] * sides[1][1] * sinAngle,
+            text: `В треугольнике $ABC$ известно, что $${[`${sides[0]}=${sideFirst}`, `${sides[1]}=${sideSecond}`].concat(`\\sin \\angle ${angleDano.join('')} = ${sinNumerator.texfrac(sinDenominator)}`).shuffleJoin('$, $')}$. Найдите площадь треугольника $ABC$.`,
+            answers: area,
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.variativeABC(letters);
