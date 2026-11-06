@@ -43,16 +43,13 @@
 			'Первая коробка ' + multiplierPhrase(kh, inWords) + ' ' + (firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' +
 			[' ', ' — '].iz() + multiplierPhrase(ka, inWords) + ' ' + (secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
 
-		let fmt = function (x) {
-			return String(Math.round(x * 100) / 100).replace('.', '{,}');
-		};
 		let analys = 'Объём правильной четырёхугольной призмы равен $V = a^2 h$, где $a$ — сторона основания, $h$ — высота. ' +
 			'Обозначим сторону основания и высоту первой коробки $a$ и $h$. ' +
-			'Тогда у второй коробки высота равна $' + (firstTaller ? '\\frac{h}{' + fmt(kh) + '}' : fmt(kh) + 'h') +
-			'$, а сторона основания равна $' + (secondWider ? fmt(ka) + 'a' : '\\frac{a}{' + fmt(ka) + '}') + '$. ' +
-			'Значит, $\\frac{V_2}{V_1} = ' + (secondWider ? fmt(ka) + '^2' : '\\frac{1}{' + fmt(ka) + '^2}') + ' \\cdot ' +
-			(firstTaller ? '\\frac{1}{' + fmt(kh) + '}' : fmt(kh)) + ' = ' +
-			(secondBigger ? fmt(ans) : '\\frac{1}{' + fmt(ans) + '}') + '$, ' +
+			'Тогда у второй коробки высота равна $' + (firstTaller ? '\\frac{h}{' + kh + '}' : kh + 'h') +
+			'$, а сторона основания равна $' + (secondWider ? ka + 'a' : '\\frac{a}{' + ka + '}') + '$. ' +
+			'Значит, $\\frac{V_2}{V_1} = ' + (secondWider ? ka + '^2' : '\\frac{1}{' + ka + '^2}') + ' \\cdot ' +
+			(firstTaller ? '\\frac{1}{' + kh + '}' : kh) + ' = ' +
+			(secondBigger ? ans : '\\frac{1}{' + ans + '}') + '$, ' +
 			'то есть объём ' + (secondBigger ? 'второй коробки больше объёма первой' : 'первой коробки больше объёма второй') +
 			' в ' + chislitlx(ans, 'раз', '$') + '.';
 
@@ -63,7 +60,7 @@
 			authors: ['chas-ege-selena'],
 			preference: [preferenceMultiplier],
 		});
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 
 		let paintBoxes = function (ct) {
 			// Рисуем в условных единицах (сторона основания первой коробки = 1),
