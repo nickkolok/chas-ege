@@ -3,38 +3,21 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		// Кратности - словами, как у ФИПИ (11 №37-48): по высоте «в полтора раза»,
-		// «вдвое», «в четыре раза», «вчетверо», «в четыре с половиной раза»;
-		// по ширине «в полтора раза», «вдвое», «втрое», «в три раза», «в четыре раза»
-		let heightMultipliers = [
-			{ k: 1.5, words: ['в полтора раза'] },
-			{ k: 2, words: ['вдвое', 'в два раза'] },
-			{ k: 3, words: ['втрое', 'в три раза'] },
-			{ k: 4, words: ['вчетверо', 'в четыре раза'] },
-			{ k: 4.5, words: ['в четыре с половиной раза'] },
-		];
-		let widthMultipliers = [
-			{ k: 1.5, words: ['в полтора раза'] },
-			{ k: 2, words: ['вдвое', 'в два раза'] },
-			{ k: 3, words: ['втрое', 'в три раза'] },
-			{ k: 4, words: ['вчетверо', 'в четыре раза'] },
-		];
+		// Кратности - как у ФИПИ (11 №37-48); словами они записываются
+		// по om.multiplierWords («в полтора раза», «вдвое», «вчетверо» и т.д.)
+		let kh = [1.5, 2, 3, 4, 4.5].iz(); // по высоте
+		let kr = [1.5, 2, 3, 4].iz(); // по ширине
 		// Запись кратностей: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
 		// («в $1{,}5$ раза», «в $2$ раза»)
 		let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
 		let inWords = getSelectedPreferenceFromList('510966', preferenceMultiplier) === 0;
-		let multWords = function (m) {
-			return inWords ? m.words.iz() : 'в $' + String(m.k).replace('.', '{,}') + '$ раза';
-		};
-		let kh = heightMultipliers.iz();
-		let kr = widthMultipliers.iz();
 		// Первая кружка выше или ниже второй; вторая шире или у́же первой
 		let firstTaller = sl1();
 		let secondWider = sl1();
 
 		// Отношения размеров второй кружки к первой
-		let hRatio = firstTaller ? 1 / kh.k : kh.k; // h2 / h1
-		let rRatio = secondWider ? kr.k : 1 / kr.k; // r2 / r1
+		let hRatio = firstTaller ? 1 / kh : kh; // h2 / h1
+		let rRatio = secondWider ? kr : 1 / kr; // r2 / r1
 		// V2 / V1 = (r2 / r1)^2 * (h2 / h1)
 		let ratio = rRatio * rRatio * hRatio;
 		let secondBigger = ratio > 1;
@@ -49,18 +32,18 @@
 			['Во сколько раз объём второй кружки больше объёма первой?', 'Во сколько раз объём первой кружки меньше объёма второй?'].iz() :
 			['Во сколько раз объём первой кружки больше объёма второй?', 'Во сколько раз объём второй кружки меньше объёма первой?'].iz();
 
-		let text = 'Даны две кружки цилиндрической формы. Первая кружка ' + multWords(kh) + ' ' +
-			(firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' + [' ', ' — '].iz() + multWords(kr) + ' ' +
+		let text = 'Даны две кружки цилиндрической формы. Первая кружка ' + multiplierPhrase(kh, inWords) + ' ' +
+			(firstTaller ? 'выше' : 'ниже') + ' второй, а вторая' + [' ', ' — '].iz() + multiplierPhrase(kr, inWords) + ' ' +
 			(secondWider ? 'шире' : 'у́же') + ' первой. ' + question;
 
 		let fmt = function (x) {
 			return String(Math.round(x * 1000) / 1000).replace('.', '{,}');
 		};
 		let analys = 'Объём цилиндра равен $V = \\pi r^2 h$. Обозначим радиус и высоту первой кружки $r$ и $h$. ' +
-			'Тогда у второй кружки высота равна $' + (firstTaller ? '\\frac{h}{' + fmt(kh.k) + '}' : fmt(kh.k) + 'h') +
-			'$, а радиус равен $' + (secondWider ? fmt(kr.k) + 'r' : '\\frac{r}{' + fmt(kr.k) + '}') + '$. ' +
-			'Значит, $\\frac{V_2}{V_1} = ' + (secondWider ? fmt(kr.k) + '^2' : '\\frac{1}{' + fmt(kr.k) + '^2}') + ' \\cdot ' +
-			(firstTaller ? '\\frac{1}{' + fmt(kh.k) + '}' : fmt(kh.k)) + ' = ' +
+			'Тогда у второй кружки высота равна $' + (firstTaller ? '\\frac{h}{' + fmt(kh) + '}' : fmt(kh) + 'h') +
+			'$, а радиус равен $' + (secondWider ? fmt(kr) + 'r' : '\\frac{r}{' + fmt(kr) + '}') + '$. ' +
+			'Значит, $\\frac{V_2}{V_1} = ' + (secondWider ? fmt(kr) + '^2' : '\\frac{1}{' + fmt(kr) + '^2}') + ' \\cdot ' +
+			(firstTaller ? '\\frac{1}{' + fmt(kh) + '}' : fmt(kh)) + ' = ' +
 			(secondBigger ? fmt(ans) : '\\frac{1}{' + fmt(ans) + '}') + '$, ' +
 			'то есть объём ' + (secondBigger ? 'второй кружки больше объёма первой' : 'первой кружки больше объёма второй') +
 			' в $' + ans + '$ раз' + (ans % 10 >= 2 && ans % 10 <= 4 && (ans % 100 < 12 || ans % 100 > 14) ? 'а' : '') + '.';
