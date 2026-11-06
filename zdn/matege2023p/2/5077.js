@@ -68,7 +68,7 @@
 			answers: [nameCylinder[1], nameSphere[1]][rand],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
-		NAtask.modifiers.assertSaneDecimals();
+		genAssertZ1000([nameCylinder[1], nameSphere[1]][rand]);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
