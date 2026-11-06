@@ -5,10 +5,7 @@
 		let key = "513740";
 		
 		let preference = ['diagonal', 'perimeter'];
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		// Параллелограмм, диагонали которого — биссектрисы углов, — ромб. Его диагонали
 		// перпендикулярны и делятся пополам, так что половины диагоналей и сторона образуют
