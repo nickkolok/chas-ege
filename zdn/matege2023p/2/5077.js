@@ -1,8 +1,4 @@
 (function() {
-	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
-	lx_declareClarifiedPhrase('диаметр', 'основания');
-	lx_declareClarifiedPhrase('радиус', 'основания');
-	lx_declareClarifiedPhrase('полная', ' площадь поверхности');
 
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
