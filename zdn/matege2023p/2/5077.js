@@ -18,11 +18,11 @@
 			[
 				['диаметр основания', 'высота'].iz(), cyl.height
 			],
-			['полная площадь поверхности', cyl.surfaceArea, ]
+			['полная площадь поверхности', cyl.surfaceArea]
 		].iz();
 		let nameSphere = [
 			['радиус', sphere.radius],
-			['площадь поверхности', sphere.surfaceArea, ],
+			['площадь поверхности', sphere.surfaceArea],
 			['объём', sphere.volume],
 			['диаметр', sphere.diameter]
 		].iz();
