@@ -5,6 +5,8 @@
 		let key = '510715';
 		let preference = ['3digit', '4digit', '5digit'];
 		let rand = getSelectedPreferenceFromList(key, preference);
+		let preferenceBound = ['between', 'above', 'below'];
+		let bound = getSelectedPreferenceFromList(key, preferenceBound);
 
 		let d = [3, 4, 5][rand];
 		let start = Math.pow(10, d - 1);
@@ -48,19 +50,27 @@
 
 		let validAnswers = [];
 		for (let v of allValidForD) {
-			if (v > moreThan && v < lessThan) {
+			if ((bound === 2 || v > moreThan) && (bound === 1 || v < lessThan)) {
 				validAnswers.push(v);
 			}
 		}
+		genAssertNonempty(validAnswers);
+		let size = ['трёхзначное', 'четырёхзначное', 'пятизначное'][rand];
+		let textStart = [
+			'Найдите натуральное число, большее $' + moreThan + '$, но меньшее $' + lessThan + '$',
+			'Найдите ' + size + ' натуральное число, большее $' + moreThan + '$',
+			'Найдите ' + size + ' натуральное число, меньшее $' + lessThan + '$',
+		][bound];
 		NAtask.setTask({
-			text: 'Найдите натуральное число, большее $' + moreThan + '$, но меньшее $' + lessThan + '$, ' +
+			text: textStart + ', ' +
 				'которое делится на каждую свою цифру и все цифры которого различны и не равны нулю. ' +
 				'В ответе укажите какое-нибудь одно такое число.',
 			answers: validAnswers,
-			preference: preference,
+			preference: [preference, preferenceBound],
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000);
 })();
 //https://mathb-ege.sdamgia.ru/test?likes=510715
 //zer00player
+// A2E542, 1DF008, A8F2D4, 58FFA0
