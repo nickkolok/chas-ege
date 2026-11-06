@@ -8,9 +8,11 @@
 		let kh = [1.5, 2, 3, 4, 4.5].iz(); // по высоте
 		let kr = [1.5, 2, 3, 4].iz(); // по ширине
 		// Запись кратностей: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
-		// («в $1{,}5$ раза», «в $2$ раза»)
+		// («в $1{,}5$ раза», «в $2$ раза»). Без preference - случайно для каждой
+		// кратности отдельно (inWords не задано)
 		let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
-		let inWords = getSelectedPreferenceFromList('510966', preferenceMultiplier) === 0;
+		let multiplierPref = getSelectedPreferenceFromList('510966', preferenceMultiplier, -1);
+		let inWords = multiplierPref === -1 ? undefined : multiplierPref === 0;
 		// Первая кружка выше или ниже второй; вторая шире или у́же первой
 		let firstTaller = sl1();
 		let secondWider = sl1();
