@@ -101,9 +101,12 @@ retryWhileUndefined(function() {
 		graph9AmarkCircles(ct, p, 4, 0.15);
 	};
 
+	let unknowns = [];
+	if (formula.includes('a')) unknowns.push('$a$');
+	let unknownsText = unknowns.length > 0 ? unknowns.join(', ') + ', ' : '';
+
 	NAtask.setTask({
-		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, где ' + ('$a$,').esli(formula.includes(
-				'a\\')) + ' ' + ('$b$,').esli(formula.includes('b')) + ' $c$ и $d$ - целые' +
+		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, где ' + unknownsText + '$c$ и $d$ — целые' +
 			(', $a' + sign + '0$').esli(formula.includes('a')) + limits +
 			'. Найдите ' + question +
 			'.',
