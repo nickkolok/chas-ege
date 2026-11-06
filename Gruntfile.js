@@ -101,6 +101,7 @@ module.exports = function(grunt) {
 					{ src: 'node_modules/html2canvas/dist/html2canvas.min.js', dest: 'dist/ext/html2canvas.js' },
 					{ src: 'node_modules/jszip/dist/jszip.min.js', dest: 'dist/ext/jszip.min.js' },
 					{ src: 'node_modules/seedrandom/seedrandom.min.js', dest: 'dist/ext/seedrandom.min.js' },
+					{ src: 'node_modules/fillword/lib/fillword.js', dest: 'dist/ext/fillword.js' },
 				]
 			},
 			otherHtml: {
