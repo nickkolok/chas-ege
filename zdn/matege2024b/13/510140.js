@@ -83,53 +83,20 @@
 				});
 				let points2D = vertices.map((vertex) => project3DTo2D(vertex, camera));
 
-				// Видимость граней - по знаку ориентированной площади проекции при обходе,
-				// согласованном с внешней нормалью (приём откалиброван на одобренном 509658.js).
-				let n = vertices.length;
-				let centroid = { x: 0, y: 0, z: 0 };
-				vertices.forEach(function (vertex) {
-					centroid.x += vertex.x / n;
-					centroid.y += vertex.y / n;
-					centroid.z += vertex.z / n;
-				});
+				// Видимость граней и рёбер - facesVisibility() и dashHiddenEdges() из lib/figure.js.
 				// Грани: нижнее и верхнее основания и три боковые.
 				let faces = [[0, 1, 2], [3, 4, 5], [0, 1, 4, 3], [1, 2, 5, 4], [2, 0, 3, 5]];
-				let facesVisible = faces.map(function (face) {
-					let p0 = vertices[face[0]], p1 = vertices[face[1]], p2 = vertices[face[2]];
-					let u = { x: p1.x - p0.x, y: p1.y - p0.y, z: p1.z - p0.z };
-					let w = { x: p2.x - p0.x, y: p2.y - p0.y, z: p2.z - p0.z };
-					let normal = { x: u.y * w.z - u.z * w.y, y: u.z * w.x - u.x * w.z, z: u.x * w.y - u.y * w.x };
-					let fc = {
-						x: (p0.x + p1.x + p2.x) / 3 - centroid.x,
-						y: (p0.y + p1.y + p2.y) / 3 - centroid.y,
-						z: (p0.z + p1.z + p2.z) / 3 - centroid.z,
-					};
-					// Знак площади берём от обхода, согласованного с ВНЕШНЕЙ нормалью:
-					// если обход грани даёт нормаль внутрь, площадь берём с минусом.
-					let orient = (normal.x * fc.x + normal.y * fc.y + normal.z * fc.z) < 0 ? -1 : 1;
-					let q0 = points2D[face[0]], q1 = points2D[face[1]], q2 = points2D[face[2]];
-					let area = (q1.x - q0.x) * (q2.y - q0.y) - (q2.x - q0.x) * (q1.y - q0.y);
-					return orient * area > 0;
-				});
-
-				// Матрица смежности: matrix[i][j] - ребро между точками i+1 и j,
-				// значение-массив задаёт штрихи пунктира. У RegularPrism геттер
-				// connectionMatrix возвращает неверный набор рёбер (лишние диагонали
-				// боковых граней и отсутствие двух боковых рёбер, см. #3478), поэтому
-				// матрицу строим сами: треугольники оснований и три боковых ребра.
-				let matrix = [
+				let visibility = facesVisibility(vertices, points2D, faces);
+				// Матрица смежности: matrix[i][j] - ребро между точками i+1 и j:
+				// треугольники оснований и три боковых ребра. Ребро - пунктиром,
+				// когда невидимы обе смежные с ним грани.
+				let matrix = dashHiddenEdges([
 					[1],
 					[1, 1],
 					[1, 0, 0],
 					[0, 1, 0, 1],
 					[0, 0, 1, 1, 1],
-				];
-				// Ребро и две смежные с ним грани: пунктир, когда невидимы обе.
-				[[0, 0, 0, 2], [1, 0, 0, 4], [1, 1, 0, 3], [2, 0, 2, 4], [3, 1, 2, 3],
-					[3, 3, 1, 2], [4, 2, 3, 4], [4, 3, 1, 4], [4, 4, 1, 3]].forEach(function (edge) {
-					if (!facesVisible[edge[2]] && !facesVisible[edge[3]])
-						matrix[edge[0]][edge[1]] = [6, 4];
-				});
+				], faces, visibility, [6, 4]);
 
 				ct.strokeStyle = om.secondaryBrandColors.iz();
 				ct.lineWidth = 2;
