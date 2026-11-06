@@ -10,11 +10,12 @@
 		// Словами кратность записывается по om.multiplierWords («вдвое», «в три раза»)
 		let k = [2, 3].iz();
 		// Запись кратностей: словами, как у ФИПИ («в полтора раза», «вдвое»), или числом
-		// («в $1{,}5$ раза», «в $2$ раза»). Без preference - случайно для каждой
-		// кратности отдельно (inWords не задано)
+		// («в $1{,}5$ раза», «в $2$ раза»). preference спрашиваем для каждой кратности
+		// заново: если он не задан, запись каждой выбирается случайно и независимо
 		let preferenceMultiplier = ['multiplierWords', 'multiplierDigits'];
-		let multiplierPref = getSelectedPreferenceFromList('512461', preferenceMultiplier, -1);
-		let inWords = multiplierPref === -1 ? undefined : multiplierPref === 0;
+		let multInWords = function () {
+			return getSelectedPreferenceFromList('512461', preferenceMultiplier) === 0;
+		};
 		let k2 = k * k;
 		let bigger = sl1();
 		let levels = [];
@@ -122,7 +123,7 @@
 		NAtask.setTask({
 			text: 'Вода в сосуде, имеющем форму правильной четырёхугольной призмы, находится на уровне $h = ' + h + '$ см. ' +
 				'На каком уровне окажется вода, если её перелить в другой сосуд, имеющий форму правильной четырёхугольной призмы, ' +
-				'у которого сторона основания ' + multiplierPhrase(k, inWords) + ' ' + (bigger ? 'больше' : 'меньше') +
+				'у которого сторона основания ' + multiplierPhrase(k, multInWords()) + ' ' + (bigger ? 'больше' : 'меньше') +
 				', чем у данного? Ответ дайте в сантиметрах.',
 			answers: ans,
 			analys: analys,
