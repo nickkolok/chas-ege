@@ -4,16 +4,8 @@
         let letters = latbukv.slice(0, 3);
 
         let key = "356159";
-        let variant = getListedPreference(key, [{
-            preference: 'B',
-            preferenceValue: 0,
-        }, {
-            preference: 'A',
-            preferenceValue: 1,
-        }, {
-            preference: 'C',
-            preferenceValue: 2,
-        }], sl(0, 2));
+        let preference = ['B', 'A', 'C']; // при какой вершине данный угол
+        let variant = getSelectedPreferenceFromList(key, preference);
 
         // Две стороны и синус угла между ними (несократимая дробь, как в ФИПИ) задаются напрямую,
         // а чертёж строится по ним — так угол на чертеже действительно имеет данный синус
@@ -84,6 +76,7 @@
         NAtask.setTask({
             text: `В треугольнике $ABC$ известно, что $${[`${sides[0]}=${sideFirst}`, `${sides[1]}=${sideSecond}`].concat(`\\sin \\angle ${angleDano.join('')} = ${sinNumerator.texfrac(sinDenominator)}`).shuffleJoin('$, $')}$. Найдите площадь треугольника $ABC$.`,
             answers: area,
+            preference: preference,
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.variativeABC(letters);
