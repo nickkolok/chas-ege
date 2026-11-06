@@ -30,7 +30,7 @@
 		let triangleSmall = new Triangle({
 			points: [pointM, pointK, triangle.pointC[0]]
 		});
-		
+
 		let answ = triangle.area()/triangleSmall.area();
 		genAssertZ1000(answ);
 
@@ -58,9 +58,9 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ на сторонах $AC$ и $BC$ отмечены точки $M$ и $K$ соответственно так, 
-			что $${[`A`, `C`][rand]}M:AC=${relation1[rand]}:${relation1.sum()}$, а $${[`B`, `C`][rand]}K:BC=${relation2[rand]}:${relation2.sum()}$. 
-			Во сколько раз площадь треугольника $ABC$ больше площади треугольника $MCK$?`,
+			text: `В треугольнике $ABC$ на сторонах $AC$ и $BC$ отмечены точки $M$ и $K$ соответственно так, ` +
+				`что $${[`A`, `C`][rand]}M:AC=${relation1[rand]}:${relation1.sum()}$, а $${[`B`, `C`][rand]}K:BC=${relation2[rand]}:${relation2.sum()}$. ` +
+				`Во сколько раз площадь треугольника $ABC$ больше площади треугольника $MCK$?`,
 			answers: answ,
 			authors: ['Александра Суматохина'],
 		});
