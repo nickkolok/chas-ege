@@ -104,7 +104,7 @@ retryWhileUndefined(function() {
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции $f(x)=' + formula.plusminus() + '$, где ' + ('$a$,').esli(formula.includes(
 				'a\\')) + ' ' + ('$b$,').esli(formula.includes('b')) + ' $c$ и $d$ - целые' +
-			(', $a' + sign + '0$').esli(formula.includes('a\\sin')) + limits +
+			(', $a' + sign + '0$').esli(formula.includes('a')) + limits +
 			'. Найдите ' + question +
 			'.',
 		answers: answ,
