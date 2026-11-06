@@ -10,24 +10,28 @@
 			preferenceValue: index
 		})), sl(preference.length - 1));
 
-		let rhombus = new Rhombus({
-			length: sl(1, 50),
-			angles: {
-				angle: {
-					angleA: 60
-				},
-				angleInDegree: true,
-			},
-		});
+		// Параллелограмм, диагонали которого — биссектрисы углов, — ромб. Его диагонали
+		// перпендикулярны и делятся пополам, так что половины диагоналей и сторона образуют
+		// пифагорову тройку k(m² − n², 2mn, m² + n²); все данные и ответ целые, как в ФИПИ.
+		let m = sl(2, 7);
+		let n = sl(1, m - 1);
+		genAssertIrreducible(m, n, 'Тройка не примитивная');
+		genAssert((m - n) % 2 === 1, 'Тройка не примитивная');
+		let k = sl(1, 13);
+		let side = k * (m * m + n * n);
+		genAssert(side <= 65, 'Слишком большая сторона');
+		let halves = [k * (m * m - n * n), k * 2 * m * n].shuffle();
+		let diagonalAC = 2 * halves[0];
+		let diagonalBD = 2 * halves[1];
 
 		NAtask.setTask({
 			text: `В параллелограмме $ABCD$ диагонали являются биссектрисами его углов`,
 			questions: [[{
-				text: `, $AB=${rhombus.lengthAB}$, $AC=${(rhombus.lengthDiagonalAC).pow(2).texsqrt(1)}$. Найдите $BD$.`,
-				answers: rhombus.lengthDiagonalBD,
+				text: `, $AB=${side}$, $AC=${diagonalAC}$. Найдите $BD$.`,
+				answers: diagonalBD,
 			}, {
-				text: ` и равны $${(rhombus.lengthDiagonalAC).pow(2).texsqrt(1)}$ и $${rhombus.lengthDiagonalBD}$. Найдите периметр параллелограмма $ABCD$.`,
-				answers: rhombus.perimeter,
+				text: ` и равны $${diagonalAC}$ и $${diagonalBD}$. Найдите периметр параллелограмма $ABCD$.`,
+				answers: 4 * side,
 			}][rand]],
 			authors: ['Александра Суматохина'],
 			preference:preference,
