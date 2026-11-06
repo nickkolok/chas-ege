@@ -109,34 +109,11 @@
 		// Видимость граней - по знаку ориентированной площади проекции при обходе,
 		// согласованном с внешней нормалью (приём из 513823 и 514225). Ребро
 		// невидимо (пунктир), если невидимы обе смежные грани.
-		let centroid = {
-			x: vertices.reduce((s, v) => s + v.x, 0) / 6,
-			y: vertices.reduce((s, v) => s + v.y, 0) / 6,
-			z: vertices.reduce((s, v) => s + v.z, 0) / 6,
-		};
 		let faces = [[0, 1, 2], [3, 4, 5], [0, 1, 4, 3], [1, 2, 5, 4], [2, 0, 3, 5]];
-		let facesVisible = faces.map(function (f) {
-			let p0 = vertices[f[0]], p1 = vertices[f[1]], p2 = vertices[f[2]];
-			let u = { x: p1.x - p0.x, y: p1.y - p0.y, z: p1.z - p0.z };
-			let w = { x: p2.x - p0.x, y: p2.y - p0.y, z: p2.z - p0.z };
-			let n = { x: u.y * w.z - u.z * w.y, y: u.z * w.x - u.x * w.z, z: u.x * w.y - u.y * w.x };
-			let fc = { x: 0, y: 0, z: 0 };
-			f.forEach(function (i) {
-				fc.x += vertices[i].x / f.length;
-				fc.y += vertices[i].y / f.length;
-				fc.z += vertices[i].z / f.length;
-			});
-			let orient = (n.x * (fc.x - centroid.x) + n.y * (fc.y - centroid.y) + n.z * (fc.z - centroid.z)) < 0 ? -1 : 1;
-			let q0 = points2D[f[0]], q1 = points2D[f[1]], q2 = points2D[f[2]];
-			return orient * ((q1.x - q0.x) * (q2.y - q0.y) - (q2.x - q0.x) * (q1.y - q0.y)) > 0;
-		});
+		let visibility = facesVisibility(vertices, points2D, faces);
 		let edges = [[0, 1], [1, 2], [2, 0], [3, 4], [4, 5], [5, 3], [0, 3], [1, 4], [2, 5]];
 		let isHidden = function (edge) {
-			return !faces.some(function (f, k) {
-				return facesVisible[k] && f.includes(edge[0]) && f.includes(edge[1]) &&
-					(Math.abs(f.indexOf(edge[0]) - f.indexOf(edge[1])) === 1 ||
-					Math.abs(f.indexOf(edge[0]) - f.indexOf(edge[1])) === f.length - 1);
-			});
+			return !isOnVisibleFace(faces, visibility, edge);
 		};
 		let dash = [7, 5];
 
