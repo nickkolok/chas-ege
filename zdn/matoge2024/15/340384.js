@@ -5,8 +5,8 @@
 
         let triangle = new Triangle({
             lengths: {
-                lengthAB: sl(3, 20),
-                lengthBC: sl(3, 20),
+                lengthAB: sl(3, 40),
+                lengthBC: sl(3, 40),
             },
             angles: {
                 angle: Math.PI / 2,
