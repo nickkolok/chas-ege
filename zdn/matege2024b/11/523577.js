@@ -46,13 +46,6 @@
 		let fmt = function (x) {
 			return String(Math.round(x * 100) / 100).replace('.', '{,}');
 		};
-		let razWord = function (x) {
-			if (!x.isAlmostInteger()) {
-				return 'раза';
-			}
-			let n = Math.round(x);
-			return n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'раза' : 'раз';
-		};
 		let analys = 'Объём правильной четырёхугольной призмы равен $V = a^2 h$, где $a$ — сторона основания, $h$ — высота. ' +
 			'Обозначим сторону основания и высоту первой коробки $a$ и $h$. ' +
 			'Тогда у второй коробки высота равна $' + (firstTaller ? '\\frac{h}{' + fmt(kh) + '}' : fmt(kh) + 'h') +
@@ -61,7 +54,7 @@
 			(firstTaller ? '\\frac{1}{' + fmt(kh) + '}' : fmt(kh)) + ' = ' +
 			(secondBigger ? fmt(ans) : '\\frac{1}{' + fmt(ans) + '}') + '$, ' +
 			'то есть объём ' + (secondBigger ? 'второй коробки больше объёма первой' : 'первой коробки больше объёма второй') +
-			' в $' + fmt(ans) + '$ ' + razWord(ans) + '.';
+			' в ' + chislitlx(ans, 'раз', '$') + '.';
 
 		NAtask.setTask({
 			text: text,
