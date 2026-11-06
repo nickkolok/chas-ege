@@ -72,7 +72,7 @@
         NAtask.setTask({
             text: `В треугольнике $ABC$ известно, что ${[
                 `$${sideDano.shuffleJoin()}=${valueDano}$`,
-                `$${[centralPoint, pointMedian].shuffleJoin()}$ – медиана`,
+                `$${[centralPoint, pointMedian].shuffleJoin()}$ — медиана`,
                 `$${[centralPoint, pointMedian].shuffleJoin()}=${medianLength.ts()}$`
             ].shuffleJoin(', ')}. Найдите $${[sideDano.iz(), pointMedian].shuffleJoin()}$.`,
             answers: valueDano / 2,
