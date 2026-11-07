@@ -26,23 +26,23 @@
 		let colors = sklonlxkand(['бордовый', 'лососевый', 'томатный', 'коралловый', 'шоколадный', 'оранжевый',
 			'золотарниковый', 'оливковый', 'желтый', 'зеленый', 'лаймовый', 'бирюзовый'
 		]).iz(4);
-		let numberOfTransprt = sl(10, 100);
-		let number1 = sl(1, numberOfTransprt - 1);
-		let number2 = numberOfTransprt - number1;
-		let answer =  number1 / numberOfTransprt;
+		let numberOfTransport = sl(10, 100);
+		let number1 = sl(1, numberOfTransport - 1);
+		let number2 = numberOfTransport - number1;
+		let answer = number1 / numberOfTransport;
 		
-		let dop=0;
+		let dop = 0;
 		
-		if(sl1()){
-			answer =  number2 / numberOfTransprt;
-			dop=2;
+		if (sl1()) {
+			answer = number2 / numberOfTransport;
+			dop = 2;
 		}
 		
 		genAssertZ1000(answer, "Кривая вероятность");
 		NAtask.setTask({
-			text: 'В фирме такси в наличии ' + numberOfTransprt + ' ' + transport[0].rm.replace('Конёк', 'Коньков').replace(
-				'ковёр', 'ковров') + '; ' + number1 + ' из них ' + colors[0].ve + ' цвета с ' + colors[1].tm + ' ' +
-				difference + ', ' + 'остальные — ' + colors[2].ve + ' цвета с ' + colors[3].tm + ' ' + difference + '. Найдите вероятность того, ' +
+			text: 'В фирме такси в наличии ' + numberOfTransport + ' ' + transport[0].rm.replace('Конёк', 'Коньков').replace(
+				'ковёр', 'ковров').replace('ёжей', 'ежей') + '; ' + number1 + ' из них ' + colors[0].ve + ' цвета с ' + colors[1].tm + ' ' +
+				difference + ', остальные — ' + colors[2].ve + ' цвета с ' + colors[3].tm + ' ' + difference + '. Найдите вероятность того, ' +
 				'что на случайный вызов ' + move + ' ' + transport[0].ie + ' ' + colors[0 + dop].ve + ' цвета с ' + colors[1 + dop].tm +
 				' ' + difference + '.',
 			answers: answer,
