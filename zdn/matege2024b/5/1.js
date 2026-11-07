@@ -5,7 +5,7 @@
 		let key = "1";
 
 		let preference1 = ['two_tosses', 'three_tosses', 'four_tosses'];
-		let preference2 = ['equal', 'more', 'less', 'moreOrEqual', 'lesseOrEqual'];
+		let preference2 = ['equal', 'more', 'less', 'moreOrEqual', 'lessOrEqual'];
 		// Количество бросков (2-4)
 		let totalTosses = getListedPreference(key, preference1.map((pref, index) => ({
 			preference: pref,
@@ -16,10 +16,10 @@
 		let successfulTosses = sl(0, totalTosses);
 
 		// Тип сравнения
-		let comparisonType = getListedPreference(key, preference2.map((pref, index) => ({
+		let comparisonType = getListedPreference(key, [...preference2.map((pref, index) => ({
 			preference: pref,
-			preferenceValue: index
-		})), (totalTosses == successfulTosses || successfulTosses == 0) ? 0 : sl(preference2.length-1));
+			preferenceValue: index,
+		})), {preference: 'lesseOrEqual', preferenceValue: preference2.indexOf('lessOrEqual')}], (totalTosses == successfulTosses || successfulTosses == 0) ? 0 : sl(preference2.length-1));
 
 		// Варианты формулировки количества выпадений
 		const resultOptions = [
@@ -64,11 +64,11 @@
 		}
 
 		genAssert(successfulTosses > 0 || comparisonType === 0, 'Для сравнения нужен положительный порог');
-		genAssert(probability.mzhd(0, 1), 'Вероятность не в диапозоне (0, 1)');
+		genAssert(probability.mzhd(0, 1), 'Вероятность не в диапазоне (0, 1)');
 
 		NAtask.setTask({
-			text: `В случайном эксперименте симметричную монету бросают ${chislitlx(totalTosses, `раз`, `$`)}. 
-		Какова вероятность того, что ${window.moneta.iz()} выпадет ${outcomeDescription}?`.replace(/выпадет ни разу/, 'ни разу не выпадет'),
+			text: (`В случайном эксперименте симметричную монету бросают ${chislitlx(totalTosses, `раз`, `$`)}. ` +
+				`Какова вероятность того, что ${window.moneta.iz()} выпадет ${outcomeDescription}?`).replace(/выпадет ни разу/, 'ни разу не выпадет'),
 			answers: probability,
 			authors: ['Авдеев Николай', 'Суматохина Александра'],
 			preference: [preference1, preference2],
