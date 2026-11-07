@@ -7,7 +7,7 @@
 	if (variant === 0) {
 		x = sl(-20, 20) / 2;
 		let slope = sl(1, 6).pm() * (x.isZ() ? 1 : 2);
-		left = '\\sqrt{' + [slope + 'x', value * value - slope * x].shuffle().slag0() + '}';
+		left = '\\sqrt{' + [slope + 'x', value * value - slope * x].slag0() + '}';
 		right = value;
 	} else {
 		x = value * value;
