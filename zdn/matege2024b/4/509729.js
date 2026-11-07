@@ -9,7 +9,7 @@
 		let degreeName = ['Цельсия', 'Фаренгейта'][rand];
 		let reverseDegreeName = ['Цельсия', 'Фаренгейта'][1 - rand];
 		let degreeNumberCelsius = sl(-50, 150);
-		let degreeNumberFahrenheit = [1.8 * degreeNumberCelsius + 32, 1.8 * degreeNumberCelsius + 32][rand];
+		let degreeNumberFahrenheit = 1.8 * degreeNumberCelsius + 32;
 
 		let givenDegree = [degreeNumberCelsius, degreeNumberFahrenheit][rand];
 		let givenText = chislitlx(givenDegree.abs(), 'градус', '$');
