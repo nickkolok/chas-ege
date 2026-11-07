@@ -14,60 +14,16 @@
 	const team_name = ['Физик', 'Химик', 'Сапфир', 'Труд', 'Геолог', 'Биолог', 'Квант', 'Изумруд', 'Рубин', 'Факел'].iz();
 	const vopr = ['не '.esli(sl1()) + 'начнёт игру с мячом', ['выиграет', 'проиграет'].iz() + ' жребий'].iz();
 
-	let n = sl(0, 3) + 2; // число сыгранных игр   0-2 игры 1-3 игры 2-4 игры 3-5 игр
-	n = getListedPreference(key, [{
-		preference: 'two_games',
-		preferenceValue: 2,
-	}, {
-		preference: 'three_games',
-		preferenceValue: 3,
-	}, {
-		preference: 'four_games',
-		preferenceValue: 4,
-	}, {
-		preference: 'five_games',
-		preferenceValue: 5,
-	}], n);
-
 	const preference1 = ['two_games', 'three_games', 'four_games', 'five_games'];
-	const preference2 = ['equal', 'more', 'less', 'moreOrEqual', 'lesseOrEqual'];
+	const preference2 = ['equal', 'more', 'less', 'moreOrEqual', 'lessOrEqual'];
+	const n = getSelectedPreferenceFromList(key, preference1) + 2;
 	const games = ['два матча', 'три матча', 'четыре матча', 'пять матчей'][n - 2];
-	let k = sl(1, n); // число выигранных жребиев
-
-	k = getListedPreference(key, [{
-		preference: 'equal',
-		preferenceValue: k,
-	}, {
-		preference: 'more',
-		preferenceValue: sl(1, n - 1),
-	}, {
-		preference: 'less',
-		preferenceValue: sl(1, n - 1),
-	}, {
-		preference: 'moreOrEqual',
-		preferenceValue: sl(1, n - 1),
-	}, {
-		preference: 'lesseOrEqual',
-		preferenceValue: sl(1, n - 1),
-	}], k);
-
-	let equalMoreLess =
-		getListedPreference(key, [{
-			preference: 'equal',
-			preferenceValue: 0,
-		}, {
-			preference: 'more',
-			preferenceValue: 1,
-		}, {
-			preference: 'less',
-			preferenceValue: 2,
-		}, {
-			preference: 'moreOrEqual',
-			preferenceValue: 3,
-		}, {
-			preference: 'lesseOrEqual',
-			preferenceValue: 4,
-		}], (n === k) ? 0 : sl(4)); // ровно %количество побед% = 0, больше = 1, меньше = 2, не более = 3, не менее = 4
+	const selectedComparison = getListedPreference(key, [...preference2.map((preference, index) => ({
+		preference,
+		preferenceValue: index,
+	})), {preference: 'lesseOrEqual', preferenceValue: preference2.indexOf('lessOrEqual')}], -1);
+	const k = sl(1, selectedComparison > 0 ? n - 1 : n);
+	const equalMoreLess = selectedComparison >= 0 ? selectedComparison : (n === k ? 0 : sl(preference2.length - 1));
 
 	const kolvoOptions = [
 		['один раз', 'два раза', 'три раза', 'четыре раза', 'пять раз'],
