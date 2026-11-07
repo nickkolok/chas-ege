@@ -12,14 +12,14 @@
 		let power = variant ? bounds[selected] : sl(lower + 1, selected < 7 ? bounds[selected] : 300);
 		let rows = [['Мощность двигателя, л.с.', 'Ставка, руб. за 1 л.с. в год'].tr('th')];
 		for (let i = 0; i < rates.length; i++) {
-		    let interval = i === 0 ? 'До 100 включительно' : i === 7 ? 'Свыше 250' :
-		        'Свыше ' + bounds[i - 1] + ' до ' + bounds[i] + ' включительно';
-		    rows.push([interval, rates[i]].tr());
+			let interval = i === 0 ? 'До 100 включительно' : i === 7 ? 'Свыше 250' :
+				'Свыше ' + bounds[i - 1] + ' до ' + bounds[i] + ' включительно';
+			rows.push([interval, rates[i]].tr());
 		}
 		NAtask.setTask({
-		    text: 'В учебной таблице представлены налоговые ставки на автомобили.' + rows.join('').toTable() +
-		        ' Какова налоговая ставка (в рублях за 1 л.с. в год) на автомобиль мощностью ' + power + ' л.с.?',
-		    answers: rates[selected], preference,
+			text: 'В учебной таблице представлены налоговые ставки на автомобили.' + rows.join('').toTable() +
+				' Какова налоговая ставка (в рублях за 1 л.с. в год) на автомобиль мощностью ' + power + ' л.с.?',
+			answers: rates[selected], preference,
 		});
 	}, 1000);
 })();
