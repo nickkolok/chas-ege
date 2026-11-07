@@ -5,8 +5,8 @@
 
         let numberOfTeams = sl(4, 20);
         let numberOfgroups = sluchDel(numberOfTeams);
-        genAssert(numberOfgroups != 1, 'Случаный делитель оказался единицей');
-        genAssert(numberOfgroups != numberOfTeams, 'Случаный делитель оказался этим же числом');
+        genAssert(numberOfgroups != 1, 'Случайный делитель оказался единицей');
+        genAssert(numberOfgroups != numberOfTeams, 'Случайный делитель оказался этим же числом');
 
         let numberOfTeamInGroup = numberOfTeams / numberOfgroups;
         genAssertZ1000(numberOfTeamInGroup / numberOfTeams);
