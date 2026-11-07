@@ -31,13 +31,16 @@
         transport = sklonlxkand(transport).iz();
 
         let colors = om.trickyColors.iz(transportArray.length);
-        let transportColor = colors.map((color, index) => '$' + transportArray[index] + '$ ' + color.replace('ый', 'ых').replace('ой', 'ых'));
+        let transportColor = colors.map((color, index) => '$' + transportArray[index] + '$ ' + color.replace(/(?:ый|ой)$/, 'ых').replace(/ий$/, 'их'));
+
+        let selectedColor = colors[selectedTransport];
+        let endings = selectedColor === 'синий' ? ['ий', 'яя', 'ее'] : [selectedColor.slice(-2), 'ая', 'ое'];
 
         NAtask.setTask({
             text: `В фирме такси в данный момент свободно ${chislitlx(numberOfTransport, transport.ie, '$')}: 
 			${transportColor.joinLast(` и `)}. 
 			По вызову ${move} ${[`один`, `одна`, `одно`][transport.rod]} из ${transport.rm}, случайно оказавш${[`ий`, `ая`, `ие`][transport.rod]}ся ближе всего к заказчику. 
-			Найдите вероятность того, что к нему ${move} ${colors[selectedTransport].slice(0, -2) + [`ый`, `ая`, `ое`][transport.rod]} ${transport.ie}.`,
+			Найдите вероятность того, что к нему ${move} ${selectedColor.slice(0, -2) + endings[transport.rod]} ${transport.ie}.`,
             answers: answer,
             authors: ['Суматохина Александра'],
         });
