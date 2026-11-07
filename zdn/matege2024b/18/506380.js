@@ -74,25 +74,20 @@
 		let numPart = [`(x - ${b})^2`, `(x - ${b})`, `x - ${a}`, `(x - ${a})^2`][swapNumDen];
 		let denPart = [`x - ${a}`, `(x - ${a})^2`, `(x - ${b})^2`, `(x - ${b})`][swapNumDen];
 		let sqRatExpr = `\\frac{${numPart}}{${denPart}} ${isSqRatGreater ? '>' : '<'} 0`;
-		let sqRatSolutions = [
-			[
-				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
-			],
-			[
-				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
-			],
-			[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
-				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
-			],
-			[
-				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`]
-			]
+		let leftOfA = ['$x < ' + a + '$', '$(-\\infty,\\, ' + a + ')$'];
+		let rightOfB = ['$x > ' + b + '$', '$(' + b + ',\\, +\\infty)$'];
+		let leftOfBExceptA = [
+			'$x < ' + a + '$ или $' + a + ' < x < ' + b + '$',
+			'$(-\\infty,\\, ' + a + ') \\cup (' + a + ',\\, ' + b + ')$',
 		];
-		let sqRatSolution = sqRatSolutions[swapNumDen][isSqRatGreater][randAnswer];
+		let rightOfAExceptB = [
+			'$' + a + ' < x < ' + b + '$ или $x > ' + b + '$',
+			'$(' + a + ',\\, ' + b + ') \\cup (' + b + ',\\, +\\infty)$',
+		];
+		// Чётная степень не меняет знак, но её корень исключается.
+		let sqRatSolution = (swapNumDen % 2 ?
+			(isSqRatGreater ? rightOfB : leftOfBExceptA) :
+			(isSqRatGreater ? rightOfAExceptB : leftOfA))[randAnswer];
 		let squareRational = { expr: sqRatExpr, solution: sqRatSolution };
 		//дробное рациональное второго типа
 		let isRationalGreater = sl1();
@@ -164,7 +159,7 @@
 			let isLogZero = sl1();
 			logarithmic = {
 				expr: `\\log_{${baseZero}} x ${isLogZero ? '>' : '<'} 0`,
-				solution: isLogZero ? [`$x > 1$`, `$(1,\\, +\\infty)$`][randAnswer] : [`$x < 1$`, `$(-\\infty,\\, 1)$`][randAnswer]
+				solution: isLogZero ? [`$x > 1$`, `$(1,\\, +\\infty)$`][randAnswer] : ['$0 < x < 1$', '$(0,\\, 1)$'][randAnswer]
 			};
 		} else {
 			// Обычный логарифм: log_base(x) > 1
@@ -214,3 +209,4 @@
 })();
 //zer00player
 //https://mathb-ege.sdamgia.ru/test?likes=506380
+// AA977E, 08507D, 823116, 58B5F8, BA8B90, C3711B, 9409FA, DA7CD1, 5A6F3F, 3BAD60, B7B04B, 51E0B6, 73CEDD, AE03E0, 81920B, 7AE004, E280CF, 1AD9E3, C1FD12, 43D2E5, 2EFD48, D058D0, 236D98, 69DB0B, 82CBEC, 0324F5, B6BDCC, 0FA86B, 57F314, 22D6CC, 236B9B
