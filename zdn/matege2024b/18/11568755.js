@@ -37,19 +37,20 @@
 				m = sl(12, 24) / 10;
 
 				introduction = 'На координатной прямой отмечено число $m$. ';
-				points = [-3,-2,-1,0,1,2,3].map(value => ({value, label: value, mark: 'line', labelPos: 'underAxis'}));
+				points = [-3, -2, -1, 0, 1, 2, 3].map(value => ({value, label: value, mark: 'line', labelPos: 'underAxis'}));
 				points.push({value: m, label: 'm', mark: 'dot', labelPos: 'overAxis'});
 
 			}
 			let a = sl(3, 8);
 			let b = sl(2, 5);
+			let useSquare = sl1();
+			let secondValue = useSquare ? ['m^2', m * m] : ['\\sqrt{m+' + a + '}', Math.sqrt(m + a)];
 			values = [
 				[a + '-m', a - m],
-				[sl1() ? 'm^2' : '\\sqrt{m+' + a + '}', 0],
+				secondValue,
 				['m-1', m - 1],
 				['-' + b.texfrac('m'), -b / m],
 			 ];
-			values[1][1] = values[1][0] === 'm^2' ? m * m : Math.sqrt(m + a);
 		}
 		let left = values.map(([expr, value]) => {
 			let lower = Math.floor(value);
