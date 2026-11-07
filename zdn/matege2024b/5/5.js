@@ -13,20 +13,20 @@
 		let counts = [];
 		let remaining = total;
 		for (let i = 0; i < groups - 1; i++) {
-		    let count = sl(1, remaining - (groups - i - 1));
-		    counts.push(count); remaining -= count;
+			let count = sl(1, remaining - (groups - i - 1));
+			counts.push(count); remaining -= count;
 		}
 		counts.push(remaining);
-		let selected = mode ? groups - 1 : sl(0, groups - 2);
+		let selected = sl(0, groups - 1);
 		genAssertZ1000(counts[selected] / total);
 		let countries = om.strany.re.iz(groups);
 		let descriptions = counts.slice(0, allKnown ? groups : groups - 1).map((n, i) => n + ' из ' + countries[i]);
 		NAtask.setTask({
-		    text: 'В чемпионате по ' + om.sport.pe.iz() + ' участвуют ' + (allKnown ? 'спортсменки: ' : chislitlx(total, 'спортсменка') + ': ') + descriptions.join(', ') +
-		        (allKnown ? '' : ', остальные — из ' + countries[groups - 1]) + '. Порядок выступлений определяется жребием. ' +
-		        'Найдите вероятность того, что спортсменка, выступающая ' + ['первой', 'последней', 'второй', 'третьей'].iz() +
-		        ', окажется из ' + countries[selected] + '.',
-		    answers: counts[selected] / total, preference: [preference1, preference2],
+			text: 'В чемпионате по ' + om.sport.pe.iz() + ' участвуют ' + (allKnown ? 'спортсменки: ' : chislitlx(total, 'спортсменка') + ': ') + descriptions.join(', ') +
+			    (allKnown ? '' : ', остальные — из ' + countries[groups - 1]) + '. Порядок выступлений определяется жребием. ' +
+			    'Найдите вероятность того, что спортсменка, выступающая ' + (mode ? 'последней' : 'первой') +
+			    ', окажется из ' + countries[selected] + '.',
+			answers: counts[selected] / total, preference: [preference1, preference2],
 		});
 	}, 20000);
 })();
