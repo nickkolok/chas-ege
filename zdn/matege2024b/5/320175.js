@@ -2,7 +2,7 @@
     retryWhileError(function() {
         NAinfo.requireApiVersion(0, 2);
         let key = '320175';
-		let preference = ['two', 'three', 'four', 'five', 'six'];
+        let preference = ['two', 'three', 'four', 'five', 'six'];
         let preference2 = ['lamps', 'terminals'];
         let device = getSelectedPreferenceFromList(key, preference2);
         let numberOfLamps = getSelectedPreferenceFromList(key, preference) + 2;
