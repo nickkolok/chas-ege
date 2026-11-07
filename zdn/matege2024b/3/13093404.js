@@ -10,17 +10,17 @@
 		let first = sl(1, 6);
 		let target = values[first];
 		NAtask.setTask({
-		    text: 'На графике показана зависимость крутящего момента автомобильного двигателя от числа оборотов в минуту. ' +
-		        'По горизонтали отмечено число оборотов в минуту, по вертикали — крутящий момент в Н·м. ' +
-		        (variant ? 'Чтобы автомобиль начал движение, крутящий момент должен быть не меньше ' + target + ' Н·м. ' : '') +
-		        'Какое наименьшее число оборотов в минуту должен поддерживать водитель, ' +
-		        (variant ? 'чтобы автомобиль начал движение?' : 'чтобы крутящий момент был не меньше ' + target + ' Н·м?'),
-		    answers: 500 * first, preference,
+			text: 'На графике показана зависимость крутящего момента автомобильного двигателя от числа оборотов в минуту. ' +
+				'По горизонтали отмечено число оборотов в минуту, по вертикали — крутящий момент в Н·м. ' +
+				(variant ? 'Чтобы автомобиль начал движение, крутящий момент должен быть не меньше ' + target + ' Н·м. ' : '') +
+				'Какое наименьшее число оборотов в минуту должен поддерживать водитель, ' +
+				(variant ? 'чтобы автомобиль начал движение?' : 'чтобы крутящий момент был не меньше ' + target + ' Н·м?'),
+			answers: 500 * first, preference,
 		});
 		NAtask.modifiers.addJqplot({
-		    dataArray: [values.map((value, i) => [500 * i, value])], width: '720px', height: '400px',
-		    options: {axes: {xaxis: {min: 0, max: 6000, tickInterval: 500}, yaxis: {min: 0, max: 300, tickInterval: 20}},
-		        seriesDefaults: {showMarker: false}},
+			dataArray: [values.map((value, i) => [500 * i, value])], width: '720px', height: '400px',
+			options: {axes: {xaxis: {min: 0, max: 6000, tickInterval: 500}, yaxis: {min: 0, max: 150 * factor, tickInterval: 10 * factor}},
+				seriesDefaults: {showMarker: false}},
 		});
 	}, 1000);
 })();
