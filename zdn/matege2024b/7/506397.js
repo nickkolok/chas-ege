@@ -5,13 +5,14 @@
        
         function answAboutStop(intervals, answ) {
             let wasStop = intervals.map(interval => lengthOfZeroInterval(interval) > 1);
-            
+
+            if (!hasNoDuplicateValue(wasStop, true)) {
+                return;
+            }
+
             let index = wasStop.indexOf(true);
             let text = 'автомобиль сделал остановку на ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1)*15, 'секунда');
-
-            if (hasNoDuplicateValue(wasStop, true)) {
-                answ[index].solution.push(text);
-            }            
+            answ[index].solution.push(text);
         }
 
         function answAboutMax(intervals, answ) {
@@ -72,33 +73,35 @@
 
         function answAboutConstNSec(intervals, answ) {
             let wasConst = intervals.map(interval => lengthConst(interval) > 1);
-            
+
+            if (!hasNoDuplicateValue(wasConst, true)) {
+                return;
+            }
+
             let index = wasConst.indexOf(true);
             let text = 'автомобиль ровно ' +
                 chislitlx((lengthConst(intervals[index]) - 1) * 15, 'секунда') +
                 ' ехал с постоянной скоростью';
-
-            if (hasNoDuplicateValue(wasConst, true)) {
-                answ[index].solution.push(text);
-            }            
+            answ[index].solution.push(text);
         }
 
         function answAboutConstMoreNSec(intervals, answ) {
             let wasConst = intervals.map(interval => lengthConst(interval) > 2);
-            
+
+            if (!hasNoDuplicateValue(wasConst, true)) {
+                return;
+            }
+
             let index = wasConst.indexOf(true);
             let text = 'автомобиль более ' + chislitlx((lengthConst(intervals[index]) - 1) * 15, 'секунда', 'r') + ' ехал с постоянной скоростью';
-
-            if (hasNoDuplicateValue(wasConst, true)) {
-                answ[index].solution.push(text);
-            } 
+            answ[index].solution.push(text);
         }
 
         let time = [0].zapMonot(11, 0, 1, 1); // шкала времени
         let value = [0]; // шкала скорости
 
-        for (; value.length <= time.length || value.length == time.length;) {
-            let interI = (time.length / sl(2, 4).floor());
+        for (; value.length <= time.length;) {
+            let interI = (time.length / sl(2, 4)).floor();
             for (let j = 0; j < interI; j++) {
                 if (value.length + 1 == time.length) {
                     value.push(0);
