@@ -29,7 +29,7 @@
 	rightSlope *= step;
 	let leftConstant = variant === 0 ? d : a * c + (variant === 2 ? d : 0);
 	let rightConstant = Math.round(leftConstant + (slope - rightSlope) * x);
-	let right = [rightSlope ? rightSlope + 'x' : 0, rightConstant].shuffle().slag0();
+	let right = [rightSlope ? rightSlope + 'x' : 0, rightConstant].shuffle().slag0() || '0';
 	chas2.task.setEquationTask({
 		parts: [left, right],
 		roots: x,
