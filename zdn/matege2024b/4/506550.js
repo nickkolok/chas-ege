@@ -11,23 +11,23 @@
 		let bSquared = sl(2, 20) ** 2;
 		let cSquared = sl(2, 20) ** 2;
 		if (form) {
-		    if (kind === 0) cSquared = sl(2, 600);
-		    else { aSquared = sl(2, 200); bSquared = sl(2, 200); }
-		    genAssert([aSquared, bSquared, cSquared].some(value => !value.isPolnKvadr()), 'Нужна хотя бы одна иррациональная сторона');
+			if (kind === 0) cSquared = sl(2, 600);
+			else { aSquared = sl(2, 200); bSquared = sl(2, 200); }
+			genAssert([aSquared, bSquared, cSquared].some(value => !value.isPolnKvadr()), 'Нужна хотя бы одна иррациональная сторона');
 		}
 		let a = Math.sqrt(aSquared), b = Math.sqrt(bSquared), c = Math.sqrt(cSquared);
 		genAssert(isValidTriangle(a, b, c), 'Фактические стороны должны образовывать треугольник');
 		let answer = kind === 0 ? Math.sqrt(a * b * ((a + b) ** 2 - cSquared)) / (a + b) :
-		    Math.sqrt(2 * aSquared + 2 * bSquared - cSquared) / 2;
+			Math.sqrt(2 * aSquared + 2 * bSquared - cSquared) / 2;
 		genAssertZ1000(answer, 'Ответ должен быть конечной десятичной дробью не длиннее трёх знаков');
 		let name = ['биссектрисы $l_c$', 'медианы $m_c$'][kind];
 		NAtask.setTask({
-		    text: 'Длина ' + name + ', проведённой к стороне $c$ треугольника со сторонами $a$, $b$ и $c$, вычисляется по формуле $' +
-		        ['l_c=\\frac{1}{a+b}\\sqrt{ab((a+b)^2-c^2)}', 'm_c=\\frac{\\sqrt{2a^2+2b^2-c^2}}{2}'][kind] + '$. ' +
-		        'Найдите длину ' + name + ', если $a=' + aSquared.texsqrt(true) + '$, $b=' + bSquared.texsqrt(true) +
-		        '$ и $c=' + cSquared.texsqrt(true) + '$.',
-		    answers: answer,
-		    preference: [preference, preferenceSides],
+			text: 'Длина ' + name + ', проведённой к стороне $c$ треугольника со сторонами $a$, $b$ и $c$, вычисляется по формуле $' +
+				['l_c=\\frac{1}{a+b}\\sqrt{ab((a+b)^2-c^2)}', 'm_c=\\frac{\\sqrt{2a^2+2b^2-c^2}}{2}'][kind] + '$. ' +
+				'Найдите длину ' + name + ', если $a=' + aSquared.texsqrt(true) + '$, $b=' + bSquared.texsqrt(true) +
+				'$ и $c=' + cSquared.texsqrt(true) + '$.',
+			answers: answer,
+			preference: [preference, preferenceSides],
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 20000);
