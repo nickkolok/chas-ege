@@ -153,7 +153,7 @@
             let wasMinFall = intervals.map((_, i) => Math.abs(deltaP[i] - minED) < 1e-7);
 
             if (sl1()) {
-                addUniqueAnsw(wasMaxRise, answ, ' наибольший рост частоты пульса');
+                addUniqueAnsw(wasMaxRise, answ, 'наибольший рост частоты пульса');
             } else {
                 addUniqueAnsw(wasMinFall, answ, 'наибольшее падение частоты пульса');
             }
@@ -271,7 +271,7 @@
         }
         genAssert(success, 'Не удалось подобрать уникальные решения');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(item => item.expr + ':' + item.solution);
 
         let paint1 = function (ctx) {
             ctx.drawGridWithArrows({
