@@ -15,7 +15,7 @@
 		let p_2 = primeNumbers.iz();
 		let p_3 = primeNumbers.iz();
 
-		genAssert(p_1 != p_2 && p_1 != p_3 && p_2 != p_3, 'Более одного совпадения');
+		genAssert(p_1 != p_2 && p_1 != p_3 && p_2 != p_3, 'Не все числа различны');
 
 		let number = p_1 * p_2 * p_3;
 		let answer = (p_1 + 1) * (p_2 + 1) * (p_3 + 1);
