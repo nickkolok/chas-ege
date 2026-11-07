@@ -15,12 +15,13 @@
 		genAssert((energy * 100000).isAlmostInteger(), 'Ответ должен иметь не более пяти знаков после запятой');
 		let answer = +energy.toFixed(5);
 		NAtask.setTask({
-		    text: 'Энергия заряженного конденсатора $W$ (в ' + ['Дж', 'джоулях'][wording] + ') вычисляется по формуле $' +
-		        ['W=\\frac{q^2}{2C}', 'W=\\frac{CU^2}{2}'][formula] + '$, где $C$ — ёмкость в фарадах, ' +
-		        (formula === 0 ? '$q$ — заряд на одной обкладке в кулонах.' : '$U$ — разность потенциалов в вольтах.') +
-		        ' Найдите энергию, если $C=' + coefficient + '\\cdot10^{-4}$ Ф и $' +
-		        [ 'q=' + q.ts(true) + '$ Кл.', 'U=' + U + '$ В.'][formula] + ' Ответ дайте в джоулях.',
-		    answers: answer, preference: [preference1, preference2],
+			text: 'Энергия заряженного конденсатора $W$ (в ' + ['Дж', 'джоулях'][wording] + ') вычисляется по формуле $' +
+				['W=\\frac{q^2}{2C}', 'W=\\frac{CU^2}{2}'][formula] + '$, где $C$ — ёмкость в фарадах, ' +
+				(formula === 0 ? '$q$ — заряд на одной обкладке в кулонах.' : '$U$ — разность потенциалов в вольтах.') +
+				' Найдите энергию, если $C=' + coefficient + '\\cdot10^{-4}$ Ф и $' +
+				[ 'q=' + q.ts(true) + '$ Кл.', 'U=' + U + '$ В.'][formula] + ' Ответ дайте в джоулях.',
+			answers: answer,
+			preference: [preference1, preference2],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 20000);
