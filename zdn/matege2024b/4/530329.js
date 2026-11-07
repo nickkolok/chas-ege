@@ -11,11 +11,11 @@
 		let sinA = a / denominator;
 		if (variant === 0) genAssertZ1000(sinA, 'Искомый синус должен быть конечной десятичной дробью');
 		NAtask.setTask({
-		    text: 'Теорему синусов можно записать в виде $\\frac{a}{\\sin\\alpha}=\\frac{b}{\\sin\\beta}$, где $a$ и $b$ — стороны треугольника, ' +
-		        'а $\\alpha$ и $\\beta$ — противолежащие им углы. Пользуясь этой формулой, найдите $' +
-		        ['\\sin\\alpha', 'a'][variant] + '$, если $b=' + b + '$, $\\sin\\beta=' + b.texfrac(denominator) + '$ и $' +
-		        ['a=' + a, '\\sin\\alpha=' + a.texfrac(denominator)][variant] + '$.',
-		    answers: [sinA, a][variant], preference,
+			text: 'Теорему синусов можно записать в виде $\\frac{a}{\\sin\\alpha}=\\frac{b}{\\sin\\beta}$, где $a$ и $b$ — стороны треугольника, ' +
+				'а $\\alpha$ и $\\beta$ — противолежащие им углы. Пользуясь этой формулой, найдите $' +
+				['\\sin\\alpha', 'a'][variant] + '$, если $b=' + b + '$, $\\sin\\beta=' + b.texfrac(denominator) + '$ и $' +
+				['a=' + a, '\\sin\\alpha=' + a.texfrac(denominator)][variant] + '$.',
+			answers: [sinA, a][variant], preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 20000);
