@@ -19,7 +19,7 @@
 			// Прямоугольный параллелепипед: размеры кратны 10
 			let x = sl(2, 10, 1);
 			let y = sl(2, 10, 1);
-			let z = sl(2, 10, 1);
+			let z = x === y ? slKrome(x, 2, 10) : sl(2, 10);
 			a = 10 * x;
 			b = 10 * y;
 			c = 10 * z;
@@ -27,24 +27,20 @@
 		}
 
 		let paint1 = function (ct) {
-			ct.translate(120, 60);
-			ct.scale(20, 20);
-			ct.lineWidth = 2 / 20;
-			
-			// Масштабируем размеры для отрисовки, чтобы фигура вписывалась в канву
-			let maxVal = Math.max(a, b, c);
-			let k = 12 / maxVal;
-			let w = a * k;
-			let h = b * k;
-			let d = c * k / 2.5;
+			let angle = Math.PI / 6;
+			let scale = Math.min(340 / (a + c * Math.cos(angle)), 340 / (b + c * Math.sin(angle)));
+			let w = a * scale, h = b * scale, d = c * scale;
+			ct.translate(30, 370);
+			ct.scale(1, -1);
+			ct.lineWidth = 2;
 
 			ct.drawParallelepiped({
 				width: w,
 				height: h,
 				depth: d,
-				angle: 40,
-				strokeStyle: om.secondaryBrandColors,
-			}, [0, 3, 4], false, [0.5, 0.2]);
+				angle: angle,
+				strokeStyle: om.secondaryBrandColors.iz(),
+			}, [6, 8, 10], false, [5, 3]);
 		};
 
 		NAtask.setTask({
@@ -65,3 +61,4 @@
 	}, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=528013
+// 086CBA, CD8CFE, 5CEF05, 68B200, FEA675, 082588
