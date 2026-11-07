@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
+	NAinfo.requireApiVersion(0, 2);
 	retryWhileError(function () {
-		NAinfo.requireApiVersion(0, 2);
 		let key = '15673028';
 		let preference = ['commonBase', 'relatedBases', 'productBase', 'decimalBase', 'signedSum'];
 		let variant = getSelectedPreferenceFromList(key, preference);
