@@ -19,7 +19,7 @@
 		    ['среднесуточная температура', 'градусах Цельсия', 10, 1],
 		];
 		let [name, units, base, step] = stories[story];
-		let year = sl(2000, 2025);
+		let year = sl(story === 0 ? 2021 : 2000, 2025);
 		let month = sl(0, 11);
 		let dates = Array.from({length: 28}, (_, i) => i + 1).filter(day => story === 12 || ![0, 6].includes(new Date(year, month, day).getDay()));
 		let values = dates.map(() => +(base + step * sl(0, 12)).toFixed(3));
@@ -34,7 +34,7 @@
 		    dates[left + selected.indexOf(minimum)], dates[left + selected.indexOf(maximum)],
 		    dates[left + selected.lastIndexOf(minimum)], dates[left + selected.lastIndexOf(maximum)],
 		    dates[left + selected.indexOf(targetValue)], targetValue];
-		let periodText = 'в период с ' + dates[left] + ' по ' + dates[right] + ' число включительно';
+		let periodText = 'в период с ' + dates[left] + '-го по ' + dates[right] + '-е число включительно';
 		let questions = [
 		    'Найдите наименьшее значение ' + periodText + '.', 'Найдите наибольшее значение ' + periodText + '.',
 		    'Найдите разность наибольшего и наименьшего значений ' + periodText + '.',
@@ -49,7 +49,8 @@
 		    text: 'На графике жирными точками показана величина «' + name + '» ' + (story === 12 ? 'за каждый день' : 'во все рабочие дни') +
 		        ' с ' + dates[0] + ' по ' + dates[dates.length - 1] + ' ' + om.mesiacy.re[month] + ' ' + year + ' года. ' +
 		        'По горизонтали указаны числа месяца, по вертикали — значения в ' + units + '. ' +
-		        'Для наглядности точки соединены линиями. ' + questions[question] +
+		        'Для наглядности точки соединены линиями. ' +
+		        (story === 0 ? 'На графике приведены учебные данные. ' : '') + questions[question] +
 		        ([3, 4, 5, 6, 7].includes(question) ? '' : ' Ответ дайте в ' + units + '.'),
 		    answers: answers[question], preference: [preferenceStory, preferenceQuestion, preferencePeriod],
 		});
