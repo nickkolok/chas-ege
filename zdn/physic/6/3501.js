@@ -30,7 +30,7 @@
 
 		let rVerb = v.dirR == 1 ? 'увеличили' : 'уменьшили';
 		let vVerb = v.dirV == 1 ? 'увеличили' : 'уменьшили';
-		let conjunction = v.dirR == v.dirV ? 'тоже' : 'а';
+		let conjunction = v.dirR == v.dirV ? ',' : ', а';
 
 		let text = 'Радиус окружности, по которой движется тело, ' + rVerb + ' в $' + v.rText + '$ раз(а), ' +
 			conjunction + ' линейную скорость тела ' + vVerb + ' в $' + v.vText + '$ раз(а). ' +
