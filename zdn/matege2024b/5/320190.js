@@ -8,22 +8,23 @@
 	NAinfo.requireApiVersion(0, 0);
 	var pass = om.rusbukv.iz();
 
-	do {
-		var zapasn = sluchch(10, 30);
-		var peregorodk = sluchch(10, 30);
-		var vsego = sluchch(100, 500);
-		var answers = (zapasn + peregorodk) / vsego;
-	} while (Math.abs(answers * 1000 - Math.round(answers * 1000)) > 1e-8);
+	retryWhileError(function () {
+		const zapasn = sluchch(10, 30);
+		const peregorodk = sluchch(10, 30);
+		const vsego = sluchch(100, 500);
+		const answers = (zapasn + peregorodk) / vsego;
+		genAssertZ1000(answers);
 
-	NAtask.setTask({
-		text: 'На борту самолёта ' + zapasn + ' кресел расположены рядом с запасными выходами и ' + peregorodk +
-			' — за перегородками, разделяющими салоны.' +
-			' Все эти места удобны для пассажира высокого роста. Остальные места неудобны. Пассажир ' + pass +
-			'. высокого роста. ' +
-			'Найдите вероятность того, что на регистрации при случайном выборе места пассажиру ' + pass + '. ' +
-			'достанется удобное место, если всего в самолёте ' + vsego + ' мест.',
-		answers,
-	});
+		NAtask.setTask({
+			text: 'На борту самолёта ' + chislitM(zapasn, 'кресло', 'кресла', 'кресел') + ' расположены рядом с запасными выходами и ' + peregorodk +
+				' — за перегородками, разделяющими салоны.' +
+				' Все эти места удобны для пассажира высокого роста. Остальные места неудобны. Пассажир ' + pass +
+				'. высокого роста. ' +
+				'Найдите вероятность того, что на регистрации при случайном выборе места пассажиру ' + pass + '. ' +
+				'достанется удобное место, если всего в самолёте ' + vsego + ' мест.',
+			answers,
+		});
+	}, 1000);
 })();
 //committed by SugarHedgehog, fixed by Диана Белова
 // 320190 321277 321279 321281 321283 321285 321287 321289 321291 321293 321295 321297 321299 321301 321303 321305
