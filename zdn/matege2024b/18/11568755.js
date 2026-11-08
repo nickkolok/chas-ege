@@ -50,13 +50,13 @@
 				secondValue,
 				['m-1', m - 1],
 				['-' + b.texfrac('m'), -b / m],
-			 ];
+			];
 		}
 		let left = values.map(([expr, value]) => {
 			let lower = Math.floor(value);
 			let fraction = value - lower;
 			genAssert(fraction > 0.07 && fraction < 0.93, 'Число слишком близко к границе отрезка');
-			return {expr, solution: '[' + lower + ';' + (lower + 1) + ']'};
+			return {expr, solution: '[' + lower + '; ' + (lower + 1) + ']'};
 		});
 		let right = left.map(row => row.solution);
 		genAssert(!right.hasDubl(), 'Числа должны лежать в разных отрезках');
