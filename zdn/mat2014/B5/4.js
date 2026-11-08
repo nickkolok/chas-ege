@@ -34,7 +34,7 @@ var paint = function(ct) {
 	var h=480;
 	ct.lineWidth=2;
 	var s=20;
-	ct.setka(20,s);
+	ct.regularGrid(20,s);
 	ct.lineWidth=4;
 	ct.lineJoin='round';
 	ct.fillStyle='777';

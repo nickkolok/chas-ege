@@ -23,7 +23,7 @@ var paint = function(ct) {
 	ct.translate(w/2,h/2);
 	ct.lineWidth=2;
 	var s2=20;
-	ct.setka(20,s2);
+	ct.regularGrid(20,s2);
 	ct.lineWidth=2.5;
 	ct.lineJoin='round';
 	ct.fillStyle='777'; // No idea what does it change
