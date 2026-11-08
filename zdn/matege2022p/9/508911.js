@@ -63,34 +63,42 @@
 			});
 
 			//точки
-			graph9AmarkCircles(ctx, points, 3, 4 / scale);
+			graph9AmarkCircles(ctx, points, undefined, 4 / scale);
 		};
-		let text = `ax^2+`;
+		let text;
+		let pointsCount = rand === 0 ? 3 : 2;
 		switch (rand) {
 			case 0:
-				genAssert((x0.isZ() && y0.isZ()) && Math.abs(a) != 1);
-				text = `ax^2+bx+c`;
+				genAssert(x0.isZ() && y0.isZ() && Math.abs(a) !== 1,
+					'Для варианта без известных коэффициентов нужны целочисленная вершина и |a| = 2');
+				text = 'ax^2+bx+c';
 				break;
 			case 1:
-				text = `${a}x^2+bx+c`.plusminus();
-				points.pop();
+				text = `${a}x^2+bx+c`;
 				break;
-			case 2:
-				genAssert(!c && b);
-				text += (`${b}x+c`).plusminus();
+			case 2: {
+				genAssert(b !== 0, 'В варианте с известным b коэффициент b должен быть ненулевым');
+				text = `ax^2+${b}x+c`;
+				// После вычитания bx остаётся ax² + c, поэтому нужны разные x².
+				genAssertNonempty(points);
+				let first = points.iz();
+				let otherPoints = points.filter(([x]) => Math.abs(x) !== Math.abs(first[0]));
+				genAssertNonempty(otherPoints, 'Для определения a и c нужны точки с разными x²');
+				points = [first, otherPoints.iz()];
 				break;
+			}
 			case 3:
-				genAssert(c);
-				text += (`bx+${c}`).plusminus();
-				points = points.filter(v => v[0]);
-				if (points.length > 2)
-					points.pop();
+				genAssert(c !== 0, 'В варианте с известным c коэффициент c должен быть ненулевым');
+				text = `ax^2+bx+${c}`;
+				points = points.filter(([x]) => x !== 0);
 				break;
 		}
+		genAssert(points.length >= pointsCount, 'Недостаточно точек для определения коэффициентов');
+		points = points.iz(pointsCount);
 		NAtask.setTask({
-			text: `На рисунке изображён график функции $f(x)=${text.plusminus()}$${`, где числа $a,	$ $b$ и $c $ - целые`.esli(rand == 0)}. Найдите $f(${chisl})$.`,
+			text: `На рисунке изображён график функции $f(x)=${text.plusminus()}$${`, где $a$, $b$ и $c$ — целые числа`.esli(rand === 0)}. Найдите $f(${chisl})$.`,
 			answers: answ,
-			analys: (`$f(x)=${(a +`x^2+` + b + `x+` + c)}$`).replace('+0x', '').replace('+0', '').plusminus(),
+			analys: `$f(x)=${[c, b, a].mn_txt('x')}$`,
 			preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
@@ -101,4 +109,4 @@
 		});
 	});
 })();
-//508911
+//508911 et al
