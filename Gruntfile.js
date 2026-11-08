@@ -59,6 +59,16 @@ module.exports = function(grunt) {
 			}
 		},
 		copy: {
+			nodeRunner: {
+				// Раннер копируется в build/, чтобы сборку с одной ветки можно
+				// было использовать для прогона шаблонов с другой ветки:
+				//   node build/dev/run-node-template.js --filepath zdn/…
+				// (бандл берётся рядом: build/lib/, node_modules — уровнем выше;
+				// пути шаблонов считаются от CWD, т.е. от «другой» ветки).
+				files: [
+					{ src: 'dev/run-node-template.js', dest: 'build/dev/run-node-template.js' },
+				],
+			},
 			pagesJs: {
 				files: [
 					{ expand: true, src: ['sh/*.js', 'c2/*.js'], dest: 'dist/' },
@@ -83,8 +93,14 @@ module.exports = function(grunt) {
 				files: [
 					{ expand: true, src: ['ext/**'], dest: 'dist/' },
 					{ expand: true, cwd: 'node_modules/ace-builds/src-min/', src: '**/*.js', dest: 'dist/ext/ace/' },
+					{ src: 'node_modules/mathjs/lib/browser/math.js', dest: 'ext/math.js' },
+					{ src: 'node_modules/nerdamer/all.min.js', dest: 'ext/nerdamer.js' },
 					{ src: 'node_modules/chas-storage/chasStorage.js', dest: 'dist/ext/chasStorage.js' },
+					{ src: 'node_modules/cubic-spline-browserified/cubic-spline-for-browser.js', dest: 'dist/ext/cubic-spline-for-browser.js' },
+					{ src: 'node_modules/flatten-shape-geometry/dist/bundle.js', dest: 'dist/ext/flatten-shape-geometry.js' },
 					{ src: 'node_modules/html2canvas/dist/html2canvas.min.js', dest: 'dist/ext/html2canvas.js' },
+					{ src: 'node_modules/jszip/dist/jszip.min.js', dest: 'dist/ext/jszip.min.js' },
+					{ src: 'node_modules/seedrandom/seedrandom.min.js', dest: 'dist/ext/seedrandom.min.js' },
 				]
 			},
 			otherHtml: {
@@ -275,6 +291,13 @@ module.exports = function(grunt) {
 				],
 				tasks: ['process-lib']
 			},
+			libNoUglify: {
+				files: [
+					'lib/*', '!lib/head*',
+					'src/**',
+				],
+				tasks: ['process-lib-nouglify']
+			},
 			taskSets: {
 				files: [
 					'zdn/**',
@@ -356,6 +379,7 @@ module.exports = function(grunt) {
 				'process-pages-js',
 				'concurrent:process-task-sets',
 				'process-css',
+				'gitstatus',
 			],
 			'process-lib': ['newer:copy:lib', 'make-chas-lib', ['make-chas-uijs', 'make-init']],
 			'process-task-sets': [['newer:copy:taskSets', 'packTasks', 'uglify:tasksPacks']],
@@ -380,12 +404,13 @@ module.exports = function(grunt) {
 	grunt.registerTask('make-init', ['concat:init', 'uglify:init']);
 	grunt.registerTask('make-head', ['uglify:head']);
 	grunt.registerTask('make-chas-lib', ['concat:chasLib', 'uglify:chasLib']);
-	grunt.registerTask('make-chas-uijs', ['concat:chasUijs', /*'unify-use-strict-chas-uijs', 'uglify:chasUijs',*/]);
+	grunt.registerTask('make-chas-uijs', ['concat:chasUijs', /*'unify-use-strict-chas-uijs', 'uglify:chasUijs',*/ 'copy:nodeRunner']);
 
 	grunt.registerTask('process-html', ['make-head', 'swigtemplates', 'htmlmin', 'newer:copy:otherHtml']);
 	grunt.registerTask('process-pages-js', ['newer:copy:pagesJs']);
 	grunt.registerTask('process-task-sets', ['concurrent:process-task-sets']);
 	grunt.registerTask('process-lib', ['concurrent:process-lib']);
+	grunt.registerTask('process-lib-nouglify', ['newer:copy:lib', 'concat:chasLib', 'concat:chasUijs', 'concat:init']);
 	grunt.registerTask('process-css', ['cssmin', 'newer:copy:css']);
 	grunt.registerTask('process-ext', ['newer:copy:externals']);
 	grunt.registerTask('process-unit-test', ['swigtemplates:unitTest', 'copy:unitTest']);
@@ -393,5 +418,137 @@ module.exports = function(grunt) {
 	grunt.registerTask('check-urls', ['checkPages:dev']);
 
 	grunt.registerTask('build-except-ext', ['concurrent:build-except-ext']);
+	
+	// --- gitstatus.txt ---
+	var childProcess = require('child_process');
+	var path = require('path');
+
+	function toText(value) {
+		if (value === null || typeof value === 'undefined') {
+			return '';
+		}
+		return value.toString().trim();
+	}
+
+	function makeGitEnv() {
+		var env = {};
+		Object.keys(process.env).forEach(function(key) {
+			env[key] = process.env[key];
+		});
+		env.LC_ALL = 'C';
+		env.LANG = 'C';
+		env.GIT_TERMINAL_PROMPT = '0';
+		return env;
+	}
+
+	var gitEnv = makeGitEnv();
+
+	function gitErrorDetails(err) {
+		if (!err) return '';
+		var parts = [];
+		var stderr = toText(err.stderr);
+		var stdout = toText(err.stdout);
+		if (stderr) parts.push(stderr);
+		if (stdout) parts.push(stdout);
+		if (parts.length === 0 && err.message) parts.push(toText(err.message));
+		if (err.code) parts.push('code: ' + err.code);
+		return parts.filter(Boolean).join('\n');
+	}
+
+	function runGit(args) {
+		if (typeof childProcess.execFileSync !== 'function') {
+			throw new Error('child_process.execFileSync is not available');
+		}
+		try {
+			return toText(childProcess.execFileSync('git', args, {
+				encoding: 'utf8',
+				env: gitEnv,
+				stdio: ['ignore', 'pipe', 'pipe']
+			}));
+		} catch (err) {
+			var details = gitErrorDetails(err);
+			throw new Error(details || 'git command failed');
+		}
+	}
+
+	function makeGitFallback(err) {
+		var message = 'Git недоступен: git не установлен, репозиторий не найден или команда git завершилась с ошибкой.';
+		var details = err && err.message ? err.message.trim() : '';
+		if (!details) return message + '\n';
+		return message + '\nПодробности:\n' + details + '\n';
+	}
+
+	function makeGitStatusContent() {
+		var hash;
+		try {
+			hash = runGit(['rev-parse', 'HEAD']);
+		} catch (err) {
+			return makeGitFallback(err);
+		}
+		var status;
+		try {
+			status = runGit([
+				'-c', 'core.quotepath=false',
+				'-c', 'color.status=false',
+				'status',
+				'--untracked-files=no'
+			]);
+		} catch (err) {
+			var details = err && err.message ? err.message.trim() : '';
+			return hash + '\n\n' +
+				'git status недоступен: не удалось получить состояние репозитория.\n' +
+				(details ? 'Подробности:\n' + details + '\n' : '');
+		}
+		return hash + '\n\n' + status + '\n';
+	}
+
+	grunt.registerTask(
+		'gitstatus',
+		'Создаёт dist/gitstatus.txt с хэшем коммита и git status без untracked-файлов',
+		function() {
+			var outFile = path.join('dist', 'gitstatus.txt');
+			var outDir = path.dirname(outFile);
+			if (!grunt.file.isDir(outDir)) {
+				grunt.file.mkdir(outDir);
+			}
+			grunt.file.write(outFile, makeGitStatusContent());
+			grunt.log.ok('Записан ' + outFile);
+		}
+	);
+	// --- /gitstatus.txt ---
+
+
+	grunt.registerTask(
+		'build-if-hash-differs',
+		'Сверяет хэш текущего коммита с тем, что в dist/gitstatus.txt. Если совпадает - радуется, если нет - запускает default.',
+		function() {
+			var gitstatusFile = path.join('dist', 'gitstatus.txt');
+			var currentHash = '';
+			try {
+				currentHash = runGit(['rev-parse', 'HEAD']);
+			} catch (err) {
+				grunt.log.error('Не удалось получить текущий хэш коммита: ' + err.message);
+				grunt.log.writeln('Запускаю полную сборку...');
+				grunt.task.run('default');
+				return;
+			}
+
+			var savedHash = '';
+			if (grunt.file.exists(gitstatusFile)) {
+				var content = grunt.file.read(gitstatusFile);
+				// Хэш обычно в первой строке
+				savedHash = content.split('\n')[0].trim();
+			}
+
+			if (savedHash && savedHash === currentHash) {
+				grunt.log.ok('Радость! Хэш текущего коммита (' + currentHash + ') совпадает с сохранённым в ' + gitstatusFile + '. Сборка не требуется.');
+			} else {
+				grunt.log.writeln('Хэш текущего коммита (' + currentHash + ') не совпадает с сохранённым (' + (savedHash || 'отсутствует') + ') или файл не найден.');
+				grunt.log.writeln('Запускаю полную сборку...');
+				grunt.task.run('default');
+			}
+		}
+	);
+
 	grunt.registerTask('default', ['build-except-ext', 'process-ext', 'process-unit-test']);
 };

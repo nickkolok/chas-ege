@@ -73,7 +73,7 @@ retryWhileUndefined(function() {
 		h = 300;
 		w = 300;
 		//Оси координат (сразу со стрелками)
-		ct.drawCoordPlane(w, h, {
+		ct.drawCoordinatePlane (w, h, {
 			hor: 1,
 			ver: 1
 		}, {

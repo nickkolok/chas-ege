@@ -12,6 +12,8 @@
 {% endblock %}
 
 {% block content %}
+	<div id="readiness-message">
+	</div>
 	<div id="typesettable-wrap">
 		<div id="question" class="question"></div>
 		<div id="resh" class="question"></div>
@@ -28,6 +30,11 @@
 					<button id="export" onclick="startExport()" title="Экспорт в РешуЕГЭ">
 						<span>
 							&#x2398;
+						</span>
+					</button>
+					<button id="export" onclick="startQuickExportToTex()" title="Экспорт в TeX">
+						<span>
+							&#x29C9;
 						</span>
 					</button>
 				</span>
@@ -70,6 +77,18 @@
 			<hr/>
 			<div>
 				<button onclick="beautifyCode();">Сделать красиво</button>
+				<button class="spoiler-show" data-chasstorage-id="otladka-baklush-show">Сделать заготовку...</button>
+				<button class="spoiler-hide" data-chasstorage-id="otladka-baklush-hide">Скрыть</button>
+				<div    class="spoiler-body" data-chasstorage-id="otladka-baklush-body" data-chasstorage-conf="!innerhtml">
+					<textarea id="textarea-task-text" data-chasstorage-id="otladka-textarea-task-text" data-chasstorage-conf="!visible">Вставьте текст задачи сюда...</textarea>
+					<br/>
+					<button onclick="makeTemplate();">Сделать заготовку</button>
+					<button class="spoiler-show" data-chasstorage-id="otladka-baklush-previous-show">Предыдущий код...</button>
+					<button class="spoiler-hide" data-chasstorage-id="otladka-baklush-previous-hide">Скрыть предыдущий код</button>
+					<div    class="spoiler-body" data-chasstorage-id="otladka-baklush-previous-body" data-chasstorage-conf="!innerhtml">
+						<textarea id="textarea-previous-code" data-chasstorage-id="otladka-textarea-previous-code" data-chasstorage-conf="!visible">Сюда будет перемещён код текущего скрипта</textarea>
+					</div>
+					</div>
 			</div>
 		</div>
 	</div>
@@ -78,6 +97,7 @@
 	</div>
 	<script>
 		addscript('otladka.js');
+		addscript('dvig_lz.js');
 		addscript('chas-ege_to_reshuege.js');
 	</script>
 {% endblock %}
