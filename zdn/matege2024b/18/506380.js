@@ -74,15 +74,15 @@
 		let numPart = [`(x - ${b})^2`, `(x - ${b})`, `x - ${a}`, `(x - ${a})^2`][swapNumDen];
 		let denPart = [`x - ${a}`, `(x - ${a})^2`, `(x - ${b})^2`, `(x - ${b})`][swapNumDen];
 		let sqRatExpr = `\\frac{${numPart}}{${denPart}} ${isSqRatGreater ? '>' : '<'} 0`;
-		let leftOfA = ['$x < ' + a + '$', '$(-\\infty,\\, ' + a + ')$'];
-		let rightOfB = ['$x > ' + b + '$', '$(' + b + ',\\, +\\infty)$'];
+		let leftOfA = [`$x < ${a}$`, `$(-\\infty,\\, ${a})$`];
+		let rightOfB = [`$x > ${b}$`, `$(${b},\\, +\\infty)$`];
 		let leftOfBExceptA = [
-			'$x < ' + a + '$ или $' + a + ' < x < ' + b + '$',
-			'$(-\\infty,\\, ' + a + ') \\cup (' + a + ',\\, ' + b + ')$',
+			`$x < ${a}$ или $${a} < x < ${b}$`,
+			`$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`
 		];
 		let rightOfAExceptB = [
-			'$' + a + ' < x < ' + b + '$ или $x > ' + b + '$',
-			'$(' + a + ',\\, ' + b + ') \\cup (' + b + ',\\, +\\infty)$',
+			`$${a} < x < ${b}$ или $x > ${b}$`,
+			`$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`
 		];
 		// Чётная степень не меняет знак, но её корень исключается.
 		let sqRatSolution = (swapNumDen % 2 ?
@@ -159,7 +159,7 @@
 			let isLogZero = sl1();
 			logarithmic = {
 				expr: `\\log_{${baseZero}} x ${isLogZero ? '>' : '<'} 0`,
-				solution: isLogZero ? [`$x > 1$`, `$(1,\\, +\\infty)$`][randAnswer] : ['$0 < x < 1$', '$(0,\\, 1)$'][randAnswer]
+				solution: isLogZero ? [`$x > 1$`, `$(1,\\, +\\infty)$`][randAnswer] : [`$0 < x < 1$`, `$(0,\\, 1)$`][randAnswer]
 			};
 		} else {
 			// Обычный логарифм: log_base(x) > 1
