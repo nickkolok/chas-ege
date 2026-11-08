@@ -1,137 +1,66 @@
-retryWhileUndefined(function() {
+(function () {
+	'use strict';
 	NAinfo.requireApiVersion(0, 2);
 
-	function f(x) {
-		return a * x + plusminus * (b * x + c).abs() + d;
-	}
-		//Почему бы и не отрицание модуля?)
-	let plusminus = (1).pm();
-	let znack;
-	if (plusminus > 0)
-		znack = '+';
-	else
-		znack = '-';
-	let a = sl(1, 10, 0.5).pm();
-	let b = slKrome(a.abs(), 1, 10, 0.5).pm();
-	let c = sl(-10, 10, 0.5);
-	let d = sl(-10, 10, 0.5);
-	let p1 = intPoints(f, {
-		minX: -c / b,
-		maxX: 5,
-		minY: -6,
-		maxY: 5
-	});
-	if (p1.length < 2)
-		return;
-	let p2 = intPoints(f, {
-		minX: -5,
-		maxX: -c / b,
-		minY: -6,
-		maxY: 5
-	});
-	if (p2.length < 2)
-		return;
-	let a1 = 0,
-		b1 = 0,
-		c1 = 0,
-		d1 = 0;
-	let question, answ, q;
-	switch (sl(1, 4)) {
-	case 1:
-		if (f(-c / b).abs() > 7 && (-100 * c / b).isZ()) {
-			question = [
-				['ординату', f(-c / b)],
-				['абсциссу', -c / b]
-			].iz();
-			answ = question.pop();
-			question += ' вершины графика';
-			break;
-		}
-	case 2:
-		q = sl(-10, 10, 0.5);
-		let variant = ['ax', 'bx'].iz(sl(1, 2));
-		if (sl1())
-			variant.push('c');
-		if (sl1())
-			variant.push('d');
-		question = 'найдите корень уравнения $' + variant.slag() + '=' + q + '$';
-		if (question.includes('ax'))
-			a1 = a;
-		if (question.includes('bx'))
-			b1 = b;
-		if (question.includes('c'))
-			c1 = c;
-		if (question.includes('d'))
-			d1 = d;
-		answ = (-c1 - d1 + q) / (a1 + b1);
-		if ((answ * 100).isZ())
-			break;
-	case 3:
-		question = [
-			['сумму', a + b + c + d],
-			['произведение', a * b * c * d]
-		].iz();
-		answ = question.pop();
-		question += ' всех коэффициентов';
-		break;
-	case 4:
-		q = [
-			[a, '$a$'],
-			[b, '$b$'],
-			[c, '$c$'],
-			[d, '$d$']
-		].iz();
-		question = q.pop();
-		answ = q;
-		break;
-	}
-	let sign = '';
-	if (question.includes('всех') || question.includes('корень') || question.includes('b') || question.includes('c')) {
-		if (b > 0)
-			sign = ', $b' + ['>', '\\geq'].iz() + '0$, ';
-		else
-			sign = ', $b' + ['<', '\\leq'].iz() + '0$, ';
-		if (c >= 0) {
-			if (!c)
-				sign += '$c \\geq 0$';
-			else
-				sign += '$c' + ['>', '\\geq'].iz() + '0$';
-		} else
-			sign += '$c' + ['<', '\\leq'].iz() + '0$';
-	}
-	let paint1 = function(ct) {
-		h = 300;
-		//Оси координат
-		graph9AdrawAxes_20_300(ct);
-		ct.translate(-10, -10);
-		//график
-		ct.translate(h / 2, h / 2);
-		ct.scale(20, -20);
-		ct.lineWidth = 0.1;
-		graph9AdrawFunction(ct, f, {
-			minX: -6,
-			maxX: 7,
-			minY: -7,
-			maxY: 6,
-			step: 0.05,
-		});
-		//точки
-		graph9AmarkCircles(ct, p1, 2, 0.15);
-		graph9AmarkCircles(ct, p2, 2, 0.15);
-	};
+	retryWhileError(function () {
+		let a = sl(1, 4).pm() / 2;
+		let b = sl(1, 4) / 2;
+		let direction = (1).pm();
+		let vertexX = sl(-4, 4) / 2;
+		let vertexY = sl(-7, 7) / 2;
+		let c = -b * vertexX;
+		let d = vertexY - a * vertexX;
+		let sign = direction > 0 ? '+' : '-';
+		let f = x => a * x + d + direction * Math.abs(b * x + c);
+		let points = intPoints(f, {minX: -6, maxX: 7, minY: -6, maxY: 5});
+		let left = points.filter(([x]) => x < vertexX);
+		let right = points.filter(([x]) => x > vertexX);
+		genAssert(left.length >= 2 && right.length >= 2, 'На каждой ветви нужны две целочисленные точки');
 
-	NAtask.setTask({
-		text: 'На рисунке изображён график функции вида $f(x)=ax+d' + znack +
-			'|bx+c|$' + sign + '. Найдите ' +
-			question + '.',
-		answers: answ,
-		analys: '$f(x)=' + (a + 'x+' + (d) + '' + znack + '|' + b + 'x+' + c).plusminus() + '|$',
-	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
-		paint: paint1,
-	});
-	return true;
-}, 100000);
+		let x = sl(8, 12).pm();
+		let rhs = a * x + d;
+		let variants = [
+			['корень уравнения $ax+d=' + rhs.ts() + '$', x, false],
+			['сумму $a+b+c+d$', a + b + c + d, true],
+			['произведение $a\\cdot b\\cdot c\\cdot d$', a * b * c * d, true],
+			['коэффициент $a$', a, false],
+			['коэффициент $b$', b, true],
+			['коэффициент $c$', c, true],
+			['коэффициент $d$', d, false],
+		];
+		if (!vertexX.isZ()) {
+			variants.push(['абсциссу вершины графика', vertexX, false]);
+		}
+		if (!vertexY.isZ()) {
+			variants.push(['ординату вершины графика', vertexY, false]);
+		}
+		let [question, answer, needsSign] = variants.iz();
+		let restrictions = needsSign ? ', где $b>0$' : '';
+		let inner = (b.ts() + 'x+' + c.ts()).plusminus();
+		let formula = (a.ts() + 'x+' + d.ts()).plusminus() + sign + '\\left|' + inner + '\\right|';
+
+		NAtask.setTask({
+			text: 'На рисунке изображён график функции вида $f(x)=ax+d' + sign +
+				'\\left|bx+c\\right|$' + restrictions + '. Найдите ' + question + '.',
+			answers: answer,
+			analys: 'По отмеченным точкам восстановим две линейные части графика. ' +
+				'Коэффициент $a$ равен полусумме их угловых коэффициентов, а $|b|$ — половине модуля их разности. ' +
+				'Если вершина имеет координаты $(x_0;y_0)$, то $c=-bx_0$ и $d=y_0-ax_0$. ' +
+				'При $b>0$ получаем $f(x)=' + formula + '$.',
+		});
+		NAtask.modifiers.addCanvasIllustration({
+			width: 300,
+			height: 300,
+			paint: function (ct) {
+				graph9AdrawAxes_20_300(ct);
+				ct.translate(140, 140);
+				ct.scale(20, -20);
+				ct.lineWidth = 0.1;
+				graph9AdrawFunction(ct, f, {minX: -6, maxX: 7, minY: -6.8, maxY: 6.8, step: 0.05});
+				graph9AmarkCircles(ct, left, 2, 0.15);
+				graph9AmarkCircles(ct, right, 2, 0.15);
+			},
+		});
+	}, 1000);
+})();
 //563824
