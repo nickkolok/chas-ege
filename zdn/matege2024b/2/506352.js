@@ -140,7 +140,7 @@ retryWhileError(function() {
 					['продолжительность прогулки с собакой', 20, 40]
 				],
 				[
-					['длительность полнометражнго фильма', 1, 3],
+					['длительность полнометражного фильма', 1, 3],
 					['длительность перелёта между соседними городами', 1, 2],
 					['длительность обзорной экскурсии', 2, 6],
 					['длительность дня летом в Москве', 15, 17],
@@ -495,7 +495,7 @@ retryWhileError(function() {
 	let valueB = bigObjects[sluchIndexBigObject][1];
 
 	if (sl1() && typeIndex < 3) {
-		valueB = valueB * [1000, 24, 1000][typeIndex];
+		valueB = Math.round(valueB * [1000, 24, 1000][typeIndex]);
 		sluchValueM = 1;
 	}
 
@@ -505,7 +505,6 @@ retryWhileError(function() {
 	if (sluchIndexSmallObject < 3 && sl(0, 1)) {
 		valueVS = smallObjects[newSluchIndexSmallObject][1];
 		sluchValueS = 1;
-		turnValueBToValueM = 1;
 	}
 	if (sluchIndexMediumObject < 3 && sl(0, 1)) {
 		valueB = mediumObjects[newSluchIndexMediumObject][1];
