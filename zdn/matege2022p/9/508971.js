@@ -14,23 +14,19 @@
 
 		let a = [sluchch(1, 6).pm(), 0][randA];
 		let k = sluchch(1, 8).pm();
-		let chisl = sluchch(1, 30, 0.5).pm();
-		genAssertZ1000(f(chisl));
-		genAssert(Math.abs(f(chisl)) >= 10, 'Спрашиваемое f(x) видно на графике');
+		let x = -a + [0.25, 0.5].iz().pm();
+		let y = f(x);
+		genAssert(Math.abs(y) >= 10, 'Спрашиваемое f(x) видно на графике');
 
-		if (randFind) {
-			answ = chisl;
-			find = `значение $x$, при котором $f(x)=${f(chisl)}$`;
-		} else {
-			find = `$f(${chisl})$`;
-			answ = f(chisl);
-		}
+		let find = randFind ? `значение $x$, при котором $f(x)=${y}$` : `$f(${x})$`;
+		let answ = randFind ? x : y;
+		let denominator = ('x' + ('+' + a).esli(a)).plusminus();
 
 		let points = intPoints(f, {
-			minX: -7,
-			maxX: 7,
-			minY: -7,
-			maxY: 7
+			minX: -8,
+			maxX: 9,
+			minY: -8,
+			maxY: 8
 		});
 		let paint1 = function (ctx) {
 			let h = 400;
@@ -59,14 +55,16 @@
 			});
 			//точки
 			graph9AmarkCircles(ctx, points, 2, 0.15);
-			//всп полоска
-			ctx.setLineDash([0.25, 0.5]);
-			ctx.drawLine(-a, -9, -a, 9);
+			// Вертикальная асимптота при ненулевом сдвиге
+			if (a) {
+				ctx.setLineDash([0.25, 0.5]);
+				ctx.drawLine(-a, -9, -a, 9);
+			}
 		};
 		NAtask.setTask({
 			text: `На рисунке изображён график функции $f(x)=\\frac{k}{x${`+a`.esli(!randA)}}$. Найдите ${find}.`,
 			answers: answ,
-			analys: (`$f(x)=\\frac{${k}}{x+${a.toString().esli(a)}}$`).plusminus(),
+			analys: `$f(x)=\\frac{${k}}{${denominator}}$`,
 			preference: [preference1, preference2],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
