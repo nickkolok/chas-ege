@@ -50,7 +50,7 @@
 		}
 
 		genAssert(validNumbers.length > 0,
-			`Не найдено чисел для Z=${Z}, S=${S}, диапазон [${X}; ${Y}]`);
+			`Не найдено чисел для Z=${Z}, S=${S}, диапазон [${min}; ${max}]`);
 
 		let textBody;
 		if (rand === 0) {
