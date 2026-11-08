@@ -15,37 +15,35 @@
 		let randB = getSelectedPreferenceFromList(key, preference2);
 		let randA = getSelectedPreferenceFromList(key, preference3);
 
-
-		let a = [sl(2, 10), [0.01, 0.25, 0.2, 0.125].iz()][randA];
+		let a = [sl(2, 8), [0.25, 0.2, 0.125].iz()][randA];
 		let b = [sluchch(1, 7).pm(), 0][randB];
-		let chisl = Math.pow(a, sluchch(1, 5));
+		let exponent = sluchch(1, 5);
+		if (randA)
+			exponent = exponent.pm();
+		let x = a ** exponent;
+		let y = exponent + b;
 
-		if (randA) {
-			genAssertZ1000(chisl);
-			genAssert(Math.abs(f(chisl)) >= 2);
+		genAssert(x < 1000);
+		genAssertZ1000(x);
+		x = Math.round(x * 1000) / 1000;
+		if (randA && exponent > 0) {
+			genAssert(x < 0.05 && Math.abs(y) >= 2);
 		} else {
-			genAssert(Math.abs(chisl) > 6);
-			genAssert(Math.abs(f(chisl)) > [6, 2][randB]);
-			genAssert(chisl < 1000);
+			genAssert(x > 8.5);
+			if (!randA)
+				genAssert(Math.abs(y) > [6, 2][randB]);
 		}
 
 		let points = intPoints(f, {
-			minX: -8,
-			maxX: 8,
+			minX: 1,
+			maxX: 9,
 			minY: -8,
 			maxY: 8
 		});
-
 		genAssert(points.length >= 2, 'Недостаточно точек');
 
-		let find, answ;
-		if (!randFind) {
-			answ = f(chisl);
-			find = `$f(${chisl})$`;
-		} else {
-			answ = chisl;
-			find = `значение $x$, при котором $f(x)=${(f(chisl))}$`;
-		}
+		let find = randFind ? `значение $x$, при котором $f(x)=${y}$` : `$f(${x})$`;
+		let answ = randFind ? x : y;
 		let paint1 = function (ct) {
 			let h = 400;
 			let w = 400;
@@ -73,9 +71,9 @@
 			graph9AmarkCircles(ct, points, 2, 0.15);
 		};
 		NAtask.setTask({
-			text: `На рисунке изображён график функции $f(x)=${`b+`.esli(!randB)}\\log{_a}{x}$. Найдите ${find}. `,
+			text: `На рисунке изображён график функции $f(x)=${`b+`.esli(!randB)}\\log_{a}{x}$. Найдите ${find}. `,
 			answers: answ,
-			analys: `$f(x)=${b}+\\log{_{${a}}} {x}$`.replace('0+', ''),
+			analys: `$f(x)=${(b + '+').esli(b)}\\log_{${a}}{x}$`,
 			preference: [preference1, preference2, preference3],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
@@ -84,6 +82,6 @@
 			height: 400,
 			paint: paint1,
 		});
-	}, 100000);
+	}, 1000);
 })();
 //509009
