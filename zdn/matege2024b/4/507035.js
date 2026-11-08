@@ -4,8 +4,11 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '507035';
-		let preference = ['onlyNumber', 'numberWithFractorization'];
-		let rand = getSelectedPreferenceFromList(key, preference);
+		let preference = ['onlyNumber', 'numberWithFactorization'];
+		let preferenceOptions = preference.map((name, index) => ({preference: name, preferenceValue: index}));
+		// Старое написание сохраняем для уже сохранённых настроек.
+		preferenceOptions.push({preference: 'numberWithFractorization', preferenceValue: 1});
+		let rand = getListedPreference(key, preferenceOptions, sl(preference.length - 1));
 
 		let the_orderToFind = decor.orderToFind.iz();
 		
