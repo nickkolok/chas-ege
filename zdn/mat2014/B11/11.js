@@ -1,4 +1,5 @@
-(function(){'use strict';
+(function(){
+	'use strict';
 
 var a=slKrome([90,180,270],1,359);
 var at='{'+a.ts()+'^\\circ}';
@@ -15,21 +16,29 @@ var vyr2=[
 ].iz()
 .replace(')^\\circ','^\\circ)'); // A sever co-style! TODO!
 
-var y;
-if(sl1()){
-	y='\\frac{'+b.ts()+'~'+vyr1+'}{'+c.ts()+'~'+vyr2+'}';
-	window.vopr.ver=[(b/(2*c)).ts()];
-}else{
-	y='\\frac{'+b.ts()+'~'+vyr2+'}{'+c.ts()+'~'+vyr1+'}';
-	window.vopr.ver=[(b*2/c).ts()];
-}
+		y,
+		answer;
+	if(sl1()){
+		y = '\\frac{' + b.ts() + '~' + vyr1 +
+			'}{' + c.ts() + '~' + vyr2 + '}';
+		answer = b / (2 * c);
+	}else{
+		y = '\\frac{' + b.ts() + '~' + vyr2 + '}{' +
+			c.ts() + '~' + vyr1 + '}';
+		answer = b * 2 / c;
+	}
 
-window.vopr.txt=('Найдите значение выражения $$'+y+'$$').plusminus().ts();
+	chas2.task.setTask({
+		text: ('Найдите значение выражения $$'+y+'$$').plusminus().ts(),
+		answers: answer,
+		tags: {
+			'log': 0,
+			'prz': 0,
+			'drs': 0,
+			'tri': 1,
+		},
+	});
 
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=1;
 })();
 //Обзад 26755
 //Николай Авдеев
