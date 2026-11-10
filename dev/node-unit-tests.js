@@ -541,4 +541,34 @@ module.exports = function registerNodeTests(QUnit) {
         );
         assert.strictEqual(withShrink.scale, withoutShrink.scale);
     });
+
+    // ============================================================
+    //  autoScale: центрирование  (lib/func.js)
+    // ============================================================
+    QUnit.module('autoScale: center');
+
+    QUnit.test('без center начало координат остаётся на месте', function (assert) {
+        var result = autoScale([{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 5 }], newCamera());
+        assert.deepEqual(result[0], { x: 0, y: 0 });
+    });
+
+    QUnit.test('с center фигура рисуется так же, как сдвинутая заранее в начало координат', function (assert) {
+        var centeredCamera = newCamera();
+        var centered = autoScale([{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 5 }], centeredCamera, [], { center: true });
+        var moved = autoScale([{ x: -5, y: -2.5 }, { x: 5, y: -2.5 }, { x: 5, y: 2.5 }], newCamera());
+        assert.deepEqual(centered, moved, 'середина габаритов — в середине поля');
+        assert.strictEqual(centeredCamera.scale, 36, 'фигура занимает всё поле по ширине');
+    });
+
+    QUnit.test('с center фигура вдали от начала координат не отбраковывается', function (assert) {
+        var vertex = [{ x: 1000, y: 1000 }, { x: 1004, y: 1000 }, { x: 1004, y: 1002 }];
+        assert.throws(function () {
+            autoScale(vertex, newCamera());
+        }, 'без center — genAssert');
+        assert.deepEqual(
+            autoScale(vertex, newCamera(), [], { center: true, startX: 0, finishX: 400, startY: 0, finishY: 400 }),
+            [{ x: 0, y: 100 }, { x: 400, y: 100 }, { x: 400, y: 300 }],
+            'поле 0..400: фигура в его середине'
+        );
+    });
 };
