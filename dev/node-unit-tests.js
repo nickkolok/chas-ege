@@ -507,4 +507,38 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'drawCircle вызван ровно один раз');
         assert.deepEqual(calls[0], [3, -4, 5], 'drawCircle(x центра, y центра, радиус)');
     });
+
+    // ============================================================
+    //  autoScale: уменьшение больших фигур  (lib/func.js)
+    // ============================================================
+    QUnit.module('autoScale: shrink');
+
+    function newCamera() {
+        return { x: 0, y: 0, z: 0, scale: 1, rotationX: 0, rotationY: 0, rotationZ: 0 };
+    }
+
+    QUnit.test('без shrink большая фигура отбраковывается, как раньше', function (assert) {
+        assert.throws(function () {
+            autoScale([{ x: -1000, y: 0 }, { x: 1000, y: 500 }], newCamera());
+        }, 'genAssert');
+    });
+
+    QUnit.test('с shrink большая фигура рисуется так же, как подобная ей маленькая', function (assert) {
+        var bigCamera = newCamera();
+        var big = autoScale([{ x: -1000, y: 0 }, { x: 1000, y: 500 }], bigCamera, [], { shrink: true });
+        var small = autoScale([{ x: -10, y: 0 }, { x: 10, y: 5 }], newCamera());
+        assert.deepEqual(big, small, 'та же картинка, что у фигуры в 100 раз меньше');
+        assert.ok(Math.abs(bigCamera.scale - 0.18) < 1e-12, 'camera.scale = 0,18');
+    });
+
+    QUnit.test('с shrink фигура, которая и так помещается, не меняется', function (assert) {
+        var vertex = [{ x: -10, y: 0 }, { x: 10, y: 5 }];
+        var withShrink = newCamera();
+        var withoutShrink = newCamera();
+        assert.deepEqual(
+            autoScale(vertex, withShrink, [], { shrink: true }),
+            autoScale(vertex, withoutShrink)
+        );
+        assert.strictEqual(withShrink.scale, withoutShrink.scale);
+    });
 };
