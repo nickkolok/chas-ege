@@ -33,7 +33,7 @@
 
 		let points = rhombusP.concat(squareP);
 
-		let connectM = [
+		let connectionMatrix = [
 			[1],
 			[0, 1],
 			[1, 0, 1],
@@ -55,7 +55,7 @@
 			ctx.strokeStyle = om.secondaryBrandColors;
 
 			ctx.lineWidth = 2;
-			ctx.drawFigure(points, connectM);
+			ctx.drawFigure(points, connectionMatrix);
 
 			// Прямой угол квадрата, как на чертеже ФИПИ
 			ctx.strokeStyle = om.primaryBrandColors.iz();
