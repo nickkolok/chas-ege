@@ -39,7 +39,13 @@
 
 		triangle.connectVerticesInConnectionMatrix([3, 4]);
 
-		let points = autoScale(triangle.vertices);
+		// Поле чуть уже холста, чтобы подписи не обрезались у края
+		let points = autoScale(triangle.vertices, undefined, [], {
+			startX: -165,
+			finishX: 165,
+			startY: -160,
+			finishY: 160,
+		});
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -55,7 +61,29 @@
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			// Подписи вершин — наружу от центра треугольника,
+			// подписи точек M (на AC) и K (на BC) — наружу по нормали к своей стороне
+			let center = {
+				x: (points[0].x + points[1].x + points[2].x) / 3,
+				y: (points[0].y + points[1].y + points[2].y) / 3,
+			};
+			let sideOf = { 3: [0, 2], 4: [1, 2] };
+			points.forEach((elem, i) => {
+				let dx = elem.x - center.x;
+				let dy = elem.y - center.y;
+				if (sideOf[i]) {
+					let [p, q] = sideOf[i].map((j) => points[j]);
+					let nx = q.y - p.y;
+					let ny = p.x - q.x;
+					let sign = (nx * dx + ny * dy < 0) ? -1 : 1;
+					dx = sign * nx;
+					dy = sign * ny;
+				}
+				let length = Math.hypot(dx, dy);
+				ctx.fillText(letters[i], elem.x + 18 * dx / length, -(elem.y + 18 * dy / length));
+			});
 		};
 
 		NAtask.setTask({
