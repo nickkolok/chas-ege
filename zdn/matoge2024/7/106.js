@@ -48,7 +48,7 @@
 			wrongAnswers: ['A', 'B', 'C', 'D'].filter(x => x !== correctLetter)
 		});
 
-		AtoB(3, ['A', 'B', 'C', 'D'].indexOf(correctLetter));
+		AtoB(3, {autoLaTeX: true});
 
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 400,
