@@ -18,11 +18,17 @@
 			length: rhombus.lengthAB
 		});
 
+		// Ромб слева, квадрат справа, зазор между ними пропорционален стороне;
+		// вся композиция — по центру холста (shiftCoordinate3D вычитает сдвиг, а не прибавляет)
+		let side = square.lengthAB;
+		let rhombusWidth = Math.max(...rhombus.vertices.map((ver) => ver.x)) - Math.min(...rhombus.vertices.map((ver) => ver.x));
+		let gap = 0.4 * side;
+		let totalWidth = rhombusWidth + gap + side;
 		let rhombusP = rhombus.vertices.map((ver) => shiftCoordinate3D(ver, {
-			x: square.lengthAB + 1
+			x: totalWidth / 2 - rhombusWidth / 2
 		}));
 		let squareP = square.vertices.map((ver) => shiftCoordinate3D(ver, {
-			x: -square.lengthAB + 1
+			x: -(totalWidth / 2 - side / 2)
 		}));
 
 		let points = rhombusP.concat(squareP);
