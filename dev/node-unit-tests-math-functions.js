@@ -64,7 +64,13 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'findPositiveAndNegativeIntervals', 'findPositiveIntervals', 'findNegativeIntervals',
         'findPositiveAndNegativePoints', 'findPositiveIntegerPoints', 'findNegativeIntegerPoints',
     ]);
-    const { getRandomSubSegment } = loadMathFunctions(['getRandomSubSegment']);
+    const {
+        getRandomSubSegment, isCloseToInteger, isDistinctByTolerance, findPointsInIntervals,
+        intPoints, intPointsWithTolerance,
+    } = loadMathFunctions([
+        'getRandomSubSegment', 'isCloseToInteger', 'isDistinctByTolerance', 'findPointsInIntervals',
+        'intPoints', 'intPointsWithTolerance',
+    ]);
 
     const EPS = 1e-6;
 
@@ -517,5 +523,112 @@ module.exports = function registerMathFunctionsTests(QUnit) {
     QUnit.test('getRandomSubSegment: слишком большой stepX', function (assert) {
         assert.throws(() => getRandomSubSegment(-5, 5, 12), 'отрезок длины 12 не помещается в [-5; 5]');
         assert.throws(() => getRandomSubSegment(0.2, 0.8, 1), 'между границами нет целых точек');
+    });
+
+    // ============================================================
+    //  isCloseToInteger, isDistinctByTolerance  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: сравнение с допуском');
+
+    QUnit.test('isCloseToInteger', function (assert) {
+        assert.strictEqual(isCloseToInteger(3, 0), true, 'целое число при нулевом допуске');
+        assert.strictEqual(isCloseToInteger(2.95, 0.1), true, '2,95 при допуске 0,1');
+        assert.strictEqual(isCloseToInteger(3.05, 0.1), true, '3,05 при допуске 0,1');
+        assert.strictEqual(isCloseToInteger(2.8, 0.1), false, '2,8 при допуске 0,1');
+        assert.strictEqual(isCloseToInteger(-0.15, 0.2), true, 'отрицательное число рядом с нулём');
+        assert.strictEqual(isCloseToInteger(-3.9, 0.2), true, '-3,9 при допуске 0,2');
+        assert.strictEqual(isCloseToInteger(-3.5, 0.2), false, '-3,5 при допуске 0,2');
+        assert.strictEqual(isCloseToInteger(2.5, 0.5), true, 'граница допуска входит');
+        assert.strictEqual(isCloseToInteger(2.5, 0.49), false, 'чуть меньше границы');
+        assert.strictEqual(isCloseToInteger(NaN, 1), false, 'NaN');
+    });
+
+    QUnit.test('isDistinctByTolerance', function (assert) {
+        assert.strictEqual(isDistinctByTolerance([1, 2.5, 4], 1), true, 'все значения далеко друг от друга');
+        assert.strictEqual(isDistinctByTolerance([1, 1.5, 4], 1), false, 'два значения ближе допуска');
+        assert.strictEqual(isDistinctByTolerance([4, 1, 1.5], 1), false, 'близкие значения стоят не рядом в массиве');
+        assert.strictEqual(isDistinctByTolerance([1, 2, 3], 1), true, 'разность, равная допуску, считается достаточной');
+        assert.strictEqual(isDistinctByTolerance([2, 2], 0.1), false, 'одинаковые значения');
+        assert.strictEqual(isDistinctByTolerance([-1, 1], 1.5), true, 'числа разных знаков');
+        assert.strictEqual(isDistinctByTolerance([5], 1), true, 'одно значение');
+        assert.strictEqual(isDistinctByTolerance([], 1), true, 'пустой массив');
+    });
+
+    // ============================================================
+    //  findPointsInIntervals  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findPointsInIntervals');
+
+    QUnit.test('findPointsInIntervals', function (assert) {
+        const points = [-3, -1.5, 0, 2, 2.5, 4];
+        assert.deepEqual(findPointsInIntervals(points, [-2, 3]), [-1.5, 0, 2, 2.5], 'точки внутри интервала');
+        assert.deepEqual(findPointsInIntervals(points, [-3, 4]), [-1.5, 0, 2, 2.5], 'по умолчанию концы не входят');
+        assert.deepEqual(findPointsInIntervals(points, [-3, 4], true, false), [-3, -1.5, 0, 2, 2.5], 'левый конец включён');
+        assert.deepEqual(findPointsInIntervals(points, [-3, 4], false, true), [-1.5, 0, 2, 2.5, 4], 'правый конец включён');
+        assert.deepEqual(findPointsInIntervals(points, [-3, 4], true, true), points, 'оба конца включены');
+        assert.deepEqual(findPointsInIntervals(points, [5, 9]), [], 'в интервале нет точек');
+        assert.deepEqual(findPointsInIntervals([], [-3, 4]), [], 'пустой список точек');
+        assert.deepEqual(findPointsInIntervals([4, -1.5, 2], [-2, 3]), [-1.5, 2], 'порядок точек сохраняется');
+    });
+
+    // ============================================================
+    //  intPoints, intPointsWithTolerance  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: intPoints');
+
+    const halfSquare = x => x * x / 2;
+
+    // Значения ниже сверены с intPoints из lib/func.js: функция должна
+    // остаться для существующих шаблонов такой же
+    QUnit.test('intPoints: точки графика с целыми координатами', function (assert) {
+        assert.deepEqual(intPoints(halfSquare, { minX: -3, maxX: 3, minY: -5, maxY: 5 }),
+            [[-2, 2], [0, 0], [2, 2]], 'x²/2 на [-3; 3)');
+        assert.deepEqual(intPoints(x => 2 * x + 1, { minX: -2, maxX: 2, minY: -10, maxY: 10 }),
+            [[-2, -3], [-1, -1], [0, 1], [1, 3]], 'правая граница maxX не входит');
+        assert.deepEqual(intPoints(x => 2 * x + 0.5, { minX: -3, maxX: 3, minY: -10, maxY: 10 }), [], 'целых значений нет');
+    });
+
+    QUnit.test('intPoints: ограничения по y', function (assert) {
+        assert.deepEqual(intPoints(halfSquare, { minX: -5, maxX: 5, minY: 0, maxY: 2 }),
+            [[-2, 2], [0, 0], [2, 2]], 'точки выше maxY отброшены');
+        assert.deepEqual(intPoints(halfSquare, { minX: -5, maxX: 5, minY: 1, maxY: 8 }),
+            [[-4, 8], [-2, 2], [2, 2], [4, 8]], 'границы minY и maxY входят');
+        assert.deepEqual(intPoints(halfSquare, { minX: -3, maxX: 3 }), [], 'без minY и maxY точек нет');
+    });
+
+    QUnit.test('intPoints: нецелые границы и шаг', function (assert) {
+        const options = { minX: -3.5, maxX: 4.5, minY: 0, maxY: 5 };
+        assert.deepEqual(intPoints(halfSquare, options), [[-2, 2], [0, 0], [2, 2]], 'границы округляются внутрь');
+        assert.deepEqual(options, { minX: -3, maxX: 4, minY: 0, maxY: 5, step: 1 }, 'объект параметров при этом изменяется');
+        assert.deepEqual(intPoints(x => 2 * x, { minX: -1, maxX: 1.5, minY: -5, maxY: 5, step: 0.5 }),
+            [[-1, -2], [-0.5, -1], [0, 0], [0.5, 1], [1, 2]], 'с явным шагом абсциссы могут быть нецелыми');
+    });
+
+    QUnit.test('intPoints: значения, не являющиеся числами', function (assert) {
+        assert.deepEqual(intPoints(x => 1 / x, { minX: -2, maxX: 3, minY: -5, maxY: 5 }),
+            [[-1, -1], [1, 1]], '1/x: точка x = 0 пропущена');
+        assert.deepEqual(intPoints(Math.sqrt, { minX: -4, maxX: 10, minY: -5, maxY: 5 }),
+            [[0, 0], [1, 1], [4, 2], [9, 3]], '√x: отрицательные x пропущены');
+    });
+
+    QUnit.test('intPoints: функция вычисляется один раз на точку', function (assert) {
+        let calls = 0;
+        intPoints(x => {
+            calls++;
+            return x;
+        }, { minX: 0, maxX: 5, minY: -5, maxY: 5 });
+        assert.equal(calls, 5, 'пять точек — пять вызовов');
+    });
+
+    QUnit.test('intPointsWithTolerance', function (assert) {
+        const shifted = x => x * x / 2 + 0.05;
+        assert.deepEqual(intPointsWithTolerance(shifted, { minX: -3, maxX: 3, minY: 0, maxY: 5, tolerance: 0.1 }),
+            [[-2, 2.05], [0, 0.05], [2, 2.05]], 'значения возвращаются без округления');
+        assert.deepEqual(intPointsWithTolerance(shifted, { minX: -3, maxX: 3, minY: 0, maxY: 5, tolerance: 0.01 }),
+            [], 'при меньшем допуске точек нет');
+        assert.deepEqual(intPointsWithTolerance(x => x, { minX: -1, maxX: 2, minY: -5, maxY: 5, tolerance: 0.1 }),
+            [[-1, -1], [0, 0], [1, 1], [2, 2]], 'в отличие от intPoints, правая граница maxX входит');
+        assert.deepEqual(intPointsWithTolerance(shifted, { minX: -4.5, maxX: 4.5, minY: 1, maxY: 3, tolerance: 0.1 }),
+            [[-2, 2.05], [2, 2.05]], 'нецелые границы и ограничения по y');
     });
 };
