@@ -30,7 +30,13 @@
 		let valueAngle = [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees][variant].ceil();
 		triangle.addVertexToConnectionMatrix(Object.values(triangle.bisectorEndPoints)[variant], ['A', 'B', 'C'][variant]);
 
-		let points = autoScale(triangle.vertices);
+		// Поле чуть уже холста, чтобы подписи вершин не обрезались у края
+		let points = autoScale(triangle.vertices, undefined, [], {
+			startX: -165,
+			finishX: 165,
+			startY: -160,
+			finishY: 160,
+		});
 
 		let pointsAngle = points.slice(0, 3);
 		let pointCentralAngle = pointsAngle.splice(variant, 1)[0];
@@ -53,7 +59,21 @@
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			// Подписи вершин — наружу от центра треугольника,
+			// подпись основания биссектрисы — за стороной, на продолжении биссектрисы
+			let center = {
+				x: (points[0].x + points[1].x + points[2].x) / 3,
+				y: (points[0].y + points[1].y + points[2].y) / 3,
+			};
+			points.forEach((elem, i) => {
+				let from = (i < 3) ? center : pointCentralAngle;
+				let dx = elem.x - from.x;
+				let dy = elem.y - from.y;
+				let length = Math.hypot(dx, dy);
+				ctx.fillText(letters[i], elem.x + 18 * dx / length, -(elem.y + 18 * dy / length));
+			});
 		};
 
 		NAtask.setTask({
