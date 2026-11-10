@@ -55,8 +55,14 @@ function countConsoleErrors(callback) {
 
 module.exports = function registerMathFunctionsTests(QUnit) {
 
-    const { brent, findRoots, findIntersectionPoints, findIntegerPointsInInterval } = loadMathFunctions([
+    const {
+        brent, findRoots, findIntersectionPoints, findIntegerPointsInInterval,
+        findPositiveAndNegativeIntervals, findPositiveIntervals, findNegativeIntervals,
+        findPositiveAndNegativePoints, findPositiveIntegerPoints, findNegativeIntegerPoints,
+    } = loadMathFunctions([
         'brent', 'findRoots', 'findIntersectionPoints', 'findIntegerPointsInInterval',
+        'findPositiveAndNegativeIntervals', 'findPositiveIntervals', 'findNegativeIntervals',
+        'findPositiveAndNegativePoints', 'findPositiveIntegerPoints', 'findNegativeIntegerPoints',
     ]);
 
     const EPS = 1e-6;
@@ -267,5 +273,144 @@ module.exports = function registerMathFunctionsTests(QUnit) {
     QUnit.test('findIntegerPointsInInterval: интервал вне отрезка', function (assert) {
         assert.deepEqual(findIntegerPointsInInterval([6, 9], -5, 5), [], 'правее maxX');
         assert.deepEqual(findIntegerPointsInInterval([-9, -6], -5, 5, true, true), [], 'левее minX');
+    });
+
+    // ============================================================
+    //  Интервалы знакопостоянства  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: интервалы знакопостоянства');
+
+    function assertIntervals(assert, actual, expected, message) {
+        const ok = actual.length === expected.length && actual.every((interval, i) =>
+            Math.abs(interval[0] - expected[i][0]) < EPS && Math.abs(interval[1] - expected[i][1]) < EPS);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось ' + JSON.stringify(expected) + ')');
+    }
+
+    const parabola = x => (x - 1) * (x + 2);
+
+    QUnit.test('findPositiveAndNegativeIntervals: парабола', function (assert) {
+        const intervals = findPositiveAndNegativeIntervals(parabola, -5, 5);
+        assertIntervals(assert, intervals.positiveIntervals, [[-5, -2], [1, 5]], 'положительна на (-5; -2) и (1; 5)');
+        assertIntervals(assert, intervals.negativeIntervals, [[-2, 1]], 'отрицательна на (-2; 1)');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: функция без корней', function (assert) {
+        let intervals = findPositiveAndNegativeIntervals(x => x * x + 1, -5, 5);
+        assertIntervals(assert, intervals.positiveIntervals, [[-5, 5]], 'x² + 1 положительна на всём отрезке');
+        assertIntervals(assert, intervals.negativeIntervals, [], 'отрицательных интервалов нет');
+
+        intervals = findPositiveAndNegativeIntervals(x => -x * x - 1, -5, 5);
+        assertIntervals(assert, intervals.positiveIntervals, [], '-x² - 1: положительных интервалов нет');
+        assertIntervals(assert, intervals.negativeIntervals, [[-5, 5]], '-x² - 1 отрицательна на всём отрезке');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: синус', function (assert) {
+        const intervals = findPositiveAndNegativeIntervals(Math.sin, -7, 7);
+        const pi = Math.PI;
+        assertIntervals(assert, intervals.positiveIntervals, [[-2 * pi, -pi], [0, pi], [2 * pi, 7]], 'положительные');
+        assertIntervals(assert, intervals.negativeIntervals, [[-7, -2 * pi], [-pi, 0], [pi, 2 * pi]], 'отрицательные');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: интервалы не пересекаются и покрывают отрезок', function (assert) {
+        const func = x => (x + 3) * (x + 0.5) * (x - 2.5) * (x - 4);
+        const intervals = findPositiveAndNegativeIntervals(func, -5, 5);
+        const all = intervals.positiveIntervals.concat(intervals.negativeIntervals).sort((a, b) => a[0] - b[0]);
+        assertIntervals(assert, all, [[-5, -3], [-3, -0.5], [-0.5, 2.5], [2.5, 4], [4, 5]], 'пять кусков подряд');
+        assert.equal(intervals.positiveIntervals.length, 3, 'три положительных');
+        assert.equal(intervals.negativeIntervals.length, 2, 'два отрицательных');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: касание оси без смены знака', function (assert) {
+        // Точка касания, известная как корень, разделяет интервалы
+        let intervals = findPositiveAndNegativeIntervals(x => x * x, -5, 5, [0]);
+        assertIntervals(assert, intervals.positiveIntervals, [[-5, 0], [0, 5]], 'x²: два интервала, нуль между ними');
+        assertIntervals(assert, intervals.negativeIntervals, [], 'отрицательных интервалов нет');
+
+        // findRoots видит касание, только если оно попало в узел сетки; иначе
+        // интервал остаётся цельным, но знак всё равно определяется верно,
+        // даже когда середина куска совпала с точкой касания
+        intervals = findPositiveAndNegativeIntervals(x => x * x, -5, 5, []);
+        assertIntervals(assert, intervals.positiveIntervals, [[-5, 5]], 'x² без известных корней: один интервал');
+        assertIntervals(assert, intervals.negativeIntervals, [], 'отрицательных интервалов нет');
+
+        intervals = findPositiveAndNegativeIntervals(x => -x * x, -5, 5, []);
+        assertIntervals(assert, intervals.negativeIntervals, [[-5, 5]], '-x² без известных корней: один интервал');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: корни на концах отрезка', function (assert) {
+        const intervals = findPositiveAndNegativeIntervals(x => x * (x - 3), 0, 3);
+        assertIntervals(assert, intervals.positiveIntervals, [], 'положительных интервалов нет');
+        assertIntervals(assert, intervals.negativeIntervals, [[0, 3]], 'отрицательна на (0; 3)');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: готовые корни четвёртым аргументом', function (assert) {
+        let calls = 0;
+        const counted = x => {
+            calls++;
+            return parabola(x);
+        };
+        const intervals = findPositiveAndNegativeIntervals(counted, -5, 5, [1, -2]);
+        assertIntervals(assert, intervals.positiveIntervals, [[-5, -2], [1, 5]], 'корни можно передать в любом порядке');
+        assertIntervals(assert, intervals.negativeIntervals, [[-2, 1]], 'отрицательный интервал');
+        assert.equal(calls, 3, 'функция вычислена только в серединах трёх кусков');
+
+        const outside = findPositiveAndNegativeIntervals(parabola, -5, 5, [-7, -2, 1, 9]);
+        assertIntervals(assert, outside.positiveIntervals, [[-5, -2], [1, 5]], 'корни вне отрезка отбрасываются');
+    });
+
+    QUnit.test('findPositiveIntervals и findNegativeIntervals', function (assert) {
+        assertIntervals(assert, findPositiveIntervals(parabola, -5, 5), [[-5, -2], [1, 5]], 'положительные интервалы параболы');
+        assertIntervals(assert, findNegativeIntervals(parabola, -5, 5), [[-2, 1]], 'отрицательный интервал параболы');
+        assertIntervals(assert, findPositiveIntervals(x => -x * x - 1, -5, 5), [], 'положительных интервалов нет');
+        assertIntervals(assert, findNegativeIntervals(x => x * x + 1, -5, 5), [], 'отрицательных интервалов нет');
+        assertIntervals(assert, findPositiveIntervals(Math.sin, -7, 7, 0.1),
+            [[-2 * Math.PI, -Math.PI], [0, Math.PI], [2 * Math.PI, 7]], 'синус с шагом 0,1');
+    });
+
+    // ============================================================
+    //  Целые точки, где функция положительна или отрицательна
+    // ============================================================
+    QUnit.module('Math Functions: целые точки знакопостоянства');
+
+    QUnit.test('findPositiveAndNegativePoints', function (assert) {
+        const intervals = { positiveIntervals: [[-5, -2], [1, 5]], negativeIntervals: [[-2, 1]] };
+        assert.deepEqual(findPositiveAndNegativePoints(intervals, -5, 5),
+            { positivePoints: [-4, -3, 2, 3, 4], negativePoints: [-1, 0] }, 'концы отрезка и корни не входят');
+        assert.deepEqual(findPositiveAndNegativePoints(intervals, -5, 5, true, true),
+            { positivePoints: [-5, -4, -3, 2, 3, 4, 5], negativePoints: [-1, 0] }, 'концы отрезка включены');
+        assert.deepEqual(findPositiveAndNegativePoints({ positiveIntervals: [], negativeIntervals: [] }, -5, 5),
+            { positivePoints: [], negativePoints: [] }, 'интервалов нет');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: парабола с целыми корнями', function (assert) {
+        assert.deepEqual(findPositiveIntegerPoints(parabola, -5, 5), [-4, -3, 2, 3, 4], 'положительна');
+        assert.deepEqual(findNegativeIntegerPoints(parabola, -5, 5), [-1, 0], 'отрицательна');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: синус', function (assert) {
+        assert.deepEqual(findPositiveIntegerPoints(Math.sin, -7, 7), [-6, -5, -4, 1, 2, 3], 'положителен; нуль не входит');
+        assert.deepEqual(findNegativeIntegerPoints(Math.sin, -7, 7), [-3, -2, -1, 4, 5, 6], 'отрицателен; нуль не входит');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: функция без корней', function (assert) {
+        assert.deepEqual(findPositiveIntegerPoints(x => x * x + 1, -3, 3), [-2, -1, 0, 1, 2], 'x² + 1 положительна');
+        assert.deepEqual(findNegativeIntegerPoints(x => x * x + 1, -3, 3), [], 'отрицательных точек нет');
+        assert.deepEqual(findNegativeIntegerPoints(x => -x * x - 1, -3, 3), [-2, -1, 0, 1, 2], '-x² - 1 отрицательна');
+        assert.deepEqual(findPositiveIntegerPoints(x => -x * x - 1, -3, 3), [], 'положительных точек нет');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: нецелые концы отрезка', function (assert) {
+        assert.deepEqual(findPositiveIntegerPoints(parabola, -4.5, 3.5), [-4, -3, 2, 3], 'положительна на (-4,5; 3,5)');
+        assert.deepEqual(findNegativeIntegerPoints(parabola, -4.5, 3.5), [-1, 0], 'отрицательна на (-4,5; 3,5)');
+    });
+
+    QUnit.test('целые точки: каждая точка интервала попадает ровно в одно множество', function (assert) {
+        const func = x => (x + 3.5) * (x + 0.5) * (x - 2.5) * (x - 4.25);
+        const positive = findPositiveIntegerPoints(func, -5, 5);
+        const negative = findNegativeIntegerPoints(func, -5, 5);
+        assert.deepEqual(positive.concat(negative).sort((a, b) => a - b), [-4, -3, -2, -1, 0, 1, 2, 3, 4],
+            'вместе дают все целые точки интервала (-5; 5)');
+        assert.ok(positive.every(x => func(x) > 0), 'в «положительных» точках функция положительна');
+        assert.ok(negative.every(x => func(x) < 0), 'в «отрицательных» точках функция отрицательна');
     });
 };
