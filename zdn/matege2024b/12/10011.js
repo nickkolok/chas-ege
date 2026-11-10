@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let letters = latbukv.slice(0, 3).concat(['M', 'K']);
+		let letters = om.latbukv.slice(0, 3).concat(['M', 'K']);
 		let rand = sl1();
 
 		let triangle = new Triangle({
