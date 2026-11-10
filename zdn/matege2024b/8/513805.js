@@ -18,12 +18,13 @@
 			['поход', 'поездка'].iz(), ['дача', 'рыбалка'].iz()
 		][randPreposition]);
 		let days = sklonlxkand(['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'].iz());
+		let daysPrep = days.ve === 'вторник' ? 'во' : 'в';
 
 		let activityPred = `${preposition} ${activity2.pe}`;
 
 		let correct = [
 			`Если ${name} без ${instrRod}, значит, он не ${activityPred}.`,
-			`Если в ${days.ve} ${name} будет выступать ${activityE}, то он в ${days.ve} будет со своей ${instrTvor}.`
+			`Если ${daysPrep} ${days.ve} ${name} будет выступать ${activityE}, то он ${daysPrep} ${days.ve} будет со своей ${instrTvor}.`
 		];
 
 		let wrong = [
