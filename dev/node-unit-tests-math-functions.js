@@ -219,31 +219,54 @@ module.exports = function registerMathFunctionsTests(QUnit) {
     // ============================================================
     QUnit.module('Math Functions: findIntegerPointsInInterval');
 
+    // Строгий вариант: концы интервала не входят в ответ
+    const strictPoints = (interval, minX, maxX, includeMinX, includeMaxX) =>
+        findIntegerPointsInInterval(interval, minX, maxX, includeMinX, includeMaxX, undefined, true);
+
     QUnit.test('findIntegerPointsInInterval: нецелые концы интервала', function (assert) {
-        assert.deepEqual(findIntegerPointsInInterval([-2.5, 3.5], -10, 10), [-2, -1, 0, 1, 2, 3], '(-2,5; 3,5)');
+        assert.deepEqual(findIntegerPointsInInterval([-2.5, 3.5], -10, 10), [-2, -1, 0, 1, 2, 3], '[-2,5; 3,5]');
         assert.deepEqual(findIntegerPointsInInterval([0.2, 0.8], -10, 10), [], 'целых точек нет');
         assert.deepEqual(findIntegerPointsInInterval([1.5, 2.5], -10, 10), [2], 'одна точка');
+        assert.deepEqual(strictPoints([-2.5, 3.5], -10, 10), [-2, -1, 0, 1, 2, 3], 'строгий вариант даёт то же');
     });
 
-    QUnit.test('findIntegerPointsInInterval: целые концы интервала не входят в ответ', function (assert) {
-        assert.deepEqual(findIntegerPointsInInterval([1, 5], -10, 10), [2, 3, 4], '(1; 5)');
-        assert.deepEqual(findIntegerPointsInInterval([-2, 1], -5, 5), [-1, 0], '(-2; 1)');
-        assert.deepEqual(findIntegerPointsInInterval([3, 4], -10, 10), [], 'между соседними целыми точек нет');
+    QUnit.test('findIntegerPointsInInterval: целые концы интервала входят в ответ', function (assert) {
+        // Промежутки монотонности записывают вместе с точками экстремума
+        assert.deepEqual(findIntegerPointsInInterval([1, 5], -10, 10), [1, 2, 3, 4, 5], '[1; 5]');
+        assert.deepEqual(findIntegerPointsInInterval([-2, 1], -5, 5), [-2, -1, 0, 1], '[-2; 1]');
+        assert.deepEqual(findIntegerPointsInInterval([3, 4], -10, 10), [3, 4], 'только концы');
+        assert.deepEqual(findIntegerPointsInInterval([2, 2], -10, 10), [2], 'вырожденный интервал');
+    });
+
+    QUnit.test('findIntegerPointsInInterval: соседние промежутки монотонности делят точку экстремума', function (assert) {
+        // Возрастает на [-3,5; 2], убывает на [2; 4,5]: точка 2 входит в оба промежутка
+        assert.deepEqual(findIntegerPointsInInterval([-3.5, 2], -5, 6), [-3, -2, -1, 0, 1, 2], 'возрастание');
+        assert.deepEqual(findIntegerPointsInInterval([2, 4.5], -5, 6), [2, 3, 4], 'убывание');
+    });
+
+    QUnit.test('findIntegerPointsInInterval: excludeIntervalEnds исключает концы интервала', function (assert) {
+        assert.deepEqual(strictPoints([1, 5], -10, 10), [2, 3, 4], '(1; 5)');
+        assert.deepEqual(strictPoints([-2, 1], -5, 5), [-1, 0], '(-2; 1)');
+        assert.deepEqual(strictPoints([3, 4], -10, 10), [], 'между соседними целыми точек нет');
     });
 
     QUnit.test('findIntegerPointsInInterval: шум в численно найденных концах', function (assert) {
-        assert.deepEqual(findIntegerPointsInInterval([-2.0000000000000018, 0.9999999999999989], -5, 5), [-1, 0],
-            'концы -2 и 1 с ошибкой округления');
-        assert.deepEqual(findIntegerPointsInInterval([-8.132383655379272e-15, 3.1415926516264103], -7, 7), [1, 2, 3],
+        assert.deepEqual(findIntegerPointsInInterval([-2.0000000000000018, 0.9999999999999989], -5, 5), [-2, -1, 0, 1],
+            'концы -2 и 1 с ошибкой округления входят');
+        assert.deepEqual(strictPoints([-2.0000000000000018, 0.9999999999999989], -5, 5), [-1, 0],
+            'в строгом варианте концы -2 и 1 не входят');
+        assert.deepEqual(strictPoints([-8.132383655379272e-15, 3.1415926516264103], -7, 7), [1, 2, 3],
             'левый конец — нуль, найденный как -8e-15');
-        assert.deepEqual(findIntegerPointsInInterval([8.132383655379272e-15, 3.1415926516264103], -7, 7), [1, 2, 3],
+        assert.deepEqual(strictPoints([8.132383655379272e-15, 3.1415926516264103], -7, 7), [1, 2, 3],
             'левый конец — нуль, найденный как +8e-15');
-        assert.deepEqual(findIntegerPointsInInterval([0.5, 2.00000002], -7, 7), [1],
-            'правый конец 2 с ошибкой 2e-8');
-        assert.deepEqual(findIntegerPointsInInterval([0.5, 2.01], -7, 7), [1, 2],
-            'отличие 0,01 больше допуска: точка 2 лежит внутри');
-        assert.deepEqual(findIntegerPointsInInterval([0.5, 2.01], -7, 7, false, false, 0.05), [1],
+        assert.deepEqual(findIntegerPointsInInterval([8.132383655379272e-15, 3.1415926516264103], -7, 7), [0, 1, 2, 3],
+            'в нестрогом варианте нуль, найденный как +8e-15, входит');
+        assert.deepEqual(strictPoints([0.5, 2.00000002], -7, 7), [1], 'правый конец 2 с ошибкой 2e-8');
+        assert.deepEqual(strictPoints([0.5, 2.01], -7, 7), [1, 2], 'отличие 0,01 больше допуска: точка 2 лежит внутри');
+        assert.deepEqual(findIntegerPointsInInterval([0.5, 2.01], -7, 7, false, false, 0.05, true), [1],
             'допуск можно задать явно');
+        assert.deepEqual(findIntegerPointsInInterval([0.5, 1.99], -7, 7, false, false, 0.05), [1, 2],
+            'с допуском 0,05 конец 1,99 считается точкой 2');
     });
 
     QUnit.test('findIntegerPointsInInterval: границы minX и maxX', function (assert) {
@@ -255,17 +278,24 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.deepEqual(findIntegerPointsInInterval([-5, 5], -2.5, 2.5), [-2, -1, 0, 1, 2], 'нецелые minX и maxX');
     });
 
-    QUnit.test('findIntegerPointsInInterval: includeMinX не добавляет конец интервала внутри отрезка', function (assert) {
-        assert.deepEqual(findIntegerPointsInInterval([1, 3], -5, 5, true, true), [2],
-            'концы 1 и 3 — не minX и не maxX');
-        assert.deepEqual(findIntegerPointsInInterval([-5, 1], -5, 5, true, true), [-5, -4, -3, -2, -1, 0],
-            'левый конец совпадает с minX, правый — нет');
+    QUnit.test('findIntegerPointsInInterval: конец интервала на границе области определения', function (assert) {
+        // Функция определена на интервале (-5; 6) и возрастает на [4,5; 6): точка 6 не входит
+        assert.deepEqual(findIntegerPointsInInterval([4.5, 6], -5, 6), [5], 'открытый конец области определения');
+        assert.deepEqual(findIntegerPointsInInterval([-5, -1.5], -5, 6), [-4, -3, -2], 'то же слева');
+        assert.deepEqual(findIntegerPointsInInterval([-5, 1], -5, 5, true, true), [-5, -4, -3, -2, -1, 0, 1],
+            'includeMinX включает minX, правый конец 1 входит как конец интервала');
+        assert.deepEqual(strictPoints([-5, 1], -5, 5, true, true), [-5, -4, -3, -2, -1, 0],
+            'строгий вариант: включённый minX остаётся, внутренний конец 1 исключён');
+        assert.deepEqual(strictPoints([-5, 1], -5, 5), [-4, -3, -2, -1, 0],
+            'строгий вариант без includeMinX исключает оба конца');
     });
 
     QUnit.test('findIntegerPointsInInterval: интервал как собственные границы', function (assert) {
-        // Так функцию вызывает setTaskWithGraphOfFunctionDerivative
+        // Так функцию вызывает setTaskWithGraphOfFunctionDerivative: концы
+        // совпадают с minX и maxX и потому не входят в ответ
         const call = interval => findIntegerPointsInInterval(interval, interval[0], interval[1]);
         assert.deepEqual(call([-2.0000000000000018, 0.9999999999999989]), [-1, 0], 'концы с шумом');
+        assert.deepEqual(call([-2, 1]), [-1, 0], 'целые концы');
         assert.deepEqual(call([-6.7, -3.2]), [-6, -5, -4], 'нецелые концы');
         assert.deepEqual(call([2, 3]), [], 'пусто');
     });
