@@ -89,6 +89,21 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+
+## Неочевидные особенности API
+
+	- `Circle`: центр — `pc`, радиус — `r`. `radius` — это метод, а не число. Рисовать окружность — `circle.drawOnto(ctx)`.
+
+	- Флаг градусов: конструкторы `Triangle`/`Rhombus`/`Trapezoid` принимают `angleInDegree`, а методы `Circle` — `angleInDegrees`.
+
+	- `shiftCoordinate3D`: сдвиг вычитается, а не прибавляется.
+
+	- `autoScale`:
+		полная сигнатура: `autoScale(v, undefined, [], {startX, finishX, startY, finishY, maxScale})`;
+		при малых размерах фигура упирается в `maxScale = 100` и получается крошечной;
+		если нужны подписи у краёв, поле надо сужать примерно до ±165.
+
+
 ## Примеры
 
 ### Планиметрия
