@@ -2,10 +2,6 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-        let key = "169853";
-        let preference = ['A', 'B', 'C']; // из какой вершины проведена высота (только на чертеже)
-        let variant = getSelectedPreferenceFromList(key, preference);
-
         // Сторона и высота к ней задаются напрямую (как в ФИПИ — целые числа);
         // ограничение на их отношение — только ради читаемого чертежа
         let side = sl(2, 40);
@@ -16,19 +12,22 @@
         // основание высоты — внутри стороны (на 15…85% её длины)
         let foot = side * sl(15, 85) / 100 - side / 2;
         let apex = { x: foot, y: height / 2 };
-        let vertices = [{ x: -side / 2, y: -height / 2 }, { x: side / 2, y: -height / 2 }];
-        vertices.splice(variant, 0, apex); // вершины A, B, C по порядку
-        vertices.push({ x: foot, y: -height / 2 }); // основание высоты
+        // Вершины: два конца стороны, вершина над ней и основание высоты
+        // (букв на чертеже нет, поэтому порядок вершин ни на что не влияет)
+        let vertices = [
+            { x: -side / 2, y: -height / 2 },
+            { x: side / 2, y: -height / 2 },
+            apex,
+            { x: foot, y: -height / 2 },
+        ];
 
         let connectionMatrix = [
             [1],
             [1, 1],
-            [0, 1, 2].map((i) => Number(i === variant)),
+            [0, 0, 1],
         ];
 
         let points = autoScale(vertices);
-        let pointsAngle = points.slice(0, 3);
-        let pointCentralAngle = pointsAngle.splice(variant, 1)[0];
 
         let paint1 = function (ctx) {
             let h = 400;
@@ -43,13 +42,12 @@
             ctx.drawFigure(points, connectionMatrix);
 
             ctx.strokeStyle = om.primaryBrandColors.iz();
-            ctx.arcBetweenSegments([pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y, pointsAngle[0].x, pointsAngle[0].y], 15, true);
+            ctx.arcBetweenSegments([points[2].x, points[2].y, points[3].x, points[3].y, points[0].x, points[0].y], 15, true);
         };
 
         NAtask.setTask({
             text: `Сторона треугольника равна $${side}$, а высота, проведённая к этой стороне, равна $${height}$. Найдите площадь этого треугольника.`,
 			answers: side * height / 2,
-			preference: preference,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.allDecimalsToStandard(/*true*/);
