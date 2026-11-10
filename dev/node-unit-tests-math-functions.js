@@ -55,7 +55,7 @@ function countConsoleErrors(callback) {
 
 module.exports = function registerMathFunctionsTests(QUnit) {
 
-    const { brent } = loadMathFunctions(['brent']);
+    const { brent, findRoots } = loadMathFunctions(['brent', 'findRoots']);
 
     const EPS = 1e-6;
 
@@ -123,5 +123,54 @@ module.exports = function registerMathFunctionsTests(QUnit) {
 
     QUnit.test('brent: превышение числа итераций', function (assert) {
         assert.throws(() => brent(x => x * x * x - 2, 0, 1000, 1e-12, 2), 'двух итераций не хватает: исключение');
+    });
+
+    // ============================================================
+    //  findRoots  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findRoots');
+
+    function assertRoots(assert, actual, expected, message) {
+        const ok = actual.length === expected.length &&
+            actual.every((root, i) => Math.abs(root - expected[i]) < EPS);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось ' + JSON.stringify(expected) + ')');
+    }
+
+    QUnit.test('findRoots: корни между узлами сетки', function (assert) {
+        assertRoots(assert, findRoots(x => x * x - 2, -5, 5), [-Math.SQRT2, Math.SQRT2], 'x² - 2 на [-5; 5]');
+        assertRoots(assert, findRoots(Math.sin, -7, 7),
+            [-2 * Math.PI, -Math.PI, 0, Math.PI, 2 * Math.PI], 'sin x на [-7; 7]');
+        assertRoots(assert, findRoots(x => (x - 1) * (x + 2), -5, 5), [-2, 1], '(x-1)(x+2) на [-5; 5]');
+    });
+
+    QUnit.test('findRoots: корень ровно в узле сетки не теряется', function (assert) {
+        assertRoots(assert, findRoots(x => x - 2.5, -5, 10), [2.5], 'x - 2.5 на [-5; 10]');
+        assertRoots(assert, findRoots(x => x - 1, 0, 3, 1), [1], 'x - 1 на [0; 3] с шагом 1');
+        assertRoots(assert, findRoots(x => (x - 1) * (x - 2), 0, 3, 1), [1, 2], 'два корня в соседних узлах');
+    });
+
+    QUnit.test('findRoots: корни на концах отрезка', function (assert) {
+        assertRoots(assert, findRoots(x => x * (x - 3), 0, 3, 1), [0, 3], 'x(x-3) на [0; 3]');
+        assertRoots(assert, findRoots(x => x - 3, 0, 3, 0.7), [3], 'корень в maxX, шаг не делит отрезок нацело');
+    });
+
+    QUnit.test('findRoots: корни не дублируются', function (assert) {
+        const roots = findRoots(Math.sin, -7, 7);
+        assert.equal(roots.length, 5, 'у sin x на [-7; 7] ровно пять корней');
+        assertRoots(assert, findRoots(x => x, -1, 1, 0.25), [0], 'корень в узле найден один раз');
+    });
+
+    QUnit.test('findRoots: корней нет', function (assert) {
+        assert.deepEqual(findRoots(x => x * x + 1, -5, 5), [], 'x² + 1');
+        assert.deepEqual(findRoots(x => x - 20, -5, 5), [], 'корень вне отрезка');
+    });
+
+    QUnit.test('findRoots: корни идут по возрастанию и без сообщений об ошибках', function (assert) {
+        let roots;
+        const errors = countConsoleErrors(function () {
+            roots = findRoots(x => (x + 3) * (x + 0.5) * (x - 2.5) * (x - 4), -5, 5);
+        });
+        assertRoots(assert, roots, [-3, -0.5, 2.5, 4], 'четыре корня, часть из них в узлах сетки');
+        assert.equal(errors, 0, 'console.error не вызывался');
     });
 };
