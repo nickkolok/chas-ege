@@ -2,7 +2,7 @@ if(!window.nabor)
 	window.nabor={};
 window.nabor.importFrom({
 	nZad:21,
-	adres:'../zdn/phyoge2026/',
-	name:'phyoge2026',
+	adres:'../zdn/physoge2026/',
+	name:'physoge2026',
 	prefix:'',
 });
