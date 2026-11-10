@@ -399,6 +399,11 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.deepEqual(findPositiveIntegerPoints(x => -x * x - 1, -3, 3), [], 'положительных точек нет');
     });
 
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: касание оси в целой точке', function (assert) {
+        assert.deepEqual(findPositiveIntegerPoints(x => (x - 1) * (x - 1), -3, 3), [-2, -1, 0, 2], 'точка касания 1 не входит');
+        assert.deepEqual(findNegativeIntegerPoints(x => -(x - 1) * (x - 1), -3, 3), [-2, -1, 0, 2], 'точка касания 1 не входит');
+    });
+
     QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: нецелые концы отрезка', function (assert) {
         assert.deepEqual(findPositiveIntegerPoints(parabola, -4.5, 3.5), [-4, -3, 2, 3], 'положительна на (-4,5; 3,5)');
         assert.deepEqual(findNegativeIntegerPoints(parabola, -4.5, 3.5), [-1, 0], 'отрицательна на (-4,5; 3,5)');
