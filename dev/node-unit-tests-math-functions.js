@@ -55,7 +55,8 @@ function countConsoleErrors(callback) {
 
 module.exports = function registerMathFunctionsTests(QUnit) {
 
-    const { brent, findRoots } = loadMathFunctions(['brent', 'findRoots']);
+    const { brent, findRoots, findIntersectionPoints } =
+        loadMathFunctions(['brent', 'findRoots', 'findIntersectionPoints']);
 
     const EPS = 1e-6;
 
@@ -172,5 +173,37 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         });
         assertRoots(assert, roots, [-3, -0.5, 2.5, 4], 'четыре корня, часть из них в узлах сетки');
         assert.equal(errors, 0, 'console.error не вызывался');
+    });
+
+    // ============================================================
+    //  findIntersectionPoints  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findIntersectionPoints');
+
+    QUnit.test('findIntersectionPoints: пересечения с горизонтальной прямой', function (assert) {
+        assertRoots(assert, findIntersectionPoints(x => x * x, 2, -5, 5),
+            [-Math.SQRT2, Math.SQRT2], 'y = x² и y = 2');
+        assertRoots(assert, findIntersectionPoints(Math.sin, 0.5, 0, 7),
+            [Math.PI / 6, 5 * Math.PI / 6, 13 * Math.PI / 6], 'y = sin x и y = 0,5 на [0; 7]');
+        assertRoots(assert, findIntersectionPoints(x => 2 * x + 1, -3, -5, 5), [-2], 'y = 2x + 1 и y = -3');
+    });
+
+    QUnit.test('findIntersectionPoints: пересечение в узле сетки не теряется и не дублируется', function (assert) {
+        let points;
+        const errors = countConsoleErrors(function () {
+            points = findIntersectionPoints(x => x * x, 4, 0, 4, 1);
+        });
+        assertRoots(assert, points, [2], 'y = x² и y = 4 на [0; 4] с шагом 1');
+        assert.equal(errors, 0, 'console.error не вызывался');
+        assertRoots(assert, findIntersectionPoints(x => x, 4, 0, 4, 1), [4], 'пересечение в maxX');
+    });
+
+    QUnit.test('findIntersectionPoints: пересечений нет', function (assert) {
+        assert.deepEqual(findIntersectionPoints(x => x * x, -1, -5, 5), [], 'y = x² и y = -1');
+    });
+
+    QUnit.test('findIntersectionPoints: при нулевой константе совпадает с findRoots', function (assert) {
+        const func = x => (x + 3) * (x - 0.37) * (x - 4);
+        assert.deepEqual(findIntersectionPoints(func, 0, -5, 5), findRoots(func, -5, 5), 'те же точки');
     });
 };
