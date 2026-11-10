@@ -541,4 +541,33 @@ module.exports = function registerNodeTests(QUnit) {
         );
         assert.strictEqual(withShrink.scale, withoutShrink.scale);
     });
+
+    // ============================================================
+    //  Положение подписей точек на чертеже  (lib/func.js)
+    // ============================================================
+    QUnit.module('labelPositionAwayFrom, labelPositionOutsideSegment');
+
+    function assertPointClose(assert, actual, expected, message) {
+        assert.ok(Math.abs(actual.x - expected.x) < 1e-12 && Math.abs(actual.y - expected.y) < 1e-12,
+            message + ': ожидалось (' + expected.x + ', ' + expected.y + '), получено (' + actual.x + ', ' + actual.y + ')');
+    }
+
+    QUnit.test('labelPositionAwayFrom: подпись отодвигается от точки from', function (assert) {
+        assertPointClose(assert, labelPositionAwayFrom({ x: 3, y: 4 }, { x: 0, y: 0 }, 10), { x: 9, y: 12 }, 'наружу от начала координат');
+        assertPointClose(assert, labelPositionAwayFrom({ x: -2, y: 1 }, { x: -2, y: 5 }, 3), { x: -2, y: -2 }, 'вниз от точки выше');
+    });
+
+    QUnit.test('labelPositionOutsideSegment: по нормали к отрезку, со стороны без точки from', function (assert) {
+        var start = { x: 0, y: 0 };
+        var end = { x: 10, y: 0 };
+        assertPointClose(assert, labelPositionOutsideSegment({ x: 4, y: 0 }, start, end, { x: 5, y: 3 }, 2), { x: 4, y: -2 }, 'from сверху — подпись снизу');
+        assertPointClose(assert, labelPositionOutsideSegment({ x: 4, y: 0 }, start, end, { x: 5, y: -3 }, 2), { x: 4, y: 2 }, 'from снизу — подпись сверху');
+        assertPointClose(assert, labelPositionOutsideSegment({ x: 4, y: 0 }, end, start, { x: 5, y: 3 }, 2), { x: 4, y: -2 }, 'порядок концов отрезка не важен');
+    });
+
+    QUnit.test('labelPositionOutsideSegment: наклонный отрезок', function (assert) {
+        // Отрезок на прямой y = x, центр фигуры — выше прямой; подпись — ниже, по нормали (1, -1)/√2
+        var label = labelPositionOutsideSegment({ x: 1, y: 1 }, { x: 0, y: 0 }, { x: 2, y: 2 }, { x: 0, y: 2 }, Math.SQRT2);
+        assertPointClose(assert, label, { x: 2, y: 0 }, 'на расстоянии √2 по нормали');
+    });
 };
