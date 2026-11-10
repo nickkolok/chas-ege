@@ -41,7 +41,10 @@
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // Подпись — снаружи окружности, на продолжении радиуса
+            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x * 1.12, -elem.y * 1.12));
         };
 
         NAtask.setTask({
