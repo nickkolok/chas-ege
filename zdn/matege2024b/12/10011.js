@@ -71,18 +71,10 @@
 			};
 			let sideOf = { 3: [0, 2], 4: [1, 2] };
 			points.forEach((elem, i) => {
-				let dx = elem.x - center.x;
-				let dy = elem.y - center.y;
-				if (sideOf[i]) {
-					let [p, q] = sideOf[i].map((j) => points[j]);
-					let nx = q.y - p.y;
-					let ny = p.x - q.x;
-					let sign = (nx * dx + ny * dy < 0) ? -1 : 1;
-					dx = sign * nx;
-					dy = sign * ny;
-				}
-				let length = Math.hypot(dx, dy);
-				ctx.fillText(letters[i], elem.x + 18 * dx / length, -(elem.y + 18 * dy / length));
+				let label = sideOf[i] ?
+					labelPositionOutsideSegment(elem, points[sideOf[i][0]], points[sideOf[i][1]], center, 18) :
+					labelPositionAwayFrom(elem, center, 18);
+				ctx.fillText(letters[i], label.x, -label.y);
 			});
 		};
 
