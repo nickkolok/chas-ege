@@ -1,6 +1,13 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
+
+        let key = '340384';
+        // Формулировка вопроса: 'aroundTriangle' — как в ФИПИ («радиус описанной около этого треугольника окружности»),
+        // 'ofTriangle' — равносильная, но не из ФИПИ («радиус описанной окружности этого треугольника»)
+        let preference = ['aroundTriangle', 'ofTriangle'];
+        let rand = getSelectedPreferenceFromList(key, preference);
+
         let letters = om.latbukv.slice(0, 3);
 
         let legAB = sl(3, 40);
@@ -48,9 +55,13 @@
                 `$AB=${legAB}$`,
                 `$BC=${legBC}$`,
                 `угол $B$ равен $90^{\\circ}$`,
-            ].shuffleJoin(`, `)}. Найдите радиус описанной окружности этого треугольника.`,
+            ].shuffleJoin(`, `)}. Найдите радиус ${[
+                'описанной около этого треугольника окружности',
+                'описанной окружности этого треугольника',
+            ][rand]}.`,
             answers: radius,
             authors: ['Александра Суматохина'],
+            preference: preference,
         });
         NAtask.modifiers.variativeABC(letters);
 
