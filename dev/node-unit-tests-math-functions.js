@@ -71,7 +71,13 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'getRandomSubSegment', 'isCloseToInteger', 'isDistinctByTolerance', 'findPointsInIntervals',
         'intPoints', 'intPointsWithTolerance',
     ]);
-    const { findExtremumsOfFunction } = loadMathFunctions(['findExtremumsOfFunction']);
+    const {
+        findExtremumsOfFunction, findAllExtremumsOfFunctionSort, findIntExtremumsOfFunction,
+        extremumsX, extremumsY, findMinimums, findMaximums, minimumsX, maximumsX,
+    } = loadMathFunctions([
+        'findExtremumsOfFunction', 'findAllExtremumsOfFunctionSort', 'findIntExtremumsOfFunction',
+        'extremumsX', 'extremumsY', 'findMinimums', 'findMaximums', 'minimumsX', 'maximumsX',
+    ]);
 
     const EPS = 1e-6;
 
@@ -747,5 +753,70 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.equal(extremums.maxP.length + extremums.minP.length, 7 + 2, 'семь внутренних экстремумов и два граничных максимума');
         assert.equal(extremums.maxP[0][0], -10, 'первый максимум — левый конец');
         assert.equal(extremums.maxP[extremums.maxP.length - 1][0], 10, 'последний максимум — правый конец');
+    });
+
+    // ============================================================
+    //  Обёртки над findExtremumsOfFunction  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: списки экстремумов');
+
+    function assertNumbers(assert, actual, expected, message) {
+        const ok = actual.length === expected.length && actual.every((value, i) => Math.abs(value - expected[i]) < EPS);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось ' + JSON.stringify(expected) + ')');
+    }
+
+    // Многочлен с экстремумами в -2 (максимум), 0,5 (минимум) и 3 (максимум):
+    // его производная равна -(x + 2)(x - 0,5)(x - 3)
+    const quartic = x => -(x * x * x * x / 4 - x * x * x / 2 - 11 * x * x / 4 + 3 * x);
+    const quarticAt = { '-2': quartic(-2), '0.5': quartic(0.5), '3': quartic(3) };
+
+    QUnit.test('findAllExtremumsOfFunctionSort: минимумы и максимумы вперемешку по возрастанию x', function (assert) {
+        assertPoints(assert, findAllExtremumsOfFunctionSort(quartic, -4, 5),
+            [[-2, quarticAt['-2']], [0.5, quarticAt['0.5']], [3, quarticAt['3']]], 'три экстремума');
+        assertPoints(assert, findAllExtremumsOfFunctionSort(cubic, -3, 3, 0.001, true, true),
+            [[-3, -18], [-1, 2], [1, -2], [3, 18]], 'с концами отрезка');
+        assertPoints(assert, findAllExtremumsOfFunctionSort(x => x, -3, 3), [], 'экстремумов нет');
+    });
+
+    QUnit.test('extremumsX и extremumsY', function (assert) {
+        assertNumbers(assert, extremumsX(quartic, -4, 5), [-2, 0.5, 3], 'абсциссы');
+        assertNumbers(assert, extremumsY(quartic, -4, 5), [quarticAt['-2'], quarticAt['0.5'], quarticAt['3']], 'ординаты');
+        assertNumbers(assert, extremumsX(quartic, -1, 2), [0.5], 'только экстремумы внутри отрезка');
+        assertNumbers(assert, extremumsX(quartic, 0.5, 3), [], 'экстремумы на концах отрезка не считаются');
+        assertNumbers(assert, extremumsX(cubic, -3, 3, 0.001, true, false), [-1, 1, 3], 'boundaryPointIsMax добавляет правый конец');
+        assertNumbers(assert, extremumsY(x => x, -3, 3), [], 'экстремумов нет');
+    });
+
+    QUnit.test('findMinimums, findMaximums, minimumsX, maximumsX', function (assert) {
+        assertPoints(assert, findMinimums(quartic, -4, 5), [[0.5, quarticAt['0.5']]], 'findMinimums');
+        assertPoints(assert, findMaximums(quartic, -4, 5), [[-2, quarticAt['-2']], [3, quarticAt['3']]], 'findMaximums');
+        assertNumbers(assert, minimumsX(quartic, -4, 5), [0.5], 'minimumsX');
+        assertNumbers(assert, maximumsX(quartic, -4, 5), [-2, 3], 'maximumsX');
+        assertNumbers(assert, minimumsX(Math.cos, -7, 7), [-Math.PI, Math.PI], 'minimumsX для cos x');
+        assertNumbers(assert, maximumsX(Math.cos, -7, 7), [-2 * Math.PI, 0, 2 * Math.PI], 'maximumsX для cos x');
+        assertNumbers(assert, maximumsX(x => x * x, -3, 3), [], 'у x² максимумов нет');
+    });
+
+    QUnit.test('minimumsX и maximumsX вместе дают extremumsX', function (assert) {
+        const all = extremumsX(Math.sin, -10, 10);
+        const merged = minimumsX(Math.sin, -10, 10).concat(maximumsX(Math.sin, -10, 10)).sort((a, b) => a - b);
+        assert.deepEqual(merged, all, 'те же точки, в точности те же числа');
+        assert.equal(all.length, 6, 'у sin x на [-10; 10] шесть экстремумов');
+    });
+
+    QUnit.test('findIntExtremumsOfFunction: экстремумы вблизи целых точек', function (assert) {
+        let extremums = findIntExtremumsOfFunction(quartic, -4, 5);
+        assertPoints(assert, extremums.maxP, [[-2, quarticAt['-2']], [3, quarticAt['3']]], 'целые максимумы');
+        assertPoints(assert, extremums.minP, [], 'минимум в 0,5 отброшен');
+
+        extremums = findIntExtremumsOfFunction(quartic, -4, 5, 0.5);
+        assertPoints(assert, extremums.minP, [[0.5, quarticAt['0.5']]], 'при допуске 0,5 минимум в 0,5 остаётся');
+
+        // Экстремумы в -1,9 и 1,15
+        const shifted = x => -(x + 1.9) * (x + 1.9) * (x < -0.375 ? 1 : 0) + (x - 1.15) * (x - 1.15) * (x >= -0.375 ? 1 : 0);
+        extremums = findIntExtremumsOfFunction(shifted, -1.5, 3, 0.2);
+        assertPoints(assert, extremums.minP, [[1.15, 0]], 'отклонение 0,15 в пределах допуска 0,2');
+        extremums = findIntExtremumsOfFunction(shifted, -1.5, 3, 0.1);
+        assertPoints(assert, extremums.minP, [], 'отклонение 0,15 больше допуска 0,1');
     });
 };
