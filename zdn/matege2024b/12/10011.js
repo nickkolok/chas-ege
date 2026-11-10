@@ -13,7 +13,7 @@
 			},
 		});
 		// Без почти плоских треугольников: на них точки M, K и подписи сливаются с вершинами
-		genAssert(Math.min(triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees) >= 25,
+		genAssert(triangle.minAngleInDegrees() >= 25,
 			'Слишком острый угол треугольника — плохой чертёж');
 
 		// Точка делит сторону на части relation[0] и relation[1]; в условии — отношение части ко всей стороне.
