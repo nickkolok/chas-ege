@@ -27,11 +27,9 @@
 		let pointM = [triangle.pointA[0], triangle.pointC[0]].mt_segmentDivisionPoint(relation1[0], relation1[1]);
 		let pointK = [triangle.pointB[0], triangle.pointC[0]].mt_segmentDivisionPoint(relation2[0], relation2[1]);
 
-		let triangleSmall = new Triangle({
-			points: [pointM, pointK, triangle.pointC[0]]
-		});
-
-		let answ = triangle.area()/triangleSmall.area();
+		// Треугольники ABC и MCK имеют общий угол C, поэтому отношение площадей равно (AC/MC)·(BC/KC);
+		// MC и KC — части relation1[1] и relation2[1] (см. mt_segmentDivisionPoint)
+		let answ = relation1.sum() / relation1[1] * relation2.sum() / relation2[1];
 		genAssertZ1000(answ);
 
 		triangle.addVertexToConnectionMatrix([pointM, pointK], ['E', 'E']);
