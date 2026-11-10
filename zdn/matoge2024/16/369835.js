@@ -8,7 +8,8 @@
 		// Данная величина (сторона или радиус) равна k√2; квадрат её — целое 2k², поэтому
 		// texsqrt выносит множитель из-под корня точно. Ответ: радиус k или сторона 2k.
 		let k = sl(1, 40);
-		let circle = new Circle(new Point(0, 0), k * [1, (2).sqrt()][rand]);
+		// Окружность чертежа — фиксированного радиуса: чертёж от k не зависит
+		let circle = new Circle(new Point(0, 0), 170);
 		// Квадрат переходит в себя при повороте на 90°, поэтому хватает поворотов от 10° до 80°.
 		// При rotate = 0 квадрат стоит «ромбиком», при rotate = 45° его стороны параллельны осям;
 		// поворот на несколько градусов от этих положений выглядит как криво нарисованный квадрат,
@@ -29,10 +30,7 @@
 			[1, 0, 1],
 		];
 
-		let points = autoScale([AB.ps, AB.pe, CD.ps, CD.pe]);
-		// Описанная окружность на чертеже: центр — середина диагонали, проходит через вершину
-		let center = new Point((points[0].x + points[2].x) / 2, (points[0].y + points[2].y) / 2);
-		let radius = center.distanceTo(new Point(points[0].x, points[0].y))[0];
+		let points = [AB.ps, AB.pe, CD.ps, CD.pe];
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -46,10 +44,8 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectionMatrix);
 
-			ctx.drawCircle(center.x, center.y, radius);
+			circle.drawOnto(ctx);
 		};
-
-		genAssert(radius < 200, 'Окружность вышла за границы спрайта');
 
 		NAtask.setTask({
 			text: ``,
