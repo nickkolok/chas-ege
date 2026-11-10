@@ -4,16 +4,14 @@
 
 		let key = '513740';
 
-		// Что найти: вторую диагональ по стороне и диагонали или периметр по двум диагоналям (в ФИПИ есть оба)
-		let preference1 = ['diagonal', 'perimeter'];
+		// Что найти: вторую диагональ по стороне и диагонали или периметр по двум диагоналям;
+		// в задаче на периметр параллелограмм назван буквами или нет (в ФИПИ есть все три варианта),
+		// в задаче на диагональ буквы нужны всегда
+		let preference1 = ['diagonal', 'perimeterWithLetters', 'perimeterWithoutLetters'];
 		// Как сказано о диагоналях: «являются биссектрисами его углов» или «делят его углы пополам» (в ФИПИ есть обе)
 		let preference2 = ['bisectors', 'halves'];
-		// Назван ли параллелограмм буквами в задаче на периметр (в ФИПИ есть оба варианта);
-		// в задаче на диагональ буквы нужны всегда
-		let preference3 = ['withLetters', 'withoutLetters'];
 		let rand = getSelectedPreferenceFromList(key, preference1);
 		let randProperty = getSelectedPreferenceFromList(key, preference2);
-		let randLetters = getSelectedPreferenceFromList(key, preference3);
 
 		// Параллелограмм, диагонали которого — биссектрисы углов, — ромб. Его диагонали
 		// перпендикулярны и делятся пополам, так что половины диагоналей и сторона образуют
@@ -30,7 +28,7 @@
 		let diagonalBD = 2 * halves[1];
 
 		let property = ['являются биссектрисами его углов', 'делят его углы пополам'][randProperty];
-		let name = (rand == 1 && randLetters == 1) ? '' : ' $ABCD$';
+		let name = (rand == 2) ? '' : ' $ABCD$';
 
 		NAtask.setTask({
 			text: `В параллелограмме${name} диагонали ${property}`,
@@ -40,9 +38,9 @@
 			}, {
 				text: ` и равны $${diagonalAC}$ и $${diagonalBD}$. Найдите периметр параллелограмма${name}.`,
 				answers: 4 * side,
-			}][rand]],
+			}][Math.min(rand, 1)]],
 			authors: ['Александра Суматохина'],
-			preference: [preference1, preference2, preference3],
+			preference: [preference1, preference2],
 		});
 		NAtask.modifiers.variativeABC();
 		NAtask.modifiers.allDecimalsToStandard(true);
