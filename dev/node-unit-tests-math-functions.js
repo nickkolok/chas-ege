@@ -64,6 +64,7 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'findPositiveAndNegativeIntervals', 'findPositiveIntervals', 'findNegativeIntervals',
         'findPositiveAndNegativePoints', 'findPositiveIntegerPoints', 'findNegativeIntegerPoints',
     ]);
+    const { getRandomSubSegment } = loadMathFunctions(['getRandomSubSegment']);
 
     const EPS = 1e-6;
 
@@ -447,5 +448,74 @@ module.exports = function registerMathFunctionsTests(QUnit) {
             'вместе дают все целые точки интервала (-5; 5)');
         assert.ok(positive.every(x => func(x) > 0), 'в «положительных» точках функция положительна');
         assert.ok(negative.every(x => func(x) < 0), 'в «отрицательных» точках функция отрицательна');
+    });
+
+    // ============================================================
+    //  getRandomSubSegment  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: getRandomSubSegment');
+
+    // Сводка по многим случайным отрезкам
+    function sampleSubSegments(minX, maxX, stepX, count) {
+        const summary = { min: Infinity, max: -Infinity, minLength: Infinity, maxLength: -Infinity, nonInteger: 0, lengths: {} };
+        for (let i = 0; i < count; i++) {
+            const [start, end] = getRandomSubSegment(minX, maxX, stepX);
+            summary.min = Math.min(summary.min, start);
+            summary.max = Math.max(summary.max, end);
+            summary.minLength = Math.min(summary.minLength, end - start);
+            summary.maxLength = Math.max(summary.maxLength, end - start);
+            summary.lengths[end - start] = true;
+            if (!Number.isInteger(start) || !Number.isInteger(end)) {
+                summary.nonInteger++;
+            }
+        }
+        return summary;
+    }
+
+    QUnit.test('getRandomSubSegment: отрезок лежит внутри заданного и не короче stepX', function (assert) {
+        const cases = [[-5, 5, 4], [-5, 5, 1], [-4, 3, 3], [-10, 9, 4], [0, 20, 7]];
+        for (const [minX, maxX, stepX] of cases) {
+            const summary = sampleSubSegments(minX, maxX, stepX, 2000);
+            const label = '[' + minX + '; ' + maxX + '], stepX = ' + stepX + ': ';
+            assert.ok(summary.min >= minX && summary.max <= maxX, label + 'не выходит за границы');
+            assert.ok(summary.minLength >= stepX, label + 'длина не меньше stepX');
+            assert.equal(summary.nonInteger, 0, label + 'концы целые');
+        }
+    });
+
+    QUnit.test('getRandomSubSegment: встречаются все допустимые длины и крайние положения', function (assert) {
+        const summary = sampleSubSegments(-5, 5, 4, 5000);
+        assert.deepEqual(Object.keys(summary.lengths).map(Number).sort((a, b) => a - b), [4, 5, 6, 7, 8, 9, 10],
+            'длины от 4 до 10');
+        assert.equal(summary.min, -5, 'отрезок может начинаться в minX');
+        assert.equal(summary.max, 5, 'отрезок может заканчиваться в maxX');
+    });
+
+    QUnit.test('getRandomSubSegment: единственный возможный отрезок', function (assert) {
+        assert.deepEqual(getRandomSubSegment(0, 3, 3), [0, 3], 'stepX равен длине всего отрезка');
+        assert.deepEqual(getRandomSubSegment(2, 3, 1), [2, 3], 'отрезок единичной длины');
+    });
+
+    QUnit.test('getRandomSubSegment: нецелые аргументы', function (assert) {
+        let summary = sampleSubSegments(-5.5, 5.5, 2, 2000);
+        assert.equal(summary.nonInteger, 0, 'нецелые границы: концы всё равно целые');
+        assert.ok(summary.min >= -5 && summary.max <= 5, 'нецелые границы: отрезок внутри [-5; 5]');
+
+        summary = sampleSubSegments(-5, 5, 0.5, 2000);
+        assert.equal(summary.nonInteger, 0, 'stepX = 0,5: концы целые');
+        assert.ok(summary.minLength >= 1, 'stepX = 0,5: длина не меньше 1');
+
+        summary = sampleSubSegments(-5, 5, 2.5, 2000);
+        assert.ok(summary.minLength >= 3, 'stepX = 2,5: длина не меньше 3');
+    });
+
+    QUnit.test('getRandomSubSegment: вырожденный отрезок не выдаётся', function (assert) {
+        const summary = sampleSubSegments(-3, 3, 0, 2000);
+        assert.ok(summary.minLength >= 1, 'при stepX = 0 длина не меньше 1');
+    });
+
+    QUnit.test('getRandomSubSegment: слишком большой stepX', function (assert) {
+        assert.throws(() => getRandomSubSegment(-5, 5, 12), 'отрезок длины 12 не помещается в [-5; 5]');
+        assert.throws(() => getRandomSubSegment(0.2, 0.8, 1), 'между границами нет целых точек');
     });
 };
