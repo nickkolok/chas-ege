@@ -78,6 +78,7 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'findExtremumsOfFunction', 'findAllExtremumsOfFunctionSort', 'findIntExtremumsOfFunction',
         'extremumsX', 'extremumsY', 'findMinimums', 'findMaximums', 'minimumsX', 'maximumsX',
     ]);
+    const { transformExtremumsToIntervals } = loadMathFunctions(['transformExtremumsToIntervals']);
 
     const EPS = 1e-6;
 
@@ -818,5 +819,98 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assertPoints(assert, extremums.minP, [[1.15, 0]], 'отклонение 0,15 в пределах допуска 0,2');
         extremums = findIntExtremumsOfFunction(shifted, -1.5, 3, 0.1);
         assertPoints(assert, extremums.minP, [], 'отклонение 0,15 больше допуска 0,1');
+    });
+
+    // ============================================================
+    //  transformExtremumsToIntervals  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: transformExtremumsToIntervals');
+
+    // Отрезки сравниваются по концам, экстремум — с точностью EPS
+    function assertExtremumIntervals(assert, actual, expected, message) {
+        const ok = actual.length === expected.length && actual.every((interval, i) =>
+            interval.leftEnd === expected[i][0] && Math.abs(interval.ext - expected[i][1]) < EPS &&
+            interval.rightEnd === expected[i][2]);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось [leftEnd, ext, rightEnd]: ' +
+            JSON.stringify(expected) + ')');
+    }
+
+    // Экстремумы в -4 (максимум), 0 (минимум), 3 (максимум): производная равна -(x + 4)x(x - 3)
+    const threeExtremums = x => -(x * x * x * x / 4 + x * x * x / 3 - 6 * x * x);
+
+    QUnit.test('transformExtremumsToIntervals: три экстремума', function (assert) {
+        const intervals = transformExtremumsToIntervals(threeExtremums, -7, 6);
+        assertExtremumIntervals(assert, intervals.intIntervalsMaximums, [[-6, -4, -1], [1, 3, 5]],
+            'максимумы: отрезки от конца интервала до соседнего экстремума');
+        assertExtremumIntervals(assert, intervals.intIntervalsMinimums, [[-3, 0, 2]],
+            'минимум: отрезок между соседними экстремумами');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: на отрезке лежит ровно один экстремум, и он даёт нужное значение', function (assert) {
+        const funcs = [threeExtremums, Math.cos, x => Math.sin(1.3 * x) + 0.2 * x];
+        let checked = 0;
+        let wrong = [];
+        for (const func of funcs) {
+            const intervals = transformExtremumsToIntervals(func, -7, 7);
+            const all = extremumsX(func, -7, 7);
+            const check = (interval, isMinimum) => {
+                checked++;
+                const inside = all.filter(x => x >= interval.leftEnd && x <= interval.rightEnd);
+                let best = interval.leftEnd;
+                for (let x = interval.leftEnd; x <= interval.rightEnd; x += 0.001) {
+                    if (isMinimum ? func(x) < func(best) : func(x) > func(best)) {
+                        best = x;
+                    }
+                }
+                if (inside.length !== 1 || Math.abs(inside[0] - interval.ext) > EPS || Math.abs(best - interval.ext) > 0.002) {
+                    wrong.push(JSON.stringify(interval));
+                }
+            };
+            intervals.intIntervalsMinimums.forEach(interval => check(interval, true));
+            intervals.intIntervalsMaximums.forEach(interval => check(interval, false));
+        }
+        assert.ok(checked >= 8, 'проверено отрезков: ' + checked);
+        assert.deepEqual(wrong, [], 'неверных отрезков нет');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: единственный экстремум', function (assert) {
+        const intervals = transformExtremumsToIntervals(x => (x - 1) * (x - 1), -5, 5);
+        assertExtremumIntervals(assert, intervals.intIntervalsMinimums, [[-4, 1, 4]], 'отрезок от minX + 1 до maxX - 1');
+        assertExtremumIntervals(assert, intervals.intIntervalsMaximums, [], 'максимумов нет');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: экстремумов нет', function (assert) {
+        assert.deepEqual(transformExtremumsToIntervals(x => 2 * x, -5, 5),
+            { intIntervalsMinimums: [], intIntervalsMaximums: [] }, 'пустые списки');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: нецелые концы интервала', function (assert) {
+        const intervals = transformExtremumsToIntervals(x => (x - 1) * (x - 1), -5.5, 5.5);
+        assertExtremumIntervals(assert, intervals.intIntervalsMinimums, [[-5, 1, 5]], 'концы отрезка целые');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: слишком близкие экстремумы отбрасываются', function (assert) {
+        // Минимум в 0 и максимум в 1: между ними нет места для отрезка с экстремумом внутри
+        const close = x => x * x / 2 - x * x * x / 3;
+        const intervals = transformExtremumsToIntervals(close, -5, 5);
+        assertExtremumIntervals(assert, intervals.intIntervalsMinimums, [], 'минимум в 0: отрезок [-4; 0] его не содержит внутри');
+        assertExtremumIntervals(assert, intervals.intIntervalsMaximums, [], 'максимум в 1: отрезок [1; 4] его не содержит внутри');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: экстремум у самого конца интервала', function (assert) {
+        const intervals = transformExtremumsToIntervals(x => (x + 4.5) * (x + 4.5), -5, 5);
+        assertExtremumIntervals(assert, intervals.intIntervalsMinimums, [],
+            'минимум в -4,5 левее наименьшей целой точки -4');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: endSegmentIsNotExtremum', function (assert) {
+        // Минимум в -3,6: отрезок [-4; 4] его содержит, но округлённый экстремум -4 совпадает с концом
+        const func = x => (x + 3.6) * (x + 3.6);
+        assertExtremumIntervals(assert, transformExtremumsToIntervals(func, -5, 5).intIntervalsMinimums,
+            [[-4, -3.6, 4]], 'без флага отрезок строится');
+        assertExtremumIntervals(assert, transformExtremumsToIntervals(func, -5, 5, true).intIntervalsMinimums,
+            [], 'с флагом отрезок отброшен');
+        assertExtremumIntervals(assert, transformExtremumsToIntervals(threeExtremums, -7, 6, true).intIntervalsMaximums,
+            [[-6, -4, -1], [1, 3, 5]], 'на целые экстремумы внутри отрезка флаг не влияет');
     });
 };
