@@ -57,6 +57,10 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectM);
 
+			// Прямой угол квадрата, как на чертеже ФИПИ
+			ctx.strokeStyle = om.primaryBrandColors.iz();
+			ctx.arcBetweenSegments([points[7].x, points[7].y, points[4].x, points[4].y, points[5].x, points[5].y], 15, true);
+
 		};
 
 		NAtask.setTask({
