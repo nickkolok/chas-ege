@@ -39,6 +39,14 @@
             ctx.drawFigure(points, connectionMatrix);
             circle.drawOnto(ctx);
 
+            // Центр окружности, как на чертеже ФИПИ
+            let textColor = ctx.fillStyle;
+            ctx.fillStyle = om.secondaryBrandColors;
+            ctx.beginPath();
+            ctx.arc(circle.pc.x, circle.pc.y, 4, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.fillStyle = textColor;
+
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
             ctx.textAlign = 'center';
