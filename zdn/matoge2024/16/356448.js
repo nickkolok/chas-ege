@@ -2,6 +2,10 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
+        let key = '356448';
+        let preference = ['angleB', 'angleC']; // какой угол требуется найти
+        let rand = getSelectedPreferenceFromList(key, preference);
+
         let letters = om.latbukv.slice(0, 4);
 
         let circle = new Circle(new Point(0, 0), 170);
@@ -62,9 +66,10 @@
         };
 
         NAtask.setTask({
-            text: `Угол $A$ трапеции $ABCD$ с основаниями $AD$ и $BC$, вписанной в окружность, равен $${angleA}^\\circ$. Найдите угол $${[`B`, `C`].iz()}$ этой трапеции. Ответ дайте в градусах.`,
+            text: `Угол $A$ трапеции $ABCD$ с основаниями $AD$ и $BC$, вписанной в окружность, равен $${angleA}^\\circ$. Найдите угол $${['B', 'C'][rand]}$ этой трапеции. Ответ дайте в градусах.`,
             answers: 180 - angleA,
             authors: ['Александра Суматохина'],
+            preference: preference,
         });
         NAtask.modifiers.variativeABC(letters);
         NAtask.modifiers.allDecimalsToStandard(true);
