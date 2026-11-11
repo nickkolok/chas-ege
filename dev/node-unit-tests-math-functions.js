@@ -1017,4 +1017,22 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.deepEqual(findIncreasingIntegerPoints(x => x * x * x, -3, 3), [-2, -1, 0, 1, 2], 'x³ возрастает всюду');
         assert.deepEqual(findDecreasingIntegerPoints(x => x * x * x, -3, 3), [], 'убывания нет');
     });
+
+    // ============================================================
+    //  Экспорт  (lib/math_functions.js в составе build/lib/chas-lib.js)
+    // ============================================================
+    QUnit.module('Math Functions: экспорт');
+
+    QUnit.test('все функции файла доступны глобально после загрузки chas-lib.js', function (assert) {
+        const source = fs.readFileSync(path.join(__dirname, '..', 'lib', 'math_functions.js'), 'utf8');
+        const names = [];
+        source.replace(/^function ([A-Za-z0-9_]+)/gm, function (match, name) {
+            names.push(name);
+        });
+        assert.ok(names.length >= 36, 'в файле найдено функций: ' + names.length);
+        const missing = names.filter(name => typeof global[name] !== 'function');
+        assert.deepEqual(missing, [], 'каждая объявленная функция экспортирована');
+        const mismatched = names.filter(name => typeof global[name] === 'function' && global[name].name !== name);
+        assert.deepEqual(mismatched, [], 'под каждым именем лежит одноимённая функция');
+    });
 };
