@@ -1354,4 +1354,107 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.equal(extremumsX(result.func, options.minX, options.maxX).length, 0, 'у самой функции экстремумов нет');
         assert.equal(findRoots(result.painFunc, options.minX, options.maxX).length, 0, 'график производной не пересекает ось');
     });
+
+    // ============================================================
+    //  paintSpline, paintMarkedPoints  (lib/math_functions.js в составе build/lib/chas-lib.js)
+    // ============================================================
+    QUnit.module('Math Functions: paintSpline');
+
+    // В браузере объект om приходит из lib/osnmas.js, который в chas-lib.js не входит
+    if (typeof global.om === 'undefined') {
+        global.om = { primaryBrandColors: ['#D777F2', '#F2A2D6'] };
+    }
+
+    // Холст-заглушка: методы, добавленные библиотекой в прототип контекста,
+    // работают как есть, а вызовы собственных методов холста и присваивания
+    // свойств записываются
+    function recordingContext() {
+        const calls = [];
+        const ctx = new Proxy(Object.create(CanvasRenderingContext2D.prototype), {
+            get(target, property, receiver) {
+                if (property in target) {
+                    return Reflect.get(target, property, receiver);
+                }
+                if (typeof property !== 'string') {
+                    return undefined;
+                }
+                return function () {
+                    calls.push([property].concat(Array.from(arguments)));
+                };
+            },
+            set(target, property, value) {
+                calls.push(['set ' + property, value]);
+                target[property] = value;
+                return true;
+            },
+        });
+        return { ctx, calls };
+    }
+
+    const paintOptions = { func: x => 3 * Math.sin(x), minX: -6, maxX: 5, minY: -5, maxY: 5 };
+    const textsOf = calls => calls.filter(call => call[0] === 'fillText').map(call => call[1]);
+    const countOf = (calls, name) => calls.filter(call => call[0] === name).length;
+
+    QUnit.test('paintSpline: график на интервале', function (assert) {
+        const { ctx, calls } = recordingContext();
+        const paint = global.paintSpline(paintOptions);
+        assert.equal(typeof paint, 'function', 'возвращает функцию рисования');
+        paint(ctx);
+
+        const texts = textsOf(calls);
+        assert.ok(texts.includes(-6) && texts.includes(5), 'концы интервала подписаны');
+        assert.equal(countOf(calls, 'arc'), 4, 'на концах выколотые точки: по два круга на каждый конец');
+        assert.ok(countOf(calls, 'lineTo') > 1000, 'график нарисован');
+        const scales = calls.filter(call => call[0] === 'scale');
+        assert.deepEqual(scales.map(call => call.slice(1)), [[20, -20], [1 / 20, -1 / 20]], 'масштаб после рисования возвращён');
+        assert.equal(countOf(calls, 'setLineDash'), 0, 'без отмеченных точек пунктир не используется');
+    });
+
+    QUnit.test('paintSpline: концы 0 и 1 не подписываются повторно', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintSpline(Object.assign({}, paintOptions, { minX: 0, maxX: 7 }))(ctx);
+        const texts = textsOf(calls);
+        assert.notOk(texts.includes(0), 'число 0 у начала координат уже есть в разметке осей');
+        assert.ok(texts.includes(7), 'правый конец подписан');
+    });
+
+    QUnit.test('paintSpline: функция не на интервале', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintSpline(Object.assign({}, paintOptions, { definedOnInterval: false }))(ctx);
+        const texts = textsOf(calls);
+        assert.notOk(texts.includes(-6) || texts.includes(5), 'концы не подписаны');
+        assert.equal(countOf(calls, 'arc'), 0, 'выколотых точек нет');
+    });
+
+    QUnit.test('paintSpline: отмеченные точки с обозначениями', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintSpline(Object.assign({}, paintOptions, { points: [-4.5, -1.5, 2.5], markedPoints: { type: 'symbol' } }))(ctx);
+        const texts = textsOf(calls);
+        assert.deepEqual(texts.slice(-3), ['x₁', 'x₂', 'x₃'], 'точки подписаны x₁, x₂, x₃');
+        assert.equal(countOf(calls, 'arc'), 4 + 3, 'к выколотым концам добавились три точки на оси');
+
+        // Пунктир от точки на оси до графика: вертикальный отрезок нужной длины
+        const dashes = calls.filter(call => call[0] === 'setLineDash').map(call => call[1]);
+        assert.deepEqual(dashes, [[4, 2], [], [4, 2], [], [4, 2], []], 'пунктир включается для каждой точки и выключается после неё');
+        const lastLine = calls.filter(call => call[0] === 'lineTo').pop();
+        assert.ok(Math.abs(lastLine[1] - 2.5 * 20) < 1e-9 && Math.abs(lastLine[2] + 3 * Math.sin(2.5) * 20) < 1e-9,
+            'последний отрезок идёт до точки графика (2,5; f(2,5))');
+        const lastStroke = calls.filter(call => call[0] === 'set strokeStyle').pop();
+        assert.equal(lastStroke[1], 'black', 'цвет линии возвращён');
+    });
+
+    QUnit.test('paintSpline: отмеченные точки с числами', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintSpline(Object.assign({}, paintOptions, { points: [-4.5, 2], markedPoints: { type: 'number' } }))(ctx);
+        assert.deepEqual(textsOf(calls).slice(-2), ['-4,5', '2'], 'подписаны абсциссы, дробная часть через запятую');
+    });
+
+    QUnit.test('paintMarkedPoints: подпись ставится по другую сторону оси от графика', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintMarkedPoints(ctx, [1, 4], x => (x < 2 ? 3 : -3), { scale: 20 }, { type: 'symbol' });
+        const labels = calls.filter(call => call[0] === 'fillText');
+        assert.equal(labels.length, 2, 'две подписи');
+        assert.ok(labels[0][3] > 0, 'график выше оси — подпись ниже оси');
+        assert.ok(labels[1][3] < 0, 'график ниже оси — подпись выше оси');
+    });
 };
