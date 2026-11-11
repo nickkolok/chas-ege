@@ -79,6 +79,13 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'extremumsX', 'extremumsY', 'findMinimums', 'findMaximums', 'minimumsX', 'maximumsX',
     ]);
     const { transformExtremumsToIntervals } = loadMathFunctions(['transformExtremumsToIntervals']);
+    const {
+        findIntervalsOfIncreaseAndDecrease, findIncreasingIntervals, findDecreasingIntervals,
+        findIncreasingAndDecreasingPoints, findIncreasingIntegerPoints, findDecreasingIntegerPoints,
+    } = loadMathFunctions([
+        'findIntervalsOfIncreaseAndDecrease', 'findIncreasingIntervals', 'findDecreasingIntervals',
+        'findIncreasingAndDecreasingPoints', 'findIncreasingIntegerPoints', 'findDecreasingIntegerPoints',
+    ]);
 
     const EPS = 1e-6;
 
@@ -912,5 +919,102 @@ module.exports = function registerMathFunctionsTests(QUnit) {
             [], 'с флагом отрезок отброшен');
         assertExtremumIntervals(assert, transformExtremumsToIntervals(threeExtremums, -7, 6, true).intIntervalsMaximums,
             [[-6, -4, -1], [1, 3, 5]], 'на целые экстремумы внутри отрезка флаг не влияет');
+    });
+
+    // ============================================================
+    //  Промежутки монотонности  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: промежутки монотонности');
+
+    QUnit.test('findIntervalsOfIncreaseAndDecrease: три экстремума', function (assert) {
+        const intervals = findIntervalsOfIncreaseAndDecrease(threeExtremums, -7, 6);
+        assertIntervals(assert, intervals.increasingIntervals, [[-7, -4], [0, 3]], 'возрастание');
+        assertIntervals(assert, intervals.decreasingIntervals, [[-4, 0], [3, 6]], 'убывание');
+    });
+
+    QUnit.test('findIntervalsOfIncreaseAndDecrease: косинус', function (assert) {
+        const pi = Math.PI;
+        const intervals = findIntervalsOfIncreaseAndDecrease(Math.cos, -7, 7);
+        assertIntervals(assert, intervals.increasingIntervals, [[-7, -2 * pi], [-pi, 0], [pi, 2 * pi]], 'возрастание');
+        assertIntervals(assert, intervals.decreasingIntervals, [[-2 * pi, -pi], [0, pi], [2 * pi, 7]], 'убывание');
+    });
+
+    QUnit.test('findIntervalsOfIncreaseAndDecrease: монотонные и постоянная функции', function (assert) {
+        let intervals = findIntervalsOfIncreaseAndDecrease(x => 2 * x + 1, -5, 5);
+        assertIntervals(assert, intervals.increasingIntervals, [[-5, 5]], 'возрастающая: весь отрезок');
+        assertIntervals(assert, intervals.decreasingIntervals, [], 'возрастающая: убывания нет');
+
+        intervals = findIntervalsOfIncreaseAndDecrease(x => -x * x * x, -5, 5);
+        assertIntervals(assert, intervals.increasingIntervals, [], 'убывающая: возрастания нет');
+        assertIntervals(assert, intervals.decreasingIntervals, [[-5, 5]], 'убывающая: весь отрезок');
+
+        intervals = findIntervalsOfIncreaseAndDecrease(() => 3, -5, 5);
+        assertIntervals(assert, intervals.increasingIntervals, [], 'постоянная: возрастания нет');
+        assertIntervals(assert, intervals.decreasingIntervals, [], 'постоянная: убывания нет');
+    });
+
+    QUnit.test('findIntervalsOfIncreaseAndDecrease: промежутки идут подряд и покрывают отрезок', function (assert) {
+        const func = x => Math.sin(1.3 * x) + 0.2 * x;
+        const intervals = findIntervalsOfIncreaseAndDecrease(func, -7, 7);
+        const all = intervals.increasingIntervals.concat(intervals.decreasingIntervals).sort((a, b) => a[0] - b[0]);
+        assert.equal(all[0][0], -7, 'первый промежуток начинается в minX');
+        assert.equal(all[all.length - 1][1], 7, 'последний заканчивается в maxX');
+        assert.ok(all.every((interval, i) => i === 0 || all[i - 1][1] === interval[0]), 'соседние промежутки стыкуются');
+        const middle = interval => (interval[0] + interval[1]) / 2;
+        const slope = x => func(x + 1e-4) - func(x - 1e-4);
+        assert.ok(intervals.increasingIntervals.every(interval => slope(middle(interval)) > 0), 'на промежутках возрастания функция растёт');
+        assert.ok(intervals.decreasingIntervals.every(interval => slope(middle(interval)) < 0), 'на промежутках убывания функция убывает');
+    });
+
+    QUnit.test('findIncreasingIntervals и findDecreasingIntervals', function (assert) {
+        assertIntervals(assert, findIncreasingIntervals(threeExtremums, -7, 6), [[-7, -4], [0, 3]], 'возрастание');
+        assertIntervals(assert, findDecreasingIntervals(threeExtremums, -7, 6), [[-4, 0], [3, 6]], 'убывание');
+        assertIntervals(assert, findDecreasingIntervals(x => x, -5, 5), [], 'у возрастающей функции убывания нет');
+        assertIntervals(assert, findIncreasingIntervals(x => -x, -5, 5), [], 'у убывающей функции возрастания нет');
+    });
+
+    // ============================================================
+    //  Целые точки промежутков монотонности
+    // ============================================================
+    QUnit.module('Math Functions: целые точки промежутков монотонности');
+
+    QUnit.test('findIncreasingAndDecreasingPoints', function (assert) {
+        const intervals = { increasingIntervals: [[-7, -4], [0, 3]], decreasingIntervals: [[-4, 0], [3, 6]] };
+        assert.deepEqual(findIncreasingAndDecreasingPoints(intervals, -7, 6),
+            { increasingPoints: [-6, -5, -4, 0, 1, 2, 3], decreasingPoints: [-4, -3, -2, -1, 0, 3, 4, 5] },
+            'точки экстремума входят в оба соседних промежутка, концы интервала не входят');
+        assert.deepEqual(findIncreasingAndDecreasingPoints(intervals, -7, 6, true, true),
+            { increasingPoints: [-7, -6, -5, -4, 0, 1, 2, 3], decreasingPoints: [-4, -3, -2, -1, 0, 3, 4, 5, 6] },
+            'includeMinX и includeMaxX добавляют концы');
+        assert.deepEqual(findIncreasingAndDecreasingPoints({ increasingIntervals: [], decreasingIntervals: [] }, -7, 6),
+            { increasingPoints: [], decreasingPoints: [] }, 'промежутков нет');
+    });
+
+    QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: целые экстремумы', function (assert) {
+        assert.deepEqual(findIncreasingIntegerPoints(threeExtremums, -7, 6), [-6, -5, -4, 0, 1, 2, 3], 'возрастание');
+        assert.deepEqual(findDecreasingIntegerPoints(threeExtremums, -7, 6), [-4, -3, -2, -1, 0, 3, 4, 5], 'убывание');
+    });
+
+    QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: нецелые экстремумы', function (assert) {
+        // cos x на (-7; 7): экстремумы в 0, ±π, ±2π
+        assert.deepEqual(findIncreasingIntegerPoints(Math.cos, -7, 7), [-3, -2, -1, 0, 4, 5, 6], 'возрастание');
+        assert.deepEqual(findDecreasingIntegerPoints(Math.cos, -7, 7), [-6, -5, -4, 0, 1, 2, 3], 'убывание');
+    });
+
+    QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: как в задаче 697896', function (assert) {
+        // Функция возрастает на [-3,5; -1,5] и на [4,5; 6), определена на (-5; 6):
+        // в ответ входят точки -3, -2 и 5, их сумма равна 0
+        const derivative = x => (x + 3.5) * (x + 1.5) * (x - 4.5);
+        const func = x => x * x * x * x / 4 + x * x * x / 6 - 8.625 * x * x - 23.625 * x;
+        assert.ok(Math.abs((func(1.001) - func(0.999)) / 0.002 - derivative(1)) < 1e-3, 'первообразная подобрана верно');
+        const points = findIncreasingIntegerPoints(func, -5, 6);
+        assert.deepEqual(points, [-3, -2, 5], 'целые точки промежутков возрастания');
+        assert.equal(points.reduce((a, b) => a + b, 0), 0, 'сумма равна 0');
+        assert.deepEqual(findDecreasingIntegerPoints(func, -5, 6), [-4, -1, 0, 1, 2, 3, 4], 'целые точки промежутков убывания');
+    });
+
+    QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: монотонная функция', function (assert) {
+        assert.deepEqual(findIncreasingIntegerPoints(x => x * x * x, -3, 3), [-2, -1, 0, 1, 2], 'x³ возрастает всюду');
+        assert.deepEqual(findDecreasingIntegerPoints(x => x * x * x, -3, 3), [], 'убывания нет');
     });
 };
