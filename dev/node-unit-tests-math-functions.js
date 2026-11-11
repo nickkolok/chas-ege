@@ -1248,6 +1248,15 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'функция, stepForX = 3, только обязательные параметры': {
             type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 3,
         },
+        'функция, stepForX по умолчанию (1)': {
+            type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5,
+        },
+        'функция, stepForX = 2': {
+            type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 2,
+        },
+        'функция, stepForX = 3, нецелые границы': {
+            type: 'function', minX: -6.5, maxX: 5.5, minY: -5, maxY: 5, stepForX: 3,
+        },
     };
 
     Object.keys(splineConfigs).forEach(function (name) {
