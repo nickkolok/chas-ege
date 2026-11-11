@@ -1126,4 +1126,177 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.deepEqual(X, [-4, -2, 0, 2], 'X');
         assert.deepEqual(Y, [3, 1, -1, -3], 'Y');
     });
+
+    // ============================================================
+    //  createSpline  (lib/math_functions.js в составе build/lib/chas-lib.js)
+    // ============================================================
+    QUnit.module('Math Functions: createSpline');
+
+    // createSpline опирается на genAssert и другие функции сборки, поэтому
+    // проверяется версия из build/lib/chas-lib.js, а не исходник. Класс Spline
+    // в браузере приходит из отдельного файла; здесь он подключается из npm.
+    if (typeof global.Spline === 'undefined') {
+        global.Spline = require('cubic-spline-browserified');
+    }
+
+    // Генератор случайный и отбраковывает неподходящие функции исключением,
+    // как это делает retryWhileError в шаблонах
+    function generateSpline(options, attempts) {
+        for (let i = 0; i < attempts; i++) {
+            try {
+                return { result: global.createSpline(Object.assign({}, options)), attempts: i + 1 };
+            } catch (e) {
+                // следующая попытка
+            }
+        }
+        return { result: null, attempts: attempts };
+    }
+
+    // Все требования, которые createSpline обещает выполнить
+    function splineProblems(result, options) {
+        const { minX, maxX, minY, maxY } = options;
+        const problems = [];
+        const drawn = result.painFunc;
+        const difference = options.minimumDifferenceBetweenExtremes === undefined ? 1 : options.minimumDifferenceBetweenExtremes;
+
+        for (let x = minX; x <= maxX; x += 0.01) {
+            if (!Number.isFinite(drawn(x)) || !Number.isFinite(result.func(x))) {
+                problems.push('не число в точке ' + x);
+                break;
+            }
+        }
+        for (const end of [minX, maxX]) {
+            if (!(drawn(end) > minY && drawn(end) < maxY)) {
+                problems.push('на конце ' + end + ' график вне сетки');
+            }
+            if (!(Math.abs(drawn(end)) > 0.5)) {
+                problems.push('на конце ' + end + ' график слишком близко к нулю');
+            }
+        }
+
+        const extremums = findAllExtremumsOfFunctionSort(drawn, minX, maxX);
+        const extremesRange = options.numberOfExtremes || { min: 0, max: 1000 };
+        if (extremums.length < extremesRange.min || extremums.length > extremesRange.max) {
+            problems.push('число экстремумов ' + extremums.length);
+        }
+        extremums.forEach((point, i) => {
+            if (!(point[0] - minX > 1 && maxX - point[0] > 1)) {
+                problems.push('экстремум ' + point[0] + ' слишком близко к концу');
+            }
+            if (!(point[1] > minY && point[1] < maxY)) {
+                problems.push('экстремум ' + point[0] + ' вне сетки по y');
+            }
+            if (!(Math.abs(point[1]) > 0.5)) {
+                problems.push('экстремум ' + point[0] + ' слишком близко к оси Ox');
+            }
+            if (i > 0 && !(Math.abs(point[1] - extremums[i - 1][1]) > difference)) {
+                problems.push('соседние экстремумы близки по y около ' + point[0]);
+            }
+            const extremumsSetting = options.extremumsIsInteger;
+            if (extremumsSetting && extremumsSetting.int === 'yes' && !isCloseToInteger(point[0], extremumsSetting.tolerance)) {
+                problems.push('экстремум ' + point[0] + ' не целый');
+            }
+            if (extremumsSetting && extremumsSetting.int === 'no' && isCloseToInteger(point[0], extremumsSetting.tolerance)) {
+                problems.push('экстремум ' + point[0] + ' целый');
+            }
+        });
+
+        const roots = findRoots(drawn, minX, maxX);
+        const rootsRange = options.numberOfRoots || { min: 0, max: 1000 };
+        if (roots.length < rootsRange.min || roots.length > rootsRange.max) {
+            problems.push('число корней ' + roots.length);
+        }
+        roots.forEach(root => {
+            const rootsSetting = options.rootsIsInteger;
+            if (rootsSetting && rootsSetting.int === 'yes' && !isCloseToInteger(root, rootsSetting.tolerance)) {
+                problems.push('корень ' + root + ' не целый');
+            }
+            if (rootsSetting && rootsSetting.int === 'no' && isCloseToInteger(root, rootsSetting.tolerance)) {
+                problems.push('корень ' + root + ' целый');
+            }
+        });
+
+        return problems;
+    }
+
+    const splineConfigs = {
+        'функция, stepForX = 4, целые экстремумы': {
+            type: 'function', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3,
+            minimumDifferenceBetweenExtremes: 2, numberOfExtremes: { min: 3, max: 10 },
+            extremumsIsInteger: { int: 'yes', tolerance: 0.15 },
+        },
+        'функция, stepForX = 3, нецелые экстремумы, не меньше двух корней': {
+            type: 'function', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 3, stepForY: 0.3,
+            minimumDifferenceBetweenExtremes: 2, numberOfExtremes: { min: 2, max: 10 }, numberOfRoots: { min: 2, max: 10 },
+            extremumsIsInteger: { int: 'no', tolerance: 0.2 },
+        },
+        'функция, stepForX = 4, нецелые корни': {
+            type: 'function', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3,
+            numberOfRoots: { min: 1, max: 10 }, rootsIsInteger: { int: 'no', tolerance: 0.2 },
+        },
+        'функция, stepForX = 4, целые корни': {
+            type: 'function', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3,
+            numberOfRoots: { min: 1, max: 10 }, rootsIsInteger: { int: 'yes', tolerance: 0.2 },
+        },
+        'производная, stepForX = 4, от двух корней': {
+            type: 'derivative', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1,
+            minimumDifferenceBetweenExtremes: 1, numberOfRoots: { min: 2, max: 10 },
+        },
+        'функция, stepForX = 6, границы не кратны шагу узлов': {
+            type: 'function', minX: -10, maxX: 9, minY: -9, maxY: 8, stepForX: 6, stepForY: 0.3,
+        },
+        'функция, stepForX = 3, только обязательные параметры': {
+            type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 3,
+        },
+    };
+
+    Object.keys(splineConfigs).forEach(function (name) {
+        QUnit.test('createSpline: ' + name, function (assert) {
+            const options = splineConfigs[name];
+            let generated = 0;
+            let problems = [];
+            for (let i = 0; i < 5; i++) {
+                const { result } = generateSpline(options, 5000);
+                if (!result) {
+                    break;
+                }
+                generated++;
+                problems = problems.concat(splineProblems(result, options));
+            }
+            assert.equal(generated, 5, 'пять функций сгенерированы, каждая не более чем за 5000 попыток');
+            assert.deepEqual(problems, [], 'все требования выполнены');
+        });
+    });
+
+    QUnit.test('createSpline: связь func и painFunc', function (assert) {
+        let options = splineConfigs['функция, stepForX = 3, только обязательные параметры'];
+        let { result } = generateSpline(options, 5000);
+        assert.ok(result, 'функция сгенерирована');
+        let same = true;
+        for (let x = options.minX; x <= options.maxX; x += 0.37) {
+            same = same && result.func(x) === result.painFunc(x);
+        }
+        assert.ok(same, "type: 'function' — рисуется сама функция");
+
+        options = splineConfigs['производная, stepForX = 4, от двух корней'];
+        ({ result } = generateSpline(options, 5000));
+        assert.ok(result, 'производная сгенерирована');
+        // Экстремумы func лежат в корнях нарисованного графика, и наоборот
+        const roots = findRoots(result.painFunc, options.minX, options.maxX);
+        const extremums = extremumsX(result.func, options.minX, options.maxX);
+        assert.equal(extremums.length, roots.length, "type: 'derivative' — экстремумов func столько же, сколько корней графика");
+        assert.ok(extremums.every((x, i) => Math.abs(x - roots[i]) < 1e-3), 'и они совпадают с корнями');
+        let signs = true;
+        for (let x = options.minX + 0.5; x < options.maxX; x += 0.37) {
+            const growth = result.func(x + 0.01) - result.func(x - 0.01);
+            signs = signs && (Math.abs(result.painFunc(x)) < 0.05 || Math.sign(growth) === Math.sign(result.painFunc(x)));
+        }
+        assert.ok(signs, 'знак графика совпадает с направлением изменения func');
+    });
+
+    QUnit.test('createSpline: недопустимые требования отбраковываются', function (assert) {
+        const impossible = Object.assign({}, splineConfigs['функция, stepForX = 3, только обязательные параметры'],
+            { numberOfExtremes: { min: 50, max: 60 } });
+        assert.strictEqual(generateSpline(impossible, 200).result, null, 'пятидесяти экстремумов на отрезке длины 12 не бывает');
+    });
 };
