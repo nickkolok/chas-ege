@@ -1299,4 +1299,50 @@ module.exports = function registerMathFunctionsTests(QUnit) {
             { numberOfExtremes: { min: 50, max: 60 } });
         assert.strictEqual(generateSpline(impossible, 200).result, null, 'пятидесяти экстремумов на отрезке длины 12 не бывает');
     });
+
+    QUnit.test('createSpline: monotoneFunction', function (assert) {
+        const options = { type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 3, monotoneFunction: true };
+        let increasing = 0;
+        let decreasing = 0;
+        let problems = [];
+        for (let i = 0; i < 30; i++) {
+            const { result } = generateSpline(options, 2000);
+            if (!result) {
+                problems.push('функция не сгенерирована');
+                break;
+            }
+            problems = problems.concat(splineProblems(result, options));
+            let rises = true;
+            let falls = true;
+            for (let x = options.minX; x < options.maxX; x += 0.05) {
+                rises = rises && result.func(x + 0.05) > result.func(x);
+                falls = falls && result.func(x + 0.05) < result.func(x);
+            }
+            increasing += rises ? 1 : 0;
+            decreasing += falls ? 1 : 0;
+            if (!rises && !falls) {
+                problems.push('функция не монотонна');
+            }
+            if (extremumsX(result.func, options.minX, options.maxX).length !== 0) {
+                problems.push('у функции есть экстремум');
+            }
+        }
+        assert.deepEqual(problems, [], 'все 30 функций монотонны и удовлетворяют требованиям');
+        assert.ok(increasing > 0 && decreasing > 0, 'встречаются и возрастающие, и убывающие (' + increasing + ' и ' + decreasing + ')');
+    });
+
+    QUnit.test('createSpline: функция без экстремумов не отбраковывается', function (assert) {
+        // Раньше при пустом списке экстремумов проверка расстояния до концов сравнивала с NaN
+        const options = { type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 3,
+            monotoneFunction: true, numberOfExtremes: { min: 0, max: 0 } };
+        assert.ok(generateSpline(options, 2000).result, 'функция с нулём экстремумов сгенерирована');
+    });
+
+    QUnit.test('createSpline: монотонная функция с графиком производной', function (assert) {
+        const options = { type: 'derivative', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3, monotoneFunction: true };
+        const { result } = generateSpline(options, 20000);
+        assert.ok(result, 'функция сгенерирована');
+        assert.equal(extremumsX(result.func, options.minX, options.maxX).length, 0, 'у самой функции экстремумов нет');
+        assert.equal(findRoots(result.painFunc, options.minX, options.maxX).length, 0, 'график производной не пересекает ось');
+    });
 };
