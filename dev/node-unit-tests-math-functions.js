@@ -79,6 +79,7 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'extremumsX', 'extremumsY', 'findMinimums', 'findMaximums', 'minimumsX', 'maximumsX',
     ]);
     const { transformExtremumsToIntervals } = loadMathFunctions(['transformExtremumsToIntervals']);
+    const { addRoots } = loadMathFunctions(['addRoots']);
     const {
         findIntervalsOfIncreaseAndDecrease, findIncreasingIntervals, findDecreasingIntervals,
         findIncreasingAndDecreasingPoints, findIncreasingIntegerPoints, findDecreasingIntegerPoints,
@@ -1034,5 +1035,95 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.deepEqual(missing, [], 'каждая объявленная функция экспортирована');
         const mismatched = names.filter(name => typeof global[name] === 'function' && global[name].name !== name);
         assert.deepEqual(mismatched, [], 'под каждым именем лежит одноимённая функция');
+    });
+
+    // ============================================================
+    //  addRoots  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: addRoots');
+
+    const integerRoots = { int: 'yes', tolerance: 0.2 };
+    const nonIntegerRoots = { int: 'no', tolerance: 0.2 };
+
+    QUnit.test('addRoots: корень ставится в целую точку между узлами', function (assert) {
+        // Узлы через 2 (stepForX = 4): середина между чётными узлами — нечётное число
+        assert.deepEqual(addRoots([-4, -2, 0, 2], [3, 1, -1, -3], integerRoots),
+            { X: [-4, -2, -1, 0, 2], Y: [3, 1, 0, -1, -3] }, 'одна смена знака');
+        assert.deepEqual(addRoots([-4, -2, 0, 2, 4], [3, -1, -2, 1, 2], integerRoots),
+            { X: [-4, -3, -2, 0, 1, 2, 4], Y: [3, 0, -1, -2, 0, 1, 2] }, 'две смены знака');
+        // Узлы через 1,5 (stepForX = 3): середина 0,25 округляется до 0
+        assert.deepEqual(addRoots([-2, -0.5, 1, 2.5], [2, 1, -1, -2], integerRoots),
+            { X: [-2, -0.5, 0, 1, 2.5], Y: [2, 1, 0, -1, -2] }, 'середина не целая');
+    });
+
+    QUnit.test('addRoots: смен знака нет', function (assert) {
+        assert.deepEqual(addRoots([-4, -2, 0, 2], [3, 1, 2, 4], integerRoots),
+            { X: [-4, -2, 0, 2], Y: [3, 1, 2, 4] }, 'узлы не меняются');
+        assert.deepEqual(addRoots([-4, -2, 0, 2], [3, 0, -2, -4], integerRoots),
+            { X: [-4, -2, 0, 2], Y: [3, 0, -2, -4] }, 'нулевой узел сам является корнем, второй рядом не добавляется');
+    });
+
+    QUnit.test('addRoots: целая точка совпала с узлом — обнуляется узел', function (assert) {
+        // Узлы через 0,5 (stepForX = 1): ближайшая к середине целая точка — сам узел
+        const result = addRoots([0, 0.5, 1, 1.5, 2], [2, 1, -1, -2, -3], integerRoots);
+        assert.deepEqual(result, { X: [0, 0.5, 1, 1.5, 2], Y: [2, 1, 0, -2, -3] }, 'обнулён узел x = 1');
+        assert.equal(new Set(result.X).size, result.X.length, 'узлов с одинаковой абсциссой нет');
+        // Узлы через 1 (stepForX = 2)
+        assert.deepEqual(addRoots([-2, -1, 0, 1, 2], [2, 1, -1, -2, -3], integerRoots),
+            { X: [-2, -1, 0, 1, 2], Y: [2, 1, 0, -2, -3] }, 'середина -0,5 округляется до узла 0');
+    });
+
+    QUnit.test('addRoots: крайние узлы не обнуляются', function (assert) {
+        // Ближайшая целая точка — крайний узел: корень ставится в середину, график не начинается с нуля
+        assert.deepEqual(addRoots([1, 1.5, 2], [2, -1, -2], integerRoots),
+            { X: [1, 1.25, 1.5, 2], Y: [2, 0, -1, -2] }, 'левый край');
+        assert.deepEqual(addRoots([0, 0.5, 1], [2, 1, -1], integerRoots),
+            { X: [0, 0.5, 0.75, 1], Y: [2, 1, 0, -1] }, 'правый край');
+    });
+
+    QUnit.test('addRoots: нецелые корни', function (assert) {
+        assert.deepEqual(addRoots([-4, -2, 0, 2], [3, 1, -1, -3], nonIntegerRoots),
+            { X: [-4, -2, -0.5, 0, 2], Y: [3, 1, 0, -1, -3] }, 'корень в полуцелой точке');
+        const result = addRoots([0, 0.5, 1, 1.5, 2], [2, 1, 3, -1, -3], nonIntegerRoots);
+        assert.deepEqual(result, { X: [0, 0.5, 1, 1.5, 2], Y: [2, 1, 3, 0, -3] },
+            'полуцелая точка совпала с узлом x = 1,5 — обнулён он');
+        const roots = addRoots([-6, -4, -2, 0, 2, 4, 6], [1, -1, 2, -2, 1, -3, 2], nonIntegerRoots);
+        const added = roots.X.filter((x, i) => roots.Y[i] === 0);
+        assert.equal(added.length, 6, 'шесть смен знака — шесть корней');
+        assert.ok(added.every(x => Math.abs(x - Math.round(x)) > 0.2), 'все корни дальше 0,2 от целых точек');
+    });
+
+    QUnit.test('addRoots: узлы остаются упорядоченными и различными', function (assert) {
+        let checked = 0;
+        let wrong = [];
+        for (const step of [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4]) {
+            for (const settings of [integerRoots, nonIntegerRoots, { int: 'no_matter', tolerance: 0.2 }]) {
+                for (let shift = 0; shift < 4; shift++) {
+                    const X = [];
+                    const Y = [];
+                    for (let k = 0; k <= 16; k++) {
+                        X.push(-7 + shift * 0.25 + k * step);
+                        Y.push(((k + shift) % 3 === 0 ? -1 : 1) * (1 + (k * 7) % 5));
+                    }
+                    const result = addRoots(X, Y, settings);
+                    checked++;
+                    const increasing = result.X.every((x, i) => i === 0 || result.X[i - 1] < x);
+                    const signChanges = result.Y.filter((y, i) => i > 0 && y * result.Y[i - 1] < 0).length;
+                    if (!increasing || signChanges !== 0 || result.X.length !== result.Y.length) {
+                        wrong.push('шаг ' + step + ', сдвиг ' + shift + ', ' + settings.int);
+                    }
+                }
+            }
+        }
+        assert.equal(checked, 96, 'проверено 96 наборов узлов');
+        assert.deepEqual(wrong, [], 'узлы строго возрастают, между соседними узлами не осталось смены знака без корня');
+    });
+
+    QUnit.test('addRoots: исходные массивы не изменяются', function (assert) {
+        const X = [-4, -2, 0, 2];
+        const Y = [3, 1, -1, -3];
+        addRoots(X, Y, integerRoots);
+        assert.deepEqual(X, [-4, -2, 0, 2], 'X');
+        assert.deepEqual(Y, [3, 1, -1, -3], 'Y');
     });
 };
