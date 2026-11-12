@@ -292,6 +292,34 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
                 canvasSettings: { markedPoints: { type: 'symbol', step: 2, numberOfPoints: { min: 4, max: 4 } } },
                 questionsF: { main: 'marked_points', conditions: ['function_is_decreasing', 'function_is_increasing'], variants: ['number'] } },
             8, 'marked'],
+        'график функции: целые точки, где производная равна нулю': [
+            { type: 'function', boundariesOfGraph: bounds, extremumsIsInteger: { int: 'yes', tolerance: 0.1 }, numberOfExtremes: { min: 2, max: 10 },
+                questionsF: { main: 'integer_points', conditions: ['derivative_is_zero'], variants: ['sum', 'production', 'number'] } },
+            8, 'extrema'],
+        'график функции: точки экстремума': [
+            { type: 'function', boundariesOfGraph: bounds, extremumsIsInteger: { int: 'yes', tolerance: 0.15 }, numberOfExtremes: { min: 2, max: 10 },
+                questionsF: { main: 'integer_points', conditions: ['extreme_points'], variants: ['sum', 'production', 'number', 'smallest', 'largest'] } },
+            8, 'extrema'],
+        'график функции: касательная параллельна оси абсцисс или прямой y = c, решения уравнения f′(x) = 0': [
+            { type: 'function', boundariesOfGraph: bounds, extremumsIsInteger: { int: 'yes', tolerance: 0.15 }, numberOfExtremes: { min: 2, max: 10 },
+                questionsF: { main: 'integer_points', conditions: ['tangent_to_graph_const', 'tangent_to_graph_abscissa', 'solutions_equation'],
+                    variants: ['sum', 'production', 'number'] } },
+            12, 'extrema'],
+        'график производной: количество точек, где касательная параллельна прямой y = c': [
+            { type: 'derivative', boundariesOfGraph: Object.assign({}, bounds, { stepForX: 3, stepForY: 1 }), numberOfExtremes: { min: 4, max: 10 },
+                questionsF: { main: 'integer_points', conditions: ['tangent_to_graph_const'], variants: ['number'] } },
+            8, 'extrema'],
+        'график производной: целые точки, в которых функция возрастает или убывает': [
+            { type: 'derivative', boundariesOfGraph: Object.assign({}, randomBounds, { stepForY: 0.1 }), rootsIsInteger: { int: 'no', tolerance: 0.2 },
+                numberOfRoots: { min: 1, max: 10 },
+                questionsF: { main: 'integer_points', conditions: ['function_is_decreasing', 'function_is_increasing'],
+                    variants: ['sum', 'production', 'number', 'largest', 'smallest'] } },
+            10, 'monotone'],
+        'график производной: длина наибольшего или наименьшего интервала монотонности': [
+            { type: 'derivative', boundariesOfGraph: Object.assign({}, randomBounds, { stepForY: 0.1 }), rootsIsInteger: { int: 'yes', tolerance: 0.2 },
+                numberOfRoots: { min: 2, max: 10 },
+                questionsF: { main: 'interval', conditions: ['function_is_decreasing', 'function_is_increasing'], variants: ['smallest', 'largest'] } },
+            5, 'interval'],
     };
 
     QUnit.module('Task: setTaskWithGraphOfFunctionDerivative');
