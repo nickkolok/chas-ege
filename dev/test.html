@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Random Grid Road and Buildings Visualization</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1e1e1e, #2d2d2d);
+            font-family: Arial, sans-serif;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            gap: 1px;
+            background-color: #333;
+            border-radius: 10px;
+            border: 2px solid #444;
+        }
+
+        .cell {
+            width: 20px;
+            height: 20px;
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .road {
+            background-color: #4CAF50;
+        }
+
+        .turn {
+            background-color: #2196F3;
+        }
+
+        .building {
+            background-color: #ff9800;
+        }
+
+        .boundary {
+            border: 1px solid #ff6b6b;
+        }
+
+        #regenerateButton {
+            position: fixed;
+            top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #regenerateButton:hover {
+            background-color: #45a049;
+        }
+
+        #turnCounter {
+            position: fixed;
+            top: 60px;
+            color: white;
+        }
+
+        #pathLength {
+            position: fixed;
+            top: 90px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <button id="regenerateButton">Создать новую дорогу</button>
+    <div id="turnCounter">Количество поворотов: 0</div>
+    <div id="pathLength">Длина пути: 0</div>
+    <div class="grid" id="grid"></div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const gridSize = 20;
+        const MIN_STRAIGHT_PATH = 3;
+        const MAX_TURNS = 3;
+        const MIN_PATH_LENGTH = 10;
+        const BUILDINGS_COUNT = 4;
+        
+        // Массив цветов для зданий
+        const buildingColors = [
+            '#FF9800',  // оранжевый
+            '#E91E63',  // розовый
+            '#9C27B0',  // фиолетовый
+            '#673AB7'   // темно-фиолетовый
+        ];
+
+        // Остальные вспомогательные функции остаются без изменений
+        function createGrid() {
+            grid.innerHTML = '';
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    const cellNumber = i * gridSize + j + 1;
+                    cell.textContent = cellNumber;
+                    cell.dataset.x = i;
+                    cell.dataset.y = j;
+                    if (i === 0 || i === gridSize-1 || j === 0 || j === gridSize-1) {
+                        cell.classList.add('boundary');
+                    }
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function isValidPosition(x, y, isFirstCell = false) {
+            if (isFirstCell) {
+                return y === 0 && x > 0 && x < gridSize - 1;
+            }
+            return x > 1 && x < gridSize - 2 && y > 0 && y < gridSize - 1;
+        }
+
+        function generateRandomRoad() {
+            const startX = Math.floor(Math.random() * (gridSize - 4)) + 2;
+            let currentX = startX;
+            let currentY = 0;
+            const roadPath = [{x: currentX, y: currentY}];
+            
+            let straightSteps = 0;
+            let lastDirection = 'down';
+            let turnsCount = 0;
+            
+            function canReachMinLength(currentLength, remainingSteps) {
+                return currentLength + remainingSteps >= MIN_PATH_LENGTH;
+            }
+            
+            while (currentY < gridSize - 2) {
+                const directions = [];
+                const currentLength = roadPath.length;
+                const minRemainingSteps = gridSize - 1 - currentY;
+                
+                if (!canReachMinLength(currentLength, minRemainingSteps)) {
+                    return generateRandomRoad();
+                }
+                
+                if (currentY < gridSize - 2) {
+                    if (lastDirection === 'down' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
+                        directions.push('down');
+                    }
+                }
+                
+                if (currentX < gridSize - 3) {
+                    if (lastDirection === 'right' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
+                        directions.push('right');
+                    }
+                }
+                
+                if (currentX > 2) {
+                    if (lastDirection === 'left' || (straightSteps >= MIN_STRAIGHT_PATH && turnsCount < MAX_TURNS)) {
+                        directions.push('left');
+                    }
+                }
+                
+                if (turnsCount >= MAX_TURNS) {
+                    directions.length = 0;
+                    if (currentY < gridSize - 2) {
+                        directions.push('down');
+                    }
+                }
+                
+                if (directions.length === 0) {
+                    return generateRandomRoad();
+                }
+                
+                const direction = directions[Math.floor(Math.random() * directions.length)];
+                
+                if (direction === lastDirection) {
+                    straightSteps++;
+                } else {
+                    straightSteps = 1;
+                    turnsCount++;
+                }
+                
+                switch(direction) {
+                    case 'down':
+                        currentY++;
+                        break;
+                    case 'right':
+                        currentX++;
+                        break;
+                    case 'left':
+                        currentX--;
+                        break;
+                }
+                
+                if (!isValidPosition(currentX, currentY)) {
+                    continue;
+                }
+                
+                lastDirection = direction;
+                roadPath.push({x: currentX, y: currentY});
+            }
+            
+            if (roadPath.length < MIN_PATH_LENGTH) {
+                return generateRandomRoad();
+            }
+            
+            return { roadPath, turnsCount };
+        }
+
+        function buildingsIntersect(building1, building2) {
+            return !(building1.x + building1.width <= building2.x ||
+                    building2.x + building2.width <= building1.x ||
+                    building1.y + building1.height <= building2.y ||
+                    building2.y + building2.height <= building1.y);
+        }
+
+        function touchesRoad(building, roadPath) {
+            for (let x = building.x; x < building.x + building.width; x++) {
+                for (let y = building.y; y < building.y + building.height; y++) {
+                    // Проверяем каждую клетку здания
+                    for (const roadCell of roadPath) {
+                        // Проверяем соседние клетки (но не саму клетку дороги)
+                        if ((Math.abs(x - roadCell.x) === 1 && y === roadCell.y) ||
+                            (Math.abs(y - roadCell.y) === 1 && x === roadCell.x)) {
+                            // Проверяем, что здание не находится на дороге
+                            if (x !== roadCell.x || y !== roadCell.y) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        function intersectsRoad(building, roadPath) {
+            for (let x = building.x; x < building.x + building.width; x++) {
+                for (let y = building.y; y < building.y + building.height; y++) {
+                    if (roadPath.some(cell => cell.x === x && cell.y === y)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function isWithinGrid(building) {
+            return building.x >= 0 && 
+                   building.x + building.width <= gridSize &&
+                   building.y >= 0 && 
+                   building.y + building.height <= gridSize;
+        }
+
+        function generateBuildings(roadPath) {
+            const buildings = [];
+            const maxAttempts = 100;
+            
+            for (let i = 0; i < BUILDINGS_COUNT; i++) {
+                let attempts = 0;
+                let validBuilding = false;
+                
+                while (!validBuilding && attempts < maxAttempts) {
+                    const width = Math.floor(Math.random() * 3) + 2;
+                    const height = Math.floor(Math.random() * 3) + 2;
+                    const x = Math.floor(Math.random() * (gridSize - width));
+                    const y = Math.floor(Math.random() * (gridSize - height));
+                    
+                    // Добавляем цвет к объекту здания
+                    const building = {
+                        x,
+                        y,
+                        width,
+                        height,
+                        color: buildingColors[i] // Каждому зданию свой цвет из массива
+                    };
+                    
+                    if (isWithinGrid(building) && 
+                        touchesRoad(building, roadPath) &&
+                        !intersectsRoad(building, roadPath) &&
+                        !buildings.some(b => buildingsIntersect(building, b))) {
+                        buildings.push(building);
+                        validBuilding = true;
+                    }
+                    
+                    attempts++;
+                }
+            }
+            
+            return buildings;
+        }
+
+        function drawRoad() {
+            createGrid();
+            const { roadPath, turnsCount } = generateRandomRoad();
+            const buildings = generateBuildings(roadPath);
+            
+            document.getElementById('turnCounter').textContent = `Количество поворотов: ${turnsCount}`;
+            document.getElementById('pathLength').textContent = `Длина пути: ${roadPath.length}`;
+            
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                const x = parseInt(cell.dataset.x);
+                const y = parseInt(cell.dataset.y);
+                
+                if (roadPath.some(point => point.x === x && point.y === y)) {
+                    cell.classList.add('road');
+                    
+                    const index = roadPath.findIndex(point => point.x === x && point.y === y);
+                    if (index > 0 && index < roadPath.length - 1) {
+                        const prev = roadPath[index - 1];
+                        const next = roadPath[index + 1];
+                        if (prev.x !== next.x && prev.y !== next.y) {
+                            cell.classList.add('turn');
+                        }
+                    }
+                }
+                
+                // Отрисовка зданий с их уникальными цветами
+                for (const building of buildings) {
+                    if (x >= building.x && x < building.x + building.width &&
+                        y >= building.y && y < building.y + building.height) {
+                        cell.style.backgroundColor = building.color;
+                    }
+                }
+            });
+        }
+
+        document.getElementById('regenerateButton').addEventListener('click', drawRoad);
+        drawRoad();
+    </script>
+</body>
+</html>
