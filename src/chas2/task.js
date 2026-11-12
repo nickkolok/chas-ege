@@ -631,6 +631,12 @@ chas2.task = {
 		let find = '';
 		let deriv;
 		let subSegment = getRandomSubSegment(minX + 1, maxX - 1, stepForX);
+		// Точки ищутся на отрезке, расширенном на 0.1 * stepForX. Если все найденные
+		// точки лежат в этом расширении, а на самом отрезке нет ни одной, вопрос
+		// («наибольшая из точек максимума на отрезке…») задан о пустом множестве.
+		const assertSegmentHasPoints = (foundPoints) => genAssertNonempty(
+			foundPoints.filter((x) => x >= subSegment[0] && x <= subSegment[1]),
+			'На отрезке нет искомых точек');
 		switch (type) {
 			case 'function':
 				switch (conditions) {
@@ -720,16 +726,19 @@ chas2.task = {
 						find = `экстремума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки экстремума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
 						answer = extremumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						assertSegmentHasPoints(answer);
 						break;
 					case 'minimum_points_on_the_segment':
 						find = `минимума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки минимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
 						answer = minimumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						assertSegmentHasPoints(answer);
 						break;
 					case 'maximum_points_on_the_segment':
 						find = `максимума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки максимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
 						answer = maximumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						assertSegmentHasPoints(answer);
 						break;
 					case 'minimum_point_on_the_segment':
 						answer = answer.intIntervalsMinimums.iz();
@@ -755,6 +764,7 @@ chas2.task = {
 						find = `решений уравнения $f\'(x)=0$ на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки экстремума:'
 						answer = extremumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						assertSegmentHasPoints(answer);
 						break;
 					case 'solution_equation_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX, true);
@@ -810,16 +820,19 @@ chas2.task = {
 						find = `экстремума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки экстремума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
 						answer = extremumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						assertSegmentHasPoints(answer);
 						break;
 					case 'minimum_points_on_the_segment':
 						find = `минимума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки минимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
 						answer = minimumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						assertSegmentHasPoints(answer);
 						break;
 					case 'maximum_points_on_the_segment':
 						find = `максимума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки максимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
 						answer = maximumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
+						assertSegmentHasPoints(answer);
 						break;
 					case 'extreme_point_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX, true)
