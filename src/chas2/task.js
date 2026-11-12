@@ -973,11 +973,11 @@ chas2.task = {
 							if (sl1()) {
 								answer = answer.decreasingIntervals.iz();
 								task.text.push('$[' + (answer[0] + 1).floor() + ';' + (answer[1] - 1).ceil() + ']$');
-								genAssert((answer[0] + 1).floor() != (answer[1] - 1).ceil(), 'Начало и конец отрезка совпали');
+								genAssert((answer[0] + 1).floor() < (answer[1] - 1).ceil(), 'Отрезок не помещается в промежуток монотонности');
 								answer = (answer[1] - 1).ceil()
 							} else {
 								answer = answer.increasingIntervals.iz();
-								genAssert((answer[0] + 1).floor() != (answer[1] - 1).ceil(), 'Начало и конец отрезка совпали');
+								genAssert((answer[0] + 1).floor() < (answer[1] - 1).ceil(), 'Отрезок не помещается в промежуток монотонности');
 								task.text.push('$[' + (answer[0] + 1).floor() + ';' + (answer[1] - 1).ceil() + ']$');
 								answer = (answer[0] + 1).floor()
 							}
@@ -994,12 +994,12 @@ chas2.task = {
 						if (conditions == 'value_on_the_segment_with_ends') {
 							if (sl1()) {
 								answer = answer.decreasingIntervals.iz();
-								genAssert((answer[0] + 1).floor() != (answer[1] - 1).ceil(), 'Начало и конец отрезка совпали')
+								genAssert((answer[0] + 1).floor() < (answer[1] - 1).ceil(), 'Отрезок не помещается в промежуток монотонности')
 								task.text.push('$[' + (answer[0] + 1).floor() + ';' + (answer[1] - 1).ceil() + ']$');
 								answer = (answer[0] + 1).floor()
 							} else {
 								answer = answer.increasingIntervals.iz();
-								genAssert((answer[0] + 1).floor() != (answer[1] - 1).ceil(), 'Начало и конец отрезка совпали')
+								genAssert((answer[0] + 1).floor() < (answer[1] - 1).ceil(), 'Отрезок не помещается в промежуток монотонности')
 								task.text.push('$[' + (answer[0] + 1).floor() + ';' + (answer[1] - 1).ceil() + ']$');
 								answer = (answer[1] - 1).ceil()
 							}
