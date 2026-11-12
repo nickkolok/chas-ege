@@ -321,11 +321,11 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
                 questionsF: { main: 'interval', conditions: ['function_is_decreasing', 'function_is_increasing'], variants: ['smallest', 'largest'] } },
             5, 'interval'],
         'график производной: точки максимума, минимума и экстремума на отрезке': [
-            { type: 'derivative', boundariesOfGraph: Object.assign({}, randomBounds, { stepForY: 0.1 }), rootsIsInteger: { int: 'yes', tolerance: 0.09 },
+            { type: 'derivative', boundariesOfGraph: Object.assign({}, randomBounds, { stepForY: 0.1 }), rootsIsInteger: { int: 'yes', tolerance: 0.2 },
                 numberOfRoots: { min: 2, max: 10 },
                 questionsF: { main: 'integer_points', variants: ['number', 'largest', 'smallest'],
                     conditions: ['maximum_points_on_the_segment', 'minimum_points_on_the_segment', 'extreme_points_on_the_segment'] } },
-            40, 'extrema'],
+            150, 'extrema'],
     };
 
     QUnit.module('Task: setTaskWithGraphOfFunctionDerivative');
