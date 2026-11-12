@@ -1081,7 +1081,7 @@ chas2.task = {
 				case 'function_is_increasing':
 				case 'function_is_decreasing':
 					if (main == 'integer_points')
-						task.text.push(' целых точек, в которых');
+						task.text.push('целых точек, в которых');
 					if (main == 'marked_points')
 						task.text.push('точек, в которых');
 					break;
