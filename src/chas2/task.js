@@ -1126,7 +1126,8 @@ chas2.task = {
 					break;
 			}
 
-		task.text.push(find + '.');
+		// Условие вида «В какой точке отрезка … принимает наибольшее значение» — вопрос
+		task.text.push(find + (task.text.includes('В какой точке отрезка') ? '?' : '.'));
 		task.text = task.text.join(' ');
 		task.answers = answer;
 
