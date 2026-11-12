@@ -108,7 +108,12 @@ var q=t.replace(/^На рисунке изображён график.*?(\)\$\.|
 out.q=q;
 var seg=null,m=q.match(/на отрезке \$\[(-?[\d,]+);(-?[\d,]+)\]?\$/)||q.match(/точке отрезка \$\[(-?[\d,]+);(-?[\d,]+)\]?\$/);
 if(m)seg=[+m[1].replace(',','.'),+m[2].replace(',','.')];
-var AMB=0.12; // ближе этого на рисунке не различить
+// Единое правило: особенность графика ближе NEAR к целой точке считается лежащей в ней,
+// дальше FAR — заведомо отдельной; промежуточное («серая зона») в задаче недопустимо
+var NEAR=0.2,FAR=0.3;
+function isNear(x){return Math.abs(x-Math.round(x))<=NEAR}
+function snap(x){return isNear(x)?Math.round(x):x}
+function gray(x){var d=Math.abs(x-Math.round(x));return d>NEAR&&d<FAR-1e-9}
 function agg(set,word){var R=set.map(function(x){return Math.round(x)});
  if(/сумму/.test(word))return R.reduce(function(a,b){return a+b},0);
  if(/произведение/.test(word))return R.reduce(function(a,b){return a*b},1);
@@ -129,25 +134,24 @@ if(mk){ // отмеченные точки
  var sg=/положительна|возрастает/.test(rest)?1:(/отрицательна|убывает/.test(rest)?-1:0);
  if(sg&&/количество/.test(rest)){set=pts.filter(function(p){return sg*fprime(p)>0});exp=set.length;
    var scale=Math.max.apply(null,pts.map(function(p){return Math.abs(fprime(p))}).concat([1e-9]));
-   amb=pts.some(function(p){return fext.some(function(e){return Math.abs(e.x-p)<AMB})});
-   if(!der){/* знак производной по графику функции: рядом с экстремумом не различить */}
-   else{amb=pts.some(function(p){return Math.abs(g(p))<0.3})}}
+   if(pts.some(function(p){return fext.some(function(e){return Math.abs(snap(e.x)-p)<FAR-1e-9})}))out.lint.push('отмеченная точка рядом с точкой экстремума')}
  else if(/принимает (наибольшее|наименьшее) значение/.test(rest)){var big=/наибольшее/.test(rest);var vals=pts.map(fprime);var best=0;for(var i=1;i<pts.length;i++)if(big?vals[i]>vals[best]:vals[i]<vals[best])best=i;exp=pts[best];
    var sorted=vals.slice().sort(function(a,b){return big?b-a:a-b});amb=sorted.length>1&&Math.abs(sorted[0]-sorted[1])<0.7;set=pts;out.notes.push('значения производной: '+vals.map(function(v){return v.toFixed(2)}).join(' '))}
  else kind='unparsed';
-}else if(/^В какой точке отрезка/.test(q)){kind='argext';var big2=/наибольшее/.test(q);if(!seg){kind='unparsed'}else{var bx=seg[0],bv=f(seg[0]);for(var x2=seg[0];x2<=seg[1]+1e-9;x2+=1e-3){var v2=f(x2);if(big2?v2>bv:v2<bv){bv=v2;bx=x2}}exp=Math.round(bx);if(Math.abs(bx-Math.round(bx))>0.25)out.notes.push('точка наибольшего/наименьшего значения не целая: '+bx.toFixed(3));
+}else if(/^В какой точке отрезка/.test(q)){kind='argext';var big2=/наибольшее/.test(q);if(!seg){kind='unparsed'}else{var bx=seg[0],bv=f(seg[0]);for(var x2=seg[0];x2<=seg[1]+1e-9;x2+=1e-3){var v2=f(x2);if(big2?v2>bv:v2<bv){bv=v2;bx=x2}}exp=Math.round(bx);if(!isNear(bx))out.lint.push('точка наибольшего/наименьшего значения не целая: '+bx.toFixed(3));
    // вторая по величине кандидатура: значения на концах
    var ev=[f(seg[0]),f(seg[1])];var other=big2?Math.max.apply(null,ev):Math.min.apply(null,ev);if(Math.abs(bx-seg[0])>1e-6&&Math.abs(bx-seg[1])>1e-6&&Math.abs(other-bv)<1e-9)amb=true;
    if(seg[0]<=minX||seg[1]>=maxX)out.lint.push('отрезок выходит за интервал');if(seg[0]>=seg[1])out.lint.push('вырожденный отрезок');set=[bx]}}
 else if(/по длине интервал, на котором/.test(q)){kind='interval';var inc=/возрастает/.test(q);var b=[minX].concat(fext.map(function(e){return e.x}),[maxX]);var lens=[];for(var i2=1;i2<b.length;i2++){var mid=(b[i2-1]+b[i2])/2;if((fprime(mid)>0)===inc)lens.push(Math.round(b[i2])-Math.round(b[i2-1]))}
-   exp=lens.length?(/наибольший/.test(q)?Math.max.apply(null,lens):Math.min.apply(null,lens)):null;set=lens;if(fext.some(function(e){return Math.abs(e.x-Math.round(e.x))>0.25}))out.notes.push('концы интервалов не целые')}
+   exp=lens.length?(/наибольший/.test(q)?Math.max.apply(null,lens):Math.min.apply(null,lens)):null;set=lens;if(fext.some(function(e){return !isNear(e.x)}))out.lint.push('концы интервалов не целые')}
 else if(/целых точек?, в которых (производная функции \$f\(x\)\$|функция( \$f\(x\)\$)?) (положительна|отрицательна|возрастает|убывает)/.test(q)){
  var mm=q.match(/(положительна|отрицательна|возрастает|убывает)/)[1];var isDer=/производная функции/.test(q);var s3=(mm==='положительна'||mm==='возрастает')?1:-1;
- if(isDer){kind='fprime-sign';set=ints().filter(function(x){return s3*fprime(x)>0});amb=ints().some(function(x){return fext.some(function(e){return Math.abs(e.x-x)<AMB&&Math.abs(e.x-x)>1e-6})})}
- else if(mm==='возрастает'||mm==='убывает'){kind='monotone';// промежутки монотонности замкнуты: точки экстремума входят
-   var bb=[minX].concat(fext.map(function(e){return e.x}),[maxX]);set=ints().filter(function(x){for(var i=1;i<bb.length;i++){var lo=bb[i-1],hi=bb[i],mid=(lo+hi)/2;if(s3*fprime(mid)>0&&x>=Math.round(lo*1e6)/1e6-1e-6&&x<=hi+1e-6)return true}return false});
-   amb=ints().some(function(x){return fext.some(function(e){return Math.abs(e.x-x)<AMB&&Math.abs(e.x-x)>1e-4})})}
- else{kind='f-sign';set=ints().filter(function(x){return s3*g(x)>0})}
+ var atExtremum=function(x){return fext.some(function(e){return Math.abs(e.x-x)<=NEAR})};
+ if(fext.some(function(e){return gray(e.x)}))out.lint.push('точка экстремума в серой зоне');
+ if(isDer){kind='fprime-sign';set=ints().filter(function(x){return !atExtremum(x)&&s3*fprime(x)>0})}
+ else if(mm==='возрастает'||mm==='убывает'){kind='monotone';// промежутки монотонности замкнуты: целая точка экстремума входит в оба соседних
+   set=ints().filter(function(x){return atExtremum(x)||s3*fprime(x)>0})}
+ else{kind='f-sign';set=ints().filter(function(x){return !gz.some(function(z){return Math.abs(z.x-x)<=NEAR})&&s3*g(x)>0})}
  exp=agg(set,q)}
 else if(/параллельна графику функции \$y=([^$]*x[^$]*)\$/.test(q)){kind='tangent-k';var eq=q.match(/\$y=([^$]*)\$/)[1].replace(/,/g,'.').replace(/−/g,'-');var km=eq.match(/([+-]?\d*\.?\d*)x/);var k=km[1]===''||km[1]==='+'?1:(km[1]==='-'?-1:+km[1]);
    var sol=zeros(function(x){return fprime(x)-k},minX+1e-6,maxX-1e-6).map(function(z){return z.x});set=sol;out.notes.push('k='+k);
@@ -157,9 +161,9 @@ else if(/параллельна графику функции \$y=([^$]*x[^$]*)\
 else if(/точ(ек|ки|ку) (экстремума|минимума|максимума)|решени(й|е) уравнения \$f'\(x\)=0\$|равна нулю|параллельна оси абсцисс|параллельна графику функции \$y=/.test(q)){
  kind='extrema';var kk=(q.match(/точ(?:ек|ки|ку) (экстремума|минимума|максимума)/)||[])[1]||'экстремума';
  var all=fext.filter(function(e){return kk==='экстремума'||(kk==='минимума')===(e.kind==='min')});
- set=all.filter(function(e){return inDom(e.x)}).map(function(e){return e.x});
- if(seg){amb=all.some(function(e){return Math.min(Math.abs(e.x-seg[0]),Math.abs(e.x-seg[1]))<0.45&&Math.min(Math.abs(e.x-seg[0]),Math.abs(e.x-seg[1]))>1e-9});if(seg[0]<=minX||seg[1]>=maxX)out.lint.push('отрезок выходит за интервал')}
- if(set.some(function(x){return Math.abs(x-Math.round(x))>0.3}))out.notes.push('точка не целая, а в ответе округлена');
+ set=all.filter(function(e){return inDom(snap(e.x))}).map(function(e){return e.x});
+ if(seg){if(all.some(function(e){return !isNear(e.x)&&Math.min(Math.abs(e.x-seg[0]),Math.abs(e.x-seg[1]))<FAR-1e-9}))out.lint.push('точка в серой зоне у конца отрезка');if(seg[0]<=minX||seg[1]>=maxX)out.lint.push('отрезок выходит за интервал')}
+ if(!/количество/.test(q)&&set.some(function(x){return !isNear(x)}))out.lint.push('в ответ идёт абсцисса нецелой точки');
  var single=/(Найдите|Определите) (точку|решение|абсциссу точки)/.test(q);
  if(single){exp=set.length?Math.round(set[0]):null;if(set.length!==1){out.notes.push('НЕОДНОЗНАЧНО: подходящих точек '+set.length);if(set.some(function(x){return Math.round(x)===got}))exp=got}}
  else exp=agg(set,q)}
@@ -227,11 +231,11 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
     // name: [настройки, сколько задач, какой вид вопроса ожидается]
     const cases = {
         'график функции: целые точки, производная положительна': [
-            { type: 'function', boundariesOfGraph: bounds, extremumsIsInteger: { int: 'no', tolerance: 0.2 },
+            { type: 'function', boundariesOfGraph: Object.assign({}, randomBounds, { stepForX: 3 }), extremumsIsInteger: { int: 'no', tolerance: 0.3 },
                 questionsF: { main: 'integer_points', conditions: ['derivative_is_positive'], variants: ['sum', 'production', 'number', 'largest', 'smallest'] } },
             10, 'fprime-sign'],
         'график функции: целые точки, производная отрицательна': [
-            { type: 'function', boundariesOfGraph: bounds, extremumsIsInteger: { int: 'no', tolerance: 0.2 },
+            { type: 'function', boundariesOfGraph: Object.assign({}, randomBounds, { stepForX: 3 }), extremumsIsInteger: { int: 'no', tolerance: 0.3 },
                 questionsF: { main: 'integer_points', conditions: ['derivative_is_negative'], variants: ['sum', 'production', 'number', 'largest', 'smallest'] } },
             10, 'fprime-sign'],
         'график производной: в какой точке отрезка функция принимает наибольшее или наименьшее значение': [
@@ -309,8 +313,8 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
             { type: 'derivative', boundariesOfGraph: Object.assign({}, bounds, { stepForX: 3, stepForY: 1 }), numberOfExtremes: { min: 4, max: 10 },
                 questionsF: { main: 'integer_points', conditions: ['tangent_to_graph_const'], variants: ['number'] } },
             8, 'extrema'],
-        'график производной: целые точки, в которых функция возрастает или убывает': [
-            { type: 'derivative', boundariesOfGraph: Object.assign({}, randomBounds, { stepForY: 0.1 }), rootsIsInteger: { int: 'no', tolerance: 0.2 },
+        'график производной: целые точки, в которых функция возрастает или убывает (точки экстремума целые и входят в ответ)': [
+            { type: 'derivative', boundariesOfGraph: Object.assign({}, randomBounds, { stepForY: 0.1 }), rootsIsInteger: { int: 'yes', tolerance: 0.2 },
                 numberOfRoots: { min: 1, max: 10 },
                 questionsF: { main: 'integer_points', conditions: ['function_is_decreasing', 'function_is_increasing'],
                     variants: ['sum', 'production', 'number', 'largest', 'smallest'] } },

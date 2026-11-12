@@ -631,12 +631,44 @@ chas2.task = {
 		let find = '';
 		let deriv;
 		let subSegment = getRandomSubSegment(minX + 1, maxX - 1, stepForX);
-		// Точки ищутся на отрезке, расширенном на 0.1 * stepForX. Если все найденные
-		// точки лежат в этом расширении, а на самом отрезке нет ни одной, вопрос
-		// («наибольшая из точек максимума на отрезке…») задан о пустом множестве.
-		const assertSegmentHasPoints = (foundPoints) => genAssertNonempty(
-			foundPoints.filter((x) => x >= subSegment[0] && x <= subSegment[1]),
-			'На отрезке нет искомых точек');
+		// Единое правило для особенностей графика (точек экстремума и корней).
+		// Особенность либо лежит в целой точке с точностью nearInteger — тогда она
+		// считается ровно этой точкой, — либо отстоит от целой точки, с которой её
+		// можно спутать, не меньше чем на farFromInteger. Всё промежуточное на
+		// рисунке не различить, и такая задача отбраковывается.
+		const nearInteger = 0.2;
+		const farFromInteger = 0.3;
+		const tooCloseMessage = 'Особенность графика слишком близко к целой точке, но не в ней';
+		// Граница промежутка: целая, если рядом с целой точкой, иначе обязана быть далеко от неё
+		const snapBoundary = (x) => {
+			if (x === minX || x === maxX) {
+				return x;
+			}
+			if (isCloseToInteger(x, nearInteger)) {
+				return Math.round(x);
+			}
+			genAssert(Math.abs(x - Math.round(x)) >= farFromInteger, tooCloseMessage);
+			return x;
+		};
+		// Точка, которая идёт в ответ как целое число
+		const roundToInteger = (x) => {
+			genAssert(isCloseToInteger(x, nearInteger), 'Точка не лежит в целой точке');
+			return Math.round(x);
+		};
+		// Точки из allPoints, лежащие на отрезке subSegment
+		const pointsOnSegment = (allPoints) => {
+			let onSegment = allPoints.filter((x) => {
+				if (isCloseToInteger(x, nearInteger)) {
+					x = Math.round(x);
+				} else {
+					// Не в целой точке: рядом с концом отрезка её положение не определить
+					genAssert(Math.abs(x - subSegment[0]) >= farFromInteger && Math.abs(x - subSegment[1]) >= farFromInteger, tooCloseMessage);
+				}
+				return x >= subSegment[0] && x <= subSegment[1];
+			});
+			genAssertNonempty(onSegment, 'На отрезке нет искомых точек');
+			return onSegment;
+		};
 		switch (type) {
 			case 'function':
 				switch (conditions) {
@@ -725,32 +757,29 @@ chas2.task = {
 					case 'extreme_points_on_the_segment':
 						find = `экстремума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки экстремума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = extremumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
-						assertSegmentHasPoints(answer);
+						answer = pointsOnSegment(extremumsX(func, minX, maxX));
 						break;
 					case 'minimum_points_on_the_segment':
 						find = `минимума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки минимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = minimumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
-						assertSegmentHasPoints(answer);
+						answer = pointsOnSegment(minimumsX(func, minX, maxX));
 						break;
 					case 'maximum_points_on_the_segment':
 						find = `максимума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки максимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = maximumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
-						assertSegmentHasPoints(answer);
+						answer = pointsOnSegment(maximumsX(func, minX, maxX));
 						break;
 					case 'minimum_point_on_the_segment':
 						answer = answer.intIntervalsMinimums.iz();
 						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 						find = `минимума ${functionsFx} на отрезке $[${answer.leftEnd};${answer.rightEnd}]$`;
-						answer = answer.ext.round();
+						answer = roundToInteger(answer.ext);
 						break;
 					case 'maximum_point_on_the_segment':
 						answer = answer.intIntervalsMaximums.iz();
 						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 						find = `максимума ${functionsFx} на отрезке $[${answer.leftEnd};${answer.rightEnd}]$`;
-						answer = answer.ext.round();
+						answer = roundToInteger(answer.ext);
 						break;
 					case 'derivative_is_zero_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX, false);
@@ -758,20 +787,19 @@ chas2.task = {
 						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 						find = `${derivativeOfFx} равна нулю на отрезке $[${answer.leftEnd.floor()};${answer.rightEnd.ceil()}]$`;
 						//task.analys = 'Точки экстремума:'
-						answer = [answer.ext.round()];
+						answer = [roundToInteger(answer.ext)];
 						break;
 					case 'solutions_equation_on_the_segment':
 						find = `решений уравнения $f\'(x)=0$ на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки экстремума:'
-						answer = extremumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
-						assertSegmentHasPoints(answer);
+						answer = pointsOnSegment(extremumsX(func, minX, maxX));
 						break;
 					case 'solution_equation_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX, true);
 						answer = [answer.intIntervalsMinimums.iz(), answer.intIntervalsMaximums.iz()].iz();
 						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 						find = `решение уравнения $f\'(x)=0$ на отрезке $[${answer.leftEnd.floor()};${answer.rightEnd.ceil()}]$`;
-						answer = [answer.ext.round()];
+						answer = [roundToInteger(answer.ext)];
 						//task.analys = 'Точки экстремума:'
 						break;
 					default:
@@ -819,41 +847,38 @@ chas2.task = {
 					case 'extreme_points_on_the_segment':
 						find = `экстремума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки экстремума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = extremumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
-						assertSegmentHasPoints(answer);
+						answer = pointsOnSegment(extremumsX(func, minX, maxX));
 						break;
 					case 'minimum_points_on_the_segment':
 						find = `минимума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки минимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = minimumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
-						assertSegmentHasPoints(answer);
+						answer = pointsOnSegment(minimumsX(func, minX, maxX));
 						break;
 					case 'maximum_points_on_the_segment':
 						find = `максимума ${functionsFx} на отрезке $[${subSegment[0]};${subSegment[1]}]$`;
 						//task.analys = 'Точки максимума на отрезке $[' + subSegment[0] + ';' + subSegment[1] + ']$:'
-						answer = maximumsX(func, subSegment[0] - stepForX * 0.1, subSegment[1] + stepForX * 0.1);
-						assertSegmentHasPoints(answer);
+						answer = pointsOnSegment(maximumsX(func, minX, maxX));
 						break;
 					case 'extreme_point_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX, true)
 						answer = [answer.intIntervalsMinimums.iz(), answer.intIntervalsMaximums.iz()].iz();
 						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 						find = `экстремума ${functionsFx} на отрезке $[${answer.leftEnd};${answer.rightEnd}]$`;
-						answer = [answer.ext.round()];
+						answer = [roundToInteger(answer.ext)];
 						break;
 					case 'minimum_point_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX, true)
 						answer = answer.intIntervalsMinimums.iz();
 						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 						find = `минимума ${functionsFx} на отрезке $[${answer.leftEnd};${answer.rightEnd}]$`;
-						answer = [answer.ext.round()];
+						answer = [roundToInteger(answer.ext)];
 						break;
 					case 'maximum_point_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX, true)
 						answer = answer.intIntervalsMaximums.iz();
 						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 						find = `максимума ${functionsFx} на отрезке $[${answer.leftEnd};${answer.rightEnd}]$`;
-						answer = [answer.ext.round()];
+						answer = [roundToInteger(answer.ext)];
 						break;
 					case 'function_is_increasing':
 						find = `${functionFx} возрастает`;
@@ -912,9 +937,19 @@ chas2.task = {
 				case 'function_is_increasing':
 				case 'function_is_decreasing':
 					//task.analys+= ' ' + answer.map((elem)=>'$['+elem[0].ts()+' ;'+elem[1].ts()+']$').join(', ');
-					if (main == 'integer_points')
-						answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, elem[0], elem[1]));
+					answer = answer.map((elem) => elem.map(snapBoundary));
+					if (main == 'integer_points') {
+						// Промежутки возрастания и убывания замкнуты: целая точка экстремума
+						// входит в оба соседних промежутка. Условия на знак строгие: граница
+						// промежутка — нуль, и в ответ она не входит.
+						let closedIntervals = conditions == 'function_is_increasing' || conditions == 'function_is_decreasing';
+						answer = answer.flatMap((elem) => findIntegerPointsInInterval(elem, minX, maxX, false, false, undefined, !closedIntervals));
+					}
 					if (main == 'marked_points') {
+						// Отмеченная точка рядом с границей промежутка: знак в ней на рисунке не определить
+						answer.forEach((elem) => elem.forEach((end) => points.forEach((point) => genAssert(
+							end === minX || end === maxX || Math.abs(point - end) >= farFromInteger,
+							'Отмеченная точка слишком близко к границе промежутка'))));
 						answer = answer.flatMap((elem) => findPointsInIntervals(points, elem));
 					}
 					break;
@@ -934,7 +969,8 @@ chas2.task = {
 				case 'solutions_equation':
 				case 'solution_equation':
 				case 'solutions_equation_on_the_segment':
-					answer = answer.map((elem) => elem.round());
+					// В вопросе о количестве точки могут быть и не целыми; иначе в ответ идут их абсциссы
+					answer = answer.map((elem) => (variants === 'number') ? elem.round() : roundToInteger(elem));
 					break;
 				case 'tangent_to_graph_equation':
 					{
@@ -991,7 +1027,7 @@ chas2.task = {
 							answer = answer.intIntervalsMinimums.iz();
 							genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 							task.text.push('$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
-							answer = answer.ext.round();
+							answer = roundToInteger(answer.ext);
 						}
 						if (conditions == 'value_on_the_segment_with_ends') {
 							if (sl1()) {
@@ -1013,7 +1049,7 @@ chas2.task = {
 							answer = answer.intIntervalsMaximums.iz();
 							genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали')
 							task.text.push('$[' + answer.leftEnd + ';' + answer.rightEnd + ']$');
-							answer = answer.ext.round();
+							answer = roundToInteger(answer.ext);
 						}
 						if (conditions == 'value_on_the_segment_with_ends') {
 							if (sl1()) {
@@ -1045,6 +1081,8 @@ chas2.task = {
 				break;
 			case 'interval':
 				//task.analys += answer.map((elem)=>'$['+elem[0].round()+' ;'+elem[1].round()+']$').join(', ')
+				// Концы интервала — точки экстремума — должны читаться с рисунка как целые
+				answer = answer.map((elem) => elem.map((end) => (end === minX || end === maxX) ? end : roundToInteger(end)));
 				answer = answer.map((elem) => elem[1].round() - elem[0].round());
 				switch (variants) {
 					case 'largest':
