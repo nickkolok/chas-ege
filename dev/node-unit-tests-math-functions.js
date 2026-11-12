@@ -191,6 +191,24 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assertRoots(assert, findRoots(x => x, -1, 1, 0.25), [0], 'корень в узле найден один раз');
     });
 
+    QUnit.test('findRoots: касание оси в узле сетки', function (assert) {
+        assertRoots(assert, findRoots(x => (x - 1) * (x - 1), 0, 2), [1], '(x-1)² на [0; 2]');
+        assertRoots(assert, findRoots(x => -(x - 0.3) * (x - 0.3), 0, 2), [0.3], '-(x-0,3)² на [0; 2]: узел 0,3 = 3 · 0,1');
+        assertRoots(assert, findRoots(x => (x + 2) * (x + 2) * (x - 0.7) * (x - 0.7), -5, 5), [-2, 0.7], 'два касания');
+        assertRoots(assert, findRoots(x => (x - 1) * (x - 1), 0, 2, 0.001), [1], 'с шагом 0,001');
+    });
+
+    QUnit.test('findRoots: узлы сетки не накапливают ошибку', function (assert) {
+        const visited = [];
+        findRoots(x => { visited.push(x); return 1; }, 0, 1);
+        assert.deepEqual(visited, [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], 'функция вычислена ровно в узлах');
+        const far = [];
+        findRoots(x => { far.push(x); return 1; }, -7, 7, 0.001);
+        assert.equal(far.length, 14001, 'при шаге 0,001 на [-7; 7] узлов 14001, каждый вычислен один раз');
+        assert.equal(far[far.length - 1], 7, 'последний узел — maxX');
+        assert.ok(far.every(x => x >= -7 && x <= 7), 'узлы не выходят за отрезок');
+    });
+
     QUnit.test('findRoots: корней нет', function (assert) {
         assert.deepEqual(findRoots(x => x * x + 1, -5, 5), [], 'x² + 1');
         assert.deepEqual(findRoots(x => x - 20, -5, 5), [], 'корень вне отрезка');
