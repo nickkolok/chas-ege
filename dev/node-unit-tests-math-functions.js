@@ -4,11 +4,11 @@
  * Юнит-тесты для lib/math_functions.js (Node.js / QUnit)
  * Подключаются через require() в run-node-tests.js
  *
- * Пока lib/math_functions.js не подключён в lib/load-chas-lib.js, его функций
- * нет в build/lib/chas-lib.js, поэтому файл читается прямо из исходников.
- * Он выполняется внутри отдельной функции, чтобы его объявления (в том числе
- * ещё не проверенные intPoints и findExtremumsOfFunction) не подменяли
- * одноимённые глобальные функции из lib/func.js.
+ * Большинство функций проверяется по исходнику: lib/math_functions.js
+ * читается с диска и выполняется внутри отдельной функции, так что тесты
+ * видят текущий текст файла и без пересборки. Функции, которым нужна
+ * остальная сборка (createSpline, paintSpline, блок экспорта), проверяются
+ * в составе build/lib/chas-lib.js — для них перед тестами нужен grunt.
  */
 
 const fs = require('fs');
@@ -189,6 +189,24 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         const roots = findRoots(Math.sin, -7, 7);
         assert.equal(roots.length, 5, 'у sin x на [-7; 7] ровно пять корней');
         assertRoots(assert, findRoots(x => x, -1, 1, 0.25), [0], 'корень в узле найден один раз');
+    });
+
+    QUnit.test('findRoots: касание оси в узле сетки', function (assert) {
+        assertRoots(assert, findRoots(x => (x - 1) * (x - 1), 0, 2), [1], '(x-1)² на [0; 2]');
+        assertRoots(assert, findRoots(x => -(x - 0.3) * (x - 0.3), 0, 2), [0.3], '-(x-0,3)² на [0; 2]: узел 0,3 = 3 · 0,1');
+        assertRoots(assert, findRoots(x => (x + 2) * (x + 2) * (x - 0.7) * (x - 0.7), -5, 5), [-2, 0.7], 'два касания');
+        assertRoots(assert, findRoots(x => (x - 1) * (x - 1), 0, 2, 0.001), [1], 'с шагом 0,001');
+    });
+
+    QUnit.test('findRoots: узлы сетки не накапливают ошибку', function (assert) {
+        const visited = [];
+        findRoots(x => { visited.push(x); return 1; }, 0, 1);
+        assert.deepEqual(visited, [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], 'функция вычислена ровно в узлах');
+        const far = [];
+        findRoots(x => { far.push(x); return 1; }, -7, 7, 0.001);
+        assert.equal(far.length, 14001, 'при шаге 0,001 на [-7; 7] узлов 14001, каждый вычислен один раз');
+        assert.equal(far[far.length - 1], 7, 'последний узел — maxX');
+        assert.ok(far.every(x => x >= -7 && x <= 7), 'узлы не выходят за отрезок');
     });
 
     QUnit.test('findRoots: корней нет', function (assert) {
@@ -1082,15 +1100,61 @@ module.exports = function registerMathFunctionsTests(QUnit) {
     });
 
     QUnit.test('addRoots: нецелые корни', function (assert) {
-        assert.deepEqual(addRoots([-4, -2, 0, 2], [3, 1, -1, -3], nonIntegerRoots),
-            { X: [-4, -2, -0.5, 0, 2], Y: [3, 1, 0, -1, -3] }, 'корень в полуцелой точке');
-        const result = addRoots([0, 0.5, 1, 1.5, 2], [2, 1, 3, -1, -3], nonIntegerRoots);
-        assert.deepEqual(result, { X: [0, 0.5, 1, 1.5, 2], Y: [2, 1, 3, 0, -3] },
-            'полуцелая точка совпала с узлом x = 1,5 — обнулён он');
-        const roots = addRoots([-6, -4, -2, 0, 2, 4, 6], [1, -1, 2, -2, 1, -3, 2], nonIntegerRoots);
-        const added = roots.X.filter((x, i) => roots.Y[i] === 0);
-        assert.equal(added.length, 6, 'шесть смен знака — шесть корней');
-        assert.ok(added.every(x => Math.abs(x - Math.round(x)) > 0.2), 'все корни дальше 0,2 от целых точек');
+        // Корень случайный, поэтому проверяется много раз
+        let positions = {};
+        let problems = [];
+        for (let attempt = 0; attempt < 300; attempt++) {
+            const result = addRoots([-4, -2, 0, 2], [3, 1, -1, -3], nonIntegerRoots);
+            const roots = result.X.filter((x, i) => result.Y[i] === 0);
+            if (roots.length !== 1 || !(roots[0] > -2 && roots[0] < 0)) {
+                problems.push('корень не между узлами -2 и 0: ' + JSON.stringify(roots));
+            } else if (Math.abs(roots[0] - Math.round(roots[0])) <= 0.2) {
+                problems.push('корень ближе 0,2 к целой точке: ' + roots[0]);
+            } else {
+                positions[roots[0]] = true;
+            }
+        }
+        assert.deepEqual(problems, [], 'корень лежит между узлами и дальше допуска от целых точек');
+        assert.ok(Object.keys(positions).length >= 5, 'положение корня случайно, а не всегда k + 0,5 (разных положений: ' +
+            Object.keys(positions).length + ')');
+    });
+
+    QUnit.test('addRoots: нецелые корни при разных допусках и шагах узлов', function (assert) {
+        let problems = [];
+        for (const tolerance of [0.05, 0.1, 0.2, 0.3, 0.4]) {
+            for (const step of [0.5, 1, 1.5, 2, 3]) {
+                for (let attempt = 0; attempt < 30; attempt++) {
+                    const X = [];
+                    const Y = [];
+                    for (let k = 0; k <= 12; k++) {
+                        X.push(-6 + k * step);
+                        Y.push(k % 2 === 0 ? 2 : -2);
+                    }
+                    const result = addRoots(X, Y, { int: 'no', tolerance: tolerance });
+                    const roots = result.X.filter((x, i) => result.Y[i] === 0);
+                    const increasing = result.X.every((x, i) => i === 0 || result.X[i - 1] < x);
+                    if (roots.length !== 12 || !increasing || roots.some(x => Math.abs(x - Math.round(x)) <= tolerance)) {
+                        problems.push('допуск ' + tolerance + ', шаг ' + step + ': ' + JSON.stringify(roots));
+                    }
+                }
+            }
+        }
+        assert.deepEqual(problems, [], 'двенадцать смен знака — двенадцать корней, все дальше допуска от целых точек');
+    });
+
+    QUnit.test('addRoots: из двух целых узлов обнуляется тот, где значение меньше по модулю', function (assert) {
+        // Узлы через 1 (stepForX = 2): между соседними узлами целых точек нет
+        assert.deepEqual(addRoots([-2, -1, 0, 1, 2], [1, 3, -1, -2, -3], integerRoots),
+            { X: [-2, -1, 0, 1, 2], Y: [1, 3, 0, -2, -3] }, 'вершина 3 в точке -1 сохранена, обнулён узел 0');
+        assert.deepEqual(addRoots([-2, -1, 0, 1, 2], [1, 1, -3, -2, -3], integerRoots),
+            { X: [-2, -1, 0, 1, 2], Y: [1, 0, -3, -2, -3] }, 'вершина -3 в точке 0 сохранена, обнулён узел -1');
+    });
+
+    QUnit.test('addRoots: при шаге узлов 0,5 целый корень возможен только в целом узле', function (assert) {
+        // Смена знака между 1,5 и 2: единственная целая точка — узел 2, обнуляется он,
+        // хотя это вершина графика. Смена знака между 2,5 и 3: узел 3 крайний, корень в середине.
+        assert.deepEqual(addRoots([0, 0.5, 1, 1.5, 2, 2.5, 3], [1, 2, -1, -2, 3, 1, -2], integerRoots),
+            { X: [0, 0.5, 1, 1.5, 2, 2.5, 2.75, 3], Y: [1, 2, 0, -2, 0, 1, 0, -2] }, 'узлы 1 и 2 обнулены, корень 2,75 добавлен');
     });
 
     QUnit.test('addRoots: узлы остаются упорядоченными и различными', function (assert) {
