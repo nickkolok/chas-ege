@@ -505,7 +505,7 @@ chas2.task = {
 	},
 
 
-	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference,analys }) {
+	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference, analys }) {
 
 		left.shuffle();
 		let shuffledSolutions = [...right].shuffle();
