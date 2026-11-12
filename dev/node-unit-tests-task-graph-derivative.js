@@ -265,6 +265,11 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
             { type: 'function', boundariesOfGraph: Object.assign({}, bounds, { stepForX: 6 }), extremumsIsInteger: { int: 'yes', tolerance: 0.1 },
                 questionsF: { main: 'point', conditions: ['solution_equation'], variants: ['empty'] } },
             8, 'extrema'],
+        'график функции: количество точек экстремума на отрезке': [
+            { type: 'function', boundariesOfGraph: bounds, minimumDifferenceBetweenExtremes: 2, numberOfExtremes: { min: 3, max: 10 },
+                extremumsIsInteger: { int: 'yes', tolerance: 0.15 },
+                questionsF: { main: 'integer_points', conditions: ['extreme_points_on_the_segment'], variants: ['number'] } },
+            8, 'extrema'],
     };
 
     QUnit.module('Task: setTaskWithGraphOfFunctionDerivative');
