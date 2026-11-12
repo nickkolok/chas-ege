@@ -124,7 +124,8 @@ if(mk){ // отмеченные точки
  kind='marked';var pts=P?P.points:[];var rest=mk[3];
  var listed=mk[2];var cnt=parseInt(mk[1]);if(cnt!==pts.length)out.lint.push('в тексте '+cnt+' точек, на рисунке '+pts.length);
  if(P&&P.type==='number'){var nums=listed.split(';').map(function(s){return +s.trim().replace(',','.')});if(nums.length!==pts.length||nums.some(function(v,i){return Math.abs(v-pts[i])>1e-9}))out.lint.push('перечень точек в тексте не совпадает с рисунком')}
- if(pts.some(function(p){return Math.abs(p-Math.round(p*10)/10)>1e-9}))out.lint.push('точки с длинной дробной частью');
+ if(pts.some(function(p){return String(p).length>6}))out.lint.push('точки с длинной дробной частью');
+ if(pts.some(function(p){return Math.abs(p-Math.round(p))<=0.3}))out.lint.push('отмеченная точка рядом с целой');
  var sg=/положительна|возрастает/.test(rest)?1:(/отрицательна|убывает/.test(rest)?-1:0);
  if(sg&&/количество/.test(rest)){set=pts.filter(function(p){return sg*fprime(p)>0});exp=set.length;
    var scale=Math.max.apply(null,pts.map(function(p){return Math.abs(fprime(p))}).concat([1e-9]));
@@ -195,6 +196,10 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
             // Настройки создаются внутри окна: функция пользуется методами,
             // добавленными в Array.prototype этого окна
             run('window.__settings = ' + JSON.stringify(settings) + ';', '<settings>');
+            if (settings.boundariesOfGraph.minX === undefined) {
+                // Границы графика выбираются случайно при каждой попытке, как в шаблонах
+                run('window.__settings.boundariesOfGraph.minX = sl(-11, -5); window.__settings.boundariesOfGraph.maxX = sl(5, 10);', '<bounds>');
+            }
             try {
                 run('NAtask.setTaskWithGraphOfFunctionDerivative(window.__settings);', '<call>');
             } catch (e) {
@@ -216,6 +221,8 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
         ' | ' + result.lint.concat(result.notes).join('; ');
 
     const bounds = { minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3 };
+    // То же, но со случайными концами интервала: при фиксированных концах часть настроек почти не даёт функций
+    const randomBounds = { minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3 };
 
     // name: [настройки, сколько задач, какой вид вопроса ожидается]
     const cases = {
@@ -270,6 +277,21 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
                 extremumsIsInteger: { int: 'yes', tolerance: 0.15 },
                 questionsF: { main: 'integer_points', conditions: ['extreme_points_on_the_segment'], variants: ['number'] } },
             8, 'extrema'],
+        'график функции: отмеченные точки, знак производной': [
+            { type: 'function', definedOnInterval: false, boundariesOfGraph: bounds, numberOfRoots: { min: 0, max: 10 },
+                canvasSettings: { markedPoints: { type: 'symbol', step: 2, numberOfPoints: { min: 4, max: 8 } } },
+                questionsF: { main: 'marked_points', conditions: ['derivative_is_negative', 'derivative_is_positive'], variants: ['number'] } },
+            10, 'marked'],
+        'график функции: отмеченные точки с числами, наибольшее или наименьшее значение производной': [
+            { type: 'function', definedOnInterval: false, boundariesOfGraph: randomBounds, numberOfRoots: { min: 0, max: 0 },
+                canvasSettings: { markedPoints: { type: 'number', step: 2, numberOfPoints: { min: 4, max: 4 } } },
+                questionsF: { main: 'marked_points', conditions: ['derivative_is_smallest', 'derivative_is_largest'], variants: ['empty'] } },
+            6, 'marked'],
+        'график производной: отмеченные точки, возрастание и убывание функции': [
+            { type: 'derivative', definedOnInterval: false, boundariesOfGraph: randomBounds, rootsIsInteger: { int: 'yes', tolerance: 0.2 },
+                canvasSettings: { markedPoints: { type: 'symbol', step: 2, numberOfPoints: { min: 4, max: 4 } } },
+                questionsF: { main: 'marked_points', conditions: ['function_is_decreasing', 'function_is_increasing'], variants: ['number'] } },
+            8, 'marked'],
     };
 
     QUnit.module('Task: setTaskWithGraphOfFunctionDerivative');

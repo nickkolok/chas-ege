@@ -557,11 +557,14 @@ chas2.task = {
 		let points = [];
 		if (main === 'marked_points') {
 			const epsilon = sl(stepForX * 0.1, stepForX * 0.5, 0.1);
-			for (let x = minX + epsilon; x <= maxX - epsilon; x += markedPoints.step) {
-				if ((painFunc(x) > 0 && Math.abs(x) > 2) || (painFunc(x) < 0 && Math.abs(x) > 1) && !isCloseToInteger(x, 0.3)) {
+			// Абсциссы считаются по номеру точки и округляются: при сложении шагов
+			// накапливалась ошибка, и получалось -2.1999999999999993 вместо -2.2
+			for (let k = 0; minX + epsilon + k * markedPoints.step <= maxX - epsilon; k++) {
+				let x = Math.round((minX + epsilon + k * markedPoints.step) * 1e6) / 1e6;
+				let farFromAxisLabels = (painFunc(x) > 0 && Math.abs(x) > 2) || (painFunc(x) < 0 && Math.abs(x) > 1);
+				if (farFromAxisLabels && !isCloseToInteger(x, 0.3)) {
 					points.push(x);
 				}
-
 			}
 			genAssert(points.length >= markedPoints.numberOfPoints.min, 'Минимальное количество отмеченных точек ' + markedPoints.numberOfPoints.min);
 			genAssert(points.length <= markedPoints.numberOfPoints.max, 'Максимальное количество отмеченных точек ' + markedPoints.numberOfPoints.max);
