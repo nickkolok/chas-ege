@@ -242,6 +242,29 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
                 numberOfRoots: { min: 1, max: 3 }, numberOfExtremes: { min: 2, max: 10 },
                 questionsF: { main: 'point', conditions: ['value_on_the_segment_with_ends'], variants: ['largest_value'] } },
             12, 'argext'],
+        'график производной: абсцисса точки, где касательная параллельна прямой y = kx + b': [
+            { type: 'derivative', boundariesOfGraph: { minX: -4, maxX: 4, minY: -9, maxY: 8, stepForX: 4, stepForY: 1 },
+                numberOfExtremes: { min: 0, max: 1 },
+                questionsF: { main: 'point', conditions: ['tangent_to_graph_equation'], variants: ['abscissa'] } },
+            10, 'tangent-k'],
+        'график производной: количество точек, где касательная параллельна прямой y = kx + b': [
+            { type: 'derivative', boundariesOfGraph: Object.assign({}, bounds, { stepForX: 3, stepForY: 1 }),
+                numberOfExtremes: { min: 4, max: 10 },
+                questionsF: { main: 'integer_points', conditions: ['tangent_to_graph_equation'], variants: ['number'] } },
+            8, 'tangent-k'],
+        'график производной: абсцисса точки, где касательная параллельна оси абсцисс': [
+            { type: 'derivative', boundariesOfGraph: { minX: -4, maxX: 4, minY: -9, maxY: 8, stepForX: 4, stepForY: 1 },
+                questionsF: { main: 'point', conditions: ['tangent_to_graph_abscissa'], variants: ['abscissa'] } },
+            10, 'extrema'],
+        'график производной: точка экстремума, минимума или максимума': [
+            { type: 'derivative', boundariesOfGraph: { minX: -8, maxX: 7, minY: -9, maxY: 8, stepForX: 7, stepForY: 0.1 },
+                numberOfRoots: { min: 1, max: 1 }, rootsIsInteger: { int: 'yes', tolerance: 0.09 },
+                questionsF: { main: 'point', conditions: ['maximum_point', 'minimum_point', 'extreme_point'], variants: ['empty'] } },
+            6, 'extrema'],
+        'график функции: решение уравнения f′(x) = 0': [
+            { type: 'function', boundariesOfGraph: Object.assign({}, bounds, { stepForX: 6 }), extremumsIsInteger: { int: 'yes', tolerance: 0.1 },
+                questionsF: { main: 'point', conditions: ['solution_equation'], variants: ['empty'] } },
+            8, 'extrema'],
     };
 
     QUnit.module('Task: setTaskWithGraphOfFunctionDerivative');

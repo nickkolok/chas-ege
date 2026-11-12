@@ -868,10 +868,11 @@ chas2.task = {
 								step: 1,
 								tolerance: 0.1,
 							});
+						genAssertNonempty(answer, 'На графике нет точек с целыми координатами');
 						answer = answer.iz()
 						genAssert(answer[1].round() != 0, '0x не подходит');
 						let extY = extremumsY(painFunc, minX, maxX);
-						extY.forEach(elem => genAssert(Math.abs(elem - answer[1].round()) > 1), 'Точки пересечения невозможно понять');
+						extY.forEach(elem => genAssert(Math.abs(elem - answer[1].round()) > 1, 'Точки пересечения невозможно понять'));
 						find = `касательная к графику ${functionsFx} параллельна `;
 						find += `графику функции $y=${[+sl(-20, 20, 0.1), answer[1].round() + 'x'].shuffleJoin('+').plusminus()}$`;
 						find += ` или совпадает с ней`;
@@ -920,12 +921,19 @@ chas2.task = {
 					answer = answer.map((elem) => elem.round());
 					break;
 				case 'tangent_to_graph_equation':
-					if (main == 'integer_points') {
-						answer = findIntersectionPoints(painFunc, answer[1].round(), minX, maxX);
+					{
+						// answer — точка графика [x, y] с целыми координатами, y — угловой коэффициент
+						let tangentPoints = findIntersectionPoints(painFunc, answer[1].round(), minX, maxX);
+						if (main == 'integer_points') {
+							answer = tangentPoints;
+						}
+						if (main == 'point') {
+							genAssert(tangentPoints.length === 1, 'Точка с таким угловым коэффициентом касательной не единственна');
+							genAssert(Math.abs(tangentPoints[0] - answer[0]) < 0.2, 'Точка касания далеко от целой точки');
+							answer = [answer[0].round()];
+						}
 					}
-					if (main == 'point') {
-						answer = answer.map((elem) => elem.round());
-					}
+					break;
 				case 'value_on_the_segment':
 				case 'solution_equation_on_the_segment':
 				case 'value_on_the_segment_with_ends':
@@ -1008,9 +1016,11 @@ chas2.task = {
 					case 'abscissa':
 						task.text.push('абсциссу')
 						//task.analys = 'Угловой коэффициент равен $'+answer[1]+'$, искомая точка $x='+answer[0]+'$.'
+						genAssert(answer.length === 1, 'Искомая точка не единственна');
 						answer = answer.iz();
 						break;
 					case 'empty':
+						genAssert(answer.length === 1, 'Искомая точка не единственна');
 						answer = answer.iz();
 						break;
 					default:
