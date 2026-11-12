@@ -1142,6 +1142,13 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.deepEqual(problems, [], 'двенадцать смен знака — двенадцать корней, все дальше допуска от целых точек');
     });
 
+    QUnit.test('addRoots: из двух равноудалённых целых точек выбирается та, к которой округляется середина', function (assert) {
+        // Узлы через 3 (stepForX = 6): между -5 и -2 лежат -4 и -3, середина -3,5 округляется до -3
+        assert.deepEqual(addRoots([-8, -5, -2, 1], [1, 2, -2, -1], integerRoots),
+            { X: [-8, -5, -3, -2, 1], Y: [1, 2, 0, -2, -1] }, 'корень в -3');
+        assert.deepEqual(addRoots([1, 4, 7], [1, 2, -2].map(y => -y), integerRoots).X, [1, 4, 6, 7], 'между 4 и 7 корень в 6');
+    });
+
     QUnit.test('addRoots: из двух целых узлов обнуляется тот, где значение меньше по модулю', function (assert) {
         // Узлы через 1 (stepForX = 2): между соседними узлами целых точек нет
         assert.deepEqual(addRoots([-2, -1, 0, 1, 2], [1, 3, -1, -2, -3], integerRoots),
