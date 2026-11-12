@@ -517,7 +517,7 @@ chas2.task = {
 	setTaskWithGraphOfFunctionDerivative: function (o) {
 		let { type,
 			definedOnInterval = true,
-			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 1, stepForY = 1 },
+			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 3, stepForY = 1 },
 			canvasSettings: { step = 0.01, scale = 20, height = 400, width = 500, font = "14px liberation_sans", lineWidth = 0.1, lineDash = [4, 2], singleSegmentX = 1, singleSegmentY = 1, monotoneFunction = false,
 				markedPoints = { type: ['symbol', 'number'].iz(), step: 2, fontMarkedPoints: "16px liberation_sans", lineWidthMarkedPoints: 0.1, numberOfPoints: { min: 4, max: 10 }, } },
 			questionsF: { main, variants, conditions },

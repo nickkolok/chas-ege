@@ -330,6 +330,14 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
                 questionsF: { main: 'integer_points', variants: ['number', 'largest', 'smallest'],
                     conditions: ['maximum_points_on_the_segment', 'minimum_points_on_the_segment', 'extreme_points_on_the_segment'] } },
             150, 'extrema'],
+        'график производной: stepForX по умолчанию': [
+            { type: 'derivative', boundariesOfGraph: { minY: -9, maxY: 8, stepForY: 0.1 }, numberOfRoots: { min: 1, max: 10 },
+                questionsF: { main: 'integer_points', conditions: ['tangent_to_graph_const'], variants: ['number'] } },
+            6, 'extrema'],
+        'график функции: stepForX по умолчанию': [
+            { type: 'function', boundariesOfGraph: { minY: -9, maxY: 8, stepForY: 0.3 }, numberOfExtremes: { min: 1, max: 10 },
+                questionsF: { main: 'integer_points', conditions: ['extreme_points'], variants: ['number'] } },
+            6, 'extrema'],
     };
 
     QUnit.module('Task: setTaskWithGraphOfFunctionDerivative');

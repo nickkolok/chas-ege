@@ -1248,8 +1248,14 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'функция, stepForX = 3, только обязательные параметры': {
             type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 3,
         },
-        'функция, stepForX по умолчанию (1)': {
+        'функция, stepForX = 1': {
+            type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 1,
+        },
+        'функция, stepForX по умолчанию': {
             type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5,
+        },
+        'производная, stepForX по умолчанию': {
+            type: 'derivative', minX: -7, maxX: 8, minY: -9, maxY: 8,
         },
         'функция, stepForX = 2': {
             type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 2,
@@ -1275,6 +1281,24 @@ module.exports = function registerMathFunctionsTests(QUnit) {
             assert.equal(generated, 5, 'пять функций сгенерированы, каждая не более чем за 5000 попыток');
             assert.deepEqual(problems, [], 'все требования выполнены');
         });
+    });
+
+    QUnit.test('createSpline: stepForX по умолчанию равен 3', function (assert) {
+        // Узлы сплайна стоят через stepForX / 2: при шаге 3 экстремумы не бывают ближе 1,5 друг к другу
+        const options = { type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5 };
+        const explicit = Object.assign({ stepForX: 3 }, options);
+        const count = settings => {
+            const counts = [];
+            for (let i = 0; i < 20; i++) {
+                const { result } = generateSpline(settings, 5000);
+                counts.push(result ? extremumsX(result.painFunc, settings.minX, settings.maxX).length : -1);
+            }
+            return counts;
+        };
+        const byDefault = count(options);
+        assert.ok(byDefault.every(n => n >= 0), 'функции генерируются');
+        assert.ok(Math.max.apply(null, byDefault) <= 6, 'экстремумов не больше шести, как при stepForX = 3 (при шаге 1 их было бы 7–11)');
+        assert.ok(Math.max.apply(null, count(explicit)) <= 6, 'то же при явном stepForX = 3');
     });
 
     QUnit.test('createSpline: связь func и painFunc', function (assert) {
