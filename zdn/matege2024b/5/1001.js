@@ -5,22 +5,7 @@
         
         let key = "1001";
 
-        let variant = getListedPreference(key, [{
-            preference: 'learned_learned',
-            preferenceValue: 0,
-        }, {
-            preference: 'learned_not_learned',
-            preferenceValue: 1,
-
-        }, {
-            preference: 'not_learned_learned',
-            preferenceValue: 2,
-
-        }, {
-            preference: 'not_learned_not_learned',
-            preferenceValue: 3,
-
-        }], sl(0, 3));
+        let variant = getSelectedPreferenceFromList(key, ['learned_learned', 'learned_not_learned', 'not_learned_learned', 'not_learned_not_learned']);
 
         let numberOfQuestions = sl(10, 100);
         let numberlearnedOrNotlearnedQuestions = sl(5, numberOfQuestions - 1);
