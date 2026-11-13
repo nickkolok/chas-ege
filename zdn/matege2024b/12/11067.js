@@ -1,7 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		
+
 		let key = '11067';
 		let preference = ['height', 'hypotenuse'];
 
