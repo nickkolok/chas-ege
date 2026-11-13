@@ -1,10 +1,10 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let a = sl(5, 50);
-        let b = slKrome(a, 5, 50);
+        let a = sl(2, 50);
+        let b = slKrome(a, 2, 50);
         let side = (a - b).abs() / Math.sqrt(2);
-        genAssert(side > [a, b].minE() * 0.75);
+        genAssert(side > [a, b].maxE() * 0.2, 'Трапеция слишком плоская');
 
         const trp = new Trapezoid({
             lengths: {
