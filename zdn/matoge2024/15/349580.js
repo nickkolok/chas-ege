@@ -3,16 +3,7 @@
         NAinfo.requireApiVersion(0, 2);
 
         let key = "349580";
-        let variant = getListedPreference(key, [{
-            preference: 'AB',
-            preferenceValue: 0,
-        }, {
-            preference: 'BC',
-            preferenceValue: 1,
-        }, {
-            preference: 'CA',
-            preferenceValue: 2,
-        }], sl(0, 2));
+        let variant = getSelectedPreferenceFromList(key, ['AB', 'BC', 'CA']);
 
         let triangle = new Triangle({
             lengths: {
