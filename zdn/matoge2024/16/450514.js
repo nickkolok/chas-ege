@@ -26,8 +26,8 @@
 			angleInDegrees: true
 		});
         
-        let points = autoScale([AB.ps, AB.pe, PC.vertices[0], p.vertices[0]]);
-        let scaleCircle = CircleByPoints.fromCenterAndPoint(new Point(0, 0), new Point(points[2].x, points[2].y));
+		let points = autoScale([AB.ps, AB.pe, PC.vertices[0], p.vertices[0]]);
+		let scaleCircle = CircleByPoints.fromCenterAndPoint(new Point(0, 0), new Point(points[2].x, points[2].y));
 
 		let paint1 = function(ctx) {
 			let h = 400;
