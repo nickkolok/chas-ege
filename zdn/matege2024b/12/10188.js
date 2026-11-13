@@ -19,7 +19,7 @@
 		});
 
 		genAssertZ1000(triangle.sinA.pow(2));
-		genAssert((triangle.sinA-0.5)>0.1, 'Задача теряет смысл с sinA=1/2');
+		genAssert((triangle.sinA-0.5).abs()>0.1, 'Задача теряет смысл с sinA=1/2');
 		genAssertZ1000(triangle.lengthBC.pow(2));
 
 		let points = autoScale(triangle.vertices, {
@@ -60,7 +60,7 @@
 		};
 
 		NAtask.setTask({
-			text: ` В треугольнике $ABC$ известно, что $BC=${triangle.lengthBC.pow(2).texsqrtfrac(1)}$, $\\sin A=${triangle.sinA.pow(2).texsqrtfrac(1)}$, внешний угол при вершине $B$ равен $${180 - triangle.angleBInDegrees}^\\circ$. Найдите $AC$.`,
+			text: `В треугольнике $ABC$ известно, что $BC=${triangle.lengthBC.pow(2).texsqrtfrac(1)}$, $\\sin A=${triangle.sinA.pow(2).texsqrtfrac(1)}$, внешний угол при вершине $B$ равен $${180 - triangle.angleBInDegrees}^\\circ$. Найдите $AC$.`,
 			answers: triangle.lengthCA,
 			authors: ['Александра Суматохина'],
 		});
