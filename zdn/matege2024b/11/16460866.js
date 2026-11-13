@@ -65,7 +65,6 @@
 			authors: ['chas-ege-ellariya'],
 			preference: [preference],
 		});
-		NAtask.modifiers.allDecimalsToStandard(true);
 
 		// Чертёж, как у ФИПИ: конус, высота и радиус основания пунктиром,
 		// образующая к концу этого радиуса и точка смены цвета на ней.
@@ -132,6 +131,7 @@
 			height: 300,
 			paint: paint,
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 //16460866
