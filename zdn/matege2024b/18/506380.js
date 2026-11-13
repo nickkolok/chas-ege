@@ -21,15 +21,15 @@
 		let holeQuad = sl(0, 2);
 		let quadraticSolutions = [
 			[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
+				[`$x < ${a}$ или $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
 				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
 			],
 			[
 				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+				[`$x < ${a}$ или $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
 			],
 			[
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
+				[`$${a} < x < ${b}$ или $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
 				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`]
 			]
 		];
@@ -47,15 +47,15 @@
 		let holeFrac = sl(0, 2);
 		let fractionalSolutions = [
 			[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
+				[`$x < ${a}$ или $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
 				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
 			],
 			[
 				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+				[`$x < ${a}$ или $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
 			],
 			[
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
+				[`$${a} < x < ${b}$ или $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
 				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`]
 			]
 		];
@@ -74,32 +74,27 @@
 		let numPart = [`(x - ${b})^2`, `(x - ${b})`, `x - ${a}`, `(x - ${a})^2`][swapNumDen];
 		let denPart = [`x - ${a}`, `(x - ${a})^2`, `(x - ${b})^2`, `(x - ${b})`][swapNumDen];
 		let sqRatExpr = `\\frac{${numPart}}{${denPart}} ${isSqRatGreater ? '>' : '<'} 0`;
-		let sqRatSolutions = [
-			[
-				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
-			],
-			[
-				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
-			],
-			[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
-				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
-			],
-			[
-				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`]
-			]
+		let leftOfA = [`$x < ${a}$`, `$(-\\infty,\\, ${a})$`];
+		let rightOfB = [`$x > ${b}$`, `$(${b},\\, +\\infty)$`];
+		let leftOfBExceptA = [
+			`$x < ${a}$ или $${a} < x < ${b}$`,
+			`$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`
 		];
-		let sqRatSolution = sqRatSolutions[swapNumDen][isSqRatGreater][randAnswer];
+		let rightOfAExceptB = [
+			`$${a} < x < ${b}$ или $x > ${b}$`,
+			`$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`
+		];
+		// Чётная степень не меняет знак, но её корень исключается.
+		let sqRatSolution = (swapNumDen % 2 ?
+			(isSqRatGreater ? rightOfB : leftOfBExceptA) :
+			(isSqRatGreater ? rightOfAExceptB : leftOfA))[randAnswer];
 		let squareRational = { expr: sqRatExpr, solution: sqRatSolution };
 		//дробное рациональное второго типа
 		let isRationalGreater = sl1();
 		let rational = {
 			expr: `\\frac{1}{(x - ${a})(x - ${b})} ${isRationalGreater ? '>' : '<'} 0`,
 			solution: isRationalGreater
-				? [`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`][randAnswer]
+				? [`$x < ${a}$ или $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`][randAnswer]
 				: [`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`][randAnswer]
 		};
 
@@ -164,7 +159,7 @@
 			let isLogZero = sl1();
 			logarithmic = {
 				expr: `\\log_{${baseZero}} x ${isLogZero ? '>' : '<'} 0`,
-				solution: isLogZero ? [`$x > 1$`, `$(1,\\, +\\infty)$`][randAnswer] : [`$x < 1$`, `$(-\\infty,\\, 1)$`][randAnswer]
+				solution: isLogZero ? [`$x > 1$`, `$(1,\\, +\\infty)$`][randAnswer] : [`$0 < x < 1$`, `$(0,\\, 1)$`][randAnswer]
 			};
 		} else {
 			// Обычный логарифм: log_base(x) > 1
