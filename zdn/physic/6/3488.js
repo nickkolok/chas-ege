@@ -29,12 +29,15 @@
 		// Выбираем случайное ТС
 		let vehicleName = adequateVehicles.iz();
 		let vehicle = sklonlxkand(vehicleName);
+		
+		// Согласовываем глагол прошедшего времени с родом существительного
+		let verbAcquired = selectVerbGender('приобрёл', vehicleName);
 
 		let text, answers, analys;
 
 		if (rand === 0) {
 			// Найти ускорение (задача 3488)
-			text = vehicle.ie.toZagl() + ', начав двигаться равноускоренно из состояния покоя по прямолинейной дороге, за $' + t + '$ с приобрёл скорость $' + v_ms + '$ м/с. Чему равно ускорение ' + vehicle.re + '?';
+			text = vehicle.ie.toZagl() + ', начав двигаться равноускоренно из состояния покоя по прямолинейной дороге, за $' + t + '$ с ' + verbAcquired + ' скорость $' + v_ms + '$ м/с. Чему равно ускорение ' + vehicle.re + '?';
 			answers = a.ts();
 			analys = 'Движение ' + vehicle.re + ' равноускоренное и прямолинейное без начальной скорости. Его скорость найдём по формуле: $v = at$. Отсюда ускорение $a = \\frac{v}{t} = \\frac{' + v_ms + '}{' + t + '} = ' + a.ts() + '$ м/с$^2$.';
 		} else {
