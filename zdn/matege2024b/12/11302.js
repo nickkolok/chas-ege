@@ -18,7 +18,7 @@
 
 		genAssertZ1000(triangle.area());
 		genAssertZ1000(triangle.tgA * 1000);
-		
+
 		triangle.addVertexToConnectionMatrix([triangle.heightC.pe], 'C');
 
 		let points = autoScale(triangle.vertices);
