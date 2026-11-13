@@ -51,7 +51,7 @@
 				text: `В прямоугольном треугольнике катеты равны $${triangle.lengthAB}$ и $${triangle.lengthBC}$. Найдите высоту, опущенную на гипотенузу.`,
 				answers: triangle.heightBLength,
 			},{
-				text:` Площадь прямоугольного треугольника $${triangle.area()}$. Один из катетов $${[triangle.lengthAB, triangle.lengthBC].iz()}$. Найдите гипотенузу этого треугольника.`,
+				text:`Площадь прямоугольного треугольника $${triangle.area()}$. Один из катетов $${[triangle.lengthAB, triangle.lengthBC].iz()}$. Найдите гипотенузу этого треугольника.`,
 				answers: triangle.lengthCA,
 			}][rand]],
 			authors: ['Александра Суматохина'],
