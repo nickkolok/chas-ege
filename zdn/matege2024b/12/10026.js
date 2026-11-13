@@ -1,7 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let letters = latbukv.slice(0, 3).concat('H');
+		let letters = latbukv.slice(0, 3);
 
 		let a = sl(5, 25);
 		let triangle = new Triangle({
@@ -39,7 +39,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ угол $B$ равен $90^\\circ$, $BC=${triangle.lengthBC}$. Площадь треугольника равна $${triangle.area()}$. Найдите $tgC$.`,
+			text: `В треугольнике $ABC$ угол $B$ равен $90^\\circ$, $BC=${triangle.lengthBC}$. Площадь треугольника равна $${triangle.area()}$. Найдите $\\tg C$.`,
 			answers: triangle.tgC,
 			authors: ['Александра Суматохина'],
 		});
