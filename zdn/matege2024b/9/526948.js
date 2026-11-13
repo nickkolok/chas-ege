@@ -50,12 +50,12 @@
             preference: [preference, preference2],
         });
 
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
+        NAtask.modifiers.allDecimalsToStandard( /*true*/);
     }, 1000);
 
 })();
