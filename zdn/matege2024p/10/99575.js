@@ -3,13 +3,7 @@
 
 	retryWhileError(function() {
 		let key = '99575';
-		let largestMass = getListedPreference(key, [{
-			preference: 'second_largest',
-			preferenceValue: 0,
-		}, {
-			preference: 'first_largest',
-			preferenceValue: 1,
-		}], sl1());
+		let largestMass = getSelectedPreferenceFromList(key, ['second_largest', 'first_largest']);
 		
 		largestMass = 1;
 
