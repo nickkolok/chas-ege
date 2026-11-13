@@ -4,13 +4,13 @@
         let rand = sl1();
 
         let side = sl(10, 20);
-        let a = sl(5, 20);
+        let a = sl(1, 20);
 
         const trp = new Trapezoid({
             lengths: {
                 lengthAB: a,
                 lengthBC: side,
-                lengthCD: slKrome(a, 5, 20),
+                lengthCD: slKrome(a, 1, 20),
                 lengthDA: side,
             },
             supplementary: {
