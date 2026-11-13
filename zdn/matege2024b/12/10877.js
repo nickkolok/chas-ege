@@ -5,10 +5,7 @@
 
 		let key = "10877";
 		let preference = ['BH_by_sin', 'CH_by_cos'];
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let a = sl(5, 50);
 		let triangle = new Triangle({
