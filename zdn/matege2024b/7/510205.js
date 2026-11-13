@@ -204,12 +204,12 @@
                 'поставьте в соответствие каждому из указанных периодов времени характеристику продаж обогревателей.',
             analys: listView.join('<br/>'),
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 400,
             paint: paint1,
         });
+        NAtask.modifiers.allDecimalsToStandard( /*true*/);
     }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=510205
