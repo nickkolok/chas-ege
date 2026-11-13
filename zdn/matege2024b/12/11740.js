@@ -1,7 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		
+
 		let key = '11740';
 		let preference = ['sin_CAD', 'tg_CAB'];
 
@@ -13,20 +13,20 @@
 		let letters = latbukv.slice(0, 4);
 		let a = sl(5, 20);
 
-		let rect = new Rectangle({ 
-            lengths: { 
-                lengthAB: a, 
-                lengthBC: slKrome(a, 5, 20) 
-            } 
+		let rect = new Rectangle({
+            lengths: {
+                lengthAB: a,
+                lengthBC: slKrome(a, 5, 20)
+            }
         });
-        
+
         let angleCAD = new Angle(rect.pointC, rect.pointA, rect.pointD).angleInRadians;
         let angleCAB = new Angle(rect.pointC, rect.pointA, rect.pointB).angleInRadians;
-        
+
         let func = [angleCAD.sin(), angleCAB.tg()][rand].pow(2);
-        
+
         genAssertZ1000(func);
-		
+
 		rect.connectVerticesInConnectionMatrix([0,2]);
 
 		let points = autoScale(rect.vertices);
