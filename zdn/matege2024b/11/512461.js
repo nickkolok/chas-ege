@@ -130,13 +130,13 @@
 			preference: [preferenceMultiplier],
 		});
 
+		NAtask.modifiers.allDecimalsToStandard();
+
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
 		});
-
-		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
 //Селена
