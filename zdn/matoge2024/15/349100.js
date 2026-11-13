@@ -37,7 +37,7 @@
         let points = autoScale(vertices.map((p) => ({ x: p.x, y: p.y - medianVertex.y / 2 })));
 
         let pointsSide = points.slice(0, 3);
-        pointsSide.splice(variant, 1)[0];
+        pointsSide.splice(variant, 1);
 
         let paint1 = function (ctx) {
             let h = 400;
