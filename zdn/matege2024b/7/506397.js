@@ -235,12 +235,12 @@
             postText: 'Пользуясь графиком, поставьте в соответствие каждому интервалу времени характеристику движения автомобиля на этом интервале.',
             analys: listView.join('<br/>'),
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 600,
             paint: paint1,
         });
+        NAtask.modifiers.allDecimalsToStandard( /*true*/);
     }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=506397
