@@ -1,38 +1,27 @@
 (function() {
 	retryWhileError(function() {
-		NAinfo.requireApiVersion(0, 2);
 		'use strict';
+		NAinfo.requireApiVersion(0, 2);
 		let key = "509755";
 
-		let relation = sl(3, 100);
+		let relation = sl(3, 200);
 		let preference1 = ['tea', 'balls', 'birds'];
 		let preference2 = ['minority', 'majority'];
 		let variant = getSelectedPreferenceFromList(key, preference1);
 		let majority = getSelectedPreferenceFromList(key, preference2);
 		let answers = (majority ? relation - 1 : 1) / relation;
-		genAssertZ1000(answers);
+		genAssertZ1000(answers * 10);
 		relation--;
 
 		let objects = [
-			[`черным`, `зелёным`, `красным`, `белым`, `жёлтым`],
+			[`чёрным`, `зелёным`, `красным`, `белым`, `жёлтым`],
 			om.trickyColors, 
 			['курица', 'гусь', 'индюк', 'перепел', 'утка', 'цесарка', 'страус']
 		][variant].iz(2);
 		
-		if (variant == 1)
-			objects = objects.map(color => {
-				let stem = color.slice(0, -2);
-				let vowel = color.endsWith('ий') ? 'и' : 'ы';
-				return {im: stem + vowel + 'е', rm: stem + vowel + 'х', te: stem + vowel + 'м'};
-			});
-		if (variant == 2)
-			objects = sklonlxkand(objects).map(bird => {
-				if (bird.ie === 'курица')
-					return {...bird, te: 'курицей'};
-				if (bird.ie === 'перепел')
-					return {...bird, im: 'перепела'};
-				return bird;
-			});
+		if (variant > 0)
+			objects = sklonlxkand(objects);
+		let container = [['ящике', 'ящика'], ['коробке', 'коробки']].iz();
 		let selected = majority ? 0 : 1;
 
 		NAtask.setTask({
@@ -41,11 +30,11 @@
 					text: `В коробке вперемешку лежат чайные пакетики с ${objects[0]} и ${objects[1]}
 						чаем, одинаковые на вид, причём пакетиков с ${objects[0]} чаем в ${chislitlx(relation, 'раз')}
 						больше, чем пакетиков с ${objects[1]}. Найдите вероятность того, что случайно
-						выбранный из этой коробки пакетик окажется пакетиком с ${objects[selected]} чаем.`,
+						выбранный из этой коробки чайный пакетик окажется с ${objects[selected]} чаем.`,
 					answers,
 				}, {
-					text: `В ящике находятся ${objects[0].im} и ${objects[1].im} шары, причём ${objects[0].rm} в ${chislitlx(relation, 'раз')}
-						больше, чем ${objects[1].rm}. Из ящика случайным образом достали один шар.
+					text: `В ${container[0]} находятся ${objects[0].im} и ${objects[1].im} шары, причём ${objects[0].rm} в ${chislitlx(relation, 'раз')}
+						больше, чем ${objects[1].rm}. Из ${container[1]} случайным образом достали один шар.
 						Найдите вероятность того, что он будет ${objects[selected].te}.`,
 					answers,
 				}, {
