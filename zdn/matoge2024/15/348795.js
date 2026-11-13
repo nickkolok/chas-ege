@@ -3,25 +3,7 @@
         NAinfo.requireApiVersion(0, 2);
 
         let key = "348795";
-        let variant = getListedPreference(key, [{
-            preference: 'find_median',
-            preferenceValue: 0,
-        }, {
-            preference: 'find_bisector',
-            preferenceValue: 1,
-        }, {
-            preference: 'find_height',
-            preferenceValue: 2,
-        }, {
-            preference: 'find_side_from_median',
-            preferenceValue: 3,
-        }, {
-            preference: 'find_side_from_bisector',
-            preferenceValue: 4,
-        }, {
-            preference: 'find_side_from_height',
-            preferenceValue: 5,
-        }], sl(0, 5));
+        let variant = getSelectedPreferenceFromList(key, ['find_median', 'find_bisector', 'find_height', 'find_side_from_median', 'find_side_from_bisector', 'find_side_from_height']);
 
         let side = sl(5, 20) * ((variant < 3) ? (3).sqrt() : 1);
 
