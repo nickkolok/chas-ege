@@ -33,6 +33,18 @@
 			larger: 'большим',
 			smaller: 'меньшим'
 		};
+		// У ФИПИ многогранники сравниваются не только по числу вершин, но и по
+		// числу граней или рёбер (0DC057, 96B43A, E9D7FC, 41B6C2 ...). Во всех трёх
+		// телах у одной и той же части больше и вершин, и рёбер, и граней, так что
+		// ответ от выбора признака не зависит
+		let criterionWords = {
+			ribs: 'рёбер',
+			vertices: 'вершин',
+			facets: 'граней'
+		};
+		// Признак сравнения - не тот, о котором спрашивают («Сколько вершин ...
+		// с меньшим числом вершин?» у ФИПИ не бывает)
+		let criterion = ['ribs', 'vertices', 'facets'].filter((c) => c !== question).iz();
 
 		let data = {
 			cube: {
@@ -73,6 +85,10 @@
 			}
 		};
 
+		['ribs', 'vertices', 'facets'].forEach(function (c) {
+			genAssert(data[solid].larger[c] > data[solid].smaller[c], 'Части должны различаться по каждому признаку');
+		});
+
 		function pointOnEdge(point1, point2, ratio) {
 			return {
 				x: point1.x + (point2.x - point1.x) * ratio,
@@ -81,62 +97,33 @@
 			};
 		}
 
+		// faces - грани в нумерации вершин библиотечной фигуры (нужны для видимости
+		// рёбер), sectionEdges - рёбра [начало, конец, доля], на которых лежат
+		// вершины сечения
 		function getFigureData() {
+			let figure, faces, sectionEdges;
 			if (solid === 'cube') {
-				let figure = new Cube(4);
-				let vertices = figure.verticesOfFigure;
-
-				return {
-					figure: figure,
-					vertices: vertices,
-					section: [
-						pointOnEdge(vertices[0], vertices[1], 0.45),
-						pointOnEdge(vertices[0], vertices[3], 0.45),
-						pointOnEdge(vertices[5], vertices[4], 0.45),
-						pointOnEdge(vertices[5], vertices[6], 0.45)
-					]
-				};
+				figure = new Cube(4);
+				faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+				sectionEdges = [[0, 1, 0.45], [0, 3, 0.45], [5, 4, 0.45], [5, 6, 0.45]];
+			} else if (solid === 'tetrahedron') {
+				figure = new RegularPyramid({ height: 4, baseSide: 4, numberSide: 3 });
+				faces = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [2, 0, 3]];
+				sectionEdges = [[3, 0, 0.55], [3, 1, 0.55], [3, 2, 0.55]];
+			} else {
+				// verticesOfFigure и connectionMatrix согласованы: верхняя вершина
+				// 3 + i стоит точно над нижней i (#3478)
+				figure = new RegularPrism({ height: 4, baseSide: 4, numberSide: 3 });
+				faces = [[0, 1, 2], [3, 4, 5], [0, 1, 4, 3], [1, 2, 5, 4], [2, 0, 3, 5]];
+				sectionEdges = [[0, 1, 0.45], [0, 2, 0.45], [3, 5, 0.45], [3, 4, 0.45]];
 			}
-
-			if (solid === 'tetrahedron') {
-				let figure = new RegularPyramid({
-					height: 4,
-					baseSide: 4,
-					numberSide: 3
-				});
-				let vertices = figure.verticesOfFigure;
-				let apex = vertices[3];
-
-				return {
-					figure: figure,
-					vertices: vertices,
-					section: [
-						pointOnEdge(apex, vertices[0], 0.55),
-						pointOnEdge(apex, vertices[1], 0.55),
-						pointOnEdge(apex, vertices[2], 0.55)
-					]
-				};
-			}
-
-			let figure = new RegularPrism({
-				height: 4,
-				baseSide: 4,
-				numberSide: 3
-			});
-			// Вершины берём из библиотеки: verticesOfFigure и connectionMatrix
-			// согласованы (верхняя вершина 3 + i стоит точно над нижней i, #3478),
-			// локальная копия с повёрнутым верхним основанием больше не нужна.
 			let vertices = figure.verticesOfFigure;
-
 			return {
 				figure: figure,
 				vertices: vertices,
-				section: [
-					pointOnEdge(vertices[0], vertices[1], 0.45),
-					pointOnEdge(vertices[0], vertices[2], 0.45),
-					pointOnEdge(vertices[3], vertices[5], 0.45),
-					pointOnEdge(vertices[3], vertices[4], 0.45)
-				]
+				faces: faces,
+				sectionEdges: sectionEdges,
+				section: sectionEdges.map((e) => pointOnEdge(vertices[e[0]], vertices[e[1]], e[2])),
 			};
 		}
 
@@ -173,12 +160,18 @@
 			ct.save();
 			ct.translate(offsetX, offsetY);
 
+			// Невидимые рёбра и отрезки сечения - пунктиром, без этого каркас куба
+			// читается двояко. Отрезок сечения виден, если лежит в видимой грани
+			let visibility = facesVisibility(figureData.vertices, vertices2D, figureData.faces);
+			let isVisible = function (vertexIndices) {
+				return isOnVisibleFace(figureData.faces, visibility, vertexIndices);
+			};
+			let dash = [6, 4];
+			let matrix = dashHiddenEdges(figureData.figure.connectionMatrix, figureData.faces, visibility, dash);
+
 			ct.strokeStyle = om.secondaryBrandColors.iz();
 			ct.lineWidth = 2;
-			ct.drawFigure(
-				vertices2D,
-				figureData.figure.connectionMatrix
-			);
+			ct.drawFigure(vertices2D, matrix);
 
 			ct.drawSection(
 				section2D.map(point => [point.x, point.y]),
@@ -190,6 +183,8 @@
 
 			for (let i = 0; i < section2D.length; i++) {
 				let next = (i + 1) % section2D.length;
+				let edges = figureData.sectionEdges;
+				ct.setLineDash(isVisible([edges[i][0], edges[i][1], edges[next][0], edges[next][1]]) ? [] : dash);
 				ct.drawLine(
 					section2D[i].x,
 					section2D[i].y,
@@ -197,6 +192,7 @@
 					section2D[next].y
 				);
 			}
+			ct.setLineDash([]);
 
 			ct.fillStyle = 'black';
 			ct.font = "20px liberation_sans";
@@ -222,7 +218,7 @@
 			text: 'Плоскость, проходящая через точки A, B и C (см. рисунок), ' +
 				'разбивает ' + solidNames[solid] + ' на два многогранника. ' +
 				'Сколько ' + questionWords[question] +
-				' у получившегося многогранника с ' + sizeWords[size] + ' числом вершин?',
+				' у получившегося многогранника с ' + sizeWords[size] + ' числом ' + criterionWords[criterion] + '?',
 			answers: data[solid][size][question],
 			preference: [
 				preferenceSolid,
