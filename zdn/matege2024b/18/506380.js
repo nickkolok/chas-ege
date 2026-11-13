@@ -21,15 +21,15 @@
 		let holeQuad = sl(0, 2);
 		let quadraticSolutions = [
 			[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
+				[`$x < ${a}$ или $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
 				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
 			],
 			[
 				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+				[`$x < ${a}$ или $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
 			],
 			[
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
+				[`$${a} < x < ${b}$ или $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
 				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`]
 			]
 		];
@@ -47,15 +47,15 @@
 		let holeFrac = sl(0, 2);
 		let fractionalSolutions = [
 			[
-				[`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
+				[`$x < ${a}$ или $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`],
 				[`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`]
 			],
 			[
 				[`$x > ${b}$`, `$(${b},\\, +\\infty)$`],
-				[`$x < ${a}$ $\\text{ или }$ $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
+				[`$x < ${a}$ или $${a} < x < ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${a},\\, ${b})$`]
 			],
 			[
-				[`$${a} < x < ${b}$ $\\text{ или }$ $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
+				[`$${a} < x < ${b}$ или $x > ${b}$`, `$(${a},\\, ${b}) \\cup (${b},\\, +\\infty)$`],
 				[`$x < ${a}$`, `$(-\\infty,\\, ${a})$`]
 			]
 		];
@@ -94,7 +94,7 @@
 		let rational = {
 			expr: `\\frac{1}{(x - ${a})(x - ${b})} ${isRationalGreater ? '>' : '<'} 0`,
 			solution: isRationalGreater
-				? [`$x < ${a}$ $\\text{ или }$ $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`][randAnswer]
+				? [`$x < ${a}$ или $x > ${b}$`, `$(-\\infty,\\, ${a}) \\cup (${b},\\, +\\infty)$`][randAnswer]
 				: [`$${a} < x < ${b}$`, `$(${a},\\, ${b})$`][randAnswer]
 		};
 
@@ -209,4 +209,3 @@
 })();
 //zer00player
 //https://mathb-ege.sdamgia.ru/test?likes=506380
-// AA977E, 08507D, 823116, 58B5F8, BA8B90, C3711B, 9409FA, DA7CD1, 5A6F3F, 3BAD60, B7B04B, 51E0B6, 73CEDD, AE03E0, 81920B, 7AE004, E280CF, 1AD9E3, C1FD12, 43D2E5, 2EFD48, D058D0, 236D98, 69DB0B, 82CBEC, 0324F5, B6BDCC, 0FA86B, 57F314, 22D6CC, 236B9B
