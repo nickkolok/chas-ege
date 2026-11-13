@@ -18,6 +18,41 @@ import json
 import sys
 import os
 import time
+import subprocess
+
+def get_github_token():
+    """
+    Получает GitHub токен в следующем порядке:
+    1. Из утилиты gh (gh auth token)
+    2. Из переменной окружения GITHUB_TOKEN
+    3. Из переменной окружения GH_TOKEN
+    """
+    # 1. Пробуем получить токен через gh CLI
+    try:
+        result = subprocess.run(
+            ['gh', 'auth', 'token'],
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+        if result.returncode == 0:
+            gh_token = result.stdout.strip()
+            if gh_token:
+                return gh_token
+    except (FileNotFoundError, subprocess.TimeoutExpired, Exception):
+        pass  # gh не установлена или ошибка
+
+    # 2. Пробуем GITHUB_TOKEN
+    env_token = os.environ.get('GITHUB_TOKEN', '')
+    if env_token:
+        return env_token
+
+    # 3. Пробуем GH_TOKEN
+    gh_token = os.environ.get('GH_TOKEN', '')
+    if gh_token:
+        return gh_token
+
+    return ''
 
 def parse_numbers(args):
     """Разбирает аргументы командной строки в список номеров."""
@@ -162,11 +197,14 @@ def fetch_pr_comments(pr_number, token, repo="nickkolok/chas-ege"):
     return result
 
 def main():
-    token = os.environ.get('GITHUB_TOKEN', '')
+    token = get_github_token()
 
     if not token:
-        print("Ошибка: Не указан GitHub токен.")
-        print("Установите переменную окружения: export GITHUB_TOKEN=your_token_here")
+        print("Ошибка: Не удалось получить GitHub токен.")
+        print("Способы задать токен (в порядке приоритета):")
+        print("  1. Установить и настроить утилиту gh: gh auth login")
+        print("  2. Установить переменную окружения: export GITHUB_TOKEN=your_token_here")
+        print("  3. Установить переменную окружения: export GH_TOKEN=your_token_here")
         sys.exit(1)
 
     if len(sys.argv) < 2:
