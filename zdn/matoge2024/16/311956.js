@@ -48,7 +48,23 @@
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // Вершины — снаружи окружности, на продолжении радиуса
+            points.slice(0, 3).forEach((elem, i) => ctx.fillText(letters[i], elem.x * 1.1, -elem.y * 1.1));
+            // Центр — с той стороны от O, где подпись дальше всего от отрезков чертежа
+            let distanceToSegment = (p, p1, p2) => {
+                let dx = p2.x - p1.x;
+                let dy = p2.y - p1.y;
+                let t = Math.min(1, Math.max(0, ((p.x - p1.x) * dx + (p.y - p1.y) * dy) / (dx * dx + dy * dy)));
+                return Math.hypot(p.x - p1.x - t * dx, p.y - p1.y - t * dy);
+            };
+            let segments = [[0, 1], [0, 2], [1, 2], [0, 3], [1, 3]].map(([i, j]) => [points[i], points[j]]);
+            let labelPosition = [...Array(12).keys()]
+                .map(k => ({ x: 20 * Math.cos(k * Math.PI / 6), y: 20 * Math.sin(k * Math.PI / 6) }))
+                .map(p => ({ p, gap: segments.map(([p1, p2]) => distanceToSegment(p, p1, p2)).minE() }))
+                .sort((l1, l2) => l2.gap - l1.gap)[0].p;
+            ctx.fillText(letters[3], labelPosition.x, -labelPosition.y);
         };
 
         NAtask.setTask({
