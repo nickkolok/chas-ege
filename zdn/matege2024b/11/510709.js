@@ -48,13 +48,13 @@
 			analys: analys,
 		});
 
-		NAtask.modifiers.allDecimalsToStandard(true);
-
 		NAtask.modifiers.addCanvasIllustration({
 			width: 220,
 			height: 190,
 			paint: paint1,
 		});
+
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 //https://mathb-ege.sdamgia.ru/problem?id=510709
