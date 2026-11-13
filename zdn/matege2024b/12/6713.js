@@ -10,7 +10,7 @@
 		})), sl(preference.length - 1));
 
 		let side = sl(5, 20);
-		let a = sl(5, 20)
+		let a = sl(5, 20);
 
 		const trp = new Trapezoid({
 			lengths: {
