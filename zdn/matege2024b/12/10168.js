@@ -21,8 +21,8 @@
 		let relation = [sl(1, 5), sl(6, 10)].shuffle();
 
 		let pointK = [triangle.pointA[0], triangle.pointC[0]].mt_segmentDivisionPoint(relation[0], relation[1]);
-		genAssert((pointK.y - triangle.pointA[0].y).abs() > 1, 'Точки M и A слились');
-		genAssert((pointK.y - triangle.pointC[0].y).abs() > 1, 'Точки M и C слились');
+		genAssert((pointK.y - triangle.pointA[0].y).abs() > 1, 'Точки K и A слились');
+		genAssert((pointK.y - triangle.pointC[0].y).abs() > 1, 'Точки K и C слились');
 
 		let triangleSmall = new Triangle({
 			points: [pointK, triangle.medianCEndPoint, triangle.pointA[0]]
@@ -30,7 +30,7 @@
 		
 		genAssertZ1000(triangleSmall.area());
 
-		triangle.addVertexToConnectionMatrix([pointK, triangle.medianCEndPoint], ['E', 'C']);
+		triangle.addVertexToConnectionMatrix([pointK, triangle.medianCEndPoint], ['K', 'M']);
 		triangle.connectVerticesInConnectionMatrix([3, 4]);
 
 		let points = autoScale(triangle.vertices);
@@ -58,7 +58,7 @@
 
 		NAtask.setTask({
 			text: `В треугольнике $ABC$ проведена медиана $CM$, на стороне $AC$ взята точка $K$ так, что $${[`A`,`C`][rand]}K = ${relation[rand].texfrac(relation.sum())} AC$.
-			Площадь треугольника $AMK$ равна $${triangleSmall.area()}$. Найдите площадь треугольника $ABC$`,
+			Площадь треугольника $AMK$ равна $${triangleSmall.area()}$. Найдите площадь треугольника $ABC$.`,
 			answers: triangle.area(),
 			authors: ['Александра Суматохина'],
 		});
