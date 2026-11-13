@@ -220,12 +220,12 @@
             postText: 'Пользуясь графиком, поставьте в соответствие каждому интервалу времени характеристику температуры на этом интервале.',
             analys:listView.join('<br/>')
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 400,
             paint: paint1,
         });
+        NAtask.modifiers.allDecimalsToStandard( /*true*/);
     }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=506258
