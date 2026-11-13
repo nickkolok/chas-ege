@@ -4,7 +4,7 @@
 		let rand = sl1();
 		let delta = [90, 240][rand];
 
-		let letters = latbukv.slice(0, 3);
+		let letters = om.latbukv.slice(0, 3);
 
 		let circle = new Circle(new Point(0, 0), sl(10, 50));
 
