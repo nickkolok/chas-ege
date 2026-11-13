@@ -4,10 +4,7 @@
 
         let key = '356518';
         let preference = ['side', 'radius'];
-        let rand = getListedPreference(key, preference.map((pref, index) => ({
-            preference: pref,
-            preferenceValue: index
-        })), sl(preference.length - 1));
+        let rand = getSelectedPreferenceFromList(key, preference);
 
         let a = sl(1, 50) * [1, (3).sqrt()][rand];
 
