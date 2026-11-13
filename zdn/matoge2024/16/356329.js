@@ -34,12 +34,11 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
-            ctx.drawArc(points[3].x, points[3].y, (points[3].y - points[0].y).abs(), 0, 2 * Math.PI);
+			ctx.drawArc(points[3].x, points[3].y, (points[3].y - points[0].y).abs(), 0, 2 * Math.PI);
 		};
 
 		NAtask.setTask({
-			text: `Периметр треугольника равен $${triangle.perimeter}$, одна из сторон равна $${[triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].iz()}$, а радиус вписанной в него окружности равен $${triangle.radiusOfInscribedCircle}$. 
-			Найдите площадь этого треугольника.`,
+			text: `Периметр треугольника равен $${triangle.perimeter}$, одна из сторон равна $${[triangle.lengthAB, triangle.lengthBC, triangle.lengthCA].iz()}$, а радиус вписанной в него окружности равен $${triangle.radiusOfInscribedCircle}$. Найдите площадь этого треугольника.`,
 			answers: triangle.area(),
 			authors: ['Александра Суматохина'],
 		});
