@@ -385,6 +385,112 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Видимость граней и рёбер  (lib/figure.js)
+    // ============================================================
+    QUnit.module('Видимость граней (facesVisibility, isOnVisibleFace, dashHiddenEdges)');
+
+    // lib/figure.js и lib/project3DTo2D.js в chas-lib.js не отдают свои
+    // функции и классы в global, поэтому загружаем их в отдельный контекст
+    var geometry = (function () {
+        var vm = require('vm');
+        var fs = require('fs');
+        var path = require('path');
+        var context = vm.createContext({ Math: Math });
+        ['figure.js', 'project3DTo2D.js'].forEach(function (file) {
+            vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'lib', file), 'utf8'), context);
+        });
+        vm.runInContext('this.Cube = Cube; this.RegularPyramid = RegularPyramid; this.RegularPrism = RegularPrism;', context);
+        return context;
+    })();
+
+    // Камера, как в шаблонах matege2024b: взгляд сверху-спереди под небольшим углом
+    var camera = {
+        x: 0, y: 0, z: 0, scale: 50,
+        rotationX: -Math.PI / 2 + Math.PI / 11, rotationY: 0, rotationZ: Math.PI / 10,
+    };
+    var project = function (vertices, cam) {
+        return vertices.map(function (v) {
+            return geometry.project3DTo2D(v, cam || camera);
+        });
+    };
+    var count = function (array) {
+        return array.filter(Boolean).length;
+    };
+
+    QUnit.test('Куб: видны ровно три грани, и верхняя среди них', function (assert) {
+        var cube = new geometry.Cube(4);
+        var vertices = cube.verticesOfFigure;
+        // Нумерация Cube: 0-3 - нижнее основание (z < 0), 4-7 - верхнее
+        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var visibility = geometry.facesVisibility(vertices, project(vertices), faces);
+        assert.equal(count(visibility), 3, 'видны три грани');
+        assert.ok(visibility[1], 'верхнее основание видно (взгляд сверху)');
+        assert.notOk(visibility[0], 'нижнее основание не видно');
+        // Противоположные грани не видны одновременно
+        assert.notOk(visibility[2] && visibility[4], 'боковые грани y = 2 и y = -2');
+        assert.notOk(visibility[3] && visibility[5], 'боковые грани x = 2 и x = -2');
+    });
+
+    QUnit.test('Порядок обхода грани и масштаб чертежа не влияют на ответ', function (assert) {
+        var cube = new geometry.Cube(4);
+        var vertices = cube.verticesOfFigure;
+        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var reversed = faces.map(function (face) {
+            return face.slice().reverse();
+        });
+        var points2D = project(vertices);
+        // Сдвиг и растяжение, как после autoScale() и центрирования
+        var moved = points2D.map(function (p) {
+            return { x: 3 * p.x + 100, y: 3 * p.y - 40 };
+        });
+        var visibility = geometry.facesVisibility(vertices, points2D, faces);
+        assert.deepEqual(geometry.facesVisibility(vertices, points2D, reversed), visibility, 'обход в другую сторону');
+        assert.deepEqual(geometry.facesVisibility(vertices, moved, faces), visibility, 'сдвиг и масштаб');
+    });
+
+    QUnit.test('Взгляд снизу: видимость меняется на противоположную', function (assert) {
+        var cube = new geometry.Cube(4);
+        var vertices = cube.verticesOfFigure;
+        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var below = Object.assign({}, camera, { rotationX: -Math.PI / 2 - Math.PI / 11 });
+        var visibility = geometry.facesVisibility(vertices, project(vertices, below), faces);
+        assert.ok(visibility[0], 'нижнее основание видно');
+        assert.notOk(visibility[1], 'верхнее основание не видно');
+    });
+
+    QUnit.test('Тетраэдр и треугольная призма: одна скрытая вершина, три пунктирных ребра', function (assert) {
+        var pyramid = new geometry.RegularPyramid({ height: 4, baseSide: 4, numberSide: 3 });
+        var pv = pyramid.verticesOfFigure;
+        var pyramidFaces = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [2, 0, 3]];
+        var pVisibility = geometry.facesVisibility(pv, project(pv), pyramidFaces);
+        var pMatrix = geometry.dashHiddenEdges(pyramid.connectionMatrix, pyramidFaces, pVisibility, [6, 4]);
+        var dashed = [];
+        pMatrix.forEach(function (row, i) {
+            row.forEach(function (value, j) {
+                if (Array.isArray(value)) {
+                    dashed.push((i + 1) + '-' + j);
+                }
+            });
+        });
+        assert.deepEqual(dashed, ['2-0', '2-1', '3-2'], 'тетраэдр: пунктир - три ребра при вершине 2');
+        assert.deepEqual(pMatrix[0], [1], 'ребро 1-0 сплошное');
+        assert.deepEqual(pyramid.connectionMatrix[1], [1, 1], 'исходная матрица не изменилась');
+
+        var prism = new geometry.RegularPrism({ height: 4, baseSide: 4, numberSide: 3 });
+        var rv = prism.verticesOfFigure;
+        var prismFaces = [[0, 1, 2], [3, 4, 5], [0, 1, 4, 3], [1, 2, 5, 4], [2, 0, 3, 5]];
+        var rVisibility = geometry.facesVisibility(rv, project(rv), prismFaces);
+        // Скрыта задняя нижняя вершина 2, а с ней - нижнее основание и обе
+        // боковые грани при ней; видны верхнее основание и передняя грань 0-1-4-3
+        assert.deepEqual(rVisibility, [false, true, true, false, false], 'призма: видны верхнее основание и грань 0-1-4-3');
+        assert.ok(geometry.isOnVisibleFace(prismFaces, rVisibility, [3, 4]), 'ребро верхнего основания видно');
+        assert.notOk(geometry.isOnVisibleFace(prismFaces, rVisibility, [2, 0]), 'ребро 2-0 скрыто');
+        assert.notOk(geometry.isOnVisibleFace(prismFaces, rVisibility, [2, 5]), 'боковое ребро 2-5 скрыто');
+        assert.ok(geometry.isOnVisibleFace(prismFaces, rVisibility, [0, 1, 3, 4]),
+            'отрезок между точками на рёбрах 0-1 и 3-4 лежит в видимой грани');
+    });
+
+    // ============================================================
     //  Circle  (lib/circle.js)
     // ============================================================
     QUnit.module('Circle');
@@ -400,5 +506,98 @@ module.exports = function registerNodeTests(QUnit) {
         circle.drawOnto(ctx);
         assert.equal(calls.length, 1, 'drawCircle вызван ровно один раз');
         assert.deepEqual(calls[0], [3, -4, 5], 'drawCircle(x центра, y центра, радиус)');
+    });
+
+    // ============================================================
+    //  autoScale: уменьшение больших фигур  (lib/func.js)
+    // ============================================================
+    QUnit.module('autoScale: shrink');
+
+    function newCamera() {
+        return { x: 0, y: 0, z: 0, scale: 1, rotationX: 0, rotationY: 0, rotationZ: 0 };
+    }
+
+    QUnit.test('без shrink большая фигура отбраковывается, как раньше', function (assert) {
+        assert.throws(function () {
+            autoScale([{ x: -1000, y: 0 }, { x: 1000, y: 500 }], newCamera());
+        }, 'genAssert');
+    });
+
+    QUnit.test('с shrink большая фигура рисуется так же, как подобная ей маленькая', function (assert) {
+        var bigCamera = newCamera();
+        var big = autoScale([{ x: -1000, y: 0 }, { x: 1000, y: 500 }], bigCamera, [], { shrink: true });
+        var small = autoScale([{ x: -10, y: 0 }, { x: 10, y: 5 }], newCamera());
+        assert.deepEqual(big, small, 'та же картинка, что у фигуры в 100 раз меньше');
+        assert.ok(Math.abs(bigCamera.scale - 0.18) < 1e-12, 'camera.scale = 0,18');
+    });
+
+    QUnit.test('с shrink фигура, которая и так помещается, не меняется', function (assert) {
+        var vertex = [{ x: -10, y: 0 }, { x: 10, y: 5 }];
+        var withShrink = newCamera();
+        var withoutShrink = newCamera();
+        assert.deepEqual(
+            autoScale(vertex, withShrink, [], { shrink: true }),
+            autoScale(vertex, withoutShrink)
+        );
+        assert.strictEqual(withShrink.scale, withoutShrink.scale);
+    });
+
+    // ============================================================
+    //  autoScale: центрирование  (lib/func.js)
+    // ============================================================
+    QUnit.module('autoScale: center');
+
+    QUnit.test('без center начало координат остаётся на месте', function (assert) {
+        var result = autoScale([{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 5 }], newCamera());
+        assert.deepEqual(result[0], { x: 0, y: 0 });
+    });
+
+    QUnit.test('с center фигура рисуется так же, как сдвинутая заранее в начало координат', function (assert) {
+        var centeredCamera = newCamera();
+        var centered = autoScale([{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 5 }], centeredCamera, [], { center: true });
+        var moved = autoScale([{ x: -5, y: -2.5 }, { x: 5, y: -2.5 }, { x: 5, y: 2.5 }], newCamera());
+        assert.deepEqual(centered, moved, 'середина габаритов — в середине поля');
+        assert.strictEqual(centeredCamera.scale, 36, 'фигура занимает всё поле по ширине');
+    });
+
+    QUnit.test('с center фигура вдали от начала координат не отбраковывается', function (assert) {
+        var vertex = [{ x: 1000, y: 1000 }, { x: 1004, y: 1000 }, { x: 1004, y: 1002 }];
+        assert.throws(function () {
+            autoScale(vertex, newCamera());
+        }, 'без center — genAssert');
+        assert.deepEqual(
+            autoScale(vertex, newCamera(), [], { center: true, startX: 0, finishX: 400, startY: 0, finishY: 400 }),
+            [{ x: 0, y: 100 }, { x: 400, y: 100 }, { x: 400, y: 300 }],
+            'поле 0..400: фигура в его середине'
+        );
+    });
+
+    // ============================================================
+    //  Положение подписей точек на чертеже  (lib/func.js)
+    // ============================================================
+    QUnit.module('labelPositionAwayFrom, labelPositionOutsideSegment');
+
+    function assertPointClose(assert, actual, expected, message) {
+        assert.ok(Math.abs(actual.x - expected.x) < 1e-12 && Math.abs(actual.y - expected.y) < 1e-12,
+            message + ': ожидалось (' + expected.x + ', ' + expected.y + '), получено (' + actual.x + ', ' + actual.y + ')');
+    }
+
+    QUnit.test('labelPositionAwayFrom: подпись отодвигается от точки from', function (assert) {
+        assertPointClose(assert, labelPositionAwayFrom({ x: 3, y: 4 }, { x: 0, y: 0 }, 10), { x: 9, y: 12 }, 'наружу от начала координат');
+        assertPointClose(assert, labelPositionAwayFrom({ x: -2, y: 1 }, { x: -2, y: 5 }, 3), { x: -2, y: -2 }, 'вниз от точки выше');
+    });
+
+    QUnit.test('labelPositionOutsideSegment: по нормали к отрезку, со стороны без точки from', function (assert) {
+        var start = { x: 0, y: 0 };
+        var end = { x: 10, y: 0 };
+        assertPointClose(assert, labelPositionOutsideSegment({ x: 4, y: 0 }, start, end, { x: 5, y: 3 }, 2), { x: 4, y: -2 }, 'from сверху — подпись снизу');
+        assertPointClose(assert, labelPositionOutsideSegment({ x: 4, y: 0 }, start, end, { x: 5, y: -3 }, 2), { x: 4, y: 2 }, 'from снизу — подпись сверху');
+        assertPointClose(assert, labelPositionOutsideSegment({ x: 4, y: 0 }, end, start, { x: 5, y: 3 }, 2), { x: 4, y: -2 }, 'порядок концов отрезка не важен');
+    });
+
+    QUnit.test('labelPositionOutsideSegment: наклонный отрезок', function (assert) {
+        // Отрезок на прямой y = x, центр фигуры — выше прямой; подпись — ниже, по нормали (1, -1)/√2
+        var label = labelPositionOutsideSegment({ x: 1, y: 1 }, { x: 0, y: 0 }, { x: 2, y: 2 }, { x: 0, y: 2 }, Math.SQRT2);
+        assertPointClose(assert, label, { x: 2, y: 0 }, 'на расстоянии √2 по нормали');
     });
 };
