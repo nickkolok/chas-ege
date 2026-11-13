@@ -148,12 +148,12 @@
             postText: 'Пользуясь графиком, поставьте в соответствие каждому интервалу времени характеристику движения автобуса на этом интервале.',
             analys: listView.join(' <br/>'),
         });
-        NAtask.modifiers.allDecimalsToStandard();
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 400,
             paint: paint1,
         });
+        NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
 // https://ege314.ru/14-analiz-grafikov-i-diagramm/reshenie-3357/
