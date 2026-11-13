@@ -266,12 +266,12 @@
             postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику изменения цены акции в этот период.',
             analys:listView.join('<br/>')
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 600,
             paint: paint1,
         });
+        NAtask.modifiers.allDecimalsToStandard( /*true*/);
     }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=510146
