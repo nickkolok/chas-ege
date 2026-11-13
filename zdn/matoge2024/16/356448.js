@@ -44,14 +44,14 @@
 
         let points = [AB.ps, AB.pe, CD.ps, CD.pe];
 
-        let paint1 = function (ctx) {
+        let paint = function (ctx) {
             let h = 400;
             let w = 400;
 
             ctx.translate(w / 2, h / 2);
 
             ctx.scale(1, -1);
-            ctx.strokeStyle = om.secondaryBrandColors;
+            ctx.strokeStyle = om.secondaryBrandColors.iz();
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, connectionMatrix);
@@ -62,7 +62,11 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             // Подпись — снаружи окружности, на продолжении радиуса
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x * 1.1, -elem.y * 1.1));
+            const labelDistance = 25;
+            points.forEach((elem, i) => {
+                const labelPos = labelPositionAwayFrom(elem, circle.pc, labelDistance);
+                ctx.fillText(letters[i], labelPos.x, -labelPos.y);
+            });
         };
 
         NAtask.setTask({
@@ -76,7 +80,7 @@
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
-            paint: paint1,
+            paint,
         });
     }, 1000);
 
