@@ -19,7 +19,6 @@
 			answers: rect.lengthBC,
 			authors: ['Александра Суматохина'],
 		});
-		NAtask.modifiers.variativeABC(letters);
 
 	}, 2000);
 	NAtask.modifiers.allDecimalsToStandard(true);
