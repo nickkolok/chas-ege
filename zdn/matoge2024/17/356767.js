@@ -23,8 +23,8 @@
         genAssert(par.heightDAB.pe.x + 5 < par.pointB.x, 'Высота из вершины D к стороне AB выходит за пределы фигуры');
         genAssert(par.heightDBC.pe.x > par.pointB.x, 'Высота из вершины D к стороне BC выходит за пределы фигуры');
 
-        let height = [par.lengthHeightDAB, par.lengthHeightDBC];
-        height = rand ? height.minE() : height.maxE();
+        let heights = [par.lengthHeightDAB, par.lengthHeightDBC];
+        let height = rand ? heights.minE() : heights.maxE();
         genAssertZ1000(height, 'Высоты не целые');
 
 
