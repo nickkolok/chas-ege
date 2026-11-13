@@ -15,7 +15,7 @@
 				calculateMedians: true
 			}
 		});
-		
+
 		genAssertZ1000(triangle.area());
 
 		let relation = [sl(1, 5), sl(6, 10)].shuffle();
@@ -27,7 +27,7 @@
 		let triangleSmall = new Triangle({
 			points: [pointK, triangle.medianCEndPoint, triangle.pointA[0]]
 		});
-		
+
 		genAssertZ1000(triangleSmall.area());
 
 		triangle.addVertexToConnectionMatrix([pointK, triangle.medianCEndPoint], ['K', 'M']);
@@ -46,7 +46,7 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
-			
+
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[4].x, points[4].y, 7);
 			ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[4].x, points[4].y, 7);
