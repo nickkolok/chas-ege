@@ -3,11 +3,12 @@
         NAinfo.requireApiVersion(0, 2);
 
         let height = sl(5, 20);
+        let lengthAB = sl(5, 20);
 
         let trp = new Trapezoid({
             lengths: {
-                lengthAB: sl(5, 20),
-                lengthCD: sl(5, 20),
+                lengthAB: lengthAB,
+                lengthCD: slKrome(lengthAB, 5, 20),
             },
             height: height,
             angles: {
