@@ -10,6 +10,9 @@
 		let m = sl(1, n - 1);
 		let k1 = m;
 		let k2 = n - m;
+		// Отношение - несократимое: «2 : 2» или «2 : 4» не пишут.
+		// При «1 : 1» у ФИПИ - «через середину высоты конуса»
+		genAssert(k1.nod(k2) === 1, 'Отношение должно быть несократимым');
 
 		let X = sl(1, 10);
 		let V_small = X * m**3;
@@ -25,7 +28,10 @@
 		];
 		let answers = [V_total, V_small, V_total, V_frustum];
 
-		let text = "Через точку, делящую высоту конуса в отношении " + k1 + " : " + k2 + ", считая от вершины, проведена плоскость, параллельная основанию. " + questions[rand];
+		let text = (k1 === k2 ?
+			"Через середину высоты конуса" :
+			"Через точку, делящую высоту конуса в отношении " + k1 + " : " + k2 + ", считая от вершины,") +
+			" проведена плоскость, параллельная основанию. " + questions[rand];
 
 		// Создаём объекты конусов для хранения геометрических параметров
 		let mainConeRadius = sl(4, 8);
@@ -49,8 +55,6 @@
 			answers: answers[rand],
 			preference: preference,
 		});
-
-		NAtask.modifiers.allDecimalsToStandard();
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 320,
@@ -105,6 +109,8 @@
 				ctx.fill();
 			},
 		});
+
+		NAtask.modifiers.allDecimalsToStandard();
 	}, 20000);
 })();
 //chas-ege-selena
