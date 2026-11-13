@@ -17,8 +17,8 @@
                 calculateHeights: true,
             }
         });
-        let answ = [trp.lengthAB, trp.lengthCD];
-        answ = (rand ? answ.minE() : answ.maxE()) / 2;
+        let bases = [trp.lengthAB, trp.lengthCD];
+        let answ = (rand ? bases.minE() : bases.maxE()) / 2;
 
         trp.addVertexToConnectionMatrix([trp.segmentBC.middle(), trp.segmentDA.middle()], 'E');
         trp.connectVerticesInConnectionMatrix(
