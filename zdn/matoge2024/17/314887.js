@@ -32,6 +32,33 @@
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, trp.connectionMatrix);
+
+            // Как на чертеже ФИПИ: угол 45° отмечен у левого конца большего основания,
+            // длины оснований подписаны снаружи трапеции
+            let bases = [[points[0], points[1], trp.lengthAB], [points[2], points[3], trp.lengthCD]];
+            if (trp.lengthAB < trp.lengthCD) {
+                bases.reverse();
+            }
+            let longBase = bases[0];
+            let shortBase = bases[1];
+            let left = longBase[0].x < longBase[1].x ? longBase[0] : longBase[1];
+            let right = left == longBase[0] ? longBase[1] : longBase[0];
+            let legEnd = [shortBase[0], shortBase[1]].sort((p1, p2) => p1.x - p2.x)[0];
+
+            ctx.strokeStyle = om.primaryBrandColors.iz();
+            ctx.arcBetweenSegments([right.x, right.y, left.x, left.y, legEnd.x, legEnd.y], 30);
+
+            ctx.scale(1, -1);
+            ctx.fillStyle = om.secondaryBrandColors.iz();
+            ctx.font = "20px liberation_sans";
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            let up = Math.sign(shortBase[0].y - longBase[0].y);
+            ctx.fillText('45°', left.x + 55, -(left.y + up * 14));
+            bases.forEach(([p1, p2, length], i) => {
+                let outside = (i == 0 ? -up : up) * 18;
+                ctx.fillText(length, (p1.x + p2.x) / 2, -((p1.y + p2.y) / 2 + outside));
+            });
         };
 
         NAtask.setTask({
