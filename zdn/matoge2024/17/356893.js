@@ -6,7 +6,7 @@
 			length: 100,
 			angles: {
 				angle: {
-					angleA: slKrome(90, 30, 150)
+					angleA: slKrome((x) => (x - 90).abs() <= 5, 30, 150)
 				},
 				angleInDegree: true,
 			},
@@ -29,7 +29,7 @@
 		};
 
 		NAtask.setTask({
-			text: ` Один из углов ромба равен $${rhombus.angleAInDegrees}^\\circ$. Найдите ${rhombus.angleAInDegrees < rhombus.angleBInDegrees ? 'больший' : 'меньший'} угол этого ромба. Ответ дайте в градусах.`,
+			text: `Один из углов ромба равен $${rhombus.angleAInDegrees}^\\circ$. Найдите ${rhombus.angleAInDegrees < rhombus.angleBInDegrees ? 'больший' : 'меньший'} угол этого ромба. Ответ дайте в градусах.`,
 			answers: rhombus.angleBInDegrees,
 			authors: ['Александра Суматохина'],
 		});
