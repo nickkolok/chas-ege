@@ -2,12 +2,12 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 		let letters = latbukv.slice(0, 3);
-		
+
 		let angleB = Math.PI / [6, 3].iz();
 		let AC = sl(1,50);
 		let sinB = angleB.sin();
 		let sinA = {n:sl(1,6), d:sl(7,10)};
-		
+
 		let triangle = new Triangle({
 			lengths: {
 				lengthCA: AC,
