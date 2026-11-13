@@ -39,6 +39,7 @@
             answers: trp.area(),
             authors: ['Александра Суматохина'],
         });
+        NAtask.modifiers.allDecimalsToStandard(true);
 
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
@@ -47,6 +48,5 @@
         });
 
     }, 2000);
-    NAtask.modifiers.allDecimalsToStandard(true);
 })();
 // https://oge.sdamgia.ru/problem?id=314887
