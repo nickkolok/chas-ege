@@ -6,23 +6,24 @@
 
         let circle = new Circle(new Point(0, 0), 160);
 
-        let a = sl(0, 100);
-        let b = sl(300, 350);
-        let PA = circle.pointOnCircle(a, {
+        // Центральный угол AOB генерируется напрямую: в ФИПИ он от 27° до 173°.
+        // Хорда AB — внизу, C — в верхней части окружности, как на чертеже ФИПИ:
+        // не дальше 60° от верхней точки и не ближе 25° к A и B, поэтому C на большей дуге,
+        // а O и C лежат по одну сторону от прямой AB
+        let angle = sl(10, 175);
+        let mid = sl(240, 300);
+        let PA = circle.pointOnCircle(mid - angle / 2, {
             angleInDegrees: true
         });
 
-        let PB = circle.pointOnCircle(b, {
+        let PB = circle.pointOnCircle(mid + angle / 2, {
             angleInDegrees: true
         });
 
-
-        let PC = circle.pointOnCircle(sl((a + b) / 2 + 50, (a + b) / 2 - 50), {
+        let maxShiftC = Math.min(60, 180 - angle / 2 - 25);
+        let PC = circle.pointOnCircle(mid + 180 + sl(-maxShiftC, maxShiftC), {
             angleInDegrees: true
         });
-
-        let angle = (a - b).abs();
-        angle = [360 - angle, angle].minE();
 
         let connectionMatrix = [
             [1],
