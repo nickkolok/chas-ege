@@ -108,13 +108,13 @@
 			preference: [preference, preferenceMultiplier],
 		});
 
-		NAtask.modifiers.allDecimalsToStandard(true);
-
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 300,
 			paint: paintCylinder,
 		});
+
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 //511443
