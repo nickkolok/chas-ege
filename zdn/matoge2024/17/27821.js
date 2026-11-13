@@ -47,8 +47,6 @@
             ctx.lineWidth = 2;
             ctx.drawFigure(points, trp.connectionMatrix);
 
-            ctx.strokeStyle = om.primaryBrandColors.iz();
-
             if (randLetters == 1) {
                 ctx.scale(1, -1);
                 ctx.font = "20px liberation_sans";
