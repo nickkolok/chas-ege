@@ -1,0 +1,28 @@
+(function () {
+    'use strict';
+    retryWhileError(function () {
+        NAinfo.requireApiVersion(0, 2);
+        
+        let key = "1001";
+
+        let variant = getSelectedPreferenceFromList(key, ['learned_learned', 'learned_not_learned', 'not_learned_learned', 'not_learned_not_learned']);
+
+        let numberOfQuestions = sl(10, 100);
+        let numberlearnedOrNotlearnedQuestions = sl(5, numberOfQuestions - 1);
+
+        let answers = (variant == 1 || variant == 2) ? (numberOfQuestions - numberlearnedOrNotlearnedQuestions) / numberOfQuestions : numberlearnedOrNotlearnedQuestions / numberOfQuestions;
+        genAssertZ1000(answers);
+        
+        let nameQuestion = sklonlxkand(['билет', 'вопрос'].iz());
+        let event = ['экзамене', ['проверочной работе', 'контрольной работе', 'тестировании', 'тесте'].iz()][Number(nameQuestion.ie == 'вопрос')];
+
+        NAtask.setTask({
+            text: `На ${event} будет ${chislitlx(numberOfQuestions, nameQuestion.ie, '$')}, ${om.maleNames.iz()} ${`не`.esli(variant > 1)} выучил $${numberlearnedOrNotlearnedQuestions}$ из них. 
+			Найдите вероятность того, что ему попадётся ${`не`.esli(variant % 2)}выученный ${nameQuestion.ve}.`,
+            answers: answers,
+            authors: ['Суматохина Александра'],
+        });
+    }, 100);
+})();
+
+// 1001 1002 1003 1004 1005 514617 514637 520474 520515 520538
