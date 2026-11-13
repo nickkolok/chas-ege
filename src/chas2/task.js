@@ -505,7 +505,7 @@ chas2.task = {
 	},
 
 
-	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference }) {
+	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference, analys }) {
 
 		left.shuffle();
 		let shuffledSolutions = [...right].shuffle();
@@ -534,6 +534,7 @@ chas2.task = {
 				'<span style="font-family: monospace; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>' +
 				postText,
 			answers: answerSequence.join(''),
+			analys: analys || '',
 			preference,
 		});
 	},

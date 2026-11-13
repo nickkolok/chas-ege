@@ -11,8 +11,11 @@
  * 2. Install puppeteer: `npm install puppeteer@^23.0.0` (compatible with Node.js 22.7.0)
  * 
  * Usage:
- *   node headless-debug.mjs --filepath <path-to-template> [--iterations <count>] [--headless]
- * 
+ *   node headless-debug.mjs --filepath <path-to-template> [--iterations <count>] [--headless] [--fast]
+ *
+ *   --fast  do not wait for MathJax and for the page to settle: many generations quickly;
+ *           the LaTeX is exported all the same (it is made from the source of the task)
+ *
  * Example:
  *   node sh/headless-debug.mjs --filepath zdn/matege2024p/10/15.js --browser `which chromium` --temp-profile --iterations 5 --headless
 
@@ -45,6 +48,7 @@ let iterations = 1;
 let headless = false; // Default to visible mode
 let browserPath = '';
 let tempProfile = false;
+let fast = false;
 
 for (let i = 0; i < args.length; i++) {
     if (args[i] === '--filepath' && args[i + 1]) {
@@ -60,13 +64,15 @@ for (let i = 0; i < args.length; i++) {
         i++;
     } else if (args[i] === '--temp-profile') {
         tempProfile = true;
+    } else if (args[i] === '--fast') {
+        fast = true;
     }
 }
 
 
 
 if (!filepath) {
-    console.error('Usage: node headless-debug.mjs --filepath <path> [--iterations <count>] [--headless]');
+    console.error('Usage: node headless-debug.mjs --filepath <path> [--iterations <count>] [--headless] [--fast]');
     process.exit(1);
 }
 
@@ -171,7 +177,9 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
     }
     
     // Wait for page to be ready
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    if (!fast) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+    }
     
     // First generation (auto-started by otladka.js via parsedJSON.autostartFile)
     try {
@@ -288,7 +296,9 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         }
 
         // Wait for MathJax
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        if (!fast) {
+            await new Promise(resolve => setTimeout(resolve, 1500));
+        }
         
         
         // Output preference marker before LaTeX block

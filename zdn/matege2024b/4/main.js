@@ -35,5 +35,5 @@ window.nomer=[
 	50703501,
 ].iz();
 
-window.comment = 'Преобразования выражений';
+window.comment = 'Вычисления по формулам';
 
