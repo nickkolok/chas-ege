@@ -64,6 +64,7 @@
             authors: ['Александра Суматохина'],
             preference
         });
+        NAtask.modifiers.allDecimalsToStandard(true);
 
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
@@ -72,6 +73,5 @@
         });
 
     }, 2000);
-    NAtask.modifiers.allDecimalsToStandard(true);
 })();
 // https://ege.sdamgia.ru/problem?id=27821
