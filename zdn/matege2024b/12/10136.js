@@ -32,7 +32,7 @@
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2 || i == 3) ? 25 : -5)));
+			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
