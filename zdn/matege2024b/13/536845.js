@@ -56,8 +56,6 @@
 			preference: preference,
 		});
 
-		NAtask.modifiers.allDecimalsToStandard();
-
 		NAtask.modifiers.addCanvasIllustration({
 			width: 320,
 			height: 340,
@@ -111,6 +109,8 @@
 				ctx.fill();
 			},
 		});
+
+		NAtask.modifiers.allDecimalsToStandard();
 	}, 20000);
 })();
 //chas-ege-selena
