@@ -29,9 +29,9 @@
 
 		NAtask.setTask({
 			text: 'Расстояние между ' + the_humanSettlementDestination.tm + ' ' + pass[0] + ' и ' + pass[1] + ' равно $' + distancePart * 2 + '$ км. ' +
-				'Из ' + the_humanSettlementDestination.re + ' ' + pass[0] + ' в ' + the_humanSettlementDestination.ie + ' ' + pass[1] +
+				'Из ' + the_humanSettlementDestination.re + ' ' + pass[0] + ' в ' + the_humanSettlementDestination.ve + ' ' + pass[1] +
 				' выехал' + ['', 'а'][driver.rod] + ' перв' + ['ый', 'ая'][driver.rod] + ' ' + driver.ie + ' со скоростью $' + speed1 + '$ км/ч, ' +
-				'а через несколько минут после этого из ' + the_humanSettlementDestination.re + ' ' + pass[0] + ' в ' + the_humanSettlementDestination.ie + ' ' + pass[1] +
+				'а через несколько минут после этого из ' + the_humanSettlementDestination.re + ' ' + pass[1] + ' в ' + the_humanSettlementDestination.ve + ' ' + pass[0] +
 				' навстречу перв' + ['ому', 'ой'][driver.rod] + ' ' + driver.de + ' выехал' + ['', 'а'][driver.rod] + ' втор' + ['ой', 'ая'][driver.rod] +
 				' ' + driver.ie + ' со скоростью $' + speed2 + '$ км/ч. В момент встречи оказалось, ' +
 				'что они проехали равные расстояния. ' +
@@ -44,6 +44,6 @@
 })();
 
 //4032141
-//Открытый банк заданий 3D868D
+// 3D868D, 820FF4
 //zer00player
 
