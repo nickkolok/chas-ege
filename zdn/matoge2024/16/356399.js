@@ -5,14 +5,14 @@
         let preference = ['radius', 'area', 'diagonal'];
 
         let rand = getSelectedPreferenceFromList(key, preference);
-        
+
         let square = new Square({
             length: sl(5, 50)*[1,2*(2).sqrt()][Number(rand==2)],
             supplementary: {
                 calculateDiagonals: true,
             }
         });
-        
+
         if (rand == 2) {
             square.connectVerticesInConnectionMatrix([
                 [[0, 2], [1, 3]].iz(),
