@@ -22,7 +22,7 @@
 			ctx.rotate(-rhombus.angleAInRadians / 2);
 
 			ctx.scale(1, -1);
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, rhombus.connectionMatrix);
