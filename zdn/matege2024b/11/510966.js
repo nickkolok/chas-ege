@@ -55,7 +55,6 @@
 			authors: ['chas-ege-selena'],
 			preference: [preferenceMultiplier],
 		});
-		NAtask.modifiers.allDecimalsToStandard(true);
 
 		let paint1 = function (ct) {
 			// Рисуем в условных единицах (радиус первой кружки = 1), ось y направлена вверх.
@@ -119,6 +118,7 @@
 			height: 230,
 			paint: paint1,
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 //510966
