@@ -40,7 +40,7 @@
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, connectionMatrix);
-            ctx.drawArc(0, 0, points[1].x, 0, 2 * Math.PI);
+            ctx.drawCircle(points[1].x);
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
@@ -53,12 +53,12 @@
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.variativeABC(letters);
-        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
+        NAtask.modifiers.allDecimalsToStandard(true);
     }, 20000);
 
 })();
