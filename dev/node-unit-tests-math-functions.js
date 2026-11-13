@@ -1,0 +1,1555 @@
+'use strict';
+
+/**
+ * Юнит-тесты для lib/math_functions.js (Node.js / QUnit)
+ * Подключаются через require() в run-node-tests.js
+ *
+ * Большинство функций проверяется по исходнику: lib/math_functions.js
+ * читается с диска и выполняется внутри отдельной функции, так что тесты
+ * видят текущий текст файла и без пересборки. Функции, которым нужна
+ * остальная сборка (createSpline, paintSpline, блок экспорта), проверяются
+ * в составе build/lib/chas-lib.js — для них перед тестами нужен grunt.
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+function loadMathFunctions(names) {
+    const source = fs.readFileSync(path.join(__dirname, '..', 'lib', 'math_functions.js'), 'utf8');
+    return new Function(source + '\nreturn {' + names.join(', ') + '};')();
+}
+
+// Эталон: корень методом деления пополам
+function bisection(func, a, b) {
+    let fa = func(a);
+    for (let i = 0; i < 200; i++) {
+        const m = (a + b) / 2;
+        const fm = func(m);
+        if (fm === 0) {
+            return m;
+        }
+        if (fa * fm < 0) {
+            b = m;
+        } else {
+            a = m;
+            fa = fm;
+        }
+    }
+    return (a + b) / 2;
+}
+
+// console.error на время вызова заглушается и подсчитывается
+function countConsoleErrors(callback) {
+    const original = console.error;
+    let count = 0;
+    console.error = function () {
+        count++;
+    };
+    try {
+        callback();
+    } finally {
+        console.error = original;
+    }
+    return count;
+}
+
+module.exports = function registerMathFunctionsTests(QUnit) {
+
+    const {
+        brent, findRoots, findIntersectionPoints, findIntegerPointsInInterval,
+        findPositiveAndNegativeIntervals, findPositiveIntervals, findNegativeIntervals,
+        findPositiveAndNegativePoints, findPositiveIntegerPoints, findNegativeIntegerPoints,
+    } = loadMathFunctions([
+        'brent', 'findRoots', 'findIntersectionPoints', 'findIntegerPointsInInterval',
+        'findPositiveAndNegativeIntervals', 'findPositiveIntervals', 'findNegativeIntervals',
+        'findPositiveAndNegativePoints', 'findPositiveIntegerPoints', 'findNegativeIntegerPoints',
+    ]);
+    const {
+        getRandomSubSegment, isCloseToInteger, isDistinctByTolerance, findPointsInIntervals,
+        intPoints, intPointsWithTolerance,
+    } = loadMathFunctions([
+        'getRandomSubSegment', 'isCloseToInteger', 'isDistinctByTolerance', 'findPointsInIntervals',
+        'intPoints', 'intPointsWithTolerance',
+    ]);
+    const {
+        findExtremumsOfFunction, findAllExtremumsOfFunctionSort, findIntExtremumsOfFunction,
+        extremumsX, extremumsY, findMinimums, findMaximums, minimumsX, maximumsX,
+    } = loadMathFunctions([
+        'findExtremumsOfFunction', 'findAllExtremumsOfFunctionSort', 'findIntExtremumsOfFunction',
+        'extremumsX', 'extremumsY', 'findMinimums', 'findMaximums', 'minimumsX', 'maximumsX',
+    ]);
+    const { transformExtremumsToIntervals } = loadMathFunctions(['transformExtremumsToIntervals']);
+    const { addRoots } = loadMathFunctions(['addRoots']);
+    const {
+        findIntervalsOfIncreaseAndDecrease, findIncreasingIntervals, findDecreasingIntervals,
+        findIncreasingAndDecreasingPoints, findIncreasingIntegerPoints, findDecreasingIntegerPoints,
+    } = loadMathFunctions([
+        'findIntervalsOfIncreaseAndDecrease', 'findIncreasingIntervals', 'findDecreasingIntervals',
+        'findIncreasingAndDecreasingPoints', 'findIncreasingIntegerPoints', 'findDecreasingIntegerPoints',
+    ]);
+
+    const EPS = 1e-6;
+
+    function assertClose(assert, actual, expected, message) {
+        assert.ok(Math.abs(actual - expected) < EPS, message + ' (получено ' + actual + ', ожидалось ' + expected + ')');
+    }
+
+    // ============================================================
+    //  brent  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: brent');
+
+    QUnit.test('brent: простые корни', function (assert) {
+        assertClose(assert, brent(x => x - 2.5, 0, 10), 2.5, 'x - 2.5 на [0; 10]');
+        assertClose(assert, brent(x => x * x - 2, 0, 2), Math.SQRT2, 'x² - 2 на [0; 2]');
+        assertClose(assert, brent(x => x * x * x - x - 2, 1, 2), 1.5213797068, 'x³ - x - 2 на [1; 2]');
+        assertClose(assert, brent(Math.cos, 0, 3), Math.PI / 2, 'cos x на [0; 3]');
+        assertClose(assert, brent(x => Math.exp(x) - 3, 0, 5), Math.log(3), 'eˣ - 3 на [0; 5]');
+    });
+
+    QUnit.test('brent: корень не подменяется концом отрезка', function (assert) {
+        assertClose(assert, brent(Math.sin, -7, -5.5), -2 * Math.PI, 'sin x на [-7; -5,5]');
+        assertClose(assert, brent(Math.sin, 2.5, 4), Math.PI, 'sin x на [2,5; 4]');
+        assertClose(assert, brent(x => Math.pow(x - 1, 3) + 0.3 * (x - 1), -5, 5), 1, '(x-1)³ + 0,3(x-1) на [-5; 5]');
+    });
+
+    QUnit.test('brent: порядок концов отрезка не важен', function (assert) {
+        assertClose(assert, brent(x => x - 2.5, 10, 0), 2.5, 'x - 2.5 на [10; 0]');
+        assertClose(assert, brent(x => 2.5 - x, 0, 10), 2.5, 'убывающая функция');
+    });
+
+    QUnit.test('brent: сверка с делением пополам', function (assert) {
+        let checked = 0;
+        let wrong = [];
+        for (let i = 0; i < 70; i++) {
+            const root = -3 + i * 0.083;
+            const funcs = [
+                x => Math.pow(x - root, 3) + 0.3 * (x - root),
+                x => Math.atan(4 * (x - root)),
+                x => Math.exp(x - root) - 1,
+            ];
+            for (let k = 0; k < funcs.length; k++) {
+                const expected = bisection(funcs[k], -5, 5);
+                const actual = brent(funcs[k], -5, 5);
+                checked++;
+                if (!(Math.abs(actual - expected) < EPS)) {
+                    wrong.push('функция ' + k + ', корень ' + root + ': получено ' + actual);
+                }
+            }
+        }
+        assert.equal(checked, 210, 'проверено 210 случаев');
+        assert.deepEqual(wrong, [], 'расхождений с делением пополам нет');
+    });
+
+    QUnit.test('brent: заданная точность соблюдается', function (assert) {
+        const root = brent(x => x * x - 2, 0, 2, 1e-12);
+        assert.ok(Math.abs(root - Math.SQRT2) < 1e-10, 'точность 1e-12 даёт ошибку меньше 1e-10 (получено ' + root + ')');
+    });
+
+    QUnit.test('brent: на концах нужны значения разных знаков', function (assert) {
+        assert.throws(() => brent(x => x * x + 1, -1, 1), 'нет корня: исключение');
+        assert.throws(() => brent(x => x - 2, 3, 5), 'корень вне отрезка: исключение');
+        assert.throws(() => brent(x => x - 2, 2, 5), 'нуль ровно на конце отрезка: исключение');
+    });
+
+    QUnit.test('brent: превышение числа итераций', function (assert) {
+        assert.throws(() => brent(x => x * x * x - 2, 0, 1000, 1e-12, 2), 'двух итераций не хватает: исключение');
+    });
+
+    // ============================================================
+    //  findRoots  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findRoots');
+
+    function assertRoots(assert, actual, expected, message) {
+        const ok = actual.length === expected.length &&
+            actual.every((root, i) => Math.abs(root - expected[i]) < EPS);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось ' + JSON.stringify(expected) + ')');
+    }
+
+    QUnit.test('findRoots: корни между узлами сетки', function (assert) {
+        assertRoots(assert, findRoots(x => x * x - 2, -5, 5), [-Math.SQRT2, Math.SQRT2], 'x² - 2 на [-5; 5]');
+        assertRoots(assert, findRoots(Math.sin, -7, 7),
+            [-2 * Math.PI, -Math.PI, 0, Math.PI, 2 * Math.PI], 'sin x на [-7; 7]');
+        assertRoots(assert, findRoots(x => (x - 1) * (x + 2), -5, 5), [-2, 1], '(x-1)(x+2) на [-5; 5]');
+    });
+
+    QUnit.test('findRoots: корень ровно в узле сетки не теряется', function (assert) {
+        assertRoots(assert, findRoots(x => x - 2.5, -5, 10), [2.5], 'x - 2.5 на [-5; 10]');
+        assertRoots(assert, findRoots(x => x - 1, 0, 3, 1), [1], 'x - 1 на [0; 3] с шагом 1');
+        assertRoots(assert, findRoots(x => (x - 1) * (x - 2), 0, 3, 1), [1, 2], 'два корня в соседних узлах');
+    });
+
+    QUnit.test('findRoots: корни на концах отрезка', function (assert) {
+        assertRoots(assert, findRoots(x => x * (x - 3), 0, 3, 1), [0, 3], 'x(x-3) на [0; 3]');
+        assertRoots(assert, findRoots(x => x - 3, 0, 3, 0.7), [3], 'корень в maxX, шаг не делит отрезок нацело');
+    });
+
+    QUnit.test('findRoots: корни не дублируются', function (assert) {
+        const roots = findRoots(Math.sin, -7, 7);
+        assert.equal(roots.length, 5, 'у sin x на [-7; 7] ровно пять корней');
+        assertRoots(assert, findRoots(x => x, -1, 1, 0.25), [0], 'корень в узле найден один раз');
+    });
+
+    QUnit.test('findRoots: касание оси в узле сетки', function (assert) {
+        assertRoots(assert, findRoots(x => (x - 1) * (x - 1), 0, 2), [1], '(x-1)² на [0; 2]');
+        assertRoots(assert, findRoots(x => -(x - 0.3) * (x - 0.3), 0, 2), [0.3], '-(x-0,3)² на [0; 2]: узел 0,3 = 3 · 0,1');
+        assertRoots(assert, findRoots(x => (x + 2) * (x + 2) * (x - 0.7) * (x - 0.7), -5, 5), [-2, 0.7], 'два касания');
+        assertRoots(assert, findRoots(x => (x - 1) * (x - 1), 0, 2, 0.001), [1], 'с шагом 0,001');
+    });
+
+    QUnit.test('findRoots: узлы сетки не накапливают ошибку', function (assert) {
+        const visited = [];
+        findRoots(x => { visited.push(x); return 1; }, 0, 1);
+        assert.deepEqual(visited, [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], 'функция вычислена ровно в узлах');
+        const far = [];
+        findRoots(x => { far.push(x); return 1; }, -7, 7, 0.001);
+        assert.equal(far.length, 14001, 'при шаге 0,001 на [-7; 7] узлов 14001, каждый вычислен один раз');
+        assert.equal(far[far.length - 1], 7, 'последний узел — maxX');
+        assert.ok(far.every(x => x >= -7 && x <= 7), 'узлы не выходят за отрезок');
+    });
+
+    QUnit.test('findRoots: корней нет', function (assert) {
+        assert.deepEqual(findRoots(x => x * x + 1, -5, 5), [], 'x² + 1');
+        assert.deepEqual(findRoots(x => x - 20, -5, 5), [], 'корень вне отрезка');
+    });
+
+    QUnit.test('findRoots: корни идут по возрастанию и без сообщений об ошибках', function (assert) {
+        let roots;
+        const errors = countConsoleErrors(function () {
+            roots = findRoots(x => (x + 3) * (x + 0.5) * (x - 2.5) * (x - 4), -5, 5);
+        });
+        assertRoots(assert, roots, [-3, -0.5, 2.5, 4], 'четыре корня, часть из них в узлах сетки');
+        assert.equal(errors, 0, 'console.error не вызывался');
+    });
+
+    // ============================================================
+    //  findIntersectionPoints  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findIntersectionPoints');
+
+    QUnit.test('findIntersectionPoints: пересечения с горизонтальной прямой', function (assert) {
+        assertRoots(assert, findIntersectionPoints(x => x * x, 2, -5, 5),
+            [-Math.SQRT2, Math.SQRT2], 'y = x² и y = 2');
+        assertRoots(assert, findIntersectionPoints(Math.sin, 0.5, 0, 7),
+            [Math.PI / 6, 5 * Math.PI / 6, 13 * Math.PI / 6], 'y = sin x и y = 0,5 на [0; 7]');
+        assertRoots(assert, findIntersectionPoints(x => 2 * x + 1, -3, -5, 5), [-2], 'y = 2x + 1 и y = -3');
+    });
+
+    QUnit.test('findIntersectionPoints: пересечение в узле сетки не теряется и не дублируется', function (assert) {
+        let points;
+        const errors = countConsoleErrors(function () {
+            points = findIntersectionPoints(x => x * x, 4, 0, 4, 1);
+        });
+        assertRoots(assert, points, [2], 'y = x² и y = 4 на [0; 4] с шагом 1');
+        assert.equal(errors, 0, 'console.error не вызывался');
+        assertRoots(assert, findIntersectionPoints(x => x, 4, 0, 4, 1), [4], 'пересечение в maxX');
+    });
+
+    QUnit.test('findIntersectionPoints: пересечений нет', function (assert) {
+        assert.deepEqual(findIntersectionPoints(x => x * x, -1, -5, 5), [], 'y = x² и y = -1');
+    });
+
+    QUnit.test('findIntersectionPoints: при нулевой константе совпадает с findRoots', function (assert) {
+        const func = x => (x + 3) * (x - 0.37) * (x - 4);
+        assert.deepEqual(findIntersectionPoints(func, 0, -5, 5), findRoots(func, -5, 5), 'те же точки');
+    });
+
+    // ============================================================
+    //  findIntegerPointsInInterval  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findIntegerPointsInInterval');
+
+    // Строгий вариант: концы интервала не входят в ответ
+    const strictPoints = (interval, minX, maxX, includeMinX, includeMaxX) =>
+        findIntegerPointsInInterval(interval, minX, maxX, includeMinX, includeMaxX, undefined, true);
+
+    QUnit.test('findIntegerPointsInInterval: нецелые концы интервала', function (assert) {
+        assert.deepEqual(findIntegerPointsInInterval([-2.5, 3.5], -10, 10), [-2, -1, 0, 1, 2, 3], '[-2,5; 3,5]');
+        assert.deepEqual(findIntegerPointsInInterval([0.2, 0.8], -10, 10), [], 'целых точек нет');
+        assert.deepEqual(findIntegerPointsInInterval([1.5, 2.5], -10, 10), [2], 'одна точка');
+        assert.deepEqual(strictPoints([-2.5, 3.5], -10, 10), [-2, -1, 0, 1, 2, 3], 'строгий вариант даёт то же');
+    });
+
+    QUnit.test('findIntegerPointsInInterval: целые концы интервала входят в ответ', function (assert) {
+        // Промежутки монотонности записывают вместе с точками экстремума
+        assert.deepEqual(findIntegerPointsInInterval([1, 5], -10, 10), [1, 2, 3, 4, 5], '[1; 5]');
+        assert.deepEqual(findIntegerPointsInInterval([-2, 1], -5, 5), [-2, -1, 0, 1], '[-2; 1]');
+        assert.deepEqual(findIntegerPointsInInterval([3, 4], -10, 10), [3, 4], 'только концы');
+        assert.deepEqual(findIntegerPointsInInterval([2, 2], -10, 10), [2], 'вырожденный интервал');
+    });
+
+    QUnit.test('findIntegerPointsInInterval: соседние промежутки монотонности делят точку экстремума', function (assert) {
+        // Возрастает на [-3,5; 2], убывает на [2; 4,5]: точка 2 входит в оба промежутка
+        assert.deepEqual(findIntegerPointsInInterval([-3.5, 2], -5, 6), [-3, -2, -1, 0, 1, 2], 'возрастание');
+        assert.deepEqual(findIntegerPointsInInterval([2, 4.5], -5, 6), [2, 3, 4], 'убывание');
+    });
+
+    QUnit.test('findIntegerPointsInInterval: excludeIntervalEnds исключает концы интервала', function (assert) {
+        assert.deepEqual(strictPoints([1, 5], -10, 10), [2, 3, 4], '(1; 5)');
+        assert.deepEqual(strictPoints([-2, 1], -5, 5), [-1, 0], '(-2; 1)');
+        assert.deepEqual(strictPoints([3, 4], -10, 10), [], 'между соседними целыми точек нет');
+    });
+
+    QUnit.test('findIntegerPointsInInterval: шум в численно найденных концах', function (assert) {
+        assert.deepEqual(findIntegerPointsInInterval([-2.0000000000000018, 0.9999999999999989], -5, 5), [-2, -1, 0, 1],
+            'концы -2 и 1 с ошибкой округления входят');
+        assert.deepEqual(strictPoints([-2.0000000000000018, 0.9999999999999989], -5, 5), [-1, 0],
+            'в строгом варианте концы -2 и 1 не входят');
+        assert.deepEqual(strictPoints([-8.132383655379272e-15, 3.1415926516264103], -7, 7), [1, 2, 3],
+            'левый конец — нуль, найденный как -8e-15');
+        assert.deepEqual(strictPoints([8.132383655379272e-15, 3.1415926516264103], -7, 7), [1, 2, 3],
+            'левый конец — нуль, найденный как +8e-15');
+        assert.deepEqual(findIntegerPointsInInterval([8.132383655379272e-15, 3.1415926516264103], -7, 7), [0, 1, 2, 3],
+            'в нестрогом варианте нуль, найденный как +8e-15, входит');
+        assert.deepEqual(strictPoints([0.5, 2.00000002], -7, 7), [1], 'правый конец 2 с ошибкой 2e-8');
+        assert.deepEqual(strictPoints([0.5, 2.01], -7, 7), [1, 2], 'отличие 0,01 больше допуска: точка 2 лежит внутри');
+        assert.deepEqual(findIntegerPointsInInterval([0.5, 2.01], -7, 7, false, false, 0.05, true), [1],
+            'допуск можно задать явно');
+        assert.deepEqual(findIntegerPointsInInterval([0.5, 1.99], -7, 7, false, false, 0.05), [1, 2],
+            'с допуском 0,05 конец 1,99 считается точкой 2');
+    });
+
+    QUnit.test('findIntegerPointsInInterval: границы minX и maxX', function (assert) {
+        assert.deepEqual(findIntegerPointsInInterval([-5, 5], -3, 3), [-2, -1, 0, 1, 2], 'по умолчанию minX и maxX не входят');
+        assert.deepEqual(findIntegerPointsInInterval([-5, 5], -3, 3, true, false), [-3, -2, -1, 0, 1, 2], 'includeMinX');
+        assert.deepEqual(findIntegerPointsInInterval([-5, 5], -3, 3, false, true), [-2, -1, 0, 1, 2, 3], 'includeMaxX');
+        assert.deepEqual(findIntegerPointsInInterval([-3, 3], -3, 3, true, true), [-3, -2, -1, 0, 1, 2, 3],
+            'интервал совпадает с отрезком, оба конца включены');
+        assert.deepEqual(findIntegerPointsInInterval([-5, 5], -2.5, 2.5), [-2, -1, 0, 1, 2], 'нецелые minX и maxX');
+    });
+
+    QUnit.test('findIntegerPointsInInterval: конец интервала на границе области определения', function (assert) {
+        // Функция определена на интервале (-5; 6) и возрастает на [4,5; 6): точка 6 не входит
+        assert.deepEqual(findIntegerPointsInInterval([4.5, 6], -5, 6), [5], 'открытый конец области определения');
+        assert.deepEqual(findIntegerPointsInInterval([-5, -1.5], -5, 6), [-4, -3, -2], 'то же слева');
+        assert.deepEqual(findIntegerPointsInInterval([-5, 1], -5, 5, true, true), [-5, -4, -3, -2, -1, 0, 1],
+            'includeMinX включает minX, правый конец 1 входит как конец интервала');
+        assert.deepEqual(strictPoints([-5, 1], -5, 5, true, true), [-5, -4, -3, -2, -1, 0],
+            'строгий вариант: включённый minX остаётся, внутренний конец 1 исключён');
+        assert.deepEqual(strictPoints([-5, 1], -5, 5), [-4, -3, -2, -1, 0],
+            'строгий вариант без includeMinX исключает оба конца');
+    });
+
+    QUnit.test('findIntegerPointsInInterval: интервал как собственные границы', function (assert) {
+        // Так функцию вызывает setTaskWithGraphOfFunctionDerivative: концы
+        // совпадают с minX и maxX и потому не входят в ответ
+        const call = interval => findIntegerPointsInInterval(interval, interval[0], interval[1]);
+        assert.deepEqual(call([-2.0000000000000018, 0.9999999999999989]), [-1, 0], 'концы с шумом');
+        assert.deepEqual(call([-2, 1]), [-1, 0], 'целые концы');
+        assert.deepEqual(call([-6.7, -3.2]), [-6, -5, -4], 'нецелые концы');
+        assert.deepEqual(call([2, 3]), [], 'пусто');
+    });
+
+    QUnit.test('findIntegerPointsInInterval: интервал вне отрезка', function (assert) {
+        assert.deepEqual(findIntegerPointsInInterval([6, 9], -5, 5), [], 'правее maxX');
+        assert.deepEqual(findIntegerPointsInInterval([-9, -6], -5, 5, true, true), [], 'левее minX');
+    });
+
+    // ============================================================
+    //  Интервалы знакопостоянства  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: интервалы знакопостоянства');
+
+    function assertIntervals(assert, actual, expected, message) {
+        const ok = actual.length === expected.length && actual.every((interval, i) =>
+            Math.abs(interval[0] - expected[i][0]) < EPS && Math.abs(interval[1] - expected[i][1]) < EPS);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось ' + JSON.stringify(expected) + ')');
+    }
+
+    const parabola = x => (x - 1) * (x + 2);
+
+    QUnit.test('findPositiveAndNegativeIntervals: парабола', function (assert) {
+        const intervals = findPositiveAndNegativeIntervals(parabola, -5, 5);
+        assertIntervals(assert, intervals.positiveIntervals, [[-5, -2], [1, 5]], 'положительна на (-5; -2) и (1; 5)');
+        assertIntervals(assert, intervals.negativeIntervals, [[-2, 1]], 'отрицательна на (-2; 1)');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: функция без корней', function (assert) {
+        let intervals = findPositiveAndNegativeIntervals(x => x * x + 1, -5, 5);
+        assertIntervals(assert, intervals.positiveIntervals, [[-5, 5]], 'x² + 1 положительна на всём отрезке');
+        assertIntervals(assert, intervals.negativeIntervals, [], 'отрицательных интервалов нет');
+
+        intervals = findPositiveAndNegativeIntervals(x => -x * x - 1, -5, 5);
+        assertIntervals(assert, intervals.positiveIntervals, [], '-x² - 1: положительных интервалов нет');
+        assertIntervals(assert, intervals.negativeIntervals, [[-5, 5]], '-x² - 1 отрицательна на всём отрезке');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: синус', function (assert) {
+        const intervals = findPositiveAndNegativeIntervals(Math.sin, -7, 7);
+        const pi = Math.PI;
+        assertIntervals(assert, intervals.positiveIntervals, [[-2 * pi, -pi], [0, pi], [2 * pi, 7]], 'положительные');
+        assertIntervals(assert, intervals.negativeIntervals, [[-7, -2 * pi], [-pi, 0], [pi, 2 * pi]], 'отрицательные');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: интервалы не пересекаются и покрывают отрезок', function (assert) {
+        const func = x => (x + 3) * (x + 0.5) * (x - 2.5) * (x - 4);
+        const intervals = findPositiveAndNegativeIntervals(func, -5, 5);
+        const all = intervals.positiveIntervals.concat(intervals.negativeIntervals).sort((a, b) => a[0] - b[0]);
+        assertIntervals(assert, all, [[-5, -3], [-3, -0.5], [-0.5, 2.5], [2.5, 4], [4, 5]], 'пять кусков подряд');
+        assert.equal(intervals.positiveIntervals.length, 3, 'три положительных');
+        assert.equal(intervals.negativeIntervals.length, 2, 'два отрицательных');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: касание оси без смены знака', function (assert) {
+        // Точка касания, известная как корень, разделяет интервалы
+        let intervals = findPositiveAndNegativeIntervals(x => x * x, -5, 5, [0]);
+        assertIntervals(assert, intervals.positiveIntervals, [[-5, 0], [0, 5]], 'x²: два интервала, нуль между ними');
+        assertIntervals(assert, intervals.negativeIntervals, [], 'отрицательных интервалов нет');
+
+        // findRoots видит касание, только если оно попало в узел сетки; иначе
+        // интервал остаётся цельным, но знак всё равно определяется верно,
+        // даже когда середина куска совпала с точкой касания
+        intervals = findPositiveAndNegativeIntervals(x => x * x, -5, 5, []);
+        assertIntervals(assert, intervals.positiveIntervals, [[-5, 5]], 'x² без известных корней: один интервал');
+        assertIntervals(assert, intervals.negativeIntervals, [], 'отрицательных интервалов нет');
+
+        intervals = findPositiveAndNegativeIntervals(x => -x * x, -5, 5, []);
+        assertIntervals(assert, intervals.negativeIntervals, [[-5, 5]], '-x² без известных корней: один интервал');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: корни на концах отрезка', function (assert) {
+        const intervals = findPositiveAndNegativeIntervals(x => x * (x - 3), 0, 3);
+        assertIntervals(assert, intervals.positiveIntervals, [], 'положительных интервалов нет');
+        assertIntervals(assert, intervals.negativeIntervals, [[0, 3]], 'отрицательна на (0; 3)');
+    });
+
+    QUnit.test('findPositiveAndNegativeIntervals: готовые корни четвёртым аргументом', function (assert) {
+        let calls = 0;
+        const counted = x => {
+            calls++;
+            return parabola(x);
+        };
+        const intervals = findPositiveAndNegativeIntervals(counted, -5, 5, [1, -2]);
+        assertIntervals(assert, intervals.positiveIntervals, [[-5, -2], [1, 5]], 'корни можно передать в любом порядке');
+        assertIntervals(assert, intervals.negativeIntervals, [[-2, 1]], 'отрицательный интервал');
+        assert.equal(calls, 3, 'функция вычислена только в серединах трёх кусков');
+
+        const outside = findPositiveAndNegativeIntervals(parabola, -5, 5, [-7, -2, 1, 9]);
+        assertIntervals(assert, outside.positiveIntervals, [[-5, -2], [1, 5]], 'корни вне отрезка отбрасываются');
+    });
+
+    QUnit.test('findPositiveIntervals и findNegativeIntervals', function (assert) {
+        assertIntervals(assert, findPositiveIntervals(parabola, -5, 5), [[-5, -2], [1, 5]], 'положительные интервалы параболы');
+        assertIntervals(assert, findNegativeIntervals(parabola, -5, 5), [[-2, 1]], 'отрицательный интервал параболы');
+        assertIntervals(assert, findPositiveIntervals(x => -x * x - 1, -5, 5), [], 'положительных интервалов нет');
+        assertIntervals(assert, findNegativeIntervals(x => x * x + 1, -5, 5), [], 'отрицательных интервалов нет');
+        assertIntervals(assert, findPositiveIntervals(Math.sin, -7, 7, 0.1),
+            [[-2 * Math.PI, -Math.PI], [0, Math.PI], [2 * Math.PI, 7]], 'синус с шагом 0,1');
+    });
+
+    // ============================================================
+    //  Целые точки, где функция положительна или отрицательна
+    // ============================================================
+    QUnit.module('Math Functions: целые точки знакопостоянства');
+
+    QUnit.test('findPositiveAndNegativePoints', function (assert) {
+        const intervals = { positiveIntervals: [[-5, -2], [1, 5]], negativeIntervals: [[-2, 1]] };
+        assert.deepEqual(findPositiveAndNegativePoints(intervals, -5, 5),
+            { positivePoints: [-4, -3, 2, 3, 4], negativePoints: [-1, 0] }, 'концы отрезка и корни не входят');
+        assert.deepEqual(findPositiveAndNegativePoints(intervals, -5, 5, true, true),
+            { positivePoints: [-5, -4, -3, 2, 3, 4, 5], negativePoints: [-1, 0] }, 'концы отрезка включены');
+        assert.deepEqual(findPositiveAndNegativePoints({ positiveIntervals: [], negativeIntervals: [] }, -5, 5),
+            { positivePoints: [], negativePoints: [] }, 'интервалов нет');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: парабола с целыми корнями', function (assert) {
+        assert.deepEqual(findPositiveIntegerPoints(parabola, -5, 5), [-4, -3, 2, 3, 4], 'положительна');
+        assert.deepEqual(findNegativeIntegerPoints(parabola, -5, 5), [-1, 0], 'отрицательна');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: синус', function (assert) {
+        assert.deepEqual(findPositiveIntegerPoints(Math.sin, -7, 7), [-6, -5, -4, 1, 2, 3], 'положителен; нуль не входит');
+        assert.deepEqual(findNegativeIntegerPoints(Math.sin, -7, 7), [-3, -2, -1, 4, 5, 6], 'отрицателен; нуль не входит');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: функция без корней', function (assert) {
+        assert.deepEqual(findPositiveIntegerPoints(x => x * x + 1, -3, 3), [-2, -1, 0, 1, 2], 'x² + 1 положительна');
+        assert.deepEqual(findNegativeIntegerPoints(x => x * x + 1, -3, 3), [], 'отрицательных точек нет');
+        assert.deepEqual(findNegativeIntegerPoints(x => -x * x - 1, -3, 3), [-2, -1, 0, 1, 2], '-x² - 1 отрицательна');
+        assert.deepEqual(findPositiveIntegerPoints(x => -x * x - 1, -3, 3), [], 'положительных точек нет');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: касание оси в целой точке', function (assert) {
+        assert.deepEqual(findPositiveIntegerPoints(x => (x - 1) * (x - 1), -3, 3), [-2, -1, 0, 2], 'точка касания 1 не входит');
+        assert.deepEqual(findNegativeIntegerPoints(x => -(x - 1) * (x - 1), -3, 3), [-2, -1, 0, 2], 'точка касания 1 не входит');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: нецелые концы отрезка', function (assert) {
+        assert.deepEqual(findPositiveIntegerPoints(parabola, -4.5, 3.5), [-4, -3, 2, 3], 'положительна на (-4,5; 3,5)');
+        assert.deepEqual(findNegativeIntegerPoints(parabola, -4.5, 3.5), [-1, 0], 'отрицательна на (-4,5; 3,5)');
+    });
+
+    QUnit.test('целые точки: каждая точка интервала попадает ровно в одно множество', function (assert) {
+        const func = x => (x + 3.5) * (x + 0.5) * (x - 2.5) * (x - 4.25);
+        const positive = findPositiveIntegerPoints(func, -5, 5);
+        const negative = findNegativeIntegerPoints(func, -5, 5);
+        assert.deepEqual(positive.concat(negative).sort((a, b) => a - b), [-4, -3, -2, -1, 0, 1, 2, 3, 4],
+            'вместе дают все целые точки интервала (-5; 5)');
+        assert.ok(positive.every(x => func(x) > 0), 'в «положительных» точках функция положительна');
+        assert.ok(negative.every(x => func(x) < 0), 'в «отрицательных» точках функция отрицательна');
+    });
+
+    // ============================================================
+    //  getRandomSubSegment  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: getRandomSubSegment');
+
+    // Сводка по многим случайным отрезкам
+    function sampleSubSegments(minX, maxX, stepX, count) {
+        const summary = { min: Infinity, max: -Infinity, minLength: Infinity, maxLength: -Infinity, nonInteger: 0, lengths: {} };
+        for (let i = 0; i < count; i++) {
+            const [start, end] = getRandomSubSegment(minX, maxX, stepX);
+            summary.min = Math.min(summary.min, start);
+            summary.max = Math.max(summary.max, end);
+            summary.minLength = Math.min(summary.minLength, end - start);
+            summary.maxLength = Math.max(summary.maxLength, end - start);
+            summary.lengths[end - start] = true;
+            if (!Number.isInteger(start) || !Number.isInteger(end)) {
+                summary.nonInteger++;
+            }
+        }
+        return summary;
+    }
+
+    QUnit.test('getRandomSubSegment: отрезок лежит внутри заданного и не короче stepX', function (assert) {
+        const cases = [[-5, 5, 4], [-5, 5, 1], [-4, 3, 3], [-10, 9, 4], [0, 20, 7]];
+        for (const [minX, maxX, stepX] of cases) {
+            const summary = sampleSubSegments(minX, maxX, stepX, 2000);
+            const label = '[' + minX + '; ' + maxX + '], stepX = ' + stepX + ': ';
+            assert.ok(summary.min >= minX && summary.max <= maxX, label + 'не выходит за границы');
+            assert.ok(summary.minLength >= stepX, label + 'длина не меньше stepX');
+            assert.equal(summary.nonInteger, 0, label + 'концы целые');
+        }
+    });
+
+    QUnit.test('getRandomSubSegment: встречаются все допустимые длины и крайние положения', function (assert) {
+        const summary = sampleSubSegments(-5, 5, 4, 5000);
+        assert.deepEqual(Object.keys(summary.lengths).map(Number).sort((a, b) => a - b), [4, 5, 6, 7, 8, 9, 10],
+            'длины от 4 до 10');
+        assert.equal(summary.min, -5, 'отрезок может начинаться в minX');
+        assert.equal(summary.max, 5, 'отрезок может заканчиваться в maxX');
+    });
+
+    QUnit.test('getRandomSubSegment: единственный возможный отрезок', function (assert) {
+        assert.deepEqual(getRandomSubSegment(0, 3, 3), [0, 3], 'stepX равен длине всего отрезка');
+        assert.deepEqual(getRandomSubSegment(2, 3, 1), [2, 3], 'отрезок единичной длины');
+    });
+
+    QUnit.test('getRandomSubSegment: нецелые аргументы', function (assert) {
+        let summary = sampleSubSegments(-5.5, 5.5, 2, 2000);
+        assert.equal(summary.nonInteger, 0, 'нецелые границы: концы всё равно целые');
+        assert.ok(summary.min >= -5 && summary.max <= 5, 'нецелые границы: отрезок внутри [-5; 5]');
+
+        summary = sampleSubSegments(-5, 5, 0.5, 2000);
+        assert.equal(summary.nonInteger, 0, 'stepX = 0,5: концы целые');
+        assert.ok(summary.minLength >= 1, 'stepX = 0,5: длина не меньше 1');
+
+        summary = sampleSubSegments(-5, 5, 2.5, 2000);
+        assert.ok(summary.minLength >= 3, 'stepX = 2,5: длина не меньше 3');
+    });
+
+    QUnit.test('getRandomSubSegment: вырожденный отрезок не выдаётся', function (assert) {
+        const summary = sampleSubSegments(-3, 3, 0, 2000);
+        assert.ok(summary.minLength >= 1, 'при stepX = 0 длина не меньше 1');
+    });
+
+    QUnit.test('getRandomSubSegment: слишком большой stepX', function (assert) {
+        assert.throws(() => getRandomSubSegment(-5, 5, 12), 'отрезок длины 12 не помещается в [-5; 5]');
+        assert.throws(() => getRandomSubSegment(0.2, 0.8, 1), 'между границами нет целых точек');
+    });
+
+    // ============================================================
+    //  isCloseToInteger, isDistinctByTolerance  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: сравнение с допуском');
+
+    QUnit.test('isCloseToInteger', function (assert) {
+        assert.strictEqual(isCloseToInteger(3, 0), true, 'целое число при нулевом допуске');
+        assert.strictEqual(isCloseToInteger(2.95, 0.1), true, '2,95 при допуске 0,1');
+        assert.strictEqual(isCloseToInteger(3.05, 0.1), true, '3,05 при допуске 0,1');
+        assert.strictEqual(isCloseToInteger(2.8, 0.1), false, '2,8 при допуске 0,1');
+        assert.strictEqual(isCloseToInteger(-0.15, 0.2), true, 'отрицательное число рядом с нулём');
+        assert.strictEqual(isCloseToInteger(-3.9, 0.2), true, '-3,9 при допуске 0,2');
+        assert.strictEqual(isCloseToInteger(-3.5, 0.2), false, '-3,5 при допуске 0,2');
+        assert.strictEqual(isCloseToInteger(2.5, 0.5), true, 'граница допуска входит');
+        assert.strictEqual(isCloseToInteger(2.5, 0.49), false, 'чуть меньше границы');
+        assert.strictEqual(isCloseToInteger(NaN, 1), false, 'NaN');
+    });
+
+    QUnit.test('isDistinctByTolerance', function (assert) {
+        assert.strictEqual(isDistinctByTolerance([1, 2.5, 4], 1), true, 'все значения далеко друг от друга');
+        assert.strictEqual(isDistinctByTolerance([1, 1.5, 4], 1), false, 'два значения ближе допуска');
+        assert.strictEqual(isDistinctByTolerance([4, 1, 1.5], 1), false, 'близкие значения стоят не рядом в массиве');
+        assert.strictEqual(isDistinctByTolerance([1, 2, 3], 1), true, 'разность, равная допуску, считается достаточной');
+        assert.strictEqual(isDistinctByTolerance([2, 2], 0.1), false, 'одинаковые значения');
+        assert.strictEqual(isDistinctByTolerance([-1, 1], 1.5), true, 'числа разных знаков');
+        assert.strictEqual(isDistinctByTolerance([5], 1), true, 'одно значение');
+        assert.strictEqual(isDistinctByTolerance([], 1), true, 'пустой массив');
+    });
+
+    // ============================================================
+    //  findPointsInIntervals  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findPointsInIntervals');
+
+    QUnit.test('findPointsInIntervals', function (assert) {
+        const points = [-3, -1.5, 0, 2, 2.5, 4];
+        assert.deepEqual(findPointsInIntervals(points, [-2, 3]), [-1.5, 0, 2, 2.5], 'точки внутри интервала');
+        assert.deepEqual(findPointsInIntervals(points, [-3, 4]), [-1.5, 0, 2, 2.5], 'по умолчанию концы не входят');
+        assert.deepEqual(findPointsInIntervals(points, [-3, 4], true, false), [-3, -1.5, 0, 2, 2.5], 'левый конец включён');
+        assert.deepEqual(findPointsInIntervals(points, [-3, 4], false, true), [-1.5, 0, 2, 2.5, 4], 'правый конец включён');
+        assert.deepEqual(findPointsInIntervals(points, [-3, 4], true, true), points, 'оба конца включены');
+        assert.deepEqual(findPointsInIntervals(points, [5, 9]), [], 'в интервале нет точек');
+        assert.deepEqual(findPointsInIntervals([], [-3, 4]), [], 'пустой список точек');
+        assert.deepEqual(findPointsInIntervals([4, -1.5, 2], [-2, 3]), [-1.5, 2], 'порядок точек сохраняется');
+    });
+
+    // ============================================================
+    //  intPoints, intPointsWithTolerance  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: intPoints');
+
+    const halfSquare = x => x * x / 2;
+
+    // Значения ниже сверены с intPoints из lib/func.js: функция должна
+    // остаться для существующих шаблонов такой же
+    QUnit.test('intPoints: точки графика с целыми координатами', function (assert) {
+        assert.deepEqual(intPoints(halfSquare, { minX: -3, maxX: 3, minY: -5, maxY: 5 }),
+            [[-2, 2], [0, 0], [2, 2]], 'x²/2 на [-3; 3)');
+        assert.deepEqual(intPoints(x => 2 * x + 1, { minX: -2, maxX: 2, minY: -10, maxY: 10 }),
+            [[-2, -3], [-1, -1], [0, 1], [1, 3]], 'правая граница maxX не входит');
+        assert.deepEqual(intPoints(x => 2 * x + 0.5, { minX: -3, maxX: 3, minY: -10, maxY: 10 }), [], 'целых значений нет');
+    });
+
+    QUnit.test('intPoints: ограничения по y', function (assert) {
+        assert.deepEqual(intPoints(halfSquare, { minX: -5, maxX: 5, minY: 0, maxY: 2 }),
+            [[-2, 2], [0, 0], [2, 2]], 'точки выше maxY отброшены');
+        assert.deepEqual(intPoints(halfSquare, { minX: -5, maxX: 5, minY: 1, maxY: 8 }),
+            [[-4, 8], [-2, 2], [2, 2], [4, 8]], 'границы minY и maxY входят');
+        assert.deepEqual(intPoints(halfSquare, { minX: -3, maxX: 3 }), [], 'без minY и maxY точек нет');
+    });
+
+    QUnit.test('intPoints: нецелые границы и шаг', function (assert) {
+        const options = { minX: -3.5, maxX: 4.5, minY: 0, maxY: 5 };
+        assert.deepEqual(intPoints(halfSquare, options), [[-2, 2], [0, 0], [2, 2]], 'границы округляются внутрь');
+        assert.deepEqual(options, { minX: -3, maxX: 4, minY: 0, maxY: 5, step: 1 }, 'объект параметров при этом изменяется');
+        assert.deepEqual(intPoints(x => 2 * x, { minX: -1, maxX: 1.5, minY: -5, maxY: 5, step: 0.5 }),
+            [[-1, -2], [-0.5, -1], [0, 0], [0.5, 1], [1, 2]], 'с явным шагом абсциссы могут быть нецелыми');
+    });
+
+    QUnit.test('intPoints: значения, не являющиеся числами', function (assert) {
+        assert.deepEqual(intPoints(x => 1 / x, { minX: -2, maxX: 3, minY: -5, maxY: 5 }),
+            [[-1, -1], [1, 1]], '1/x: точка x = 0 пропущена');
+        assert.deepEqual(intPoints(Math.sqrt, { minX: -4, maxX: 10, minY: -5, maxY: 5 }),
+            [[0, 0], [1, 1], [4, 2], [9, 3]], '√x: отрицательные x пропущены');
+    });
+
+    QUnit.test('intPoints: функция вычисляется один раз на точку', function (assert) {
+        let calls = 0;
+        intPoints(x => {
+            calls++;
+            return x;
+        }, { minX: 0, maxX: 5, minY: -5, maxY: 5 });
+        assert.equal(calls, 5, 'пять точек — пять вызовов');
+    });
+
+    QUnit.test('intPointsWithTolerance', function (assert) {
+        const shifted = x => x * x / 2 + 0.05;
+        assert.deepEqual(intPointsWithTolerance(shifted, { minX: -3, maxX: 3, minY: 0, maxY: 5, tolerance: 0.1 }),
+            [[-2, 2.05], [0, 0.05], [2, 2.05]], 'значения возвращаются без округления');
+        assert.deepEqual(intPointsWithTolerance(shifted, { minX: -3, maxX: 3, minY: 0, maxY: 5, tolerance: 0.01 }),
+            [], 'при меньшем допуске точек нет');
+        assert.deepEqual(intPointsWithTolerance(x => x, { minX: -1, maxX: 2, minY: -5, maxY: 5, tolerance: 0.1 }),
+            [[-1, -1], [0, 0], [1, 1], [2, 2]], 'в отличие от intPoints, правая граница maxX входит');
+        assert.deepEqual(intPointsWithTolerance(shifted, { minX: -4.5, maxX: 4.5, minY: 1, maxY: 3, tolerance: 0.1 }),
+            [[-2, 2.05], [2, 2.05]], 'нецелые границы и ограничения по y');
+    });
+
+    // ============================================================
+    //  findExtremumsOfFunction  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findExtremumsOfFunction');
+
+    // Сравнение списков точек [x, y] с точностью EPS
+    function assertPoints(assert, actual, expected, message) {
+        const ok = actual.length === expected.length && actual.every((point, i) =>
+            Math.abs(point[0] - expected[i][0]) < EPS && Math.abs(point[1] - expected[i][1]) < EPS);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось ' + JSON.stringify(expected) + ')');
+    }
+
+    const cubic = x => x * x * x - 3 * x; // максимум в (-1; 2), минимум в (1; -2)
+
+    QUnit.test('findExtremumsOfFunction: парабола и кубическая функция', function (assert) {
+        let extremums = findExtremumsOfFunction(x => (x - 1) * (x - 1) - 4, -5, 5);
+        assertPoints(assert, extremums.minP, [[1, -4]], '(x-1)² - 4: минимум в (1; -4)');
+        assertPoints(assert, extremums.maxP, [], '(x-1)² - 4: максимумов нет');
+
+        extremums = findExtremumsOfFunction(cubic, -3, 3);
+        assertPoints(assert, extremums.maxP, [[-1, 2]], 'x³ - 3x: максимум в (-1; 2)');
+        assertPoints(assert, extremums.minP, [[1, -2]], 'x³ - 3x: минимум в (1; -2)');
+    });
+
+    QUnit.test('findExtremumsOfFunction: тригонометрические функции', function (assert) {
+        const pi = Math.PI;
+        let extremums = findExtremumsOfFunction(Math.cos, -7, 7);
+        assertPoints(assert, extremums.maxP, [[-2 * pi, 1], [0, 1], [2 * pi, 1]], 'cos x: максимумы');
+        assertPoints(assert, extremums.minP, [[-pi, -1], [pi, -1]], 'cos x: минимумы');
+
+        extremums = findExtremumsOfFunction(Math.sin, 0, 7);
+        assertPoints(assert, extremums.maxP, [[pi / 2, 1]], 'sin x: максимум');
+        assertPoints(assert, extremums.minP, [[3 * pi / 2, -1]], 'sin x: минимум');
+    });
+
+    QUnit.test('findExtremumsOfFunction: абсцисса известна точнее шага сетки', function (assert) {
+        const extremums = findExtremumsOfFunction(x => -(x - Math.SQRT2) * (x - Math.SQRT2), -5, 5, 0.1);
+        assert.ok(Math.abs(extremums.maxP[0][0] - Math.SQRT2) < 1e-6,
+            'при шаге 0,1 максимум найден с ошибкой меньше 1e-6 (получено ' + extremums.maxP[0][0] + ')');
+        const integerExtremum = findExtremumsOfFunction(x => (x - 2) * (x - 2), -5.0004, 5).minP[0][0];
+        assert.ok(Math.abs(integerExtremum - 2) < 1e-6,
+            'целый экстремум, не попавший в узел сетки (получено ' + integerExtremum + ')');
+    });
+
+    QUnit.test('findExtremumsOfFunction: функция без экстремумов', function (assert) {
+        assert.deepEqual(findExtremumsOfFunction(x => 2 * x + 1, -5, 5), { minP: [], maxP: [] }, 'линейная');
+        assert.deepEqual(findExtremumsOfFunction(x => x * x * x, -5, 5), { minP: [], maxP: [] }, 'x³: перегиб не экстремум');
+        assert.deepEqual(findExtremumsOfFunction(() => 3, -5, 5), { minP: [], maxP: [] }, 'постоянная');
+    });
+
+    QUnit.test('findExtremumsOfFunction: экстремум, симметричный относительно узлов сетки', function (assert) {
+        // Узлы -0,5 и 0,5 дают одинаковые значения: вершина между ними не должна потеряться
+        const extremums = findExtremumsOfFunction(x => x * x, -2.5, 2.5, 1);
+        assertPoints(assert, extremums.minP, [[0, 0]], 'x² с шагом 1 на [-2,5; 2,5]');
+        const plateau = findExtremumsOfFunction(x => Math.min(1, 2 - Math.abs(x)), -3, 3);
+        assert.equal(plateau.maxP.length, 1, 'плоская вершина считается одним максимумом');
+        assert.ok(plateau.maxP[0][0] >= -1 && plateau.maxP[0][0] <= 1 && plateau.maxP[0][1] === 1,
+            'максимум лежит на плоском участке');
+    });
+
+    QUnit.test('findExtremumsOfFunction: экстремумы на концах отрезка', function (assert) {
+        // x² на [-2; 3]: на концах значения 4 и 9, оба конца — граничные максимумы
+        let extremums = findExtremumsOfFunction(x => x * x, -2, 3);
+        assertPoints(assert, extremums.maxP, [], 'по умолчанию концы не считаются экстремумами');
+        assertPoints(assert, extremums.minP, [[0, 0]], 'внутренний минимум');
+
+        extremums = findExtremumsOfFunction(x => x * x, -2, 3, 0.001, true, false);
+        assertPoints(assert, extremums.maxP, [[-2, 4], [3, 9]], 'boundaryPointIsMax: оба конца');
+        assertPoints(assert, extremums.minP, [[0, 0]], 'минимумы не изменились');
+
+        extremums = findExtremumsOfFunction(x => x * x, -2, 3, 0.001, false, true);
+        assertPoints(assert, extremums.minP, [[0, 0]], 'boundaryPointIsMin: концы минимумами не являются');
+
+        extremums = findExtremumsOfFunction(cubic, -3, 3, 0.001, true, true);
+        assertPoints(assert, extremums.minP, [[-3, -18], [1, -2]], 'x³ - 3x: левый конец — минимум');
+        assertPoints(assert, extremums.maxP, [[-1, 2], [3, 18]], 'x³ - 3x: правый конец — максимум');
+    });
+
+    QUnit.test('findExtremumsOfFunction: экстремум вплотную к концу отрезка', function (assert) {
+        let extremums = findExtremumsOfFunction(x => (x - 4.9985) * (x - 4.9985), 0, 5);
+        assertPoints(assert, extremums.minP, [[4.9985, 0]], 'минимум в полутора шагах от maxX');
+        extremums = findExtremumsOfFunction(x => (x - 0.0015) * (x - 0.0015), 0, 5);
+        assertPoints(assert, extremums.minP, [[0.0015, 0]], 'минимум в полутора шагах от minX');
+        extremums = findExtremumsOfFunction(x => x * x, 0, 5);
+        assertPoints(assert, extremums.minP, [], 'минимум ровно на конце внутренним экстремумом не считается');
+    });
+
+    QUnit.test('findExtremumsOfFunction: функция не вычисляется вне отрезка', function (assert) {
+        let outside = 0;
+        const extremums = findExtremumsOfFunction(x => {
+            if (x < -3 || x > 3) {
+                outside++;
+            }
+            return cubic(x);
+        }, -3, 3, 0.07);
+        assert.equal(outside, 0, 'все вызовы внутри [-3; 3]');
+        assertPoints(assert, extremums.maxP, [[-1, 2]], 'шаг не делит отрезок нацело: максимум найден');
+        assertPoints(assert, extremums.minP, [[1, -2]], 'шаг не делит отрезок нацело: минимум найден');
+    });
+
+    QUnit.test('findExtremumsOfFunction: точки, где функция не определена', function (assert) {
+        const extremums = findExtremumsOfFunction(x => Math.sqrt(x) - x, -2, 4);
+        assertPoints(assert, extremums.maxP, [[0.25, 0.25]], '√x - x: максимум найден, участок x < 0 пропущен');
+        assertPoints(assert, extremums.minP, [], 'ложных минимумов нет');
+    });
+
+    QUnit.test('findExtremumsOfFunction: точки идут по возрастанию x', function (assert) {
+        const extremums = findExtremumsOfFunction(Math.cos, -10, 10, 0.001, true, true);
+        const sorted = points => points.every((point, i) => i === 0 || points[i - 1][0] < point[0]);
+        assert.ok(sorted(extremums.maxP), 'максимумы упорядочены');
+        assert.ok(sorted(extremums.minP), 'минимумы упорядочены');
+        assert.equal(extremums.maxP.length + extremums.minP.length, 7 + 2, 'семь внутренних экстремумов и два граничных максимума');
+        assert.equal(extremums.maxP[0][0], -10, 'первый максимум — левый конец');
+        assert.equal(extremums.maxP[extremums.maxP.length - 1][0], 10, 'последний максимум — правый конец');
+    });
+
+    // ============================================================
+    //  Обёртки над findExtremumsOfFunction  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: списки экстремумов');
+
+    function assertNumbers(assert, actual, expected, message) {
+        const ok = actual.length === expected.length && actual.every((value, i) => Math.abs(value - expected[i]) < EPS);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось ' + JSON.stringify(expected) + ')');
+    }
+
+    // Многочлен с экстремумами в -2 (максимум), 0,5 (минимум) и 3 (максимум):
+    // его производная равна -(x + 2)(x - 0,5)(x - 3)
+    const quartic = x => -(x * x * x * x / 4 - x * x * x / 2 - 11 * x * x / 4 + 3 * x);
+    const quarticAt = { '-2': quartic(-2), '0.5': quartic(0.5), '3': quartic(3) };
+
+    QUnit.test('findAllExtremumsOfFunctionSort: минимумы и максимумы вперемешку по возрастанию x', function (assert) {
+        assertPoints(assert, findAllExtremumsOfFunctionSort(quartic, -4, 5),
+            [[-2, quarticAt['-2']], [0.5, quarticAt['0.5']], [3, quarticAt['3']]], 'три экстремума');
+        assertPoints(assert, findAllExtremumsOfFunctionSort(cubic, -3, 3, 0.001, true, true),
+            [[-3, -18], [-1, 2], [1, -2], [3, 18]], 'с концами отрезка');
+        assertPoints(assert, findAllExtremumsOfFunctionSort(x => x, -3, 3), [], 'экстремумов нет');
+    });
+
+    QUnit.test('extremumsX и extremumsY', function (assert) {
+        assertNumbers(assert, extremumsX(quartic, -4, 5), [-2, 0.5, 3], 'абсциссы');
+        assertNumbers(assert, extremumsY(quartic, -4, 5), [quarticAt['-2'], quarticAt['0.5'], quarticAt['3']], 'ординаты');
+        assertNumbers(assert, extremumsX(quartic, -1, 2), [0.5], 'только экстремумы внутри отрезка');
+        assertNumbers(assert, extremumsX(quartic, 0.5, 3), [], 'экстремумы на концах отрезка не считаются');
+        assertNumbers(assert, extremumsX(cubic, -3, 3, 0.001, true, false), [-1, 1, 3], 'boundaryPointIsMax добавляет правый конец');
+        assertNumbers(assert, extremumsY(x => x, -3, 3), [], 'экстремумов нет');
+    });
+
+    QUnit.test('findMinimums, findMaximums, minimumsX, maximumsX', function (assert) {
+        assertPoints(assert, findMinimums(quartic, -4, 5), [[0.5, quarticAt['0.5']]], 'findMinimums');
+        assertPoints(assert, findMaximums(quartic, -4, 5), [[-2, quarticAt['-2']], [3, quarticAt['3']]], 'findMaximums');
+        assertNumbers(assert, minimumsX(quartic, -4, 5), [0.5], 'minimumsX');
+        assertNumbers(assert, maximumsX(quartic, -4, 5), [-2, 3], 'maximumsX');
+        assertNumbers(assert, minimumsX(Math.cos, -7, 7), [-Math.PI, Math.PI], 'minimumsX для cos x');
+        assertNumbers(assert, maximumsX(Math.cos, -7, 7), [-2 * Math.PI, 0, 2 * Math.PI], 'maximumsX для cos x');
+        assertNumbers(assert, maximumsX(x => x * x, -3, 3), [], 'у x² максимумов нет');
+    });
+
+    QUnit.test('minimumsX и maximumsX вместе дают extremumsX', function (assert) {
+        const all = extremumsX(Math.sin, -10, 10);
+        const merged = minimumsX(Math.sin, -10, 10).concat(maximumsX(Math.sin, -10, 10)).sort((a, b) => a - b);
+        assert.deepEqual(merged, all, 'те же точки, в точности те же числа');
+        assert.equal(all.length, 6, 'у sin x на [-10; 10] шесть экстремумов');
+    });
+
+    QUnit.test('findIntExtremumsOfFunction: экстремумы вблизи целых точек', function (assert) {
+        let extremums = findIntExtremumsOfFunction(quartic, -4, 5);
+        assertPoints(assert, extremums.maxP, [[-2, quarticAt['-2']], [3, quarticAt['3']]], 'целые максимумы');
+        assertPoints(assert, extremums.minP, [], 'минимум в 0,5 отброшен');
+
+        extremums = findIntExtremumsOfFunction(quartic, -4, 5, 0.5);
+        assertPoints(assert, extremums.minP, [[0.5, quarticAt['0.5']]], 'при допуске 0,5 минимум в 0,5 остаётся');
+
+        // Экстремумы в -1,9 и 1,15
+        const shifted = x => -(x + 1.9) * (x + 1.9) * (x < -0.375 ? 1 : 0) + (x - 1.15) * (x - 1.15) * (x >= -0.375 ? 1 : 0);
+        extremums = findIntExtremumsOfFunction(shifted, -1.5, 3, 0.2);
+        assertPoints(assert, extremums.minP, [[1.15, 0]], 'отклонение 0,15 в пределах допуска 0,2');
+        extremums = findIntExtremumsOfFunction(shifted, -1.5, 3, 0.1);
+        assertPoints(assert, extremums.minP, [], 'отклонение 0,15 больше допуска 0,1');
+    });
+
+    // ============================================================
+    //  transformExtremumsToIntervals  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: transformExtremumsToIntervals');
+
+    // Отрезки сравниваются по концам, экстремум — с точностью EPS
+    function assertExtremumIntervals(assert, actual, expected, message) {
+        const ok = actual.length === expected.length && actual.every((interval, i) =>
+            interval.leftEnd === expected[i][0] && Math.abs(interval.ext - expected[i][1]) < EPS &&
+            interval.rightEnd === expected[i][2]);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось [leftEnd, ext, rightEnd]: ' +
+            JSON.stringify(expected) + ')');
+    }
+
+    // Экстремумы в -4 (максимум), 0 (минимум), 3 (максимум): производная равна -(x + 4)x(x - 3)
+    const threeExtremums = x => -(x * x * x * x / 4 + x * x * x / 3 - 6 * x * x);
+
+    QUnit.test('transformExtremumsToIntervals: три экстремума', function (assert) {
+        const intervals = transformExtremumsToIntervals(threeExtremums, -7, 6);
+        assertExtremumIntervals(assert, intervals.intIntervalsMaximums, [[-6, -4, -1], [1, 3, 5]],
+            'максимумы: отрезки от конца интервала до соседнего экстремума');
+        assertExtremumIntervals(assert, intervals.intIntervalsMinimums, [[-3, 0, 2]],
+            'минимум: отрезок между соседними экстремумами');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: на отрезке лежит ровно один экстремум, и он даёт нужное значение', function (assert) {
+        const funcs = [threeExtremums, Math.cos, x => Math.sin(1.3 * x) + 0.2 * x];
+        let checked = 0;
+        let wrong = [];
+        for (const func of funcs) {
+            const intervals = transformExtremumsToIntervals(func, -7, 7);
+            const all = extremumsX(func, -7, 7);
+            const check = (interval, isMinimum) => {
+                checked++;
+                const inside = all.filter(x => x >= interval.leftEnd && x <= interval.rightEnd);
+                let best = interval.leftEnd;
+                for (let x = interval.leftEnd; x <= interval.rightEnd; x += 0.001) {
+                    if (isMinimum ? func(x) < func(best) : func(x) > func(best)) {
+                        best = x;
+                    }
+                }
+                if (inside.length !== 1 || Math.abs(inside[0] - interval.ext) > EPS || Math.abs(best - interval.ext) > 0.002) {
+                    wrong.push(JSON.stringify(interval));
+                }
+            };
+            intervals.intIntervalsMinimums.forEach(interval => check(interval, true));
+            intervals.intIntervalsMaximums.forEach(interval => check(interval, false));
+        }
+        assert.ok(checked >= 8, 'проверено отрезков: ' + checked);
+        assert.deepEqual(wrong, [], 'неверных отрезков нет');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: единственный экстремум', function (assert) {
+        const intervals = transformExtremumsToIntervals(x => (x - 1) * (x - 1), -5, 5);
+        assertExtremumIntervals(assert, intervals.intIntervalsMinimums, [[-4, 1, 4]], 'отрезок от minX + 1 до maxX - 1');
+        assertExtremumIntervals(assert, intervals.intIntervalsMaximums, [], 'максимумов нет');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: экстремумов нет', function (assert) {
+        assert.deepEqual(transformExtremumsToIntervals(x => 2 * x, -5, 5),
+            { intIntervalsMinimums: [], intIntervalsMaximums: [] }, 'пустые списки');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: нецелые концы интервала', function (assert) {
+        const intervals = transformExtremumsToIntervals(x => (x - 1) * (x - 1), -5.5, 5.5);
+        assertExtremumIntervals(assert, intervals.intIntervalsMinimums, [[-5, 1, 5]], 'концы отрезка целые');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: слишком близкие экстремумы отбрасываются', function (assert) {
+        // Минимум в 0 и максимум в 1: между ними нет места для отрезка с экстремумом внутри
+        const close = x => x * x / 2 - x * x * x / 3;
+        const intervals = transformExtremumsToIntervals(close, -5, 5);
+        assertExtremumIntervals(assert, intervals.intIntervalsMinimums, [], 'минимум в 0: отрезок [-4; 0] его не содержит внутри');
+        assertExtremumIntervals(assert, intervals.intIntervalsMaximums, [], 'максимум в 1: отрезок [1; 4] его не содержит внутри');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: экстремум у самого конца интервала', function (assert) {
+        const intervals = transformExtremumsToIntervals(x => (x + 4.5) * (x + 4.5), -5, 5);
+        assertExtremumIntervals(assert, intervals.intIntervalsMinimums, [],
+            'минимум в -4,5 левее наименьшей целой точки -4');
+    });
+
+    QUnit.test('transformExtremumsToIntervals: endSegmentIsNotExtremum', function (assert) {
+        // Минимум в -3,6: отрезок [-4; 4] его содержит, но округлённый экстремум -4 совпадает с концом
+        const func = x => (x + 3.6) * (x + 3.6);
+        assertExtremumIntervals(assert, transformExtremumsToIntervals(func, -5, 5).intIntervalsMinimums,
+            [[-4, -3.6, 4]], 'без флага отрезок строится');
+        assertExtremumIntervals(assert, transformExtremumsToIntervals(func, -5, 5, true).intIntervalsMinimums,
+            [], 'с флагом отрезок отброшен');
+        assertExtremumIntervals(assert, transformExtremumsToIntervals(threeExtremums, -7, 6, true).intIntervalsMaximums,
+            [[-6, -4, -1], [1, 3, 5]], 'на целые экстремумы внутри отрезка флаг не влияет');
+    });
+
+    // ============================================================
+    //  Промежутки монотонности  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: промежутки монотонности');
+
+    QUnit.test('findIntervalsOfIncreaseAndDecrease: три экстремума', function (assert) {
+        const intervals = findIntervalsOfIncreaseAndDecrease(threeExtremums, -7, 6);
+        assertIntervals(assert, intervals.increasingIntervals, [[-7, -4], [0, 3]], 'возрастание');
+        assertIntervals(assert, intervals.decreasingIntervals, [[-4, 0], [3, 6]], 'убывание');
+    });
+
+    QUnit.test('findIntervalsOfIncreaseAndDecrease: косинус', function (assert) {
+        const pi = Math.PI;
+        const intervals = findIntervalsOfIncreaseAndDecrease(Math.cos, -7, 7);
+        assertIntervals(assert, intervals.increasingIntervals, [[-7, -2 * pi], [-pi, 0], [pi, 2 * pi]], 'возрастание');
+        assertIntervals(assert, intervals.decreasingIntervals, [[-2 * pi, -pi], [0, pi], [2 * pi, 7]], 'убывание');
+    });
+
+    QUnit.test('findIntervalsOfIncreaseAndDecrease: монотонные и постоянная функции', function (assert) {
+        let intervals = findIntervalsOfIncreaseAndDecrease(x => 2 * x + 1, -5, 5);
+        assertIntervals(assert, intervals.increasingIntervals, [[-5, 5]], 'возрастающая: весь отрезок');
+        assertIntervals(assert, intervals.decreasingIntervals, [], 'возрастающая: убывания нет');
+
+        intervals = findIntervalsOfIncreaseAndDecrease(x => -x * x * x, -5, 5);
+        assertIntervals(assert, intervals.increasingIntervals, [], 'убывающая: возрастания нет');
+        assertIntervals(assert, intervals.decreasingIntervals, [[-5, 5]], 'убывающая: весь отрезок');
+
+        intervals = findIntervalsOfIncreaseAndDecrease(() => 3, -5, 5);
+        assertIntervals(assert, intervals.increasingIntervals, [], 'постоянная: возрастания нет');
+        assertIntervals(assert, intervals.decreasingIntervals, [], 'постоянная: убывания нет');
+    });
+
+    QUnit.test('findIntervalsOfIncreaseAndDecrease: промежутки идут подряд и покрывают отрезок', function (assert) {
+        const func = x => Math.sin(1.3 * x) + 0.2 * x;
+        const intervals = findIntervalsOfIncreaseAndDecrease(func, -7, 7);
+        const all = intervals.increasingIntervals.concat(intervals.decreasingIntervals).sort((a, b) => a[0] - b[0]);
+        assert.equal(all[0][0], -7, 'первый промежуток начинается в minX');
+        assert.equal(all[all.length - 1][1], 7, 'последний заканчивается в maxX');
+        assert.ok(all.every((interval, i) => i === 0 || all[i - 1][1] === interval[0]), 'соседние промежутки стыкуются');
+        const middle = interval => (interval[0] + interval[1]) / 2;
+        const slope = x => func(x + 1e-4) - func(x - 1e-4);
+        assert.ok(intervals.increasingIntervals.every(interval => slope(middle(interval)) > 0), 'на промежутках возрастания функция растёт');
+        assert.ok(intervals.decreasingIntervals.every(interval => slope(middle(interval)) < 0), 'на промежутках убывания функция убывает');
+    });
+
+    QUnit.test('findIncreasingIntervals и findDecreasingIntervals', function (assert) {
+        assertIntervals(assert, findIncreasingIntervals(threeExtremums, -7, 6), [[-7, -4], [0, 3]], 'возрастание');
+        assertIntervals(assert, findDecreasingIntervals(threeExtremums, -7, 6), [[-4, 0], [3, 6]], 'убывание');
+        assertIntervals(assert, findDecreasingIntervals(x => x, -5, 5), [], 'у возрастающей функции убывания нет');
+        assertIntervals(assert, findIncreasingIntervals(x => -x, -5, 5), [], 'у убывающей функции возрастания нет');
+    });
+
+    // ============================================================
+    //  Целые точки промежутков монотонности
+    // ============================================================
+    QUnit.module('Math Functions: целые точки промежутков монотонности');
+
+    QUnit.test('findIncreasingAndDecreasingPoints', function (assert) {
+        const intervals = { increasingIntervals: [[-7, -4], [0, 3]], decreasingIntervals: [[-4, 0], [3, 6]] };
+        assert.deepEqual(findIncreasingAndDecreasingPoints(intervals, -7, 6),
+            { increasingPoints: [-6, -5, -4, 0, 1, 2, 3], decreasingPoints: [-4, -3, -2, -1, 0, 3, 4, 5] },
+            'точки экстремума входят в оба соседних промежутка, концы интервала не входят');
+        assert.deepEqual(findIncreasingAndDecreasingPoints(intervals, -7, 6, true, true),
+            { increasingPoints: [-7, -6, -5, -4, 0, 1, 2, 3], decreasingPoints: [-4, -3, -2, -1, 0, 3, 4, 5, 6] },
+            'includeMinX и includeMaxX добавляют концы');
+        assert.deepEqual(findIncreasingAndDecreasingPoints({ increasingIntervals: [], decreasingIntervals: [] }, -7, 6),
+            { increasingPoints: [], decreasingPoints: [] }, 'промежутков нет');
+    });
+
+    QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: целые экстремумы', function (assert) {
+        assert.deepEqual(findIncreasingIntegerPoints(threeExtremums, -7, 6), [-6, -5, -4, 0, 1, 2, 3], 'возрастание');
+        assert.deepEqual(findDecreasingIntegerPoints(threeExtremums, -7, 6), [-4, -3, -2, -1, 0, 3, 4, 5], 'убывание');
+    });
+
+    QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: нецелые экстремумы', function (assert) {
+        // cos x на (-7; 7): экстремумы в 0, ±π, ±2π
+        assert.deepEqual(findIncreasingIntegerPoints(Math.cos, -7, 7), [-3, -2, -1, 0, 4, 5, 6], 'возрастание');
+        assert.deepEqual(findDecreasingIntegerPoints(Math.cos, -7, 7), [-6, -5, -4, 0, 1, 2, 3], 'убывание');
+    });
+
+    QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: как в задаче 697896', function (assert) {
+        // Функция возрастает на [-3,5; -1,5] и на [4,5; 6), определена на (-5; 6):
+        // в ответ входят точки -3, -2 и 5, их сумма равна 0
+        const derivative = x => (x + 3.5) * (x + 1.5) * (x - 4.5);
+        const func = x => x * x * x * x / 4 + x * x * x / 6 - 8.625 * x * x - 23.625 * x;
+        assert.ok(Math.abs((func(1.001) - func(0.999)) / 0.002 - derivative(1)) < 1e-3, 'первообразная подобрана верно');
+        const points = findIncreasingIntegerPoints(func, -5, 6);
+        assert.deepEqual(points, [-3, -2, 5], 'целые точки промежутков возрастания');
+        assert.equal(points.reduce((a, b) => a + b, 0), 0, 'сумма равна 0');
+        assert.deepEqual(findDecreasingIntegerPoints(func, -5, 6), [-4, -1, 0, 1, 2, 3, 4], 'целые точки промежутков убывания');
+    });
+
+    QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: монотонная функция', function (assert) {
+        assert.deepEqual(findIncreasingIntegerPoints(x => x * x * x, -3, 3), [-2, -1, 0, 1, 2], 'x³ возрастает всюду');
+        assert.deepEqual(findDecreasingIntegerPoints(x => x * x * x, -3, 3), [], 'убывания нет');
+    });
+
+    // ============================================================
+    //  Экспорт  (lib/math_functions.js в составе build/lib/chas-lib.js)
+    // ============================================================
+    QUnit.module('Math Functions: экспорт');
+
+    QUnit.test('все функции файла доступны глобально после загрузки chas-lib.js', function (assert) {
+        const source = fs.readFileSync(path.join(__dirname, '..', 'lib', 'math_functions.js'), 'utf8');
+        const names = [];
+        source.replace(/^function ([A-Za-z0-9_]+)/gm, function (match, name) {
+            names.push(name);
+        });
+        assert.ok(names.length >= 36, 'в файле найдено функций: ' + names.length);
+        const missing = names.filter(name => typeof global[name] !== 'function');
+        assert.deepEqual(missing, [], 'каждая объявленная функция экспортирована');
+        const mismatched = names.filter(name => typeof global[name] === 'function' && global[name].name !== name);
+        assert.deepEqual(mismatched, [], 'под каждым именем лежит одноимённая функция');
+    });
+
+    // ============================================================
+    //  addRoots  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: addRoots');
+
+    const integerRoots = { int: 'yes', tolerance: 0.2 };
+    const nonIntegerRoots = { int: 'no', tolerance: 0.2 };
+
+    QUnit.test('addRoots: корень ставится в целую точку между узлами', function (assert) {
+        // Узлы через 2 (stepForX = 4): середина между чётными узлами — нечётное число
+        assert.deepEqual(addRoots([-4, -2, 0, 2], [3, 1, -1, -3], integerRoots),
+            { X: [-4, -2, -1, 0, 2], Y: [3, 1, 0, -1, -3] }, 'одна смена знака');
+        assert.deepEqual(addRoots([-4, -2, 0, 2, 4], [3, -1, -2, 1, 2], integerRoots),
+            { X: [-4, -3, -2, 0, 1, 2, 4], Y: [3, 0, -1, -2, 0, 1, 2] }, 'две смены знака');
+        // Узлы через 1,5 (stepForX = 3): середина 0,25 округляется до 0
+        assert.deepEqual(addRoots([-2, -0.5, 1, 2.5], [2, 1, -1, -2], integerRoots),
+            { X: [-2, -0.5, 0, 1, 2.5], Y: [2, 1, 0, -1, -2] }, 'середина не целая');
+    });
+
+    QUnit.test('addRoots: смен знака нет', function (assert) {
+        assert.deepEqual(addRoots([-4, -2, 0, 2], [3, 1, 2, 4], integerRoots),
+            { X: [-4, -2, 0, 2], Y: [3, 1, 2, 4] }, 'узлы не меняются');
+        assert.deepEqual(addRoots([-4, -2, 0, 2], [3, 0, -2, -4], integerRoots),
+            { X: [-4, -2, 0, 2], Y: [3, 0, -2, -4] }, 'нулевой узел сам является корнем, второй рядом не добавляется');
+    });
+
+    QUnit.test('addRoots: целая точка совпала с узлом — обнуляется узел', function (assert) {
+        // Узлы через 0,5 (stepForX = 1): ближайшая к середине целая точка — сам узел
+        const result = addRoots([0, 0.5, 1, 1.5, 2], [2, 1, -1, -2, -3], integerRoots);
+        assert.deepEqual(result, { X: [0, 0.5, 1, 1.5, 2], Y: [2, 1, 0, -2, -3] }, 'обнулён узел x = 1');
+        assert.equal(new Set(result.X).size, result.X.length, 'узлов с одинаковой абсциссой нет');
+        // Узлы через 1 (stepForX = 2)
+        assert.deepEqual(addRoots([-2, -1, 0, 1, 2], [2, 1, -1, -2, -3], integerRoots),
+            { X: [-2, -1, 0, 1, 2], Y: [2, 1, 0, -2, -3] }, 'середина -0,5 округляется до узла 0');
+    });
+
+    QUnit.test('addRoots: крайние узлы не обнуляются', function (assert) {
+        // Ближайшая целая точка — крайний узел: корень ставится в середину, график не начинается с нуля
+        assert.deepEqual(addRoots([1, 1.5, 2], [2, -1, -2], integerRoots),
+            { X: [1, 1.25, 1.5, 2], Y: [2, 0, -1, -2] }, 'левый край');
+        assert.deepEqual(addRoots([0, 0.5, 1], [2, 1, -1], integerRoots),
+            { X: [0, 0.5, 0.75, 1], Y: [2, 1, 0, -1] }, 'правый край');
+    });
+
+    QUnit.test('addRoots: нецелые корни', function (assert) {
+        // Корень случайный, поэтому проверяется много раз
+        let positions = {};
+        let problems = [];
+        for (let attempt = 0; attempt < 300; attempt++) {
+            const result = addRoots([-4, -2, 0, 2], [3, 1, -1, -3], nonIntegerRoots);
+            const roots = result.X.filter((x, i) => result.Y[i] === 0);
+            if (roots.length !== 1 || !(roots[0] > -2 && roots[0] < 0)) {
+                problems.push('корень не между узлами -2 и 0: ' + JSON.stringify(roots));
+            } else if (Math.abs(roots[0] - Math.round(roots[0])) <= 0.2) {
+                problems.push('корень ближе 0,2 к целой точке: ' + roots[0]);
+            } else {
+                positions[roots[0]] = true;
+            }
+        }
+        assert.deepEqual(problems, [], 'корень лежит между узлами и дальше допуска от целых точек');
+        assert.ok(Object.keys(positions).length >= 5, 'положение корня случайно, а не всегда k + 0,5 (разных положений: ' +
+            Object.keys(positions).length + ')');
+    });
+
+    QUnit.test('addRoots: нецелые корни при разных допусках и шагах узлов', function (assert) {
+        let problems = [];
+        for (const tolerance of [0.05, 0.1, 0.2, 0.3, 0.4]) {
+            for (const step of [0.5, 1, 1.5, 2, 3]) {
+                for (let attempt = 0; attempt < 30; attempt++) {
+                    const X = [];
+                    const Y = [];
+                    for (let k = 0; k <= 12; k++) {
+                        X.push(-6 + k * step);
+                        Y.push(k % 2 === 0 ? 2 : -2);
+                    }
+                    const result = addRoots(X, Y, { int: 'no', tolerance: tolerance });
+                    const roots = result.X.filter((x, i) => result.Y[i] === 0);
+                    const increasing = result.X.every((x, i) => i === 0 || result.X[i - 1] < x);
+                    if (roots.length !== 12 || !increasing || roots.some(x => Math.abs(x - Math.round(x)) <= tolerance)) {
+                        problems.push('допуск ' + tolerance + ', шаг ' + step + ': ' + JSON.stringify(roots));
+                    }
+                }
+            }
+        }
+        assert.deepEqual(problems, [], 'двенадцать смен знака — двенадцать корней, все дальше допуска от целых точек');
+    });
+
+    QUnit.test('addRoots: из двух равноудалённых целых точек выбирается та, к которой округляется середина', function (assert) {
+        // Узлы через 3 (stepForX = 6): между -5 и -2 лежат -4 и -3, середина -3,5 округляется до -3
+        assert.deepEqual(addRoots([-8, -5, -2, 1], [1, 2, -2, -1], integerRoots),
+            { X: [-8, -5, -3, -2, 1], Y: [1, 2, 0, -2, -1] }, 'корень в -3');
+        assert.deepEqual(addRoots([1, 4, 7], [1, 2, -2].map(y => -y), integerRoots).X, [1, 4, 6, 7], 'между 4 и 7 корень в 6');
+    });
+
+    QUnit.test('addRoots: из двух целых узлов обнуляется тот, где значение меньше по модулю', function (assert) {
+        // Узлы через 1 (stepForX = 2): между соседними узлами целых точек нет
+        assert.deepEqual(addRoots([-2, -1, 0, 1, 2], [1, 3, -1, -2, -3], integerRoots),
+            { X: [-2, -1, 0, 1, 2], Y: [1, 3, 0, -2, -3] }, 'вершина 3 в точке -1 сохранена, обнулён узел 0');
+        assert.deepEqual(addRoots([-2, -1, 0, 1, 2], [1, 1, -3, -2, -3], integerRoots),
+            { X: [-2, -1, 0, 1, 2], Y: [1, 0, -3, -2, -3] }, 'вершина -3 в точке 0 сохранена, обнулён узел -1');
+    });
+
+    QUnit.test('addRoots: при шаге узлов 0,5 целый корень возможен только в целом узле', function (assert) {
+        // Смена знака между 1,5 и 2: единственная целая точка — узел 2, обнуляется он,
+        // хотя это вершина графика. Смена знака между 2,5 и 3: узел 3 крайний, корень в середине.
+        assert.deepEqual(addRoots([0, 0.5, 1, 1.5, 2, 2.5, 3], [1, 2, -1, -2, 3, 1, -2], integerRoots),
+            { X: [0, 0.5, 1, 1.5, 2, 2.5, 2.75, 3], Y: [1, 2, 0, -2, 0, 1, 0, -2] }, 'узлы 1 и 2 обнулены, корень 2,75 добавлен');
+    });
+
+    QUnit.test('addRoots: узлы остаются упорядоченными и различными', function (assert) {
+        let checked = 0;
+        let wrong = [];
+        for (const step of [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4]) {
+            for (const settings of [integerRoots, nonIntegerRoots, { int: 'no_matter', tolerance: 0.2 }]) {
+                for (let shift = 0; shift < 4; shift++) {
+                    const X = [];
+                    const Y = [];
+                    for (let k = 0; k <= 16; k++) {
+                        X.push(-7 + shift * 0.25 + k * step);
+                        Y.push(((k + shift) % 3 === 0 ? -1 : 1) * (1 + (k * 7) % 5));
+                    }
+                    const result = addRoots(X, Y, settings);
+                    checked++;
+                    const increasing = result.X.every((x, i) => i === 0 || result.X[i - 1] < x);
+                    const signChanges = result.Y.filter((y, i) => i > 0 && y * result.Y[i - 1] < 0).length;
+                    if (!increasing || signChanges !== 0 || result.X.length !== result.Y.length) {
+                        wrong.push('шаг ' + step + ', сдвиг ' + shift + ', ' + settings.int);
+                    }
+                }
+            }
+        }
+        assert.equal(checked, 96, 'проверено 96 наборов узлов');
+        assert.deepEqual(wrong, [], 'узлы строго возрастают, между соседними узлами не осталось смены знака без корня');
+    });
+
+    QUnit.test('addRoots: исходные массивы не изменяются', function (assert) {
+        const X = [-4, -2, 0, 2];
+        const Y = [3, 1, -1, -3];
+        addRoots(X, Y, integerRoots);
+        assert.deepEqual(X, [-4, -2, 0, 2], 'X');
+        assert.deepEqual(Y, [3, 1, -1, -3], 'Y');
+    });
+
+    // ============================================================
+    //  createSpline  (lib/math_functions.js в составе build/lib/chas-lib.js)
+    // ============================================================
+    QUnit.module('Math Functions: createSpline');
+
+    // createSpline опирается на genAssert и другие функции сборки, поэтому
+    // проверяется версия из build/lib/chas-lib.js, а не исходник. Класс Spline
+    // в браузере приходит из отдельного файла; здесь он подключается из npm.
+    if (typeof global.Spline === 'undefined') {
+        global.Spline = require('cubic-spline-browserified');
+    }
+
+    // Генератор случайный и отбраковывает неподходящие функции исключением,
+    // как это делает retryWhileError в шаблонах
+    function generateSpline(options, attempts) {
+        for (let i = 0; i < attempts; i++) {
+            try {
+                return { result: global.createSpline(Object.assign({}, options)), attempts: i + 1 };
+            } catch (e) {
+                // следующая попытка
+            }
+        }
+        return { result: null, attempts: attempts };
+    }
+
+    // Все требования, которые createSpline обещает выполнить
+    function splineProblems(result, options) {
+        const { minX, maxX, minY, maxY } = options;
+        const problems = [];
+        const drawn = result.painFunc;
+        const difference = options.minimumDifferenceBetweenExtremes === undefined ? 1 : options.minimumDifferenceBetweenExtremes;
+
+        for (let x = minX; x <= maxX; x += 0.01) {
+            if (!Number.isFinite(drawn(x)) || !Number.isFinite(result.func(x))) {
+                problems.push('не число в точке ' + x);
+                break;
+            }
+        }
+        for (const end of [minX, maxX]) {
+            if (!(drawn(end) > minY && drawn(end) < maxY)) {
+                problems.push('на конце ' + end + ' график вне сетки');
+            }
+            if (!(Math.abs(drawn(end)) > 0.5)) {
+                problems.push('на конце ' + end + ' график слишком близко к нулю');
+            }
+        }
+
+        const extremums = findAllExtremumsOfFunctionSort(drawn, minX, maxX);
+        const extremesRange = options.numberOfExtremes || { min: 0, max: 1000 };
+        if (extremums.length < extremesRange.min || extremums.length > extremesRange.max) {
+            problems.push('число экстремумов ' + extremums.length);
+        }
+        extremums.forEach((point, i) => {
+            if (!(point[0] - minX > 1 && maxX - point[0] > 1)) {
+                problems.push('экстремум ' + point[0] + ' слишком близко к концу');
+            }
+            if (!(point[1] > minY && point[1] < maxY)) {
+                problems.push('экстремум ' + point[0] + ' вне сетки по y');
+            }
+            if (!(Math.abs(point[1]) > 0.5)) {
+                problems.push('экстремум ' + point[0] + ' слишком близко к оси Ox');
+            }
+            if (i > 0 && !(Math.abs(point[1] - extremums[i - 1][1]) > difference)) {
+                problems.push('соседние экстремумы близки по y около ' + point[0]);
+            }
+            const extremumsSetting = options.extremumsIsInteger;
+            if (extremumsSetting && extremumsSetting.int === 'yes' && !isCloseToInteger(point[0], extremumsSetting.tolerance)) {
+                problems.push('экстремум ' + point[0] + ' не целый');
+            }
+            if (extremumsSetting && extremumsSetting.int === 'no' && isCloseToInteger(point[0], extremumsSetting.tolerance)) {
+                problems.push('экстремум ' + point[0] + ' целый');
+            }
+        });
+
+        const roots = findRoots(drawn, minX, maxX);
+        const rootsRange = options.numberOfRoots || { min: 0, max: 1000 };
+        if (roots.length < rootsRange.min || roots.length > rootsRange.max) {
+            problems.push('число корней ' + roots.length);
+        }
+        roots.forEach(root => {
+            const rootsSetting = options.rootsIsInteger;
+            if (rootsSetting && rootsSetting.int === 'yes' && !isCloseToInteger(root, rootsSetting.tolerance)) {
+                problems.push('корень ' + root + ' не целый');
+            }
+            if (rootsSetting && rootsSetting.int === 'no' && isCloseToInteger(root, rootsSetting.tolerance)) {
+                problems.push('корень ' + root + ' целый');
+            }
+        });
+
+        return problems;
+    }
+
+    const splineConfigs = {
+        'функция, stepForX = 4, целые экстремумы': {
+            type: 'function', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3,
+            minimumDifferenceBetweenExtremes: 2, numberOfExtremes: { min: 3, max: 10 },
+            extremumsIsInteger: { int: 'yes', tolerance: 0.15 },
+        },
+        'функция, stepForX = 3, нецелые экстремумы, не меньше двух корней': {
+            type: 'function', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 3, stepForY: 0.3,
+            minimumDifferenceBetweenExtremes: 2, numberOfExtremes: { min: 2, max: 10 }, numberOfRoots: { min: 2, max: 10 },
+            extremumsIsInteger: { int: 'no', tolerance: 0.2 },
+        },
+        'функция, stepForX = 4, нецелые корни': {
+            type: 'function', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3,
+            numberOfRoots: { min: 1, max: 10 }, rootsIsInteger: { int: 'no', tolerance: 0.2 },
+        },
+        'функция, stepForX = 4, целые корни': {
+            type: 'function', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3,
+            numberOfRoots: { min: 1, max: 10 }, rootsIsInteger: { int: 'yes', tolerance: 0.2 },
+        },
+        'производная, stepForX = 4, от двух корней': {
+            type: 'derivative', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1,
+            minimumDifferenceBetweenExtremes: 1, numberOfRoots: { min: 2, max: 10 },
+        },
+        'функция, stepForX = 6, границы не кратны шагу узлов': {
+            type: 'function', minX: -10, maxX: 9, minY: -9, maxY: 8, stepForX: 6, stepForY: 0.3,
+        },
+        'функция, stepForX = 3, только обязательные параметры': {
+            type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 3,
+        },
+        'функция, stepForX = 1': {
+            type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 1,
+        },
+        'функция, stepForX по умолчанию': {
+            type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5,
+        },
+        'производная, stepForX по умолчанию': {
+            type: 'derivative', minX: -7, maxX: 8, minY: -9, maxY: 8,
+        },
+        'функция, stepForX = 2': {
+            type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 2,
+        },
+        'функция, stepForX = 3, нецелые границы': {
+            type: 'function', minX: -6.5, maxX: 5.5, minY: -5, maxY: 5, stepForX: 3,
+        },
+    };
+
+    Object.keys(splineConfigs).forEach(function (name) {
+        QUnit.test('createSpline: ' + name, function (assert) {
+            const options = splineConfigs[name];
+            let generated = 0;
+            let problems = [];
+            for (let i = 0; i < 5; i++) {
+                const { result } = generateSpline(options, 5000);
+                if (!result) {
+                    break;
+                }
+                generated++;
+                problems = problems.concat(splineProblems(result, options));
+            }
+            assert.equal(generated, 5, 'пять функций сгенерированы, каждая не более чем за 5000 попыток');
+            assert.deepEqual(problems, [], 'все требования выполнены');
+        });
+    });
+
+    QUnit.test('createSpline: stepForX по умолчанию равен 3', function (assert) {
+        // Узлы сплайна стоят через stepForX / 2: при шаге 3 экстремумы не бывают ближе 1,5 друг к другу
+        const options = { type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5 };
+        const explicit = Object.assign({ stepForX: 3 }, options);
+        const count = settings => {
+            const counts = [];
+            for (let i = 0; i < 20; i++) {
+                const { result } = generateSpline(settings, 5000);
+                counts.push(result ? extremumsX(result.painFunc, settings.minX, settings.maxX).length : -1);
+            }
+            return counts;
+        };
+        const byDefault = count(options);
+        assert.ok(byDefault.every(n => n >= 0), 'функции генерируются');
+        assert.ok(Math.max.apply(null, byDefault) <= 6, 'экстремумов не больше шести, как при stepForX = 3 (при шаге 1 их было бы 7–11)');
+        assert.ok(Math.max.apply(null, count(explicit)) <= 6, 'то же при явном stepForX = 3');
+    });
+
+    QUnit.test('createSpline: связь func и painFunc', function (assert) {
+        let options = splineConfigs['функция, stepForX = 3, только обязательные параметры'];
+        let { result } = generateSpline(options, 5000);
+        assert.ok(result, 'функция сгенерирована');
+        let same = true;
+        for (let x = options.minX; x <= options.maxX; x += 0.37) {
+            same = same && result.func(x) === result.painFunc(x);
+        }
+        assert.ok(same, "type: 'function' — рисуется сама функция");
+
+        options = splineConfigs['производная, stepForX = 4, от двух корней'];
+        ({ result } = generateSpline(options, 5000));
+        assert.ok(result, 'производная сгенерирована');
+        // Экстремумы func лежат в корнях нарисованного графика, и наоборот
+        const roots = findRoots(result.painFunc, options.minX, options.maxX);
+        const extremums = extremumsX(result.func, options.minX, options.maxX);
+        assert.equal(extremums.length, roots.length, "type: 'derivative' — экстремумов func столько же, сколько корней графика");
+        assert.ok(extremums.every((x, i) => Math.abs(x - roots[i]) < 1e-3), 'и они совпадают с корнями');
+        let signs = true;
+        for (let x = options.minX + 0.5; x < options.maxX; x += 0.37) {
+            const growth = result.func(x + 0.01) - result.func(x - 0.01);
+            signs = signs && (Math.abs(result.painFunc(x)) < 0.05 || Math.sign(growth) === Math.sign(result.painFunc(x)));
+        }
+        assert.ok(signs, 'знак графика совпадает с направлением изменения func');
+    });
+
+    QUnit.test('createSpline: недопустимые требования отбраковываются', function (assert) {
+        const impossible = Object.assign({}, splineConfigs['функция, stepForX = 3, только обязательные параметры'],
+            { numberOfExtremes: { min: 50, max: 60 } });
+        assert.strictEqual(generateSpline(impossible, 200).result, null, 'пятидесяти экстремумов на отрезке длины 12 не бывает');
+    });
+
+    QUnit.test('createSpline: monotoneFunction', function (assert) {
+        const options = { type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 3, monotoneFunction: true };
+        let increasing = 0;
+        let decreasing = 0;
+        let problems = [];
+        for (let i = 0; i < 30; i++) {
+            const { result } = generateSpline(options, 2000);
+            if (!result) {
+                problems.push('функция не сгенерирована');
+                break;
+            }
+            problems = problems.concat(splineProblems(result, options));
+            let rises = true;
+            let falls = true;
+            for (let x = options.minX; x < options.maxX; x += 0.05) {
+                rises = rises && result.func(x + 0.05) > result.func(x);
+                falls = falls && result.func(x + 0.05) < result.func(x);
+            }
+            increasing += rises ? 1 : 0;
+            decreasing += falls ? 1 : 0;
+            if (!rises && !falls) {
+                problems.push('функция не монотонна');
+            }
+            if (extremumsX(result.func, options.minX, options.maxX).length !== 0) {
+                problems.push('у функции есть экстремум');
+            }
+        }
+        assert.deepEqual(problems, [], 'все 30 функций монотонны и удовлетворяют требованиям');
+        assert.ok(increasing > 0 && decreasing > 0, 'встречаются и возрастающие, и убывающие (' + increasing + ' и ' + decreasing + ')');
+    });
+
+    QUnit.test('createSpline: функция без экстремумов не отбраковывается', function (assert) {
+        // Раньше при пустом списке экстремумов проверка расстояния до концов сравнивала с NaN
+        const options = { type: 'function', minX: -6, maxX: 6, minY: -5, maxY: 5, stepForX: 3,
+            monotoneFunction: true, numberOfExtremes: { min: 0, max: 0 } };
+        assert.ok(generateSpline(options, 2000).result, 'функция с нулём экстремумов сгенерирована');
+    });
+
+    QUnit.test('createSpline: монотонная функция с графиком производной', function (assert) {
+        const options = { type: 'derivative', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3, monotoneFunction: true };
+        const { result } = generateSpline(options, 20000);
+        assert.ok(result, 'функция сгенерирована');
+        assert.equal(extremumsX(result.func, options.minX, options.maxX).length, 0, 'у самой функции экстремумов нет');
+        assert.equal(findRoots(result.painFunc, options.minX, options.maxX).length, 0, 'график производной не пересекает ось');
+    });
+
+    // ============================================================
+    //  paintSpline, paintMarkedPoints  (lib/math_functions.js в составе build/lib/chas-lib.js)
+    // ============================================================
+    QUnit.module('Math Functions: paintSpline');
+
+    // В браузере объект om приходит из lib/osnmas.js, который в chas-lib.js не входит
+    if (typeof global.om === 'undefined') {
+        global.om = { primaryBrandColors: ['#D777F2', '#F2A2D6'] };
+    }
+
+    // Холст-заглушка: методы, добавленные библиотекой в прототип контекста,
+    // работают как есть, а вызовы собственных методов холста и присваивания
+    // свойств записываются
+    function recordingContext() {
+        const calls = [];
+        const ctx = new Proxy(Object.create(CanvasRenderingContext2D.prototype), {
+            get(target, property, receiver) {
+                if (property in target) {
+                    return Reflect.get(target, property, receiver);
+                }
+                if (typeof property !== 'string') {
+                    return undefined;
+                }
+                return function () {
+                    calls.push([property].concat(Array.from(arguments)));
+                };
+            },
+            set(target, property, value) {
+                calls.push(['set ' + property, value]);
+                target[property] = value;
+                return true;
+            },
+        });
+        return { ctx, calls };
+    }
+
+    const paintOptions = { func: x => 3 * Math.sin(x), minX: -6, maxX: 5, minY: -5, maxY: 5 };
+    const textsOf = calls => calls.filter(call => call[0] === 'fillText').map(call => call[1]);
+    const countOf = (calls, name) => calls.filter(call => call[0] === name).length;
+
+    QUnit.test('paintSpline: график на интервале', function (assert) {
+        const { ctx, calls } = recordingContext();
+        const paint = global.paintSpline(paintOptions);
+        assert.equal(typeof paint, 'function', 'возвращает функцию рисования');
+        paint(ctx);
+
+        const texts = textsOf(calls);
+        assert.ok(texts.includes(-6) && texts.includes(5), 'концы интервала подписаны');
+        assert.equal(countOf(calls, 'arc'), 4, 'на концах выколотые точки: по два круга на каждый конец');
+        assert.ok(countOf(calls, 'lineTo') > 1000, 'график нарисован');
+        const scales = calls.filter(call => call[0] === 'scale');
+        assert.deepEqual(scales.map(call => call.slice(1)), [[20, -20], [1 / 20, -1 / 20]], 'масштаб после рисования возвращён');
+        assert.equal(countOf(calls, 'setLineDash'), 0, 'без отмеченных точек пунктир не используется');
+    });
+
+    QUnit.test('paintSpline: концы 0 и 1 не подписываются повторно', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintSpline(Object.assign({}, paintOptions, { minX: 0, maxX: 7 }))(ctx);
+        const texts = textsOf(calls);
+        assert.notOk(texts.includes(0), 'число 0 у начала координат уже есть в разметке осей');
+        assert.ok(texts.includes(7), 'правый конец подписан');
+    });
+
+    QUnit.test('paintSpline: функция не на интервале', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintSpline(Object.assign({}, paintOptions, { definedOnInterval: false }))(ctx);
+        const texts = textsOf(calls);
+        assert.notOk(texts.includes(-6) || texts.includes(5), 'концы не подписаны');
+        assert.equal(countOf(calls, 'arc'), 0, 'выколотых точек нет');
+    });
+
+    QUnit.test('paintSpline: отмеченные точки с обозначениями', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintSpline(Object.assign({}, paintOptions, { points: [-4.5, -1.5, 2.5], markedPoints: { type: 'symbol' } }))(ctx);
+        const texts = textsOf(calls);
+        assert.deepEqual(texts.slice(-3), ['x₁', 'x₂', 'x₃'], 'точки подписаны x₁, x₂, x₃');
+        assert.equal(countOf(calls, 'arc'), 4 + 3, 'к выколотым концам добавились три точки на оси');
+
+        // Пунктир от точки на оси до графика: вертикальный отрезок нужной длины
+        const dashes = calls.filter(call => call[0] === 'setLineDash').map(call => call[1]);
+        assert.deepEqual(dashes, [[4, 2], [], [4, 2], [], [4, 2], []], 'пунктир включается для каждой точки и выключается после неё');
+        const lastLine = calls.filter(call => call[0] === 'lineTo').pop();
+        assert.ok(Math.abs(lastLine[1] - 2.5 * 20) < 1e-9 && Math.abs(lastLine[2] + 3 * Math.sin(2.5) * 20) < 1e-9,
+            'последний отрезок идёт до точки графика (2,5; f(2,5))');
+        const lastStroke = calls.filter(call => call[0] === 'set strokeStyle').pop();
+        assert.equal(lastStroke[1], 'black', 'цвет линии возвращён');
+    });
+
+    QUnit.test('paintSpline: отмеченные точки с числами', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintSpline(Object.assign({}, paintOptions, { points: [-4.5, 2], markedPoints: { type: 'number' } }))(ctx);
+        assert.deepEqual(textsOf(calls).slice(-2), ['-4,5', '2'], 'подписаны абсциссы, дробная часть через запятую');
+    });
+
+    QUnit.test('paintMarkedPoints: подпись ставится по другую сторону оси от графика', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintMarkedPoints(ctx, [1, 4], x => (x < 2 ? 3 : -3), { scale: 20 }, { type: 'symbol' });
+        const labels = calls.filter(call => call[0] === 'fillText');
+        assert.equal(labels.length, 2, 'две подписи');
+        assert.ok(labels[0][3] > 0, 'график выше оси — подпись ниже оси');
+        assert.ok(labels[1][3] < 0, 'график ниже оси — подпись выше оси');
+    });
+};

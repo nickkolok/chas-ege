@@ -165,6 +165,22 @@ try {
     console.error('⚠️  Не удалось загрузить node-unit-tests.js:', err.message);
 }
 
+try {
+    const registerMathFunctionsTests = require('./node-unit-tests-math-functions.js');
+    registerMathFunctionsTests(QUnit);
+    console.log('✅ Тесты lib/math_functions.js (node-unit-tests-math-functions.js) подключены.');
+} catch (err) {
+    console.error('⚠️  Не удалось загрузить node-unit-tests-math-functions.js:', err.message);
+}
+
+try {
+    const registerTaskGraphDerivativeTests = require('./node-unit-tests-task-graph-derivative.js');
+    registerTaskGraphDerivativeTests(QUnit);
+    console.log('✅ Тесты setTaskWithGraphOfFunctionDerivative (node-unit-tests-task-graph-derivative.js) подключены.');
+} catch (err) {
+    console.error('⚠️  Не удалось загрузить node-unit-tests-task-graph-derivative.js:', err.message);
+}
+
 QUnit.testDone(function (details) {
     if (details.failed > 0) {
         console.error(`\n❌ Провален тест: "${details.name}"`);
