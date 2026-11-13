@@ -39,6 +39,8 @@
 		// V в решении - обозначение объёма, а не вершина: её не переставляем
 		NAtask.modifiers.variativeABC(letters, { preserve: ['V'] });
 
+		NAtask.modifiers.allDecimalsToStandard(true);
+
 		NAtask.modifiers.addCanvasIllustration({
 			width: 380,
 			height: 330,
@@ -171,8 +173,6 @@
 				put(P, letters[5]);
 			},
 		});
-
-		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 //14495555
