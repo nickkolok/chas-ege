@@ -25,7 +25,7 @@
 		let p = circle.pointOnCircle(90, {
 			angleInDegrees: true
 		});
-        
+
 		let points = autoScale([AB.ps, AB.pe, PC.vertices[0], p.vertices[0]]);
 		let scaleCircle = CircleByPoints.fromCenterAndPoint(new Point(0, 0), new Point(points[2].x, points[2].y));
 
