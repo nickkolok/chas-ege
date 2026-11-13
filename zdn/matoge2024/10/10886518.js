@@ -77,12 +77,12 @@
 		postquestion: '.',
         authors: ['Александра Суматохина'],
 	});
-	NAtask.modifiers.allDecimalsToStandard(/*true*/);
 	NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint,
         });
+	NAtask.modifiers.allDecimalsToStandard(/*true*/);
 }, 2000);})();
 //10886518
 //Открытый банк заданий A61D76
