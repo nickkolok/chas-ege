@@ -1,10 +1,13 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
+		let key = '26719';
+		let preference = ['maximum', 'minimum'];
+		let rand = getSelectedPreferenceFromList(key, preference);
+		let [forbidMinY, forbidMaxY] = [1 - rand, rand].map(elem => Boolean(elem));
+
 		let a = sl(1, 100).pm();
 		let b = sl(2, 19);
-		let l = sl(-20.5, 1, 0.5);
-		let r = sl(-20.5, 1, 0.5);
 		let arr1 = ['+', '-'];
 		let arr2 = ['-', '+'];
 		let maxmin = sl1();
@@ -21,6 +24,10 @@
 			primaryStep: 0.01,
 			secondaryStep: 0.001,
 			authors: ['Алендарь Сергей'],
+			forbidMinY,
+			forbidMaxY,
+			domain: x => x > 0,
+			preference,
 		});
 	}, 1000);
 })();
