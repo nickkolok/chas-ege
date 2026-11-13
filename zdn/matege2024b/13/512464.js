@@ -66,36 +66,13 @@
 	let shiftY = (Math.min(...points2D.map((p) => p.y)) + Math.max(...points2D.map((p) => p.y))) / 2;
 	points2D = points2D.map((p) => ({ x: p.x - shiftX, y: p.y - shiftY }));
 
-	// Видимость граней - по знаку ориентированной площади проекции при обходе,
-	// согласованном с внешней нормалью (приём из 513823 и 514225).
+	// Видимость граней - facesVisibility() из lib/figure.js.
 	// Ребро пунктирно, когда невидимы обе смежные грани.
-	let centroid = { x: 0, y: 0, z: 0 };
-	vertices.forEach(function (vertex) {
-		centroid.x += vertex.x / vertices.length;
-		centroid.y += vertex.y / vertices.length;
-		centroid.z += vertex.z / vertices.length;
-	});
 	let faces = [[0, 1, 2, 3], [0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]];
-	let facesVisible = faces.map(function (face) {
-		let p0 = vertices[face[0]], p1 = vertices[face[1]], p2 = vertices[face[2]];
-		let u = { x: p1.x - p0.x, y: p1.y - p0.y, z: p1.z - p0.z };
-		let w = { x: p2.x - p0.x, y: p2.y - p0.y, z: p2.z - p0.z };
-		let normal = { x: u.y * w.z - u.z * w.y, y: u.z * w.x - u.x * w.z, z: u.x * w.y - u.y * w.x };
-		let fc = { x: 0, y: 0, z: 0 };
-		face.forEach(function (i) {
-			fc.x += vertices[i].x / face.length;
-			fc.y += vertices[i].y / face.length;
-			fc.z += vertices[i].z / face.length;
-		});
-		let orient = (normal.x * (fc.x - centroid.x) + normal.y * (fc.y - centroid.y) + normal.z * (fc.z - centroid.z)) < 0 ? -1 : 1;
-		let q0 = points2D[face[0]], q1 = points2D[face[1]], q2 = points2D[face[2]];
-		return orient * ((q1.x - q0.x) * (q2.y - q0.y) - (q2.x - q0.x) * (q1.y - q0.y)) > 0;
-	});
+	let visibility = facesVisibility(vertices, points2D, faces);
 	let edges = [[0, 1], [1, 2], [2, 3], [3, 0], [0, 4], [1, 4], [2, 4], [3, 4]];
 	let isHidden = function (edge) {
-		return !faces.some(function (face, k) {
-			return facesVisible[k] && face.includes(edge[0]) && face.includes(edge[1]);
-		});
+		return !isOnVisibleFace(faces, visibility, edge);
 	};
 	let baseCenter = {
 		x: (points2D[0].x + points2D[1].x + points2D[2].x + points2D[3].x) / 4,
