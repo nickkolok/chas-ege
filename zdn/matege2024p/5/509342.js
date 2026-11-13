@@ -125,12 +125,12 @@
 					`<br/>$P(A|B) = \\frac{${p_A_intersect_B.ts()}}{${p_B.ts()}} = ${answer.ts()}$.`
 		});
 		
-		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint,
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	});
 })();
 //509342
