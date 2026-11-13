@@ -5,10 +5,7 @@
 
         let key = "356079";
         let preference = ['sinA', 'cosA', 'tgA', 'ctgA', 'sinC', 'cosC', 'tgC', 'ctgC'];
-        let variant = getListedPreference(key, preference.map((pref, index) => ({
-            preference: pref,
-            preferenceValue: index
-        })), sl(preference.length - 1));
+        let variant = getSelectedPreferenceFromList(key, preference);
 
         let triangle = new Triangle({
             lengths: {
