@@ -40,14 +40,15 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectionMatrix);
-			ctx.drawArc(0, 0, scaleCircle.r, 0, 2 * Math.PI);
+			scaleCircle.drawOnto(ctx);
+
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
 			points.slice(0, -1).forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ угол $C$ равен $${[45,120][rand]}^\\circ$, $AB =${AB.length.pow(2).texsqrt(1)}$. Найдите радиус окружности, описанной около этого треугольника.`,
+			text: `В треугольнике $ABC$ угол $C$ равен $${[45, 120][rand]}^\\circ$, $AB=${AB.length.pow(2).texsqrt(1)}$. Найдите радиус окружности, описанной около этого треугольника.`,
 			answers: circle.r,
 			authors: ['Александра Суматохина'],
 		});
