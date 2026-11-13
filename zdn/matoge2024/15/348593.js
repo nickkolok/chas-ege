@@ -40,8 +40,7 @@
         };
 
         NAtask.setTask({
-            text: `В треугольнике $ABC$ известно, что $AB=BC$, $\\angle ${letters.slice().permuteCyclic(-1).randomReverse().join('')} = ${angleC}^{\\circ}$. 
-            Найдите угол $${[letters, letters.slice().permuteCyclic(1)].iz().randomReverse().join('')}$. Ответ дайте в градусах.`,
+            text: `В треугольнике $ABC$ известно, что $AC=BC$, $\\angle ACB = ${angleC}^{\\circ}$. Найдите угол $BAC$. Ответ дайте в градусах.`,
             answers: (180 - angleC) / 2,
             authors: ['Александра Суматохина'],
         });
