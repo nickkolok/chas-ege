@@ -101,12 +101,12 @@
 			analys: `$f(x)=${[c, b, a].mn_txt('x')}$`,
 			preference,
 		});
-		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	});
 })();
 //508911 et al
