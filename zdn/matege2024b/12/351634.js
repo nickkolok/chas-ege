@@ -29,9 +29,6 @@
 				lengthBC: trp.lengthCD,
 				lengthCA: trp.lengthDA,
 			},
-			supplementary: {
-				calculateDiagonals: true,
-			}
 		});
 
 		trp.connectVerticesInConnectionMatrix([
