@@ -85,12 +85,12 @@
 			preference: preference,
 			analys: ('$f(x)=' + kTex + '\\sqrt{x}$').plusminus(),
 		});
-		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.addCanvasIllustration({
 			width,
 			height,
 			paint: paint1,
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	});
 })();
 //509113 509118
