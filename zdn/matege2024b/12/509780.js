@@ -5,10 +5,7 @@
 		let key = '509780';
 		let preference = ['area', 'side', 'angle'];
 
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let trp = new Trapezoid({
 			lengths: {
