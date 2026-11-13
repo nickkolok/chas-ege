@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let [a,b] = om.pifagtr.iz();
+		let [a, b] = om.pifagtr.iz();
 		let coefficient = sl(1, 100)/10;
 
 		let triangle = new Triangle({
@@ -37,7 +37,7 @@
 		};
 
 		NAtask.setTask({
-			text: ` В прямоугольном треугольнике наибольший из катетов равен $${[triangle.lengthAB,triangle.lengthBC].maxE()}$. Гипотенуза равна $${triangle.lengthCA}$. Найдите наименьшую среднюю линию этого треугольника.`,
+			text: `В прямоугольном треугольнике наибольший из катетов равен $${[triangle.lengthAB,triangle.lengthBC].maxE()}$. Гипотенуза равна $${triangle.lengthCA}$. Найдите наименьшую среднюю линию этого треугольника.`,
 			answers: [triangle.midlineBCLength, triangle.midlineABLength].minE(),
 			authors: ['Александра Суматохина'],
 		});
