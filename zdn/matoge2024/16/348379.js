@@ -52,7 +52,11 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             // Подпись — снаружи окружности, на продолжении радиуса
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x * 1.12, -elem.y * 1.12));
+            const labelDistance = 30;
+            points.forEach((elem, i) => {
+                const labelPos = labelPositionAwayFrom(elem, circle.pc, labelDistance);
+                ctx.fillText(letters[i], labelPos.x, -labelPos.y);
+            });
         };
 
         NAtask.setTask({
