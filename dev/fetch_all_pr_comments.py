@@ -11,6 +11,7 @@
 - Комбинации:               fetch_all_pr_comments.py 2426 2428 1234..1240
 
 В файле — по одному номеру или диапазону на строку, строки с # игнорируются.
+Результат сохраняется в .cache/prcomments/<args_joined_by_underscore>.json
 """
 
 import requests
@@ -19,6 +20,8 @@ import sys
 import os
 import time
 import subprocess
+
+CACHE_DIR = os.path.join('.cache', 'prcomments')
 
 def get_github_token():
     """
@@ -88,31 +91,41 @@ def parse_numbers(args):
             result.append(n)
     return result
 
-def parse_file(filename):
-    """Разбирает файл со списком номеров и диапазонов."""
-    numbers = []
+def read_file_lines(filename):
+    """
+    Читает файл и возвращает список непустых строк без комментариев.
+    Сохраняет исходные строки (включая диапазоны) для использования в имени файла.
+    """
+    lines = []
     with open(filename, 'r') as f:
         for line in f:
             line = line.strip()
             if not line or line.startswith('#'):
                 continue
-            if '..' in line:
-                parts = line.split('..')
-                if len(parts) != 2:
-                    print(f"Предупреждение: пропущена некорректная строка: {line}")
-                    continue
-                try:
-                    start = int(parts[0])
-                    end = int(parts[1])
-                except ValueError:
-                    print(f"Предупреждение: пропущена некорректная строка: {line}")
-                    continue
-                numbers.extend(range(start, end + 1))
-            else:
-                try:
-                    numbers.append(int(line))
-                except ValueError:
-                    print(f"Предупреждение: пропущена некорректная строка: {line}")
+            lines.append(line)
+    return lines
+
+def parse_lines(lines):
+    """Разбирает список строк (с номерами и диапазонами) в список номеров."""
+    numbers = []
+    for line in lines:
+        if '..' in line:
+            parts = line.split('..')
+            if len(parts) != 2:
+                print(f"Предупреждение: пропущена некорректная строка: {line}")
+                continue
+            try:
+                start = int(parts[0])
+                end = int(parts[1])
+            except ValueError:
+                print(f"Предупреждение: пропущена некорректная строка: {line}")
+                continue
+            numbers.extend(range(start, end + 1))
+        else:
+            try:
+                numbers.append(int(line))
+            except ValueError:
+                print(f"Предупреждение: пропущена некорректная строка: {line}")
     # Убираем дубликаты, сохраняя порядок
     seen = set()
     result = []
@@ -196,6 +209,28 @@ def fetch_pr_comments(pr_number, token, repo="nickkolok/chas-ege"):
 
     return result
 
+def build_output_filename(raw_args):
+    """
+    Строит путь к выходному файлу на основе исходных аргументов.
+    raw_args — список строк (номера и диапазоны), переданных пользователем.
+    Имя файла: .cache/prcomments/<arg1>_<arg2>_..._<argN>.json
+    """
+    # Санитизация: заменяем потенциально проблемные символы на '-'
+    safe_args = []
+    for arg in raw_args:
+        # '..' оставляем как есть — это валидная часть диапазона
+        # Заменяем '/' и другие спецсимволы (кроме '.', '-', '_') на '-'
+        safe = ''
+        for ch in arg:
+            if ch.isalnum() or ch in '.-_':
+                safe += ch
+            else:
+                safe += '-'
+        safe_args.append(safe)
+
+    joined = '_'.join(safe_args)
+    return os.path.join(CACHE_DIR, joined + '.json')
+
 def main():
     token = get_github_token()
 
@@ -218,6 +253,8 @@ def main():
         print("  python fetch_all_pr_comments.py 1234..1268")
         print("  python fetch_all_pr_comments.py 2426 2428 1234..1240")
         print("  python fetch_all_pr_comments.py --file list.txt")
+        print("")
+        print(f"Результат сохраняется в {CACHE_DIR}/<args_joined_by_underscore>.json")
         sys.exit(1)
 
     if sys.argv[1] == '--file':
@@ -228,11 +265,21 @@ def main():
         if not os.path.exists(filename):
             print(f"Ошибка: Файл {filename} не найден")
             sys.exit(1)
-        pr_numbers = parse_file(filename)
+        raw_lines = read_file_lines(filename)
+        if not raw_lines:
+            print(f"Ошибка: В файле {filename} нет валидных номеров или диапазонов")
+            sys.exit(1)
+        pr_numbers = parse_lines(raw_lines)
+        # Для имени файла используем исходные строки из файла
+        raw_args = raw_lines
     else:
-        pr_numbers = parse_numbers(sys.argv[1:])
+        raw_args = sys.argv[1:]
+        pr_numbers = parse_numbers(raw_args)
+
+    output_filename = build_output_filename(raw_args)
 
     print(f"Всего номеров для обработки: {len(pr_numbers)}")
+    print(f"Файл результата: {output_filename}")
     print("=" * 60)
 
     all_prs_data = []
@@ -258,7 +305,7 @@ def main():
         print("\nОшибка: Не удалось получить данные ни для одного PR")
         sys.exit(1)
 
-    output_filename = "all_pr_comments.json"
+    os.makedirs(CACHE_DIR, exist_ok=True)
     with open(output_filename, 'w', encoding='utf-8') as f:
         json.dump(all_prs_data, f, ensure_ascii=False, indent=2)
 
