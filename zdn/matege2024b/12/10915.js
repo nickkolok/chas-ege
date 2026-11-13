@@ -56,7 +56,7 @@
 		let wantedAngle = reverse ? 'ABC' : 'ABD';
 
 		NAtask.setTask({
-			text: `Четырёхугольник $ABCD$ вписан в окружность. Угол ${givenAngle}$ равен ${reverse ? angleABD : angleABC}^\\circ$, угол $CAD$ равен $${angleCAD}^\\circ$. Найдите угол ${wantedAngle}$. Ответ дайте в градусах.`,
+			text: `Четырёхугольник $ABCD$ вписан в окружность. Угол $${givenAngle}$ равен $${reverse ? angleABD : angleABC}^\\circ$, угол $CAD$ равен $${angleCAD}^\\circ$. Найдите угол $${wantedAngle}$. Ответ дайте в градусах.`,
 			answers: reverse ? angleABC : angleABD,
 			preference,
 			authors: ['Александра Суматохина'],
