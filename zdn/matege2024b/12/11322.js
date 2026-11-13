@@ -7,10 +7,7 @@
 		let key = "11322";
 		let preference = ['side_AB_by_height', 'side_AB_by_median', 'bisector'];
 
-		let rand = getListedPreference(key, preference.map((pref, index) => ({
-			preference: pref,
-			preferenceValue: index
-		})), sl(preference.length - 1));
+		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let triangle = new Triangle({
 			lengths: {
