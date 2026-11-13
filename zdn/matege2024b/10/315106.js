@@ -15,6 +15,7 @@
 			{ x: 15, y: 8, L: 17 },
 			{ x: 16, y: 12, L: 20 },
 			{ x: 20, y: 15, L: 25 },
+			{ x: 6.4, y: 4.8, L: 8 },
 		];
 
 		let triple = triples.iz();
@@ -24,7 +25,7 @@
 		let wireLength = triple.L;
 
 		let houseHeight = sl(2, 6);
-		let poleHeight = houseHeight + heightDifference;
+		let poleHeight = (houseHeight + heightDifference).okrugldo(0.1);
 
 		let answers = [
 			wireLength,
@@ -32,15 +33,15 @@
 		];
 
 		let analys = [
-			`Разность высот точек крепления провода равна $${poleHeight}−${houseHeight}=${heightDifference}$ м. По теореме Пифагора длина провода равна $\\sqrt{${distance}^2+${heightDifference}^2}=\\sqrt{${distance * distance}+${heightDifference * heightDifference}}=\\sqrt{${wireLength * wireLength}}=${wireLength}$ м.`,
-			`Разность высот точек крепления провода равна $\\sqrt{${wireLength}^2−${distance}^2}=\\sqrt{${wireLength * wireLength}−${distance * distance}}=\\sqrt{${heightDifference * heightDifference}}=${heightDifference}$ м. Поэтому высота столба равна $${houseHeight}+${heightDifference}=${poleHeight}$ м.`,
+			`Разность высот точек крепления провода равна $${poleHeight.ts()}−${houseHeight}=${heightDifference.ts()}$ м. По теореме Пифагора длина провода равна $\\sqrt{${distance.ts()}^2+${heightDifference.ts()}^2}=\\sqrt{${(distance * distance).okrugldo(0.01).ts()}+${(heightDifference * heightDifference).okrugldo(0.01).ts()}}=\\sqrt{${wireLength * wireLength}}=${wireLength}$ м.`,
+			`Разность высот точек крепления провода равна $\\sqrt{${wireLength}^2−${distance.ts()}^2}=\\sqrt{${wireLength * wireLength}−${(distance * distance).okrugldo(0.01).ts()}}=\\sqrt{${(heightDifference * heightDifference).okrugldo(0.01).ts()}}=${heightDifference.ts()}$ м. Поэтому высота столба равна $${houseHeight}+${heightDifference.ts()}=${poleHeight.ts()}$ м.`,
 		][rand];
 
 		NAtask.setTask({
-			text: `От столба к дому натянут провод, который крепится на высоте ${houseHeight} м от земли (см. рисунок). Расстояние от дома до столба ${distance} м. `,
+			text: `От столба к дому натянут провод, который крепится на высоте ${houseHeight} м от земли (см. рисунок). Расстояние от дома до столба ${distance.ts()} м. `,
 			questions: [
 				[{
-					text: `Высота столба равна ${poleHeight} м. Найдите длину провода`,
+					text: `Высота столба равна ${poleHeight.ts()} м. Найдите длину провода`,
 					answers: answers[0],
 				}, {
 					text: `Длина провода равна ${wireLength} м. Вычислите высоту столба`,
@@ -94,7 +95,7 @@
 				// Высота столба
 				ct.textAlign = 'right';
 				ct.textBaseline = 'middle';
-				ct.fillText(rand === 0 ? poleHeight : '?', poleX - 10, (poleTopY + groundY) / 2);
+				ct.fillText(rand === 0 ? poleHeight.ts() : '?', poleX - 10, (poleTopY + groundY) / 2);
 
 				// Высота крепления
 				ct.textAlign = 'right';
@@ -103,7 +104,7 @@
 				// Расстояние между домом и столбом
 				ct.textAlign = 'center';
 				ct.textBaseline = 'top';
-				ct.fillText(distance, (poleX + wallX) / 2, groundY + 10);
+				ct.fillText(distance.ts(), (poleX + wallX) / 2, groundY + 10);
 
 				// Длина провода
 				ct.save();
@@ -119,3 +120,4 @@
 })();
 
 // https://oge.sdamgia.ru/problem?id=315106
+// 63209E, 711FE6, 2125D7, 98E931, CAFD85, 11BFFF, 4AEDF7, 0A9F22, 26CCCF, C6D0C9, AD43CD
