@@ -67,12 +67,12 @@
 			analys: `$f(x)=\\frac{${k}}{${denominator}}$`,
 			preference: [preference1, preference2],
 		});
-		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	});
 })();
 //508971 508983
