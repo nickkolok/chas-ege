@@ -218,12 +218,12 @@
             postText: 'Пользуясь графиком, поставьте в соответствие каждому интервалу числа оборотов в минуту характеристику крутящего момента на этом интервале.',
             analys: listView.join('<br/>')
         });
-        NAtask.modifiers.allDecimalsToStandard();
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 400,
             paint: paint1,
         });
+        NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=507051
