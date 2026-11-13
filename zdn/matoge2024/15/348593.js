@@ -13,7 +13,7 @@
         });
         genAssert(!triangle.lengthAB.isAlmostEqual(triangle.lengthBC), 'Основание не должно быть равно боковой стороне');
         let angleC = triangle.angleCInDegrees.ceil();
-        genAssert(angleC != 90, 'B - прямой угол');
+        genAssert(angleC != 90, 'C - прямой угол');
 
         let points = autoScale(triangle.vertices);
         let letters = om.latbukv.slice(0, 3);
