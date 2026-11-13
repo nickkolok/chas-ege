@@ -61,7 +61,6 @@
 			authors: ['chas-ege-selena'],
 			preference: [preferenceMultiplier],
 		});
-		NAtask.modifiers.allDecimalsToStandard(true);
 
 		let paintBoxes = function (ct) {
 			// Рисуем в условных единицах (сторона основания первой коробки = 1),
@@ -117,6 +116,7 @@
 			height: 300,
 			paint: paintBoxes,
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 //523577
