@@ -14,7 +14,7 @@
 		// При rotate = 0 квадрат стоит «ромбиком», при rotate = 45° его стороны параллельны осям;
 		// поворот на несколько градусов от этих положений выглядит как криво нарисованный квадрат,
 		// поэтому исключаются 0…10°, 80…90° и 35…55°
-		let rotate = slKrome((x) => (x - 45).abs() < 10, 10, 80);
+		let rotate = slKrome((x) => (x - 45).abs() <= 10, 11, 79);
 
 		let AB = circle.chordByAngles(90 + rotate, 180 + rotate, {
 			angleInDegrees: true
@@ -32,7 +32,7 @@
 
 		let points = [AB.ps, AB.pe, CD.ps, CD.pe];
 
-		let paint1 = function(ctx) {
+		let paint1 = function (ctx) {
 			let h = 400;
 			let w = 400;
 
