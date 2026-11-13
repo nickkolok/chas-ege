@@ -15,7 +15,7 @@
 		genAssert(rect.lengthDiagonalAC.isAlmostInteger(), 'Диагональ не целая');
 
 		NAtask.setTask({
-			text: `В параллелограмме $ABCD$ известно, что $AB=${rect.lengthAB}$, $AC=BD=${rect.lengthDiagonalAC}$. Найдите площадь параллелограмма`,
+			text: `В параллелограмме $ABCD$ известно, что $AB=${rect.lengthAB}$, $AC=BD=${rect.lengthDiagonalAC}$. Найдите площадь параллелограмма.`,
 			answers: rect.area(),
 			authors: ['Александра Суматохина'],
 		});
