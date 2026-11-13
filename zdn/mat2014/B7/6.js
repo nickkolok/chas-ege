@@ -25,7 +25,7 @@
 	var multiplier = sl(1, 9);
 
 	var parts = [
-		['\\sqrt' + textpower + '{' + [a, b + 'x'].shuffle().slag0() + '}', c],
+		['\\sqrt' + textpower + '{' + [a, b + 'x'].slag0() + '}', c],
 		['\\sqrt' + textpower + '{\\frac{' + numerator.pow(power) * multiplier + '}{' + [a * multiplier, b * multiplier + 'x'].slag0() + '}}', numerator.texrndfrac(c)],
 		['\\sqrt' + textpower + '{\\frac{' + [a * multiplier, b * multiplier + 'x'].slag0() +
 			'}{' + numerator.pow(power) * multiplier + '}}', c.texrndfrac(numerator)
