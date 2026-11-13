@@ -15,7 +15,7 @@
 				calculateBisectors: true,
 			}
 		});
-		
+
 		genAssert(triangle.angleAInDegrees!=90);
 		genAssert(triangle.angleBInDegrees!=90);
 		genAssertZ1000(triangle.area());
