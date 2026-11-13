@@ -26,17 +26,17 @@
 
         switch (variant) {
             case 0:
-			case 5:
+            case 5:
                 sides = ['BC', 'CA'];
                 break;
             case 1:
-			case 4:
+            case 4:
                 sides = ['AB', 'CA'];
                 break;
             case 2:
             case 3:
-			case 6:
-			case 7:
+            case 6:
+            case 7:
                 sides = ['AB', 'BC'];
                 break;
         }
