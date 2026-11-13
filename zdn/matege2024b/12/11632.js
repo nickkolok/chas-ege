@@ -5,10 +5,7 @@
         let key = '11632';
         let preference = ['sin_BAC_by_diagonals', 'sin_ABD_by_side_diagonalBD', 'sin_BAC_by_side_diagonalAC', 'tg_BAC_by_side_diagonalAC', 'tg_BAC_by_area_diagonalAC'];
 
-        let rand = getListedPreference(key, preference.map((pref, index) => ({
-            preference: pref,
-            preferenceValue: index
-        })), sl(preference.length - 1));
+        let rand = getSelectedPreferenceFromList(key, preference);
 
         let letters = latbukv.slice(0, 4);
         let d1 = sl(1, 50);
