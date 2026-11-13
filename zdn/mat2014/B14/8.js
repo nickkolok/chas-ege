@@ -1,21 +1,6 @@
 (function() {
 	let key = "8";
-	let variant = getListedPreference(key, [{
-		preference: 'river_speed',
-		preferenceValue: 0,
-	}, {
-		preference: 'boat_speed',
-		preferenceValue: 1,
-	}, {
-		preference: 'parking_duration',
-		preferenceValue: 2,
-	}, {
-		preference: 'total_time',
-		preferenceValue: 3,
-	}, {
-		preference: 'distance_between_points',
-		preferenceValue: 4,
-	}], sl(0, 4));
+	let variant = getSelectedPreferenceFromList(key, ['river_speed', 'boat_speed', 'parking_duration', 'total_time', 'distance_between_points']);
 	
 	let b = 0.5, x, a, s, t;
 	for (; !(b.isZ() && b > 0);) {
