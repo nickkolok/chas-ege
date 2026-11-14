@@ -331,12 +331,12 @@
         answers: y,
         authors: ['Aisse-258', 'NickKolok', 'mcFrene']
     });
-    NAtask.modifiers.allDecimalsToStandard(true);
     chas2.task.modifiers.addCanvasIllustration({
         width: 400,
         height: 400,
         paint: paint1
     });
+    NAtask.modifiers.allDecimalsToStandard(true);
 }, 2000);
 })();
 //mcFrene
