@@ -1049,6 +1049,29 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.deepEqual(findDecreasingIntegerPoints(func, -5, 6), [-4, -1, 0, 1, 2, 3, 4], 'целые точки промежутков убывания');
     });
 
+    QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: строгий режим', function (assert) {
+        // x³ - 12x: максимум в -2, минимум в 2
+        const func = x => x * x * x - 12 * x;
+        assert.deepEqual(findIncreasingIntegerPoints(func, -5, 5), [-4, -3, -2, 2, 3, 4], 'по умолчанию точки экстремума входят');
+        assert.deepEqual(findDecreasingIntegerPoints(func, -5, 5), [-2, -1, 0, 1, 2], 'по умолчанию точки экстремума входят');
+        const strict = [undefined, undefined, undefined, true];
+        const increasing = findIncreasingIntegerPoints(func, -5, 5, ...strict);
+        const decreasing = findDecreasingIntegerPoints(func, -5, 5, ...strict);
+        assert.deepEqual(increasing, [-4, -3, 3, 4], 'строго: производная положительна');
+        assert.deepEqual(decreasing, [-1, 0, 1], 'строго: производная отрицательна');
+        const slope = x => 3 * x * x - 12;
+        assert.ok(increasing.every(x => slope(x) > 0) && decreasing.every(x => slope(x) < 0), 'знак производной в точках соответствует');
+        assert.deepEqual(increasing.concat(decreasing).filter(x => slope(x) === 0), [], 'точек с нулевой производной в ответе нет');
+    });
+
+    QUnit.test('findIncreasingAndDecreasingPoints: строгий режим', function (assert) {
+        const intervals = { increasingIntervals: [[-7, -4], [0, 3]], decreasingIntervals: [[-4, 0], [3, 6]] };
+        assert.deepEqual(findIncreasingAndDecreasingPoints(intervals, -7, 6, false, false, true),
+            { increasingPoints: [-6, -5, 1, 2], decreasingPoints: [-3, -2, -1, 4, 5] }, 'точки экстремума -4, 0 и 3 не входят');
+        assert.deepEqual(findIncreasingAndDecreasingPoints(intervals, -7, 6, true, true, true),
+            { increasingPoints: [-7, -6, -5, 1, 2], decreasingPoints: [-3, -2, -1, 4, 5, 6] }, 'концы области определения включаются флагами, как и раньше');
+    });
+
     QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: монотонная функция', function (assert) {
         assert.deepEqual(findIncreasingIntegerPoints(x => x * x * x, -3, 3), [-2, -1, 0, 1, 2], 'x³ возрастает всюду');
         assert.deepEqual(findDecreasingIntegerPoints(x => x * x * x, -3, 3), [], 'убывания нет');
