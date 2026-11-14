@@ -5,29 +5,31 @@
 	let variant = getSelectedPreferenceFromList('508353', preference);
 	if (variant) {
 		retryWhileError(function () {
-			let base = sl(2, 9);
-			let other = slKrome(base, 2, 9);
-			let a = sl(2, 10);
-			let b = sl(2, 10);
-			let k = sl(-4, 4);
+			let base = sl(2, 12);
+			let other = slKrome(base, 2, 12);
+			let a = variant === 2 ? slKrome([0, 1], -24, 24) : sl(2, 24);
+			let b = variant === 2 ? slKrome([0, 1], -24, 24) : sl(2, 24);
+			let c = slKrome([0, 1], -24, 24);
 			let expr;
 			if (variant === 1) {
-				let p = sl(2, 3);
-				let q = sl(1, 3);
+				let p = sl(1, 6);
+				let q = sl(1, 6);
+				let r = sl(1, 6);
 				expr = (base ** p) + '^' + a + '/' + (base ** q) + '^' + b;
 				if (sl1()) {
-					let exponent = p * a - q * b - k;
-					genAssert(exponent !== 0 && exponent !== 1);
-					expr += '/' + base + '^(' + exponent + ')';
+					let divisor = (base ** r) + '^(' + c + ')';
+					expr = sl1() ? 'divideColon(' + expr + ',' + divisor + ')' : expr + '/' + divisor;
 				}
 			} else {
-				genAssert(a > 2 && a + k !== 0 && a + k !== 1);
-				expr = (base * other) + '^' + a + '/(' + base + '^' + (a + k) + '*' + other + '^' + (a - 1) + ')';
+				let powers = base + '^' + a + '*' + other + '^' + b;
+				let product = (base * other) + '^(' + c + ')';
+				expr = sl1() ? powers + '/' + product : product + '/(' + powers + ')';
 			}
 			NAtask.setEvaluationTask({expr, preference});
 		}, 10000);
 		return;
 	}
+
 	retryWhileError(function() {
 		'use strict';
 		let c = sl(2, 9);
