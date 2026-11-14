@@ -55,6 +55,23 @@ function countConsoleErrors(callback) {
 
 module.exports = function registerMathFunctionsTests(QUnit) {
 
+    // Часть тестов случайна (createSpline, getRandomSubSegment, addRoots). Чтобы
+    // они не падали от случая к случаю, Math.random на время каждого теста этого
+    // файла заменяется генератором с зерном, составленным из названий модуля и теста.
+    const seedrandom = require('seedrandom');
+    const originalRandom = Math.random;
+    const isOwnModule = details => /^Math Functions/.test(details.module);
+    QUnit.testStart(function (details) {
+        if (isOwnModule(details)) {
+            Math.random = seedrandom(details.module + ' / ' + details.name);
+        }
+    });
+    QUnit.testDone(function (details) {
+        if (isOwnModule(details)) {
+            Math.random = originalRandom;
+        }
+    });
+
     const {
         brent, findRoots, findIntersectionPoints, findIntegerPointsInInterval,
         findPositiveAndNegativeIntervals, findPositiveIntervals, findNegativeIntervals,
@@ -1346,6 +1363,20 @@ module.exports = function registerMathFunctionsTests(QUnit) {
             assert.equal(generated, 5, 'пять функций сгенерированы, каждая не более чем за 5000 попыток');
             assert.deepEqual(problems, [], 'все требования выполнены');
         });
+    });
+
+    QUnit.test('createSpline: при одном и том же зерне получается один и тот же график', function (assert) {
+        const options = splineConfigs['функция, stepForX = 3, только обязательные параметры'];
+        const sample = function () {
+            Math.random = seedrandom('одно и то же зерно');
+            const { result, attempts } = generateSpline(options, 5000);
+            return [attempts].concat([-5, -2.5, 0, 1.7, 4].map(x => result.func(x)));
+        };
+        const first = sample();
+        assert.deepEqual(sample(), first, 'число попыток и значения функции совпали');
+        Math.random = seedrandom('другое зерно');
+        const other = generateSpline(options, 5000).result;
+        assert.notDeepEqual([first[0]].concat([-5, -2.5, 0, 1.7, 4].map(x => other.func(x))), first, 'при другом зерне график другой');
     });
 
     QUnit.test('createSpline: связь func и painFunc', function (assert) {
