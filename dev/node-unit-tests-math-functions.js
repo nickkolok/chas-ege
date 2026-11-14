@@ -226,6 +226,20 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.ok(far.every(x => x >= -7 && x <= 7), 'узлы не выходят за отрезок');
     });
 
+    QUnit.test('findRoots: разрыв со сменой знака корнем не считается', function (assert) {
+        assert.deepEqual(findRoots(x => 1 / (x - 0.55), 0, 1), [], '1 / (x - 0,55): в точке 0,55 разрыв, а не корень');
+        assert.deepEqual(findRoots(x => Math.tan(x), 1, 2), [], 'tg x на [1; 2]: разрыв в π/2');
+        assert.deepEqual(findRoots(x => (x < 0.55 ? -1 : 1), 0, 1), [], 'скачок от -1 к 1');
+        assertRoots(assert, findRoots(x => Math.tan(x), -1, 4), [0, Math.PI], 'tg x на [-1; 4]: корни 0 и π найдены, разрыв пропущен');
+        assertRoots(assert, findRoots(x => (x - 0.3) / (x - 0.55), 0, 1), [0.3], 'корень и разрыв рядом');
+    });
+
+    QUnit.test('findRoots: крутой корень не принимается за разрыв', function (assert) {
+        assertRoots(assert, findRoots(x => 1e6 * (x - 0.55), 0, 1), [0.55], 'линейная функция с наклоном 10⁶');
+        assertRoots(assert, findRoots(x => Math.atan(1e4 * (x - 0.55)), 0, 1), [0.55], 'арктангенс с резким переходом');
+        assertRoots(assert, findRoots(x => Math.cbrt(x - 0.55), 0, 1), [0.55], 'кубический корень: бесконечная производная в нуле');
+    });
+
     QUnit.test('findRoots: корней нет', function (assert) {
         assert.deepEqual(findRoots(x => x * x + 1, -5, 5), [], 'x² + 1');
         assert.deepEqual(findRoots(x => x - 20, -5, 5), [], 'корень вне отрезка');
