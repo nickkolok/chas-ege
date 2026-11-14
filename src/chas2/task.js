@@ -525,7 +525,8 @@ chas2.task = {
 			numberOfRoots = { min: 0, max: 1000 },
 			minimumDifferenceBetweenExtremes = 1,
 			extremumsIsInteger = { int: 'no_matter', tolerance: 0.2 },
-			rootsIsInteger = { int: 'no_matter', tolerance: 0.2 }, } = o;
+			rootsIsInteger = { int: 'no_matter', tolerance: 0.2 },
+			derivativeScale = 2, } = o;
 
 		const conditionsArray = ['derivative_is_positive', 'derivative_is_negative', 'derivative_is_zero', 'extreme_points', 'minimum_points', 'maximum_points', 'function_is_positive', 'function_is_negative', 'value_on_the_segment', 'extreme_points_on_the_segment', 'minimum_points_on_the_segment', 'maximum_points_on_the_segment',
 		];
@@ -552,6 +553,7 @@ chas2.task = {
 			numberOfRoots: numberOfRoots,
 			minimumDifferenceBetweenExtremes: minimumDifferenceBetweenExtremes,
 			monotoneFunction: monotoneFunction,
+			derivativeScale: derivativeScale,
 		});
 
 		let points = [];

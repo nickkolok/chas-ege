@@ -354,4 +354,41 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
                 'вопрос однозначен');
         });
     });
+
+    QUnit.test('множитель графика производной (derivativeScale) передаётся в createSpline', function (assert) {
+        const { window, run } = env();
+        const settings = {
+            type: 'derivative', canvasSettings: {}, boundariesOfGraph: { minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 },
+            numberOfRoots: { min: 1, max: 10 },
+            questionsF: { main: 'integer_points', conditions: ['tangent_to_graph_const'], variants: ['number'] },
+        };
+        const slope = (func, x) => (func(x + 1e-4) - func(x - 1e-4)) / 2e-4;
+        const generate = function (extra) {
+            window.Math.seedrandom('множитель');
+            for (let attempt = 0; attempt < 20000; attempt++) {
+                window.vopr.podg();
+                window.__lastSpline = null;
+                run('window.__settings = ' + JSON.stringify(Object.assign({}, settings, extra)) + ';', '<settings>');
+                try {
+                    run('NAtask.setTaskWithGraphOfFunctionDerivative(window.__settings);', '<call>');
+                    return window.__lastSpline;
+                } catch (e) {
+                    // следующая попытка
+                }
+            }
+            return null;
+        };
+        const worstError = (spline, scale) => Math.max.apply(null, [-6.3, -3.1, -0.4, 2.2, 5.7].map(
+            x => Math.abs(spline.result.painFunc(x) - scale * slope(spline.result.func, x))));
+
+        const byDefault = generate({});
+        assert.ok(byDefault, 'задача с множителем по умолчанию сгенерирована');
+        assert.equal(byDefault.options.derivativeScale, 2, 'по умолчанию множитель равен 2');
+        assert.ok(worstError(byDefault, 2) < 1e-3, 'нарисована удвоенная производная');
+
+        const exact = generate({ derivativeScale: 1 });
+        assert.ok(exact, 'задача с множителем 1 сгенерирована');
+        assert.equal(exact.options.derivativeScale, 1, 'множитель 1 дошёл до createSpline');
+        assert.ok(worstError(exact, 1) < 1e-3, 'нарисована производная в точности');
+    });
 };
