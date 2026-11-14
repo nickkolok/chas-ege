@@ -55,6 +55,23 @@ function countConsoleErrors(callback) {
 
 module.exports = function registerMathFunctionsTests(QUnit) {
 
+    // Часть тестов случайна (createSpline, getRandomSubSegment, addRoots). Чтобы
+    // они не падали от случая к случаю, Math.random на время каждого теста этого
+    // файла заменяется генератором с зерном, составленным из названий модуля и теста.
+    const seedrandom = require('seedrandom');
+    const originalRandom = Math.random;
+    const isOwnModule = details => /^Math Functions/.test(details.module);
+    QUnit.testStart(function (details) {
+        if (isOwnModule(details)) {
+            Math.random = seedrandom(details.module + ' / ' + details.name);
+        }
+    });
+    QUnit.testDone(function (details) {
+        if (isOwnModule(details)) {
+            Math.random = originalRandom;
+        }
+    });
+
     const {
         brent, findRoots, findIntersectionPoints, findIntegerPointsInInterval,
         findPositiveAndNegativeIntervals, findPositiveIntervals, findNegativeIntervals,
@@ -207,6 +224,20 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.equal(far.length, 14001, 'при шаге 0,001 на [-7; 7] узлов 14001, каждый вычислен один раз');
         assert.equal(far[far.length - 1], 7, 'последний узел — maxX');
         assert.ok(far.every(x => x >= -7 && x <= 7), 'узлы не выходят за отрезок');
+    });
+
+    QUnit.test('findRoots: разрыв со сменой знака корнем не считается', function (assert) {
+        assert.deepEqual(findRoots(x => 1 / (x - 0.55), 0, 1), [], '1 / (x - 0,55): в точке 0,55 разрыв, а не корень');
+        assert.deepEqual(findRoots(x => Math.tan(x), 1, 2), [], 'tg x на [1; 2]: разрыв в π/2');
+        assert.deepEqual(findRoots(x => (x < 0.55 ? -1 : 1), 0, 1), [], 'скачок от -1 к 1');
+        assertRoots(assert, findRoots(x => Math.tan(x), -1, 4), [0, Math.PI], 'tg x на [-1; 4]: корни 0 и π найдены, разрыв пропущен');
+        assertRoots(assert, findRoots(x => (x - 0.3) / (x - 0.55), 0, 1), [0.3], 'корень и разрыв рядом');
+    });
+
+    QUnit.test('findRoots: крутой корень не принимается за разрыв', function (assert) {
+        assertRoots(assert, findRoots(x => 1e6 * (x - 0.55), 0, 1), [0.55], 'линейная функция с наклоном 10⁶');
+        assertRoots(assert, findRoots(x => Math.atan(1e4 * (x - 0.55)), 0, 1), [0.55], 'арктангенс с резким переходом');
+        assertRoots(assert, findRoots(x => Math.cbrt(x - 0.55), 0, 1), [0.55], 'кубический корень: бесконечная производная в нуле');
     });
 
     QUnit.test('findRoots: корней нет', function (assert) {
@@ -1032,6 +1063,29 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.deepEqual(findDecreasingIntegerPoints(func, -5, 6), [-4, -1, 0, 1, 2, 3, 4], 'целые точки промежутков убывания');
     });
 
+    QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: строгий режим', function (assert) {
+        // x³ - 12x: максимум в -2, минимум в 2
+        const func = x => x * x * x - 12 * x;
+        assert.deepEqual(findIncreasingIntegerPoints(func, -5, 5), [-4, -3, -2, 2, 3, 4], 'по умолчанию точки экстремума входят');
+        assert.deepEqual(findDecreasingIntegerPoints(func, -5, 5), [-2, -1, 0, 1, 2], 'по умолчанию точки экстремума входят');
+        const strict = [undefined, undefined, undefined, true];
+        const increasing = findIncreasingIntegerPoints(func, -5, 5, ...strict);
+        const decreasing = findDecreasingIntegerPoints(func, -5, 5, ...strict);
+        assert.deepEqual(increasing, [-4, -3, 3, 4], 'строго: производная положительна');
+        assert.deepEqual(decreasing, [-1, 0, 1], 'строго: производная отрицательна');
+        const slope = x => 3 * x * x - 12;
+        assert.ok(increasing.every(x => slope(x) > 0) && decreasing.every(x => slope(x) < 0), 'знак производной в точках соответствует');
+        assert.deepEqual(increasing.concat(decreasing).filter(x => slope(x) === 0), [], 'точек с нулевой производной в ответе нет');
+    });
+
+    QUnit.test('findIncreasingAndDecreasingPoints: строгий режим', function (assert) {
+        const intervals = { increasingIntervals: [[-7, -4], [0, 3]], decreasingIntervals: [[-4, 0], [3, 6]] };
+        assert.deepEqual(findIncreasingAndDecreasingPoints(intervals, -7, 6, false, false, true),
+            { increasingPoints: [-6, -5, 1, 2], decreasingPoints: [-3, -2, -1, 4, 5] }, 'точки экстремума -4, 0 и 3 не входят');
+        assert.deepEqual(findIncreasingAndDecreasingPoints(intervals, -7, 6, true, true, true),
+            { increasingPoints: [-7, -6, -5, 1, 2], decreasingPoints: [-3, -2, -1, 4, 5, 6] }, 'концы области определения включаются флагами, как и раньше');
+    });
+
     QUnit.test('findIncreasingIntegerPoints и findDecreasingIntegerPoints: монотонная функция', function (assert) {
         assert.deepEqual(findIncreasingIntegerPoints(x => x * x * x, -3, 3), [-2, -1, 0, 1, 2], 'x³ возрастает всюду');
         assert.deepEqual(findDecreasingIntegerPoints(x => x * x * x, -3, 3), [], 'убывания нет');
@@ -1372,6 +1426,20 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.ok(Math.max.apply(null, count(explicit)) <= 6, 'то же при явном stepForX = 3');
     });
 
+    QUnit.test('createSpline: при одном и том же зерне получается один и тот же график', function (assert) {
+        const options = splineConfigs['функция, stepForX = 3, только обязательные параметры'];
+        const sample = function () {
+            Math.random = seedrandom('одно и то же зерно');
+            const { result, attempts } = generateSpline(options, 5000);
+            return [attempts].concat([-5, -2.5, 0, 1.7, 4].map(x => result.func(x)));
+        };
+        const first = sample();
+        assert.deepEqual(sample(), first, 'число попыток и значения функции совпали');
+        Math.random = seedrandom('другое зерно');
+        const other = generateSpline(options, 5000).result;
+        assert.notDeepEqual([first[0]].concat([-5, -2.5, 0, 1.7, 4].map(x => other.func(x))), first, 'при другом зерне график другой');
+    });
+
     QUnit.test('createSpline: связь func и painFunc', function (assert) {
         let options = splineConfigs['функция, stepForX = 3, только обязательные параметры'];
         let { result } = generateSpline(options, 5000);
@@ -1396,6 +1464,33 @@ module.exports = function registerMathFunctionsTests(QUnit) {
             signs = signs && (Math.abs(result.painFunc(x)) < 0.05 || Math.sign(growth) === Math.sign(result.painFunc(x)));
         }
         assert.ok(signs, 'знак графика совпадает с направлением изменения func');
+    });
+
+    QUnit.test('createSpline: множитель графика производной (derivativeScale)', function (assert) {
+        const options = { type: 'derivative', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 };
+        const slope = (func, x) => (func(x + 1e-4) - func(x - 1e-4)) / 2e-4;
+        const points = [-6.3, -3.1, -0.4, 2.2, 5.7];
+        const worstError = (result, scale) => Math.max.apply(null,
+            points.map(x => Math.abs(result.painFunc(x) - scale * slope(result.func, x))));
+
+        Math.random = seedrandom('множитель');
+        const byDefault = generateSpline(options, 20000).result;
+        assert.ok(byDefault, 'график с множителем по умолчанию сгенерирован');
+        assert.ok(worstError(byDefault, 2) < 1e-3, 'по умолчанию нарисована удвоенная производная func');
+
+        Math.random = seedrandom('множитель');
+        const explicitTwo = generateSpline(Object.assign({ derivativeScale: 2 }, options), 20000).result;
+        assert.deepEqual(points.map(x => explicitTwo.painFunc(x)), points.map(x => byDefault.painFunc(x)),
+            'явный множитель 2 даёт в точности тот же график, что и умолчание');
+
+        Math.random = seedrandom('множитель');
+        const exact = generateSpline(Object.assign({ derivativeScale: 1 }, options), 20000).result;
+        assert.ok(exact, 'график с множителем 1 сгенерирован');
+        assert.ok(worstError(exact, 1) < 1e-3, 'при множителе 1 нарисована производная func в точности');
+
+        Math.random = seedrandom('множитель');
+        const functionGraph = generateSpline(Object.assign({}, options, { type: 'function', stepForY: 0.3, derivativeScale: 5 }), 20000).result;
+        assert.ok(points.every(x => functionGraph.painFunc(x) === functionGraph.func(x)), 'на график функции множитель не влияет');
     });
 
     QUnit.test('createSpline: недопустимые требования отбраковываются', function (assert) {
