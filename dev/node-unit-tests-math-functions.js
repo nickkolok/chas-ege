@@ -1442,6 +1442,33 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.ok(signs, 'знак графика совпадает с направлением изменения func');
     });
 
+    QUnit.test('createSpline: множитель графика производной (derivativeScale)', function (assert) {
+        const options = { type: 'derivative', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 };
+        const slope = (func, x) => (func(x + 1e-4) - func(x - 1e-4)) / 2e-4;
+        const points = [-6.3, -3.1, -0.4, 2.2, 5.7];
+        const worstError = (result, scale) => Math.max.apply(null,
+            points.map(x => Math.abs(result.painFunc(x) - scale * slope(result.func, x))));
+
+        Math.random = seedrandom('множитель');
+        const byDefault = generateSpline(options, 20000).result;
+        assert.ok(byDefault, 'график с множителем по умолчанию сгенерирован');
+        assert.ok(worstError(byDefault, 2) < 1e-3, 'по умолчанию нарисована удвоенная производная func');
+
+        Math.random = seedrandom('множитель');
+        const explicitTwo = generateSpline(Object.assign({ derivativeScale: 2 }, options), 20000).result;
+        assert.deepEqual(points.map(x => explicitTwo.painFunc(x)), points.map(x => byDefault.painFunc(x)),
+            'явный множитель 2 даёт в точности тот же график, что и умолчание');
+
+        Math.random = seedrandom('множитель');
+        const exact = generateSpline(Object.assign({ derivativeScale: 1 }, options), 20000).result;
+        assert.ok(exact, 'график с множителем 1 сгенерирован');
+        assert.ok(worstError(exact, 1) < 1e-3, 'при множителе 1 нарисована производная func в точности');
+
+        Math.random = seedrandom('множитель');
+        const functionGraph = generateSpline(Object.assign({}, options, { type: 'function', stepForY: 0.3, derivativeScale: 5 }), 20000).result;
+        assert.ok(points.every(x => functionGraph.painFunc(x) === functionGraph.func(x)), 'на график функции множитель не влияет');
+    });
+
     QUnit.test('createSpline: недопустимые требования отбраковываются', function (assert) {
         const impossible = Object.assign({}, splineConfigs['функция, stepForX = 3, только обязательные параметры'],
             { numberOfExtremes: { min: 50, max: 60 } });
