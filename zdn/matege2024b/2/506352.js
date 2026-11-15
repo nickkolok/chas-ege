@@ -440,9 +440,9 @@ retryWhileError(function() {
 
 			left.push({
 				expr: exprName,
-				solution: val.ts() + ' ' + unit
+				solution: val.ts() + ' ' + unit + (t === 1 && arrIndex === 2 && data.timeSuffix ? ' ' + data.timeSuffix : '')
 			});
-			right.push(val.ts() + ' ' + unit);
+			right.push(left[left.length - 1].solution);
 		}
 
 		let uniqueNames = new Set(left.map(l => l.expr));
@@ -563,7 +563,7 @@ retryWhileError(function() {
 	];
 
 	let left = arrayObjects.map((obj, i) => ({
-		expr: value[typeIndex] + ' ' + obj,
+		expr: (value[typeIndex] + ' ' + obj).trim(),
 		solution: arrayValue[i]
 	}));
 
