@@ -51,8 +51,6 @@
 			ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[3].x, points[3].y, 7);
 			ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[3].x, points[3].y, 7);
 
-			ctx.strokeStyle = om.primaryBrandColors.iz();
-
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
 			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2 || i == 3) ? 25 : -5)));
