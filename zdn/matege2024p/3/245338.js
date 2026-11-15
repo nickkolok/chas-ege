@@ -61,9 +61,7 @@
 		let point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
 		let paint1 = function(ctx) {
-			let h = 400;
-			let w = 400;
-			ctx.translate(h / 2, w / 2);
+			ctx.translateToCenter();
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.primaryBrandColors[0];
 			ctx.drawFigure(point2DPyr, matrixPyr);
