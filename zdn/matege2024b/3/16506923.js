@@ -9,21 +9,21 @@
 		let anchors = [760, 680, 600, 520, 440, 400, 360, 320, 280, 240, 200].map(value => value + offset);
 		let points = [];
 		for (let i = 0; i < anchors.length - 1; i++) {
-		    points.push([i, anchors[i]], [i + 0.5, (anchors[i] + anchors[i + 1]) / 2]);
+			points.push([i, anchors[i]], [i + 0.5, (anchors[i] + anchors[i + 1]) / 2]);
 		}
 		points.push([10, anchors[10]]);
 		let selected = points[sl(1, points.length - 2)];
 		NAtask.setTask({
-		    text: 'На графике изображена зависимость атмосферного давления от высоты над уровнем моря. ' +
-		        'На горизонтальной оси отмечена высота в километрах, на вертикальной — давление в миллиметрах ртутного столба. ' +
-		        (variant ? 'Чему равно атмосферное давление на высоте ' + selected[0].ts() + ' км? Ответ дайте в миллиметрах ртутного столба.' :
-		            'На какой высоте атмосферное давление равно ' + selected[1].ts() + ' мм рт. ст.? Ответ дайте в километрах.'),
-		    answers: selected[variant ? 1 : 0], preference,
+			text: 'На графике изображена зависимость атмосферного давления от высоты над уровнем моря. ' +
+				'На горизонтальной оси отмечена высота в километрах, на вертикальной — давление в миллиметрах ртутного столба. ' +
+				(variant ? 'Чему равно атмосферное давление на высоте ' + selected[0].ts() + ' км? Ответ дайте в миллиметрах ртутного столба.' :
+					'На какой высоте атмосферное давление равно ' + selected[1].ts() + ' мм рт. ст.? Ответ дайте в километрах.'),
+			answers: selected[variant ? 1 : 0], preference,
 		});
 		NAtask.modifiers.addJqplot({
-		    dataArray: [points], width: '700px', height: '460px',
-		    options: {axes: {xaxis: {min: 0, max: 10, tickInterval: 0.5}, yaxis: {min: 0, max: 800, tickInterval: 20}},
-		        seriesDefaults: {showMarker: false}},
+			dataArray: [points], width: '700px', height: '460px',
+			options: {axes: {xaxis: {min: 0, max: 10, tickInterval: 0.5}, yaxis: {min: 0, max: 800, tickInterval: 20}},
+				seriesDefaults: {showMarker: false}},
 		});
 	}, 1000);
 })();
