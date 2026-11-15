@@ -54,8 +54,8 @@
 		genAssert((answ - answ.floor() < 0.3) || (answ.ceil() - answ < 0.3), 'Ответ не читаем');
 
 		let paint1 = function(ctx) {
-			let height = 400;
-			let width = 400;
+			let height = ctx.canvas.height;
+			let width = ctx.canvas.width;
 			let scale = 40;
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
@@ -64,7 +64,7 @@
 			ctx.strokeStyle = '#888';
 			ctx.lineWidth = 0.5;
 
-			ctx.translate(width / 2, height / 2);
+			ctx.translateToCenter();
 
 			ctx.regularGrid(scale, 5);
 
