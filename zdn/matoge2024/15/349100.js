@@ -40,10 +40,8 @@
         pointsSide.splice(variant, 1);
 
         let paint1 = function (ctx) {
-            let h = 400;
-            let w = 400;
 
-            ctx.translate(w / 2, h / 2);
+            ctx.translateToCenter();
 
             ctx.scale(1, -1);
             ctx.strokeStyle = om.secondaryBrandColors.iz();
