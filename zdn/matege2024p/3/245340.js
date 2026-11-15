@@ -62,9 +62,7 @@
 			genAssert((point2DPar[3].y - point2DPar[2].y).abs() > 20, 'Сечение не видно');
 
 		let paint1 = function(ctx) {
-			let h = 400;
-			let w = 400;
-			ctx.translate(h / 2, w / 2);
+			ctx.translateToCenter();
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.primaryBrandColors[0];
 			ctx.strokeStyle = om.secondaryBrandColors;
