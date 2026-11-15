@@ -32,7 +32,7 @@
 			ctx.translate(w / 2, h / 2);
 
 			ctx.scale(1, -1);
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectionMatrix);
@@ -44,7 +44,7 @@
 		};
 
 		NAtask.setTask({
-			text: `На окружности по разные стороны от диаметра $AB$ отмечены точки $D$ и $C$. Известно, что $DBA = ${0.5*(180-D)}^\\circ$ . Найдите угол $DCB$. Ответ дайте в градусах.`,
+			text: `На окружности по разные стороны от диаметра $AB$ отмечены точки $D$ и $C$. Известно, что $\\angle DBA = ${0.5*(180-D)}^\\circ$. Найдите угол $DCB$. Ответ дайте в градусах.`,
 			answers: D / 2,
 			authors: ['Александра Суматохина'],
 		});
