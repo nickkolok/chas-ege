@@ -93,13 +93,11 @@ retryWhileError(function () {
     }
 
     let paint1 = function (ct) {
-        let h = 300;
-        let w = 300;
         //Оси координат
         graph9AdrawAxes_20_300(ct);
         ct.translate(-10, -10);
         ct.lineWidth = 0.1;
-        ct.translate(h / 2, h / 2);
+        ct.translateToCenter();
         ct.scale(20, -20);
         //График
         graph9AdrawFunction(ct, f, {
