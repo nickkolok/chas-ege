@@ -46,18 +46,17 @@
 				break;
 			case 1:
 				ctx.arcBetweenSegments([points[0].x, points[0].y, points[2].x, points[2].y, points[3].x, points[3].y], 15);
-				ctx.arcBetweenSegments([points[1].x, points[1].y, points[2].x, points[2].y, points[3].x, points[3].y], 20);
+				ctx.arcBetweenSegments([points[1].x, points[1].y, points[2].x, points[2].y, points[3].x, points[3].y], 15);
 				ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[3].x, points[3].y, 7);
 				ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[3].x, points[3].y, 7);
 				break;
 			case 2:
 				ctx.arcBetweenSegments([points[0].x, points[0].y, points[2].x, points[2].y, points[3].x, points[3].y], 15);
-				ctx.arcBetweenSegments([points[1].x, points[1].y, points[2].x, points[2].y, points[3].x, points[3].y], 20);
+				ctx.arcBetweenSegments([points[1].x, points[1].y, points[2].x, points[2].y, points[3].x, points[3].y], 15);
 				ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[2].x, points[2].y, 7, 2);
 				ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[2].x, points[2].y, 7, 2);
 				break;
 			}
-			//
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
@@ -68,17 +67,13 @@
 			text: `В `,
 			questions: [
 				[{
-					text: `равнобедренном треугольнике $ABC$ угол $ACB$ равен $120^\\circ$. 
-                Высота $CM$, проведённая к основанию $AB$, равна $${triangle.heightCLength}$. Найдите длину стороны $AC$.`,
+					text: `равнобедренном треугольнике $ABC$ угол $ACB$ равен $120^\\circ$. Высота $CM$, проведённая к основанию $AB$, равна $${triangle.heightCLength}$. Найдите длину стороны $AC$.`,
 					answers: triangle.lengthCA,
 				}, {
-					text: `треугольнике $ABC$ угол $C$ равен $120^\\circ$.
-                Медиана $CM$ делит угол $C$ пополам и равна $${triangle.heightCLength}$. 
-                Найдите длину стороны $AC$.`,
+					text: `треугольнике $ABC$ угол $C$ равен $120^\\circ$. Медиана $CM$ делит угол $C$ пополам и равна $${triangle.heightCLength}$. Найдите длину стороны $AC$.`,
 					answers: triangle.lengthCA,
 				}, {
-					text: `треугольнике $ABC$ известно, что $AC = BC = ${side}$, $\\angle ACB = 120^\\circ$, $CM$ – биссектриса. 
-                Найдите длину отрезка $CM$.`,
+					text: `треугольнике $ABC$ известно, что $AC = BC = ${side}$, $\\angle ACB = 120^\\circ$, $CM$ – биссектриса. Найдите длину отрезка $CM$.`,
 					answers: triangle.heightCLength,
 				}][rand]
 			],
