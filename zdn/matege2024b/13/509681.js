@@ -34,8 +34,8 @@
 		// композиции (gapRatio от суммы радиусов в пикселях), чтобы смотрелось одинаково
 		// и для крошечного, и для крупного меньшего шара.
 		let paint = function(ctx) {
-			let W = 400;
-			ctx.translate(W / 2, W / 2);
+			let W = ctx.canvas.width;
+			ctx.translateToCenter();
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
 
