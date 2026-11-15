@@ -47,15 +47,15 @@
 		genAssertZ1000(probTarget);
 
 		let paint = function(ctx) {
-			let w = 400;
-			let h = 400;
+			let w = ctx.canvas.width;
+			let h = ctx.canvas.height;
 
 			// Рамка прямоугольника
 			ctx.strokeStyle = "black";
 			ctx.lineWidth = 1;
 			ctx.strokeRect(20, 20, w - 40, h - 40);
 
-			ctx.translate(w / 2, h / 2);
+			ctx.translateToCenter();
 			ctx.scale(20, -20);
 			ctx.lineWidth = 0.1;
 			
