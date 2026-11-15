@@ -55,9 +55,7 @@
 		genAssert((point2DPar[0].x - point2DPar[2].x).abs() > 20, 'Сечение не видно');
 
 		let paint1 = function(ctx) {
-			let h = 400;
-			let w = 400;
-			ctx.translate(h / 2, w / 2);
+			ctx.translateToCenter();
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
 			ctx.drawFigure(point2DPar, matrixPar);
