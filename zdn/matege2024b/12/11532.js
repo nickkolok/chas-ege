@@ -6,8 +6,9 @@
 
 		let rand = getSelectedPreferenceFromList(key, preference);
 
+		let k = sl(1, 50);
 		let rhombus = new Rhombus({
-			length: sl(1, 50) * Math.sqrt(3),
+			length: k * Math.sqrt(3),
 			angles: {
 				angle: {
 					angleA: Math.PI / 3,
@@ -42,10 +43,10 @@
 			text: ``,
 			questions: [
 				[{
-					text: `Сторона ромба $${rhombus.lengthAB.pow(2).texsqrt(1)}$, одна из диагоналей равна $${rhombus.lengthDiagonalAC}$. Найдите площадь ромба`,
+					text: `Сторона ромба $${(3 * k * k).texsqrt(1)}$, одна из диагоналей равна $${3 * k}$. Найдите площадь ромба`,
 					answers: rhombus.area(),
 				}, {
-					text: `Одна из диагоналей ромба равна $${rhombus.lengthDiagonalAC}$, а его площадь равна $${rhombus.area().pow(2).texsqrt(1)}$. Найдите сторону ромба`,
+					text: `Одна из диагоналей ромба равна $${rhombus.lengthDiagonalAC}$, а его площадь равна $${(27 * k ** 4).texsqrtfrac(4)}$. Найдите сторону ромба`,
 					answers: rhombus.lengthAB,
 				}][rand]
 			],
