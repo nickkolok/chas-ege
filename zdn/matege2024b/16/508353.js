@@ -25,7 +25,7 @@
 				let product = (base * other) + '^(' + c + ')';
 				expr = sl1() ? powers + '/' + product : product + '/(' + powers + ')';
 			}
-			NAtask.setEvaluationTask({expr, preference});
+			NAtask.setEvaluationTask({expr, authors: ['Алендарь Сергей'], preference});
 		}, 10000);
 		return;
 	}
@@ -42,4 +42,3 @@
 	}, 10000);
 })();
 //508353
-

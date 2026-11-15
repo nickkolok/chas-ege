@@ -7,7 +7,7 @@
 		retryWhileError(function () {
 			let numerator = sl(1, 99) / 10;
 			let divisor = sl(2, 30);
-			NAtask.setEvaluationTask({expr: numerator + '/(1+1/' + divisor + ')', preference});
+			NAtask.setEvaluationTask({expr: numerator + '/(1+1/' + divisor + ')', authors: ['Алендарь Сергей'], preference});
 		}, 10000);
 		return;
 	}
