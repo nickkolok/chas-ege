@@ -31,12 +31,15 @@
         let paint1 = function (ctx) {
             let h = 400;
             let w = 400;
-            ctx.lineWidth = 0.5;
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.strokeStyle = '#888';
+            ctx.lineWidth = 1;
             ctx.translate(w / 2, h / 2);
             ctx.regularGrid(40, 5);
 
             ctx.scale(40, -40);
-            ctx.strokeStyle = om.secondaryBrandColors;
+            ctx.strokeStyle = om.secondaryBrandColors[0];
 
             ctx.lineWidth = 3.5 / 40;
             ctx.rotate(Math.PI * sl(5, 20, 5) / 10);

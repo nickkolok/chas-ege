@@ -41,13 +41,16 @@
         let paint1 = function (ctx) {
             let h = 400;
             let w = 400;
-            ctx.lineWidth = 0.5;
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.strokeStyle = '#888';
+            ctx.lineWidth = 1;
             let scale = 30;
 
             ctx.translate(w / 2, h / 2);
             ctx.regularGrid(scale, 6);
             ctx.scale(scale, -scale);
-            ctx.strokeStyle = om.secondaryBrandColors;
+            ctx.strokeStyle = om.secondaryBrandColors[0];
             ctx.rotate(sl1() * Math.PI / 2);
             ctx.lineWidth = 4 / scale;
             ctx.drawFigure(figure.vertices, figure.connectionMatrix);
