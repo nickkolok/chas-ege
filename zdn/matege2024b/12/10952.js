@@ -2,26 +2,29 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let letters = latbukv.slice(0, 9);
-		let rotate = sl(0, 8, 2);
-		let lettersRotate = letters.slice().permuteCyclic((rotate / 2).floor());
+		let preference = ['nonagon', 'decagon'];
+		let count = [9, 10][getSelectedPreferenceFromList('10952', preference)];
+		let letters = latbukv.slice(0, count);
+		let rotate = sl(0, count - 1, 2);
+		let lettersRotate = letters.slice();
 
-		let delta = slKrome(4, 1, 7);
-		let a = sl(1, 8 - delta);
+		let delta = slKrome(count / 2, 1, count - 2);
+		let a = sl(1, count - 1 - delta);
 		let angleF = [a, 0, a + delta];
 
-		lettersRotate = angleF.map(a => lettersRotate[a]);
-		let points = generatePolygonPoints(160, 9);
+		lettersRotate = angleF.map(i => lettersRotate[i]);
+		let points = generatePolygonPoints(160, count);
 
-		let matrixConnections = {
-			0: [1, 8],
-			2: [1, 3],
-			4: [3, 5],
-			6: [5, 7],
-			8: [7, 0],
-		};
+		let matrixConnections = {};
+		for (let i = 0; i < count; i++) {
+			matrixConnections[i] = [(i + 1) % count];
+		}
 
-		points = autoScale(points);
+		points = autoScale(points).map(point => {
+			let angle = -rotate * Math.PI / count;
+			return {x: point.x * Math.cos(angle) - point.y * Math.sin(angle),
+				y: point.x * Math.sin(angle) + point.y * Math.cos(angle)};
+		});
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -30,8 +33,7 @@
 			ctx.translate(w / 2, h / 2);
 
 			ctx.scale(1, -1);
-			ctx.rotate(-rotate * Math.PI / 9);
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.lineWidth = 2;
 			ctx.drawFigureVer2(points, matrixConnections);
@@ -42,16 +44,16 @@
 			});
 
 			ctx.font = "20px liberation_sans";
-			ctx.rotate(rotate * Math.PI / 9);
 			ctx.scale(1, -1);
 			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i > 4) ? 25 : -5)));
 
 		};
 
 		NAtask.setTask({
-			text: `$${letters.join('')}$ – правильный девятиугольник. Найдите угол $${lettersRotate.join('')}$. Ответ дайте в градусах.`,
-			answers: 20 * delta,
+			text: `$${letters.join('')}$ – правильный ${count === 9 ? 'девятиугольник' : 'десятиугольник'}. Найдите угол $${lettersRotate.join('')}$. Ответ дайте в градусах.`,
+			answers: 180 / count * delta,
 			authors: ['Александра Суматохина'],
+			preference: preference,
 		});
 		NAtask.modifiers.variativeABC(letters);
 		NAtask.modifiers.addCanvasIllustration({
