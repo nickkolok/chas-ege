@@ -36,10 +36,10 @@
             ctx.lineWidth = 2;
             ctx.drawFigure(points, triangle.connectionMatrix);
 
-            ctx.drawLine(points[1].x, points[1].y, 160, points[1].y);
+            ctx.drawLine(points[1].x, points[1].y, points[1].x + 35, points[1].y);
 
             ctx.strokeStyle = om.primaryBrandColors.iz();
-            ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, 160, points[1].y], 15);
+            ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, points[1].x + 35, points[1].y], 15);
 
             ctx.arcBetweenSegments([points[0].x, points[0].y, points[3].x, points[3].y, points[2].x, points[2].y], 15);
 
@@ -51,15 +51,14 @@
         NAtask.setTask({
             text: ``,
             questions: [[{
-                text: `В равнобедренном треугольнике $ABC$ внешний угол при основании равен $150^\\circ$, а
-					медиана $CM$, проведённая к основанию, равна $${triangle.heightCLength}$. 
-					Найдите боковую сторону треугольника $ABC$.`,
+                text: `В равнобедренном треугольнике $ABC$ внешний угол при основании равен $150^\\circ$, а медиана $CM$, проведённая к основанию, равна $${triangle.heightCLength}$. Найдите боковую сторону треугольника $ABC$.`,
                 answers: triangle.lengthCA,
             }, {
                 text: `В треугольнике $ABC$ известно, что $AC=BC=${triangle.lengthCA}$, внешний угол при вершине $B$ равен $150^\\circ$. Найдите длину медианы $CM$.`,
                 answers: triangle.heightCLength,
             }
             ][rand]],
+            preference: preference,
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.variativeABC(letters);
