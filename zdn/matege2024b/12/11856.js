@@ -4,14 +4,14 @@
 
 		const rect = new Rectangle({
 			lengths: {
-				lengthAB: sl(1,50),
-				lengthBC: sl(1,50),
+				lengthAB: sl(1, 50),
+				lengthBC: sl(1, 50),
 			},
 			supplementary: {
-				calculateDiagonals: true
-			}
+				calculateDiagonals: true,
+			},
 		});
-		
+
 		genAssert(rect.lengthDiagonalAC.isAlmostInteger(), 'Диагональ не целая');
 
 		NAtask.setTask({
@@ -19,8 +19,7 @@
 			answers: rect.lengthBC,
 			authors: ['Александра Суматохина'],
 		});
-
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 2000);
-	NAtask.modifiers.allDecimalsToStandard(true);
 })();
 // https://base.mathege.ru/clones/?position=16&parent=11856
