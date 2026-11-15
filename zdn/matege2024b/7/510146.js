@@ -68,11 +68,11 @@
 
         function answAboutMaxDeltaIDay(intervals, answ) {
             let incr = intervals.map(interval => {
-                    let delta = [];
-                    for (let i = 1; i < interval.length; i++) {
-                        delta.push(interval[i] - interval[i - 1]);
-                    }
-                    return delta.maxE();
+                let delta = [];
+                for (let i = 1; i < interval.length; i++) {
+                    delta.push(interval[i] - interval[i - 1]);
+                }
+                return delta.maxE();
             });
 
             let maxEI = incr.maxE();
@@ -82,18 +82,18 @@
 
         function answAboutMaxDeltaDDay(intervals, answ) {
             let decr = intervals.map(interval => {
-                    let delta = [];
-                    for (let i = 1; i < interval.length; i++) {
-                        delta.push(interval[i - 1] - interval[i]);
-                    }
-                    return delta.maxE();
+                let delta = [];
+                for (let i = 1; i < interval.length; i++) {
+                    delta.push(interval[i - 1] - interval[i]);
+                }
+                return delta.maxE();
             });
 
             let maxED = decr.maxE();
             let wasMaxDeltaDDay = intervals.map((_, i) => decr[i] === maxED);
             addUniqueAnsw(wasMaxDeltaDDay, answ, 'наибольшее падение цены за день торгов');
         }
-        
+
         function answAboutMaxDelta(intervals, answ) {
             let interval = intervals.map(int => {
                 return (int.maxE() - int.minE()).abs();
@@ -103,7 +103,7 @@
             let wasMaxDelta = intervals.map((_, i) => interval[i] === maxE);
             addUniqueAnsw(wasMaxDelta, answ, 'наибольшее изменение цены за весь период');
         }
-        
+
         function answAboutMinDeltas(intervals, answ) {
             let deltaMin = intervals.map(interval => {
                 let delta = [];
@@ -112,20 +112,20 @@
                 }
                 return delta.sum();
             });
-            
+
             let minE = deltaMin.minE();
             if (minE === 0)
-                return;           
-            
+                return;
+
             let wasMinDeltas = intervals.map((_, i) => deltaMin[i] === minE);
             addUniqueAnsw(wasMinDeltas, answ, 'минимальное колебание цены акций');
         }
 
-        function getWeekdays(year = 2012, month = 9, startFrom = 1, count = 11,) {
+        function getWeekdays(year = 2012, month = 9, startFrom = 1, count = 12) {
             const result = [];
             const date = new Date(year, month, startFrom);
 
-            while (date.getMonth() === month && result.length <= count) {
+            while (date.getMonth() === month && result.length < count) {
                 const dayOfWeek = date.getDay();
                 const day = date.getDate();
 
@@ -187,22 +187,22 @@
         let LessP = sl(3, 5);
         let MoreP = slKrome(LessP, 4, 7);
 
-            if (aAboutIncrOrDecr) {
-                // добавляем ответ про повышение цены
-                answAboutIncreasing(intervals, listOfIntervals);
-            } else {
-                // добавляем ответ про понижение цены
-                answAboutDecreasing(intervals, listOfIntervals);
-            }
-            // добавляем ответ про цена акции не менялась
-            answAboutConst(intervals, listOfIntervals);
-            if (aAboutNonIncrOrDecr) {
-                // добавляем ответ про цена была не более
-                answAboutNonMoreP(intervals, listOfIntervals, MoreP);
-            } else {
-                // добавляем ответ про цена была не менее
-                answAboutNonLessP(intervals, listOfIntervals, LessP);
-            }
+        if (aAboutIncrOrDecr) {
+            // добавляем ответ про повышение цены
+            answAboutIncreasing(intervals, listOfIntervals);
+        } else {
+            // добавляем ответ про понижение цены
+            answAboutDecreasing(intervals, listOfIntervals);
+        }
+        // добавляем ответ про цена акции не менялась
+        answAboutConst(intervals, listOfIntervals);
+        if (aAboutNonIncrOrDecr) {
+            // добавляем ответ про цена была не более
+            answAboutNonMoreP(intervals, listOfIntervals, MoreP);
+        } else {
+            // добавляем ответ про цена была не менее
+            answAboutNonLessP(intervals, listOfIntervals, LessP);
+        }
 
         // добавляем ответ про максимальную цена
         answAboutMax(intervals, listOfIntervals);
@@ -219,7 +219,7 @@
         } else {
             answAboutMaxDeltaDDay(intervals, listOfIntervals);
         }
-        
+
         answAboutMinDeltas(intervals, listOfIntervals);
 
         listOfIntervals.forEach(item => item.solution = item.solution.iz());
@@ -264,14 +264,14 @@
             rightHeader: 'ХАРАКТЕРИСТИКИ',
             right: solutions,
             postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику изменения цены акции в этот период.',
-            analys:listView.join('<br/>')
+            analys: listView.join('<br/>')
         });
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 600,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
+        NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=510146
