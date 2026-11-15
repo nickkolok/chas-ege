@@ -49,18 +49,18 @@
 
             addUniqueAnsw(wasMore, answ, 'в каждом месяце этого периода ' + gender[flag].rm + ' рождалось больше, чем ' + gender[1 - flag].rm);
         }
-        
+
         function answAboutDeltaMW(intervals, answ, delta) {
-            let deltas = intervals[0].map((interval, i) => interval.every((val, j) => (val - intervals[1][i][j]).abs() <= delta * 5));
-            
-            addUniqueAnsw(deltas, answ, 'в каждый месяц этого периода число рождений девочек и мальчиков различалось не более чем на ' + delta*5);
+            let deltas = intervals[0].map((interval, i) => interval.every((val, j) => math.smallerEq((val - intervals[1][i][j]).abs(), delta)));
+
+            addUniqueAnsw(deltas, answ, 'в каждый месяц этого периода число рождений девочек и мальчиков различалось не более чем на ' + delta * 5);
         }
-        
+
         function answAboutDeltaMWOneMonth(intervals, answ, delta) {
             let deltas = intervals[0].map((interval, i) => {
                 let differences = interval.map((val, j) => (val - intervals[1][i][j]).abs());
-                let hasSignificant = differences.some(diff => diff > delta * 5);
-                let allSignificant = differences.every(diff => diff > delta * 5);
+                let hasSignificant = differences.some(diff => math.larger(diff, delta));
+                let allSignificant = differences.every(diff => math.larger(diff, delta));
 
                 return hasSignificant && !allSignificant;
             });
@@ -128,7 +128,7 @@
         answAboutDeltaMW(intervals, listOfIntervals, delta);
         let deltaMore = sl(2,3);
         answAboutDeltaMWOneMonth(intervals, listOfIntervals, deltaMore);
-        
+
 
         listOfIntervals.forEach(item => {
             genAssert(item.solution.length > 0, 'У интервала нет характеристик');
@@ -191,7 +191,7 @@
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
+        NAtask.modifiers.allDecimalsToStandard();
     }, 2000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=506337
