@@ -35,14 +35,15 @@
 				return [(a < 0 ? '-' : '') + '\\frac{m}{' + Math.abs(a) + '}', m => m / a];
 			case 9:
 				return ['\\log_{' + Math.abs(a) + '}{m}', m => Math.log(m) / Math.log(Math.abs(a))];
+			case 10:
+				return [root('m') + signed(b), m => Math.sqrt(m) + b];
 			case 11:
 				return [b + '+m', m => b + m];
 			case 12:
 				return [root(b + '+m'), m => Math.sqrt(b + m)];
 			case 13:
 				return ['m^{' + c + '}' + signed(b / 2), m => m ** c + b / 2];
-			default:
-				return [root('m') + signed(b), m => Math.sqrt(m) + b];
+
 		}
 	}
 	retryWhileError(function () {
