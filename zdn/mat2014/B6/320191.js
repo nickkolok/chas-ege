@@ -34,5 +34,5 @@
 		NAtask.setTask({text, answers: answer, preference: [preference1, preference2]});
 	}, 20000);
 })();
-// ФИПИ: 0FF842, B4BC07, 8384DF, CE9AE8, 606D80, 6CB2D4, E96242
+// 0FF842, B4BC07, 8384DF, CE9AE8, 606D80, 6CB2D4, E96242
 
