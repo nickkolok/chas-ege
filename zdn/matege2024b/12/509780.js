@@ -3,7 +3,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '509780';
-		let preference = ['area', 'side', 'angle'];
+		let preference = ['area', 'side', 'base'];
 
 		let rand = getSelectedPreferenceFromList(key, preference);
 
