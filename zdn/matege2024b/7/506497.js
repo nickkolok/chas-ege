@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 	retryWhileError(function () {
-		/* На рисунке точками показано атмосферное давление в некотором городе на протяжении трёх суток с 4 по 6 апреля 2013 года. В течение суток давление измеряется 4 раза: в 0:00, в 6:00, в 12:00 и в 18:00.По горизонтали указывается время и дата, по вертикали – давление в миллиметрах ртутного столба. Для наглядности точки соединены линиями.*/
+		/* На рисунке точками показано атмосферное давление в некотором городе на протяжении трёх суток с 4 по 6 апреля 2013 года. В течение суток давление измеряется 4 раза: в 0:00, в 6:00, в 12:00 и в 18:00. По горизонтали указывается время и дата, по вертикали – давление в миллиметрах ртутного столба. Для наглядности точки соединены линиями.*/
 
 		function convert(P) {
 			return 752 + P * 2 + ' мм рт. ст.';
@@ -63,12 +63,12 @@
 		}
 
 		function answAboutIncreasingNonMore(intervals, answ, more) {
-			let wasCondition = intervals.map(interval => isIncreasing(interval) && isNotLess(interval, more));
+			let wasCondition = intervals.map(interval => isIncreasing(interval) && isNotMore(interval, more));
 			addUniqueAnsw(wasCondition, answ, 'давление росло, но не превышало ' + convert(more));
 		}
 
 		function answAboutDecreasingNonLess(intervals, answ, less) {
-			let wasCondition = intervals.map(interval => isDecreasing(interval) && isNotMore(interval, less));
+			let wasCondition = intervals.map(interval => isDecreasing(interval) && isMore(interval, less));
 			addUniqueAnsw(wasCondition, answ, 'давление упало, но осталось больше ' + convert(less));
 		}
 
@@ -78,12 +78,12 @@
 		}
 
 		function answAboutConstNotLess(intervals, answ, less) {
-			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isNotLess(interval, less));
+			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isMore(interval, less));
 			addUniqueAnsw(wasCondition, answ, 'давление не изменилось и было выше ' + convert(less));
 		}
 
 		function answAboutConstNotMore(intervals, answ, more) {
-			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isNotMore(interval, more));
+			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isLess(interval, more));
 			addUniqueAnsw(wasCondition, answ, 'давление не изменилось и было ниже ' + convert(more));
 		}
 
@@ -156,9 +156,9 @@
 			// добавляем ответ про давление не изменилось
 			answAboutConstP(intervals, listOfIntervals);
 		} else {
-			//давление не изменилось и было ниже
+			// давление не изменилось и было ниже
 			answAboutConstNotMore(intervals, listOfIntervals, MoreP1);
-			//давление не изменилось и было выше
+			// давление не изменилось и было выше
 			answAboutConstNotLess(intervals, listOfIntervals, LessP1);
 		}
 
@@ -167,7 +167,10 @@
 		// добавляем ответ про максимальный и минимальный рост
 		answAboutMaxMinDelta(intervals, listOfIntervals);
 
-		listOfIntervals.forEach(item => item.solution = item.solution.iz());
+		listOfIntervals.forEach(item => {
+			genAssert(item.solution.length > 0, 'У интервала нет характеристик');
+			item.solution = item.solution.iz();
+		});
 
 		let solutions = listOfIntervals.map(item => item.solution);
 		solutions.forEach(item => genAssertNonempty(item));
@@ -205,7 +208,7 @@
 			}
 
 			ctx.scale(1 / 40, -1 / 30);
-			ctx.font = "12px serif";
+			ctx.font = '12px serif';
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
 
@@ -224,14 +227,14 @@
 			rightHeader: 'ХАРАКТЕРИСТИКИ',
 			right: solutions,
 			postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику атмосферного давления в этом городе в течение этого периода.',
-			analys:listView.join('<br/>'),
+			analys: listView.join('<br/>'),
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 800,
 			height: 600,
 			paint: paint1,
 		});
-		NAtask.modifiers.allDecimalsToStandard( /*true*/);
-	}, 100);
+		NAtask.modifiers.allDecimalsToStandard();
+	}, 1000);
 })();
 //https://mathb-ege.sdamgia.ru/problem?id=506497
