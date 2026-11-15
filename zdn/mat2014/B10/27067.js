@@ -43,9 +43,7 @@
 		point2DCube = cube.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
 		let paint1 = function(ctx) {
-			let h = 400;
-			let w = 400;
-			ctx.translate(h / 2, w / 2);
+			ctx.translateToCenter();
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
 			ctx.drawFigure(point2DCube, matrixCube);
