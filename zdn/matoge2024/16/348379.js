@@ -27,7 +27,7 @@
         let points = [PA.vertices[0], PB.vertices[0], PC.vertices[0]];
 
         let paint = function (ctx) {
-            ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
+            ctx.translateToCenter();
 
             ctx.scale(1, -1);
             ctx.strokeStyle = om.secondaryBrandColors.iz();
