@@ -11,18 +11,18 @@
 		let a = sl(5, 20);
 
 		let rect = new Rectangle({
-            lengths: {
-                lengthAB: a,
-                lengthBC: slKrome(a, 5, 20)
-            }
-        });
+			lengths: {
+				lengthAB: a,
+				lengthBC: slKrome(a, 5, 20)
+			}
+		});
 
-        let angleCAD = new Angle(rect.pointC, rect.pointA, rect.pointD).angleInRadians;
-        let angleCAB = new Angle(rect.pointC, rect.pointA, rect.pointB).angleInRadians;
+		let angleCAD = new Angle(rect.pointC, rect.pointA, rect.pointD).angleInRadians;
+		let angleCAB = new Angle(rect.pointC, rect.pointA, rect.pointB).angleInRadians;
 
-        let func = [angleCAD.sin(), angleCAB.tg()][rand].pow(2);
+		let func = [angleCAD.sin(), angleCAB.tg()][rand].pow(2);
 
-        genAssertZ1000(func);
+		genAssertZ1000(func);
 
 		rect.connectVerticesInConnectionMatrix([0,2]);
 
@@ -46,7 +46,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В прямоугольнике $ABCD$ сторона равна $${[[`BC`, rect.lengthBC], [`AB`, rect.lengthAB]][rand].join(`$ равна $`)}$, $${[[[`sin \\angle CAD`], `tg \\angle CAB`][rand], func.texsqrtfrac(1)].join(`=`)}$. Найдите площадь прямоугольника.`,
+			text: `В прямоугольнике $ABCD$ сторона $${[[`BC`, rect.lengthBC], [`AB`, rect.lengthAB]][rand].join(`$ равна $`)}$, $${[[`\\sin \\angle CAD`, `\\tg \\angle CAB`][rand], func.texsqrtfrac(1)].join(`=`)}$. Найдите площадь прямоугольника.`,
 			answers: rect.area(),
 			authors: ['Александра Суматохина'],
 			preference: preference,
