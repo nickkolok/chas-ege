@@ -39,7 +39,7 @@
 		let endings = selectedColor === 'синий' ? ['ий', 'яя', 'ее'] : [selectedColor.slice(-2), 'ая', 'ое'];
 
 		NAtask.setTask({
-			text: `В фирме такси в данный момент свободно ${chislitlx(numberOfTransport, transport.ie, '$').replace('ёжей', 'ежей').replace('метл', 'метёл')}:
+			text: `В фирме такси в данный момент свободно ${chislitM(numberOfTransport, transport.ie, transport.re, transport.rm, '$')}:
 			${transportColor.joinLast(` и `)}.
 			По вызову ${move} ${[`один`, `одна`, `одно`][transport.rod]} из ${transport.rm}, случайно оказавш${[`ий`, `ая`, `ее`][transport.rod]}ся ближе всего к заказчику.
 			Найдите вероятность того, что к нему ${move} ${selectedColor.slice(0, -2) + endings[transport.rod]} ${transport.ie}.`,
