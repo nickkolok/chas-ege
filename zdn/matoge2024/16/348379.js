@@ -42,9 +42,7 @@
             // Центр окружности, как на чертеже ФИПИ
             let textColor = ctx.fillStyle;
             ctx.fillStyle = om.secondaryBrandColors.iz();
-            ctx.beginPath();
-            ctx.arc(circle.pc.x, circle.pc.y, 4, 0, 2 * Math.PI);
-            ctx.fill();
+            ctx.drawFilledCircle(circle.pc.x, circle.pc.y, 4);
             ctx.fillStyle = textColor;
 
             ctx.scale(1, -1);
