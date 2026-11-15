@@ -22,7 +22,7 @@
             ctx.fillStyle = '#fff';
             ctx.fillRect(0, 0, size, size);
             ctx.strokeStyle = '#888';
-            ctx.translate(size / 2, size / 2);
+            ctx.translateToCenter();
             ctx.fillStyle = '#b0b0b0';
             ctx.beginPath();
             ctx.arc(0, 0, outerRadius * cell, 0, 2 * Math.PI);
