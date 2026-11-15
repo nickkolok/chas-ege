@@ -56,25 +56,25 @@ function preamble(Sol,notSol){
 
 }
 
-var a=sluchch(1,9).pm();
-var x1=sluchch(1,9).pm();
+let a=sluchch(1,9).pm();
+let x1=sluchch(1,9).pm();
 let preference = ['full', 'zeroRoot', 'oppositeRoots'];
 let variant = getSelectedPreferenceFromList('26667', preference);
-var x2 = variant === 1 ? 0 : variant === 2 ? -x1 : slKrome(x1.abs(),1,9).pm();
+let x2 = variant === 1 ? 0 : variant === 2 ? -x1 : slKrome(x1.abs(),1,9).pm();
 if (variant === 1 && sl1()) {
     [x1, x2] = [x2, x1];
 }
 
 chas2.task.setAdditiveEquationTask({
     customPreamble: 'Найдите ' + preamble(x1,x2) + ' корень уравнения',
-	preference: preference,
-	parts: [
-		a+'x^2',
-		(-1)*a*(x1+x2)+'x',
-		a*x1*x2,
-	].filter(term => term !== '0x^2' && term !== '0x' && term !== 0),
-	enablePartsDivision: 0,
-	roots: x1,
+    preference: preference,
+    parts: [
+        a+'x^2',
+        (-1)*a*(x1+x2)+'x',
+        a*x1*x2,
+    ].filter(term => term !== '0x^2' && term !== '0x' && term !== 0),
+    enablePartsDivision: 0,
+    roots: x1,
 });
 })();
 
