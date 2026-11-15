@@ -3,7 +3,7 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let m = sl(40, 80, 5); // масса ученика от 40 до 80 кг с шагом 5
+		let m = sl(8, 16) * 5; // масса ученика от 40 до 80 кг, кратная 5
 		let g = 10; // ускорение свободного падения, м/с^2
 		let answer = m * g;
 
