@@ -72,13 +72,13 @@
         }
 
         function answAboutConstNSec(intervals, answ) {
-            let wasConst = intervals.map(interval => lengthConst(interval) > 1);
+            let wasConstFlags = intervals.map(interval => lengthConst(interval) > 1);
 
-            if (!hasNoDuplicateValue(wasConst, true)) {
+            if (!hasNoDuplicateValue(wasConstFlags, true)) {
                 return;
             }
 
-            let index = wasConst.indexOf(true);
+            let index = wasConstFlags.indexOf(true);
             let text = 'автомобиль ровно ' +
                 chislitlx((lengthConst(intervals[index]) - 1) * 15, 'секунда') +
                 ' ехал с постоянной скоростью';
@@ -86,14 +86,15 @@
         }
 
         function answAboutConstMoreNSec(intervals, answ) {
-            let wasConst = intervals.map(interval => lengthConst(interval) > 2);
+            let seconds = 15;
+            let wasConstFlags = intervals.map(interval => (lengthConst(interval) - 1) * 15 > seconds);
 
-            if (!hasNoDuplicateValue(wasConst, true)) {
+            if (!hasNoDuplicateValue(wasConstFlags, true)) {
                 return;
             }
 
-            let index = wasConst.indexOf(true);
-            let text = 'автомобиль более ' + chislitlx((lengthConst(intervals[index]) - 1) * 15, 'секунда', 'r') + ' ехал с постоянной скоростью';
+            let index = wasConstFlags.indexOf(true);
+            let text = 'автомобиль более ' + chislitlx(seconds, 'секунда', 'r') + ' ехал с постоянной скоростью';
             answ[index].solution.push(text);
         }
 
@@ -191,10 +192,10 @@
         // добавляем ответ про максимальную скорость
         answAboutMax(intervals, listOfIntervals);
 
+        listOfIntervals.forEach(item => genAssertNonempty(item.solution));
         listOfIntervals.forEach(item => item.solution = item.solution.iz());
 
         let solutions = listOfIntervals.map(item => item.solution);
-        solutions.forEach(item => genAssertNonempty(item));
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
         let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
@@ -240,7 +241,7 @@
             height: 600,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
+        NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=506397
