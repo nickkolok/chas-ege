@@ -72,7 +72,7 @@
                 let y = func(x);
                 if (y > maxVal) maxVal = y;
             }
-            return [[0, maxVal]];
+            return maxVal;
         }
 
         function findMaxInIntervals(intervals) {
@@ -99,8 +99,8 @@
         }
 
         function answAboutMax(intervals, answ) {
-            let max1 = findMaximums(func, 0, 4)[0][1];
-            let max2 = findMaximums(func, 4, 8)[0][1];
+            let max1 = findMaximums(func, 0, 4);
+            let max2 = findMaximums(func, 4, 8);
             if (Math.abs(max1 - max2) > 0.5) {
                 let maxIndex = findMaxInIntervals(intervals);
                 let wasMax = intervals.map((_, i) => i === maxIndex);
@@ -161,16 +161,16 @@
 
         function answAboutDecreasingAfterIncreasing(intervals, answ) {
             let wasCondition = intervals.map(int => isDecreasingAfterIsIncreasing(int));
-            addUniqueAnsw(wasCondition, answ, 'частота пульса сначала падала, а затем росла');
+            addUniqueAnsw(wasCondition, answ, 'частота пульса сначала росла, а затем падала');
         }
 
         function answAboutIncreasingAfterDecreasing(intervals, answ) {
             let wasCondition = intervals.map(int => isIncreasingAfterIsDecreasing(int));
-            addUniqueAnsw(wasCondition, answ, 'частота пульса сначала росла, а затем падала');
+            addUniqueAnsw(wasCondition, answ, 'частота пульса сначала падала, а затем росла');
         }
 
         let time = [0].zapMonot(9, 0, 1, 1);
-        
+
         // Генерируем значения пульса так, чтобы были разные характеристики
         let value = [sl(1, 3, 0.5)];
         for (let i = 1; i < time.length; i++) {
@@ -261,11 +261,11 @@
                 let chosen = avail.iz();
                 tempSolutions[obj.index] = chosen;
                 tempUsed.add(chosen);
-                obj.item.solution = chosen;
             }
             if (canAssign) {
                 success = true;
                 solutions = tempSolutions;
+                listOfIntervals.forEach((item, i) => item.solution = solutions[i]);
                 break;
             }
         }
@@ -313,7 +313,7 @@
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
+        NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=509719
