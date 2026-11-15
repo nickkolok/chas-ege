@@ -46,5 +46,5 @@
 		NAtask.setTask({text, answers: answer, preference: [preference1, preference2, preference3]});
 	}, 20000);
 })();
-// ФИПИ: 452E1F, 0D6E8F, 4465E7, 93A088, 0ECCC1, 2989CE, C7DCB3, 6E23DD, CCBCCB, 1155EB, 3EE7EA, BD0EED, 3B77EE, 2A1BBF
+// 452E1F, 0D6E8F, 4465E7, 93A088, 0ECCC1, 2989CE, C7DCB3, 6E23DD, CCBCCB, 1155EB, 3EE7EA, BD0EED, 3B77EE, 2A1BBF
 
