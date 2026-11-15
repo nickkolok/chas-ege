@@ -2,14 +2,14 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let letters = latbukv.slice(0, 3).concat(`O`);
+        let letters = latbukv.slice(0, 3).concat('O');
         let radius = sl(120, 165);
 
         let circle = new Circle(new Point(0, 0), radius);
-        let pointC = new Point((180).pm(), sl(radius).pm());
+        let pointB = new Point((180).pm(), sl(radius).pm());
 
-        let tan = circle.tangentsFromPoint(pointC, { segmentLength: 250 });
-        let angle = new Angle(tan[0][0], pointC.vertices[0], tan[1][0], circle.pc).angleInDegrees.ceil();
+        let tan = circle.tangentsFromPoint(pointB, { segmentLength: 250 });
+        let angle = new Angle(tan[0][0], pointB, tan[1][0]).angleInDegrees.ceil();
 
         let connectionMatrix = [
             [1],
@@ -17,7 +17,7 @@
             [1, 0, 1],
         ];
 
-        let points = [tan[0][0], pointC.vertices[0], tan[1][0], circle.pc];
+        let points = [tan[0][0], pointB, tan[1][0], circle.pc];
 
         let paint1 = function (ctx) {
             let h = 400;
@@ -26,7 +26,7 @@
             ctx.translate(w / 2, h / 2);
 
             ctx.scale(1, -1);
-            ctx.strokeStyle = om.secondaryBrandColors;
+            ctx.strokeStyle = om.secondaryBrandColors.iz();
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, connectionMatrix);
