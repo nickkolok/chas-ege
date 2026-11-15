@@ -35,10 +35,11 @@
 	NAtask.setTask({
 		text: condition + ' Сколько процентов составляет концентрация получившегося раствора?',
 		answers: answer,
-		analys: 'Количество растворённого вещества при смешивании сохраняется. ' +
+		analys: variant === 2 ? 'При равных количествах процентная концентрация равна $\\frac{x\\cdot' + percent1 + '+x\\cdot' + percent2 + '}{x+x}=' + answer + '$.' : 'Количество растворённого вещества при смешивании сохраняется. ' +
 			'Процентная концентрация смеси равна $\\frac{' + first + '\\cdot' + percent1 + '+' +
 			second + '\\cdot' + percent2 + '}{' + first + '+' + second + '}=' + answer + '$.',
 		preference,
 	});
 })();
+// Открытый банк заданий ФИПИ
 // E385F8, 63D20A, B5802E, B9D0D6, FF32C9, 1B1D9A, 9B09EC, 275D6A, 36F882, D8A2E9, F6AEFA, EBFEF9, 094108, B8BA7A, 9E0A9B, EA86ED, 48EE8E, 7EB880, A0EE0C, C12291, 5EF0F8, 040A4F, 4A00B8, B8B6B1, 50C315, E8F619, 3EE428, EF9BCE, FA60E2, 8B79EE

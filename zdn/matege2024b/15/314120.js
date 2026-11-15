@@ -41,7 +41,7 @@
                     answers: Math.floor(100 * payment / priceInKopecks),
                 },
                 {
-                    text: 'Сколько рублей будут стоить ' + '$' + count + '$' + ' наборов ' + item.rm + ', купленных в этом магазине',
+                    text: 'Сколько рублей будут стоить ' + chislitlx(count, 'набор', '$') + ' ' + item.rm + ', купленных в этом магазине',
                     answers: priceInKopecks * count / 100,
                 }
             ], postquestion: '?',
