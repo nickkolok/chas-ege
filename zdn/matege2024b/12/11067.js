@@ -22,7 +22,7 @@
 			}
 		});
 
-		genAssertZ1000(triangle.heightBLength, 'Высота не целая');
+		genAssertZ1000(triangle.heightBLength);
 
 		let points = autoScale(triangle.vertices);
 
@@ -44,11 +44,11 @@
 
 		NAtask.setTask({
 			text: ``,
-			questions:[[{
+			questions: [[{
 				text: `В прямоугольном треугольнике катеты равны $${triangle.lengthAB}$ и $${triangle.lengthBC}$. Найдите высоту, опущенную на гипотенузу.`,
 				answers: triangle.heightBLength,
 			},{
-				text:`Площадь прямоугольного треугольника $${triangle.area()}$. Один из катетов $${[triangle.lengthAB, triangle.lengthBC].iz()}$. Найдите гипотенузу этого треугольника.`,
+				text: `Площадь прямоугольного треугольника равна $${triangle.area()}$. Один из катетов равен $${[triangle.lengthAB, triangle.lengthBC].iz()}$. Найдите гипотенузу этого треугольника.`,
 				answers: triangle.lengthCA,
 			}][rand]],
 			authors: ['Александра Суматохина'],
@@ -65,4 +65,4 @@
 
 })();
 // https://base.mathege.ru/clones/?position=16&parent=11067
-// https://base.mathege.ru/clones?position=16&parent=10983
+// https://base.mathege.ru/clones/?position=16&parent=10983
