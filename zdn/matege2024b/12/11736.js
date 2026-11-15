@@ -8,12 +8,14 @@
         let rand = getSelectedPreferenceFromList(key, preference);
 
         let letters = latbukv.slice(0, 4);
-        let a = sl(5, 20);
+        // Generate a Pythagorean pair directly for the sine variant.
+        let [a, b] = om.pifagtr.iz();
+        if (rand) { a = sl(5, 20); b = slKrome(a, 5, 20); }
 
         let rect = new Rectangle({
             lengths: {
                 lengthAB: a,
-                lengthBC: slKrome(a, 5, 20)
+                lengthBC: b
             }
         });
 
@@ -58,8 +60,8 @@
             paint: paint1,
         });
 
+        NAtask.modifiers.allDecimalsToStandard(true);
     }, 2000);
-    NAtask.modifiers.allDecimalsToStandard(true);
 })();
 // https://base.mathege.ru/clones/?position=16&parent=11736
 // https://base.mathege.ru/clones/?position=16&parent=11820
