@@ -22,22 +22,12 @@
 		genAssert((triangle.sinA-0.5).abs()>0.1, 'Задача теряет смысл с sinA=1/2');
 		genAssertZ1000(triangle.lengthBC.pow(2));
 
-		let points = autoScale(triangle.vertices, {
-			x: 0,
-			y: 0,
-			z: 0,
-			scale: 1,
-			rotationX: 0,
-			rotationY: 0,
-			rotationZ: 0,
-		}, triangle.vertices, {
-			startX: -180,
-			finishX: 120,
-			startY: -160,
-			finishY: 160,
-			step: 0.1,
-			maxScale: 100
-		});
+		let a = triangle.vertices[0];
+		let b = triangle.vertices[1];
+		let extension = {x: b.x + (b.x - a.x) / 2, y: b.y + (b.y - a.y) / 2};
+		let scaled = autoScale([...triangle.vertices, extension]);
+		let points = scaled.slice(0, 3);
+		let rayEnd = scaled[3];
 
 		let paint1 = function(ctx) {
 			let h = 400;
@@ -50,9 +40,9 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
-			ctx.drawLine(points[1].x, points[1].y, 160, points[1].y);
+			ctx.drawLine(points[1].x, points[1].y, rayEnd.x, rayEnd.y);
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, 160, points[1].y], 20);
+			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, rayEnd.x, rayEnd.y], 20);
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
