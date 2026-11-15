@@ -22,10 +22,8 @@
 		}
 
 		let paint1 = function (ctx) {
-			let w = 400;
-			let h = 300;
 			
-			ctx.translate(w / 2, h / 2);
+			ctx.translateToCenter();
 			ctx.scale(1, -1);
 
 			let points = [];
