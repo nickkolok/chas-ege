@@ -30,10 +30,8 @@
 		let scaleCircle = CircleByPoints.fromCenterAndPoint(new Point(0, 0), new Point(points[2].x, points[2].y));
 
 		let paint1 = function(ctx) {
-			let h = 400;
-			let w = 400;
 
-			ctx.translate(w / 2, h / 2);
+			ctx.translateToCenter();
 
 			ctx.scale(1, -1);
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
