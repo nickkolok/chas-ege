@@ -48,7 +48,7 @@
             let index = constFlags.indexOf(true);
 
             if (index !== -1 && hasNoDuplicateValue(constFlags, true)) {
-                let text = chislitlx(lengthConst(intervals[index]), 'минута') +
+                let text = chislitlx(lengthConst(intervals[index]) - 1, 'минута') +
                     ' автобус двигался с постоянной ненулевой скоростью';
                 answ[index].solution.push(text);
             }
@@ -75,7 +75,7 @@
                 }
             }
         }
-        value = value.slice(0, 25);
+        value = value.slice(0, time.length);
 
         let beginTime = sl(0, 4);
 
