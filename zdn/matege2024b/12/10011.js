@@ -60,7 +60,7 @@
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
 			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
+			ctx.font = '20px liberation_sans';
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
 			// Подписи вершин — наружу от центра треугольника,
@@ -80,7 +80,7 @@
 
 		NAtask.setTask({
 			text: `В треугольнике $ABC$ на сторонах $AC$ и $BC$ отмечены точки $M$ и $K$ соответственно так, ` +
-				`что $${[`A`, `C`][rand]}M:AC=${relation1[rand]}:${relation1.sum()}$, а $${[`B`, `C`][rand]}K:BC=${relation2[rand]}:${relation2.sum()}$. ` +
+				`что $${['A', 'C'][rand]}M:AC=${relation1[rand]}:${relation1.sum()}$, а $${['B', 'C'][rand]}K:BC=${relation2[rand]}:${relation2.sum()}$. ` +
 				`Во сколько раз площадь треугольника $ABC$ больше площади треугольника $MCK$?`,
 			answers: answ,
 			authors: ['Александра Суматохина'],
