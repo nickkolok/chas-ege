@@ -28,6 +28,4 @@
 })();
 //zer00player
 //https://mathb-ege.sdamgia.ru/problem?id=509609
-// ФИПИ: сопоставленные позиции категории 4 и все исходные коды.
-// 4.80: E5ACB3, 9EE9D6
-// 4.81: AAACDF, BBC258, A23C9A
+// E5ACB3, 9EE9D6, AAACDF, BBC258, A23C9A
