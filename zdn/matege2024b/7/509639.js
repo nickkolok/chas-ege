@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    retryWhileError(function () { 
+    retryWhileError(function () {
         /* 'На рисунке точками показаны ежемесячные объёмы продаж холодильников в магазине бытовой техники. По горизонтали указываются месяцы, по вертикали – количество проданных холодильников. Для наглядности точки соединены линией.' */
 
         function convert(P) {
@@ -16,7 +16,7 @@
             let wasMax = intervals.map((_, i) => i === maxIndex);
             addUniqueAnsw(wasMax, answ, 'ежемесячный объём продаж достигает максимума за весь период');
         }
-        
+
         function answAboutConst(intervals, answ) {
             let wasConst = intervals.map(interval => interval[0] === interval[1] && interval[1] === interval[2]);
             let wasConstTwoFirst = intervals.map(interval => interval[0] === interval[1] && interval[1] !== interval[2]);
@@ -30,13 +30,13 @@
             addUniqueAnsw(wasConst, answ, 'все три месяца периода объём продаж был одинаковым');
         }
 
-        function answAboutMoreInMounth(intervals, answ, month, MoreP) {
+        function answAboutMoreInMonth(intervals, answ, month, MoreP) {
             let wasMore = intervals.map(interval => interval[month] > MoreP);
             let monthNames = ['первый', 'второй', 'последний'];
             addUniqueAnsw(wasMore, answ, 'за ' + monthNames[month] + ' месяц периода было продано больше ' + convert(MoreP) + ' холодильников');
         }
 
-        function answAboutLessInMounth(intervals, answ, month, LessP) {
+        function answAboutLessInMonth(intervals, answ, month, LessP) {
             let wasLess = intervals.map(interval => interval[month] < LessP);
             let monthNames = ['первый', 'второй', 'последний'];
             addUniqueAnsw(wasLess, answ, 'за ' + monthNames[month] + ' месяц периода было продано меньше ' + convert(LessP) + ' холодильников');
@@ -93,7 +93,7 @@
         let count = 1;
 
         for (; production.length <= time.length && count < 100;) {
-            let interI = ((time.length / 3).floor());
+            let interI = (time.length / 3).floor();
             for (let j = 0; j < interI; j++) {
                 let lastProduction = production[production.length - 1];
                 let newProduction = [0, 0, 0, 1].iz() ? lastProduction : lastProduction + (sl(0.5, 1.5, 0.5) * (-1).pow(count % 2));
@@ -121,11 +121,11 @@
         let moreM = slKrome(lessM, 0, 2);
 
         answAboutConst(intervals, listOfIntervals);
-        answAboutLessInMounth(intervals, listOfIntervals, lessM, lessP);
-        answAboutMoreInMounth(intervals, listOfIntervals, moreM, moreP);
+        answAboutLessInMonth(intervals, listOfIntervals, lessM, lessP);
+        answAboutMoreInMonth(intervals, listOfIntervals, moreM, moreP);
 
         // добавляем ответ про максимальный показатель
-        answAboutMax(intervals, listOfIntervals, production);
+        answAboutMax(intervals, listOfIntervals);
         answAboutMaxDeltaI(intervals, listOfIntervals);
         answAboutMaxDeltaD(intervals, listOfIntervals);
         answAboutSlowRise(intervals, listOfIntervals);
@@ -173,14 +173,14 @@
             rightHeader: 'ХАРАКТЕРИСТИКИ',
             right: solutions,
             postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику продаж холодильников.',
-            analys:listView.join('<br/>'),
+            analys: listView.join('<br/>'),
         });
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
+        NAtask.modifiers.allDecimalsToStandard();
     }, 2000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=509639
