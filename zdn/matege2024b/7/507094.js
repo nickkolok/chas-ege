@@ -1,4 +1,4 @@
-P * 10(function () {
+(function () {
 	'use strict';
 	retryWhileError(function () {
 		/* На рисунке точками показано потребление воды городской ТЭЦ на протяжении суток. По горизонтали указывается время, по вертикали – объём воды в кубометрах в час. Для наглядности точки соединены линией.*/
@@ -6,7 +6,7 @@ P * 10(function () {
 		function convert(P) {
 			return P * 10;
 		}
-		
+
 		function answAboutMax(intervals, answ) {
 			let maxIndex = findMaxInIntervals(intervals, p);
 			let wasMax = intervals.map((_, i) => i === maxIndex);
@@ -82,7 +82,6 @@ P * 10(function () {
 				}
 				return false;
 			});
-			let times = ['вдвое', 'втрое', 'вчетверо', 'впятеро', 'вшестеро', 'всемеро', 'восьмеро'];
 			let deltaValues = intervals.map(interval => {
 				if (isIncreasing(interval)) {
 					let min = interval.minE();
@@ -136,12 +135,12 @@ P * 10(function () {
 			});
 		}
 
-		let time = [1].zapMonot(25, 0, 1, 1); // шкала времени
+		let time = [0].zapMonot(25, 0, 1, 1); // шкала времени
 		let p = [sl(1, 5.9, 0.1)]; // шкала потребления воды
 		let count = 0;
 		let times = ['вдвое', 'втрое', 'вчетверо', 'впятеро', 'вшестеро', 'всемеро', 'восьмеро'];
 
-		for (; p.length <= time.length;) {
+		for (; p.length < time.length && count < 100;) {
 			let interI = ((time.length / (sl(1.5, 2.5, 0.5))).floor());
 			for (let j = 0; j < interI; j++) {
 				let newPoint = p[p.length - 1] + sl(0.1, 1, 0.1) * [-1, 1][count % 2];
@@ -152,6 +151,9 @@ P * 10(function () {
 			}
 			count++;
 		}
+
+		p = p.slice(0, time.length);
+		genAssert(p.length === time.length, 'Недостаточно точек графика');
 
 		let intervals = Array.from({length: 4}, (_, i) => p.slice(i * 6, i * 6 + 7));
 
@@ -200,9 +202,9 @@ P * 10(function () {
 		answAboutMax(intervals, listOfIntervals);
 		// добавляем ответ про максимальный и минимальный рост
 		if (sl1()) {
-			answAboutMaxDeltaI(intervals, listOfIntervals)
+			answAboutMaxDeltaI(intervals, listOfIntervals);
 		} else {
-			answAboutMaxDeltaD(intervals, listOfIntervals)
+			answAboutMaxDeltaD(intervals, listOfIntervals);
 		}
 
 		if (variableDI) {
@@ -214,7 +216,7 @@ P * 10(function () {
 		}
 
 		listOfIntervals.forEach(item => {
-			item.solution = item.solution.iz()
+			item.solution = item.solution.iz();
 		});
 
 		let solutions = listOfIntervals.map(item => item.solution);
@@ -268,7 +270,7 @@ P * 10(function () {
 			height: 600,
 			paint: paint1,
 		});
-		NAtask.modifiers.allDecimalsToStandard( /*true*/);
+		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
 //https://mathb-ege.sdamgia.ru/problem?id=507094
