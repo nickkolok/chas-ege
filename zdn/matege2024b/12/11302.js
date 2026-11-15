@@ -5,9 +5,12 @@
 		let letters = latbukv.slice(0, 3).concat('M');
 
 		let a = sl(1, 25);
+		let base = slKrome(a, 1, 25);
+		let doubleHeight = Math.sqrt(4 * a ** 2 - base ** 2);
+		genAssert(doubleHeight > 0 && Number.isInteger(doubleHeight));
 		let triangle = new Triangle({
 			lengths: {
-				lengthAB: slKrome(a, 1, 25),
+				lengthAB: base,
 				lengthBC: a,
 				lengthCA: a,
 			},
@@ -17,7 +20,6 @@
 		});
 
 		genAssertZ1000(triangle.area());
-		genAssertZ1000(triangle.tgA * 1000);
 
 		triangle.addVertexToConnectionMatrix([triangle.heightC.pe], 'C');
 
@@ -44,11 +46,12 @@
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
+			ctx.textAlign = 'center';
 			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
-			text: `В равнобедренном треугольнике $ABC$ высота $CM$, проведённая к основанию, равна $${triangle.heightCLength.pow(2).texsqrt(1)}$, а $\\tg A = ${triangle.tgA.pow(2).texsqrtfrac(1)}$. Найдите площадь треугольника.`,
+			text: `В равнобедренном треугольнике $ABC$ высота $CM$, проведённая к основанию, равна $${triangle.heightCLength.pow(2).texsqrt(1)}$, а $\\tg A = ${doubleHeight.texfrac(base)}$. Найдите площадь треугольника.`,
 			answers: triangle.area(),
 			authors: ['Александра Суматохина'],
 		});
