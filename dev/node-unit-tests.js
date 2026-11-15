@@ -600,4 +600,23 @@ module.exports = function registerNodeTests(QUnit) {
         var label = labelPositionOutsideSegment({ x: 1, y: 1 }, { x: 0, y: 0 }, { x: 2, y: 2 }, { x: 0, y: 2 }, Math.SQRT2);
         assertPointClose(assert, label, { x: 2, y: 0 }, 'на расстоянии √2 по нормали');
     });
+
+    // ============================================================
+    //  Canvas: перенос начала координат  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: translateToCenter');
+
+    QUnit.test('ctx.translateToCenter переносит начало координат в центр холста', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.translateToCenter === 'function', 'метод translateToCenter определён');
+        var calls = [];
+        var ctx = {
+            canvas: { width: 400, height: 300 },
+            translate: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        CanvasRenderingContext2D.prototype.translateToCenter.call(ctx);
+        assert.equal(calls.length, 1, 'translate вызван ровно один раз');
+        assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
+    });
 };
