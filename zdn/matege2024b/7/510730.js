@@ -75,8 +75,8 @@
             let length = intervals.map(interval => (lengthOfZeroInterval(interval) - 1) * 15);
             let secTexts = intervals.map((_, i) => {
                 let sec = chislitlx(length[i], 'секунда', 'value');
-                if (length[i] == 4) sec = 'минуту';
-                if (length[i] == 2 && sl1()) sec = 'полминуты';
+                if (length[i] == 60) sec = 'минуту';
+                if (length[i] == 30 && sl1()) sec = 'полминуты';
                 return sec;
             });
 
@@ -92,7 +92,7 @@
 
         function answAboutConstNSec(intervals, answ) {
             let wasConst = intervals.map(interval => lengthConst(interval) > 1);
-            let constTexts = intervals.map(interval => 'батискаф ' + chislitlx(lengthConst(interval) * 15, 'секунда') + ' погружался с постоянной ненулевой скоростью');
+            let constTexts = intervals.map(interval => 'батискаф ' + chislitlx((lengthConst(interval) - 1) * 15, 'секунда') + ' погружался с постоянной ненулевой скоростью');
 
             wasConst.forEach((condition, i) => {
                 if (condition) {
