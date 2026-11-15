@@ -8,7 +8,9 @@
 		let distFactor = sl(2, 4);
 
 		// F = G*m1*m2/r^2;  F' = G*(k*m1)*(k*m2)/(r/n)^2 = k^2*n^2*F
-		let answer = massFactor * massFactor * distFactor * distFactor;
+		let massSq = massFactor.sqr();
+		let distSq = distFactor.sqr();
+		let answer = massSq * distSq;
 
 		NAtask.setTask({
 			text: 'Свинцовые шары взаимодействуют силами всемирного тяготения. ' +
@@ -22,7 +24,7 @@
 				'а расстояние между их центрами уменьшить в ' + chislitlx(distFactor, 'раз') + ', ' +
 				'новая сила будет равна ' +
 				'$$F\' = G \\frac{' + massFactor + 'm_1 \\cdot ' + massFactor + 'm_2}{(r/' + distFactor + ')^2} = ' +
-				'G \\frac{' + (massFactor * massFactor) + ' m_1 m_2}{r^2 / ' + (distFactor * distFactor) + '} = ' +
+				'G \\frac{' + massSq + ' m_1 m_2}{r^2 / ' + distSq + '} = ' +
 				answer + ' \\cdot G \\frac{m_1 m_2}{r^2} = ' + answer + ' F.$$ ' +
 				'Таким образом, модуль силы тяготения увеличится в ' + answer + ' раз.',
 		});
