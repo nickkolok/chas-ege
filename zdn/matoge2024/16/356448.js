@@ -45,10 +45,8 @@
         let points = [AB.ps, AB.pe, CD.ps, CD.pe];
 
         let paint = function (ctx) {
-            let h = ctx.canvas.height;
-            let w = ctx.canvas.width;
 
-            ctx.translate(w / 2, h / 2);
+            ctx.translateToCenter();
 
             ctx.scale(1, -1);
             ctx.strokeStyle = om.secondaryBrandColors.iz();
