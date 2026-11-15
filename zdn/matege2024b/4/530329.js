@@ -23,8 +23,8 @@
 		genAssertZ1000(sinB, 'sinB должно быть не более 3 знаков после запятой');
 		genAssert(sinB < 1, 'sinB не должен превышать 1');
 
-		let nameLetter = ['a', 'b'].shuffle();
-		let nameSin = ['\\alpha', '\\beta'].shuffle();
+		let nameLetter = ['a', 'b'];
+		let nameSin = ['\\alpha', '\\beta'];
 
 		NAtask.setTask({
 

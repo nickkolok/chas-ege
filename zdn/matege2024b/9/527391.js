@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let nameCityWithlakes = [
+		let nameCityWithLakes = [
 			['Нижний Тагил', ['Выйский', 'Черноисточинский']],
 			['Коломна', ['Казанский', 'Парковый']],
 			['Екатеринбург', ['Верх-Исетский', 'Нижне-Исетский']],
@@ -26,29 +26,13 @@
 			['Южно-Сахалинск', ['Комсомольский', 'Парковый']],
 			['Хабаровск', ['Стадионный', 'Пионерский']],
 			['Владивосток', ['Спортивный', 'Лесной']],
-			['Чебоксары', ['Заводской', 'Южный']],
-			['Уфа', ['Нижегородский', 'Солнечный']],
-			['Тюмень', ['Лебяжий', 'Центральный']],
-			['Кемерово', ['Комсомольский', 'Рудничный']],
-			['Новокузнецк', ['Верхний', 'Заводской']],
-			['Магнитогорск', ['Парковый', 'Лесной']],
-			['Орск', ['Старый', 'Новый']],
-			['Стерлитамак', ['Городской', 'Северный']],
-			['Нижнекамск', ['Промышленный', 'Центральный']],
-			['Дзержинск', ['Волжский', 'Восточный']],
-			['Братск', ['Старый', 'Падунский']],
-			['Ангарск', ['Парковый', 'Молодежный']],
-			['Благовещенск', ['Городской', 'Утиный']],
-			['Южно-Сахалинск', ['Комсомольский', 'Парковый']],
-			['Хабаровск', ['Стадионный', 'Пионерский']],
-			['Владивосток', ['Спортивный', 'Лесной']],
 		].iz();
 
 		const settings = {
 			villagePoints: sl(10, 15),
 			villageSize: 4.2,
 			lakePoints: sl(6, 8),
-			lakeCount: [2, nameCityWithlakes[1].length].maxE(),
+			lakeCount: [2, nameCityWithLakes[1].length].maxE(),
 			minLakeSize: 1,
 			maxLakeSize: 4,
 			colorFillLake: '#a0d3ff50',
@@ -75,11 +59,14 @@
 			let scale = 40;
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
+			ctx.fillStyle = '#fff';
+			ctx.fillRect(0, 0, width, height);
+			ctx.strokeStyle = '#888';
 			ctx.lineWidth = 0.5;
 
 			ctx.translate(width / 2, height / 2);
 
-			ctx.regularGrid(scale, scale);
+			ctx.regularGrid(scale, 5);
 
 			ctx.scale(scale, -scale);
 			ctx.lineWidth = 2 / scale;
@@ -95,20 +82,20 @@
 
 			lakes.forEach((lake, index) => {
 				ctx.fillText('пруд', (lake.center.x) * scale, -lake.center.y * scale - 12);
-				ctx.fillText(nameCityWithlakes[1][index], (lake.center.x) * scale, -lake.center.y * scale);
+				ctx.fillText(nameCityWithLakes[1][index], (lake.center.x) * scale, -lake.center.y * scale);
 			});
 
 			ctx.fillStyle = 'black';
 			ctx.fillText('1 км', 3.5 * scale, 4.3 * scale);
 
 			ctx.font = "bold 20px serif";
-			ctx.fillText('г. ' + nameCityWithlakes[0], 0, -4.5 * scale);
+			ctx.fillText('г. ' + nameCityWithLakes[0], 0, -4.5 * scale);
 		};
 
 		NAtask.setTask({
-			text: 'На фрагменте географической карты схематично изображены границы города ' + nameCityWithlakes[0] +
+			text: 'На фрагменте географической карты схематично изображены границы города ' + nameCityWithLakes[0] +
 				' и очертания водоёмов (длина стороны квадратной клетки равна 1 км). Оцените приближённо площадь пруда ' +
-				nameCityWithlakes[1][rand] + '. Ответ дайте в квадратных километрах с округлением до целого числа.',
+				nameCityWithLakes[1][rand] + '. Ответ дайте в квадратных километрах с округлением до целого числа.',
 			answers: answ.round(),
 			analys: '$' + answ.toFixedLess(3) + '$',
 		});
