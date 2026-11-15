@@ -16,8 +16,8 @@
 			y: rect.pointD.y
 		}, 'E');
 
-		let ED = [rect.vertices[1], rect.vertices[4]].mt_rasst();
-		genAssert(ED.isAlmostInteger(), 'ED не целая');
+		let EB = [rect.vertices[1], rect.vertices[4]].mt_rasst();
+		genAssert(EB.isAlmostInteger(), 'EB не целая');
 
 		rect.connectVerticesInConnectionMatrix(
 			[
@@ -40,16 +40,14 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, rect.connectionMatrix);
 
-			ctx.strokeStyle = om.primaryBrandColors.iz();
-
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
 			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
-			text: `На стороне $DC$ прямоугольника $ABCD$, у которого $AB=${rect.lengthAB}$ и $AD = ${rect.lengthDA}$ , отмечена точка $E$ так, что треугольник $ADE$ равнобедренный. Найдите $EB$.`,
-			answers: ED,
+			text: `На стороне $DC$ прямоугольника $ABCD$, у которого $AB = ${rect.lengthAB}$ и $AD = ${rect.lengthDA}$, отмечена точка $E$ так, что треугольник $ADE$ равнобедренный. Найдите $EB$.`,
+			answers: EB,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.variativeABC(letters);
@@ -59,7 +57,7 @@
 			height: 400,
 			paint: paint1,
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 2000);
-	NAtask.modifiers.allDecimalsToStandard(true);
 })();
 // https://base.mathege.ru/clones/?position=16&parent=1845
