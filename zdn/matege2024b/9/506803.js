@@ -35,15 +35,15 @@
         });
 
         let paint1 = function (ctx) {
-            let h = 400;
-            let w = 400;
+            let h = ctx.canvas.height;
+            let w = ctx.canvas.width;
             ctx.fillStyle = '#fff';
             ctx.fillRect(0, 0, w, h);
             ctx.strokeStyle = '#888';
             ctx.lineWidth = 1;
             let scale = 30;
 
-            ctx.translate(w / 2, h / 2);
+            ctx.translateToCenter();
             ctx.regularGrid(scale, 6);
             ctx.scale(scale, -scale);
             ctx.strokeStyle = om.secondaryBrandColors[0];
