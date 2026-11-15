@@ -1,10 +1,10 @@
 (function () {
     'use strict';
-    retryWhileError(function () { 
-        /* 'На рисунке точками показан годовой объём добычи угля в России открытым способом в период с 2001 по 2010 год. По горизонтали указывается год, по вертикали – объём добычи угля в миллионах тонн. Для наглядности точки соединены линиями.' */
-        
-        function convert(value){   
-            return 150 + value * 25+ ' млн т';
+    retryWhileError(function () {
+        /* На рисунке точками показан годовой объём добычи угля в России открытым способом в период с 2001 по 2010 год. По горизонтали указывается год, по вертикали – объём добычи угля в миллионах тонн. Для наглядности точки соединены линиями. */
+
+        function convert(value) {
+            return 150 + value * 25 + ' млн т';
         }
 
         function answAboutMin(intervals, answ) {
@@ -13,19 +13,19 @@
             addUniqueAnsw(wasMin, answ, 'период с минимальным показателем добычи за 10 лет');
         }
 
-        function answAboutMoreButLess(intervals, answ, MoreP, LessP) {
-            let wasCondition = intervals.map(interval => isLess(interval, LessP) && isMore(interval, MoreP));
-            addUniqueAnsw(wasCondition, answ, 'годовой объём добычи составлял больше ' + convert(MoreP) + ', но меньше ' + convert(LessP) );
+        function answAboutMoreButLess(intervals, answ, moreP, lessP) {
+            let wasCondition = intervals.map(interval => isLess(interval, lessP) && isMore(interval, moreP));
+            addUniqueAnsw(wasCondition, answ, 'годовой объём добычи составлял больше ' + convert(moreP) + ', но меньше ' + convert(lessP));
         }
 
-        function answAboutMore(intervals, answ, MoreP) {
-            let wasMore = intervals.map(interval => isMore(interval, MoreP));
-            addUniqueAnsw(wasMore, answ, 'объём добычи ежегодно составлял больше ' + convert(MoreP));
+        function answAboutMore(intervals, answ, moreP) {
+            let wasMore = intervals.map(interval => isMore(interval, moreP));
+            addUniqueAnsw(wasMore, answ, 'объём добычи ежегодно составлял больше ' + convert(moreP));
         }
 
-        function answAboutLess(intervals, answ, LessP) {
-            let wasLess = intervals.map(interval => isLess(interval, LessP));
-            addUniqueAnsw(wasLess, answ, 'объём добычи ежегодно составлял меньше ' + convert(LessP));
+        function answAboutLess(intervals, answ, lessP) {
+            let wasLess = intervals.map(interval => isLess(interval, lessP));
+            addUniqueAnsw(wasLess, answ, 'объём добычи ежегодно составлял меньше ' + convert(lessP));
         }
 
         function answAboutIncreasing(intervals, answ) {
@@ -87,7 +87,7 @@
         let maxAttempts = 100;
 
         for (; production.length <= time.length && count < maxAttempts;) {
-            let interI = ((time.length / (sl(3, 8, 0.5))).floor());
+            let interI = (time.length / sl(3, 8, 0.5)).floor();
             for (let j = 0; j < interI; j++) {
                 let lastProduction = production[production.length - 1];
                 let newProduction = lastProduction + (sl(0.1, 2, 0.1) * (-1).pow(count % 2));
@@ -195,7 +195,7 @@
             height: 600,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
+        NAtask.modifiers.allDecimalsToStandard();
     }, 2000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=510154

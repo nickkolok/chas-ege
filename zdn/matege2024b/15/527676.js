@@ -2,14 +2,18 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
+        let key = '527676';
+        let preference1 = ['increaseFirst', 'decreaseFirst'];
+        let preference2 = ['increaseSecond', 'decreaseSecond'];
+        let preference3 = ['howManyCostNow', 'howManyCostBefore'];
+        let randFirst = getSelectedPreferenceFromList(key, preference1);
+        let randSecond = getSelectedPreferenceFromList(key, preference2);
+        let randQuestion = getSelectedPreferenceFromList(key, preference3);
 
         let months = om.months;
         let firstMonth = sklonlxkand(months.iz());
 
         let dishes = sklonlxkand(['чайник', 'молочник', 'половник', 'соусник', 'горшок', 'кофейник', 'кувшин', 'салатник', 'супник'].iz());
-
-        let randFirst = sl1();
-        let randSecond = sl1();
 
         let moreOrLessFirst = ['дороже', 'дешевле'][randFirst];
         let moreOrLessSecond = ['дороже', 'дешевле'][randSecond];
@@ -22,12 +26,10 @@
 
         genAssertZ1000(finalePrise / 10, 'Число имеет более 2 знаков после запятой');
 
-
-
         NAtask.setTask({
             text:
                 'За ' + firstMonth.ie + ' магазин дважды изменял цену на ' + dishes.ie + ': ',
-            questions: [
+            questions: [[
                 {
                     text: 'в первый раз на ' + percentFirst + '%  стал ' + moreOrLessFirst + ', ' +
                         'во второй — на ' + percentSecond + '% ' + moreOrLessSecond + '. ' +
@@ -41,8 +43,9 @@
                         ' он стал стоить ' + finalePrise + ' p.',
                     answers: prise,
                 },
-            ],
+            ][randQuestion]],
             postquestion: '?',
+            preference: [preference1, preference2, preference3],
         });
         NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
