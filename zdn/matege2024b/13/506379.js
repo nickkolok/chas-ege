@@ -37,7 +37,7 @@
 		let dashed = [[0,4],[4,5],[4,7]];          // три ребра в дальней нижней левой вершине
 
 		let paint = function(ctx) {
-			ctx.translate(W / 2, H / 2);
+			ctx.translateToCenter();
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
 			let seg = function(e) {
