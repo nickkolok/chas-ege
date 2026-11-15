@@ -1,11 +1,11 @@
-(function () {
-	retryWhileError(function () {
+(function() {
+	retryWhileError(function() {
 		'use strict';
 		NAinfo.requireApiVersion(0, 2);
 		let key = "511614";
 
 		let preference = ['two_boys', 'two_girls', 'boy', 'girl', 'boy_and_girl'];
-		let variant = getSelectedPreferenceFromList(key, preference);
+		let variant = getListedPreference(key, [...preference.map((preference, preferenceValue) => ({preference, preferenceValue})), {preference: 'two_girl', preferenceValue: 1}], sl(preference.length - 1));
 		let age = sl(0, 2);
 
 		let question;
@@ -42,3 +42,4 @@
 // B306C9
 // 2D6259
 // 998481
+
