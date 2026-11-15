@@ -2,7 +2,6 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let letters = latbukv.slice(0, 2).concat(`O`);
 		let circle = new Circle(new Point(0, 0), 170);
 
 		let A = sl(0, 360);
@@ -10,13 +9,15 @@
 			angleInDegrees: true
 		});
 
-		let B = (A + sl(10, 150).pm()) % 360;
+		let offset = sl(10, 150).pm();
+		let angle = offset.abs();
+		let B = (A + offset) % 360;
 		let PB = circle.pointOnCircle(B, {
 			angleInDegrees: true
 		});
 
 		let length = sl(10, 100);
-		let smallLength = length * (A - B).abs() / 360;
+		let smallLength = length * angle / 360;
 		genAssertZ1000(smallLength);
 
 		let connectionMatrix = [
@@ -33,7 +34,7 @@
 			ctx.translate(w / 2, h / 2);
 
 			ctx.scale(1, -1);
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectionMatrix);
@@ -45,7 +46,7 @@
 		};
 
 		NAtask.setTask({
-			text: `На окружности с центром $O$ отмечены точки $A$ и $B$ так, что $\\angle AOB=${(A-B).abs()}^\\circ$. Длина меньшей дуги $AB$ равна $${smallLength}$. Найдите длину большей дуги.`,
+			text: `На окружности с центром $O$ отмечены точки $A$ и $B$ так, что $\\angle AOB=${angle}^\\circ$. Длина меньшей дуги $AB$ равна $${smallLength}$. Найдите длину большей дуги.`,
 			answers: length - smallLength,
 			authors: ['Александра Суматохина'],
 		});
