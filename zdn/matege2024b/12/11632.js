@@ -12,11 +12,11 @@
         let d2 = slKrome(d1, 1, 50);
         let side = (d1.pow(2) / 4 + d2.pow(2) / 4).sqrt();
 
-        rhombus = new Rhombus({
+        let rhombus = new Rhombus({
             length: [sl(5, 20), side][Number(rand > 2)],
             angles: {
                 angle: {
-                    angleA: [[1, 2].iz() * Math.PI / 3, Math.atan(d2 / d1)][Number(rand > 2)],
+                    angleA: [[1, 2].iz() * Math.PI / 3, 2 * Math.atan(d2 / d1)][Number(rand > 2)],
                 },
             }
         });
