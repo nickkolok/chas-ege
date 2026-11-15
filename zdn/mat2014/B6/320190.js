@@ -4,7 +4,7 @@
 	let pass = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯA'.split('').iz();
 	let located = sl1();
 
-	retryWhileError(function () {
+	retryWhileError(function() {
 		const zapasn = sluchch(10, 30);
 		const peregorodk = sluchch(10, 30);
 		const vsego = sluchch(100, 500);
@@ -12,7 +12,7 @@
 		genAssertZ1000(answers);
 
 		NAtask.setTask({
-			text: 'На борту самолёта ' + chislitM(zapasn, 'место', 'места', 'мест') + (located ? ' расположены' : '') + ' рядом с запасными выходами и ' + chislitM(peregorodk, 'место', 'места', 'мест') +
+			text: 'На борту самолёта ' + chislitM(zapasn, 'место', 'места', 'мест') + (located ? (zapasn % 10 === 1 && zapasn % 100 !== 11 ? ' расположено' : ' расположены') : '') + ' рядом с запасными выходами и ' + chislitM(peregorodk, 'место', 'места', 'мест') +
 				(located ? ' —' : '') + ' за перегородками, разделяющими салоны.' +
 				' Остальные места неудобны для пассажира высокого роста. Пассажир ' + pass +
 				'. высокого роста. ' +
@@ -34,3 +34,4 @@
 // B32F8B, 41F7EA
 // 334D4A, F7EF69
 // EF1B7C
+
