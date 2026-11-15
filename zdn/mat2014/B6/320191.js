@@ -2,7 +2,7 @@
 	'use strict';
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let key = window.nomer === 320191 ? '320191' : '320191';
+		let key = '320191';
 		let preference1 = ['inAuditorium', 'notInAuditorium'];
 		let preference2 = ['future', 'past', 'extended'];
 		let outside = getSelectedPreferenceFromList(key, preference1);
@@ -35,3 +35,4 @@
 	}, 20000);
 })();
 // ФИПИ: 0FF842, B4BC07, 8384DF, CE9AE8, 606D80, 6CB2D4, E96242
+
