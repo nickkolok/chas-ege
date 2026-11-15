@@ -41,9 +41,7 @@
 		let strok = [5, 4];
 
 		let paint1 = function(ctx) {
-			let h = 400;
-			let w = 400;
-			ctx.translate(h / 2, w / 2);
+			ctx.translateToCenter();
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors;
 			ctx.drawFigure(point2DPyr, [
