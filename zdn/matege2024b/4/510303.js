@@ -41,8 +41,4 @@
 //zer00player
 //https://mathb-ege.sdamgia.ru/problem?id=510303
 //https://mathb-ege.sdamgia.ru/problem?id=520532
-// ФИПИ: сопоставленные позиции категории 4 и все исходные коды.
-// 4.39: F26545, 20F7F6, 031176, 456C15, 321E10, B08CD3, CF9AEF, 4FA43F, 3D9688
-// 4.40: B8EF4A, 7F4C1F
-// 4.41: 6E3B4E, 9897AE
-// 4.42: 0C027D, 5C727C, 555CA6
+// F26545, 20F7F6, 031176, 456C15, 321E10, B08CD3, CF9AEF, 4FA43F, 3D9688, B8EF4A, 7F4C1F, 6E3B4E, 9897AE, 0C027D, 5C727C, 555CA6
