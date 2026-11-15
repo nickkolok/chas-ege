@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    retryWhileError(function () { 
+    retryWhileError(function () {
         /* На рисунке точками показаны ежемесячные объёмы продаж обогревателей в магазине бытовой техники. По горизонтали указываются месяцы, по вертикали – количество проданных обогревателей. Для наглядности точки соединены линией.*/
 
         function convert(P) {
@@ -10,10 +10,10 @@
         function answAboutMaxMin(intervals, answ) {
             let maxIndex = findMaxInIntervals(intervals, production);
             let minIndex = findMinInIntervals(intervals, production);
-            
+
             let wasMax = intervals.map((_, i) => i === maxIndex);
             let wasMin = intervals.map((_, i) => i === minIndex);
-            
+
             if(sl1())
                 addUniqueAnsw(wasMax, answ, 'ежемесячный объём продаж достигает максимума за весь период');
             if(sl1())
@@ -92,7 +92,7 @@
         let production = [sl(5, 8)]; // шкала продаж
         let count = 1;
 
-        for (; production.length <= time.length && count < 100;) {
+        while (production.length <= time.length && count < 100) {
             let interI = ((time.length / 1.6).floor());
             for (let j = 0; j < interI; j++) {
                 let lastProduction = production[production.length - 1];
@@ -120,20 +120,20 @@
         let less = sl(2, 4);
         let more = sl(4, 6);
         let nonMore = slKrome(less, 2, 4);
-        
+
         answAboutConst(intervals, listOfIntervals);
         if (sl1()) {
             answAboutIncreasing(intervals, listOfIntervals);
         } else {
             answAboutDecreasing(intervals, listOfIntervals);
         }
-        
+
         answAboutIncreasingMore(intervals, listOfIntervals, more);
         answAboutIncreasingLess(intervals, listOfIntervals, nonMore);
-        
+
         answAboutLess(intervals, listOfIntervals, less);
         answAboutMore(intervals, listOfIntervals, more);
-        
+
         // добавляем ответ про максимальный показатель
         answAboutMaxMin(intervals, listOfIntervals);
         answAboutMaxDeltaI(intervals, listOfIntervals);
@@ -209,7 +209,7 @@
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard( /*true*/);
+        NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=510205

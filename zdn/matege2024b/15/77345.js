@@ -2,9 +2,13 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-
-        let rand = sl1();
-        let randUpgrade = sl1();
+        let key = '77345';
+        let preference1 = ['solveRight', 'solveWrong'];
+        let preference2 = ['correctSolve', 'incorrectSolve'];
+        let preference3 = ['howManySolve_fipi', 'howManySolve_percent', 'howManyTryToSolve', 'howManySolve_fipi_reverse', 'howManySolve_only'];
+        let rand = getSelectedPreferenceFromList(key, preference1);
+        let randUpgrade = getSelectedPreferenceFromList(key, preference2);
+        let randQuestion = getSelectedPreferenceFromList(key, preference3);
         let students = sl(1500, 10000, 100);
         let persent = sl(10, 90, 1);
         let taskNumber = sl(1, 20, 1);
@@ -21,7 +25,7 @@
 
         NAtask.setTask({
             text: '',
-            questions: [
+            questions: [[
                 {
                     text: 'Из ' + '$' + students + '$' + ' ' + gender + ' ' + educationInstitution + ' города ' + '$' + persent + '$' +
                         '% ' + сorrectIncorrect + ' решили задачу №' + '$' + taskNumber + '$' + '. Сколько из ' + gender + ' ' + educationInstitution +
@@ -52,8 +56,9 @@
                         '. Сколько ' + gender + ' ' + educationInstitution + '  решили задачу №' + '$' + taskNumber + '$' + ' ' + checkForCorrect,
                     answers: answer,
                 },
-            ],
+            ][randQuestion]],
             postquestion: '?',
+            preference: [preference1, preference2, preference3],
         });
     }, 100);
 })();
