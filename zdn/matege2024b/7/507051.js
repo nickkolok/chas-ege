@@ -40,13 +40,13 @@
         }
 
         function answAboutIncreasingNonLess(intervals, answ, less) {
-            let wasCondition = intervals.map(interval => isIncreasing(interval) && isNotLess(interval, less));
+            let wasCondition = intervals.map(interval => isIncreasing(interval) && isMore(interval, less));
             addUniqueAnsw(wasCondition, answ, 'при увеличении числа оборотов крутящий момент растёт, но остаётся больше ' +
                 convert(less));
         }
 
         function answAboutDecreasingNonLess(intervals, answ, less) {
-            let wasCondition = intervals.map(interval => isDecreasing(interval) && isNotLess(interval, less));
+            let wasCondition = intervals.map(interval => isDecreasing(interval) && isMore(interval, less));
             addUniqueAnsw(wasCondition, answ, 'при увеличении числа оборотов крутящий момент падает, но остаётся больше ' +
                 convert(less));
         }
@@ -111,7 +111,7 @@
             count++;
         }
 
-        value = value.slice(0, 13);
+        value = value.slice(0, time.length - 1);
         value.push(sl(1, 2, 0.5));
 
         let spline = new Spline(time, value);
@@ -121,6 +121,7 @@
         for (let i = 0; i < 3; i++)
             rangeIntervals.push(sl(1, 4));
         rangeIntervals.push(12 - rangeIntervals.sum());
+        genAssert(rangeIntervals.every(length => length > 0), 'Пустой интервал');
 
         let intervals = Array.from({
             length: 4
@@ -162,8 +163,8 @@
             };
         });
 
-        let [less1, less2, less3] = arrayOfUniqueValues(length, 1, 3);
-        let [more1, more2, more3] = arrayOfUniqueValues(length, 4, 6);
+        let [less1, less2, less3] = arrayOfUniqueValues(3, 1, 3);
+        let [more1, more2, more3] = arrayOfUniqueValues(3, 4, 6);
 
         answAboutNonMore(intervals, listOfIntervals, more1);
         answAboutNonLess(intervals, listOfIntervals, less1);
