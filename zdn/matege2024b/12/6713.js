@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let key = "6713";
+		let key = '6713';
 		let preference = ['height', 'diagonal'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
