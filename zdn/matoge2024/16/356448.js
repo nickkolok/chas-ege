@@ -45,8 +45,8 @@
         let points = [AB.ps, AB.pe, CD.ps, CD.pe];
 
         let paint = function (ctx) {
-            let h = 400;
-            let w = 400;
+            let h = ctx.canvas.height;
+            let w = ctx.canvas.width;
 
             ctx.translate(w / 2, h / 2);
 
