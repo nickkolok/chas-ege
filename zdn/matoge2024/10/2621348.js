@@ -1,37 +1,37 @@
 (function () {
-    'use strict';
-    retryWhileError(function () {
+	'use strict';
+	retryWhileError(function () {
 
-        let diceSides = 6;
-        let minSum = sl(3, 6);
-        let maxSum = minSum + slKrome(minSum, 1, 3);
+		let preference = ['consecutive', 'arbitrary'];
+		let variant = getSelectedPreferenceFromList('2621348', preference);
+		let diceSides = 6;
+		let minSum = sl(3, 6);
+		let maxSum = minSum + sl(1, 3);
+		let sumsText = variant ? arrayOfUniqueValues(sl(2, 4), 2, 12).sort((a, b) => a - b) : Array.from({length: maxSum - minSum + 1}, (_, i) => minSum + i);
 
-        let favorable = 0;
-        for (let i = 1; i <= diceSides; i++) {
-            for (let j = 1; j <= diceSides; j++) {
-                let sum = i + j;
-                if (sum >= minSum && sum <= maxSum) {
-                    favorable++;
-                }
-            }
-        }
+		let favorable = 0;
+		for (let i = 1; i <= diceSides; i++) {
+			for (let j = 1; j <= diceSides; j++) {
+				let sum = i + j;
+				if (sumsText.includes(sum)) {
+					favorable++;
+				}
+			}
+		}
 
-        let probability = favorable / 36;
+		let probability = favorable / 36;
 
-        let sumsText = [];
-        for (let s = minSum; s <= maxSum; s++) {
-            sumsText.push(s);
-        }
-        let sumsStr = sumsText.joinLast(', ', ' или ');
+		let sumsStr = sumsText.joinLast(', ', ' или ');
 
-        genAssertZ1000(probability);
+		genAssertZ1000(probability);
 
-        NAtask.setTask({
-            text: 'Симметричный игральный кубик бросают два раза. ' +
-                'Найдите вероятность события «сумма выпавших очков равна ' + sumsStr + '».',
-            answers: probability,
-        });
-    }, 100);
+		NAtask.setTask({
+			text: 'Симметричный игральный кубик бросают два раза. ' +
+				'Найдите вероятность события «сумма выпавших очков равна ' + sumsStr + '».',
+			answers: probability,
+			preference: preference,
+		});
+	}, 1000);
 })();
 //2621348
 //Открытый банк заданий 27FFA4
