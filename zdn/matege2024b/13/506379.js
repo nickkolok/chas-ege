@@ -6,8 +6,9 @@
 		let b = sl(2, 9);
 		let c = sl(2, 12);
 
-		let V = a * b * c;
-		let S = 2 * (a * b + a * c + b * c);
+		let box = new Parallelepiped({ width: a, depth: b, height: c });
+		let V = box.volume;
+		let S = box.surfaceArea;
 
 		// Чертёж: пропорциональный параллелепипед, авто-вписанный в canvas.
 		// Контракт вписывания (bounding box + maxScale:50) и стиль линий заимствованы из
