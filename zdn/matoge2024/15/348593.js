@@ -33,7 +33,7 @@
             ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[2].x, points[2].y, 10);
 
             ctx.scale(1, -1);
-            ctx.font = "20px liberation_sans";
+            ctx.font = '20px liberation_sans';
             points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
         };
 
@@ -49,7 +49,7 @@
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(/*true*/);
+        NAtask.modifiers.allDecimalsToStandard(true);
     }, 1000);
 
 })();
