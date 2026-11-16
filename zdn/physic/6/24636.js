@@ -57,9 +57,8 @@
 			// 4: касательная
 			let slope = -2 * k * Ax;
 			let angle = Math.atan(slope);
-			let v4x = Ax + len * Math.cos(angle);
-			let v4y = Ay + len * Math.sin(angle);
-			ctx.drawArrow(Ax, Ay, v4x, v4y, true);
+			let v4 = calculateEndpointLineAtAngle(Ax, Ay, angle, len);
+			ctx.drawArrow(Ax, Ay, v4.x, v4.y, true);
 
 			ctx.scale(1, -1);
 			ctx.font = "bold 18px liberation_sans";
@@ -68,7 +67,7 @@
 			ctx.fillText("1", Ax + 8, -(Ay - len) + 15);
 			ctx.fillText("2", Ax + 8, -(Ay + len) - 5);
 			ctx.fillText("3", Ax + len + 8, -Ay + 5);
-			ctx.fillText("4", v4x + 8, -v4y + 5);
+			ctx.fillText("4", v4.x + 8, -v4.y + 5);
 			ctx.fillText("A", Ax + 8, -Ay - 8);
 		};
 
