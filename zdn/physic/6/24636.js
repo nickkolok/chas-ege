@@ -10,7 +10,9 @@
 		let Ax = sl(-80, 80, 1);
 		genAssert(Math.abs(Ax) >= 35, "Точка A не должна быть слишком близко к вершине траектории, чтобы векторы скорости и горизонт не сливались");
 		
-		let Ay = 90 - 0.01 * Ax * Ax; 
+		let k = 0.01;
+		let trajectory = x => 90 - k * x * x;
+		let Ay = trajectory(Ax);
 
 		let questionText, answer;
 		if (rand === 0) {
@@ -28,7 +30,7 @@
 
 			let points = [];
 			for(let x = -109; x <= 109; x += 5) {
-				points.push({x: x, y: 90 - 0.01 * x * x});
+				points.push({x: x, y: trajectory(x)});
 			}
 			
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
@@ -53,7 +55,7 @@
 			ctx.drawArrow(Ax, Ay, Ax + len, Ay, true);
 			
 			// 4: касательная
-			let slope = -0.02 * Ax;
+			let slope = -2 * k * Ax;
 			let angle = Math.atan(slope);
 			let v4x = Ax + len * Math.cos(angle);
 			let v4y = Ay + len * Math.sin(angle);
