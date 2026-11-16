@@ -85,12 +85,8 @@
 
 				// точки приложения сил
 				ct.fillStyle = 'black';
-				ct.beginPath();
-				ct.arc(dot1, y, 7, 0, 2 * Math.PI);
-				ct.fill();
-				ct.beginPath();
-				ct.arc(dot2, y, 7, 0, 2 * Math.PI);
-				ct.fill();
+				ct.drawFilledCircle(dot1, y, 7);
+				ct.drawFilledCircle(dot2, y, 7);
 
 				// подписи F
 				ct.font = 'italic 22px serif';
