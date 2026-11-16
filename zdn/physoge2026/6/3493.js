@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     
-    let v_bus = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].iz();
-    let v_pass = [1, 2, 3].iz();
+    let v_bus = sl(5, 20);
+    let v_pass = sl(1, 3);
     let directions = ['от задней двери к кабине водителя', 'от кабины водителя к задней двери'];
     let directionText = directions.iz();
     let directionSign = (directionText === 'от задней двери к кабине водителя') ? 1 : -1;
