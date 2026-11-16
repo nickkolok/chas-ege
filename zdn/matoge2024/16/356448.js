@@ -17,7 +17,8 @@
         // угол A не берётся из окрестности 90°, где трапеция вырождается в прямоугольник
         // (при 90° ровно, т. е. arcBCD = 180°, основания равны).
         let minArc = 25;
-        let arcBCD = slKrome((x) => (x - 180).abs() < 10, 60, 300);
+        let angleA = slKrome((x) => (x - 90).abs() < 5, 30, 150);
+        let arcBCD = 2 * angleA;
         let arcLeg = sl(minArc, Math.min(arcBCD - minArc, 360 - arcBCD - minArc));
         let arcBC = arcBCD - arcLeg;
 
@@ -34,7 +35,6 @@
             angleInDegrees: true
         });
 
-        let angleA = arcBCD / 2;
 
         let connectionMatrix = [
             [1],
@@ -84,3 +84,4 @@
 
 })();
 // https://math-oge.sdamgia.ru/problem?id=356448
+
