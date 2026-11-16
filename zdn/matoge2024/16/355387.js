@@ -19,22 +19,9 @@
         });
         genAssert(trp.lengthAB + trp.lengthCD == trp.lengthBC + trp.lengthDA);
 
-        let bisector1 = bisectorIntersection({
-            fP: trp.pointD,
-            sP: trp.pointA,
-            tP: trp.pointB
-        }, [trp.segmentCD, trp.segmentBC])[0];
-
-        let bisector2 = bisectorIntersection({
-            fP: trp.pointA,
-            sP: trp.pointD,
-            tP: trp.pointC
-        }, [trp.segmentAB, trp.segmentCD])[0];
-
-        let o = bisector1.intersect(bisector2);
-        genAssertNonempty(o);
-        o = o[0];
-        let points = autoScale(trp.vertices.concat(o));
+        let circle = trp.inscribedCircle();
+        genAssert(circle !== null);
+        let points = autoScale(trp.vertices.concat(circle.pc));
 
         let paint1 = function (ctx) {
 
@@ -45,7 +32,8 @@
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, trp.connectionMatrix);
-            ctx.drawArc(points[4].x, points[4].y, points[3].x.abs(), 0, 2 * Math.PI);
+            let scale = Math.hypot(points[1].x - points[0].x, points[1].y - points[0].y) / trp.lengthAB;
+            new Circle(new Point(circle.pc.x * scale, circle.pc.y * scale), circle.r * scale).drawOnto(ctx);
 
 
             ctx.strokeStyle = om.primaryBrandColors.iz();
@@ -67,3 +55,4 @@
     }, 10000);
 })();
 // https://oge.sdamgia.ru/problem?id=355387
+
