@@ -19,7 +19,6 @@ retryWhileError(function() {
 			func.push((ai[i] + '\\sqrt{x+' + ci[i] + '}+' + bi[i]).plusminus());
 			funcShuffle[i] =
 				func[i].replace('+0x', '').replace('+0', '');
-			funcShuffle[i] = func[i];
 		}
 
 		funcShuffle.shuffle();
@@ -28,7 +27,7 @@ retryWhileError(function() {
 		let a, b, c;
 		let answers = [];
 		for (let i = 0; i < 4; i++) {
-			answers.push(1 + funcShuffle.indexOf(func[i]));
+			answers.push(1 + funcShuffle.indexOf(func[i].replace('+0x', '').replace('+0', '')));
 			a = ai[i];
 			b = bi[i];
 			c = ci[i];
@@ -52,8 +51,8 @@ retryWhileError(function() {
 			let w = 300;
 			//Оси координат
 			for (let i = 0; i < 3; i++) {
-				if (i)
-					ct.translate(200, -h / 2 + 10);
+				ct.save();
+			ct.translate((i % 2) * 320, Math.floor(i / 2) * 320);
 				ct.drawCoordinatePlane(w, h, {
 					hor: 1,
 					ver: 1
@@ -85,6 +84,7 @@ retryWhileError(function() {
 
 				ct.font = "19px liberation_sans";
 				ct.fillText(['A', 'B', 'C'][i] + ')', 130, 130);
+			ct.restore();
 			}
 
 
@@ -95,10 +95,10 @@ retryWhileError(function() {
 			answers: answers.join(''),
 		});
 		chas2.task.modifiers.addCanvasIllustration({
-			width: 3000,
-			height: 320,
+			width: 640,
+			height: 640,
 			paint: paint1,
 		});
 	},
 	100000);
-//314771 но только про корни
+// 314771

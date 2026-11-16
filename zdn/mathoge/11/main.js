@@ -7,4 +7,4 @@ window.nomer=[
 	31477103,
 	31477104,
 ].iz()
-window.comment='Графики';
+window.comment='Графики функций';
