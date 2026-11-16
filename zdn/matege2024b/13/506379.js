@@ -10,12 +10,14 @@
 		let V = box.volume;
 		let S = box.surfaceArea;
 
+		let canvasSize = 400;
+
 		// Чертёж: пропорциональный параллелепипед, авто-вписанный в canvas.
 		// Контракт вписывания (bounding box + maxScale:50) и стиль линий заимствованы из
 		// zdn/matege2024p/3/245335.js (autoScale / setLineDash([5,4]) / om.secondaryBrandColors).
 		// Ракурс и видимость рёбер считаем явно, чтобы попасть во фронтальную проекцию со
 		// скриншота (движковый ракурс 245335 — изометрия, другой вид).
-		let W = 400, H = 400, pad = 20, maxScale = 50;
+		let W = canvasSize, H = canvasSize, pad = 20, maxScale = 50;
 		let k = 0.5, ang = Math.PI / 6;            // кавалерская проекция: глубина под 30°, коэф 0.5
 		let ddx = Math.cos(ang), ddy = Math.sin(ang);
 		// 3D-вершины пропорционально рёбрам: X~a (ширина), Y~b (глубина), Z~c (высота)
@@ -65,8 +67,8 @@
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
-			width: 400,
-			height: 400,
+			width: canvasSize,
+			height: canvasSize,
 			paint: paint,
 		});
 	}, 100000);
