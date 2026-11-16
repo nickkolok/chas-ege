@@ -1561,6 +1561,17 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.ok(points.every(x => functionGraph.painFunc(x) === functionGraph.func(x)), 'на график функции множитель не влияет');
     });
 
+    QUnit.test('createSpline: недопустимый derivativeScale даёт понятную ошибку', function (assert) {
+        const options = { type: 'derivative', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 };
+        for (const value of [0, -1, NaN, Infinity, '2', null]) {
+            assert.throws(() => global.createSpline(Object.assign({}, options, { derivativeScale: value })),
+                /derivativeScale должен быть положительным числом/, 'derivativeScale = ' + String(value));
+        }
+        assert.throws(() => global.createSpline(Object.assign({}, options, { type: 'function', derivativeScale: 0 })),
+            /derivativeScale/, 'проверяется и для графика функции');
+        assert.ok(generateSpline(Object.assign({}, options, { derivativeScale: 0.5 }), 20000).result, 'дробный положительный множитель допустим');
+    });
+
     QUnit.test('createSpline: недопустимые требования отбраковываются', function (assert) {
         const impossible = Object.assign({}, splineConfigs['функция, stepForX = 3, только обязательные параметры'],
             { numberOfExtremes: { min: 50, max: 60 } });
