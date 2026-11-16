@@ -81,6 +81,7 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'findPositiveAndNegativeIntervals', 'findPositiveIntervals', 'findNegativeIntervals',
         'findPositiveAndNegativePoints', 'findPositiveIntegerPoints', 'findNegativeIntegerPoints',
     ]);
+    const { findSignChangePoints } = loadMathFunctions(['findSignChangePoints']);
     const {
         getRandomSubSegment, isCloseToInteger, isDistinctByTolerance, findPointsInIntervals,
         intPoints, intPointsWithTolerance,
@@ -234,6 +235,15 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assertRoots(assert, findRoots(x => (x - 0.3) / (x - 0.55), 0, 1), [0.3], 'корень и разрыв рядом');
     });
 
+    QUnit.test('findRoots: несимметричный скачок корнем не считается', function (assert) {
+        assert.deepEqual(findRoots(x => (x < 0.55 ? -1 : 2), 0, 1), [], 'скачок от -1 к 2');
+        assert.deepEqual(findRoots(x => (x < 0.55 ? -2 : 1), 0, 1), [], 'скачок от -2 к 1');
+        assert.deepEqual(findRoots(x => (x < 0.55 ? 3 : -0.5), 0, 1), [], 'скачок от 3 к -0,5');
+        assert.deepEqual(findRoots(x => x - 0.55 + (x < 0.55 ? -0.001 : 0.001), 0, 1), [], 'наклонная прямая со скачком 0,002 в точке смены знака');
+        assert.deepEqual(findRoots(x => (x < 0.55 ? -1 : 2), 0, 1, 0.001), [], 'скачок от -1 к 2 при шаге сетки 0,001');
+        assertRoots(assert, findRoots(x => (x < 0.55 ? x - 0.3 : 2), 0, 1), [0.3], 'корень 0,3 перед скачком найден');
+    });
+
     QUnit.test('findRoots: крутой корень не принимается за разрыв', function (assert) {
         assertRoots(assert, findRoots(x => 1e6 * (x - 0.55), 0, 1), [0.55], 'линейная функция с наклоном 10⁶');
         assertRoots(assert, findRoots(x => Math.atan(1e4 * (x - 0.55)), 0, 1), [0.55], 'арктангенс с резким переходом');
@@ -252,6 +262,35 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         });
         assertRoots(assert, roots, [-3, -0.5, 2.5, 4], 'четыре корня, часть из них в узлах сетки');
         assert.equal(errors, 0, 'console.error не вызывался');
+    });
+
+    // ============================================================
+    //  findSignChangePoints  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findSignChangePoints');
+
+    function assertSignChangePoints(assert, actual, expected, message) {
+        const ok = actual.length === expected.length && actual.every((point, i) =>
+            Math.abs(point.x - expected[i][0]) < EPS && point.isRoot === expected[i][1]);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось [x, isRoot]: ' + JSON.stringify(expected) + ')');
+    }
+
+    QUnit.test('findSignChangePoints: корни и разрывы', function (assert) {
+        assertSignChangePoints(assert, findSignChangePoints(x => (x - 1) * (x + 2), -5, 5), [[-2, true], [1, true]],
+            'у непрерывной функции все точки — корни');
+        assertSignChangePoints(assert, findSignChangePoints(x => 1 / (x - 0.55), -3, 3), [[0.55, false]],
+            '1 / (x - 0,55): одна точка, и это разрыв');
+        assertSignChangePoints(assert, findSignChangePoints(Math.tan, -1, 4), [[0, true], [Math.PI / 2, false], [Math.PI, true]],
+            'tg x на [-1; 4]: корни 0 и π, разрыв π/2');
+        assertSignChangePoints(assert, findSignChangePoints(x => (x < 0.55 ? -1 : 2), 0, 1), [[0.55, false]], 'скачок от -1 к 2');
+        assertSignChangePoints(assert, findSignChangePoints(x => x * x + 1, -5, 5), [], 'смен знака нет');
+    });
+
+    QUnit.test('findSignChangePoints: корни те же, что у findRoots', function (assert) {
+        const funcs = [Math.sin, Math.tan, x => (x - 0.3) / (x - 0.55), x => (x + 3) * (x + 0.5) * (x - 2.5) * (x - 4)];
+        const different = funcs.filter(func => JSON.stringify(findSignChangePoints(func, -5, 5).filter(point => point.isRoot).map(point => point.x)) !==
+            JSON.stringify(findRoots(func, -5, 5)));
+        assert.deepEqual(different.length, 0, 'findRoots — это точки с isRoot = true');
     });
 
     // ============================================================
@@ -445,6 +484,23 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assertIntervals(assert, intervals.negativeIntervals, [[0, 3]], 'отрицательна на (0; 3)');
     });
 
+    QUnit.test('findPositiveAndNegativeIntervals: разрыв со сменой знака разделяет интервалы', function (assert) {
+        const hyperbola = x => 1 / (x - 0.55);
+        let intervals = findPositiveAndNegativeIntervals(hyperbola, -3, 3);
+        assertIntervals(assert, intervals.negativeIntervals, [[-3, 0.55]], '1 / (x - 0,55): минус слева от разрыва');
+        assertIntervals(assert, intervals.positiveIntervals, [[0.55, 3]], '1 / (x - 0,55): плюс справа от разрыва');
+        assertIntervals(assert, findNegativeIntervals(hyperbola, -3, 3), [[-3, 0.55]], 'findNegativeIntervals');
+        assertIntervals(assert, findPositiveIntervals(hyperbola, -3, 3), [[0.55, 3]], 'findPositiveIntervals');
+
+        intervals = findPositiveAndNegativeIntervals(Math.tan, -1, 4);
+        assertIntervals(assert, intervals.positiveIntervals, [[0, Math.PI / 2], [Math.PI, 4]], 'tg x на [-1; 4]: плюс на (0; π/2) и (π; 4)');
+        assertIntervals(assert, intervals.negativeIntervals, [[-1, 0], [Math.PI / 2, Math.PI]], 'tg x на [-1; 4]: минус на (-1; 0) и (π/2; π)');
+
+        intervals = findPositiveAndNegativeIntervals(x => (x < 0.55 ? -1 : 2), -3, 3);
+        assertIntervals(assert, intervals.negativeIntervals, [[-3, 0.55]], 'скачок от -1 к 2: минус слева');
+        assertIntervals(assert, intervals.positiveIntervals, [[0.55, 3]], 'скачок от -1 к 2: плюс справа');
+    });
+
     QUnit.test('findPositiveAndNegativeIntervals: готовые корни четвёртым аргументом', function (assert) {
         let calls = 0;
         const counted = x => {
@@ -492,6 +548,14 @@ module.exports = function registerMathFunctionsTests(QUnit) {
     QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: синус', function (assert) {
         assert.deepEqual(findPositiveIntegerPoints(Math.sin, -7, 7), [-6, -5, -4, 1, 2, 3], 'положителен; нуль не входит');
         assert.deepEqual(findNegativeIntegerPoints(Math.sin, -7, 7), [-3, -2, -1, 4, 5, 6], 'отрицателен; нуль не входит');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: разрывная функция', function (assert) {
+        const hyperbola = x => 1 / (x - 0.55);
+        assert.deepEqual(findPositiveIntegerPoints(hyperbola, -3, 3), [1, 2], '1 / (x - 0,55) положительна в точках 1 и 2');
+        assert.deepEqual(findNegativeIntegerPoints(hyperbola, -3, 3), [-2, -1, 0], '1 / (x - 0,55) отрицательна в точках -2, -1, 0');
+        assert.deepEqual(findPositiveIntegerPoints(Math.tan, -1, 4), [1], 'tg x на (-1; 4) положителен только в точке 1');
+        assert.deepEqual(findNegativeIntegerPoints(Math.tan, -1, 4), [2, 3], 'tg x на (-1; 4) отрицателен в точках 2 и 3');
     });
 
     QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: функция без корней', function (assert) {
