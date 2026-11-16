@@ -16,7 +16,7 @@
                 angle: Math.PI / 2,
             },
         });
-        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
+        genAssert(!triangle.isIsosceles(), 'Все стороны треугольника должны быть разными');
 
         let find = ['sin', 'cos', 'tg', 'ctg'][variant % 4] + ' ' + ['A', 'C'][variant < 4 ? 0 : 1];
         let sides;
@@ -61,7 +61,7 @@
             ctx.arcBetweenSegments([points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y], 20);
 
             ctx.scale(1, -1);
-            ctx.font = "20px liberation_sans";
+            ctx.font = '20px liberation_sans';
             points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
         };
 
@@ -78,7 +78,7 @@
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(/*true*/);
+        NAtask.modifiers.allDecimalsToStandard(true);
     }, 2000);
 
 })();
