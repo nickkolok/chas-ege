@@ -8,13 +8,15 @@
 		let preference2 = ['bigger', 'smaller']; // какой угол параллелограмма найти
 		let randDiagonal = getSelectedPreferenceFromList(key, preference1);
 		let randFind = getSelectedPreferenceFromList(key, preference2);
+		let preference3 = ['withoutAngleValues', 'withAngleValues'];
+		let randAngleValues = getSelectedPreferenceFromList(key, preference3);
 
 		// Диагональ выходит из вершины V (A для AC, B для BD) и делит угол при ней на α и β.
 		// Угол параллелограмма при V равен α + β; около 90° — запрещено (не видно, острый он или тупой).
 		let alpha = sl(10, 85);
 		let beta = sl(10, 85);
 		let angleV = alpha + beta;
-		genAssert((angleV - 90).abs() > 4, 'Угол параллелограмма слишком близок к прямому');
+		genAssert((angleV - 90).abs() > 5, 'Угол параллелограмма слишком близок к прямому');
 		genAssert(angleV <= 160, 'Слишком плоский параллелограмм');
 
 		let angleSmaller = Math.min(angleV, 180 - angleV);
@@ -60,7 +62,7 @@
 			ctx.translateToCenter();
 
 			ctx.scale(1, -1);
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectionMatrix);
@@ -76,6 +78,23 @@
 			ctx.font = "20px liberation_sans";
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
+			if (randAngleValues) {
+				// Порядок сторон соответствует углам alpha и beta при выбранной вершине.
+				let first = randDiagonal == 0 ? 1 : 0;
+				let second = randDiagonal == 0 ? 3 : 2;
+				[first, second].forEach((j, i) => {
+					let v = points[indexV];
+					let d = points[indexOpposite];
+					let side = points[j];
+					let sideLength = Math.hypot(side.x - v.x, side.y - v.y);
+					let diagonalLength = Math.hypot(d.x - v.x, d.y - v.y);
+					let dx = (side.x - v.x) / sideLength + (d.x - v.x) / diagonalLength;
+					let dy = (side.y - v.y) / sideLength + (d.y - v.y) / diagonalLength;
+					let radius = Math.min(sideLength * 0.6, 65 + i * 35);
+					let factor = radius / Math.hypot(dx, dy);
+					ctx.fillText([alpha, beta][i] + '°', v.x + dx * factor, -(v.y + dy * factor));
+				});
+			}
 			// Подписи — снаружи: от центра через вершину
 			points.forEach((elem, i) => {
 				let len = Math.hypot(elem.x, elem.y);
@@ -88,7 +107,7 @@
 			text: `Диагональ $${diagonal}$ параллелограмма $ABCD$ образует с его сторонами углы, равные $${[alpha, beta].shuffleJoin('^\\circ$ и $')}^\\circ$. Найдите ${[`больший`, `меньший`][randFind]} угол этого параллелограмма. Ответ дайте в градусах.`,
 			answers: [angleBigger, angleSmaller][randFind],
 			authors: ['Александра Суматохина'],
-			preference: [preference1, preference2],
+			preference: [preference1, preference2, preference3],
 		});
 		NAtask.modifiers.variativeABC(letters);
 		NAtask.modifiers.addCanvasIllustration({
