@@ -45,12 +45,12 @@
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
-            ctx.fillText(letters.slice(-1), 0, 0);
+            ctx.fillText(letters[4], 0, 0);
             points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
         };
 
         NAtask.setTask({
-            text: `Диагонали $AC$ и $BD$ параллелограмма $ABCD$ пересекаются в точке $O$, $AC = ${par.lengthDiagonalAC.pow(2).texsqrt(1)}$, $BD =${par.lengthDiagonalBD.pow(2).texsqrt(1)}$, $AB = ${par.lengthAB}$. Найдите $DO$.`,
+            text: `Диагонали $AC$ и $BD$ параллелограмма $ABCD$ пересекаются в точке $O$, $AC = ${par.lengthDiagonalAC.pow(2).texsqrt(1)}$, $BD = ${par.lengthDiagonalBD}$, $AB = ${par.lengthAB}$. Найдите $DO$.`,
             answers: answ,
             authors: ['Александра Суматохина'],
         });
