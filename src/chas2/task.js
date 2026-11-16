@@ -510,7 +510,8 @@ chas2.task = {
  * @param {Object} boundariesOfGraph {minX, maxX, minY, maxY}
  * @param {Object} subBoundaries {minX, maxX}
  * @param {Object} canvasSettings {height, width, scale, }
- * @param {Array} questionsF {main:integer_points||point||intervals, variants, conditions} 
+ * @param {Object} questionsF {main: integer_points || point || interval || marked_points, variants, conditions};
+ *   variants и conditions — непустые массивы, из них берётся случайный элемент
  * @param {Boolean} extremumsIsInteger
  * @param {Boolean} rootsIsInteger 
  */
@@ -528,13 +529,19 @@ chas2.task = {
 			rootsIsInteger = { int: 'no_matter', tolerance: 0.2 },
 			derivativeScale = 2, } = o;
 
-		const conditionsArray = ['derivative_is_positive', 'derivative_is_negative', 'derivative_is_zero', 'extreme_points', 'minimum_points', 'maximum_points', 'function_is_positive', 'function_is_negative', 'value_on_the_segment', 'extreme_points_on_the_segment', 'minimum_points_on_the_segment', 'maximum_points_on_the_segment',
-		];
-
-		const variantsArray = ['sum', 'production', 'number', 'largest', 'smallest', 'minimum', 'maximum', 'smallest_value', 'largest_value', 'largest', 'smallest', 'minimum_point_on_the_segment', 'maximum_point_on_the_segment'];
-
-		conditions = conditions.iz() || conditionsArray.iz();
-		variants = variants.iz() || variantsArray.iz();
+		// Списков по умолчанию нет: допустимые conditions зависят от type и main,
+		// а допустимые variants — от main и conditions, и общего списка, годного
+		// для всех сочетаний, не существует. Прежние умолчания содержали значения,
+		// которые функция не поддерживает; к тому же при пропущенном списке до них
+		// не доходило — раньше падал вызов .iz() у undefined.
+		if (!Array.isArray(conditions) || !conditions.length) {
+			throw new Error('Не заданы questionsF.conditions: укажите непустой массив');
+		}
+		if (!Array.isArray(variants) || !variants.length) {
+			throw new Error('Не заданы questionsF.variants: укажите непустой массив');
+		}
+		conditions = conditions.iz();
+		variants = variants.iz();
 		let answer;
 
 		let task = o.clone();
@@ -1106,6 +1113,8 @@ chas2.task = {
 						task.text.push('наименьший');
 						answer = answer.minE()
 						break;
+					default:
+						throw new Error('variants: ' + variants + ' не найдено');
 				}
 				genAssert(answer !== 0, 'Интервал не может быть нулевой длины')
 				task.text.push('по длине интервал, на котором');

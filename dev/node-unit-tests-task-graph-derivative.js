@@ -364,6 +364,52 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
         });
     });
 
+    // Вызывает функцию с настройками settings до первой задачи или до первой ошибки,
+    // сообщение которой подходит под stopOn (RegExp); возвращает { error, txt }
+    function callOnce(seed, settings, attempts, stopOn) {
+        const { window, run } = env();
+        window.Math.seedrandom(String(seed));
+        let error = null;
+        for (let attempt = 0; attempt < attempts; attempt++) {
+            window.vopr.podg();
+            run('window.__settings = ' + JSON.stringify(settings) + ';', '<settings>');
+            try {
+                run('NAtask.setTaskWithGraphOfFunctionDerivative(window.__settings);', '<call>');
+                return { error: null, txt: String(window.vopr.txt) };
+            } catch (e) {
+                error = e;
+                if (stopOn && stopOn.test(e.message)) {
+                    break;
+                }
+            }
+        }
+        return { error, txt: null };
+    }
+
+    QUnit.test('без conditions или variants — понятная ошибка, а не TypeError и не случайное недопустимое значение', function (assert) {
+        const base = { type: 'derivative', canvasSettings: {}, boundariesOfGraph: { minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 } };
+        const cases = [
+            [{ main: 'integer_points', variants: ['number'] }, /Не заданы questionsF\.conditions/],
+            [{ main: 'integer_points', conditions: [], variants: ['number'] }, /Не заданы questionsF\.conditions/],
+            [{ main: 'integer_points', conditions: ['extreme_points'] }, /Не заданы questionsF\.variants/],
+            [{ main: 'integer_points', conditions: ['extreme_points'], variants: [] }, /Не заданы questionsF\.variants/],
+        ];
+        cases.forEach(function ([questionsF, message]) {
+            const result = callOnce('умолчания', Object.assign({ questionsF: questionsF }, base), 1, null);
+            assert.ok(result.error && message.test(result.error.message), JSON.stringify(questionsF) + ': ' + (result.error && result.error.message));
+        });
+    });
+
+    QUnit.test('интервал: неизвестный variants — ошибка, а не массив ответов', function (assert) {
+        const result = callOnce('интервал', {
+            type: 'derivative', canvasSettings: {}, boundariesOfGraph: { minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 },
+            rootsIsInteger: { int: 'yes', tolerance: 0.2 }, numberOfRoots: { min: 2, max: 10 },
+            questionsF: { main: 'interval', conditions: ['function_is_increasing'], variants: ['number'] },
+        }, 20000, /не найдено/);
+        assert.equal(result.txt, null, 'задача не сгенерирована');
+        assert.ok(result.error && /variants: number не найдено/.test(result.error.message), String(result.error && result.error.message));
+    });
+
     QUnit.test('множитель графика производной (derivativeScale) передаётся в createSpline', function (assert) {
         const { window, run } = env();
         const settings = {
