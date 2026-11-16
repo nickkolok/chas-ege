@@ -702,12 +702,12 @@ chas2.task = {
 						answer = points[deriv.min()];
 						break;
 					case 'tangent_to_graph_abscissa':
-						find = `касательная к графику ${functionsFx} параллельна оси абсцисс`;
+						find = `касательная к графику ${functionsFx} параллельна оси абсцисс или совпадает с ней`;
 						//task.analys = 'Точки экстремума:'
 						answer = extremumsX(func, minX, maxX);
 						break;
 					case 'tangent_to_graph_const':
-						find = `касательная к графику ${functionsFx} параллельна графику функции $y=${sl(-20, 20, 0.1)}$ или совпадает с ней`;
+						find = `касательная к графику ${functionsFx} параллельна прямой $y=${sl(-20, 20, 0.1)}$ или совпадает с ней`;
 						//task.analys = 'Точки экстремума:'
 						answer = extremumsX(func, minX, maxX);
 						break;
@@ -904,7 +904,7 @@ chas2.task = {
 						answer = findDecreasingIntervals(func, minX, maxX);
 						break;
 					case 'tangent_to_graph_const':
-						find = `касательная к графику ${functionsFx} параллельна графику функции $y=${sl(-20, 20, 0.1)}$ или совпадает с ней`;
+						find = `касательная к графику ${functionsFx} параллельна прямой $y=${sl(-20, 20, 0.1)}$ или совпадает с ней`;
 						//task.analys = 'Точки экстремума:'
 						answer = extremumsX(func, minX, maxX);
 						break;
@@ -928,7 +928,7 @@ chas2.task = {
 						let extY = extremumsY(painFunc, minX, maxX);
 						extY.forEach(elem => genAssert(Math.abs(elem - answer[1].round()) > 1, 'Точки пересечения невозможно понять'));
 						find = `касательная к графику ${functionsFx} параллельна `;
-						find += `графику функции $y=${[+sl(-20, 20, 0.1), answer[1].round() + 'x'].shuffleJoin('+').plusminus()}$`;
+						find += `прямой $y=${[+sl(-20, 20, 0.1), answer[1].round() + 'x'].shuffleJoin('+').plusminus()}$`;
 						find += ` или совпадает с ней`;
 						break;
 					default:
@@ -1152,7 +1152,6 @@ chas2.task = {
 			switch (conditions) {
 				case 'derivative_is_positive':
 				case 'derivative_is_negative':
-				case 'derivative_is_zero':
 				case 'function_is_positive':
 				case 'function_is_negative':
 				case 'function_is_increasing':
@@ -1162,6 +1161,9 @@ chas2.task = {
 					if (main == 'marked_points')
 						task.text.push('точек, в которых');
 					break;
+				// Нули производной — точки экстремума, а не все целые точки промежутка:
+				// «количество точек, в которых производная функции f(x) равна 0», как у ФИПИ
+				case 'derivative_is_zero':
 				case 'tangent_to_graph_const':
 				case 'tangent_to_graph_abscissa':
 				case 'tangent_to_graph_equation':

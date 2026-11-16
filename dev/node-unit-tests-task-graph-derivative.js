@@ -89,6 +89,10 @@ if(/\$\[[^\]$]*\$/.test(t))out.lint.push('нет закрывающей ]');
 if(/undefined|NaN|\[object/.test(t))out.lint.push('undefined/NaN в тексте');
 if(/^В какой|В какой точке/.test(t.replace(/^.*?\.\s/,''))&&!/\?\s*$/.test(t))out.lint.push('вопрос без вопросительного знака');
 if(/\d\.\d/.test(t))out.lint.push('десятичная точка в тексте');
+// Как у ФИПИ: «параллельна прямой … или совпадает с ней», «параллельна оси абсцисс или совпадает с ней»
+if(/параллельна графику/.test(t))out.lint.push('«параллельна графику» вместо «параллельна прямой»');
+if(/параллельна (прямой|оси абсцисс)/.test(t)&&!/или совпадает с ней/.test(t))out.lint.push('нет «или совпадает с ней»');
+if(/целых точек, в которых производная функции \$f\(x\)\$ равна нулю/.test(t))out.lint.push('«целых точек» в вопросе о нулях производной');
 if(ver.length!==1)out.lint.push('ответов: '+ver.length);
 var got=Number(String(ver[0]).replace(',','.').replace('−','-'));
 if(!isFinite(got))out.lint.push('ответ не число: '+ver[0]);
@@ -153,12 +157,12 @@ else if(/целых точек?, в которых (производная фу�
    set=ints().filter(function(x){return atExtremum(x)||s3*fprime(x)>0})}
  else{kind='f-sign';set=ints().filter(function(x){return !gz.some(function(z){return Math.abs(z.x-x)<=NEAR})&&s3*g(x)>0})}
  exp=agg(set,q)}
-else if(/параллельна графику функции \$y=([^$]*x[^$]*)\$/.test(q)){kind='tangent-k';var eq=q.match(/\$y=([^$]*)\$/)[1].replace(/,/g,'.').replace(/−/g,'-');var km=eq.match(/([+-]?\d*\.?\d*)x/);var k=km[1]===''||km[1]==='+'?1:(km[1]==='-'?-1:+km[1]);
+else if(/параллельна прямой \$y=([^$]*x[^$]*)\$/.test(q)){kind='tangent-k';var eq=q.match(/\$y=([^$]*)\$/)[1].replace(/,/g,'.').replace(/−/g,'-');var km=eq.match(/([+-]?\d*\.?\d*)x/);var k=km[1]===''||km[1]==='+'?1:(km[1]==='-'?-1:+km[1]);
    var sol=zeros(function(x){return fprime(x)-k},minX+1e-6,maxX-1e-6).map(function(z){return z.x});set=sol;out.notes.push('k='+k);
    if(/абсциссу точки/.test(q)){exp=sol.length?Math.round(sol[0]):null;if(sol.length!==1)out.notes.push('НЕОДНОЗНАЧНО: решений '+sol.length);if(sol.some(function(x){return Math.abs(x-Math.round(x))>0.25}))out.notes.push('решение не целое')}
    else exp=agg(sol,q);
    amb=gext.some(function(e){return Math.abs(g(e.x)-k)<0.6})}
-else if(/точ(ек|ки|ку) (экстремума|минимума|максимума)|решени(й|е) уравнения \$f'\(x\)=0\$|равна нулю|параллельна оси абсцисс|параллельна графику функции \$y=/.test(q)){
+else if(/точ(ек|ки|ку) (экстремума|минимума|максимума)|решени(й|е) уравнения \$f'\(x\)=0\$|равна нулю|параллельна оси абсцисс|параллельна прямой \$y=/.test(q)){
  kind='extrema';var kk=(q.match(/точ(?:ек|ки|ку) (экстремума|минимума|максимума)/)||[])[1]||'экстремума';
  var all=fext.filter(function(e){return kk==='экстремума'||(kk==='минимума')===(e.kind==='min')});
  set=all.filter(function(e){return inDom(snap(e.x))}).map(function(e){return e.x});
