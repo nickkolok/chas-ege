@@ -69,10 +69,7 @@
 				// нить
 				ct.strokeStyle = 'black';
 				ct.lineWidth = 3;
-				ct.beginPath();
-				ct.moveTo(x1, y);
-				ct.lineTo(x2, y);
-				ct.stroke();
+				ct.drawLine(x1, y, x2, y);
 
 				// острия стрелок, направленные наружу
 				ct.beginPath();
