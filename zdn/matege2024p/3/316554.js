@@ -1,23 +1,39 @@
 (function() {
+	'use strict';
+	NAinfo.requireApiVersion(0, 2);
 	retryWhileError(function() {
-		NAinfo.requireApiVersion(0, 2);
 
 		let letters = ['A', 'B', 'C', 'D'];
 		let letterWithIndex = letters.map((elem) => elem + '₁');
 		let allLet = letters.concat(letterWithIndex);
 
-		let letters1 = [
-			[letters[0], letters[2]],
-			[letters[1], letters[3]]
-		].iz();
-		if (sl1()) {
-			letters1 = letters1.map((elem) => elem + '_1');
+		let diagonal = sl1();
+		let upper = sl1();
+		let preference = ['parallel', 'perpendicular', 'inclined'];
+		let variant = getSelectedPreferenceFromList('316554', preference);
+		let first = [letters[diagonal], letters[diagonal + 2]];
+		if (upper) {
+			first = first.map(letter => letter + '_1');
 		}
-		letters1 = letters1.join('');
-
-		let letters2 = letters.slice().permuteCyclic(sl(1, 4)).slice(0, 2);
-
-		letters2 = (sl1()) ? letters2.join('_1') : letters2.join('') + '_1';
+		let second;
+		if (variant === 0) {
+			second = [letters[diagonal], letters[diagonal + 2]];
+			if (!upper) {
+				second = second.map(letter => letter + '_1');
+			}
+		} else if (variant === 1) {
+			second = [letters[1 - diagonal], letters[3 - diagonal]];
+			if (sl1()) {
+				second = second.map(letter => letter + '_1');
+			}
+		} else {
+			second = letters.slice().permuteCyclic(sl(1, 4)).slice(0, 2);
+			second[sl1()] += '_1';
+		}
+		let letters1 = first.shuffle().join('');
+		let letters2 = second.shuffle().join('');
+		let objects = ['прямыми', 'отрезками'].iz();
+		let answer = [0, 90, 60][variant];
 
 		let paint1 = function(ctx) {
 			ctx.translate(110, 50);
@@ -39,9 +55,10 @@
 			}, [0, 3, 4], false, [0.4, 0.5]);
 		};
 		NAtask.setTask({
-			text: 'В кубе $ABCDA_1B_1C_1D_1$ найдите угол между прямыми $' + letters1 + '$ и $' + letters2 +
+			text: 'В кубе $ABCDA_1B_1C_1D_1$ найдите угол между ' + objects + ' $' + letters1 + '$ и $' + letters2 +
 				'$. Ответ дайте в градусах.',
-			answers: 60,
+			answers: answer,
+			preference: preference,
 			author: ['Суматохина Александра']
 		});
 		NAtask.modifiers.variativeABC(allLet);
