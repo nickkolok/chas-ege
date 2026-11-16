@@ -1416,6 +1416,28 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.notDeepEqual([first[0]].concat([-5, -2.5, 0, 1.7, 4].map(x => other.func(x))), first, 'при другом зерне график другой');
     });
 
+    QUnit.test('createSpline: на несимметричной сетке знак первого приращения перевыбирается вместе с узлами', function (assert) {
+        // Сетка по y от -2 до 7. Если знак, с которого начинается чередование, выбрать один раз
+        // до перевыбора узлов, графики, начинающиеся с максимума, отбраковываются чаще:
+        // на этих настройках их доля падает с 0,32 до 0,23.
+        const options = { type: 'function', minX: -8, maxX: 8, minY: -2, maxY: 7, stepForX: 4, stepForY: 0.3 };
+        let total = 0;
+        let startsWithMaximum = 0;
+        while (total < 1500) {
+            const { result } = generateSpline(options, 5000);
+            const extremums = findExtremumsOfFunction(result.painFunc, options.minX, options.maxX, 0.01);
+            const firstMinimum = extremums.minP.length ? extremums.minP[0][0] : Infinity;
+            const firstMaximum = extremums.maxP.length ? extremums.maxP[0][0] : Infinity;
+            if (firstMinimum === Infinity && firstMaximum === Infinity) {
+                continue;
+            }
+            total++;
+            startsWithMaximum += (firstMaximum < firstMinimum) ? 1 : 0;
+        }
+        const share = startsWithMaximum / total;
+        assert.ok(share > 0.28 && share < 0.36, 'доля графиков, начинающихся с максимума: ' + share.toFixed(3) + ' (ожидается около 0,32)');
+    });
+
     QUnit.test('createSpline: связь func и painFunc', function (assert) {
         let options = splineConfigs['функция, stepForX = 3, только обязательные параметры'];
         let { result } = generateSpline(options, 5000);
