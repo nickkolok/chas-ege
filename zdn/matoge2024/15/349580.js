@@ -15,11 +15,11 @@
                 calculateMidlines: true,
             }
         });
-        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
-        [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees].forEach(angle => genAssert(angle < 80,
-            'Треугольник недостаточно остроугольный'));
+        genAssert(!triangle.isIsosceles(), 'Все стороны треугольника должны быть разными');
+        genAssert(triangle.maxAngleInDegrees() < 80, 'Треугольник недостаточно остроугольный');
 
-        triangle.addVertexToConnectionMatrix([triangle.midlineABPoints, triangle.midlineBCPoints, triangle.midlineCAPoints][variant], 'E');
+        let midlinePoints = [triangle.midlinePointsAB, triangle.midlinePointsBC, triangle.midlinePointsCA][variant];
+        midlinePoints.forEach(point => triangle.addVertexToConnectionMatrix(point, 'E'));
         triangle.connectVerticesInConnectionMatrix([3, 4]);
 
         let letters = om.latbukv.slice(0, 5);
@@ -27,7 +27,7 @@
         sidesMiddle.generatePairs();
         sidesMiddle = sidesMiddle.map(side => side.shuffleJoin());
         [sidesMiddle[1], sidesMiddle[2]] = [sidesMiddle[2], sidesMiddle[1]];
-        sidesMiddle.splice(variant, 1)[0];
+        sidesMiddle.splice(variant, 1);
 
         if (variant == 1) {
             sidesMiddle = sidesMiddle.reverse();
@@ -43,7 +43,7 @@
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
-            ctx.strokeStyle = om.secondaryBrandColors;
+            ctx.strokeStyle = om.secondaryBrandColors.iz();
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, triangle.connectionMatrix);
@@ -58,18 +58,16 @@
 
 
             ctx.scale(1, -1);
-            ctx.font = "20px liberation_sans";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i > 4) ? 25 : -5)));
+            ctx.font = '20px liberation_sans';
+            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i > 2) ? 25 : -5)));
         };
 
         NAtask.setTask({
-            text: ` Точки $D$ и $F$ являются серединами сторон $${sidesMiddle.join('$ и $')}$ треугольника $ABC$, 
-			${[
+            text: `Точки $D$ и $E$ являются серединами сторон $${sidesMiddle.join('$ и $')}$ треугольника $ABC$, ${[
                     `сторона $AB$ равна $${triangle.lengthAB}$`,
                     `сторона $BC$ равна $${triangle.lengthBC}$`,
                     `сторона $AC$ равна $${triangle.lengthCA}$`
-                ].shuffleJoin(', ')}. 
-			Найдите $DF$.`,
+                ].shuffleJoin(', ')}. Найдите $DE$.`,
             answers: [triangle.midlineABLength, triangle.midlineBCLength, triangle.midlineCALength][variant],
             authors: ['Александра Суматохина'],
         });
@@ -80,7 +78,7 @@
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(/*true*/);
+        NAtask.modifiers.allDecimalsToStandard(true);
     }, 1000);
 
 })();
