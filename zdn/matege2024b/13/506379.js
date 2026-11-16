@@ -12,47 +12,25 @@
 
 		let canvasSize = 400;
 
-		// Чертёж: пропорциональный параллелепипед, авто-вписанный в canvas.
-		// Контракт вписывания (bounding box + maxScale:50) и стиль линий заимствованы из
-		// zdn/matege2024p/3/245335.js (autoScale / setLineDash([5,4]) / om.secondaryBrandColors).
-		// Ракурс и видимость рёбер считаем явно, чтобы попасть во фронтальную проекцию со
-		// скриншота (движковый ракурс 245335 — изометрия, другой вид).
-		let W = canvasSize, H = canvasSize, pad = 20, maxScale = 50;
-		let k = 0.5, ang = Math.PI / 6;            // кавалерская проекция: глубина под 30°, коэф 0.5
-		let ddx = Math.cos(ang), ddy = Math.sin(ang);
-		// 3D-вершины пропорционально рёбрам: X~a (ширина), Y~b (глубина), Z~c (высота)
-		// 0 fBL,1 fBR,2 fTR,3 fTL,  4 bBL,5 bBR,6 bTR,7 bTL
-		let P3 = [
-			[0, 0, 0], [a, 0, 0], [a, 0, c], [0, 0, c],
-			[0, b, 0], [a, b, 0], [a, b, c], [0, b, c],
-		];
-		let proj = function(p) { return { x: p[0] + k * p[1] * ddx, y: -p[2] - k * p[1] * ddy }; };
-		let pts = P3.map(proj);
-		let xs = pts.map(function(p) { return p.x; });
-		let ys = pts.map(function(p) { return p.y; });
-		let minx = Math.min.apply(null, xs), maxx = Math.max.apply(null, xs);
-		let miny = Math.min.apply(null, ys), maxy = Math.max.apply(null, ys);
-		let scale = Math.min((W - 2 * pad) / (maxx - minx), (H - 2 * pad) / (maxy - miny));
-		if (scale > maxScale) { scale = maxScale; }
-		let cx = (minx + maxx) / 2, cy = (miny + maxy) / 2;
-		let verts = pts.map(function(p) { return { x: (p.x - cx) * scale, y: (p.y - cy) * scale }; });
-		let solid  = [[0,1],[1,2],[2,3],[3,0],[1,5],[2,6],[3,7],[5,6],[6,7]];
-		let dashed = [[0,4],[4,5],[4,7]];          // три ребра в дальней нижней левой вершине
-
+		// Чертёж — библиотечный drawParallelepiped, как в аналоге 515838.
 		let paint = function(ctx) {
-			ctx.translateToCenter();
-			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.secondaryBrandColors;
-			let seg = function(e) {
-				ctx.beginPath();
-				ctx.moveTo(verts[e[0]].x, verts[e[0]].y);
-				ctx.lineTo(verts[e[1]].x, verts[e[1]].y);
-				ctx.stroke();
-			};
-			solid.forEach(seg);
-			ctx.setLineDash([5, 4]);
-			dashed.forEach(seg);
-			ctx.setLineDash([]);
+			ctx.translate(120, 60);
+			ctx.scale(20, 20);
+			ctx.lineWidth = 2 / 20;
+
+			let maxDim = Math.max(a, b, c);
+			let scale = 8 / maxDim;
+			let drawA = a * scale;
+			let drawB = b * scale;
+			let drawC = c * scale;
+
+			ctx.drawParallelepiped({
+				width: drawA,
+				height: drawC,
+				depth: drawB,
+				angle: 30,
+				strokeStyle: om.secondaryBrandColors.iz(),
+			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
 		NAtask.setTask({
