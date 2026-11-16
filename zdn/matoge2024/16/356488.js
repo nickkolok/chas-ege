@@ -22,6 +22,7 @@
         ];
 
         let points = autoScale([AB.ps, AB.pe, C]);
+        let scaledCircle = CircleByPoints.fromCenterAndPoint(new Point(0, 0), new Point(points[0].x, points[0].y));
 
         let paint1 = function (ctx) {
 
@@ -32,7 +33,7 @@
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, connectionMatrix);
-            ctx.drawCircle(Math.hypot(points[0].x, points[0].y));
+            scaledCircle.drawOnto(ctx);
         };
 
         NAtask.setTask({
@@ -59,4 +60,5 @@
 })();
 // https://oge.sdamgia.ru/test?likes=356488
 // https://oge.sdamgia.ru/problem?id=356533
+
 
