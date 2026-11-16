@@ -13,7 +13,7 @@
 			},
 		});
 
-		let angle = [triangle.angleBInDegrees, triangle.angleAInDegrees].iz().ceil();
+		let angle = [triangle.angleBInDegrees, triangle.angleAInDegrees].iz().round();
 
 		let points = autoScale(triangle.vertices);
 		let letters = om.latbukv.slice(0, 3);
@@ -32,7 +32,7 @@
 			ctx.arcBetweenSegments([points[0].x, points[0].y, points[2].x, points[2].y, points[1].x, points[1].y], 20);
 
 			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
+			ctx.font = '20px liberation_sans';
 			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
 		};
 
@@ -41,14 +41,13 @@
 			answers: 90 - angle,
 			authors: ['Александра Суматохина'],
 		});
-		NAtask.modifiers.variativeABC(letters);
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
 		});
-		NAtask.modifiers.allDecimalsToStandard(/*true*/);
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 
 })();
