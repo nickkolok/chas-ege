@@ -1142,6 +1142,12 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.deepEqual(increasing.concat(decreasing).filter(x => slope(x) === 0), [], 'точек с нулевой производной в ответе нет');
     });
 
+    QUnit.test('findIncreasingIntegerPoints: строгий режим исключает только точки экстремума', function (assert) {
+        // У x³ в нуле производная равна нулю, но экстремума нет: точка остаётся в ответе
+        assert.deepEqual(findIncreasingIntegerPoints(x => x * x * x, -3, 3, undefined, undefined, undefined, true), [-2, -1, 0, 1, 2],
+            'стационарная точка перегиба не исключается');
+    });
+
     QUnit.test('findIncreasingAndDecreasingPoints: строгий режим', function (assert) {
         const intervals = { increasingIntervals: [[-7, -4], [0, 3]], decreasingIntervals: [[-4, 0], [3, 6]] };
         assert.deepEqual(findIncreasingAndDecreasingPoints(intervals, -7, 6, false, false, true),
