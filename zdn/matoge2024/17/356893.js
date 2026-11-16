@@ -13,11 +13,14 @@
 		});
 
 		let points = autoScale(rhombus.vertices);
+		let rotateToDiagonal = sl1();
 
 		let paint1 = function(ctx) {
 
 			ctx.translateToCenter();
-			ctx.rotate(-rhombus.angleAInRadians / 2);
+			if (rotateToDiagonal) {
+				ctx.rotate(-rhombus.angleAInRadians / 2);
+			}
 
 			ctx.scale(1, -1);
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
