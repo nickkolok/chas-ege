@@ -4,8 +4,8 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let t = sl(1, 3, 1);
-		let v0 = sl(10 * t + 5, 45, 5);
 		let g = 10;
+		let v0 = sl(g * t + 5, 45, 5);
 		let v = v0 - g * t;
 
 		NAtask.setTask({
