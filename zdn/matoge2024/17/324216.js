@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 		
-		let letters = latbukv.slice(0, 5);
+		let letters = latbukv.slice(0, 4);
 
 		let side = sl(5, 20);
 		let a = sl(5, 20);
@@ -19,8 +19,10 @@
 			}
 		});
 
-		trp.addVertexToConnectionMatrix(trp.heightCAB.pe, 'C');
-		let AH = trp.pointA.distanceTo(trp.heightCAB.pe)[0];
+		let vertex = sl1() ? 'C' : 'D';
+		let foot = trp['height' + vertex + 'AB'].pe;
+		trp.addVertexToConnectionMatrix(foot, vertex);
+		let AH = trp.pointA.distanceTo(foot)[0];
 
 		let points = autoScale(trp.vertices);
 
@@ -35,17 +37,16 @@
 			ctx.drawFigure(points, trp.connectionMatrix);
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.arcBetweenSegments([points[0].x, points[0].y, points[4].x, points[4].y, points[2].x, points[2].y], 15);
+			ctx.arcBetweenSegments([points[0].x, points[0].y, points[4].x, points[4].y, points[vertex == 'C' ? 2 : 3].x, points[vertex == 'C' ? 2 : 3].y], 15);
 
 			ctx.scale(1, -1);
-            ctx.font = "20px liberation_sans";
+			ctx.font = "20px liberation_sans";
 			ctx.textAlign = "center";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2 || i == 4) ? 25 : -5)));
+			points.slice(0, 4).forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + (i < 2 ? 25 : -5)));
 		};
 
 		NAtask.setTask({
-			text: `Высота равнобедренной трапеции, проведённая из вершины $C$, делит основание $AB$ на отрезки длиной $${AH}$ и $${trp.lengthAB - AH}$. 
-			Найдите длину основания $CD$.`,
+			text: `Высота равнобедренной трапеции, проведённая из вершины $${vertex}$, делит основание $AB$ на отрезки длиной $${AH}$ и $${trp.lengthAB - AH}$. Найдите длину основания $CD$.`,
 			answers: trp.lengthCD,
 			authors: ['Александра Суматохина'],
 		});
