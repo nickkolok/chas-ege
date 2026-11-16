@@ -24,26 +24,25 @@
 		transport = sklonlxkand(transport);
 
 		let colors = sklonlxkand(['бордовый', 'лососевый', 'томатный', 'коралловый', 'шоколадный', 'оранжевый',
-			'золотарниковый', 'оливковый', 'желтый', 'зеленый', 'лаймовый', 'бирюзовый'
+			'золотарниковый', 'оливковый', 'жёлтый', 'зелёный', 'лаймовый', 'бирюзовый'
 		]).iz(4);
-		let numberOfTransprt = sl(10, 100);
-		let number1 = numberOfTransprt.nod(slKrome([numberOfTransprt, 1], 1, numberOfTransprt - 1));
-		let number2 = numberOfTransprt - number1;
-		let answer =  number1 / numberOfTransprt;
-		
-		let dop=0;
-		
-		if(sl1()){
-			answer =  number2 / numberOfTransprt;
-			dop=2;
+		let numberOfTransport = sl(10, 100);
+		let number1 = sl(1, numberOfTransport - 1);
+		let number2 = numberOfTransport - number1;
+		let answer = number1 / numberOfTransport;
+
+		let dop = 0;
+
+		if (sl1()) {
+			answer = number2 / numberOfTransport;
+			dop = 2;
 		}
-		
+
 		genAssertZ1000(answer, "Кривая вероятность");
 		NAtask.setTask({
-			text: 'В фирме такси в наличии ' + numberOfTransprt + ' ' + transport[0].rm.replace('Конёк', 'Коньков').replace(
-				'ковёр', 'ковров') + '; ' + number1 + ' из них ' + colors[0].ve + ' цвета с ' + colors[1].tm + ' ' +
-				difference + ', ' + 'остальные — ' + colors[2].ve + ' цвета с ' + colors[3].tm + ' ' + difference + '. Найдите вероятность того, ' +
-				'что на случайный вызов ' + move + ' ' + transport[0].ie + ' ' + colors[0 + dop].ve + ' цвета с ' + colors[1 + dop].tm +
+			text: 'В фирме такси в наличии ' + (transport[0].ie === 'ковёр-самолёт' ? chislitM(numberOfTransport, 'ковёр-самолёт', 'ковра-самолёта', 'ковров-самолётов') : transport[0].ie === 'Конёк-Горбунок' ? chislitM(numberOfTransport, 'Конёк-Горбунок', 'Конька-Горбунка', 'Коньков-Горбунков') : chislitlx(numberOfTransport, transport[0].ie).replace('ёжей', 'ежей').replace(/метл$/, 'метёл')) + '; ' + number1 + ' из них ' + colors[0].ve + ' цвета с ' + colors[1].tm + ' ' +
+				difference + ', остальные — ' + colors[2].ve + ' цвета с ' + colors[3].tm + ' ' + difference + '. Найдите вероятность того, ' +
+				'что на случайный вызов ' + move + ' ' + transport[0].ie + ' ' + colors[dop].ve + ' цвета с ' + colors[1 + dop].tm +
 				' ' + difference + '.',
 			answers: answer,
 		});
@@ -52,3 +51,5 @@
 })();
 // 320193 525368
 //SugarHedgehog
+// 548648, E74F4D, 686B4F, 5CA61E, 4C92A4, EE27E4, E6736F, EC9F3D
+
