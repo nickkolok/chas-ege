@@ -1192,16 +1192,8 @@ chas2.task = {
 				case 'extreme_points_on_the_segment':
 				case 'minimum_points_on_the_segment':
 				case 'maximum_points_on_the_segment':
-				case 'extreme_points':
-				case 'minimum_points':
-				case 'maximum_points':
-				case 'extreme_points_on_the_segment':
-				case 'minimum_points_on_the_segment':
-				case 'maximum_points_on_the_segment':
 					task.text.push('точек');
 					break;
-				case 'minimum_point_on_the_segment':
-				case 'maximum_point_on_the_segment':
 				case 'extreme_point':
 				case 'minimum_point':
 				case 'maximum_point':
