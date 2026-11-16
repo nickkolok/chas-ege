@@ -43,11 +43,12 @@
         let points = autoScale(par.vertices);
 
         let paint1 = function (ctx) {
+            let strokeColor = om.secondaryBrandColors.iz();
 
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
-            ctx.strokeStyle = om.secondaryBrandColors.iz();
+            ctx.strokeStyle = strokeColor;
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, par.connectionMatrix);
@@ -66,7 +67,7 @@
                 }
                 ctx.strokeStyle = om.primaryBrandColors[1];
                 ctx.arcBetweenSegments([points[3].x, points[3].y, points[foot].x, points[foot].y, points[far].x, points[far].y], 15, true);
-                ctx.strokeStyle = om.secondaryBrandColors.iz();
+                ctx.strokeStyle = strokeColor;
             });
         };
 
