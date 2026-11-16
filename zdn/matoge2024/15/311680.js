@@ -16,7 +16,7 @@
 
 		let points = autoScale(triangle.vertices);
 		genAssert(160 - points[1].x > 20, 'Прямая из угла B не видна');
-		let letters = latbukv.slice(0, 3);
+		let letters = om.latbukv.slice(0, 3);
 
 		let paint1 = function (ctx) {
 
@@ -34,14 +34,12 @@
 			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, 160, points[1].y], 20);
 
 			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
+			ctx.font = '20px liberation_sans';
 			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
-			text: `В равнобедренном треугольнике $ABC$ с основанием $AB$
-            внешний угол при вершине $B$ равен $${180 - angleB}^{\\circ}$. 
-            Найдите величину угла $${letters.slice().permuteCyclic(-1).randomReverse().join('')}$. Ответ дайте в градусах`,
+			text: `В равнобедренном треугольнике $ABC$ с основанием $AB$ внешний угол при вершине $B$ равен $${180 - angleB}^{\\circ}$. Найдите величину угла $${letters.slice().permuteCyclic(-1).randomReverse().join('')}$. Ответ дайте в градусах.`,
 			answers: 180 - angleB * 2,
 			authors: ['Александра Суматохина'],
 		});
@@ -52,7 +50,7 @@
 			height: 400,
 			paint: paint1,
 		});
-		NAtask.modifiers.allDecimalsToStandard(/*true*/);
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 
 })();
