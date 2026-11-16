@@ -60,7 +60,7 @@
 			paint: function (ct) {
 				let y = 40;
 				let x1 = 30;
-				let x2 = 430;
+				let x2 = ct.canvas.width - x1;
 				let dot1 = 130;
 				let dot2 = 330;
 				let headLength = 14;
