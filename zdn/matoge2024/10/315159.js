@@ -18,7 +18,9 @@
 		let sportName = om.sport.de.iz();
 		let targetPosition = ['первым', 'последним', 'предпоследним', 'вторым', 'третьим'].iz();
 
-		let answerProbability, conditionText, randCount;
+		let answerProbability;
+		let conditionText;
+		let randCount;
 
 		switch (rand) {
 		case 0:
@@ -42,7 +44,7 @@
 		genAssertZ1000(answerProbability);
 
 		NAtask.setTask({
-			text: 'На соревнованиях по ' + sportName + ' участвуют ' + chislitlx(counts[0], 'спортсмен', '$') + ' из ' + countries[0] + ', $' +
+			text: 'В соревнованиях по ' + sportName + ' участвуют ' + chislitlx(counts[0], 'спортсмен', '$').trim() + ' из ' + countries[0] + ', $' +
 				counts[1] + '$ из ' + countries[1] + ' и $' +
 				counts[2] + '$ из ' + countries[2] + '. ' +
 				'Порядок, в котором спортсмены выступают, определяется жребием. ' +
