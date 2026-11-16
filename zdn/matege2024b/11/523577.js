@@ -52,7 +52,7 @@
 			(firstTaller ? '\\frac{1}{' + kh + '}' : kh) + ' = ' +
 			(secondBigger ? ans : '\\frac{1}{' + ans + '}') + '$, ' +
 			'то есть объём ' + (secondBigger ? 'второй коробки больше объёма первой' : 'первой коробки больше объёма второй') +
-			' в ' + chislitlx(ans, 'раз', '$') + '.';
+			' ' + multiplierPhrase(ans, false) + '.';
 
 		NAtask.setTask({
 			text: text,
