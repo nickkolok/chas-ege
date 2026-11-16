@@ -25,7 +25,7 @@
 				calculateBisectors: true,
 			}
 		});
-		genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
+		genAssert(!triangle.isIsosceles(), 'Все стороны треугольника должны быть разными');
 
 		let valueAngle = [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees][variant].ceil();
 		triangle.addVertexToConnectionMatrix(Object.values(triangle.bisectorEndPoints)[variant], ['A', 'B', 'C'][variant]);
@@ -53,10 +53,10 @@
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.arcBetweenSegments([pointsAngle[0].x, pointsAngle[0].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y], 30);
-			ctx.arcBetweenSegments([pointsAngle[1].x, pointsAngle[1].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y], 35);
+			ctx.arcBetweenSegments([pointsAngle[1].x, pointsAngle[1].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y], 30);
 
 			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
+			ctx.font = '20px liberation_sans';
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
 			// Подписи вершин — наружу от центра треугольника,
@@ -87,7 +87,7 @@
 			height: 400,
 			paint: paint1,
 		});
-		NAtask.modifiers.allDecimalsToStandard(/*true*/);
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 
 })();
