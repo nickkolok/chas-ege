@@ -619,4 +619,32 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+    // ============================================================
+    //  Canvas: рисование шара  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawSphere');
+
+    QUnit.test('ctx.drawSphere рисует контур, экватор и пунктирный радиус через библиотечные вызовы', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawSphere === 'function', 'метод drawSphere определён');
+        var calls = [];
+        var ctx = {
+            drawCircle: function () { calls.push(['drawCircle'].concat(Array.prototype.slice.call(arguments))); },
+            drawEllipse: function () { calls.push(['drawEllipse'].concat(Array.prototype.slice.call(arguments))); },
+            drawLine: function () { calls.push(['drawLine'].concat(Array.prototype.slice.call(arguments))); },
+            setLineDash: function () { calls.push(['setLineDash'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        CanvasRenderingContext2D.prototype.drawSphere.call(ctx, 10, -5, 40);
+        assert.deepEqual(calls[0], ['drawCircle', 10, -5, 40], 'контур: drawCircle(cx, cy, radius)');
+        assert.deepEqual(calls[1], ['drawEllipse', 10, -5, 40, 40 * 0.28], 'экватор: drawEllipse(cx, cy, R, R*flat)');
+        assert.deepEqual(calls[2], ['setLineDash', [5, 4]], 'перед радиусом включается пунктир');
+        var end = calls[3];
+        assert.equal(end[0], 'drawLine', 'радиус рисуется drawLine');
+        assert.equal(end[1], 10, 'радиус из центра cx');
+        assert.equal(end[2], -5, 'радиус из центра cy');
+        assert.ok(Math.abs(end[3] - (10 + Math.cos(Math.PI / 4) * 40)) < 1e-9, 'кончик радиуса по X на экваторе');
+        assert.ok(Math.abs(end[4] - (-5 + Math.sin(Math.PI / 4) * 40 * 0.28)) < 1e-9, 'кончик радиуса по Y на экваторе');
+        assert.deepEqual(calls[4], ['setLineDash', []], 'после радиуса пунктир сбрасывается');
+        assert.equal(calls.length, 5, 'ровно пять вызовов: контур, экватор, пунктир, радиус, сброс');
+    });
+
 };
