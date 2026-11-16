@@ -47,7 +47,7 @@
                     break;
                 case 1:
                     ctx.arcBetweenSegments([pointToLine[0].x, pointToLine[0].y, pointForAngleAndMarked.x, pointForAngleAndMarked.y, points[3].x, points[3].y], 30);
-                    ctx.arcBetweenSegments([pointToLine[1].x, pointToLine[1].y, pointForAngleAndMarked.x, pointForAngleAndMarked.y, points[3].x, points[3].y], 35);
+                    ctx.arcBetweenSegments([pointToLine[1].x, pointToLine[1].y, pointForAngleAndMarked.x, pointForAngleAndMarked.y, points[3].x, points[3].y], 30);
                     break;
                 case 2:
                     ctx.arcBetweenSegments([pointForAngleAndMarked.x, pointForAngleAndMarked.y, points[3].x, points[3].y, pointToLine[0].x, pointToLine[0].y], 15, true);
@@ -56,9 +56,7 @@
         };
 
         NAtask.setTask({
-            text: `${[`Медиана`, `Биссектриса`, `Высота`, `Сторона`][(variant < 3) ? 3 : (variant % 3)]} 
-            равностороннего треугольника равна $${[side, height][(variant < 3) ? 0 : 1].pow(2).texsqrt(true)}$.
-			Найдите `,
+            text: `${[`Медиана`, `Биссектриса`, `Высота`, `Сторона`][(variant < 3) ? 3 : (variant % 3)]} равностороннего треугольника равна $${[side, height][(variant < 3) ? 0 : 1].pow(2).texsqrt(true)}$. Найдите `,
             questions: [
                 [{
                     text: 'медиану',
@@ -83,7 +81,7 @@
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(/*true*/);
+        NAtask.modifiers.allDecimalsToStandard(true);
     }, 2000);
 
 })();
