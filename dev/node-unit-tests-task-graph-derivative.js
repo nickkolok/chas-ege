@@ -400,6 +400,20 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
         });
     });
 
+    QUnit.test('без boundariesOfGraph, canvasSettings или questionsF — понятная ошибка, а не TypeError', function (assert) {
+        const full = {
+            type: 'derivative', canvasSettings: {}, boundariesOfGraph: { minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 },
+            questionsF: { main: 'integer_points', conditions: ['extreme_points'], variants: ['number'] },
+        };
+        ['boundariesOfGraph', 'canvasSettings', 'questionsF'].forEach(function (name) {
+            const settings = Object.assign({}, full);
+            delete settings[name];
+            const result = callOnce('объекты настроек', settings, 1, null);
+            assert.ok(result.error && new RegExp('Не задан ' + name).test(result.error.message),
+                name + ': ' + (result.error && result.error.message));
+        });
+    });
+
     QUnit.test('интервал: неизвестный variants — ошибка, а не массив ответов', function (assert) {
         const result = callOnce('интервал', {
             type: 'derivative', canvasSettings: {}, boundariesOfGraph: { minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 },

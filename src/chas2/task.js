@@ -516,6 +516,15 @@ chas2.task = {
  * @param {Boolean} rootsIsInteger
  */
 	setTaskWithGraphOfFunctionDerivative: function (o) {
+		// Без этих объектов деструктуризация ниже падала с непонятным TypeError
+		if (!o || typeof o !== 'object') {
+			throw new Error('setTaskWithGraphOfFunctionDerivative: не передан объект настроек');
+		}
+		['boundariesOfGraph', 'canvasSettings', 'questionsF'].forEach((name) => {
+			if (!o[name] || typeof o[name] !== 'object') {
+				throw new Error('Не задан ' + name + ': укажите объект настроек (для canvasSettings можно пустой {})');
+			}
+		});
 		let { type,
 			definedOnInterval = true,
 			boundariesOfGraph: { minX, maxX, minY, maxY, stepForX = 3, stepForY = 1 },
