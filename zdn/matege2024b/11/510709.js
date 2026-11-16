@@ -20,10 +20,8 @@
 		let r = [2, 4, 5, 8, 10, 20, 25, 40, 50].filter(function (x) {
 			return (A / x * 10).isAlmostInteger() && (H / x * 100).isAlmostInteger();
 		}).iz();
-		let a = A / r;
-		let ans = H / r;
-		a = Math.round(a * 10) / 10;
-		ans = Math.round(ans * 100) / 100;
+		let a = (A / r).okrugldo(0.1);
+		let ans = (H / r).okrugldo(0.01);
 
 		let analys = 'Копия подобна оригиналу, поэтому отношение высоты к стороне основания у них одно и то же: ' +
 			'$\\frac{h}{' + a + '} = \\frac{' + H + '}{' + A + '}$, откуда $h = ' + a + ' \\cdot \\frac{' + H + '}{' + A + '} = ' + ans + '$ см.';
