@@ -2,7 +2,7 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let key = "348415";
+        let key = '348415';
         let variant = getSelectedPreferenceFromList(key, ['hypotenuse', 'area', 'catheter']);
 
         let triangle = new Triangle({
@@ -40,16 +40,14 @@
         };
 
         NAtask.setTask({
-            text: `${[`Катеты прямоугольного треугольника`, `В прямоугольном треугольнике`][variant < 2 ? 0 : 1]} 
-			${dano[0]} равны $${dano[1].join('$ и $')}$${` соответственно`.esli(variant < 2 ? 0 : 1)}.
-			Найдите `,
+            text: `В прямоугольном треугольнике ${dano[0]} равны $${dano[1].join('$ и $')}$${' соответственно'.esli(variant === 2)}. Найдите `,
             questions: [
                 [{
                     text: `гипотенузу`,
                     answer: triangle.lengthAB,
                 }, {
                     text: `площадь`,
-                    answer: triangle.area,
+                    answer: triangle.area(),
                 }, {
                     text: `другой катет`,
                     answer: triangle.lengthBC,
@@ -64,7 +62,7 @@
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(/*true*/);
+        NAtask.modifiers.allDecimalsToStandard(true);
     }, 1000);
 
 })();
