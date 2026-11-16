@@ -14,8 +14,9 @@
             angleInDegrees: true
         });
 
-        let angleC = sl(16, 164);
-        let PC = circle.pointOnCircle(angleC, {
+        let angleBAC = sl(8, 82);
+        let polarAngleC = 2 * angleBAC;
+        let PC = circle.pointOnCircle(polarAngleC, {
             angleInDegrees: true
         });
 
@@ -55,8 +56,8 @@
         };
 
         NAtask.setTask({
-            text: `Центр окружности, описанной около треугольника $ABC$, лежит на стороне $AB$. Найдите угол $ABC$, если угол $BAC$ равен $${angleC / 2}^\\circ$. Ответ дайте в градусах.`,
-            answers: 90 - angleC / 2,
+            text: `Центр окружности, описанной около треугольника $ABC$, лежит на стороне $AB$. Найдите угол $ABC$, если угол $BAC$ равен $${angleBAC}^\\circ$. Ответ дайте в градусах.`,
+            answers: 90 - angleBAC,
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.variativeABC(letters);
@@ -70,3 +71,4 @@
 
 })();
 // https://math-oge.sdamgia.ru/problem?id=348379
+
