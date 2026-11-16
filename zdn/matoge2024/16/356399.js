@@ -7,13 +7,13 @@
         let rand = getSelectedPreferenceFromList(key, preference);
 
         let square = new Square({
-            length: sl(5, 50)*[1,2*(2).sqrt()][Number(rand==2)],
+            length: sl(5, 50) * (rand === 2 ? 2 * (2).sqrt() : 1),
             supplementary: {
                 calculateDiagonals: true,
             }
         });
 
-        if (rand == 2) {
+        if (rand === 2) {
             square.connectVerticesInConnectionMatrix([
                 [[0, 2], [1, 3]].iz(),
             ]);
@@ -30,21 +30,23 @@
 
             ctx.lineWidth = 2;
             ctx.drawFigure(vertex, square.connectionMatrix);
-            ctx.drawArc(0, 0, vertex[3].x.abs(), 0, 2 * Math.PI);
+            let circle = square.inscribedCircle();
+            let scale = Math.abs((vertex[1].x - vertex[0].x) / (square.pointB.x - square.pointA.x));
+            circle.scale(scale, scale).drawOnto(ctx);
 
         };
 
         NAtask.setTask({
             text: ``,
             questions:[[{
-            	text:`Сторона квадрата равна $${square.lengthAB}$. Найдите радиус окружности, вписанной в этот квадрат.`,
-            	answers:square.lengthAB/2,
+                text:`Сторона квадрата равна $${square.lengthAB}$. Найдите радиус окружности, вписанной в этот квадрат.`,
+                answers:square.lengthAB/2,
             },{
-            	text:`Найдите площадь квадрата, описанного около окружности радиуса $${square.lengthAB/2}$.`,
-            	answers:square.area(),
+                text:`Найдите площадь квадрата, описанного около окружности радиуса $${square.lengthAB/2}$.`,
+                answers:square.area(),
             },{
-            	text:`Радиус вписанной в квадрат окружности равен $${(square.lengthAB/2).pow(2).texsqrt(1)}$. Найдите диагональ этого квадрата.`,
-            	answers:square.lengthDiagonalAC,
+                text:`Радиус вписанной в квадрат окружности равен $${(square.lengthAB / 2).pow(2).round().texsqrt(1)}$. Найдите диагональ этого квадрата.`,
+                answers:square.lengthDiagonalAC,
             }][rand]],
             authors: ['Александра Суматохина'],
             preference,
@@ -62,3 +64,4 @@
 // https://oge.sdamgia.ru/problem?id=356399
 // https://oge.sdamgia.ru/problem?id=353229
 // https://oge.sdamgia.ru/problem?id=356369
+
