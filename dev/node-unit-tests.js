@@ -508,6 +508,51 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(calls[0], [3, -4, 5], 'drawCircle(x центра, y центра, радиус)');
     });
 
+    QUnit.test('Circle.prototype.inscribedPolygonByArcs: квадрат по четырём равным дугам', function (assert) {
+        var circle = new Circle(new Point(0, 0), 1);
+        var v = circle.inscribedPolygonByArcs([90, 90, 90, 90], 0, { angleInDegrees: true });
+        assert.equal(v.length, 4, 'четыре вершины');
+        assertPointClose(assert, v[0], { x: 1, y: 0 }, 'A');
+        assertPointClose(assert, v[1], { x: 0, y: 1 }, 'B');
+        assertPointClose(assert, v[2], { x: -1, y: 0 }, 'C');
+        assertPointClose(assert, v[3], { x: 0, y: -1 }, 'D');
+    });
+
+    QUnit.test('Circle.prototype.inscribedPolygonByArcs: совпадает с построением через chordByAngles', function (assert) {
+        var circle = new Circle(new Point(0, 0), 170);
+        var arcLeg = 40, arcBC = 80, arcDA = 360 - (arcLeg + arcBC + arcLeg);
+        var phiA = 37;
+        var v = circle.inscribedPolygonByArcs([arcLeg, arcBC, arcLeg, arcDA], phiA, { angleInDegrees: true });
+        var AB = circle.chordByAngles(phiA, phiA + arcLeg, { angleInDegrees: true });
+        var CD = circle.chordByAngles(phiA + arcLeg + arcBC, phiA + arcLeg + arcBC + arcLeg, { angleInDegrees: true });
+        var expected = [AB.ps, AB.pe, CD.ps, CD.pe];
+        for (var i = 0; i < 4; i++) {
+            assertPointClose(assert, v[i], expected[i], 'вершина ' + i);
+        }
+    });
+
+    QUnit.test('Circle.prototype.inscribedPolygonByArcs: радианы и ненулевой центр', function (assert) {
+        var circle = new Circle(new Point(3, -4), 5);
+        var v = circle.inscribedPolygonByArcs([Math.PI / 2, Math.PI / 2, Math.PI / 2, Math.PI / 2], 0);
+        assertPointClose(assert, v[0], { x: 8, y: -4 }, 'A');
+        assertPointClose(assert, v[1], { x: 3, y: 1 }, 'B');
+        assertPointClose(assert, v[2], { x: -2, y: -4 }, 'C');
+        assertPointClose(assert, v[3], { x: 3, y: -9 }, 'D');
+    });
+
+    QUnit.test('Circle.prototype.inscribedPolygonByArcs: требует положительные дуги с суммой в оборот', function (assert) {
+        var circle = new Circle(new Point(0, 0), 1);
+        assert.throws(function () {
+            circle.inscribedPolygonByArcs([90, 90, 90, 90], 0);
+        }, 'без angleInDegrees сумма 360 не равна 2π');
+        assert.throws(function () {
+            circle.inscribedPolygonByArcs([0, 120, 120, 120], 0, { angleInDegrees: true });
+        }, 'нулевая дуга');
+        assert.throws(function () {
+            circle.inscribedPolygonByArcs([90, 90, 90], 0, { angleInDegrees: true });
+        }, 'сумма меньше 360');
+    });
+
     // ============================================================
     //  autoScale: уменьшение больших фигур  (lib/func.js)
     // ============================================================
