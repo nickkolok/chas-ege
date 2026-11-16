@@ -551,6 +551,73 @@ chas2.task = {
 		}
 		conditions = conditions.iz();
 		variants = variants.iz();
+
+		// Поддерживаемые сочетания: type → main → conditions → допустимые variants.
+		// Остальные сочетания либо давали неверный ответ (например, сумму нецелых
+		// абсцисс), либо нескладный текст («Найдите точек…»), либо падали на каждой
+		// попытке, так что retryWhileError лишь исчерпывал попытки.
+		const anyAggregate = ['sum', 'production', 'number', 'largest', 'smallest'];
+		const countOrExtreme = ['number', 'largest', 'smallest'];
+		const largestOrSmallest = ['largest', 'smallest'];
+		const signConditions = ['derivative_is_positive', 'derivative_is_negative', 'function_is_positive', 'function_is_negative',
+			'function_is_increasing', 'function_is_decreasing'];
+		const monotonicityConditions = ['function_is_increasing', 'function_is_decreasing'];
+		const pointSetConditions = ['extreme_points', 'minimum_points', 'maximum_points',
+			'extreme_points_on_the_segment', 'minimum_points_on_the_segment', 'maximum_points_on_the_segment'];
+		const supported = {
+			function: {
+				integer_points: [
+					[signConditions, anyAggregate],
+					[pointSetConditions, anyAggregate],
+					[['derivative_is_zero', 'tangent_to_graph_abscissa', 'tangent_to_graph_const',
+						'solutions_equation', 'solutions_equation_on_the_segment'], anyAggregate],
+				],
+				marked_points: [
+					[signConditions, countOrExtreme],
+					[['derivative_is_largest', 'derivative_is_smallest'], ['empty']],
+				],
+				point: [
+					[['minimum_point_on_the_segment', 'maximum_point_on_the_segment', 'derivative_is_zero_on_the_segment',
+						'solution_equation_on_the_segment', 'solution_equation'], ['empty']],
+					[['derivative_is_zero', 'tangent_to_graph_abscissa', 'tangent_to_graph_const'], ['abscissa']],
+				],
+				interval: [
+					[signConditions, largestOrSmallest],
+				],
+			},
+			derivative: {
+				integer_points: [
+					[monotonicityConditions, anyAggregate],
+					[pointSetConditions, anyAggregate],
+					[['tangent_to_graph_abscissa', 'tangent_to_graph_const'], anyAggregate],
+					// абсциссы точек касания нецелые: о них можно спросить только количество
+					[['tangent_to_graph_equation'], ['number']],
+				],
+				marked_points: [
+					[monotonicityConditions, countOrExtreme],
+				],
+				point: [
+					[['value_on_the_segment', 'value_on_the_segment_with_ends'], ['smallest_value', 'largest_value']],
+					[['extreme_point', 'minimum_point', 'maximum_point',
+						'extreme_point_on_the_segment', 'minimum_point_on_the_segment', 'maximum_point_on_the_segment'], ['empty']],
+					[['tangent_to_graph_abscissa', 'tangent_to_graph_const', 'tangent_to_graph_equation'], ['abscissa']],
+				],
+				interval: [
+					[monotonicityConditions, largestOrSmallest],
+				],
+			},
+		};
+		const isSupported = ((supported[type] || {})[main] || [])
+			.some(([conditionList, variantList]) => conditionList.includes(conditions) && variantList.includes(variants));
+		if (!isSupported) {
+			throw new Error('Сочетание не поддерживается: type: ' + type + ', main: ' + main +
+				', conditions: ' + conditions + ', variants: ' + variants);
+		}
+		// Ответ на вопрос о производной в отмеченных точках — сама точка: на рисунке она должна быть подписана числом
+		if (main === 'marked_points' && (conditions === 'derivative_is_largest' || conditions === 'derivative_is_smallest') &&
+			markedPoints.type !== 'number') {
+			throw new Error('Для conditions: ' + conditions + ' нужны отмеченные точки с числами: markedPoints.type: \'number\'');
+		}
 		let answer;
 
 		let task = o.clone();

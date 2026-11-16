@@ -414,14 +414,40 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
         });
     });
 
+    QUnit.test('неподдерживаемое сочетание type, main, conditions, variants — понятная ошибка', function (assert) {
+        const bounds = { minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 };
+        const cases = [
+            // сумма нецелых абсцисс точек касания
+            [{ type: 'derivative', canvasSettings: {}, questionsF: { main: 'integer_points', conditions: ['tangent_to_graph_equation'], variants: ['sum'] } },
+                /Сочетание не поддерживается/],
+            // ответ — одно число, а вариант спрашивает количество
+            [{ type: 'function', canvasSettings: { markedPoints: { type: 'number', step: 2, numberOfPoints: { min: 4, max: 4 } } },
+                questionsF: { main: 'marked_points', conditions: ['derivative_is_largest'], variants: ['number'] } }, /Сочетание не поддерживается/],
+            // «Найдите точек экстремума…»
+            [{ type: 'function', canvasSettings: {}, questionsF: { main: 'point', conditions: ['extreme_points'], variants: ['empty'] } },
+                /Сочетание не поддерживается/],
+            // условие, которого для графика производной нет
+            [{ type: 'derivative', canvasSettings: {}, questionsF: { main: 'integer_points', conditions: ['derivative_is_positive'], variants: ['number'] } },
+                /Сочетание не поддерживается/],
+            // ответ — абсцисса, а точки подписаны x₁, x₂, …
+            [{ type: 'function', canvasSettings: { markedPoints: { type: 'symbol', step: 2, numberOfPoints: { min: 4, max: 4 } } },
+                questionsF: { main: 'marked_points', conditions: ['derivative_is_smallest'], variants: ['empty'] } }, /нужны отмеченные точки с числами/],
+        ];
+        cases.forEach(function ([settings, message]) {
+            const result = callOnce('сочетания', Object.assign({ boundariesOfGraph: bounds }, settings), 1, null);
+            assert.ok(result.error && message.test(result.error.message), JSON.stringify(settings.questionsF) + ': ' + (result.error && result.error.message));
+        });
+    });
+
     QUnit.test('интервал: неизвестный variants — ошибка, а не массив ответов', function (assert) {
         const result = callOnce('интервал', {
             type: 'derivative', canvasSettings: {}, boundariesOfGraph: { minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 },
             rootsIsInteger: { int: 'yes', tolerance: 0.2 }, numberOfRoots: { min: 2, max: 10 },
             questionsF: { main: 'interval', conditions: ['function_is_increasing'], variants: ['number'] },
-        }, 20000, /не найдено/);
+        }, 1, null);
         assert.equal(result.txt, null, 'задача не сгенерирована');
-        assert.ok(result.error && /variants: number не найдено/.test(result.error.message), String(result.error && result.error.message));
+        // Такое сочетание отсекается проверкой поддерживаемых сочетаний, ещё до построения графика
+        assert.ok(result.error && /Сочетание не поддерживается.*variants: number/.test(result.error.message), String(result.error && result.error.message));
     });
 
     QUnit.test('allDecimalsToStandard не трогает тег <canvas>', function (assert) {
