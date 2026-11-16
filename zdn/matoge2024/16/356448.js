@@ -23,17 +23,6 @@
         let arcBC = arcBCD - arcLeg;
 
         let phiA = sl(0, 359);
-        let phiB = phiA + arcLeg;
-        let phiC = phiB + arcBC;
-        let phiD = phiC + arcLeg;
-
-        let AB = circle.chordByAngles(phiA, phiB, {
-            angleInDegrees: true
-        });
-
-        let CD = circle.chordByAngles(phiC, phiD, {
-            angleInDegrees: true
-        });
 
 
         let connectionMatrix = [
@@ -42,7 +31,10 @@
             [1, 0, 1],
         ];
 
-        let points = [AB.ps, AB.pe, CD.ps, CD.pe];
+        let points = circle.inscribedPolygonByArcs(
+            [arcLeg, arcBC, arcLeg, 360 - arcBCD - arcLeg],
+            phiA, {angleInDegrees: true}
+        );
 
         let paint = function (ctx) {
 
