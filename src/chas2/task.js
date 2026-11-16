@@ -513,7 +513,7 @@ chas2.task = {
  * @param {Object} questionsF {main: integer_points || point || interval || marked_points, variants, conditions};
  *   variants и conditions — непустые массивы, из них берётся случайный элемент
  * @param {Boolean} extremumsIsInteger
- * @param {Boolean} rootsIsInteger 
+ * @param {Boolean} rootsIsInteger
  */
 	setTaskWithGraphOfFunctionDerivative: function (o) {
 		let { type,
@@ -1229,7 +1229,7 @@ chas2.task = {
 			paint: paint,
 		});
 	},
-	
+
 	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference, analys }) {
 
 		left.shuffle();

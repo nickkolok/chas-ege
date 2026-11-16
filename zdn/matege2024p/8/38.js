@@ -25,7 +25,7 @@
 				lineWidth: 0.07,
 			},
 			minimumDifferenceBetweenExtremes: 1,
-			numberOfRoots: {min:1, max:1}, 
+			numberOfRoots: {min:1, max:1},
 			rootsIsInteger: {
 				int: 'yes',
 				tolerance: 0.09

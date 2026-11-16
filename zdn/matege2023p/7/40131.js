@@ -28,12 +28,11 @@
 				lineWidth: 0.07,
 			},
 			minimumDifferenceBetweenExtremes: 1,
-			numberOfRoots: {min:0, max:10}, 
+			numberOfRoots: {min:0, max:10},
 			numberOfExtremes: {min: 0, max:1},
-			preference: preference, 
+			preference: preference,
 		});
 	}, 10000);
 })();
 
 //40131 514459 515184 515185 515186 515187 515188 515189 515190 515191 530666
-

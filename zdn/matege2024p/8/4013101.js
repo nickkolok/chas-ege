@@ -25,7 +25,7 @@
 				lineWidth: 0.07,
 			},
 			minimumDifferenceBetweenExtremes: 1,
-			numberOfRoots: {min:1, max:1}, 
+			numberOfRoots: {min:1, max:1},
 			rootsIsInteger: {
 				int: 'yes',
 				tolerance: 0.05
@@ -35,4 +35,3 @@
 })();
 
 //40131 514459 515184 515185 515186 515187 515188 515189 515190 515191 530666
-

@@ -25,7 +25,7 @@
 				lineWidth: 0.07,
 			},
 			minimumDifferenceBetweenExtremes: 1,
-			numberOfRoots: {min:2, max:2}, 
+			numberOfRoots: {min:2, max:2},
 			rootsIsInteger: {
 				int: 'yes',
 				tolerance: 0.09
@@ -34,4 +34,3 @@
 	}, 10000);
 })();
 //50118802
-

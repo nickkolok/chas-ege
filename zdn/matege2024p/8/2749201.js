@@ -25,8 +25,8 @@
 				lineWidth: 0.07,
 			},
 			minimumDifferenceBetweenExtremes: 0,
-			numberOfRoots: {min:1, max:3}, 
-			numberOfExtremes: {min: 2, max:10}, 
+			numberOfRoots: {min:1, max:3},
+			numberOfExtremes: {min: 2, max:10},
 		});
 	}, 1000);
 })();

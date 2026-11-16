@@ -25,8 +25,8 @@
 				lineWidth: 0.07,
 			},
 			minimumDifferenceBetweenExtremes: 0,
-			numberOfRoots: {min:2, max:10}, 
-			numberOfExtremes: {min: 2, max:10}, 
+			numberOfRoots: {min:2, max:10},
+			numberOfExtremes: {min: 2, max:10},
 			rootsIsInteger: {
 				int: 'yes',
 				tolerance: 0.09

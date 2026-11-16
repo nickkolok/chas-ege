@@ -33,8 +33,8 @@
 				}
 			},
 			minimumDifferenceBetweenExtremes: 1,
-			numberOfRoots: {min:0, max:0}, 
-			numberOfExtremes: {min: 0, max:10}, 
+			numberOfRoots: {min:0, max:0},
+			numberOfExtremes: {min: 0, max:10},
 		});
 	}, 10000);
 })();
