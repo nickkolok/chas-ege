@@ -10,6 +10,7 @@
         let sideDano = letters.slice(0, 3);
         let centralPoint = sideDano.splice(variant, 1)[0];
         let pointMedian = letters[3];
+        let medianSegment = [centralPoint, pointMedian].shuffleJoin();
 
         // Сторона, к которой проведена медиана, и сама медиана задаются напрямую:
         // медиана в этой задаче — лишнее данное, годится любая длина.
@@ -54,7 +55,7 @@
             ctx.strokeInMiddleOfSegment(pointsSide[1].x, pointsSide[1].y, points[3].x, points[3].y, 10);
 
             ctx.scale(1, -1);
-            ctx.font = "20px liberation_sans";
+            ctx.font = '20px liberation_sans';
             // Вершина, из которой проведена медиана, — сверху, подпись над ней; остальные точки — на нижней стороне
             points.forEach((elem, i) => ctx.fillText(letters[i], elem.x - 6, -elem.y + ((i === variant) ? -8 : 25)));
         };
@@ -62,8 +63,8 @@
         NAtask.setTask({
             text: `В треугольнике $ABC$ известно, что ${[
                 `$${sideDano.shuffleJoin()}=${valueDano}$`,
-                `$${[centralPoint, pointMedian].shuffleJoin()}$ — медиана`,
-                `$${[centralPoint, pointMedian].shuffleJoin()}=${medianLength.ts()}$`
+                `$${medianSegment}$ — медиана`,
+                `$${medianSegment}=${medianLength.ts()}$`
             ].shuffleJoin(', ')}. Найдите $${[sideDano.iz(), pointMedian].shuffleJoin()}$.`,
             answers: valueDano / 2,
             preference: preference,
@@ -76,7 +77,7 @@
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(/*true*/);
+        NAtask.modifiers.allDecimalsToStandard(true);
     }, 1000);
 
 })();
