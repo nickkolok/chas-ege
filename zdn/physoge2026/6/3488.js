@@ -24,7 +24,7 @@
 		let adequateVehicles = getAdequateVehicles(v_kmh);
 		
 		// Если список пустой, повторим (маловероятно при наших параметрах)
-		genAssert(adequateVehicles.length > 0, 'Нет подходящих транспортных средств');
+		genAssertNonempty(adequateVehicles, 'Нет подходящих транспортных средств');
 		
 		// Выбираем случайное ТС
 		let vehicleName = adequateVehicles.iz();
