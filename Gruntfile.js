@@ -381,7 +381,9 @@ module.exports = function(grunt) {
 				'process-css',
 				'gitstatus',
 			],
-			'process-lib': ['newer:copy:lib', 'make-chas-lib', ['make-chas-uijs', 'make-init']],
+			// chas-uijs.js склеивается из готового build/lib/chas-lib.js, а init.cat.js — из chas-uijs.js,
+			// поэтому эти три шага должны идти строго последовательно.
+			'process-lib': ['newer:copy:lib', ['make-chas-lib', 'make-chas-uijs', 'make-init']],
 			'process-task-sets': [['newer:copy:taskSets', 'packTasks', 'uglify:tasksPacks']],
 		},
 	});
