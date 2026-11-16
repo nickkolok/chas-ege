@@ -16,10 +16,11 @@
 			}
 		});
 
-		genAssert(triangle.angleAInDegrees!=90);
-		genAssert(triangle.angleBInDegrees!=90);
+		genAssert(triangle.angleAInDegrees != 90);
+		genAssert(triangle.angleBInDegrees != 90);
 		genAssertZ1000(triangle.area());
-		let intersectPoint = triangle.bisectorA.intersect(triangle.bisectorB);
+		let circle = triangle.inscribedCircle();
+		let intersectPoint = circle.pc;
 
 		let points = autoScale(triangle.vertices.concat(intersectPoint));
 
@@ -32,7 +33,8 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
-			ctx.drawArc(points[3].x, points[3].y, (points[3].y - points[0].y).abs(), 0, 2 * Math.PI);
+			let scale = Math.hypot(points[1].x - points[0].x, points[1].y - points[0].y) / triangle.lengthAB;
+			new Circle(new Point(circle.pc.x * scale, circle.pc.y * scale), circle.r * scale).drawOnto(ctx);
 		};
 
 		NAtask.setTask({
@@ -46,7 +48,8 @@
 			height: 400,
 			paint: paint1,
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 2000);
-	NAtask.modifiers.allDecimalsToStandard(true);
 })();
 // https://oge.sdamgia.ru/problem?id=356329
+
