@@ -65,12 +65,12 @@
             authors: ['Александра Суматохина'],
         });
 
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(true);
 
     }, 2000);
 })();
