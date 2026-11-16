@@ -60,7 +60,7 @@
             ctx.drawFigure(points, connectionMatrix);
 
             ctx.scale(1, -1);
-            ctx.font = "20px liberation_sans";
+            ctx.font = '20px liberation_sans';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             points.forEach((elem, i) => {
@@ -84,7 +84,7 @@
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(/*true*/);
+        NAtask.modifiers.allDecimalsToStandard(true);
     }, 1000);
 
 })();
