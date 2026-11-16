@@ -4,10 +4,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let V = sl(1, 20);
-		let rho;
-		do {
-			rho = sl(500, 15000, 500);
-		} while ((rho * V) % 1000 !== 0);
+		let rho = slKrome(r => (r * V) % 1000 !== 0, 500, 15000, 500);
 		let m = rho * V / 1000;
 
 		NAtask.setTask({
