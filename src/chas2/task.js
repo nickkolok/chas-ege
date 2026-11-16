@@ -777,16 +777,22 @@ chas2.task = {
 						answer = pointsOnSegment(maximumsX(func, minX, maxX));
 						break;
 					case 'minimum_point_on_the_segment':
-						answer = answer.intIntervalsMinimums.iz();
+						// Отрезки строятся так же, как в ветке для графика производной;
+						// ответ — массив из одной точки, как там же
+						answer = transformExtremumsToIntervals(func, minX, maxX, true).intIntervalsMinimums;
+						genAssertNonempty(answer, 'Нет точки минимума, для которой строится отрезок');
+						answer = answer.iz();
 						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 						find = `минимума ${functionsFx} на отрезке $[${answer.leftEnd};${answer.rightEnd}]$`;
-						answer = roundToInteger(answer.ext);
+						answer = [roundToInteger(answer.ext)];
 						break;
 					case 'maximum_point_on_the_segment':
-						answer = answer.intIntervalsMaximums.iz();
+						answer = transformExtremumsToIntervals(func, minX, maxX, true).intIntervalsMaximums;
+						genAssertNonempty(answer, 'Нет точки максимума, для которой строится отрезок');
+						answer = answer.iz();
 						genAssert(answer.leftEnd != answer.rightEnd, 'Начало и конец отрезка совпали');
 						find = `максимума ${functionsFx} на отрезке $[${answer.leftEnd};${answer.rightEnd}]$`;
-						answer = roundToInteger(answer.ext);
+						answer = [roundToInteger(answer.ext)];
 						break;
 					case 'derivative_is_zero_on_the_segment':
 						answer = transformExtremumsToIntervals(func, minX, maxX, false);
