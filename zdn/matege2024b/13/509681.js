@@ -56,21 +56,14 @@
 			let cxSmall = R1 + gap / 2;
 
 			let drawSphere = function(cx, R) {
-				ctx.beginPath();
-				ctx.arc(cx, 0, R, 0, 2 * Math.PI);
-				ctx.stroke();
+				ctx.drawCircle(cx, 0, R);
 
-				ctx.beginPath();
-				ctx.ellipse(cx, 0, R, R * flat, 0, 0, 2 * Math.PI);
-				ctx.stroke();
+				ctx.drawEllipse(cx, 0, R, R * flat);
 
 				// Кончик вычислен через тот же alpha и тот же flat, что и эллипс выше,
 				// поэтому он попадает точно на экватор (cos^2+sin^2 = 1), а не внутрь него.
 				ctx.setLineDash([5, 4]);
-				ctx.beginPath();
-				ctx.moveTo(cx, 0);
-				ctx.lineTo(cx + Math.cos(alpha) * R, Math.sin(alpha) * R * flat);
-				ctx.stroke();
+				ctx.drawLine(cx, 0, cx + Math.cos(alpha) * R, Math.sin(alpha) * R * flat);
 				ctx.setLineDash([]);
 			};
 
