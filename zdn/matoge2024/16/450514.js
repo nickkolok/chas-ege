@@ -1,19 +1,19 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let rand = sl1();
-		let delta = [90, 240][rand];
+		let angleC = [30, 45, 60, 120, 135, 150].iz();
+		let delta = 2 * angleC;
 
 		let letters = om.latbukv.slice(0, 3);
 
 		let circle = new Circle(new Point(0, 0), sl(10, 50));
 
-		let A = sl(-90, 0);
-		let AB = circle.chordByAngles(A, A + delta, {
+		let startAngle = sl(-90, 0);
+		let AB = circle.chordByAngles(startAngle, startAngle + delta, {
 			angleInDegrees: true
 		});
 
-		let PC = circle.pointOnCircle(sl(A + delta + 30, 250), {
+		let PC = circle.pointOnCircle(sl(startAngle + delta + 15, startAngle + 345), {
 			angleInDegrees: true
 		});
 
@@ -22,11 +22,11 @@
 			[1, 1],
 		];
 
-		let p = circle.pointOnCircle(90, {
-			angleInDegrees: true
-		});
-
-		let points = autoScale([AB.ps, AB.pe, PC.vertices[0], p.vertices[0]]);
+		// Крайние точки окружности задают границы всего рисунка.
+		let bounds = [new Point(circle.r, 0), new Point(-circle.r, 0), new Point(0, circle.r), new Point(0, -circle.r)];
+		let scaled = autoScale([AB.ps, AB.pe, PC.vertices[0]].concat(bounds));
+		let points = scaled.slice(0, 3);
+		// autoScale возвращает обычные объекты; фабрика окружности принимает Point.
 		let scaleCircle = CircleByPoints.fromCenterAndPoint(new Point(0, 0), new Point(points[2].x, points[2].y));
 
 		let paint1 = function(ctx) {
@@ -42,11 +42,11 @@
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
-			points.slice(0, -1).forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
+			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ угол $C$ равен $${[45, 120][rand]}^\\circ$, $AB=${AB.length.pow(2).texsqrt(1)}$. Найдите радиус окружности, описанной около этого треугольника.`,
+			text: `В треугольнике $ABC$ угол $C$ равен $${angleC}^\\circ$, $AB=${AB.length.pow(2).round().texsqrt(1)}$. Найдите радиус окружности, описанной около этого треугольника.`,
 			answers: circle.r,
 			authors: ['Александра Суматохина'],
 		});
@@ -62,3 +62,4 @@
 })();
 // https://oge.sdamgia.ru/problem?id=450514
 // https://ege.sdamgia.ru/problem?id=541815
+
