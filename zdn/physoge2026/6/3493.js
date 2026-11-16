@@ -3,9 +3,8 @@
     
     let v_bus = sl(5, 20);
     let v_pass = sl(1, 3);
-    let directions = ['от задней двери к кабине водителя', 'от кабины водителя к задней двери'];
-    let directionText = directions.iz();
-    let directionSign = (directionText === 'от задней двери к кабине водителя') ? 1 : -1;
+    let directionSign = [1, -1].iz();
+    let directionText = directionSign === 1 ? 'от задней двери к кабине водителя' : 'от кабины водителя к задней двери';
     let v_result = v_bus + directionSign * v_pass;
     
     let text = 'Автобус везёт пассажиров по прямой дороге со скоростью ' + v_bus + ' м/с. ' +
