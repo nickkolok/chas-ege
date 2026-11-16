@@ -6,10 +6,10 @@
 
         let circle = new Circle(new Point(0, 0), 160);
 
-        // Центральный угол AOB генерируется напрямую: в ФИПИ он от 27° до 173°.
+        // Центральный угол AOB генерируется напрямую: в ФИПИ он от 27° до 173°, здесь расширен до 10°–175°.
         // Хорда AB — внизу, C — в верхней части окружности, как на чертеже ФИПИ:
         // не дальше 60° от верхней точки и не ближе 25° к A и B, поэтому C на большей дуге,
-        // а O и C лежат по одну сторону от прямой AB
+        // а O и C лежат по одну сторону от прямой AB.
         let angle = sl(10, 175);
         let mid = sl(240, 300);
         let PA = circle.pointOnCircle(mid - angle / 2, {
@@ -20,7 +20,7 @@
             angleInDegrees: true
         });
 
-        let maxShiftC = Math.min(60, 180 - angle / 2 - 25);
+        let maxShiftC = 60;
         let PC = circle.pointOnCircle(mid + 180 + sl(-maxShiftC, maxShiftC), {
             angleInDegrees: true
         });
@@ -71,12 +71,12 @@
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.variativeABC(letters);
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(true);
     }, 20000);
 
 })();
