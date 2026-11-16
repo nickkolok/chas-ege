@@ -81,6 +81,7 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'findPositiveAndNegativeIntervals', 'findPositiveIntervals', 'findNegativeIntervals',
         'findPositiveAndNegativePoints', 'findPositiveIntegerPoints', 'findNegativeIntegerPoints',
     ]);
+    const { findSignChangePoints } = loadMathFunctions(['findSignChangePoints']);
     const {
         getRandomSubSegment, isCloseToInteger, isDistinctByTolerance, findPointsInIntervals,
         intPoints, intPointsWithTolerance,
@@ -234,6 +235,15 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assertRoots(assert, findRoots(x => (x - 0.3) / (x - 0.55), 0, 1), [0.3], 'корень и разрыв рядом');
     });
 
+    QUnit.test('findRoots: несимметричный скачок корнем не считается', function (assert) {
+        assert.deepEqual(findRoots(x => (x < 0.55 ? -1 : 2), 0, 1), [], 'скачок от -1 к 2');
+        assert.deepEqual(findRoots(x => (x < 0.55 ? -2 : 1), 0, 1), [], 'скачок от -2 к 1');
+        assert.deepEqual(findRoots(x => (x < 0.55 ? 3 : -0.5), 0, 1), [], 'скачок от 3 к -0,5');
+        assert.deepEqual(findRoots(x => x - 0.55 + (x < 0.55 ? -0.001 : 0.001), 0, 1), [], 'наклонная прямая со скачком 0,002 в точке смены знака');
+        assert.deepEqual(findRoots(x => (x < 0.55 ? -1 : 2), 0, 1, 0.001), [], 'скачок от -1 к 2 при шаге сетки 0,001');
+        assertRoots(assert, findRoots(x => (x < 0.55 ? x - 0.3 : 2), 0, 1), [0.3], 'корень 0,3 перед скачком найден');
+    });
+
     QUnit.test('findRoots: крутой корень не принимается за разрыв', function (assert) {
         assertRoots(assert, findRoots(x => 1e6 * (x - 0.55), 0, 1), [0.55], 'линейная функция с наклоном 10⁶');
         assertRoots(assert, findRoots(x => Math.atan(1e4 * (x - 0.55)), 0, 1), [0.55], 'арктангенс с резким переходом');
@@ -252,6 +262,35 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         });
         assertRoots(assert, roots, [-3, -0.5, 2.5, 4], 'четыре корня, часть из них в узлах сетки');
         assert.equal(errors, 0, 'console.error не вызывался');
+    });
+
+    // ============================================================
+    //  findSignChangePoints  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findSignChangePoints');
+
+    function assertSignChangePoints(assert, actual, expected, message) {
+        const ok = actual.length === expected.length && actual.every((point, i) =>
+            Math.abs(point.x - expected[i][0]) < EPS && point.isRoot === expected[i][1]);
+        assert.ok(ok, message + ' (получено ' + JSON.stringify(actual) + ', ожидалось [x, isRoot]: ' + JSON.stringify(expected) + ')');
+    }
+
+    QUnit.test('findSignChangePoints: корни и разрывы', function (assert) {
+        assertSignChangePoints(assert, findSignChangePoints(x => (x - 1) * (x + 2), -5, 5), [[-2, true], [1, true]],
+            'у непрерывной функции все точки — корни');
+        assertSignChangePoints(assert, findSignChangePoints(x => 1 / (x - 0.55), -3, 3), [[0.55, false]],
+            '1 / (x - 0,55): одна точка, и это разрыв');
+        assertSignChangePoints(assert, findSignChangePoints(Math.tan, -1, 4), [[0, true], [Math.PI / 2, false], [Math.PI, true]],
+            'tg x на [-1; 4]: корни 0 и π, разрыв π/2');
+        assertSignChangePoints(assert, findSignChangePoints(x => (x < 0.55 ? -1 : 2), 0, 1), [[0.55, false]], 'скачок от -1 к 2');
+        assertSignChangePoints(assert, findSignChangePoints(x => x * x + 1, -5, 5), [], 'смен знака нет');
+    });
+
+    QUnit.test('findSignChangePoints: корни те же, что у findRoots', function (assert) {
+        const funcs = [Math.sin, Math.tan, x => (x - 0.3) / (x - 0.55), x => (x + 3) * (x + 0.5) * (x - 2.5) * (x - 4)];
+        const different = funcs.filter(func => JSON.stringify(findSignChangePoints(func, -5, 5).filter(point => point.isRoot).map(point => point.x)) !==
+            JSON.stringify(findRoots(func, -5, 5)));
+        assert.deepEqual(different.length, 0, 'findRoots — это точки с isRoot = true');
     });
 
     // ============================================================
@@ -445,6 +484,23 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assertIntervals(assert, intervals.negativeIntervals, [[0, 3]], 'отрицательна на (0; 3)');
     });
 
+    QUnit.test('findPositiveAndNegativeIntervals: разрыв со сменой знака разделяет интервалы', function (assert) {
+        const hyperbola = x => 1 / (x - 0.55);
+        let intervals = findPositiveAndNegativeIntervals(hyperbola, -3, 3);
+        assertIntervals(assert, intervals.negativeIntervals, [[-3, 0.55]], '1 / (x - 0,55): минус слева от разрыва');
+        assertIntervals(assert, intervals.positiveIntervals, [[0.55, 3]], '1 / (x - 0,55): плюс справа от разрыва');
+        assertIntervals(assert, findNegativeIntervals(hyperbola, -3, 3), [[-3, 0.55]], 'findNegativeIntervals');
+        assertIntervals(assert, findPositiveIntervals(hyperbola, -3, 3), [[0.55, 3]], 'findPositiveIntervals');
+
+        intervals = findPositiveAndNegativeIntervals(Math.tan, -1, 4);
+        assertIntervals(assert, intervals.positiveIntervals, [[0, Math.PI / 2], [Math.PI, 4]], 'tg x на [-1; 4]: плюс на (0; π/2) и (π; 4)');
+        assertIntervals(assert, intervals.negativeIntervals, [[-1, 0], [Math.PI / 2, Math.PI]], 'tg x на [-1; 4]: минус на (-1; 0) и (π/2; π)');
+
+        intervals = findPositiveAndNegativeIntervals(x => (x < 0.55 ? -1 : 2), -3, 3);
+        assertIntervals(assert, intervals.negativeIntervals, [[-3, 0.55]], 'скачок от -1 к 2: минус слева');
+        assertIntervals(assert, intervals.positiveIntervals, [[0.55, 3]], 'скачок от -1 к 2: плюс справа');
+    });
+
     QUnit.test('findPositiveAndNegativeIntervals: готовые корни четвёртым аргументом', function (assert) {
         let calls = 0;
         const counted = x => {
@@ -492,6 +548,14 @@ module.exports = function registerMathFunctionsTests(QUnit) {
     QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: синус', function (assert) {
         assert.deepEqual(findPositiveIntegerPoints(Math.sin, -7, 7), [-6, -5, -4, 1, 2, 3], 'положителен; нуль не входит');
         assert.deepEqual(findNegativeIntegerPoints(Math.sin, -7, 7), [-3, -2, -1, 4, 5, 6], 'отрицателен; нуль не входит');
+    });
+
+    QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: разрывная функция', function (assert) {
+        const hyperbola = x => 1 / (x - 0.55);
+        assert.deepEqual(findPositiveIntegerPoints(hyperbola, -3, 3), [1, 2], '1 / (x - 0,55) положительна в точках 1 и 2');
+        assert.deepEqual(findNegativeIntegerPoints(hyperbola, -3, 3), [-2, -1, 0], '1 / (x - 0,55) отрицательна в точках -2, -1, 0');
+        assert.deepEqual(findPositiveIntegerPoints(Math.tan, -1, 4), [1], 'tg x на (-1; 4) положителен только в точке 1');
+        assert.deepEqual(findNegativeIntegerPoints(Math.tan, -1, 4), [2, 3], 'tg x на (-1; 4) отрицателен в точках 2 и 3');
     });
 
     QUnit.test('findPositiveIntegerPoints и findNegativeIntegerPoints: функция без корней', function (assert) {
@@ -1078,6 +1142,12 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.deepEqual(increasing.concat(decreasing).filter(x => slope(x) === 0), [], 'точек с нулевой производной в ответе нет');
     });
 
+    QUnit.test('findIncreasingIntegerPoints: строгий режим исключает только точки экстремума', function (assert) {
+        // У x³ в нуле производная равна нулю, но экстремума нет: точка остаётся в ответе
+        assert.deepEqual(findIncreasingIntegerPoints(x => x * x * x, -3, 3, undefined, undefined, undefined, true), [-2, -1, 0, 1, 2],
+            'стационарная точка перегиба не исключается');
+    });
+
     QUnit.test('findIncreasingAndDecreasingPoints: строгий режим', function (assert) {
         const intervals = { increasingIntervals: [[-7, -4], [0, 3]], decreasingIntervals: [[-4, 0], [3, 6]] };
         assert.deepEqual(findIncreasingAndDecreasingPoints(intervals, -7, 6, false, false, true),
@@ -1440,6 +1510,28 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.notDeepEqual([first[0]].concat([-5, -2.5, 0, 1.7, 4].map(x => other.func(x))), first, 'при другом зерне график другой');
     });
 
+    QUnit.test('createSpline: на несимметричной сетке знак первого приращения перевыбирается вместе с узлами', function (assert) {
+        // Сетка по y от -2 до 7. Если знак, с которого начинается чередование, выбрать один раз
+        // до перевыбора узлов, графики, начинающиеся с максимума, отбраковываются чаще:
+        // на этих настройках их доля падает с 0,32 до 0,23.
+        const options = { type: 'function', minX: -8, maxX: 8, minY: -2, maxY: 7, stepForX: 4, stepForY: 0.3 };
+        let total = 0;
+        let startsWithMaximum = 0;
+        while (total < 1500) {
+            const { result } = generateSpline(options, 5000);
+            const extremums = findExtremumsOfFunction(result.painFunc, options.minX, options.maxX, 0.01);
+            const firstMinimum = extremums.minP.length ? extremums.minP[0][0] : Infinity;
+            const firstMaximum = extremums.maxP.length ? extremums.maxP[0][0] : Infinity;
+            if (firstMinimum === Infinity && firstMaximum === Infinity) {
+                continue;
+            }
+            total++;
+            startsWithMaximum += (firstMaximum < firstMinimum) ? 1 : 0;
+        }
+        const share = startsWithMaximum / total;
+        assert.ok(share > 0.28 && share < 0.36, 'доля графиков, начинающихся с максимума: ' + share.toFixed(3) + ' (ожидается около 0,32)');
+    });
+
     QUnit.test('createSpline: связь func и painFunc', function (assert) {
         let options = splineConfigs['функция, stepForX = 3, только обязательные параметры'];
         let { result } = generateSpline(options, 5000);
@@ -1491,6 +1583,17 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         Math.random = seedrandom('множитель');
         const functionGraph = generateSpline(Object.assign({}, options, { type: 'function', stepForY: 0.3, derivativeScale: 5 }), 20000).result;
         assert.ok(points.every(x => functionGraph.painFunc(x) === functionGraph.func(x)), 'на график функции множитель не влияет');
+    });
+
+    QUnit.test('createSpline: недопустимый derivativeScale даёт понятную ошибку', function (assert) {
+        const options = { type: 'derivative', minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 };
+        for (const value of [0, -1, NaN, Infinity, '2', null]) {
+            assert.throws(() => global.createSpline(Object.assign({}, options, { derivativeScale: value })),
+                /derivativeScale должен быть положительным числом/, 'derivativeScale = ' + String(value));
+        }
+        assert.throws(() => global.createSpline(Object.assign({}, options, { type: 'function', derivativeScale: 0 })),
+            /derivativeScale/, 'проверяется и для графика функции');
+        assert.ok(generateSpline(Object.assign({}, options, { derivativeScale: 0.5 }), 20000).result, 'дробный положительный множитель допустим');
     });
 
     QUnit.test('createSpline: недопустимые требования отбраковываются', function (assert) {
