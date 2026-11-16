@@ -1220,12 +1220,14 @@ chas2.task = {
 		task.answers = answer;
 
 		NAtask.setTask(task);
+		// Сначала текстовые модификаторы, потом иллюстрация: иначе allDecimalsToStandard
+		// обрабатывает и добавленный тег <canvas> (его атрибут data-nonce — Math.random())
+		NAtask.modifiers.allDecimalsToStandard();
 		NAtask.modifiers.addCanvasIllustration({
 			width: width,
 			height: height,
 			paint: paint,
 		});
-		NAtask.modifiers.allDecimalsToStandard();
 	},
 	
 	setCorrespondenceTask: function({ left, right, text, leftHeader, rightHeader, postText, autoLaTeXLeft, autoLaTeXRight, preference, analys }) {

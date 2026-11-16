@@ -410,6 +410,18 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
         assert.ok(result.error && /variants: number не найдено/.test(result.error.message), String(result.error && result.error.message));
     });
 
+    QUnit.test('allDecimalsToStandard не трогает тег <canvas>', function (assert) {
+        const result = callOnce('canvas', {
+            type: 'function', canvasSettings: {}, boundariesOfGraph: { minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.3 },
+            extremumsIsInteger: { int: 'yes', tolerance: 0.15 },
+            questionsF: { main: 'integer_points', conditions: ['tangent_to_graph_const'], variants: ['number'] },
+        }, 20000, null);
+        assert.ok(result.txt, 'задача сгенерирована');
+        const tag = (result.txt || '').match(/<canvas[^>]*>/);
+        assert.ok(tag && /data-nonce="0\.\d+"/.test(tag[0]), 'атрибут data-nonce остался числом: ' + (tag && tag[0]));
+        assert.notOk(/\d\.\d/.test(result.txt.replace(/<canvas[\s\S]*?<\/canvas>/, '')), 'в тексте условия нет десятичных точек: ' + result.txt);
+    });
+
     QUnit.test('множитель графика производной (derivativeScale) передаётся в createSpline', function (assert) {
         const { window, run } = env();
         const settings = {
