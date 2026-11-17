@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 	NAinfo.requireApiVersion(0, 2);
-	let edge = 3 * sl(2, 8);
+	let edge = sl(6, 24, 3);
 	let half = edge / 2;
 	let volume = edge * edge * edge / 24;
 
