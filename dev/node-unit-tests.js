@@ -541,4 +541,82 @@ module.exports = function registerNodeTests(QUnit) {
         );
         assert.strictEqual(withShrink.scale, withoutShrink.scale);
     });
+
+    // ============================================================
+    //  autoScale: центрирование  (lib/func.js)
+    // ============================================================
+    QUnit.module('autoScale: center');
+
+    QUnit.test('без center начало координат остаётся на месте', function (assert) {
+        var result = autoScale([{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 5 }], newCamera());
+        assert.deepEqual(result[0], { x: 0, y: 0 });
+    });
+
+    QUnit.test('с center фигура рисуется так же, как сдвинутая заранее в начало координат', function (assert) {
+        var centeredCamera = newCamera();
+        var centered = autoScale([{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 5 }], centeredCamera, [], { center: true });
+        var moved = autoScale([{ x: -5, y: -2.5 }, { x: 5, y: -2.5 }, { x: 5, y: 2.5 }], newCamera());
+        assert.deepEqual(centered, moved, 'середина габаритов — в середине поля');
+        assert.strictEqual(centeredCamera.scale, 36, 'фигура занимает всё поле по ширине');
+    });
+
+    QUnit.test('с center фигура вдали от начала координат не отбраковывается', function (assert) {
+        var vertex = [{ x: 1000, y: 1000 }, { x: 1004, y: 1000 }, { x: 1004, y: 1002 }];
+        assert.throws(function () {
+            autoScale(vertex, newCamera());
+        }, 'без center — genAssert');
+        assert.deepEqual(
+            autoScale(vertex, newCamera(), [], { center: true, startX: 0, finishX: 400, startY: 0, finishY: 400 }),
+            [{ x: 0, y: 100 }, { x: 400, y: 100 }, { x: 400, y: 300 }],
+            'поле 0..400: фигура в его середине'
+        );
+    });
+
+    // ============================================================
+    //  Положение подписей точек на чертеже  (lib/func.js)
+    // ============================================================
+    QUnit.module('labelPositionAwayFrom, labelPositionOutsideSegment');
+
+    function assertPointClose(assert, actual, expected, message) {
+        assert.ok(Math.abs(actual.x - expected.x) < 1e-12 && Math.abs(actual.y - expected.y) < 1e-12,
+            message + ': ожидалось (' + expected.x + ', ' + expected.y + '), получено (' + actual.x + ', ' + actual.y + ')');
+    }
+
+    QUnit.test('labelPositionAwayFrom: подпись отодвигается от точки from', function (assert) {
+        assertPointClose(assert, labelPositionAwayFrom({ x: 3, y: 4 }, { x: 0, y: 0 }, 10), { x: 9, y: 12 }, 'наружу от начала координат');
+        assertPointClose(assert, labelPositionAwayFrom({ x: -2, y: 1 }, { x: -2, y: 5 }, 3), { x: -2, y: -2 }, 'вниз от точки выше');
+    });
+
+    QUnit.test('labelPositionOutsideSegment: по нормали к отрезку, со стороны без точки from', function (assert) {
+        var start = { x: 0, y: 0 };
+        var end = { x: 10, y: 0 };
+        assertPointClose(assert, labelPositionOutsideSegment({ x: 4, y: 0 }, start, end, { x: 5, y: 3 }, 2), { x: 4, y: -2 }, 'from сверху — подпись снизу');
+        assertPointClose(assert, labelPositionOutsideSegment({ x: 4, y: 0 }, start, end, { x: 5, y: -3 }, 2), { x: 4, y: 2 }, 'from снизу — подпись сверху');
+        assertPointClose(assert, labelPositionOutsideSegment({ x: 4, y: 0 }, end, start, { x: 5, y: 3 }, 2), { x: 4, y: -2 }, 'порядок концов отрезка не важен');
+    });
+
+    QUnit.test('labelPositionOutsideSegment: наклонный отрезок', function (assert) {
+        // Отрезок на прямой y = x, центр фигуры — выше прямой; подпись — ниже, по нормали (1, -1)/√2
+        var label = labelPositionOutsideSegment({ x: 1, y: 1 }, { x: 0, y: 0 }, { x: 2, y: 2 }, { x: 0, y: 2 }, Math.SQRT2);
+        assertPointClose(assert, label, { x: 2, y: 0 }, 'на расстоянии √2 по нормали');
+    });
+
+    // ============================================================
+    //  Canvas: перенос начала координат  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: translateToCenter');
+
+    QUnit.test('ctx.translateToCenter переносит начало координат в центр холста', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.translateToCenter === 'function', 'метод translateToCenter определён');
+        var calls = [];
+        var ctx = {
+            canvas: { width: 400, height: 300 },
+            translate: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        CanvasRenderingContext2D.prototype.translateToCenter.call(ctx);
+        assert.equal(calls.length, 1, 'translate вызван ровно один раз');
+        assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
+    });
 };
