@@ -148,10 +148,10 @@ if(mk){ // отмеченные точки
    // вторая по величине кандидатура: значения на концах
    var ev=[f(seg[0]),f(seg[1])];var other=big2?Math.max.apply(null,ev):Math.min.apply(null,ev);if(Math.abs(bx-seg[0])>1e-6&&Math.abs(bx-seg[1])>1e-6&&Math.abs(other-bv)<1e-9)amb=true;
    if(seg[0]<=minX||seg[1]>=maxX)out.lint.push('отрезок выходит за интервал');if(seg[0]>=seg[1])out.lint.push('вырожденный отрезок');set=[bx]}}
-else if(/по длине интервал, на котором/.test(q)){kind='interval';var inc=/возрастает/.test(q);var b=[minX].concat(fext.map(function(e){return e.x}),[maxX]);var lens=[];for(var i2=1;i2<b.length;i2++){var mid=(b[i2-1]+b[i2])/2;if((fprime(mid)>0)===inc)lens.push(Math.round(b[i2])-Math.round(b[i2-1]))}
-   exp=lens.length?(/наибольший/.test(q)?Math.max.apply(null,lens):Math.min.apply(null,lens)):null;set=lens;if(fext.some(function(e){return !isNear(e.x)}))out.lint.push('концы интервалов не целые')}
-else if(/целых точек?, в которых (производная функции \$f\(x\)\$|функция( \$f\(x\)\$)?) (положительна|отрицательна|возрастает|убывает)/.test(q)){
- var mm=q.match(/(положительна|отрицательна|возрастает|убывает)/)[1];var isDer=/производная функции/.test(q);var s3=(mm==='положительна'||mm==='возрастает')?1:-1;
+else if(/промежутки.*В ответе укажите длину (наибольшего|наименьшего) из них/.test(q)){kind='interval';var inc=/возрастания|положительна/.test(q);var b=[minX].concat(fext.map(function(e){return e.x}),[maxX]);var lens=[];for(var i2=1;i2<b.length;i2++){var mid=(b[i2-1]+b[i2])/2;if((fprime(mid)>0)===inc)lens.push(Math.round(b[i2])-Math.round(b[i2-1]))}
+   exp=lens.length?(/длину наибольшего/.test(q)?Math.max.apply(null,lens):Math.min.apply(null,lens)):null;set=lens;if(fext.some(function(e){return !isNear(e.x)}))out.lint.push('концы интервалов не целые')}
+else if(/целых точек?, в которых (производная функции \$f\(x\)\$|функция( \$f\(x\)\$)?) (положительна|отрицательна|возрастает|убывает)|промежутки (возрастания|убывания) функции \$f\(x\)\$\. В ответе укажите .*целых точек, входящих в эти промежутки/.test(q)){
+ var mm=q.match(/(положительна|отрицательна|возрастает|убывает|возрастания|убывания)/)[1];mm=({возрастания:'возрастает',убывания:'убывает'})[mm]||mm;var isDer=/производная функции/.test(q);var s3=(mm==='положительна'||mm==='возрастает')?1:-1;
  var atExtremum=function(x){return fext.some(function(e){return Math.abs(e.x-x)<=NEAR})};
  if(fext.some(function(e){return gray(e.x)}))out.lint.push('точка экстремума в серой зоне');
  if(isDer){kind='fprime-sign';set=ints().filter(function(x){return !atExtremum(x)&&s3*fprime(x)>0})}

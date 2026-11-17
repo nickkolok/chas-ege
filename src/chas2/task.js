@@ -536,7 +536,7 @@ chas2.task = {
 	 *   variants: 'sum', 'production', 'number', 'largest', 'smallest' — для множества точек;
 	 *   'empty' — найти точку; 'abscissa' — найти абсциссу точки;
 	 *   'smallest_value', 'largest_value' — точка наименьшего (наибольшего) значения на отрезке;
-	 *   для 'interval' — 'largest', 'smallest' (наибольший или наименьший по длине интервал).
+	 *   для 'interval' — 'largest', 'smallest' (длина наибольшего или наименьшего из промежутков).
 	 *   Для conditions 'derivative_is_largest' и 'derivative_is_smallest' нужны markedPoints.type: 'number'
 	 * @param {Object} [o.numberOfExtremes={min: 0, max: 1000}] сколько экстремумов у нарисованного графика
 	 * @param {Object} [o.numberOfRoots={min: 0, max: 1000}] сколько нулей у нарисованного графика
@@ -1240,21 +1240,30 @@ chas2.task = {
 				// Концы интервала — точки экстремума — должны читаться с рисунка как целые
 				answer = answer.map((elem) => elem.map((end) => (end === minX || end === maxX) ? end : roundToInteger(end)));
 				answer = answer.map((elem) => elem[1].round() - elem[0].round());
+				let whichLength;
 				switch (variants) {
 					case 'largest':
-						task.text.push('наибольший');
+						whichLength = 'наибольшего';
 						answer = answer.maxE()
 						break;
 					case 'smallest':
-						task.text.push('наименьший');
+						whichLength = 'наименьшего';
 						answer = answer.minE()
 						break;
 					default:
 						throw new Error('variants: ' + variants + ' не найдено');
 				}
 				genAssert(answer !== 0, 'Интервал не может быть нулевой длины')
-				task.text.push('по длине интервал, на котором');
-				find += '. В ответ запишите длину этого интервала'
+				// «Наименьший по длине интервал, на котором функция возрастает» не существует:
+				// подходит любой его подынтервал. Спрашиваем о промежутках (наибольших
+				// по включению), как принято: «Найдите промежутки возрастания функции f(x).
+				// В ответе укажите длину наименьшего из них».
+				if (conditions === 'function_is_increasing' || conditions === 'function_is_decreasing') {
+					task.text.push('промежутки ' + (conditions === 'function_is_increasing' ? 'возрастания' : 'убывания') + ' функции $f(x)$.');
+				} else {
+					task.text.push('промежутки, на которых ' + find + '.');
+				}
+				find = 'В ответе укажите длину ' + whichLength + ' из них';
 				break;
 			case 'marked_points':
 				let description = 'На оси абсцисс отмечены ' + chislitlx(points.length, 'точка') + ': $';
@@ -1304,8 +1313,21 @@ chas2.task = {
 				case 'function_is_negative':
 				case 'function_is_increasing':
 				case 'function_is_decreasing':
-					if (main == 'integer_points')
-						task.text.push('целых точек, в которых');
+					if (main == 'integer_points') {
+						if (conditions === 'function_is_increasing' || conditions === 'function_is_decreasing') {
+							// Промежутки монотонности замкнуты, и целая точка экстремума входит
+							// в ответ (см. closedIntervals), а «функция возрастает в точке
+							// экстремума» неверно. Поэтому, как принято: «Найдите промежутки
+							// убывания функции f(x). В ответе укажите сумму целых точек,
+							// входящих в эти промежутки».
+							const aggregate = task.text.pop(); // «сумму», «количество» и т. п.
+							task.text.push('промежутки ' + monotonicityIntervals + '. В ответе укажите', aggregate,
+								'целых точек, входящих в эти промежутки.');
+							questionIsComplete = true;
+						} else {
+							task.text.push('целых точек, в которых');
+						}
+					}
 					// Вопрос только об отмеченных точках, как у ФИПИ: «Найдите количество
 					// отмеченных точек, в которых производная функции f(x) положительна».
 					// Без «отмеченных» он был бы о всех точках интервала.
