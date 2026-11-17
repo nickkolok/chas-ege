@@ -826,7 +826,7 @@ chas2.task = {
 						answer = extremumsX(func, minX, maxX);
 						break;
 					case 'tangent_to_graph_const':
-						find = `касательная к графику ${functionsFx} параллельна прямой $y=${sl(-20, 20, 0.1)}$ или совпадает с ней`;
+						find = `касательная к графику ${functionsFx} параллельна прямой $y=${slKrome((c) => Math.abs(c) < 1e-9, -20, 20, 0.1)}$ или совпадает с ней`;
 						//task.analys = 'Точки экстремума:'
 						answer = extremumsX(func, minX, maxX);
 						break;
@@ -1023,7 +1023,7 @@ chas2.task = {
 						answer = findDecreasingIntervals(func, minX, maxX);
 						break;
 					case 'tangent_to_graph_const':
-						find = `касательная к графику ${functionsFx} параллельна прямой $y=${sl(-20, 20, 0.1)}$ или совпадает с ней`;
+						find = `касательная к графику ${functionsFx} параллельна прямой $y=${slKrome((c) => Math.abs(c) < 1e-9, -20, 20, 0.1)}$ или совпадает с ней`;
 						//task.analys = 'Точки экстремума:'
 						answer = extremumsX(func, minX, maxX);
 						break;
@@ -1047,7 +1047,7 @@ chas2.task = {
 						let extY = extremumsY(painFunc, minX, maxX);
 						extY.forEach(elem => genAssert(Math.abs(elem - answer[1].round()) > 1, 'Точки пересечения невозможно понять'));
 						find = `касательная к графику ${functionsFx} параллельна `;
-						find += `прямой $y=${[+sl(-20, 20, 0.1), answer[1].round() + 'x'].shuffleJoin('+').plusminus()}$`;
+						find += `прямой $y=${[+slKrome((c) => Math.abs(c) < 1e-9, -20, 20, 0.1), answer[1].round() + 'x'].shuffleJoin('+').plusminus()}$`;
 						find += ` или совпадает с ней`;
 						break;
 					default:
