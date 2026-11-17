@@ -39,9 +39,12 @@
 		// V в решении - обозначение объёма, а не вершина: её не переставляем
 		NAtask.modifiers.variativeABC(letters, { preserve: ['V'] });
 
+		let canvasWidth = 380;
+		let canvasHeight = 330;
+
 		NAtask.modifiers.addCanvasIllustration({
-			width: 380,
-			height: 330,
+			width: canvasWidth,
+			height: canvasHeight,
 			paint: function (ct) {
 				let cube = new Cube(a);
 				let vertices = cube.verticesOfFigure;
@@ -61,8 +64,8 @@
 				let maxX = Math.max.apply(null, vertex2D.map(point => point.x));
 				let minY = Math.min.apply(null, vertex2D.map(point => point.y));
 				let maxY = Math.max.apply(null, vertex2D.map(point => point.y));
-				let offsetX = 190 - (minX + maxX) / 2;
-				let offsetY = 165 - (minY + maxY) / 2;
+				let offsetX = canvasWidth / 2 - (minX + maxX) / 2;
+				let offsetY = canvasHeight / 2 - (minY + maxY) / 2;
 
 				vertex2D = vertex2D.map(function (point) {
 					return {
