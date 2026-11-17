@@ -1070,6 +1070,30 @@ chas2.task = {
 				case 'function_is_decreasing':
 					//task.analys+= ' ' + answer.map((elem)=>'$['+elem[0].ts()+' ;'+elem[1].ts()+']$').join(', ');
 					answer = answer.map((elem) => elem.map(snapBoundary));
+					// По графику функции знак производной читается по наклону графика. Если
+					// в точке, о которой спрашивают, график почти горизонтален, а экстремума
+					// там нет («полка»), знак на рисунке не определить: задача отбраковывается.
+					// minReadableSlope = 0,2 — подъём на клетку не меньше чем через пять клеток.
+					if (type === 'function' && ['derivative_is_positive', 'derivative_is_negative',
+						'function_is_increasing', 'function_is_decreasing'].includes(conditions)) {
+						const minReadableSlope = 0.2;
+						const extremumAbscissas = extremumsX(func, minX, maxX);
+						let readPoints = points;
+						if (main == 'integer_points') {
+							readPoints = [];
+							for (let n = Math.floor(minX) + 1; n < maxX; n++) {
+								readPoints.push(n);
+							}
+						}
+						readPoints.forEach((x) => {
+							// В самой точке экстремума производная равна нулю, и это видно
+							if (extremumAbscissas.some((extremum) => Math.abs(x - extremum) <= nearInteger)) {
+								return;
+							}
+							const slope = (func(x + 0.001) - func(x - 0.001)) / 0.002;
+							genAssert(Math.abs(slope) >= minReadableSlope, 'График почти горизонтален в точке ' + x + ': знак производной не читается');
+						});
+					}
 					if (main == 'integer_points') {
 						// Промежутки возрастания и убывания замкнуты: целая точка экстремума
 						// входит в оба соседних промежутка. Условия на знак строгие: граница

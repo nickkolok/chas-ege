@@ -400,6 +400,47 @@ module.exports = function registerTaskGraphDerivativeTests(QUnit) {
         });
     });
 
+    QUnit.test('график функции: в точках, где читается знак производной, график не почти горизонтален', function (assert) {
+        const { window, run } = env();
+        window.Math.seedrandom('полки');
+        const settings = {
+            type: 'function', canvasSettings: {}, boundariesOfGraph: { minY: -9, maxY: 8, stepForX: 3, stepForY: 0.3 },
+            extremumsIsInteger: { int: 'no', tolerance: 0.2 }, minimumDifferenceBetweenExtremes: 2,
+            questionsF: { main: 'integer_points', conditions: ['derivative_is_positive', 'derivative_is_negative'], variants: ['number'] },
+        };
+        const slopes = [];
+        let generated = 0;
+        for (let attempt = 0; attempt < 200000 && generated < 40; attempt++) {
+            window.vopr.podg();
+            window.__lastSpline = null;
+            run('window.__settings = ' + JSON.stringify(settings) + ';' +
+                'window.__settings.boundariesOfGraph.minX = sl(-11, -5); window.__settings.boundariesOfGraph.maxX = sl(5, 10);', '<settings>');
+            try {
+                run('NAtask.setTaskWithGraphOfFunctionDerivative(window.__settings);', '<call>');
+            } catch (e) {
+                continue;
+            }
+            generated++;
+            const func = window.__lastSpline.result.func;
+            const { minX, maxX } = window.__lastSpline.options;
+            const slope = x => (func(x + 1e-4) - func(x - 1e-4)) / 2e-4;
+            // Экстремумы — независимо, по смене знака наклона на сетке
+            const extrema = [];
+            for (let x = minX + 0.001; x < maxX - 0.001; x += 0.001) {
+                if (Math.sign(slope(x)) !== Math.sign(slope(x + 0.001))) {
+                    extrema.push(x);
+                }
+            }
+            for (let n = Math.floor(minX) + 1; n < maxX; n++) {
+                if (!extrema.some(e => Math.abs(n - e) <= 0.2)) {
+                    slopes.push(Math.abs(slope(n)));
+                }
+            }
+        }
+        assert.equal(generated, 40, 'сгенерировано задач: 40');
+        assert.ok(Math.min.apply(null, slopes) >= 0.2 - 1e-3, 'наименьший модуль наклона в читаемых точках: ' + Math.min.apply(null, slopes));
+    });
+
     QUnit.test('без boundariesOfGraph, canvasSettings или questionsF — понятная ошибка, а не TypeError', function (assert) {
         const full = {
             type: 'derivative', canvasSettings: {}, boundariesOfGraph: { minX: -8, maxX: 8, minY: -9, maxY: 8, stepForX: 4, stepForY: 0.1 },
