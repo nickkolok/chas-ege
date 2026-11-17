@@ -123,8 +123,8 @@
 				ct.fillKrug(P.x, P.y, 3);
 
 				let center = {
-					x: (minX + maxX) / 2 + offsetX,
-					y: (minY + maxY) / 2 + offsetY,
+					x: canvasWidth / 2,
+					y: canvasHeight / 2,
 				};
 				// Вершина, проекция которой лежит внутри контура куба (у этого ракурса -
 				// передняя верхняя), подписывается внутрь передней грани: снаружи
