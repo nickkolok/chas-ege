@@ -135,11 +135,13 @@ if(mk){ // отмеченные точки
  if(P&&P.type==='number'){var nums=listed.split(';').map(function(s){return +s.trim().replace(',','.')});if(nums.length!==pts.length||nums.some(function(v,i){return Math.abs(v-pts[i])>1e-9}))out.lint.push('перечень точек в тексте не совпадает с рисунком')}
  if(pts.some(function(p){return String(p).length>6}))out.lint.push('точки с длинной дробной частью');
  if(pts.some(function(p){return Math.abs(p-Math.round(p))<=0.3}))out.lint.push('отмеченная точка рядом с целой');
- var sg=/положительна|возрастает/.test(rest)?1:(/отрицательна|убывает/.test(rest)?-1:0);
+ // Вопрос должен касаться только отмеченных точек, как у ФИПИ
+ if(!/отмеченных точек|из этих точек/.test(rest))out.lint.push('вопрос не ограничен отмеченными точками');
+ var sg=/положительна|возрастает|возрастания/.test(rest)?1:(/отрицательна|убывает|убывания/.test(rest)?-1:0);
  if(sg&&/количество/.test(rest)){set=pts.filter(function(p){return sg*fprime(p)>0});exp=set.length;
    var scale=Math.max.apply(null,pts.map(function(p){return Math.abs(fprime(p))}).concat([1e-9]));
    if(pts.some(function(p){return fext.some(function(e){return Math.abs(snap(e.x)-p)<FAR-1e-9})}))out.lint.push('отмеченная точка рядом с точкой экстремума')}
- else if(/принимает (наибольшее|наименьшее) значение/.test(rest)){var big=/наибольшее/.test(rest);var vals=pts.map(fprime);var best=0;for(var i=1;i<pts.length;i++)if(big?vals[i]>vals[best]:vals[i]<vals[best])best=i;exp=pts[best];
+ else if(/принимает (наибольшее|наименьшее) значение|значение производной функции \$f\(x\)\$ (наибольшее|наименьшее)/.test(rest)){var big=/наибольшее/.test(rest);var vals=pts.map(fprime);var best=0;for(var i=1;i<pts.length;i++)if(big?vals[i]>vals[best]:vals[i]<vals[best])best=i;exp=pts[best];
    var sorted=vals.slice().sort(function(a,b){return big?b-a:a-b});amb=sorted.length>1&&Math.abs(sorted[0]-sorted[1])<0.7;set=pts;out.notes.push('значения производной: '+vals.map(function(v){return v.toFixed(2)}).join(' '))}
  else kind='unparsed';
 }else if(/^В какой точке отрезка/.test(q)){kind='argext';var big2=/наибольшее/.test(q);if(!seg){kind='unparsed'}else{var bx=seg[0],bv=f(seg[0]);for(var x2=seg[0];x2<=seg[1]+1e-9;x2+=1e-3){var v2=f(x2);if(big2?v2>bv:v2<bv){bv=v2;bx=x2}}exp=Math.round(bx);if(!isNear(bx))out.lint.push('точка наибольшего/наименьшего значения не целая: '+bx.toFixed(3));

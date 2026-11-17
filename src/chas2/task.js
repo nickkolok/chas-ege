@@ -1293,6 +1293,9 @@ chas2.task = {
 				throw new Error('Не указано, что будут находиться точки или интервал. Определите main.');
 		}
 
+		// Конец условия уже записан целиком: find в него не добавляется
+		let questionIsComplete = false;
+		const monotonicityIntervals = (conditions === 'function_is_increasing' ? 'возрастания' : 'убывания') + ' функции $f(x)$';
 		if (main != 'interval')
 			switch (conditions) {
 				case 'derivative_is_positive':
@@ -1303,8 +1306,17 @@ chas2.task = {
 				case 'function_is_decreasing':
 					if (main == 'integer_points')
 						task.text.push('целых точек, в которых');
-					if (main == 'marked_points')
-						task.text.push('точек, в которых');
+					// Вопрос только об отмеченных точках, как у ФИПИ: «Найдите количество
+					// отмеченных точек, в которых производная функции f(x) положительна».
+					// Без «отмеченных» он был бы о всех точках интервала.
+					if (main == 'marked_points') {
+						if (conditions === 'function_is_increasing' || conditions === 'function_is_decreasing') {
+							task.text.push('отмеченных точек, принадлежащих промежуткам ' + monotonicityIntervals + '.');
+							questionIsComplete = true;
+						} else {
+							task.text.push('отмеченных точек, в которых');
+						}
+					}
 					break;
 				// Нули производной — точки экстремума, а не все целые точки промежутка:
 				// «количество точек, в которых производная функции f(x) равна 0», как у ФИПИ
@@ -1318,9 +1330,17 @@ chas2.task = {
 						task.text.push('точки, в которой');
 					break
 				case 'derivative_is_zero_on_the_segment':
+					task.text.push('точку, в которой');
+					break;
+				// Как у ФИПИ: «В какой из этих точек значение производной функции f(x)
+				// наибольшее? В ответе укажите эту точку». Прежнее «Найдите точку, в которой
+				// производная принимает наибольшее значение» спрашивало о всём интервале.
 				case 'derivative_is_largest':
 				case 'derivative_is_smallest':
-					task.text.push('точку, в которой');
+					task.text.pop(); // «Найдите» или «Определите»
+					task.text.push('В какой из этих точек значение производной функции $f(x)$ ' +
+						(conditions === 'derivative_is_largest' ? 'наибольшее' : 'наименьшее') + '? В ответе укажите эту точку.');
+					questionIsComplete = true;
 					break;
 				case 'extreme_points':
 				case 'minimum_points':
@@ -1343,7 +1363,9 @@ chas2.task = {
 			}
 
 		// Условие вида «В какой точке отрезка … принимает наибольшее значение» — вопрос
-		task.text.push(find + (task.text.includes('В какой точке отрезка') ? '?' : '.'));
+		if (!questionIsComplete) {
+			task.text.push(find + (task.text.includes('В какой точке отрезка') ? '?' : '.'));
+		}
 		task.text = task.text.join(' ');
 		task.answers = answer;
 
