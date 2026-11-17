@@ -1,6 +1,11 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
+		let key = '27499';
+		let preference1 = ['function_is_decreasing', 'function_is_increasing'];
+		let preference2 = ['smallest', 'largest'];
+		let rand1 = getSelectedPreferenceFromList(key, preference1);
+		let rand2 = getSelectedPreferenceFromList(key, preference2);
 
 		NAtask.setTaskWithGraphOfFunctionDerivative({
 			authors: 'Суматохина Александра',
@@ -15,8 +20,8 @@
 			},
 			questionsF: {
 				main: 'interval',
-				conditions: ['function_is_decreasing', 'function_is_increasing'],
-				variants: ['smallest', 'largest',],
+				conditions: [preference1[rand1]],
+				variants: [preference2[rand2]],
 			},
 			canvasSettings: {
 				height: 400,
@@ -35,6 +40,7 @@
 				int: 'yes',
 				tolerance: 0.09
 			},
+			preference: [preference1, preference2],
 		});
 	}, 200000);
 })();
