@@ -62,6 +62,20 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+## Подписи вершин с индексом
+
+Букву вершины с подстрочным индексом (A₁ и т.п.) рисует
+`ctx.drawVertexLabel(x, y, letter, subscript)` из `lib/canvas.js`:
+буква - шрифт 20px liberation_sans, индекс - 14px liberation_sans
+со смещением (13, 5) от начала буквы, цвет - текущий `fillStyle`.
+Куда ставить подпись относительно вершины, решает шаблон: наружу контура
+удобно через `labelPositionAwayFrom()`, внутрь - по образцу ФИПИ;
+в метод передаются уже готовые координаты начала буквы.
+
+```js
+ct.drawVertexLabel(px, py, letters[i], '1');//A₁
+```
+
 ## Примеры
 
 ### Планиметрия
