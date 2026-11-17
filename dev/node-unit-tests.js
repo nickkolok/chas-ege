@@ -619,4 +619,40 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Площадь и периметр многоугольника  (lib/figure.js)
+    // ============================================================
+    QUnit.module('polygonAreaAndPerimeter');
+
+    QUnit.test('Прямоугольник: площадь и периметр', function (assert) {
+        var r = geometry.polygonAreaAndPerimeter([[0,0],[4,0],[4,3],[0,3]]);
+        assert.equal(r.area, 12, 'S = 4·3 = 12');
+        assert.equal(r.perimeter, 14, 'P = 2·(4+3) = 14');
+    });
+
+    QUnit.test('Обход в другую сторону не меняет результат', function (assert) {
+        var cw = geometry.polygonAreaAndPerimeter([[0,0],[4,0],[4,3],[0,3]]);
+        var ccw = geometry.polygonAreaAndPerimeter([[0,3],[4,3],[4,0],[0,0]]);
+        assert.deepEqual(ccw, cw, 'площадь по модулю, периметр тот же');
+    });
+
+    QUnit.test('Невыпуклый L-образный многоугольник', function (assert) {
+        var r = geometry.polygonAreaAndPerimeter([[0,0],[3,0],[3,1],[1,1],[1,3],[0,3]]);
+        assert.equal(r.area, 5, 'S = 3·1 + 1·2 = 5');
+        assert.equal(r.perimeter, 12, 'P = 3+1+2+2+1+3 = 12');
+    });
+
+    QUnit.test('Ортогональный многоугольник: периметр = сумма |dx|+|dy|', function (assert) {
+        var profile = [[0,0],[5,0],[5,2],[2,2],[2,4],[0,4]];
+        var r = geometry.polygonAreaAndPerimeter(profile);
+        var l1 = 0;
+        for (var i = 0; i < profile.length; i++) {
+            var p = profile[i], q = profile[(i+1)%profile.length];
+            l1 += Math.abs(q[0]-p[0]) + Math.abs(q[1]-p[1]);
+        }
+        assert.equal(r.area, 14, 'S сечения');
+        assert.equal(r.perimeter, l1, 'для осевых рёбер евклидова длина = |dx|+|dy|');
+    });
+
 };
