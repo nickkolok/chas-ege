@@ -3,14 +3,18 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let a = 6 * sl(1, 4); // длина ребра куба (кратна 6, чтобы ответ был целым)
+		let a = sl(6, 24, 6); // длина ребра куба (кратна 6, чтобы ответ был целым)
 		let half = a / 2;
 
 		let letters = ['A', 'B', 'C', 'D', 'K', 'P'];
 		let bottom = ['A', 'B', 'C', 'D']; // нижние вершины по циклу
 		let edgeNames = ['AB', 'BC', 'CD', 'AD']; // ребро i соединяет bottom[i] и bottom[(i+1)%4]
 		let edgeHidden = [1, 1, 0, 0]; // рёбра AB и BC находятся на невидимых гранях
-		let corner = sl(3); // вершина, у которой берём середины выходящих рёбер
+		// Вершина, у которой берём середины выходящих рёбер. Вершина B при этом
+		// ракурсе невидима (обе её нижние рёбра AB и BC скрыты), и у неё вся пирамида
+		// рисовалась пунктиром поверх подписей - её не берём. Буквы всё равно
+		// переставляет variativeABC, так что на разнообразие текста это не влияет
+		let corner = slKrome((i) => edgeHidden[(i + 3) % 4] && edgeHidden[i], 0, 3);
 		let i1 = (corner + 3) % 4;
 		let i2 = corner;
 		let vrt = bottom[corner];
@@ -32,11 +36,15 @@
 			answers: vol,
 		});
 
-		NAtask.modifiers.variativeABC(letters);
+		// V в решении - обозначение объёма, а не вершина: её не переставляем
+		NAtask.modifiers.variativeABC(letters, { preserve: ['V'] });
+
+		let canvasWidth = 380;
+		let canvasHeight = 330;
 
 		NAtask.modifiers.addCanvasIllustration({
-			width: 380,
-			height: 330,
+			width: canvasWidth,
+			height: canvasHeight,
 			paint: function (ct) {
 				let cube = new Cube(a);
 				let vertices = cube.verticesOfFigure;
@@ -56,8 +64,8 @@
 				let maxX = Math.max.apply(null, vertex2D.map(point => point.x));
 				let minY = Math.min.apply(null, vertex2D.map(point => point.y));
 				let maxY = Math.max.apply(null, vertex2D.map(point => point.y));
-				let offsetX = 190 - (minX + maxX) / 2;
-				let offsetY = 165 - (minY + maxY) / 2;
+				let offsetX = canvasWidth / 2 - (minX + maxX) / 2;
+				let offsetY = canvasHeight / 2 - (minY + maxY) / 2;
 
 				vertex2D = vertex2D.map(function (point) {
 					return {
@@ -68,13 +76,6 @@
 
 				let bottomIndices = [0, 1, 2, 3];
 				let topIndices = [5, 6, 7, 4];
-				let midpoint3D = function (index1, index2) {
-					return {
-						x: (vertices[index1].x + vertices[index2].x) / 2,
-						y: (vertices[index1].y + vertices[index2].y) / 2,
-						z: (vertices[index1].z + vertices[index2].z) / 2,
-					};
-				};
 				let projectPoint = function (point) {
 					let projected = project3DTo2D(point, camera);
 					return {
@@ -83,8 +84,8 @@
 					};
 				};
 
-				let k3D = midpoint3D(bottomIndices[i1], bottomIndices[(i1 + 1) % 4]);
-				let p3D = midpoint3D(bottomIndices[i2], bottomIndices[(i2 + 1) % 4]);
+				let k3D = coordinatesMiddleOfSegment3D(vertices[bottomIndices[i1]], vertices[bottomIndices[(i1 + 1) % 4]]);
+				let p3D = coordinatesMiddleOfSegment3D(vertices[bottomIndices[i2]], vertices[bottomIndices[(i2 + 1) % 4]]);
 				let K = projectPoint(k3D);
 				let P = projectPoint(p3D);
 				let top = vertex2D[topIndices[corner]];
@@ -122,12 +123,32 @@
 				ct.fillKrug(P.x, P.y, 3);
 
 				let center = {
-					x: (minX + maxX) / 2 + offsetX,
-					y: (minY + maxY) / 2 + offsetY,
+					x: canvasWidth / 2,
+					y: canvasHeight / 2,
+				};
+				// Вершина, проекция которой лежит внутри контура куба (у этого ракурса -
+				// передняя верхняя), подписывается внутрь передней грани: снаружи
+				// её подпись ложилась на ребро верхней грани
+				let onHull = function (point) {
+					let others = vertex2D.filter((q) => q !== point);
+					// Точка - вершина выпуклой оболочки, если какая-то прямая через неё
+					// оставляет все остальные вершины по одну сторону
+					for (let t = 0; t < 72; t++) {
+						let nx = Math.cos(t * Math.PI / 36);
+						let ny = Math.sin(t * Math.PI / 36);
+						if (others.every((q) => (q.x - point.x) * nx + (q.y - point.y) * ny < -1e-6)) {
+							return true;
+						}
+					}
+					return false;
 				};
 				let put = function (point, letter, subscript) {
 					let dx = point.x < center.x ? -20 : 8;
 					let dy = point.y < center.y ? -8 : 18;
+					if (vertex2D.includes(point) && !onHull(point)) {
+						dx = 6;
+						dy = 24;
+					}
 					let x = point.x + dx;
 					let y = point.y + dy;
 
@@ -147,7 +168,7 @@
 			},
 		});
 
-		NAtask.modifiers.allDecimalsToStandard();
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 //14495555
