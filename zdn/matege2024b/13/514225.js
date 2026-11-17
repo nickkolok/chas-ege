@@ -38,7 +38,7 @@
 						h2 >= 0.2 * 0.2 * a2 && area <= 3000 :
 						h2 >= 0.35 * 0.35 * a2 && area <= 12000;
 					if (fits) {
-						triples.push({ halfBase: halfBase, apothem: apothem, edge: edge, h2: h2 });
+						triples.push({ halfBase: halfBase, apothem: apothem, edge: edge, h2: h2, area: area });
 					}
 				}
 			}
@@ -55,8 +55,8 @@
 			genAssert(H > 15, 'Слишком маленькая высота');
 		}
 
-		// Площадь боковой поверхности: n граней по a * apothem / 2
-		let S_bok = n * a * apothem / 2;
+		// Площадь боковой поверхности: n граней по a * apothem / 2 — посчитана при отборе тройки
+		let S_bok = t.area;
 
 		let text = triangular ?
 			'Стороны основания правильной треугольной пирамиды равны $' + a +
