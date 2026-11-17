@@ -1,7 +1,9 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-
+		let key = '27496';
+		let preference = ['sum', 'production', 'number', 'smallest', 'largest'];
+		let rand = getSelectedPreferenceFromList(key, preference);
 		NAtask.setTaskWithGraphOfFunctionDerivative({
 			authors: 'Суматохина Александра',
 			type: 'function',
@@ -16,7 +18,7 @@
 			questionsF: {
 				main: 'integer_points',
 				conditions: ['extreme_points_on_the_segment'],
-				variants: ['sum', 'production', 'number', 'smallest', 'largest'],
+				variants: [preference[rand]],
 			},
 			canvasSettings: {
 				height: 400,
@@ -35,6 +37,7 @@
 				int: 'yes',
 				tolerance: 0.2
 			},*/
+			preference: preference,
 		});
 	}, 10000);
 })();
