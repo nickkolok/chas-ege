@@ -39,7 +39,6 @@
 				height: h,
 				depth: d,
 				angle: angle,
-				strokeStyle: om.secondaryBrandColors.iz(),
 			}, [6, 8, 10], false, [5, 3]);
 		};
 
