@@ -161,6 +161,8 @@ else if(/целых точек?, в которых (производная фу�
  exp=agg(set,q)}
 else if(/параллельна прямой \$y=([^$]*x[^$]*)\$/.test(q)){kind='tangent-k';var eq=q.match(/\$y=([^$]*)\$/)[1].replace(/,/g,'.').replace(/−/g,'-');var km=eq.match(/([+-]?\d*\.?\d*)x/);var k=km[1]===''||km[1]==='+'?1:(km[1]==='-'?-1:+km[1]);
    var sol=zeros(function(x){return fprime(x)-k},minX+1e-6,maxX-1e-6).map(function(z){return z.x});set=sol;out.notes.push('k='+k);
+   // На выколотом конце значение f′ не должно быть близко к k: иначе не видно, есть ли там пересечение
+   if([minX,maxX].some(function(e){return Math.abs(fprime(e)-k)<0.5}))out.lint.push('значение f′ на конце графика близко к k');
    if(/абсциссу точки/.test(q)){exp=sol.length?Math.round(sol[0]):null;if(sol.length!==1)out.notes.push('НЕОДНОЗНАЧНО: решений '+sol.length);if(sol.some(function(x){return Math.abs(x-Math.round(x))>0.25}))out.notes.push('решение не целое')}
    else exp=agg(sol,q);
    amb=gext.some(function(e){return Math.abs(g(e.x)-k)<0.6})}

@@ -1050,6 +1050,11 @@ chas2.task = {
 						genAssert(answer[1].round() != 0, '0x не подходит');
 						let extY = extremumsY(painFunc, minX, maxX);
 						extY.forEach(elem => genAssert(Math.abs(elem - answer[1].round()) > 1, 'Точки пересечения невозможно понять'));
+						// Если значение на выколотом конце близко к угловому коэффициенту, по рисунку
+						// не понять, пересекает ли график прямую y = k до конца. Порог 0,5 — тот же,
+						// что createSpline требует для нулей на концах графика производной.
+						[minX, maxX].forEach(end => genAssert(Math.abs(painFunc(end) - answer[1].round()) >= 0.5,
+							'Значение производной на конце графика близко к угловому коэффициенту'));
 						find = `касательная к графику ${functionsFx} параллельна `;
 						find += `прямой $y=${[+slKrome((c) => Math.abs(c) < 1e-9, -20, 20, 0.1), answer[1].round() + 'x'].shuffleJoin('+').plusminus()}$`;
 						find += ` или совпадает с ней`;
