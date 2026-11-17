@@ -505,16 +505,52 @@ chas2.task = {
 	},
 
 	/** @function NApi.task.setTaskWithGraphOfFunctionDerivative
- * На рисунке изображён график производной/функции
- * @param {String} type derivative or function
- * @param {Object} boundariesOfGraph {minX, maxX, minY, maxY}
- * @param {Object} subBoundaries {minX, maxX}
- * @param {Object} canvasSettings {height, width, scale, }
- * @param {Object} questionsF {main: integer_points || point || interval || marked_points, variants, conditions};
- *   variants и conditions — непустые массивы, из них берётся случайный элемент
- * @param {Boolean} extremumsIsInteger
- * @param {Boolean} rootsIsInteger
- */
+	 * Задание по рисунку: график функции y = f(x) или её производной y = f'(x),
+	 * построенный случайным сплайном (createSpline из lib/math_functions.js).
+	 * Ответ вычисляется по построенному графику; задача отбраковывается (genAssert),
+	 * если ответ нельзя однозначно прочитать с рисунка, — поэтому функцию вызывают
+	 * внутри retryWhileError.
+	 * Правило чтения: особенность графика (корень, экстремум) ближе 0,2 к целой точке
+	 * считается лежащей в ней; дальше 0,3 — нецелой; промежуточное отбраковывается.
+	 *
+	 * @param {String} o.type 'function' — нарисован график f(x); 'derivative' — график f'(x)
+	 * @param {Boolean} [o.definedOnInterval=true] писать «определённой на интервале (minX; maxX)»
+	 *   и рисовать выколотые концы графика
+	 * @param {Object} o.boundariesOfGraph границы графика: {minX, maxX, minY, maxY, stepForX = 3, stepForY = 1};
+	 *   minX, maxX — концы интервала определения; minY, maxY — график не выходит за них;
+	 *   stepForX — шаг узлов сплайна по x (узлы через stepForX / 2: чем больше, тем реже экстремумы);
+	 *   stepForY — шаг случайных значений в узлах
+	 * @param {Object} o.canvasSettings настройки рисунка (обязателен, можно {}):
+	 *   {height = 400, width = 500, scale = 20, step = 0.01, font, lineWidth = 0.1, lineDash = [4, 2],
+	 *   singleSegmentX = 1, singleSegmentY = 1, monotoneFunction = false, markedPoints};
+	 *   monotoneFunction — строить монотонную функцию;
+	 *   markedPoints — отмеченные точки для main: 'marked_points':
+	 *   {type: 'symbol' (подписи x₁, x₂, …) | 'number' (подписи числами), step = 2 — шаг между точками,
+	 *   numberOfPoints: {min, max}, fontMarkedPoints, lineWidthMarkedPoints}; по умолчанию type выбирается случайно
+	 * @param {Object} o.questionsF вопрос: {main, conditions, variants};
+	 *   conditions и variants — непустые массивы, из каждого берётся случайный элемент.
+	 *   main — что ищется: 'integer_points' (точки: сумма, произведение, количество, наибольшая, наименьшая),
+	 *   'point' (одна точка), 'interval' (длина интервала), 'marked_points' (среди отмеченных точек).
+	 *   Допустимые сочетания type, main, conditions и variants перечислены в начале функции
+	 *   (константа supported); неподдерживаемое сочетание — Error.
+	 *   variants: 'sum', 'production', 'number', 'largest', 'smallest' — для множества точек;
+	 *   'empty' — найти точку; 'abscissa' — найти абсциссу точки;
+	 *   'smallest_value', 'largest_value' — точка наименьшего (наибольшего) значения на отрезке;
+	 *   для 'interval' — 'largest', 'smallest' (наибольший или наименьший по длине интервал).
+	 *   Для conditions 'derivative_is_largest' и 'derivative_is_smallest' нужны markedPoints.type: 'number'
+	 * @param {Object} [o.numberOfExtremes={min: 0, max: 1000}] сколько экстремумов у нарисованного графика
+	 * @param {Object} [o.numberOfRoots={min: 0, max: 1000}] сколько нулей у нарисованного графика
+	 * @param {Number} [o.minimumDifferenceBetweenExtremes=1] наименьшая разность значений соседних экстремумов
+	 *   нарисованного графика (и крайних экстремумов со значениями на концах)
+	 * @param {Object} [o.extremumsIsInteger={int: 'no_matter', tolerance: 0.2}] абсциссы экстремумов нарисованного
+	 *   графика: int: 'yes' — отличаются от целого не более чем на tolerance, 'no' — не менее, 'no_matter' — любые
+	 * @param {Object} [o.rootsIsInteger={int: 'no_matter', tolerance: 0.2}] то же для нулей нарисованного графика
+	 * @param {Number} [o.derivativeScale=2] множитель графика производной (type: 'derivative'): по умолчанию
+	 *   рисуется удвоенная производная сплайна, чтобы график был выше; на ответы не влияет
+	 * @param {Array} [o.preference] передаётся в setTask, как и остальные поля o (authors и т. п.)
+	 * @throws {Error} если не задан boundariesOfGraph, canvasSettings или questionsF, пусты conditions
+	 *   или variants, или сочетание настроек не поддерживается
+	 */
 	setTaskWithGraphOfFunctionDerivative: function (o) {
 		// Без этих объектов деструктуризация ниже падала с непонятным TypeError
 		if (!o || typeof o !== 'object') {
