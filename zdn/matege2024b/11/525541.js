@@ -39,7 +39,7 @@
 		// ответ от выбора признака не зависит
 		// Признак сравнения - не тот, о котором спрашивают («Сколько вершин ...
 		// с меньшим числом вершин?» у ФИПИ не бывает)
-		let criterion = ['ribs', 'vertices', 'facets'].filter((c) => c !== question).iz();
+		let criterion = preferenceQuestion.filter((c) => c !== question).iz();
 
 		let data = {
 			cube: {
@@ -80,7 +80,7 @@
 			}
 		};
 
-		['ribs', 'vertices', 'facets'].forEach(function (c) {
+		preferenceQuestion.forEach(function (c) {
 			genAssert(data[solid].larger[c] > data[solid].smaller[c], 'Части должны различаться по каждому признаку');
 		});
 
