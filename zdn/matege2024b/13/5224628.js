@@ -62,9 +62,10 @@
 				[dx, dy + height], [0, height], [width, height], [dx + width, dy + height],
 				[dx, dy], [0, 0], [width, 0], [dx + width, dy],
 			];
-			let s = Math.min(300 / (width + dx), 240 / (height + dy));
-			let originX = 200 - s * (width + dx) / 2;
-			let originY = 160 + s * (height + dy) / 2;
+			let canvasWidth = ct.canvas.width, canvasHeight = ct.canvas.height;
+			let s = Math.min((canvasWidth - 100) / (width + dx), (canvasHeight - 80) / (height + dy));
+			let originX = canvasWidth / 2 - s * (width + dx) / 2;
+			let originY = canvasHeight / 2 + s * (height + dy) / 2;
 
 			ct.save();
 			ct.translate(originX, originY);
