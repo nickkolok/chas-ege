@@ -38,7 +38,7 @@
 						h2 >= 0.2 * 0.2 * a2 && area <= 3000 :
 						h2 >= 0.35 * 0.35 * a2 && area <= 12000;
 					if (fits) {
-						triples.push({ halfBase: halfBase, apothem: apothem, edge: edge });
+						triples.push({ halfBase: halfBase, apothem: apothem, edge: edge, h2: h2 });
 					}
 				}
 			}
@@ -49,8 +49,8 @@
 		let l = t.edge;          // боковое ребро
 		let apothem = t.apothem; // целая по построению: берём из тройки, а не из геттера
 
-		// Высота пирамиды: H = sqrt(l^2 - R^2)
-		let H = Math.sqrt(l * l - (triangular ? a * a / 3 : a * a));
+		// Высота пирамиды: H^2 = l^2 - R^2 уже посчитан при отборе тройки
+		let H = Math.sqrt(t.h2);
 		if (!triangular) {
 			genAssert(H > 15, 'Слишком маленькая высота');
 		}
