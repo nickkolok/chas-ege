@@ -73,13 +73,6 @@
 
 				let bottomIndices = [0, 1, 2, 3];
 				let topIndices = [5, 6, 7, 4];
-				let midpoint3D = function (index1, index2) {
-					return {
-						x: (vertices[index1].x + vertices[index2].x) / 2,
-						y: (vertices[index1].y + vertices[index2].y) / 2,
-						z: (vertices[index1].z + vertices[index2].z) / 2,
-					};
-				};
 				let projectPoint = function (point) {
 					let projected = project3DTo2D(point, camera);
 					return {
@@ -88,8 +81,8 @@
 					};
 				};
 
-				let k3D = midpoint3D(bottomIndices[i1], bottomIndices[(i1 + 1) % 4]);
-				let p3D = midpoint3D(bottomIndices[i2], bottomIndices[(i2 + 1) % 4]);
+				let k3D = coordinatesMiddleOfSegment3D(vertices[bottomIndices[i1]], vertices[bottomIndices[(i1 + 1) % 4]]);
+				let p3D = coordinatesMiddleOfSegment3D(vertices[bottomIndices[i2]], vertices[bottomIndices[(i2 + 1) % 4]]);
 				let K = projectPoint(k3D);
 				let P = projectPoint(p3D);
 				let top = vertex2D[topIndices[corner]];
