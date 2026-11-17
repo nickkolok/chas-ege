@@ -3,7 +3,7 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let a = 6 * sl(1, 4); // длина ребра куба (кратна 6, чтобы ответ был целым)
+		let a = sl(6, 24, 6); // длина ребра куба (кратна 6, чтобы ответ был целым)
 		let half = a / 2;
 
 		let letters = ['A', 'B', 'C', 'D', 'K', 'P'];
