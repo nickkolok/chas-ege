@@ -619,4 +619,40 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Canvas: подпись вершины с индексом  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawVertexLabel');
+
+    QUnit.test('ctx.drawVertexLabel рисует букву и подстрочный индекс', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawVertexLabel === 'function', 'метод drawVertexLabel определён');
+        var calls = [];
+        var ctx = {
+            font: '',
+            fillText: function (text, x, y) {
+                calls.push({ text: text, x: x, y: y, font: this.font });
+            },
+        };
+        CanvasRenderingContext2D.prototype.drawVertexLabel.call(ctx, 100, 50, 'A', '1');
+        assert.equal(calls.length, 2, 'буква и индекс - два вызова');
+        assert.deepEqual(calls[0], { text: 'A', x: 100, y: 50, font: '20px liberation_sans' }, 'буква в точке (100, 50)');
+        assert.deepEqual(calls[1], { text: '1', x: 113, y: 55, font: '14px liberation_sans' }, 'индекс со смещением (13, 5) меньшим шрифтом');
+    });
+
+    QUnit.test('ctx.drawVertexLabel без индекса рисует только букву', function (assert) {
+        var calls = [];
+        var ctx = {
+            font: '',
+            fillText: function (text, x, y) {
+                calls.push({ text: text, x: x, y: y, font: this.font });
+            },
+        };
+        CanvasRenderingContext2D.prototype.drawVertexLabel.call(ctx, 10, 20, 'B', '');
+        CanvasRenderingContext2D.prototype.drawVertexLabel.call(ctx, 30, 40, 'C');
+        assert.equal(calls.length, 2, 'по одному вызову на вершину');
+        assert.equal(calls[0].text, 'B', 'пустой индекс не рисуется');
+        assert.equal(calls[1].text, 'C', 'отсутствующий индекс не рисуется');
+    });
+
 };
