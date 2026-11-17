@@ -73,11 +73,12 @@
 		let paint = function (ct) {
 			let w = ct.canvas.width;
 			let h = ct.canvas.height;
+			let ellipseK = 0.28; // сплюснутость эллипса основания в перспективе
 			let R = 0.36 * w;
-			let ry = 0.28 * R;
+			let ry = ellipseK * R;
 			let H = Math.min(R * Math.sqrt(3), h - 2 * ry - 24);
 			R = H / Math.sqrt(3);
-			ry = 0.28 * R;
+			ry = ellipseK * R;
 			let cx = w / 2;
 			let apexY = (h - H - ry) / 2;
 			let baseY = apexY + H;
