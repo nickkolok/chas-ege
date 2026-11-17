@@ -712,4 +712,52 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(only(bare, 'stroke').length, 2, 'стрелки две');
     });
 
+
+    // ============================================================
+    //  Конус  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Конус (drawCone)');
+
+    QUnit.test('drawCone: контурные образующие, основание и секущая окружность', function (assert) {
+        var ctx = canvasLog();
+        ctx.drawCone({ cx: 130, apexY: 30, baseY: 240, r: 75, ry: 20, t: 0.5 });
+        var ellipses = only(ctx, 'ellipse');
+        assert.equal(ellipses.length, 4, 'по две половины основания и секущей окружности');
+        assert.deepEqual(ellipses[0].slice(1), [130, 240, 75, 20, 0, 0, Math.PI, false], 'ближняя половина основания сплошная');
+        assert.deepEqual(ellipses[1].slice(6), [Math.PI, 2 * Math.PI, false], 'дальняя половина основания');
+        assert.deepEqual(ellipses[2].slice(1), [130, 135, 37.5, 10, 0, 0, Math.PI, false], 'секущая окружность подобна основанию с коэффициентом t');
+        assert.deepEqual(only(ctx, 'moveTo'), [['moveTo', 130, 30], ['moveTo', 130, 30]], 'обе образующие из вершины');
+        assert.deepEqual(only(ctx, 'lineTo'), [['lineTo', 55, 240], ['lineTo', 205, 240]], 'в крайние точки основания');
+        assert.equal(only(ctx, 'fill').length, 0, 'без fillBelowSection заливки нет');
+        assert.deepEqual(only(ctx, 'setLineDash'),
+            [['setLineDash', [6, 4]], ['setLineDash', []], ['setLineDash', [6, 4]], ['setLineDash', []]],
+            'пунктир включается только на дальних половинах и сбрасывается');
+    });
+
+    QUnit.test('drawCone: заливка одним контуром и пунктирная ось', function (assert) {
+        var ctx = canvasLog();
+        ctx.fillStyle = '#123456';
+        ctx.drawCone({ cx: 130, apexY: 30, baseY: 240, r: 75, ry: 20, t: 0.5, fillBelowSection: true, fillColor: '#abcdef', axis: true });
+        assert.equal(only(ctx, 'fill').length, 1, 'часть поверхности залита ровно один раз');
+        assert.equal(ctx.fillStyle, '#123456', 'fillStyle после рисования не изменился');
+        var ellipses = only(ctx, 'ellipse');
+        assert.equal(ellipses.length, 6, 'две дуги контура заливки и по две половины основания и секущей окружности');
+        assert.deepEqual(ellipses[0].slice(1), [130, 240, 75, 20, 0, Math.PI, 0, true], 'контур идёт по ближней половине основания');
+        assert.deepEqual(ellipses[1].slice(1), [130, 135, 37.5, 10, 0, 0, Math.PI, false], 'и по ближней половине секущей окружности');
+        assert.deepEqual(only(ctx, 'moveTo')[0], ['moveTo', 92.5, 135], 'контур начинается у секущей окружности');
+        assert.deepEqual(only(ctx, 'lineTo').slice(0, 2), [['lineTo', 55, 240], ['lineTo', 167.5, 135]], 'к основанию и обратно к секущей окружности');
+        assert.deepEqual(only(ctx, 'lineTo').slice(-1), [['lineTo', 130, 240]], 'ось доведена до центра основания');
+        assert.equal(only(ctx, 'stroke').length, 7, 'две образующие, четыре половины эллипсов и ось');
+    });
+
+    QUnit.test('drawCone: без секущей окружности и свои штрихи пунктира', function (assert) {
+        var ctx = canvasLog();
+        ctx.drawCone({ cx: 0, apexY: -100, baseY: 100, r: 50, dash: [7, 5] });
+        var ellipses = only(ctx, 'ellipse');
+        assert.equal(ellipses.length, 2, 'только основание');
+        assert.deepEqual(ellipses[0].slice(1, 5), [0, 100, 50, 0.28 * 50], 'ry по умолчанию 0.28*r');
+        assert.deepEqual(only(ctx, 'setLineDash')[0], ['setLineDash', [7, 5]], 'штрихи переданы как есть');
+        assert.equal(only(ctx, 'stroke').length, 4, 'две образующие и две половины основания, оси нет');
+    });
+
 };
