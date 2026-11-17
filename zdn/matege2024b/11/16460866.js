@@ -90,8 +90,8 @@
 			let bx = cx + R * Math.cos(phi);
 			let by = baseY + ry * Math.sin(phi);
 			// Точка смены цвета и окружность смены цвета на поверхности
-			let px = cx + t * (bx - cx);
-			let py = apexY + t * (by - apexY);
+			let px = cx.proporMezhdu(bx, t);
+			let py = apexY.proporMezhdu(by, t);
 			let cy = apexY + t * H;
 			let cr = t * R, cry = t * ry;
 
