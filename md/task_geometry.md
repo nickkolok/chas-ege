@@ -62,6 +62,56 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+## Сосуды, тела вращения и размерные стрелки
+
+Цилиндрический сосуд (бак, стакан, кружку) не нужно рисовать по дугам вручную:
+
+* `ctx.drawCylinderVessel({cx, yTop, yBottom, r, ry, liquidY, strokeStyle, liquidColor, dash})` -
+  сосуд с открытым верхом: ободок, стенки и дно; если задан `liquidY`, ещё и жидкость
+  до этого уровня. Жидкость заливается одним контуром, чтобы полупрозрачный цвет
+  нигде не накладывался сам на себя;
+* `ctx.drawCone({cx, apexY, baseY, r, ry, t, fillBelowSection, fillColor, strokeStyle, dash, axis})` -
+  конус с вершиной сверху: контурные образующие, основание и, если задана доля `t`,
+  секущая окружность на боковой поверхности (подобие с коэффициентом `t` от вершины).
+  При `fillBelowSection: true` часть поверхности между секущей окружностью и основанием
+  закрашивается одним контуром, `axis: true` добавляет пунктирную ось;
+* `ctx.drawEllipseWithHiddenHalf(x, y, radiusX, radiusY, dash, yUp)` - эллипс в перспективе:
+  ближняя половина сплошная, дальняя пунктиром. Отдельная функция, потому что так
+  рисуются и дно, и поверхность жидкости, и любое другое основание тела вращения.
+  Если ось Y перевёрнута (`ctx.scale(1, -1)`), передайте `yUp: true`;
+* `ctx.drawDimensionArrow(x, y1, y2, letter, letterGap)` - вертикальная размерная стрелка
+  с наконечниками с обоих концов и обозначением размера (`h` и т.п.) справа от середины.
+
+```js
+let edgeColor = om.secondaryBrandColors.iz();
+ct.lineWidth = 2;
+ct.strokeStyle = edgeColor;
+ct.fillStyle = edgeColor;
+ct.drawCylinderVessel({
+	cx: 170, yTop: 40, yBottom: 255, r: 75,
+	liquidY: 137, liquidColor: om.transparentBrandColors.iz(),
+});
+ct.drawDimensionArrow(170 + 75 + 25, 255, 137, 'h');
+```
+
+Конус с секущей окружностью (например, границей двух цветов на образующей):
+
+```js
+	ct.drawCone({
+		cx: 130, apexY: 30, baseY: 240, r: 75,
+		t: 0.5, fillBelowSection: true, axis: true,
+		strokeStyle: edgeColor, fillColor: om.transparentBrandColors.iz(),
+	});
+```
+
+Ручной набор того же чертежа - `zdn/matege2024b/11/16460866.js` и `508394.js`.
+В `508394.js` конус вершиной вниз, а образующие проведены в точки касания эллипса;
+этот вариант `drawCone` пока не покрывает.
+
+В `drawCylinderVessel`, `drawCone` и `drawDimensionArrow` ось Y направлена вниз, как на холсте
+без `ctx.scale(1, -1)`. Радиус и уровень жидкости здесь - величины чертежа, а не
+данные задачи: если они уже есть у объекта (например, у `Cylinder` из `lib/figure.js`),
+в `paint` их дублировать не нужно.
 ## Примеры
 
 ### Планиметрия

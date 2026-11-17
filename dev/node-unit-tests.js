@@ -619,4 +619,145 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Сосуд-цилиндр и размерная стрелка  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Сосуд-цилиндр (drawEllipseWithHiddenHalf, drawCylinderVessel, drawDimensionArrow)');
+
+    // В Node.js CanvasRenderingContext2D - заглушка (см. run-node-tests.js),
+    // поэтому низкоуровневые вызовы пишем в журнал, а рисуем методами прототипа.
+    var canvasLog = function () {
+        var ctx = Object.create(CanvasRenderingContext2D.prototype);
+        ctx.log = [];
+        ['beginPath', 'moveTo', 'lineTo', 'ellipse', 'arc', 'stroke', 'fill', 'closePath', 'setLineDash', 'fillText'].forEach(function (name) {
+            ctx[name] = function () {
+                ctx.log.push([name].concat(Array.prototype.slice.call(arguments)));
+            };
+        });
+        ctx.canvas = { width: 400, height: 300 };
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'start';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = '#000000';
+        return ctx;
+    };
+    var only = function (ctx, name) {
+        return ctx.log.filter(function (call) { return call[0] === name; });
+    };
+
+    QUnit.test('drawEllipseWithHiddenHalf: ближняя половина сплошная, дальняя пунктиром', function (assert) {
+        var ctx = canvasLog();
+        ctx.drawEllipseWithHiddenHalf(170, 255, 75, 19);
+        var ellipses = only(ctx, 'ellipse');
+        assert.equal(ellipses.length, 2, 'эллипс нарисован двумя половинами');
+        assert.deepEqual(ellipses[0].slice(1, 5), [170, 255, 75, 19], 'центр и полуоси');
+        assert.deepEqual(ellipses[0].slice(6), [0, Math.PI, false], 'видимая половина 0..PI');
+        assert.deepEqual(ellipses[1].slice(6), [Math.PI, 2 * Math.PI, false], 'невидимая половина PI..2PI');
+        assert.deepEqual(only(ctx, 'setLineDash'), [['setLineDash', [6, 4]], ['setLineDash', []]], 'пунктир только на второй половине');
+        assert.deepEqual(ctx.log.map(function (call) { return call[0]; }),
+            ['beginPath', 'ellipse', 'stroke', 'closePath', 'setLineDash',
+                'beginPath', 'ellipse', 'stroke', 'closePath', 'setLineDash'],
+            'сплошная половина обведена до включения пунктира, пунктир выключен в конце');
+    });
+
+    QUnit.test('drawEllipseWithHiddenHalf: ось Y вверх и свой пунктир', function (assert) {
+        var ctx = canvasLog();
+        ctx.drawEllipseWithHiddenHalf(0, 0, 10, 3, [7, 5], true);
+        var ellipses = only(ctx, 'ellipse');
+        assert.deepEqual(ellipses[0].slice(6), [Math.PI, 2 * Math.PI, false], 'видимая половина PI..2PI');
+        assert.deepEqual(ellipses[1].slice(6), [2 * Math.PI, 3 * Math.PI, false], 'невидимая - оставшаяся половина оборота');
+        assert.deepEqual(only(ctx, 'setLineDash')[0], ['setLineDash', [7, 5]], 'штрихи пунктира переданы как есть');
+    });
+
+    QUnit.test('drawCylinderVessel: жидкость одним контуром, ободок, стенки, дно и поверхность', function (assert) {
+        var ctx = canvasLog();
+        ctx.fillStyle = '#123456';
+        ctx.drawCylinderVessel({ cx: 170, yTop: 40, yBottom: 255, r: 75, liquidY: 137, liquidColor: '#abcdef' });
+        assert.equal(only(ctx, 'fill').length, 1, 'жидкость залита ровно один раз');
+        assert.equal(ctx.fillStyle, '#123456', 'fillStyle после рисования не изменился');
+        var ellipses = only(ctx, 'ellipse');
+        assert.equal(ellipses.length, 7, 'две дуги контура жидкости, ободок и по две половины дна и поверхности');
+        assert.deepEqual(ellipses[0].slice(1), [170, 255, 75, 18.75, 0, Math.PI, 0, true], 'контур идёт по ближней половине дна');
+        assert.deepEqual(ellipses[1].slice(1), [170, 137, 75, 18.75, 0, 0, Math.PI, true], 'и по дальней половине поверхности');
+        assert.deepEqual(ellipses[2].slice(1), [170, 40, 75, 18.75, 0, 0, 2 * Math.PI, false], 'ободок целиком, ry по умолчанию 0.25*r');
+        assert.deepEqual(only(ctx, 'moveTo').slice(1), [['moveTo', 95, 40], ['moveTo', 245, 40]], 'стенки начинаются у ободка');
+        assert.deepEqual(only(ctx, 'lineTo').slice(2), [['lineTo', 95, 255], ['lineTo', 245, 255]], 'и заканчиваются у дна');
+    });
+
+    QUnit.test('drawCylinderVessel: без уровня жидкости сосуд пустой', function (assert) {
+        var ctx = canvasLog();
+        ctx.drawCylinderVessel({ cx: 0, yTop: -100, yBottom: 100, r: 50, ry: 15 });
+        assert.equal(only(ctx, 'fill').length, 0, 'заливки нет');
+        var ellipses = only(ctx, 'ellipse');
+        assert.equal(ellipses.length, 3, 'ободок и две половины дна');
+        assert.deepEqual(ellipses[0].slice(1, 5), [0, -100, 50, 15], 'свои полуоси');
+    });
+
+    QUnit.test('drawDimensionArrow: два наконечника и буква справа от середины', function (assert) {
+        var ctx = canvasLog();
+        ctx.drawDimensionArrow(270, 255, 137, 'h');
+        assert.deepEqual(only(ctx, 'moveTo')[0], ['moveTo', 270, 255], 'первая стрелка от дна');
+        assert.deepEqual(only(ctx, 'lineTo')[0], ['lineTo', 270, 137], 'к поверхности жидкости');
+        assert.ok(only(ctx, 'moveTo').some(function (call) { return call[1] === 270 && call[2] === 137; }),
+            'вторая стрелка начинается у поверхности: наконечники с обоих концов');
+        assert.deepEqual(only(ctx, 'fillText'), [['fillText', 'h', 278, 196]], 'буква справа от стрелки, на середине отрезка');
+        assert.equal(ctx.font, '10px sans-serif', 'шрифт восстановлен');
+        assert.equal(ctx.textAlign, 'start', 'textAlign восстановлен');
+        assert.equal(ctx.textBaseline, 'alphabetic', 'textBaseline восстановлен');
+
+        var bare = canvasLog();
+        bare.drawDimensionArrow(10, 0, 100);
+        assert.equal(only(bare, 'fillText').length, 0, 'без обозначения буквы нет');
+        assert.equal(only(bare, 'stroke').length, 2, 'стрелки две');
+    });
+
+
+    // ============================================================
+    //  Конус  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Конус (drawCone)');
+
+    QUnit.test('drawCone: контурные образующие, основание и секущая окружность', function (assert) {
+        var ctx = canvasLog();
+        ctx.drawCone({ cx: 130, apexY: 30, baseY: 240, r: 75, ry: 20, t: 0.5 });
+        var ellipses = only(ctx, 'ellipse');
+        assert.equal(ellipses.length, 4, 'по две половины основания и секущей окружности');
+        assert.deepEqual(ellipses[0].slice(1), [130, 240, 75, 20, 0, 0, Math.PI, false], 'ближняя половина основания сплошная');
+        assert.deepEqual(ellipses[1].slice(6), [Math.PI, 2 * Math.PI, false], 'дальняя половина основания');
+        assert.deepEqual(ellipses[2].slice(1), [130, 135, 37.5, 10, 0, 0, Math.PI, false], 'секущая окружность подобна основанию с коэффициентом t');
+        assert.deepEqual(only(ctx, 'moveTo'), [['moveTo', 130, 30], ['moveTo', 130, 30]], 'обе образующие из вершины');
+        assert.deepEqual(only(ctx, 'lineTo'), [['lineTo', 55, 240], ['lineTo', 205, 240]], 'в крайние точки основания');
+        assert.equal(only(ctx, 'fill').length, 0, 'без fillBelowSection заливки нет');
+        assert.deepEqual(only(ctx, 'setLineDash'),
+            [['setLineDash', [6, 4]], ['setLineDash', []], ['setLineDash', [6, 4]], ['setLineDash', []]],
+            'пунктир включается только на дальних половинах и сбрасывается');
+    });
+
+    QUnit.test('drawCone: заливка одним контуром и пунктирная ось', function (assert) {
+        var ctx = canvasLog();
+        ctx.fillStyle = '#123456';
+        ctx.drawCone({ cx: 130, apexY: 30, baseY: 240, r: 75, ry: 20, t: 0.5, fillBelowSection: true, fillColor: '#abcdef', axis: true });
+        assert.equal(only(ctx, 'fill').length, 1, 'часть поверхности залита ровно один раз');
+        assert.equal(ctx.fillStyle, '#123456', 'fillStyle после рисования не изменился');
+        var ellipses = only(ctx, 'ellipse');
+        assert.equal(ellipses.length, 6, 'две дуги контура заливки и по две половины основания и секущей окружности');
+        assert.deepEqual(ellipses[0].slice(1), [130, 240, 75, 20, 0, Math.PI, 0, true], 'контур идёт по ближней половине основания');
+        assert.deepEqual(ellipses[1].slice(1), [130, 135, 37.5, 10, 0, 0, Math.PI, false], 'и по ближней половине секущей окружности');
+        assert.deepEqual(only(ctx, 'moveTo')[0], ['moveTo', 92.5, 135], 'контур начинается у секущей окружности');
+        assert.deepEqual(only(ctx, 'lineTo').slice(0, 2), [['lineTo', 55, 240], ['lineTo', 167.5, 135]], 'к основанию и обратно к секущей окружности');
+        assert.deepEqual(only(ctx, 'lineTo').slice(-1), [['lineTo', 130, 240]], 'ось доведена до центра основания');
+        assert.equal(only(ctx, 'stroke').length, 7, 'две образующие, четыре половины эллипсов и ось');
+    });
+
+    QUnit.test('drawCone: без секущей окружности и свои штрихи пунктира', function (assert) {
+        var ctx = canvasLog();
+        ctx.drawCone({ cx: 0, apexY: -100, baseY: 100, r: 50, dash: [7, 5] });
+        var ellipses = only(ctx, 'ellipse');
+        assert.equal(ellipses.length, 2, 'только основание');
+        assert.deepEqual(ellipses[0].slice(1, 5), [0, 100, 50, 0.28 * 50], 'ry по умолчанию 0.28*r');
+        assert.deepEqual(only(ctx, 'setLineDash')[0], ['setLineDash', [7, 5]], 'штрихи переданы как есть');
+        assert.equal(only(ctx, 'stroke').length, 4, 'две образующие и две половины основания, оси нет');
+    });
+
 };
