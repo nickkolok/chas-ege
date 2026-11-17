@@ -14,7 +14,7 @@
 		// ракурсе невидима (обе её нижние рёбра AB и BC скрыты), и у неё вся пирамида
 		// рисовалась пунктиром поверх подписей - её не берём. Буквы всё равно
 		// переставляет variativeABC, так что на разнообразие текста это не влияет
-		let corner = [0, 2, 3].iz();
+		let corner = slKrome((i) => edgeHidden[(i + 3) % 4] && edgeHidden[i], 0, 3);
 		let i1 = (corner + 3) % 4;
 		let i2 = corner;
 		let vrt = bottom[corner];
