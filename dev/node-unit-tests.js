@@ -619,4 +619,59 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+    // ============================================================
+    //  Canvas: рисование шара  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawSphere');
+
+    QUnit.test('ctx.drawSphere рисует контур, экватор и пунктирный радиус через библиотечные вызовы', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawSphere === 'function', 'метод drawSphere определён');
+        var calls = [];
+        var ctx = {
+            drawCircle: function () { calls.push(['drawCircle'].concat(Array.prototype.slice.call(arguments))); },
+            drawEllipse: function () { calls.push(['drawEllipse'].concat(Array.prototype.slice.call(arguments))); },
+            drawLine: function () { calls.push(['drawLine'].concat(Array.prototype.slice.call(arguments))); },
+            setLineDash: function () { calls.push(['setLineDash'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        CanvasRenderingContext2D.prototype.drawSphere.call(ctx, 10, -5, 40);
+        assert.deepEqual(calls[0], ['drawCircle', 10, -5, 40], 'контур: drawCircle(cx, cy, radius)');
+        assert.deepEqual(calls[1], ['drawEllipse', 10, -5, 40, 40 * 0.28], 'экватор: drawEllipse(cx, cy, R, R*flat)');
+        assert.deepEqual(calls[2], ['setLineDash', [5, 4]], 'перед радиусом включается пунктир');
+        var end = calls[3];
+        assert.equal(end[0], 'drawLine', 'радиус рисуется drawLine');
+        assert.equal(end[1], 10, 'радиус из центра cx');
+        assert.equal(end[2], -5, 'радиус из центра cy');
+        assert.ok(Math.abs(end[3] - (10 + Math.cos(Math.PI / 4) * 40)) < 1e-9, 'кончик радиуса по X на экваторе');
+        assert.ok(Math.abs(end[4] - (-5 + Math.sin(Math.PI / 4) * 40 * 0.28)) < 1e-9, 'кончик радиуса по Y на экваторе');
+        assert.deepEqual(calls[4], ['setLineDash', []], 'после радиуса пунктир сбрасывается');
+        assert.equal(calls.length, 5, 'ровно пять вызовов: контур, экватор, пунктир, радиус, сброс');
+    });
+
+    QUnit.test('ctx.drawSphere с hiddenHalf/diameter/centerDot рисует экватор половинами, диаметр и точку-центра', function (assert) {
+        var calls = [];
+        var ctx = {
+            drawCircle: function () { calls.push(['drawCircle'].concat(Array.prototype.slice.call(arguments))); },
+            drawEllipse: function () { calls.push(['drawEllipse'].concat(Array.prototype.slice.call(arguments))); },
+            drawLine: function () { calls.push(['drawLine'].concat(Array.prototype.slice.call(arguments))); },
+            setLineDash: function () { calls.push(['setLineDash'].concat(Array.prototype.slice.call(arguments))); },
+            fillKrug: function () { calls.push(['fillKrug'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        var flat = 0.3, angle = 0.65 * Math.PI, r = 50, cx = 100, cy = 110, ry = r * flat;
+        CanvasRenderingContext2D.prototype.drawSphere.call(ctx, cx, cy, r, {
+            flat: flat, radiusAngle: angle, dash: [6, 4], hiddenHalf: true, diameter: true, centerDot: 2.5,
+        });
+        assert.deepEqual(calls[0], ['drawCircle', cx, cy, r], 'контур: drawCircle(cx, cy, radius)');
+        assert.deepEqual(calls[1], ['drawEllipse', cx, cy, r, ry, 0, 0, Math.PI], 'экватор: ближняя половина сплошная');
+        assert.deepEqual(calls[2], ['setLineDash', [6, 4]], 'перед дальней половиной включается пунктир');
+        assert.deepEqual(calls[3], ['drawEllipse', cx, cy, r, ry, 0, Math.PI, 2 * Math.PI], 'экватор: дальняя половина пунктиром');
+        var d = calls[4];
+        assert.equal(d[0], 'drawLine', 'диаметр рисуется drawLine');
+        var dx = Math.cos(angle) * r, dy = Math.sin(angle) * ry;
+        assert.ok(Math.abs(d[1] - (cx + dx)) < 1e-9 && Math.abs(d[2] - (cy + dy)) < 1e-9, 'один конец диаметра на экваторе');
+        assert.ok(Math.abs(d[3] - (cx - dx)) < 1e-9 && Math.abs(d[4] - (cy - dy)) < 1e-9, 'второй конец диаметра симметричен относительно центра');
+        assert.deepEqual(calls[5], ['setLineDash', []], 'после диаметра пунктир сбрасывается');
+        assert.deepEqual(calls[6], ['fillKrug', cx, cy, 2.5], 'точка-центра fillKrug(cx, cy, centerDot)');
+        assert.equal(calls.length, 7, 'ровно семь вызовов');
+    });
+
 };
