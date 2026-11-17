@@ -37,11 +37,6 @@
 		// числу граней или рёбер (0DC057, 96B43A, E9D7FC, 41B6C2 ...). Во всех трёх
 		// телах у одной и той же части больше и вершин, и рёбер, и граней, так что
 		// ответ от выбора признака не зависит
-		let criterionWords = {
-			ribs: 'рёбер',
-			vertices: 'вершин',
-			facets: 'граней'
-		};
 		// Признак сравнения - не тот, о котором спрашивают («Сколько вершин ...
 		// с меньшим числом вершин?» у ФИПИ не бывает)
 		let criterion = ['ribs', 'vertices', 'facets'].filter((c) => c !== question).iz();
@@ -218,7 +213,7 @@
 			text: 'Плоскость, проходящая через точки A, B и C (см. рисунок), ' +
 				'разбивает ' + solidNames[solid] + ' на два многогранника. ' +
 				'Сколько ' + questionWords[question] +
-				' у получившегося многогранника с ' + sizeWords[size] + ' числом ' + criterionWords[criterion] + '?',
+				' у получившегося многогранника с ' + sizeWords[size] + ' числом ' + questionWords[criterion] + '?',
 			answers: data[solid][size][question],
 			preference: [
 				preferenceSolid,
