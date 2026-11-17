@@ -846,17 +846,17 @@ chas2.task = {
 						answer = extremumsX(func, minX, maxX);
 						break;
 					case 'extreme_points':
-						find = 'экстремума';
+						find = `экстремума ${functionsFx}`;
 						//task.analys = 'Точки экстремума:'
 						answer = extremumsX(func, minX, maxX);
 						break;
 					case 'minimum_points':
-						find = 'минимума';
+						find = `минимума ${functionsFx}`;
 						//task.analys = 'Точки минимума:'
 						answer = minimumsX(func, minX, maxX);
 						break;
 					case 'maximum_points':
-						find = 'максимума';
+						find = `максимума ${functionsFx}`;
 						//task.analys = 'Точки максимума:'
 						answer = maximumsX(func, minX, maxX);
 						break;
