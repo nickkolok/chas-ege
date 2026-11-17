@@ -126,7 +126,7 @@
 		let matrix = dashHiddenEdges(drawPyramid.connectionMatrix, faces, visibility, [7, 5]);
 
 		let paint1 = function (ct) {
-			ct.translate(200, 175);
+			ct.translateToCenter();
 			ct.lineWidth = 2;
 			ct.strokeStyle = om.secondaryBrandColors.iz();
 			ct.drawFigure(points2D, matrix);
