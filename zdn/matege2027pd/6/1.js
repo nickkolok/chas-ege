@@ -20,13 +20,14 @@
 	let c2 = sluchch(8, 120, prizes.divs[2]);
 	let c3 = sluchch(2, 20, prizes.divs[3]);
 	let c4 = sluchch(1, 8, prizes.divs[4]);
+	let c = [c0, c1, c2, c3, c4];
 
 	let tickets = sluchch(5000, 100000, 1000);
-	let s = (prizes.weights[0]*c0 + prizes.weights[1]*c1 + prizes.weights[2]*c2 + prizes.weights[3]*c3 + prizes.weights[4]*c4) / tickets;
+	let s = p.map((pi, i) => pi * c[i]).sum() / tickets;
 	genAssertZ1000(s, 'Ответ должен быть целым числом');
 
 	let pStr = p.map(x => x.toLocaleString('ru-RU'));
-	let cStr = [c0, c1, c2, c3, c4].map(x => x.toLocaleString('ru-RU'));
+	let cStr = c.map(x => x.toLocaleString('ru-RU'));
 	let tStr = tickets.toLocaleString('ru-RU');
 
 	let y = ['Выигрыш (в рублях)'].concat(pStr).tr('th');
