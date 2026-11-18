@@ -2,10 +2,6 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		function parabl(x) {
-			return a * x * x + b * x + c;
-		}
-
 		let key = '508911';
 		let preference = ['dontShow', 'showA', 'showB', 'showC'];
 		let rand = getSelectedPreferenceFromList(key, preference);
@@ -13,6 +9,12 @@
 		let a = sluchch(1, 2).pm();
 		let b = sluchch(0, 10).pm();
 		let c = sluchch(0, 10).pm();
+		let koef = [c, b, a];
+
+		function parabl(x) {
+			return koef.mn_vychisl(x);
+		}
+
 		let D = b * b - 4 * a * c;
 		genAssert(D >= 0, 'Дискриминант меньше нуля');
 		genAssert(D.isPolnKvadr(), 'Дискриминант не полный квадрат');
@@ -98,7 +100,7 @@
 		NAtask.setTask({
 			text: `На рисунке изображён график функции $f(x)=${text.plusminus()}$${`, где $a$, $b$ и $c$ — целые числа`.esli(rand === 0)}. Найдите $f(${chisl})$.`,
 			answers: answ,
-			analys: `$f(x)=${[c, b, a].mn_txt('x')}$`,
+			analys: `$f(x)=${koef.mn_txt('x')}$`,
 			preference,
 		});
 		NAtask.modifiers.addCanvasIllustration({
