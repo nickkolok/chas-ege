@@ -40,20 +40,12 @@
         genAssert(answer <= ticketPrice, "Разница не может быть больше цены билета");
 
         // Формирование строки таблицы
-        let tableRows = '';
-        tableRows += '<tr><td>Выигрыш (руб.)</td>';
-        for (let w of winAmounts) {
-            tableRows += `<td>${w}</td>`;
-        }
-        tableRows += '</tr>';
+        let tableRows = [
+            ['Выигрыш (руб.)'].concat(winAmounts).tr(),
+            ['Количество билетов'].concat(counts).tr(),
+        ].soed();
 
-        tableRows += '<tr><td>Количество билетов</td>';
-        for (let c of counts) {
-            tableRows += `<td>${c}</td>`;
-        }
-        tableRows += '</tr>';
-
-        let tableHtml =`<table border="1" style="border-collapse: collapse; text-align: center; margin: 10px auto;">${tableRows}</table>`.replace(/<td>/g, '<td style="padding: 8px 15px; min-width: 60px;">');
+        let tableHtml = tableRows.vTag('table', 'border="1" style="border-collapse: collapse; text-align: center; margin: 10px auto;"').replace(/<td>/g, '<td style="padding: 8px 15px; min-width: 60px;">');
         
         NAtask.setTask({
             text: `В таблице показано количество билетов и возможные выигрыши беспроигрышной денежной лотереи. Цена билета лотереи равна ${ticketPrice} рублей. Всего билетов выпущено ${totalTickets} штук. Участник покупает один случайный билет. На сколько рублей цена билета выше, чем математическое ожидание выигрыша?` +
