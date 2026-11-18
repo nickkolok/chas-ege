@@ -3,7 +3,7 @@
 
 	retryWhileError(function() {
 
-		let volume = sl(1, 50) * 100;
+		let volume = sl(100, 5000, 100);
 		let height = sluchDel(volume);
 		genAssert(height > 1, 'Сосуд высотой 1 единицу выглядит неправдоподобно');
 
