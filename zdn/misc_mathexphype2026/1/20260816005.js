@@ -11,7 +11,7 @@
   ].iz();
   
   let c = variants.counts;
-  let total = c[0] + c[1] + c[2] + c[3];
+  let total = c.sum();
   
   let M = (fat[0]*c[0] + fat[1]*c[1] + fat[2]*c[2] + fat[3]*c[3]) / total;
   M = Math.round(M * 10) / 10;
