@@ -50,7 +50,7 @@
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.setLineDash([4, 5]);
-			ctx.drawArc(0, 0, point2DCube[1].y, 0, Math.PI * 2, true);
+			ctx.drawCircle(point2DCube[1].y);
 
 			ctx.drawEllipse(0, 0, point2DCube[1].y, 20, 0, Math.PI * 2, 0);
 		};
