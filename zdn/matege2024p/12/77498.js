@@ -19,7 +19,7 @@
 					a2,
 					a2 + ['sqrt(' + c + ')', ''].iz()
 				].iz() + 'x'
-			].shuffle().join(sign.iz()) + sign.iz() + a1 + ['sqrt(' + c + ')', ''].iz() + 'pi' + [sign.iz() + d, ''].iz(),
+			].shuffleJoin(sign.iz()) + sign.iz() + a1 + ['sqrt(' + c + ')', ''].iz() + 'pi' + [sign.iz() + d, ''].iz(),
 			leftEnd: '0',
 			rightEnd: 'pi/2',
 			primaryStep: 0.01,
