@@ -619,4 +619,47 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Canvas: окружность через точку  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawCircleThrough');
+
+    QUnit.test('ctx.drawCircleThrough рисует окружность через точку вокруг начала координат', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawCircleThrough === 'function', 'метод drawCircleThrough определён');
+        var calls = [];
+        var ctx = {
+            drawCircle: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        CanvasRenderingContext2D.prototype.drawCircleThrough.call(ctx, { x: 3, y: 4 });
+        assert.equal(calls.length, 1, 'drawCircle вызван ровно один раз');
+        assert.deepEqual(calls[0], [0, 0, 5], 'центр (0, 0), радиус — расстояние до точки');
+    });
+
+    QUnit.test('ctx.drawCircleThrough с явным центром', function (assert) {
+        var calls = [];
+        var ctx = {
+            drawCircle: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        CanvasRenderingContext2D.prototype.drawCircleThrough.call(ctx, { x: 4, y: 5 }, { x: 1, y: 1 });
+        assert.deepEqual(calls[0], [1, 1, 5], 'радиус — расстояние от центра до точки');
+    });
+
+    QUnit.test('ctx.drawCircleThrough: вершина после autoScale даёт радиус r * camera.scale', function (assert) {
+        var camera = { x: 0, y: 0, z: 0, scale: 1, rotationX: 0, rotationY: 0, rotationZ: 0 };
+        var points = autoScale([{ x: -7, y: 0 }, { x: 7, y: 0 }, { x: 0, y: 7 }], camera);
+        var calls = [];
+        var ctx = {
+            drawCircle: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        CanvasRenderingContext2D.prototype.drawCircleThrough.call(ctx, points[1]);
+        assert.ok(Math.abs(calls[0][2] - 7 * camera.scale) < 1e-9, 'радиус масштабированной окружности');
+    });
+
 };
