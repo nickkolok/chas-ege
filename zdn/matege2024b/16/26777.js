@@ -44,8 +44,7 @@
 		genAssert(!squareRoot.isPolnKvadr(), 'Корень извлекается');
 		let fraction = signGiven * (numerator * Math.sqrt(squareRoot)) / denominator;
 		genAssert(fraction < 1, 'Значение не должно превышать 1');
-		let givenValue = (signGiven === -1 ? '-' : '') + '\\frac{' + numerator + '\\sqrt{' + squareRoot + '}' + '}{' +
-			denominator + '}';
+		let givenValue = (signGiven * numerator).texfrac(denominator, squareRoot.texsqrt());
 		let answer = signFind * factor * Math.sqrt(1 - Math.pow(fraction, 2));
 		genAssertZ1000(answer, 'более 3 знаков после запятой');
 		NAtask.setTask({
