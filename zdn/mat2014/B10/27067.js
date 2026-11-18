@@ -31,7 +31,7 @@
 
 		let point2DCube = cube.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(cube.verticesOfFigure, camera, point2DCube, {
+		point2DCube = autoScale(cube.verticesOfFigure, camera, point2DCube, {
 			startX: -180,
 			finishX: 180,
 			startY: -160,
@@ -39,8 +39,6 @@
 			maxScale: 200,
 			step: 0.5,
 		});
-
-		point2DCube = cube.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
