@@ -50,6 +50,7 @@
 		let paint1 = function(ct) {
 			let h = 380;
 			let w = 500;
+			let scale = 20;
 			ct.drawCoordinatePlane(w, h, {
 				hor: 1,
 				ver: 1
@@ -57,15 +58,15 @@
 				x1: '1',
 				y1: '1',
 				sh1: 13,
-			}, 20);
+			}, scale);
 			ct.font = "12px liberation_sans";
-			ct.drawLine(20 * maxX, 5, 20 * maxX, -5);
-			ct.drawLine(20 * minX, 5, 20 * minX, -5);
+			ct.drawLine(scale * maxX, 5, scale * maxX, -5);
+			ct.drawLine(scale * minX, 5, scale * minX, -5);
 			if (maxX != 0 && maxX != 1)
-				ct.fillText(maxX, 20 * maxX - 5, 15);
+				ct.fillText(maxX, scale * maxX - 5, 15);
 			if (minX != 0 && minX != 1)
-				ct.fillText(minX, 20 * minX - 10, 15);
-			ct.scale(20, -20);
+				ct.fillText(minX, scale * minX - 10, 15);
+			ct.scale(scale, -scale);
 			ct.lineWidth = 0.15;
 
 			graph9AdrawFunction(ct, f, {
