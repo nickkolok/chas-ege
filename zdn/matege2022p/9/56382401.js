@@ -4,8 +4,8 @@
 
 	retryWhileError(function () {
 		// Выбираем представление с k > 0: одновременная смена знаков k и b сохраняет график.
-		let k = sl(1, 4) / 2;
-		let b = slKrome(0, -5, 5) / 2;
+		let k = sl(0.5, 2, 0.5);
+		let b = slKrome(0, -2.5, 2.5, 0.5);
 		let f = x => Math.abs(k * Math.abs(x) + b);
 		let vertex = -b / k;
 		genAssert(b > 0 || vertex < 5.5, 'Излом должен быть виден на графике');
