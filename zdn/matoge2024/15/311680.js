@@ -10,7 +10,7 @@
 				lengthCA: side,
 			},
 		});
-		genAssert(![triangle.lengthAB, triangle.lengthBC].hasDubl(), 'Основание не должно совпадать с боковой стороной');
+		genAssert(!triangle.isEquilateral(), 'Основание не должно совпадать с боковой стороной');
 
 		let angleB = triangle.angleBInDegrees.ceil();
 
