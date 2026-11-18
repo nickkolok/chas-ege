@@ -8,6 +8,7 @@
 		let rpmStep = 500;
 		let factor = sl(1, 2);
 		let values = [0, 20, 40, 60, 80, 100, 120, 140, 120, 100, 80, 60, 40].map(value => value * factor);
+		let rpm = [].N(values.length, rpmStep);
 		let first = sl(1, 6);
 		let target = values[first];
 		NAtask.setTask({
@@ -20,7 +21,7 @@
 			preference,
 		});
 		NAtask.modifiers.addJqplot({
-			dataArray: [values.map((value, i) => [rpmStep * i, value])],
+			dataArray: [[rpm, values].T()],
 			width: '720px',
 			height: '400px',
 			options: {
