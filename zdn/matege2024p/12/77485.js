@@ -13,7 +13,7 @@
 		let rightEnd = (center + r2).toFixed(1);
 
 		NAtask.setMinimaxFunctionTask({
-			expr: sign + '(' + ['x', b].shuffle().join('+') + ')^2*e^(' + '-' + [a, 'x'].shuffle().join('-') + ')',
+			expr: sign + '(' + ['x', b].shuffleJoin('+') + ')^2*e^(' + '-' + [a, 'x'].shuffleJoin('-') + ')',
 			leftEnd: leftEnd,
 			rightEnd: rightEnd,
 			forbiddenAnswers: [0, '-0'],
