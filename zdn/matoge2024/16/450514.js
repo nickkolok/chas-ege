@@ -13,7 +13,8 @@
 			angleInDegrees: true
 		});
 
-		let PC = circle.pointOnCircle(sl(startAngle + delta + 15, startAngle + 345), {
+		let arcGap = 15; // минимальный угловой зазор между соседними вершинами
+		let PC = circle.pointOnCircle(sl(startAngle + delta + arcGap, startAngle + 360 - arcGap), {
 			angleInDegrees: true
 		});
 
