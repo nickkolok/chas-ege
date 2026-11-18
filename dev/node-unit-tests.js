@@ -619,4 +619,29 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+    // ============================================================
+    //  graph9Asetup_20_300: оси + система координат  (lib/func.js)
+    // ============================================================
+    QUnit.module('graph9Asetup_20_300');
+
+    QUnit.test('graph9Asetup_20_300 рисует оси и переносит начало координат в их пересечение', function (assert) {
+        assert.ok(typeof graph9Asetup_20_300 === 'function', 'функция graph9Asetup_20_300 определена');
+        var calls = { translate: [], scale: [], setka: [] };
+        var ctx = {
+            canvas: { width: 300, height: 300 },
+            lineWidth: 0,
+            font: '',
+            setka: function () { calls.setka.push(Array.prototype.slice.call(arguments)); },
+            drawArrow: function () {},
+            fillText: function () {},
+            translate: function () { calls.translate.push(Array.prototype.slice.call(arguments)); },
+            scale: function () { calls.scale.push(Array.prototype.slice.call(arguments)); },
+        };
+        graph9Asetup_20_300(ctx);
+        assert.deepEqual(calls.setka[0], [20, 20], 'сетка с шагом 20px');
+        assert.deepEqual(calls.translate[calls.translate.length - 1], [140, 140], 'начало координат в точке пересечения осей (140,140)');
+        assert.deepEqual(calls.scale[0], [20, -20], 'единица 20px, ось y направлена вверх');
+        assert.equal(ctx.lineWidth, 0.1, 'толщина линий графика 0.1');
+    });
+
 };
