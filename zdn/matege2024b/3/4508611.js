@@ -12,7 +12,7 @@
 		let power = variant ? bounds[selected] : sl(lower + 1, selected < 7 ? bounds[selected] : 300);
 		let rows = [['Мощность двигателя, л.с.', 'Ставка, руб. за 1 л.с. в год'].tr('th')];
 		for (let i = 0; i < rates.length; i++) {
-			let interval = i === 0 ? 'До 100 включительно' : i === 7 ? 'Свыше 250' :
+			let interval = i === 0 ? 'До ' + bounds[0] + ' включительно' : i === 7 ? 'Свыше ' + bounds[bounds.length - 1] :
 				'Свыше ' + bounds[i - 1] + ' до ' + bounds[i] + ' включительно';
 			rows.push([interval, rates[i]].tr());
 		}
