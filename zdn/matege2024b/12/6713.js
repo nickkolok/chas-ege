@@ -23,9 +23,9 @@
 		});
 
 		if (rand == 1) {
-			genAssert(trp.lengthDiagonalAC.isAlmostInteger(), 'Диагональ не целая');
+			genAssertAlmostInteger(trp.lengthDiagonalAC, 'Диагональ не целая');
 		} else {
-			genAssert(trp.lengthHeightACD.isAlmostInteger(), 'Высота не целая');
+			genAssertAlmostInteger(trp.lengthHeightACD, 'Высота не целая');
 		}
 
 		if (rand == 1) {
