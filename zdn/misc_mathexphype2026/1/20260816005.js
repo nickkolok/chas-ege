@@ -13,7 +13,7 @@
   let c = variants.counts;
   let total = c.sum();
   
-  let M = (fat[0]*c[0] + fat[1]*c[1] + fat[2]*c[2] + fat[3]*c[3]) / total;
+  let M = fat.map((f, i) => f * c[i]).sum() / total;
   M = Math.round(M * 10) / 10;
   let Mstr = M.toFixed(1);
   
