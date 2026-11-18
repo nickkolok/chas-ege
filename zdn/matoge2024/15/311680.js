@@ -15,7 +15,9 @@
 		let angleB = triangle.angleBInDegrees.ceil();
 
 		let points = autoScale(triangle.vertices);
-		genAssert(160 - points[1].x > 20, 'Прямая из угла B не видна');
+		const rayEndX = 160; // правый край поля чертежа
+		const arcRadius = 20; // радиус дуги угла
+		genAssert(rayEndX - points[1].x > arcRadius, 'Прямая из угла B не видна');
 		let letters = om.latbukv.slice(0, 3);
 
 		let paint1 = function (ctx) {
@@ -28,10 +30,10 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
-			ctx.drawLine(points[1].x, points[1].y, 160, points[1].y);
+			ctx.drawLine(points[1].x, points[1].y, rayEndX, points[1].y);
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, 160, points[1].y], 20);
+			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, rayEndX, points[1].y], arcRadius);
 
 			ctx.scale(1, -1);
 			ctx.font = '20px liberation_sans';
