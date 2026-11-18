@@ -619,4 +619,28 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  mathjsRules.expandProdSums  (lib/mathjs_rules.js)
+    // ============================================================
+    QUnit.module('mathjsRules: expandProdSums');
+
+    QUnit.test('expandProdSums раскрывает произведение сумм', function (assert) {
+        var fs = require('fs');
+        var path = require('path');
+        // Загружаем без пересборки: mathjs — из node_modules (тот же browser-бандл,
+        // что и lib/load.js), mathjs_helpers.js и mathjs_rules.js — с диска.
+        var math = require('../node_modules/mathjs/lib/browser/math.js');
+        var helpersSrc = fs.readFileSync(path.join(__dirname, '..', 'lib', 'mathjs_helpers.js'), 'utf8');
+        var rulesSrc = fs.readFileSync(path.join(__dirname, '..', 'lib', 'mathjs_rules.js'), 'utf8');
+        var mathjsRules = new Function('math', 'console', helpersSrc + '\n' + rulesSrc + '\nreturn mathjsRules;')(math, console);
+
+        assert.ok(Array.isArray(mathjsRules.expandProdSums), 'expandProdSums — массив правил');
+        assert.equal(mathjsRules.expandProdSums.length, 2, 'два правила: для суммы и для разности');
+
+        var res = math.simplify(math.parse('(a+b)*(c+d)'), mathjsRules.expandProdSums);
+        assert.notStrictEqual(res.fn, 'multiply', 'вершина выражения больше не произведение');
+        assert.equal(math.evaluate(res.toString(), { a: 2, b: 3, c: 4, d: 5 }), (2 + 3) * (4 + 5), 'значение сохранено');
+    });
+
 };
