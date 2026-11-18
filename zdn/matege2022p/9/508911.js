@@ -39,6 +39,7 @@
 		let w = 400,
 			h = 400;
 		let paint1 = function (ctx) {
+			let scale = 20;
 			//Оси координат
 			ctx.drawCoordinatePlane(w, h, {
 				hor: 1,
@@ -47,9 +48,8 @@
 				x1: '1',
 				y1: '1',
 				sh1: 13,
-			}, 20);
+			}, scale);
 
-			let scale = 20;
 			ctx.scale(scale, -scale);
 			ctx.lineWidth = 2 / scale;
 
