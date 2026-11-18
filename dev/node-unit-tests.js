@@ -619,4 +619,66 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+    // ============================================================
+    //  Смешивание двух сплавов/растворов  (lib/func.js + lib/osnmas.js)
+    // ============================================================
+    QUnit.module('Смешивание двух сплавов/растворов');
+
+    QUnit.test('slDvaSplava: диапазоны, порядок масс, концентрация смеси', function (assert) {
+        for (var largestMass = 0; largestMass <= 1; largestMass++) {
+            for (var i = 0; i < 200; i++) {
+                var d = null;
+                for (var t = 0; t < 10000 && d === null; t++) {
+                    try {
+                        d = slDvaSplava(largestMass);
+                    } catch (e) {
+                        // genAssertZ1000 отбраковал слишком дробную концентрацию — перегенерация
+                    }
+                }
+                assert.ok(d !== null, 'данные сгенерированы (largestMass=' + largestMass + ')');
+                if (d === null) { continue; }
+                assert.ok(d.massFirst >= 10 && d.massFirst <= 99, 'massFirst в [10, 99]');
+                assert.ok(d.massSecond >= 1 - 1e-9 && d.massSecond <= 2 * d.massFirst - 1 + 1e-9, 'massSecond в допустимом диапазоне');
+                assert.notEqual(d.massSecond, d.massFirst, 'массы различны');
+                assert.ok(largestMass === 1 ? d.massFirst > d.massSecond : d.massSecond > d.massFirst,
+                    'порядок масс соответствует largestMass=' + largestMass);
+                assert.ok(Math.abs(d.massThird - (d.massFirst + d.massSecond)) < 1e-9, 'massThird — сумма масс');
+                assert.ok(Math.abs(d.massDifference - Math.abs(d.massFirst - d.massSecond)) < 1e-9, 'massDifference — модуль разности');
+                assert.ok(d.percentFirst >= 1 && d.percentFirst <= 50, 'percentFirst в [1, 50]');
+                assert.ok(d.percentSecond >= 1 && d.percentSecond <= 50, 'percentSecond в [1, 50]');
+                assert.notEqual(d.percentFirst, d.percentSecond, 'концентрации различны');
+                var mix = (d.massFirst * d.percentFirst + d.massSecond * d.percentSecond) / (d.massFirst + d.massSecond);
+                assert.ok(Math.abs(d.percentThird - mix) < 1e-9, 'percentThird — концентрация смеси');
+                assert.ok(Math.abs(d.percentThird * 1000 - Math.round(d.percentThird * 1000)) < 1e-6, 'percentThird: не более 3 знаков после запятой');
+            }
+        }
+    });
+
+    QUnit.test('slSplavRastvor: предмет и примесь со склонениями, единицы массы', function (assert) {
+        // lib/osnmas.js не входит в chas-lib-бандл; загружаем его в глобальную
+        // область видимости, чтобы появился настоящий om (var om = {})
+        if (typeof global.om === 'undefined') {
+            var fs = require('fs');
+            var path = require('path');
+            var vm = require('vm');
+            var src = fs.readFileSync(path.join(__dirname, '..', 'lib', 'osnmas.js'), 'utf8');
+            vm.runInThisContext(src, { filename: 'lib/osnmas.js' });
+        }
+        var seen = {};
+        for (var i = 0; i < 200; i++) {
+            var v = slSplavRastvor();
+            assert.ok(v.bulk && typeof v.bulk.re === 'string', 'bulk — объект Word');
+            assert.ok(v.mixin && typeof v.mixin.re === 'string', 'mixin — объект Word');
+            assert.ok(typeof v.juncture === 'string' && v.juncture.length > 0, 'juncture — непустая строка');
+            assert.ok(om.edizm.massa.indexOf(v.massUnits) !== -1, 'massUnits — строка из om.edizm.massa');
+            if (v.bulk.ie === 'раствор') {
+                assert.ok(om.substance.indexOf(v.mixin.ie) !== -1, 'примесь раствора — из om.substance');
+            } else {
+                assert.equal(v.bulk.ie, 'сплав', 'предмет — сплав или раствор');
+            }
+            seen[v.bulk.ie] = true;
+        }
+        assert.ok(seen['сплав'] && seen['раствор'], 'встречаются оба предмета');
+    });
+
 };
