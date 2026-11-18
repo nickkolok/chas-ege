@@ -256,6 +256,34 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Знаки тригонометрических функций по четвертям  (lib/func.js)
+    // ============================================================
+    QUnit.module('trigSignByQuarter');
+
+    QUnit.test('trigSignByQuarter: знаки sin/cos/tg/ctg по четвертям', function (assert) {
+        var expected = {
+            sin: [1, 1, -1, -1],
+            cos: [1, -1, -1, 1],
+            tg: [1, -1, 1, -1],
+            ctg: [1, -1, 1, -1],
+        };
+        Object.keys(expected).forEach(function (funcName) {
+            for (var quarter = 1; quarter <= 4; quarter++) {
+                assert.strictEqual(trigSignByQuarter(funcName, quarter), expected[funcName][quarter - 1],
+                    funcName + ' в четверти ' + quarter);
+            }
+        });
+    });
+
+    QUnit.test('trigSignByQuarter: tg и ctg согласованы с sin/cos', function (assert) {
+        for (var quarter = 1; quarter <= 4; quarter++) {
+            var product = trigSignByQuarter('sin', quarter) * trigSignByQuarter('cos', quarter);
+            assert.strictEqual(trigSignByQuarter('tg', quarter), product, 'tg в четверти ' + quarter);
+            assert.strictEqual(trigSignByQuarter('ctg', quarter), product, 'ctg в четверти ' + quarter);
+        }
+    });
+
+    // ============================================================
     //  String Generic Functions  (src/chaslib/String_generic.js)
     // ============================================================
     QUnit.module('String Generic Functions');
