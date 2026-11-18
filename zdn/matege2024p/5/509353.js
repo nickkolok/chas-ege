@@ -26,12 +26,7 @@
         let counts = [count1, count2, count3, count4];
 
         // Расчет математического ожидания
-        let sumWin = 0;
-        for (let i = 0; i < 4; i++) {
-            sumWin += winAmounts[i] * counts[i];
-        }
-
-        let mathExpectation = sumWin / totalTickets;
+        let mathExpectation = math.dot(winAmounts, counts) / totalTickets;
 
         let answer = ticketPrice - mathExpectation;
 
