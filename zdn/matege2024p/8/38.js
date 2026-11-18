@@ -51,49 +51,19 @@
 		else
 			condition = 'максимума';
 
-		let paint1 = function(ct) {
-			let h = 380;
-			let w = 500;
-			ct.drawCoordinatePlane(w, h, {
-				hor: 1,
-				ver: 1
-			}, {
-				x1: '1',
-				y1: '1',
-				sh1: 13,
-			}, 20);
-
-			ct.font = "12px liberation_sans";
-			ct.drawLine(20 * maxX, 5, 20 * maxX, -5);
-			ct.drawLine(20 * minX, 5, 20 * minX, -5);
-
-			if (maxX != 0 && maxX != 1)
-				ct.fillText(maxX, 20 * maxX, 15);
-
-			if (minX != 0 && minX != 1)
-				ct.fillText(minX, 20 * minX - 13, 15);
-
-			ct.scale(20, -20);
-			ct.lineWidth = 0.15;
-
-			graph9AdrawFunction(ct, f, {
-				minX: minX,
-				maxX: maxX,
-				minY: -9,
-				maxY: 9,
-				step: 0.01
-			});
-
-			graph9AmarkCircles(ct, [
-				[maxX, f(maxX)],
-				[minX, f(minX)]
-			], 2, 0.2);
-			ct.fillStyle = "white";
-			graph9AmarkCircles(ct, [
-				[maxX, f(maxX)],
-				[minX, f(minX)]
-			], 2, 0.1);
-		};
+		let paint1 = paintSpline({
+			func: f,
+			minX: minX,
+			maxX: maxX,
+			minY: -9,
+			maxY: 9,
+			step: 0.01,
+			scale: 20,
+			width: 500,
+			height: 380,
+			font: "12px liberation_sans",
+			lineWidth: 0.15,
+		});
 		NAtask.setTask({
 			text: 'На рисунке изображён график $y=f\'(x)$ — производной функции $f(x)$, определенной на интервале $(' +
 				minX + ';' + maxX + ')$. ' +
