@@ -9,7 +9,7 @@
         // Параметры
         let speedLimits = [30, 40, 50, 60, 70, 80, 90, 100, 110];
         let speedLimit = speedLimits[rand];
-        let totalVehicles = sl(2, 40, 1) * 500; // от 1000 до 20000 с шагом 500
+        let totalVehicles = sl(1000, 20000, 500); // от 1000 до 20000 с шагом 500
 
         // Второе нарушение
         let otherViolations = [
