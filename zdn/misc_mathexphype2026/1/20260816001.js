@@ -9,8 +9,9 @@
 	let c3 = sluchch(1, 12);
 	let c4 = sluchch(1, 8);
 
-	let totalCards = c0 + c1 + c2 + c3 + c4;
-	let s = (16*c0 + 32*c1 + 64*c2 + 128*c3 + 256*c4) / totalCards;
+	let counts = [c0, c1, c2, c3, c4];
+	let totalCards = counts.sum();
+	let s = volumes.reduce((acc, v, i) => acc + v * counts[i], 0) / totalCards;
 	
 	genAssert((10*s).isAlmostInteger(), 'Ответ должен быть целым или иметь один знак после запятой');
 
