@@ -21,7 +21,7 @@
 		let bulk, mixin, juncture;
 		if (sl1()) { // Растворы
 			bulk = 'раствор';
-			mixin = ['соль', 'щёлочь', 'кислота'].iz();
+			mixin = om.substance.iz();
 			juncture = 'Два раствора сливают и получают третий, содержащий';
 		} else { // Сплавы
 			bulk = 'сплав';
