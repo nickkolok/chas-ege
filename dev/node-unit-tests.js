@@ -602,6 +602,27 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Поворот точек  (lib/func.js)
+    // ============================================================
+    QUnit.module('rotatePoints');
+
+    QUnit.test('rotatePoints: поворот вокруг начала координат', function (assert) {
+        assertPointClose(assert, rotatePoints([{ x: 1, y: 0 }], Math.PI / 2)[0], { x: 0, y: 1 }, 'на 90° против часовой стрелки');
+        assertPointClose(assert, rotatePoints([{ x: 1, y: 0 }], -Math.PI / 2)[0], { x: 0, y: -1 }, 'на -90°');
+        assertPointClose(assert, rotatePoints([{ x: 3, y: 4 }], 0)[0], { x: 3, y: 4 }, 'нулевой угол ничего не меняет');
+    });
+
+    QUnit.test('rotatePoints: поворот вокруг произвольного центра', function (assert) {
+        assertPointClose(assert, rotatePoints([{ x: 2, y: 1 }], Math.PI, { x: 1, y: 1 })[0], { x: 0, y: 1 }, 'на 180° вокруг (1,1)');
+    });
+
+    QUnit.test('rotatePoints: исходный массив не мутирует', function (assert) {
+        var src = [{ x: 1, y: 0 }];
+        rotatePoints(src, Math.PI / 2);
+        assert.deepEqual(src, [{ x: 1, y: 0 }], 'исходные точки не изменились');
+    });
+
+    // ============================================================
     //  Canvas: перенос начала координат  (lib/canvas.js)
     // ============================================================
     QUnit.module('Canvas: translateToCenter');
