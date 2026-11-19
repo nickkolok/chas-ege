@@ -15,6 +15,18 @@
 буквы на чертеже и в условии задачи соответствуют друг другу.
 В случае, если чертежа нет, можно сокращать: `NAtask.modifiers.variativeABC();`
 
+Подписи вершин фигуры рисует `ctx.signVertices(points, letters)` из `lib/canvas.js`:
+буквы из `letters` ставятся у вершин `points` (например, после `autoScale()`)
+шрифтом 20px liberation_sans: для первой половины вершин - под вершиной,
+для второй - над вершиной. Вызывать после `ctx.drawFigure(...)` в контексте
+с отражённой осью Y; метод сам временно переворачивает ось обратно,
+чтобы буквы не были перевёрнуты, и восстанавливает контекст (`save`/`restore`).
+
+```js
+ctx.drawFigure(points, triangle.connectionMatrix);
+ctx.signVertices(points, letters);
+```
+
 
 ## Построение чертежа
 
