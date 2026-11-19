@@ -6,7 +6,7 @@
 
   var two = [22, 23, 24, 25, 32, 33, 34, 35, 42, 43, 44, 45, 52, 53, 54, 55];
   var chunks = [sl(2, 5), sl(2, 5), two.iz()];
-  var P = chunks[0] * chunks[1] * chunks[2];
+  var P = chunks.production();
   var digs = (chunks.join('')).split('').map(Number);
   var N = digs.length;
   genAssert(N <= 6, 'не больше шести отметок');
@@ -22,13 +22,11 @@
      if (mask >> (t2 - 1) & 1) ch.push(seq[t2]);
      else ch[ch.length - 1] = ch[ch.length - 1] * 10 + seq[t2];
     }
-    var pp = 1;
-    for (var t3 = 0; t3 < ch.length; t3++) pp *= ch[t3];
+    var pp = ch.production();
     if (pp == P) {
-     var sm = 0;
-     for (var t4 = 0; t4 < N; t4++) sm += seq[t4];
-     var mn = Math.floor(sm / N + 0.5);
-     if (means.indexOf(mn) < 0) means.push(mn);
+     var sm = seq.sum();
+     var mn = (sm / N).round();
+     means.pushUnique(mn);
     }
    }
   }
