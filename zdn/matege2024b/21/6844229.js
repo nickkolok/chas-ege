@@ -9,7 +9,7 @@
 		let first = sl(1, total - 2);
 		let second = sl(1, total - first - 1);
 		let row = [first, second, total - first - second].shuffle();
-		row.forEach((value, col) => sums[col] += value);
+		sums = objSum(sums, row);
 	}
 	let total = sums.sum();
 	NAtask.setTask({
