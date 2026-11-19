@@ -9,15 +9,14 @@
   var Fl = sl(5, 12);
   var q = sl(2, 8);
   var K = sluchch((E - 1) * Fl * q + 1, E * Fl * q, 1);
-  var cnt = 0, qq = 0;
+  var cnt = 0, fl = 0;
   for (var q2 = 1; q2 <= 40; q2++) {
    if ((E - 1) * Fl * q2 < K && K <= E * Fl * q2) {
     var fl2 = ((K - (E - 1) * Fl * q2) / q2).ceil();
-    if (fl2 <= Fl) { cnt++; qq = q2; }
+    if (fl2 <= Fl) { cnt++; fl = fl2; }
    }
   }
   genAssert(cnt == 1, 'число квартир на этаже единственно');
-  var fl = ((K - (E - 1) * Fl * qq) / qq).ceil();
   var bank = [[7,462,7],[8,468,12],[10,333,9],[12,465,5]];
   var hit = bank.some(function (t) { return t[0] == E && t[1] == K && t[2] == Fl; });
   genAssert(!hit, 'этот набор занят прототипом банка');
