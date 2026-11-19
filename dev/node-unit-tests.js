@@ -654,5 +654,20 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.clip, 4, 'clip на каждую ячейку');
     });
 
+    QUnit.module('allSignPairs');
+
+    QUnit.test('allSignPairs даёт все четыре комбинации знаков и новый массив', function (assert) {
+        assert.deepEqual(allSignPairs(), [[1, 1], [1, -1], [-1, 1], [-1, -1]], 'все комбинации знаков двух коэффициентов');
+        assert.notStrictEqual(allSignPairs(), allSignPairs(), 'каждый вызов - новый массив');
+    });
+
+    QUnit.module('texSigns');
+
+    QUnit.test('texSigns записывает знаки коэффициентов в TeX', function (assert) {
+        assert.equal(texSigns(['k', 'b'], [2, -1]), '$k>0,\\quad b<0$', 'знаки k и b');
+        assert.equal(texSigns(['a', 'c'], [-0.5, 3]), '$a<0,\\quad c>0$', 'знаки a и c');
+        assert.equal(texSigns(['a'], [0]), '$a=0$', 'ноль');
+    });
+
 
 };
