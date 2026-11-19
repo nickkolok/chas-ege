@@ -4,7 +4,7 @@
  retryWhileError(function(){
   NAinfo.requireApiVersion(0, 2);
 
-  var key = '%(dec)d';
+  var key = '2625613';
   var preference = ['perimetry', 'ploshadi'];
   var rand = getSelectedPreferenceFromList(key, preference);
   var x1 = sl(1, 9), x2 = sl(1, 9), y1 = sl(1, 9), y2 = sl(1, 9);
