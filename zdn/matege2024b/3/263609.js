@@ -56,7 +56,7 @@
 		});
 		let xMin = dates[0] - 0.5, xMax = dates[dates.length - 1] + 0.5;
 		NAtask.modifiers.addJqplot({
-		    dataArray: [values.map((value, i) => [dates[i], value])], width: '760px', height: '400px',
+		    dataArray: [[dates, values].T()], width: '760px', height: '400px',
 		    options: {axes: {xaxis: {min: xMin, max: xMax,
 		        ticks: [[xMin, '']].concat(dates.slice().dopFixedLess(0), [[xMax, '']])},
 		        yaxis: {min: base - step, max: base + 13 * step, tickInterval: step}}, seriesDefaults: {showMarker: true}},
