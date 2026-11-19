@@ -57,7 +57,7 @@
 		NAtask.modifiers.addJqplot({
 		    dataArray: [values.map((value, i) => [dates[i], value])], width: '760px', height: '400px',
 		    options: {axes: {xaxis: {min: dates[0] - 0.5, max: dates[dates.length - 1] + 0.5,
-		        ticks: [[dates[0] - 0.5, '']].concat(dates.map(day => [day, '' + day]), [[dates[dates.length - 1] + 0.5, '']])},
+		        ticks: [[dates[0] - 0.5, '']].concat(dates.slice().dopFixedLess(0), [[dates[dates.length - 1] + 0.5, '']])},
 		        yaxis: {min: base - step, max: base + 13 * step, tickInterval: step}}, seriesDefaults: {showMarker: true}},
 		});
 		NAtask.modifiers.allDecimalsToStandard();
