@@ -105,7 +105,7 @@
 			let coord4 = coordinatesMiddleOfSegment3D(point2DPar[0], point2DPar[3]);
 			let coord5 = coordinatesMiddleOfSegment3D(point2DPar[4], point2DPar[5]);
 
-			let radius = 140 - 2;
+			let radius = parForPaint.width / 2 - 2;
 
 			//цилиндр
 			ctx.strokeStyle = om.primaryBrandColors.iz();
