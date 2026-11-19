@@ -14,6 +14,8 @@
 			baseArea: prism.baseArea,
 		});
 
+		let baseAreaTex = prism.baseArea.pow(2).texsqrt(1);
+
 		let letter = ['A', 'B', 'C', 'D', 'E', 'F', 'F₁', 'A₁', 'B₁', 'C₁', 'D₁', 'E₁', ];
 		let strok = [5, 4];
 
@@ -74,7 +76,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
 			text: ['Найдите ', 'Дана шестиугольная пирамида $' + vert.join('') + '$, площадь основания которой равна $' +
-				pyr.baseArea.pow(2).texsqrt(1) + '$, а высота, проведённая к этому основанию, равна $' + pyr.height + '$. Найдите '
+				baseAreaTex + '$, а высота, проведённая к этому основанию, равна $' + pyr.height + '$. Найдите '
 			][v],
 			questions: [{
 				text: 'объём',
@@ -83,7 +85,7 @@
 			postquestion: [' многогранника, ' +
 				'вершинами которого являются вершины $' + vert.shuffleJoin(', ') +
 				'$ правильной шестиугольной призмы ' +
-				'$ABCDFEA_1B_1C_1D_1F_1E_1$, площадь основания которой равна $' + prism.baseArea.pow(2).texsqrt(1) +
+				'$ABCDFEA_1B_1C_1D_1F_1E_1$, площадь основания которой равна $' + baseAreaTex +
 				'$, а боковое ребро равно $' +	prism.height +
 				'$', ' прямой призмы с вершинами $' + ['A', 'B', 'C', 'D', 'E', 'F', 'A_1', 'B_1', 'C_1', 'D_1', 'E_1', 'F_1']
 				.shuffleJoin(', ') + '$'
