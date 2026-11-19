@@ -619,4 +619,55 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+    // ============================================================
+    //  drawGraphsGrid: сетка координатных плоскостей  (lib/func.js)
+    // ============================================================
+    QUnit.module('drawGraphsGrid');
+
+    QUnit.test('drawGraphsGrid раскладывает графики по ячейкам 2x2 и переводит в математические координаты', function (assert) {
+        assert.ok(typeof drawGraphsGrid === 'function', 'функция drawGraphsGrid определена');
+        var calls = { translate: [], scale: [], rect: [], plane: [], fillText: [], save: 0, restore: 0, clip: 0 };
+        var drawn = [];
+        var ctx = {
+            canvas: { width: 400, height: 400 },
+            lineWidth: 0,
+            save: function () { calls.save++; },
+            restore: function () { calls.restore++; },
+            translate: function () { calls.translate.push(Array.prototype.slice.call(arguments)); },
+            beginPath: function () {},
+            rect: function () { calls.rect.push(Array.prototype.slice.call(arguments)); },
+            clip: function () { calls.clip++; },
+            fillText: function (t) { calls.fillText.push(t); },
+            drawCoordinatePlane: function (w, h, cell, text, scale) { calls.plane.push([w, h, scale]); },
+            scale: function () { calls.scale.push(Array.prototype.slice.call(arguments)); },
+        };
+        drawGraphsGrid(ctx, [{v: 1}, {v: 2}, {v: 3}, {v: 4}], function (c, item, i) {
+            drawn.push([item.v, i, c.lineWidth]);
+        });
+        assert.deepEqual(calls.translate, [[0, 0], [200, 0], [0, 200], [200, 200]], 'ячейки 2x2 с шагом 200px (холст 400)');
+        assert.deepEqual(calls.plane, [[196, 196, 16], [196, 196, 16], [196, 196, 16], [196, 196, 16]], 'плоскость 196, единица 16px');
+        assert.deepEqual(calls.scale, [[16, -16], [16, -16], [16, -16], [16, -16]], 'scale(16,-16): ось y вверх');
+        assert.deepEqual(calls.fillText, ['График 1', 'График 2', 'График 3', 'График 4'], 'подписи ячеек');
+        assert.deepEqual(drawn, [[1, 0, 0.12], [2, 1, 0.12], [3, 2, 0.12], [4, 3, 0.12]], 'drawCell получает элемент, индекс и lineWidth 0.12');
+        assert.equal(calls.save, 4, 'save на каждую ячейку');
+        assert.equal(calls.restore, 4, 'restore на каждую ячейку');
+        assert.equal(calls.clip, 4, 'clip на каждую ячейку');
+    });
+
+    QUnit.module('allSignPairs');
+
+    QUnit.test('allSignPairs даёт все четыре комбинации знаков и новый массив', function (assert) {
+        assert.deepEqual(allSignPairs(), [[1, 1], [1, -1], [-1, 1], [-1, -1]], 'все комбинации знаков двух коэффициентов');
+        assert.notStrictEqual(allSignPairs(), allSignPairs(), 'каждый вызов - новый массив');
+    });
+
+    QUnit.module('texSigns');
+
+    QUnit.test('texSigns записывает знаки коэффициентов в TeX', function (assert) {
+        assert.equal(texSigns(['k', 'b'], [2, -1]), '$k>0,\\quad b<0$', 'знаки k и b');
+        assert.equal(texSigns(['a', 'c'], [-0.5, 3]), '$a<0,\\quad c>0$', 'знаки a и c');
+        assert.equal(texSigns(['a'], [0]), '$a=0$', 'ноль');
+    });
+
+
 };
