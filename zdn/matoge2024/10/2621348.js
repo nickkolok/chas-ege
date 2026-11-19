@@ -7,7 +7,7 @@
 		let diceSides = 6;
 		let minSum = sl(3, 6);
 		let maxSum = minSum + sl(1, 3);
-		let sumsText = variant ? arrayOfUniqueValues(sl(2, 4), 2, 12).sort((a, b) => a - b) : Array.from({length: maxSum - minSum + 1}, (_, i) => minSum + i);
+		let sumsText = variant ? arrayOfUniqueValues(sl(2, 4), 2, 12).sortNumeric() : Array.from({length: maxSum - minSum + 1}, (_, i) => minSum + i);
 
 		let favorable = 0;
 		for (let i = 1; i <= diceSides; i++) {
