@@ -490,6 +490,44 @@ module.exports = function registerNodeTests(QUnit) {
             'отрезок между точками на рёбрах 0-1 и 3-4 лежит в видимой грани');
     });
 
+    QUnit.test('RegularPrism.faces: грани согласованы с connectionMatrix и verticesOfFigure', function (assert) {
+        var prism3 = new geometry.RegularPrism({ height: 4, baseSide: 4, numberSide: 3 });
+        assert.deepEqual(prism3.faces,
+            [[0, 1, 2], [3, 4, 5], [0, 1, 4, 3], [1, 2, 5, 4], [2, 0, 3, 5]],
+            'треугольная призма: два основания и три боковые грани');
+
+        [3, 4, 6].forEach(function (n) {
+            var prism = new geometry.RegularPrism({ height: 4, baseSide: 4, numberSide: n });
+            var faces = prism.faces;
+            assert.equal(faces.length, n + 2, n + '-угольная призма: n + 2 граней');
+            assert.equal(faces[0].length, n, 'нижнее основание из n вершин');
+            assert.equal(faces[1].length, n, 'верхнее основание из n вершин');
+            prism.connectionMatrix.forEach(function (row, i) {
+                row.forEach(function (value, j) {
+                    if (!value) { return; }
+                    var edge = [i + 1, j];
+                    var incident = faces.filter(function (face) {
+                        return edge.every(function (v) { return face.includes(v); });
+                    });
+                    assert.equal(incident.length, 2, 'ребро ' + (i + 1) + '-' + j + ' лежит в двух гранях');
+                });
+            });
+        });
+
+        var prism6 = new geometry.RegularPrism({ height: 4, baseSide: 4, numberSide: 6 });
+        var v6 = prism6.verticesOfFigure;
+        var vis = geometry.facesVisibility(v6, project(v6), prism6.faces);
+        assert.ok(vis[1], 'верхнее основание видно');
+        assert.notOk(vis[0], 'нижнее основание не видно');
+        var dashed = geometry.dashHiddenEdges(prism6.connectionMatrix, prism6.faces, vis, [5, 4]);
+        var dashedCount = 0;
+        dashed.forEach(function (row) {
+            row.forEach(function (value) { if (Array.isArray(value)) { dashedCount++; } });
+        });
+        assert.ok(dashedCount > 0, 'невидимые рёбра рисуются пунктиром');
+        assert.deepEqual(prism6.connectionMatrix[0], [1], 'исходная матрица не изменилась');
+    });
+
     // ============================================================
     //  Circle  (lib/circle.js)
     // ============================================================

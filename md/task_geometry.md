@@ -54,8 +54,10 @@
 * `dashHiddenEdges(connectionMatrix, faces, visibility, dash)` - копия матрицы
   смежности для `drawFigure()` с пунктиром на невидимых рёбрах.
 
+У правильной призмы (`RegularPrism`) грани уже есть — `prism.faces` (нижнее основание, верхнее, затем боковые); перечислять их вручную не нужно.
+
 ```js
-let faces = [[0, 1, 2], [3, 4, 5], [0, 1, 4, 3], [1, 2, 5, 4], [2, 0, 3, 5]];
+let faces = prism.faces;
 let visibility = facesVisibility(vertices, points2D, faces);
 ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibility, [7, 5]));
 ```
