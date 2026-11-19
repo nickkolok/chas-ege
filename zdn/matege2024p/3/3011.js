@@ -34,15 +34,13 @@
 
 		let point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(pyr, camera, point2DPyr, {
+		point2DPyr = autoScale(pyr, camera, point2DPyr, {
 			startX: -180,
 			finishX: 160,
 			startY: -160,
 			finishY: 160,
 			maxScale: 50,
 		});
-
-		point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
 		let letters = ['A', 'B', 'C', 'D', 'S', 'O'];
 
