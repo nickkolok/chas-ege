@@ -96,15 +96,9 @@
 			ctx.strokeStyle = om.secondaryBrandColors;
 
 			ctx.lineWidth = 2;
-			ctx.drawFigure(point2DPar, [
-				[strok],
-				[0, 1],
-				[strok, 0, 1],
-				[0, 0, 0, 1],
-				[strok, 0, 0, 0, 1],
-				[0, 1, 0, 0, 0, 1],
-				[0, 0, 1, 0, 1, 0, 1,],
-			]);
+			let faces = [[0, 1, 2, 3], [5, 6, 7, 4], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+			let visibility = facesVisibility(parForPaint.verticesOfFigure, point2DPar, faces);
+			ctx.drawFigure(point2DPar, dashHiddenEdges(parForPaint.connectionMatrix, faces, visibility, strok));
 			let coord1 = coordinatesMiddleOfSegment3D(point2DPar[5], point2DPar[7]);
 			let coord2 = coordinatesMiddleOfSegment3D(point2DPar[1], point2DPar[2]);
 			let coord3 = coordinatesMiddleOfSegment3D(point2DPar[6], point2DPar[7]);
