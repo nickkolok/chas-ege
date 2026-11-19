@@ -26,16 +26,12 @@
           vert = [copyLetter[0], copyLetter[1], copyLetter[4], copyLetter[5], copyLetter.filter((_, i) => ![0, 1, 4, 5].includes(i)).iz()];
         }
 
-		let strok = [5, 4];
-
-		let matrixPar = [
-			[strok],
-			[0, 1],
-			[strok, 0, 1],
-			[0, 0, 0, 1],
-			[strok, 0, 0, 0, 1],
-			[0, 1, 0, 0, 0, 1],
-			[0, 0, 1, 0, 1, 0, 1],
+		// Грани параллелепипеда: нижнее и верхнее основания и четыре боковые.
+		// Порядок вершин — как в Parallelepiped.verticesOfFigure (lib/figure.js): 4 над 3, 5 над 0, 6 над 1, 7 над 2.
+		let faces = [
+			[0, 1, 2, 3], [4, 5, 6, 7],
+			[0, 1, 6, 5], [1, 2, 7, 6],
+			[2, 3, 4, 7], [3, 0, 5, 4],
 		];
 
 		let camera = {
@@ -60,6 +56,8 @@
 		});
 
 		point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+		let visibility = facesVisibility(par.verticesOfFigure, point2DPar, faces);
+		let matrixPar = dashHiddenEdges(par.connectionMatrix, faces, visibility, [5, 4]);
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
