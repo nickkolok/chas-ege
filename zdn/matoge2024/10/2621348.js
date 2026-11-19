@@ -19,7 +19,7 @@
 			}
 		}
 
-		let probability = favorable / 36;
+		let probability = favorable / (diceSides * diceSides);
 
 		let sumsStr = sumsText.joinLast(', ', ' или ');
 
