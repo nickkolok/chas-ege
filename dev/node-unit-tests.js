@@ -619,4 +619,58 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Canvas: пунктирная сетка drawGridWithArrows  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawGridWithArrows gridLineDash');
+
+    function gridStubCtx(events) {
+        return {
+            lineWidth: 0, font: '', textAlign: '', textBaseline: '',
+            save: function () { events.push(['save']); },
+            restore: function () { events.push(['restore']); },
+            translate: function () { events.push(['translate']); },
+            scale: function () { events.push(['scale']); },
+            setLineDash: function (d) { events.push(['dash', Array.prototype.slice.call(d)]); },
+            fillText: function () { events.push(['label']); },
+            irregularGrid: function () { events.push(['grid']); },
+            drawArrow: function () { events.push(['arrow']); },
+            drawLine: function () { events.push(['tick']); },
+        };
+    }
+
+    QUnit.test('gridLineDash применяется к сетке и сбрасывается до осей', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawGridWithArrows === 'function', 'метод drawGridWithArrows определён');
+        var events = [];
+        var ctx = gridStubCtx(events);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, {
+            gridLineDash: [3, 3], gridWidth: 60, gridHeight: 60, cellWidth: 10, cellHeight: 10, maxX: 3, maxY: 3,
+        });
+        var gi = -1, ai = -1, i;
+        for (i = 0; i < events.length; i++) {
+            if (events[i][0] === 'grid' && gi < 0) gi = i;
+            if (events[i][0] === 'arrow' && ai < 0) ai = i;
+        }
+        assert.ok(gi >= 0 && ai > gi, 'сетка рисуется до осей');
+        var dashBeforeGrid = null;
+        for (i = 0; i < gi; i++) if (events[i][0] === 'dash') dashBeforeGrid = events[i][1];
+        assert.deepEqual(dashBeforeGrid, [3, 3], 'перед сеткой установлен пунктир [3, 3]');
+        var resetBetween = false;
+        for (i = gi + 1; i < ai; i++) if (events[i][0] === 'dash' && events[i][1].length === 0) resetBetween = true;
+        assert.ok(resetBetween, 'пунктир сброшен до отрисовки осей (оси сплошные)');
+    });
+
+    QUnit.test('без gridLineDash сетка рисуется сплошной (поведение по умолчанию)', function (assert) {
+        var events = [];
+        var ctx = gridStubCtx(events);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, {
+            gridWidth: 60, gridHeight: 60, cellWidth: 10, cellHeight: 10, maxX: 3, maxY: 3,
+        });
+        var nonEmptyDash = false;
+        for (var i = 0; i < events.length; i++) {
+            if (events[i][0] === 'dash' && events[i][1].length > 0) nonEmptyDash = true;
+        }
+        assert.notOk(nonEmptyDash, 'непустой пунктир не устанавливается');
+    });
 };
