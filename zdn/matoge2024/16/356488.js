@@ -22,7 +22,7 @@
         ];
 
         let points = autoScale([AB.ps, AB.pe, C]);
-        let scaledCircle = CircleByPoints.fromCenterAndPoint(new Point(0, 0), new Point(points[0].x, points[0].y));
+        let scaledCircle = CircleByPoints.fromCenterAndPoint(circle.pc, new Point(points[0].x, points[0].y));
 
         let paint1 = function (ctx) {
 
