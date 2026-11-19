@@ -54,10 +54,11 @@
 		        ([3, 4, 5, 6, 7].includes(question) ? '' : ' Ответ дайте в ' + units + '.'),
 		    answers: answers[question], preference: [preferenceStory, preferenceQuestion, preferencePeriod],
 		});
+		let xMin = dates[0] - 0.5, xMax = dates[dates.length - 1] + 0.5;
 		NAtask.modifiers.addJqplot({
 		    dataArray: [values.map((value, i) => [dates[i], value])], width: '760px', height: '400px',
-		    options: {axes: {xaxis: {min: dates[0] - 0.5, max: dates[dates.length - 1] + 0.5,
-		        ticks: [[dates[0] - 0.5, '']].concat(dates.slice().dopFixedLess(0), [[dates[dates.length - 1] + 0.5, '']])},
+		    options: {axes: {xaxis: {min: xMin, max: xMax,
+		        ticks: [[xMin, '']].concat(dates.slice().dopFixedLess(0), [[xMax, '']])},
 		        yaxis: {min: base - step, max: base + 13 * step, tickInterval: step}}, seriesDefaults: {showMarker: true}},
 		});
 		NAtask.modifiers.allDecimalsToStandard();
