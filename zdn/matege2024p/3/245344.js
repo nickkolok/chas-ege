@@ -11,7 +11,7 @@
 
 		let prism3 = new Prism({
 			height: prism6.height,
-			baseArea: prism6.baseArea / 6,
+			baseArea: prism6.baseArea / prism6.numberSide,
 		});
 
 		let letter = ['A', 'B', 'C', 'D', 'E', 'F', 'F₁', 'A₁', 'B₁', 'C₁', 'D₁', 'E₁', ];
