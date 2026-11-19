@@ -619,4 +619,49 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Ограничение числа знаков после запятой  (lib/func_assert.js)
+    // ============================================================
+    QUnit.module('genAssertDecimalPlaces');
+
+    QUnit.test('не более N знаков после запятой', function (assert) {
+        genAssertDecimalPlaces(1.25, 2);
+        genAssertDecimalPlaces(0.0015, 4);
+        genAssertDecimalPlaces(7, 0);
+        assert.ok(true, 'подходящие числа не отбраковываются');
+        assert.throws(function () {
+            genAssertDecimalPlaces(1.256, 2);
+        }, /не более 2 знаков/, '1.256 при двух знаках отбраковывается');
+        assert.throws(function () {
+            genAssertDecimalPlaces(0.0015, 3);
+        }, /не более 3 знаков/, '0.0015 при трёх знаках отбраковывается');
+        assert.throws(function () {
+            genAssertDecimalPlaces(1.5, 0);
+        }, /не более 0 знаков/, '1.5 при нуле знаков отбраковывается');
+    });
+
+    QUnit.test('ложная точность вычислений за знаки не считается', function (assert) {
+        genAssertDecimalPlaces(0.9 / 100, 3); // 0.009000000000000001
+        genAssertDecimalPlaces(0.1 + 0.2, 1); // 0.30000000000000004
+        assert.ok(true, 'хвосты плавающей точки не мешают');
+    });
+
+    QUnit.test('своё сообщение проходит насквозь', function (assert) {
+        assert.throws(function () {
+            genAssertDecimalPlaces(1.234, 2, 'Удлинение имеет слишком много знаков');
+        }, /Удлинение имеет слишком много знаков/, 'сообщение автора шаблона сохранено');
+    });
+
+    QUnit.test('genAssertZ1000 ведёт себя как раньше', function (assert) {
+        genAssertZ1000(0.001);
+        genAssertZ1000(2);
+        assert.ok(true, '0.001 и 2 подходят');
+        assert.throws(function () {
+            genAssertZ1000(0.0001);
+        }, /не более 3 знаков/, '0.0001 - четыре знака');
+        assert.throws(function () {
+            genAssertZ1000(1 / 3);
+        }, /не более 3 знаков/, '1/3 - бесконечная дробь');
+    });
 };
