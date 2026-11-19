@@ -602,6 +602,37 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Подписи в стороне от отрезков; рёбра матрицы смежности (lib/func.js)
+    // ============================================================
+    QUnit.module('labelPositionAwayFromSegments, segmentsFromConnectionMatrix');
+
+    QUnit.test('segmentsFromConnectionMatrix: рёбра в формате drawFigure', function (assert) {
+        var points = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 2, y: 2 }];
+        var segments = segmentsFromConnectionMatrix(points, [[1], [1, 1], [1, 1]]);
+        assert.deepEqual(segments, [
+            [points[1], points[0]],
+            [points[2], points[0]],
+            [points[2], points[1]],
+            [points[3], points[0]],
+            [points[3], points[1]],
+        ], 'строка i — рёбра из points[i+1] в points[j], «рваные» строки допустимы');
+        assert.deepEqual(segmentsFromConnectionMatrix(points, [[0], [0, 0], [0, 0]]), [], 'нулевая матрица — рёбер нет');
+        assert.deepEqual(segmentsFromConnectionMatrix(points, [[[4, 2]]]), [[points[1], points[0]]], 'пунктирное ребро — тоже ребро');
+    });
+
+    QUnit.test('labelPositionAwayFromSegments: направление с наибольшим зазором до отрезков', function (assert) {
+        var below = [[{ x: -100, y: -10 }, { x: 100, y: -10 }]];
+        assertPointClose(assert, labelPositionAwayFromSegments({ x: 0, y: 0 }, below, 20), { x: 0, y: 20 }, 'отрезок снизу — подпись сверху');
+        assertPointClose(assert, labelPositionAwayFromSegments({ x: 0, y: 0 }, below, 5), { x: 0, y: 5 }, 'distance задаёт отступ');
+        assertPointClose(assert, labelPositionAwayFromSegments({ x: 3, y: 4 }, below, 20, 4), { x: 3, y: 24 }, 'отсчёт от point, directions = 4');
+    });
+
+    QUnit.test('labelPositionAwayFromSegments: при равенстве — первое направление', function (assert) {
+        var symmetric = [[{ x: -100, y: -10 }, { x: 100, y: -10 }], [{ x: -100, y: 10 }, { x: 100, y: 10 }]];
+        assertPointClose(assert, labelPositionAwayFromSegments({ x: 0, y: 0 }, symmetric, 20), { x: 20, y: 0 }, 'симметрия — направление k = 0');
+    });
+
+    // ============================================================
     //  Canvas: перенос начала координат  (lib/canvas.js)
     // ============================================================
     QUnit.module('Canvas: translateToCenter');
