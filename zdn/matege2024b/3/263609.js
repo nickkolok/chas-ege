@@ -21,7 +21,7 @@
 		let [name, units, base, step] = stories[story];
 		let year = sl(story === 0 ? 2021 : 2000, 2025);
 		let month = sl(0, 11);
-		let dates = Array.from({length: 28}, (_, i) => i + 1).filter(day => story === 12 || ![0, 6].includes(new Date(year, month, day).getDay()));
+		let dates = [].N(28).filter(day => story === 12 || ![0, 6].includes(new Date(year, month, day).getDay()));
 		let values = dates.map(() => +(base + step * sl(0, 12)).toFixed(3));
 		let left = period ? sl(0, dates.length - 4) : 0;
 		let right = period ? sl(left + 2, dates.length - 1) : dates.length - 1;
