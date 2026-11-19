@@ -45,7 +45,7 @@
 				let f = x => rise * x / run + intercept;
 				ctx.drawLine(-6, f(-6), 7, f(7));
 				if (variant !== 0) {
-					let x = Math.abs(intercept + rise) <= 5 ? run : -run;
+					let x = Math.abs(f(run)) <= 5 ? run : -run;
 					ctx.drawFilledCircle(0, intercept, 0.17);
 					ctx.drawFilledCircle(x, f(x), 0.17);
 				}
