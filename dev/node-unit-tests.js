@@ -619,4 +619,24 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Array: разбиения на непрерывные куски  (lib/array_general.js)
+    // ============================================================
+    QUnit.module('Array: allContiguousPartitions');
+
+    QUnit.test('allContiguousPartitions: все разбиения на непрерывные куски', function (assert) {
+        assert.deepEqual([].allContiguousPartitions(), [[]], 'пустой массив: одно пустое разбиение');
+        assert.deepEqual([7].allContiguousPartitions(), [[[7]]], 'один элемент: одно разбиение');
+        assert.deepEqual([1, 2].allContiguousPartitions(), [[[1, 2]], [[1], [2]]], 'два элемента: 2 разбиения');
+        assert.deepEqual([1, 2, 3].allContiguousPartitions(),
+            [[[1, 2, 3]], [[1], [2, 3]], [[1, 2], [3]], [[1], [2], [3]]], 'три элемента: 4 разбиения в порядке маски');
+        assert.equal([1, 2, 3, 4].allContiguousPartitions().length, 8, 'четыре элемента: 2^3 = 8 разбиений');
+        assert.equal([1, 2, 3, 4, 5].allContiguousPartitions().length, 16, 'пять элементов: 2^4 = 16 разбиений');
+        var src = [1, 2, 3];
+        var parts = src.allContiguousPartitions();
+        parts[0][0].push(99);
+        assert.deepEqual(src, [1, 2, 3], 'исходный массив не изменяется');
+        assert.deepEqual(parts[3], [[1], [2], [3]], 'остальные разбиения не затронуты');
+    });
 };
