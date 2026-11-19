@@ -22,7 +22,8 @@
 		let circle = triangle.inscribedCircle();
 		let intersectPoint = circle.pc;
 
-		let points = autoScale(triangle.vertices.concat(intersectPoint));
+		let camera = { scale: 1 };
+		let points = autoScale(triangle.vertices.concat(intersectPoint), camera);
 
 		let paint1 = function(ctx) {
 
@@ -33,8 +34,7 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
-			let scale = Math.hypot(points[1].x - points[0].x, points[1].y - points[0].y) / triangle.lengthAB;
-			new Circle(new Point(circle.pc.x * scale, circle.pc.y * scale), circle.r * scale).drawOnto(ctx);
+			new Circle(new Point(points[3].x, points[3].y), circle.r * camera.scale).drawOnto(ctx);
 		};
 
 		NAtask.setTask({
