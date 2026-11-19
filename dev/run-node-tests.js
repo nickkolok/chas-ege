@@ -173,6 +173,14 @@ try {
     console.error('⚠️  Не удалось загрузить node-unit-tests-math-functions.js:', err.message);
 }
 
+try {
+    const registerSeedrandomTests = require('./node-unit-tests-seedrandom.js');
+    registerSeedrandomTests(QUnit);
+    console.log('✅ Тесты seedrandom в бандле (node-unit-tests-seedrandom.js) подключены.');
+} catch (err) {
+    console.error('⚠️  Не удалось загрузить node-unit-tests-seedrandom.js:', err.message);
+}
+
 QUnit.testDone(function (details) {
     if (details.failed > 0) {
         console.error(`\n❌ Провален тест: "${details.name}"`);
