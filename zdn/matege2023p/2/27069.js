@@ -32,15 +32,13 @@
 
 		let point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(pyr.verticesOfFigure, camera, point2DPyr, {
+		point2DPyr = autoScale(pyr.verticesOfFigure, camera, point2DPyr, {
 			startX: -390 / 2,
 			finishX: 390 / 2,
 			startY: -390 / 2,
 			finishY: 390 / 2,
 			maxScale: 50,
 		});
-
-		point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 		
 		let connectionMatrix= [
 			[1],
