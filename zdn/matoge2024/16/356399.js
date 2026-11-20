@@ -19,6 +19,8 @@
             ]);
         }
 
+        let radius = square.inscribedCircle().r;
+
         let vertex = autoScale(square.vertices);
 
         let paint1 = function (ctx) {
@@ -40,12 +42,12 @@
             text: ``,
             questions:[[{
                 text:`Сторона квадрата равна $${square.lengthAB}$. Найдите радиус окружности, вписанной в этот квадрат.`,
-                answers:square.lengthAB/2,
+                answers:radius,
             },{
-                text:`Найдите площадь квадрата, описанного около окружности радиуса $${square.lengthAB/2}$.`,
+                text:`Найдите площадь квадрата, описанного около окружности радиуса $${radius}$.`,
                 answers:square.area(),
             },{
-                text:`Радиус вписанной в квадрат окружности равен $${(square.lengthAB / 2).pow(2).round().texsqrt(1)}$. Найдите диагональ этого квадрата.`,
+                text:`Радиус вписанной в квадрат окружности равен $${radius.pow(2).round().texsqrt(1)}$. Найдите диагональ этого квадрата.`,
                 answers:square.lengthDiagonalAC,
             }][rand]],
             authors: ['Александра Суматохина'],
