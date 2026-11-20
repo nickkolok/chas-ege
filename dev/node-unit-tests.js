@@ -619,4 +619,64 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Целочисленное распределение суммы по весам  (lib/array.js)
+    // ============================================================
+    QUnit.module('Array.prototype.toSumInt');
+
+    QUnit.test('точное деление не искажается', function (assert) {
+        assert.deepEqual([1, 2, 3].toSumInt(6), [1, 2, 3], 'веса 1:2:3, сумма 6');
+        assert.deepEqual([5].toSumInt(7), [7], 'один вес забирает всё');
+        assert.deepEqual([2, 3].toSumInt(0), [0, 0], 'нулевая сумма');
+    });
+
+    QUnit.test('остаток достаётся наибольшим дробным частям', function (assert) {
+        assert.deepEqual([1, 1, 1].toSumInt(10), [4, 3, 3], '10/3: единица уходит первому');
+        assert.deepEqual([1, 1].toSumInt(3), [2, 1], 'при равных остатках - тому, кто раньше');
+        assert.deepEqual([50, 20, 10, 5].toSumInt(1000), [588, 235, 118, 59], 'веса не в сумме 100');
+    });
+
+    QUnit.test('нулевой вес не получает ничего', function (assert) {
+        assert.deepEqual([3, 0].toSumInt(10), [10, 0], 'последний вес нулевой');
+        assert.deepEqual([1, 1, 0].toSumInt(3), [2, 1, 0], 'нулевой вес в конце');
+    });
+
+    QUnit.test('сумма сохраняется в точности, элементы целые', function (assert) {
+        var cases = [
+            [[7, 11, 3, 5], 1000],
+            [[55, 15, 10, 5, 3, 2, 1, 1, 1, 1], 19000],
+            [[1, 1, 1, 1, 1, 1, 1], 20000],
+            [[60, 15, 10, 5, 3, 2, 1, 1, 1, 1], 500],
+        ];
+        cases.forEach(function (pair) {
+            var weights = pair[0], total = pair[1];
+            var parts = weights.toSumInt(total);
+            assert.equal(parts.length, weights.length, 'длина сохранена: ' + weights.join(','));
+            assert.equal(parts.sum(), total, 'сумма равна ' + total);
+            assert.ok(parts.every(function (x) { return x.isZ() && x >= 0; }), 'все элементы целые неотрицательные');
+        });
+        assert.deepEqual([7, 11, 3, 5].toSumInt(1000), [269, 423, 116, 192], 'конкретное распределение');
+    });
+
+    QUnit.test('округление toSum сумму не сохраняет, toSumInt - сохраняет', function (assert) {
+        var rounded = [1, 1, 1].toSum(10).map(function (x) { return x.round(); });
+        assert.equal(rounded.sum(), 9, 'поэлементное округление долей теряет единицу');
+        assert.equal([1, 1, 1].toSumInt(10).sum(), 10, 'toSumInt возвращает ровно 10');
+    });
+
+    QUnit.test('исходный массив не изменяется', function (assert) {
+        var weights = [1, 2, 3];
+        weights.toSumInt(12);
+        assert.deepEqual(weights, [1, 2, 3], 'веса остались прежними');
+    });
+
+    QUnit.test('негодные данные отбраковываются', function (assert) {
+        assert.throws(function () { [1, 2].toSumInt(-1); }, /целое неотрицательное/, 'отрицательная сумма');
+        assert.throws(function () { [1, 2].toSumInt(2.5); }, /целое неотрицательное/, 'дробная сумма');
+        assert.throws(function () { [1, 2].toSumInt(); }, /целое неотрицательное/, 'сумма не передана');
+        assert.throws(function () { [].toSumInt(5); }, /не должен быть пуст/, 'пустой массив весов');
+        assert.throws(function () { [0, 0].toSumInt(5); }, /положительной/, 'нулевая сумма весов');
+        assert.throws(function () { [-1, 2].toSumInt(5); }, /отрицательными/, 'отрицательный вес');
+    });
 };
