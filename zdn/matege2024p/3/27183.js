@@ -4,11 +4,10 @@
 
 		let cube = new Cube(sl(2, 50));
 
-		let prism = new IrregularTriangularPrism({
+		let prism = new RectangularPrismWithRightAngledTriangleAtBase({
 			height: cube.baseSide,
 			sideA: 0.5 * cube.baseSide,
-			sideB: 0.5 * cube.baseSide,
-			sideC: 0.5 * cube.DWDiagonal
+			sideB: 0.5 * cube.baseSide
 		});
 
 		let camera = {
