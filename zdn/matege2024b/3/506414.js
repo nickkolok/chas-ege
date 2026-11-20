@@ -6,7 +6,7 @@
 		let preference = ['firstAtValue', 'lastAtValue', 'firstMaximum', 'lastMaximum', 'countAtValue', 'dryDays', 'maximumValue'];
 		let variant = getSelectedPreferenceFromList(key, preference);
 		let start = sl(1, 10);
-		let values = Array.from({length: 16}, () => sl(0, 14) / 2);
+		let values = [].zapslch(0, 15, 0, 7, 0.5);
 		let target = values[sl(0, values.length - 1)];
 		let maximum = values.maxE();
 		let answers = [start + values.indexOf(target), start + values.lastIndexOf(target),
