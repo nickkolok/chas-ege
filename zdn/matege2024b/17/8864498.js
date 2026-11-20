@@ -14,7 +14,7 @@
 		let reciprocal = sl1();
 		let notation = reciprocal ? '\\left(' + (1).texfrac(base) + '\\right)' : base;
 		let sign = variant === 0 ? 1 : -1;
-		x = sl(-12, 12) / 2;
+		x = sl(-6, 6, 0.5);
 		let step = x.isZ() ? 1 : 2;
 		let slope = sl(1, 4).pm();
 		let other = slKrome([0, -sign * slope], -4, 4);
