@@ -29,8 +29,8 @@
 		let d = variant === 1 ? argDenominator * otherDenominator : argDenominator * otherNumerator;
 		right = log(variant === 3 ? d.texfrac(n) : n.texfrac(d));
 	}
-	let x = sl(-16, 16) / 2;
-	let slope = sl(1, 8).pm() * 2;
+	let x = sl(-8, 8, 0.5);
+	let slope = sl(2, 16, 2).pm();
 	let constant = (argNumerator - argDenominator * slope * x).texfrac(argDenominator);
 	let left = log('(' + [slope + 'x', constant].slag0() + ')');
 	if (variant !== 0) {
