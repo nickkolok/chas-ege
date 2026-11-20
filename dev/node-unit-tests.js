@@ -491,6 +491,29 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Центр тяжести набора точек  (lib/figure.js)
+    // ============================================================
+    QUnit.module('Центроид набора точек (centroidOfPoints)');
+
+    QUnit.test('centroidOfPoints: среднее координат плоских точек', function (assert) {
+        var centroid = geometry.centroidOfPoints([{ x: 0, y: 0 }, { x: 6, y: 0 }, { x: 0, y: 9 }]);
+        assert.deepEqual(centroid, { x: 2, y: 3 }, 'центроид треугольника');
+        assert.ok(!('z' in centroid), 'у плоских точек нет z');
+        assert.deepEqual(geometry.centroidOfPoints([{ x: 5, y: -7 }]), { x: 5, y: -7 }, 'одна точка');
+    });
+
+    QUnit.test('centroidOfPoints: среднее координат пространственных точек', function (assert) {
+        var centroid = geometry.centroidOfPoints([
+            { x: 0, y: 0, z: 0 }, { x: 4, y: 0, z: 0 }, { x: 0, y: 4, z: 0 }, { x: 0, y: 0, z: 4 },
+        ]);
+        assert.deepEqual(centroid, { x: 1, y: 1, z: 1 }, 'центроид тетраэдра');
+    });
+
+    QUnit.test('centroidOfPoints: пустой массив - ошибка', function (assert) {
+        assert.throws(function () { geometry.centroidOfPoints([]); }, /empty point array/, 'пустой массив точек');
+    });
+
+    // ============================================================
     //  Circle  (lib/circle.js)
     // ============================================================
     QUnit.module('Circle');
