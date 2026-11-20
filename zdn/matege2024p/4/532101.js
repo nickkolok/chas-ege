@@ -46,10 +46,7 @@
             table += `| ${r.text} | ${r.count} |\n`;
         }
 
-        let fineSpeed = 0;
-        for(let r of rows){
-            fineSpeed += r.count * r.fine;
-        }
+        let fineSpeed = rows.map(r => r.count * r.fine).sum();
 
         let otherViolations = [
             {
