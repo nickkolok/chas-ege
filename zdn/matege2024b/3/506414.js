@@ -6,7 +6,8 @@
 		let preference = ['firstAtValue', 'lastAtValue', 'firstMaximum', 'lastMaximum', 'countAtValue', 'dryDays', 'maximumValue'];
 		let variant = getSelectedPreferenceFromList(key, preference);
 		let start = sl(1, 10);
-		let values = [].zapslch(0, 15, 0, 7, 0.5);
+		let valueMax = 7, valueStep = 0.5;
+		let values = [].zapslch(0, 15, 0, valueMax, valueStep);
 		let target = values.iz();
 		let maximum = values.maxE();
 		let answers = [start + values.indexOf(target), start + values.lastIndexOf(target),
@@ -24,11 +25,12 @@
 		        'Для наглядности точки соединены линиями. ' + questions[variant],
 		    answers: answers[variant], preference,
 		});
+		let xMin = start - 0.5, xMax = start + values.length - 0.5;
 		NAtask.modifiers.addJqplot({
 		    dataArray: [values.map((value, i) => [start + i, value])], width: '720px', height: '380px',
-		    options: {axes: {xaxis: {min: start - 0.5, max: start + values.length - 0.5,
-		        ticks: [[start - 0.5, '']].concat(values.map((_, i) => [start + i, '' + (start + i)]), [[start + values.length - 0.5, '']])},
-		        yaxis: {min: 0, max: 7, tickInterval: 0.5}}, seriesDefaults: {showMarker: true}},
+		    options: {axes: {xaxis: {min: xMin, max: xMax,
+		        ticks: [[xMin, '']].concat(values.map((_, i) => [start + i, '' + (start + i)]), [[xMax, '']])},
+		        yaxis: {min: 0, max: valueMax, tickInterval: valueStep}}, seriesDefaults: {showMarker: true}},
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
