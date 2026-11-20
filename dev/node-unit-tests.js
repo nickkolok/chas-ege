@@ -619,4 +619,52 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Canvas: вектор с подписью  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawVector');
+
+    function recordingCtx() {
+        var calls = [];
+        var ctx = {
+            strokeStyle: '#000', fillStyle: '#000', lineWidth: 1,
+            font: '10px sans-serif', textAlign: 'start', textBaseline: 'alphabetic',
+            save: function () { calls.push(['save']); },
+            restore: function () { calls.push(['restore']); },
+            beginPath: function () { calls.push(['beginPath']); },
+            closePath: function () { calls.push(['closePath']); },
+            moveTo: function (x, y) { calls.push(['moveTo', x, y]); },
+            lineTo: function (x, y) { calls.push(['lineTo', x, y]); },
+            stroke: function () { calls.push(['stroke']); },
+            fill: function () { calls.push(['fill']); },
+            fillText: function (s, x, y) { calls.push(['fillText', s, x, y]); },
+        };
+        ctx.drawLine = CanvasRenderingContext2D.prototype.drawLine;
+        return { ctx: ctx, calls: calls };
+    }
+
+    QUnit.test('ctx.drawVector рисует стержень, залитый наконечник и подпись за концом', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawVector === 'function', 'метод drawVector определён');
+        var rec = recordingCtx();
+        CanvasRenderingContext2D.prototype.drawVector.call(rec.ctx, 0, 0, 65, 0, '1', { color: '#0066cc' });
+        var calls = rec.calls;
+        assert.ok(calls.some(function (c) { return c[0] === 'moveTo' && c[1] === 0 && c[2] === 0; }), 'moveTo в начало');
+        assert.ok(calls.some(function (c) { return c[0] === 'lineTo' && c[1] === 65 && c[2] === 0; }), 'lineTo в конец');
+        assert.equal(calls.filter(function (c) { return c[0] === 'fill'; }).length, 1, 'наконечник залит один раз');
+        var texts = calls.filter(function (c) { return c[0] === 'fillText'; });
+        assert.equal(texts.length, 1, 'подпись одна');
+        assert.equal(texts[0][1], '1', 'текст подписи');
+        assert.ok(Math.abs(texts[0][2] - 80) < 1e-9 && Math.abs(texts[0][3] - 0) < 1e-9, 'подпись в (80, 0)');
+        assert.equal(rec.ctx.strokeStyle, '#0066cc', 'цвет выставлен');
+        assert.equal(rec.ctx.lineWidth, 2.5, 'толщина 2.5');
+    });
+
+    QUnit.test('ctx.drawVector без label не рисует подпись', function (assert) {
+        var rec = recordingCtx();
+        CanvasRenderingContext2D.prototype.drawVector.call(rec.ctx, 0, 0, 65, 0);
+        assert.equal(rec.calls.filter(function (c) { return c[0] === 'fillText'; }).length, 0, 'fillText не вызывался');
+        assert.equal(rec.calls.filter(function (c) { return c[0] === 'fill'; }).length, 1, 'наконечник всё равно залит');
+    });
+
 };
