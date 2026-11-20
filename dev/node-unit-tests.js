@@ -619,4 +619,19 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Coordinate axis: целые засечки  (lib/func.js)
+    // ============================================================
+    QUnit.module('Coordinate axis: coordAxis_integerTicks');
+
+    QUnit.test('coordAxis_integerTicks: целые засечки с подписью под осью', function (assert) {
+        var ticks = coordAxis_integerTicks(-2, 2);
+        assert.equal(ticks.length, 5, 'от -2 до 2 — пять засечек');
+        assert.deepEqual(ticks.map(function (p) { return p.value; }), [-2, -1, 0, 1, 2], 'целые значения по возрастанию');
+        assert.deepEqual(ticks.map(function (p) { return p.label; }), ['-2', '-1', '0', '1', '2'], 'подписи — строки');
+        assert.ok(ticks.every(function (p) { return p.mark === 'line' && p.labelPos === 'underAxis'; }), 'засечка line, подпись underAxis');
+        assert.deepEqual(coordAxis_integerTicks(1.2, 3.8).map(function (p) { return p.value; }), [2, 3], 'дробные границы округляются до целых');
+        assert.deepEqual(coordAxis_integerTicks(3, 1), [], 'перевёрнутый диапазон пуст');
+    });
 };
