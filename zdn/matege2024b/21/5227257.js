@@ -16,7 +16,7 @@
    for (var B2 = lo + 1; B2 < hi; B2++)
     for (var C2 = lo + 1; C2 < hi; C2++) {
      var v = R - B2 + C2;
-     if (v > 0 && v % A2 == 0 && xs.indexOf(v / A2) < 0) xs.push(v / A2);
+     if (v > 0 && v.kratno(A2)) xs.pushUnique(v / A2);
     }
   genAssert(xs.length == 1, 'загаданное число единственно');
   NAtask.setTask({
