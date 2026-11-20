@@ -56,7 +56,7 @@
 
 			NAtask.setTask({
 				text: taskText,
-				answers: vStd,
+				answers: v,
 				analys: analys,
 				preference: preference,
 			});
@@ -81,7 +81,7 @@
 
 			NAtask.setTask({
 				text: taskText,
-				answers: sStd,
+				answers: s,
 				analys: analys,
 				preference: preference,
 			});
