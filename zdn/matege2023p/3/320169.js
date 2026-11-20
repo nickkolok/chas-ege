@@ -45,7 +45,7 @@
 			genAssert(k > 0 && k < kol, 'Нужны дети обоих полов');
 
 		NAtask.setTask({
-			text: `${persons.joinLast(' и ')} бросили жребий — кому начинать игру. Найдите вероятность того, что начинать игру ${must} ${uslov}.`,
+			text: `${persons.joinWithConjunction()} бросили жребий — кому начинать игру. Найдите вероятность того, что начинать игру ${must} ${uslov}.`,
 			answers: answ,
 			preference: [preference1, preference2],
 			analys: `Жребий начать игру может выпасть каждому из ${chislo} детей. Вероятность того, что это будет ${uslov}, равна ${answ.ts()}.`,
