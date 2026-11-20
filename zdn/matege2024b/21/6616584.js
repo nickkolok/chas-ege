@@ -15,7 +15,7 @@
   var cnt = 0;
   for (var cc = 0; cc <= Q; cc++) {
    var num = p * cc - S;
-   if (num < 0 || num % m !== 0) continue;
+   if (num < 0 || !num.kratno(m)) continue;
    var ww = num / m;
    if (ww < 1 || cc + ww > Q) continue;
    cnt++;
