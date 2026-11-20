@@ -746,4 +746,31 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('мёрз', 1), 'мёрзла');
     });
 
+
+    QUnit.test('Глаголы на -ёг: лёг, берёг и жёг ведут себя по-разному', function (assert) {
+        assert.equal(selectVerbGender('лёг', 1), 'легла');
+        assert.equal(selectVerbGender('лёг', 2), 'легло');
+        assert.equal(selectVerbGender('лёг', 3), 'легли');
+        assert.equal(selectVerbGender('прилёг', 1), 'прилегла');
+        assert.equal(selectVerbGender('залёг', 1), 'залегла');
+        assert.equal(selectVerbGender('налёг', 1), 'налегла');
+        assert.equal(selectVerbGender('влёг', 1), 'влегла');
+        assert.equal(selectVerbGender('жёг', 1), 'жгла', 'здесь гласная выпадает');
+        assert.equal(selectVerbGender('сжёг', 1), 'сжгла');
+        assert.equal(selectVerbGender('поджёг', 1), 'поджгла');
+        assert.equal(selectVerbGender('берёг', 1), 'берегла');
+        assert.equal(selectVerbGender('стерёг', 1), 'стерегла');
+        assert.equal(selectVerbGender('сберёг', 1), 'сберегла');
+        assert.equal(selectVerbGender('пренебрёг', 1), 'пренебрегла');
+    });
+
+    QUnit.test('Возвратные глаголы на -ёг', function (assert) {
+        assert.equal(selectVerbGender('улёгся', 0), 'улёгся');
+        assert.equal(selectVerbGender('улёгся', 1), 'улеглась');
+        assert.equal(selectVerbGender('улёгся', 2), 'улеглось');
+        assert.equal(selectVerbGender('улёгся', 3), 'улеглись');
+        assert.equal(selectVerbGender('берёгся', 1), 'береглась');
+        assert.equal(selectVerbGender('жёгся', 1), 'жглась');
+    });
+
 };
