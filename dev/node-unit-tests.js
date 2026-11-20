@@ -619,4 +619,21 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  String: перестановки мультимножества  (lib/string.js)
+    // ============================================================
+    QUnit.module('String: countDistinctPermutations');
+
+    QUnit.test('countDistinctPermutations: число различных перестановок символов', function (assert) {
+        assert.equal(''.countDistinctPermutations(), 1, 'пустая строка: 1');
+        assert.equal('А'.countDistinctPermutations(), 1, 'одна буква: 1');
+        assert.equal('АА'.countDistinctPermutations(), 1, 'две одинаковые: 2!/2! = 1');
+        assert.equal('АБ'.countDistinctPermutations(), 2, 'две разные: 2! = 2');
+        assert.equal('АБА'.countDistinctPermutations(), 3, 'АБА: 3!/2! = 3');
+        assert.equal('МАТЕМАТИКА'.countDistinctPermutations(), 151200, 'МАТЕМАТИКА: 10!/24 = 151200');
+        assert.equal('ФОРМУЛА'.countDistinctPermutations(), 5040, 'ФОРМУЛА: 7! = 5040');
+        assert.equal('УРАВНЕНИЕ'.countDistinctPermutations(), 90720, 'УРАВНЕНИЕ: 9!/4 = 90720');
+    });
+
 };
