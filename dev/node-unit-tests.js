@@ -619,4 +619,61 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Количественное числительное словами  (lib/func.js)
+    // ============================================================
+    QUnit.module('cardinalNumber');
+
+    QUnit.test('cardinalNumber: формы, нужные шаблонам про жребий', function (assert) {
+        assert.equal(cardinalNumber(4, 'r'), 'четырёх', 'каждому из четырёх детей');
+        assert.equal(cardinalNumber(5, 'r'), 'пяти', 'каждому из пяти детей');
+        assert.equal(cardinalNumber(8, 'r'), 'восьми', 'каждому из восьми детей');
+    });
+
+    QUnit.test('cardinalNumber: формы берутся из словаря числительных', function (assert) {
+        assert.equal(cardinalNumber(7, 'r'), lx['семь'].re, 'семи - родительный падеж');
+        assert.equal(cardinalNumber(9, 't'), lx['девять'].te, 'девятью - творительный падеж');
+        assert.equal(cardinalNumber(10), lx['десять'].ie, 'по умолчанию именительный');
+    });
+
+    QUnit.test('cardinalNumber: все падежи', function (assert) {
+        assert.equal(cardinalNumber(5, 'i'), 'пять');
+        assert.equal(cardinalNumber(5, 'r'), 'пяти');
+        assert.equal(cardinalNumber(5, 'd'), 'пяти');
+        assert.equal(cardinalNumber(5, 'v'), 'пять');
+        assert.equal(cardinalNumber(5, 't'), 'пятью');
+        assert.equal(cardinalNumber(5, 'p'), 'пяти');
+    });
+
+    QUnit.test('cardinalNumber: род у единицы и двойки', function (assert) {
+        assert.equal(cardinalNumber(1), 'один', 'мужской по умолчанию');
+        assert.equal(cardinalNumber(1, 'i', 1), 'одна');
+        assert.equal(cardinalNumber(1, 'i', 2), 'одно');
+        assert.equal(cardinalNumber(1, 'r', 1), 'одной');
+        assert.equal(cardinalNumber(2, 'i', 1), 'две', 'две подруги');
+        assert.equal(cardinalNumber(2, 'v', 1), 'две');
+        assert.equal(cardinalNumber(2, 'r', 1), 'двух', 'в косвенных падежах род не важен');
+        assert.equal(cardinalNumber(22, 'i', 1), 'двадцать две');
+    });
+
+    QUnit.test('cardinalNumber: составные числа склоняются по частям', function (assert) {
+        assert.equal(cardinalNumber(11, 'r'), 'одиннадцати');
+        assert.equal(cardinalNumber(20, 'r'), 'двадцати');
+        assert.equal(cardinalNumber(21), 'двадцать один');
+        assert.equal(cardinalNumber(25, 'r'), 'двадцати пяти');
+        assert.equal(cardinalNumber(40, 't'), 'сорока');
+        assert.equal(cardinalNumber(100, 'r'), 'ста');
+        assert.equal(cardinalNumber(115, 'r'), 'ста пятнадцати');
+        assert.equal(cardinalNumber(200, 't'), 'двумястами');
+        assert.equal(cardinalNumber(999, 'r'), 'девятисот девяноста девяти');
+    });
+
+    QUnit.test('cardinalNumber: неверные аргументы - ошибка', function (assert) {
+        assert.throws(function () { cardinalNumber(0); }, 'нуля в словаре числительных нет');
+        assert.throws(function () { cardinalNumber(1000); }, 'тысячи требуют согласования существительного');
+        assert.throws(function () { cardinalNumber(4.5); }, 'число целое');
+        assert.throws(function () { cardinalNumber(4, 'x'); }, 'неизвестный падеж');
+        assert.throws(function () { cardinalNumber(4, 'r', 3); }, 'неизвестный род');
+    });
 };
