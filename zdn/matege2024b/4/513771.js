@@ -9,7 +9,7 @@
 		let wording = getSelectedPreferenceFromList(key, preference2);
 		let coefficient = sl(1, 10);
 		let C = coefficient / 10000;
-		let q = sl(1, 900) / 10000;
+		let q = sl(0.0001, 0.09, 0.0001);
 		let U = sl(2, 20);
 		let energy = formula === 0 ? q * q / (2 * C) : C * U * U / 2;
 		genAssert((energy * 100000).isAlmostInteger(), 'Ответ должен иметь не более пяти знаков после запятой');
