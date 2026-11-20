@@ -139,7 +139,7 @@
 		if (points.length) {
 			NAtask.modifiers.addCanvasIllustration({
 				width: 560, height: 100,
-				paint: ct => coordAxis_drawAuto(ct, {points, width: 560}),
+				paint: ct => coordAxis_drawAuto(ct, {points, width: ct.canvas.width}),
 			});
 		}
 		NAtask.modifiers.allDecimalsToStandard();
