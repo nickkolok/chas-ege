@@ -20,7 +20,7 @@
 			yTicks.push(i);
 		}
 
-		let xText = 4;
+		let xText = x_vals.last();
 		let FText = F_vals[4];
 
 		NAtask.setTask({
@@ -38,8 +38,8 @@
 					xaxis: {
 						label: 'x, см',
 						min: 0,
-						max: 4,
-						ticks: [0, 1, 2, 3, 4]
+						max: x_vals.last(),
+						ticks: x_vals
 					},
 					yaxis: {
 						label: 'F, Н',
