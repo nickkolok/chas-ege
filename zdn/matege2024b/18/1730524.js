@@ -64,7 +64,7 @@
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 640, height: 100,
-			paint: ct => coordAxis_drawAuto(ct, {points, width: 640}),
+			paint: ct => coordAxis_drawAuto(ct, {points, width: ct.canvas.width}),
 		});
 	}, 1000);
 })();
