@@ -702,4 +702,48 @@ module.exports = function registerNodeTests(QUnit) {
         assert.throws(function () { selectVerbGender('купил'); }, /nounOrRod must be defined/);
     });
 
+
+    QUnit.test('Глаголы на -ёк: весь класс -ечь одной записью', function (assert) {
+        assert.equal(selectVerbGender('пёк', 1), 'пекла');
+        assert.equal(selectVerbGender('испёк', 1), 'испекла');
+        assert.equal(selectVerbGender('сёк', 1), 'секла');
+        assert.equal(selectVerbGender('отсёк', 1), 'отсекла');
+        assert.equal(selectVerbGender('пересёк', 1), 'пересекла');
+        assert.equal(selectVerbGender('тёк', 1), 'текла');
+        assert.equal(selectVerbGender('истёк', 1), 'истекла');
+        assert.equal(selectVerbGender('утёк', 1), 'утекла');
+        assert.equal(selectVerbGender('стёк', 1), 'стекла');
+        assert.equal(selectVerbGender('протёк', 1), 'протекла');
+        assert.equal(selectVerbGender('отёк', 1), 'отекла');
+        assert.equal(selectVerbGender('влёк', 1), 'влекла');
+        assert.equal(selectVerbGender('увлёк', 1), 'увлекла');
+        assert.equal(selectVerbGender('привлёк', 1), 'привлекла');
+        assert.equal(selectVerbGender('извлёк', 1), 'извлекла');
+        assert.equal(selectVerbGender('развлёк', 1), 'развлекла');
+        assert.equal(selectVerbGender('облёк', 1), 'облекла');
+        assert.equal(selectVerbGender('изрёк', 1), 'изрекла');
+        assert.equal(selectVerbGender('нарёк', 1), 'нарекла');
+        assert.equal(selectVerbGender('прорёк', 1), 'прорекла');
+        assert.equal(selectVerbGender('обрёк', 1), 'обрекла');
+    });
+
+    QUnit.test('Глаголы на -ёк: средний род, множественное число, возвратные', function (assert) {
+        assert.equal(selectVerbGender('извлёк', 2), 'извлекло');
+        assert.equal(selectVerbGender('истёк', 3), 'истекли');
+        assert.equal(selectVerbGender('сёк', 0), 'сёк', 'мужской род не трогаем');
+        assert.equal(selectVerbGender('отрёкся', 1), 'отреклась');
+        assert.equal(selectVerbGender('увлёкся', 1), 'увлеклась');
+        assert.equal(selectVerbGender('облёкся', 2), 'облеклось');
+        assert.equal(selectVerbGender('извлёкся', 3), 'извлеклись');
+    });
+
+    QUnit.test('Формы без ё и ё под ударением на основе', function (assert) {
+        assert.equal(selectVerbGender('выпек', 1), 'выпекла', 'ударение на приставке, ё нет');
+        assert.equal(selectVerbGender('высек', 1), 'высекла');
+        assert.equal(selectVerbGender('вытек', 1), 'вытекла');
+        assert.equal(selectVerbGender('тёр', 1), 'тёрла', 'ё на основе сохраняется');
+        assert.equal(selectVerbGender('пёр', 1), 'пёрла');
+        assert.equal(selectVerbGender('мёрз', 1), 'мёрзла');
+    });
+
 };
