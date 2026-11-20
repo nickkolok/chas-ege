@@ -35,14 +35,8 @@
 		let targetX = uniqueValues.iz();
 
 		// Считаем вероятность события {X = targetX} суммированием
-		let probTarget = 0;
-		let terms = []; // Для вывода в решении
-		for (let i = 0; i < n; i++) {
-			if (xValues[i] === targetX) {
-				probTarget += probs[i];
-				terms.push(probs[i]);
-			}
-		}
+		let terms = probs.filter((p, i) => xValues[i] === targetX); // Для вывода в решении
+		let probTarget = terms.sum();
 		
 		genAssertZ1000(probTarget);
 
