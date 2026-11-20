@@ -32,7 +32,7 @@
 			case 7:
 				return [a.texfrac('m'), m => a / m];
 			case 8:
-				return [(a < 0 ? '-' : '') + '\\frac{m}{' + Math.abs(a) + '}', m => m / a];
+				return [(a < 0 ? '-' : '') + 'm'.texfrac(Math.abs(a)), m => m / a];
 			case 9:
 				return ['\\log_{' + Math.abs(a) + '}{m}', m => Math.log(m) / Math.log(Math.abs(a))];
 			case 10:
