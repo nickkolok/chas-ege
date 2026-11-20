@@ -619,4 +619,38 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Случайная выборка: iz / sluchiz  (lib/array.js, lib/func.js)
+    // ============================================================
+    QUnit.module('iz / sluchiz: пустая выборка');
+
+    QUnit.test('sluchiz(a, 0) - пустой массив', function (assert) {
+        assert.deepEqual(sluchiz([1, 2, 3], 0), [], 'ноль элементов - пустой массив');
+    });
+
+    QUnit.test('.iz(0) - пустой массив', function (assert) {
+        assert.deepEqual([1, 2, 3].iz(0), [], 'ноль элементов - пустой массив');
+        assert.deepEqual([].iz(0), [], 'из пустого массива тоже пусто');
+    });
+
+    QUnit.test('.iz() без аргумента по-прежнему один элемент', function (assert) {
+        var a = ['a', 'b', 'c'];
+        for (var i = 0; i < 20; i++) {
+            assert.ok(a.indexOf(a.iz()) >= 0, 'случайный элемент массива');
+        }
+    });
+
+    QUnit.test('.iz(n) и sluchiz(a, n) при n >= 1 - как раньше', function (assert) {
+        var two = [1, 2, 3, 4].iz(2);
+        assert.equal(two.length, 2, 'два элемента');
+        assert.notEqual(two[0], two[1], 'без повторений');
+        assert.deepEqual(sluchiz([1, 2, 3], 3).sort(), [1, 2, 3], 'все элементы');
+    });
+
+    QUnit.test('прочие n меньше 1 ведут себя как раньше', function (assert) {
+        assert.equal(sluchiz([1, 2, 3]).length, 1, 'без n - один элемент');
+        assert.equal(sluchiz([1, 2, 3], -1).length, 1, '-1 - один элемент');
+        assert.equal(sluchiz([1, 2, 3], 0.5).length, 1, 'дробное меньше 1 - один элемент');
+    });
 };
