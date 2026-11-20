@@ -86,7 +86,7 @@
         for(let candidate_N = 1; candidate_N <= maxNother; candidate_N++){
             let candidate_totalFine = fineSpeed + candidate_N * otherVio.fine;
             let val = candidate_totalFine * 100 / Ntotal;
-            if (Math.abs(val - Math.round(val)) < 1/1024/1024) {
+            if (val.isAlmostInteger()) {
                 N_other = candidate_N;
                 totalFine = candidate_totalFine;
                 expectedValue = totalFine / Ntotal;
