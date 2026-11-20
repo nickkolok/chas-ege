@@ -619,4 +619,135 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Диаграмма Эйлера  (lib/euler_diagram.js)
+    // ============================================================
+    QUnit.module('Диаграмма Эйлера');
+
+    // Мок-контекст, который отслеживает аффинное преобразование,
+    // чтобы проверять итоговые пиксельные координаты подписей и точек.
+    function eulerMockContext(width, height) {
+        var m = { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 };
+        var stack = [];
+        var log = { strokeRect: [], fillText: [], fillKrug: [], scale: [] };
+        function device(x, y) {
+            return [m.a * x + m.c * y + m.e, m.b * x + m.d * y + m.f];
+        }
+        var ctx = {
+            canvas: { width: width, height: height },
+            lineWidth: 0,
+            font: '',
+            strokeStyle: '',
+            translateToCenter: CanvasRenderingContext2D.prototype.translateToCenter,
+            save: function () {
+                stack.push({ m: { a: m.a, b: m.b, c: m.c, d: m.d, e: m.e, f: m.f }, lineWidth: this.lineWidth, font: this.font });
+            },
+            restore: function () {
+                var s = stack.pop();
+                m = s.m;
+                this.lineWidth = s.lineWidth;
+                this.font = s.font;
+            },
+            translate: function (x, y) {
+                m.e += m.a * x + m.c * y;
+                m.f += m.b * x + m.d * y;
+            },
+            scale: function (sx, sy) {
+                m.a *= sx; m.b *= sx; m.c *= sy; m.d *= sy;
+                log.scale.push([sx, sy]);
+            },
+            strokeRect: function (x, y, w, h) {
+                log.strokeRect.push({ at: device(x, y), size: [m.a * w, m.d * h], lineWidth: this.lineWidth });
+            },
+            fillText: function (text, x, y) {
+                log.fillText.push({ text: text, at: device(x, y), font: this.font });
+            },
+            fillKrug: function (x, y, radius) {
+                log.fillKrug.push({ at: device(x, y), radius: radius, lineWidth: this.lineWidth });
+            },
+            matrix: function () { return { a: m.a, b: m.b, c: m.c, d: m.d, e: m.e, f: m.f }; },
+        };
+        return { ctx: ctx, log: log };
+    }
+
+    QUnit.test('drawEulerDiagram: рамка, точки и подписи в пиксельных координатах', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawEulerDiagram === 'function', 'метод drawEulerDiagram определён');
+        var mock = eulerMockContext(400, 400);
+        CanvasRenderingContext2D.prototype.drawEulerDiagram.call(mock.ctx, {
+            points: [[1, 2], [-3, -1]],
+            above: ['4', '7'],
+            below: ['0,2', '0,3'],
+        });
+        var log = mock.log;
+
+        assert.equal(log.strokeRect.length, 1, 'рамка нарисована один раз');
+        assert.deepEqual(log.strokeRect[0].at, [20, 20], 'рамка отступила от края холста на 20px');
+        assert.deepEqual(log.strokeRect[0].size, [360, 360], 'рамка 360×360 на холсте 400×400');
+        assert.equal(log.strokeRect[0].lineWidth, 1, 'толщина рамки 1px');
+
+        assert.deepEqual(log.scale, [[20, -20]], 'единица 20px, ось y направлена вверх');
+        assert.equal(log.fillKrug.length, 2, 'нарисованы обе точки');
+        assert.deepEqual(log.fillKrug[0].at, [220, 160], 'точка (1, 2) — в пикселях (220, 160)');
+        assert.deepEqual(log.fillKrug[1].at, [140, 220], 'точка (-3, -1) — в пикселях (140, 220)');
+        assert.equal(log.fillKrug[0].radius, 0.18, 'радиус точки 0.18');
+        assert.equal(log.fillKrug[0].lineWidth, 0.1, 'толщина линий в математических координатах 0.1');
+
+        var byText = {};
+        log.fillText.forEach(function (item) { byText[item.text] = item; });
+        assert.deepEqual(byText['S'].at, [350, 30], 'подпись опыта — у правого верхнего угла рамки, в координатах холста');
+        assert.equal(byText['S'].font, '16px liberation_sans', 'подпись опыта обычным шрифтом 16px');
+        assert.deepEqual(byText['4'].at, [220, 154], 'подпись над точкой: на 6px выше');
+        assert.equal(byText['4'].font, 'bold 16px liberation_sans', 'подпись над точкой жирная');
+        assert.deepEqual(byText['0,2'].at, [220, 176], 'подпись под точкой: на 16px ниже');
+        assert.equal(byText['0,2'].font, '13px liberation_sans', 'подпись под точкой шрифтом 13px');
+        assert.deepEqual(byText['7'].at, [140, 214], 'подпись второй точки на своём месте');
+
+        assert.deepEqual(mock.ctx.matrix(), { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 }, 'преобразования контекста восстановлены');
+    });
+
+    QUnit.test('drawEulerDiagram: кегль подписей настраивается, нижние подписи необязательны', function (assert) {
+        var mock = eulerMockContext(400, 400);
+        CanvasRenderingContext2D.prototype.drawEulerDiagram.call(mock.ctx, {
+            points: [[0, 0]],
+            above: ['5'],
+            aboveFontSize: 18,
+        });
+        assert.equal(mock.log.fillText.length, 2, 'подпись опыта и одна подпись точки');
+        assert.equal(mock.log.fillText[1].font, 'bold 18px liberation_sans', 'кегль подписи над точкой берётся из o.aboveFontSize');
+        assert.deepEqual(mock.log.fillText[1].at, [200, 194], 'точка (0, 0) — в центре холста');
+    });
+
+    QUnit.test('eulerDiagramCoords: неповторяющиеся x с шагом 1.5 и целые y от -6 до 6', function (assert) {
+        var coords = eulerDiagramCoords(6, -8, 7);
+        assert.equal(coords.length, 6, 'координат столько же, сколько точек');
+        var xs = coords.map(function (p) { return p[0]; });
+        var ys = coords.map(function (p) { return p[1]; });
+        assert.equal(new Set(xs).size, 6, 'координаты x не повторяются');
+        assert.equal(new Set(ys).size, 6, 'координаты y не повторяются');
+        xs.forEach(function (x) {
+            assert.ok(x >= -8 && x <= 7, 'x в заданном диапазоне: ' + x);
+            assert.ok(Math.abs((x + 8) / 1.5 - Math.round((x + 8) / 1.5)) < 1e-9, 'x отличается от minX на кратное 1.5: ' + x);
+        });
+        ys.forEach(function (y) {
+            assert.ok(y >= -6 && y <= 6 && y === Math.round(y), 'y — целое от -6 до 6: ' + y);
+        });
+    });
+
+    QUnit.test('eulerDiagramValues: 3–4 значения от 1 до 9, каждое повторяется 2–5 раз', function (assert) {
+        for (var attempt = 0; attempt < 20; attempt++) {
+            var data = eulerDiagramValues(2, 5);
+            var unique = data.uniqueValues;
+            var xs = data.xValues;
+            assert.ok(unique.length === 3 || unique.length === 4, 'уникальных значений 3 или 4');
+            assert.equal(new Set(unique).size, unique.length, 'значения не повторяются');
+            assert.ok(unique.every(function (v) { return v >= 1 && v <= 9; }), 'значения от 1 до 9');
+            assert.equal(new Set(xs).size, unique.length, 'в списке исходов те же значения');
+            unique.forEach(function (v) {
+                var count = xs.filter(function (x) { return x === v; }).length;
+                assert.ok(count >= 2 && count <= 5, 'значение ' + v + ' встретилось ' + count + ' раз');
+            });
+        }
+    });
+
 };
