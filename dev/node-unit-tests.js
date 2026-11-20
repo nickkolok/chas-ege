@@ -621,9 +621,9 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
-    //  Canvas: вектор с подписью  (lib/canvas.js)
+    //  Canvas: вектор с подписью и штриховка  (lib/canvas.js)
     // ============================================================
-    QUnit.module('Canvas: drawVector');
+    QUnit.module('Canvas: drawVector, hatchSegment');
 
     function recordingCtx() {
         var calls = [];
@@ -665,6 +665,20 @@ module.exports = function registerNodeTests(QUnit) {
         CanvasRenderingContext2D.prototype.drawVector.call(rec.ctx, 0, 0, 65, 0);
         assert.equal(rec.calls.filter(function (c) { return c[0] === 'fillText'; }).length, 0, 'fillText не вызывался');
         assert.equal(rec.calls.filter(function (c) { return c[0] === 'fill'; }).length, 1, 'наконечник всё равно залит');
+    });
+
+
+    QUnit.test('ctx.hatchSegment штрихует горизонтальный отрезок вниз-влево', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.hatchSegment === 'function', 'метод hatchSegment определён');
+        var rec = recordingCtx();
+        CanvasRenderingContext2D.prototype.hatchSegment.call(rec.ctx, 40, 310, 360, 310, 8);
+        var moves = rec.calls.filter(function (c) { return c[0] === 'moveTo'; });
+        var lines = rec.calls.filter(function (c) { return c[0] === 'lineTo'; });
+        assert.equal(moves.length, 40, '40 штрихов на отрезке 320 с шагом 8');
+        assert.deepEqual(moves[0], ['moveTo', 40, 310], 'первый штрих от начала');
+        assert.deepEqual(lines[0], ['lineTo', 32, 318], 'первый штрих вниз-влево на 8');
+        assert.deepEqual(moves[39], ['moveTo', 352, 310], 'последний штрих');
+        assert.deepEqual(lines[39], ['lineTo', 344, 318], 'последний штрих вниз-влево');
     });
 
 };
