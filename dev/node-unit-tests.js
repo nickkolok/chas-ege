@@ -619,4 +619,33 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  Основа числительного в названии n-угольника  (lib/func.js)
+    // ============================================================
+    QUnit.module('polygonNumeralStem');
+
+    QUnit.test('polygonNumeralStem: основы для названий многоугольников', function (assert) {
+        assert.equal(polygonNumeralStem(3), 'тре', 'треугольной');
+        assert.equal(polygonNumeralStem(4), 'четырёх', 'четырёхугольной');
+        assert.equal(polygonNumeralStem(5), 'пяти', 'пятиугольной');
+        assert.equal(polygonNumeralStem(6), 'шести', 'шестиугольной');
+        assert.equal(polygonNumeralStem(8), 'восьми', 'восьмиугольной');
+        assert.equal(polygonNumeralStem(10), 'десяти', 'десятиугольной');
+        assert.equal(polygonNumeralStem(12), 'двенадцати', 'двенадцатиугольной');
+        assert.equal(polygonNumeralStem(20), 'двадцати', 'двадцатиугольной');
+    });
+
+    QUnit.test('polygonNumeralStem: формы берутся из словаря числительных', function (assert) {
+        assert.equal(polygonNumeralStem(7), lx['семь'].re, 'семи - родительный падеж числительного');
+        assert.equal(polygonNumeralStem(9), lx['девять'].re, 'девяти');
+        assert.notEqual(polygonNumeralStem(3), lx['три'].re, 'у тройки особая основа: тре, а не трёх');
+    });
+
+    QUnit.test('polygonNumeralStem: вне 3..20 - ошибка', function (assert) {
+        assert.throws(function () { polygonNumeralStem(2); }, 'двухугольников не бывает');
+        assert.throws(function () { polygonNumeralStem(21); }, 'за пределами словаря');
+        assert.throws(function () { polygonNumeralStem(4.5); }, 'число сторон целое');
+    });
+
 };
