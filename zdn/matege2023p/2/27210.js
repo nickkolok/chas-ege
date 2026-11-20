@@ -15,18 +15,21 @@
 		let e = sl(2, d - 1);
 		let c = sl(2, 6);
 		let H = c + sl(1, 4);
+		// Координаты ступеньки: они же — концы подписываемых рёбер
+		let yStep = d - e;
+		let zStep = H - c;
 
 		let polyhedron = new RectilinearSolid([
-			[0, 0, 0, a, d, H - c],
-			[0, d - e, H - c, w, d, H],
+			[0, 0, 0, a, d, zStep],
+			[0, yStep, zStep, w, d, H],
 		]);
 
 		let paint1 = function (ct) {
 			ct.drawRectilinearSolid(polyhedron, {
 				labels: [
-					{ from: [0, d - e, H], to: [0, d, H], text: e },
+					{ from: [0, yStep, H], to: [0, d, H], text: e },
 					{ from: [0, d, H], to: [w, d, H], text: w },
-					{ from: [0, d - e, H - c], to: [0, d - e, H], text: c },
+					{ from: [0, yStep, zStep], to: [0, yStep, H], text: c },
 					{ from: [0, d, 0], to: [0, d, H], text: H, direction: [1, 0] },
 					{ from: [0, 0, 0], to: [a, 0, 0], text: a },
 					{ from: [a, 0, 0], to: [a, d, 0], text: d },
