@@ -125,9 +125,7 @@
 				// Обозначение угла наклона
 				ctx.strokeStyle = '#333';
 				ctx.lineWidth = 1.5;
-				ctx.beginPath();
-				ctx.arc(baseLeftX, baseLeftY, 35, -Math.PI, -Math.PI + angleRad);
-				ctx.stroke();
+				ctx.drawArc(baseLeftX, baseLeftY, 35, -Math.PI, -Math.PI + angleRad);
 
 				// Подпись угла α
 				let alphaAngle = -Math.PI + angleRad / 2;
