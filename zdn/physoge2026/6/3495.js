@@ -83,8 +83,8 @@
 			width: 400,
 			height: 350,
 			paint: function (ctx) {
-				let w = 400;
-				let h = 350;
+				let w = ctx.canvas.width;
+				let h = ctx.canvas.height;
 
 				// Наклонная плоскость (прямоугольный треугольник-клин)
 				let baseLeftX = 40;
