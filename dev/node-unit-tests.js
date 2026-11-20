@@ -619,4 +619,16 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+    // ============================================================
+    //  texOtrezok: TeX-запись отрезка  (lib/func.js)
+    // ============================================================
+    QUnit.module('texOtrezok');
+
+    QUnit.test('texOtrezok записывает закрытый промежуток', function (assert) {
+        assert.equal(texOtrezok(3, 4), '[3; 4]', 'целые концы');
+        assert.equal(texOtrezok(-2, -1), '[-2; -1]', 'отрицательные концы');
+        assert.equal(texOtrezok(0, 1), '[0; 1]', 'нулевой конец');
+        assert.equal(texOtrezok(1.5, 2.5), '[1.5; 2.5]', 'дробные концы');
+        assert.equal(texOtrezok(-5, -5), '[-5; -5]', 'вырожденный отрезок');
+    });
 };
