@@ -10,7 +10,7 @@
 	if (variant === 2) {
 		second = first;
 		percent1 = sl(5, 35);
-		percent2 = percent1 + 2 * sl(1, 15);
+		percent2 = sl(percent1 + 2, percent1 + 30, 2);
 		condition = 'Смешали некоторое количество $' + percent1 + '$%-го раствора вещества с таким же количеством $' +
 			percent2 + '$%-го раствора этого же вещества.';
 	} else if (variant === 3) {
