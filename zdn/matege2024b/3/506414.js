@@ -7,7 +7,7 @@
 		let variant = getSelectedPreferenceFromList(key, preference);
 		let start = sl(1, 10);
 		let values = [].zapslch(0, 15, 0, 7, 0.5);
-		let target = values[sl(0, values.length - 1)];
+		let target = values.iz();
 		let maximum = values.maxE();
 		let answers = [start + values.indexOf(target), start + values.lastIndexOf(target),
 		    start + values.indexOf(maximum), start + values.lastIndexOf(maximum),
