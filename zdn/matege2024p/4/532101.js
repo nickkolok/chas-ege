@@ -16,11 +16,11 @@
             sl(0, 1),   // 70-79
             sl(0, 1)    // 80-89
         ];
-        let sumW = weights.reduce((a,b) => a+b, 0);
+        let shares = weights.toSum(Ntotal);
         let counts = [];
         let rem = Ntotal;
         for(let i=0; i<10; i++){
-            let c = Math.round(Ntotal * weights[i] / sumW);
+            let c = Math.round(shares[i]);
             if(i < 10) c = Math.min(c, rem);
             counts.push(c);
             rem -= c;
