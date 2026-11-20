@@ -491,6 +491,25 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Расстояние между точками плоскости  (lib/figure.js)
+    // ============================================================
+    QUnit.module('lengthInPlane (lib/figure.js)');
+
+    QUnit.test('lengthInPlane: расстояние между точками плоскости', function (assert) {
+        assert.equal(geometry.lengthInPlane({ x: 0, y: 0 }, { x: 3, y: 4 }), 5, 'треугольник 3-4-5');
+        assert.equal(geometry.lengthInPlane({ x: 3, y: 4 }, { x: 0, y: 0 }), 5, 'симметрично');
+        assert.equal(geometry.lengthInPlane({ x: -2, y: -1 }, { x: 1, y: 3 }), 5, 'отрицательные координаты');
+        assert.equal(geometry.lengthInPlane({ x: 7, y: -2 }, { x: 7, y: -2 }), 0, 'совпадающие точки');
+    });
+
+    QUnit.test('lengthInPlane: плоские точки без z, как после autoScale', function (assert) {
+        var p1 = { x: 1, y: 2 };
+        var p2 = { x: 4, y: 6 };
+        assert.ok(Number.isFinite(geometry.lengthInPlane(p1, p2)), 'без z даёт число, а не NaN');
+        assert.equal(geometry.lengthInPlane(p1, p2), 5, 'расстояние 3-4-5');
+    });
+
+    // ============================================================
     //  Circle  (lib/circle.js)
     // ============================================================
     QUnit.module('Circle');
