@@ -13,7 +13,7 @@
   for (var t = 0; t < perms.length; t++) {
    var Q = parseInt(ds[perms[t][0]] + ds[perms[t][1]] + ds[perms[t][2]], 10);
    if (Q == P || Q <= P + 1 || Q % 2 == 0) continue;
-   if (qs.indexOf(Q) < 0) qs.push(Q);
+   qs.pushUnique(Q);
   }
   genAssert(qs.length == 1, 'первая страница после листов единственна');
   var Q0 = qs[0];
