@@ -8,7 +8,6 @@
 		'(-\\infty;' + boundary + (closed ? ']' : ')');
 	let interval = (a, b) => '(' + a + ';' + b + ')';
 	let union = (a, b) => a + '\\cup' + b;
-	let fraction = (a, b) => '\\frac{' + a + '}{' + b + '}';
 	if (variant === 0) {
 		let base = sl(2, 7);
 		let exponent = sl(1, 2);
@@ -42,16 +41,16 @@
 		left = [
 			{expr: '(' + first + ')^2(' + second + ')<0', solution: union(halfline(a, false, false), interval(a, b))},
 			{expr: '(' + first + ')(' + second + ')<0', solution: interval(a, b)},
-			{expr: fraction(first, second) + '>0', solution: union(halfline(a, false, false), halfline(b, true, false))},
-			{expr: fraction('(' + second + ')^2', first) + '>0', solution: union(interval(a, b), halfline(b, true, false))},
+			{expr: first.texfrac(second) + '>0', solution: union(halfline(a, false, false), halfline(b, true, false))},
+			{expr: ('(' + second + ')^2').texfrac(first) + '>0', solution: union(interval(a, b), halfline(b, true, false))},
 		];
 	} else if (variant === 3) {
 		let a = sl(1, 9);
 		left = [
 			{expr: 'x(x-' + a + ')\\le0', solution: '[0;' + a + ']'},
 			{expr: 'x(x+' + a + ')\\le0', solution: '[-' + a + ';0]'},
-			{expr: fraction('x', 'x-' + a) + '\\le0', solution: '[0;' + a + ')'},
-			{expr: fraction('x', 'x+' + a) + '\\le0', solution: '(-' + a + ';0]'},
+			{expr: 'x'.texfrac('x-' + a) + '\\le0', solution: '[0;' + a + ')'},
+			{expr: 'x'.texfrac('x+' + a) + '\\le0', solution: '(-' + a + ';0]'},
 		];
 	} else {
 		let base = sl(2, 5);
