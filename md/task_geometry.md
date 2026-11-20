@@ -62,6 +62,28 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+## Параллелепипед: проекция и габариты
+
+`ctx.drawParallelepiped(o, dottedLine, diagonal, setLineDash)` рисует коробку
+с передним нижним левым углом в начале координат; глубина уходит вправо и вверх
+на `depth * cos(angle)` по горизонтали и `depth / 2` по вертикали.
+
+Переписывать эту формулу в шаблоне не нужно - в `lib/canvas.js` есть
+
+* `parallelepipedVertices(o)` - восемь вершин проекции `[x, y]`
+  (0-3 верхние, 4-7 нижние, 0 и 4 - задние левые, 3 и 7 - задние правые);
+* `parallelepipedSize(o)` - габариты проекции `{width, height}`: по ним чертёж
+  вписывается в холст, а тот же `o` передаётся в `drawParallelepiped()`.
+
+```js
+let box = {width: a, height: h, depth: 0.6 * a, angle: Math.PI / 4};
+let size = parallelepipedSize(box);
+let s = Math.min(ct.canvas.width / size.width, ct.canvas.height / size.height);
+```
+
+При взгляде справа-сверху невидимы рёбра 6, 8, 10 (те, что сходятся у задней
+нижней вершины) - их номера передаются в `dottedLine`.
+
 ## Примеры
 
 ### Планиметрия
