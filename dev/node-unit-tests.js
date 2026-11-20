@@ -619,4 +619,33 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
+
+    // ============================================================
+    //  TeX-запись числовых промежутков  (lib/intervals.js)
+    // ============================================================
+    QUnit.module('texInterval, texHalfline, texUnion');
+
+    QUnit.test('texInterval: открытые и закрытые концы', function (assert) {
+        assert.equal(texInterval(0, 5), '(0;5)', 'по умолчанию оба конца открыты');
+        assert.equal(texInterval(-3, 4, true, true), '[-3;4]', 'отрезок');
+        assert.equal(texInterval(0, 5, true, false), '[0;5)', 'полуинтервал [;)');
+        assert.equal(texInterval(0, 5, false, true), '(0;5]', 'полуинтервал (;]');
+        assert.equal(texInterval(0, '\\frac{1}{5}'), '(0;\\frac{1}{5})', 'строковый конец');
+    });
+
+    QUnit.test('texHalfline: лучи вправо и влево', function (assert) {
+        assert.equal(texHalfline(5, true, false), '(5;+\\infty)', 'открытый луч вправо');
+        assert.equal(texHalfline(5, true, true), '[5;+\\infty)', 'закрытый луч вправо');
+        assert.equal(texHalfline(0, false, false), '(-\\infty;0)', 'открытый луч влево');
+        assert.equal(texHalfline(0, false, true), '(-\\infty;0]', 'закрытый луч влево');
+        assert.equal(texHalfline('\\frac{1}{5}', true, false), '(\\frac{1}{5};+\\infty)', 'строковая граница');
+    });
+
+    QUnit.test('texUnion: объединение через \\cup, без разрыва формулы', function (assert) {
+        assert.equal(texUnion('(0;5)', '(6;+\\infty)'), '(0;5)\\cup(6;+\\infty)', 'два промежутка');
+        var s = texUnion(texHalfline(-3, false, true), texHalfline(4, true, true));
+        assert.equal(s, '(-\\infty;-3]\\cup[4;+\\infty)', 'объединение лучей');
+        assert.ok(s.indexOf('$') === -1, 'части без $ — формула не рвётся');
+    });
+
 };
