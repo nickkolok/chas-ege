@@ -116,10 +116,7 @@
 				ctx.strokeStyle = '#999';
 				let hatchStep = 8;
 				for (let i = baseLeftX; i < baseRightX; i += hatchStep) {
-					ctx.beginPath();
-					ctx.moveTo(i, baseLeftY);
-					ctx.lineTo(i - hatchStep, baseLeftY + hatchStep);
-					ctx.stroke();
+					ctx.drawLine(i, baseLeftY, i - hatchStep, baseLeftY + hatchStep);
 				}
 
 				// Обозначение угла наклона
