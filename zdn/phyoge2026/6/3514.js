@@ -3,7 +3,7 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let k = sl(1, 5, 1) * 100; // Жёсткость пружины в Н/м
+		let k = sl(100, 500, 100); // Жёсткость пружины в Н/м
 		let x_vals = [0, 1, 2, 3, 4]; // Растяжение в см
 		let F_vals = x_vals.map(function(x) { return k * x / 100; });
 		
