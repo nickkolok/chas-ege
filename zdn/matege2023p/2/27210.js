@@ -23,8 +23,6 @@
 
 		let paint1 = function (ct) {
 			ct.drawRectilinearSolid(polyhedron, {
-				width: 300,
-				height: 300,
 				labels: [
 					{ from: [0, d - e, H], to: [0, d, H], text: e },
 					{ from: [0, d, H], to: [w, d, H], text: w },
