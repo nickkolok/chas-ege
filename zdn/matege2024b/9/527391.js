@@ -44,9 +44,7 @@
 		genAssert(lakes.length > 1, 'Только один пруд');
 
 		let sortedByCenterY = lakes.sort((a, b) => a.center.y - b.center.y);
-		for (let i = 1; i < sortedByCenterY.length; i++) {
-			genAssert(sortedByCenterY[i].center.y - sortedByCenterY[i - 1].center.y > 0.5, 'Только один пруд');
-		}
+		genAssert(!sortedByCenterY.map(lake => lake.center.y).hasAlmostDuplicateNumbers(0.5), 'Только один пруд');
 
 		let rand = sl(lakes.length - 1);
 		let chooseLake = lakes[rand];
