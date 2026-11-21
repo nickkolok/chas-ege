@@ -18,7 +18,7 @@
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
 			if (rotateToDiagonal) {
-				ctx.rotate(-rhombus.angleAInRadians / 2);
+				ctx.rotate([rhombus.pointA, rhombus.pointB].mt_arctgUnakl());
 			}
 
 			ctx.scale(1, -1);
