@@ -1,0 +1,65 @@
+(function () {
+    retryWhileError(function () {
+        NAinfo.requireApiVersion(0, 2);
+
+        let letters = latbukv.slice(0, 4).concat('O');
+
+        let par = new Parallelogram({
+            lengths: {
+                lengthAB: sl(1, 50),
+                lengthBC: sl(1, 50),
+            },
+            angles: {
+                angle: {
+                    angleA: [60, 120].iz(),
+                },
+                angleInDegree: true,
+            },
+            supplementary: {
+                calculateDiagonals: true
+            }
+        });
+
+        genAssertZ1000(par.lengthDiagonalAC.pow(2));
+        genAssertZ1000(par.lengthDiagonalBD);
+
+        let answ = par.lengthDiagonalBD / 2;
+
+        par.connectVerticesInConnectionMatrix([
+            [0, 2],
+            [1, 3]
+        ]);
+
+        let points = autoScale(par.vertices);
+
+        let paint1 = function (ctx) {
+            ctx.translateToCenter();
+
+            ctx.scale(1, -1);
+            ctx.strokeStyle = om.secondaryBrandColors.iz();
+
+            ctx.lineWidth = 2;
+            ctx.drawFigure(points, par.connectionMatrix);
+
+            ctx.scale(1, -1);
+            ctx.font = '20px liberation_sans';
+            ctx.fillText(letters[4], 0, 0);
+            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
+        };
+
+        NAtask.setTask({
+            text: `Диагонали $AC$ и $BD$ параллелограмма $ABCD$ пересекаются в точке $O$, $AC = ${par.lengthDiagonalAC.pow(2).texsqrt(1)}$, $BD = ${par.lengthDiagonalBD}$, $AB = ${par.lengthAB}$. Найдите $DO$.`,
+            answers: answ,
+            authors: ['Александра Суматохина'],
+        });
+        NAtask.modifiers.variativeABC(letters);
+
+        NAtask.modifiers.addCanvasIllustration({
+            width: 400,
+            height: 400,
+            paint: paint1,
+        });
+        NAtask.modifiers.allDecimalsToStandard(true);
+    }, 2000);
+})();
+// https://oge.sdamgia.ru/problem?id=392876
