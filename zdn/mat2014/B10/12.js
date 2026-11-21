@@ -4,6 +4,7 @@
 
 			let stroke = [4, 5];
 
+			// Вершины 6 и 14 совпадают с вырезанным углом: рёбер от него в оставшемся теле нет.
 			let matrixConnections = {
 				0: [1, [3, stroke], 5],
 				2: [1, [3, stroke], 7],
@@ -43,17 +44,15 @@
 				rotationZ: Math.PI / sl(10, 14),
 			};
 
-			let point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
+			const projection = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
 
-			autoScale(vertex3D, camera, point2D, {
+			const point2D = autoScale(vertex3D, camera, projection, {
 				startX: -180,
 				finishX: 160,
 				startY: -160,
 				finishY: 160,
 				maxScale: 100,
 			});
-
-			point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
 			genAssert((point2D[3].y - point2D[11].y).abs() > 20);
 			genAssert((point2D[3].y - point2D[8].y).abs() > 20);
 			genAssert((point2D[13].x - point2D[14].x).abs() > 20);
@@ -63,7 +62,7 @@
 			let paint1 = function(ctx) {
 				ctx.translateToCenter();
 				ctx.lineWidth = 2;
-				ctx.strokeStyle = om.secondaryBrandColors;
+				ctx.strokeStyle = om.secondaryBrandColors.iz();
 				ctx.drawFigureVer2(point2D, matrixConnections);
 
 				ctx.font = "20px liberation_sans";
@@ -89,3 +88,4 @@
 
 })();
 //27193 25671 25673 25675 25677 25679
+
