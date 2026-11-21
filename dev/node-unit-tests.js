@@ -663,4 +663,22 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 0, 'пустой список вершин - ни одной подписи');
     });
 
+    QUnit.test('ctx.signVertices: необязательный список above задаёт вершины для подписи сверху', function (assert) {
+        var calls = [];
+        var ctx = {
+            font: '',
+            save: function () {},
+            restore: function () {},
+            scale: function () {},
+            fillText: function (text, x, y) { calls.push({ text: text, x: x, y: y }); },
+        };
+        var points = [{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }, { x: 4, y: 4 }];
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C', 'K', 'M'], [2, 3]);
+        assert.deepEqual(calls.map(function (c) { return c.y; }), [25, 24, -7, -8, 21], 'вершины 2 и 3 сверху (-5), остальные снизу (+25)');
+        assert.deepEqual(calls.map(function (c) { return c.text; }), ['A', 'B', 'C', 'K', 'M'], 'буквы в порядке вершин');
+        calls = [];
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C', 'K', 'M']);
+        assert.deepEqual(calls.map(function (c) { return c.y; }), [25, 24, 23, -8, -9], 'без above сохраняется правило половин');
+    });
+
 };
