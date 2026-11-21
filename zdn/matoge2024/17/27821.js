@@ -36,7 +36,6 @@
         let randLetters = getSelectedPreferenceFromList(key, preference);
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
@@ -47,7 +46,7 @@
 
             if (randLetters == 1) {
                 ctx.scale(1, -1);
-                ctx.font = "20px liberation_sans";
+                ctx.font = '20px liberation_sans';
                 points.slice(0, 4).forEach((elem, i) => {
                     let offsetX = (i == 0 || i == 3) ? -15 : 5;
                     let offsetY = (i < 2) ? 25 : -5;
