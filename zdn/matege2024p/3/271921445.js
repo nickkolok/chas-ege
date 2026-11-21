@@ -33,16 +33,19 @@
 				23: [15, [18, stroke], 22],
 			};
 
+			let minSide = 5;
+			let maxSide = 20;
+
 			let par1 = new Parallelepiped({
 				depth: sl(10, 20),
-				height: sl(5, 20),
-				width: sl(5, 20),
+				height: sl(minSide, maxSide),
+				width: sl(minSide, maxSide),
 			});
 
 			let par2 = new Parallelepiped({
 				depth: par1.depth,
-				height: sl(5, 20),
-				width: slKrome(par1.width, 5, 20),
+				height: sl(minSide, maxSide),
+				width: slKrome(par1.width, minSide, maxSide),
 			});
 
 			let par3 = new Parallelepiped({
