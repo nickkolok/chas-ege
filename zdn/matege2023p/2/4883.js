@@ -26,6 +26,7 @@
 		let strok = [5, 4];
 
 		let parForPaint = new Cube(300);
+		let sphereForPaint = new Sphere(0.5 * parForPaint.baseSide);
 
 		let camera = {
 			x: 0,
@@ -57,8 +58,8 @@
 
 			ctx.setLineDash([4, 5]);
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.drawArc(0, 0, 150, 0, 2 * Math.PI);
-			ctx.drawEllipse(0, 0, 150, 30, 0, 0, 2 * Math.PI);
+			ctx.drawCircle(sphereForPaint.radius);
+			ctx.drawEllipse(0, 0, sphereForPaint.radius, 30, 0, 0, 2 * Math.PI);
 		};
 
 		NAtask.setTask({
