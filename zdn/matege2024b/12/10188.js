@@ -24,7 +24,7 @@
 
 		let a = triangle.vertices[0];
 		let b = triangle.vertices[1];
-		let extension = {x: b.x + (b.x - a.x) / 2, y: b.y + (b.y - a.y) / 2};
+		let extension = [a, b].mt_vectorDivisionPoint(3, -1); // точка на продолжении AB за B: AP:PB = 3:(-1)
 		let scaled = autoScale([...triangle.vertices, extension]);
 		let points = scaled.slice(0, 3);
 		let rayEnd = scaled[3];
