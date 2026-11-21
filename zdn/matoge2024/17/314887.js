@@ -22,7 +22,6 @@
         let points = autoScale(trp.vertices);
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
@@ -48,14 +47,17 @@
 
             ctx.scale(1, -1);
             ctx.fillStyle = om.secondaryBrandColors.iz();
-            ctx.font = "20px liberation_sans";
+            ctx.font = '20px liberation_sans';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             let up = Math.sign(shortBase[0].y - longBase[0].y);
             ctx.fillText('45°', left.x + 55, -(left.y + up * 14));
             bases.forEach(([p1, p2, length], i) => {
-                let outside = (i == 0 ? -up : up) * 18;
-                ctx.fillText(length, (p1.x + p2.x) / 2, -((p1.y + p2.y) / 2 + outside));
+                let [x, y] = coordinatesMiddleOfSegment(p1.x, p1.y, p2.x, p2.y);
+                let middle = {x, y};
+                let otherBase = bases[1 - i];
+                let label = labelPositionOutsideSegment(middle, p1, p2, otherBase[0], 18);
+                ctx.fillText(length, label.x, -label.y);
             });
         };
 
