@@ -7,7 +7,8 @@
         let rand = getSelectedPreferenceFromList(key, preference);
 
         // distance: сторона целая, как в ФИПИ (от 1 до 30)
-        let a = rand == 2 ? sl(1, 30) : (rand == 0 ? 3 * sl(1, 16) : sl(1, 50) * (3).sqrt());
+        let sqrt3 = (3).sqrt();
+        let a = rand == 2 ? sl(1, 30) : (rand == 0 ? sl(3, 48, 3) : sl(sqrt3, 50 * sqrt3, sqrt3));
 
         let triangle = new Triangle({
             lengths: {
