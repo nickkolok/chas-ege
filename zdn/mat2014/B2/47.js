@@ -1,23 +1,20 @@
-(function() {
-	'use strict';
-	retryWhileError(function() {
-		NAinfo.requireApiVersion(0, 0);
-		var vestab = sluchch(10, 30); //  вес таблетки
-		var protsent = sluchch(2, 10); //  процент активного в-ва
-		var vozr = sluchch(6, 12); //  возраст
-		var doza = sluchch(1, 3, 0.5); //  доза активного в-ва
-		var vozrmas = ['трех', 'четырех', 'пяти'].iz(1);
-		var vozves = sluchch(3, 6, 0.5);
-		var otwet = (vozves * doza) / ((vestab / 100) * protsent);
-		genAssert(otwet.isZ(), 'Необходимо целое количество таблеток');
-		genAssert(otwet < 10, 'Слишком много таблеток в день');
+	(function() {
+		NAinfo.requireApiVersion(0, 2);
+		var trig = ['sin', 'cos', 'tg', 'ctg'].iz();
+		var gradus = slKrome(function(x){
+			if (trig == 'tg' && Math.abs(x % 180) == 90) return true;
+			if (trig == 'ctg' && x % 180 == 0) return true;
+			return false;
+		}, -900, 900);
+		
+		var angle_rad = (gradus / 180 * Math.PI)[trig]();
+		var otvet = angle_rad['arc' + trig]();
+		if (trig == 'ctg' && otvet < 0) {
+			otvet += Math.PI;
+		}
+		
 		NAtask.setTask({
-			text: 'Одна таблетка лекарства весит ' + vestab + ' мг и содержит ' + protsent +
-				'% активного вещества. Ребёнку в возрасте до ' + vozr + ' месяцев врач прописывает ' + doza +
-				' мг активного вещества на каждый килограмм веса в сутки.' +
-				' Сколько таблеток этого лекарства следует дать ребёнку в возрасте ' + vozrmas + '  месяцев и весом ' + vozves +
-				' кг в течение суток?',
-			answers: otwet.ceil(),
+		text: 'Найти значение угла (в градусах)' + '  $ \\arc' + trig + '(\\' + trig + '(' + gradus + '^{\\circ}))$',
+		answers: otvet / Math.PI * 180,
 		});
-	}, 100);
-})();
+	})();
