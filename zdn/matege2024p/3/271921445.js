@@ -53,15 +53,18 @@
 
 			let deltaX = par1.width * sl(-0.5, 0.5, 0.1);
 
+			let upperShiftZ = -0.5 * (par1.height + par2.height);
+			let ledgeWidth = 0.5 * (par2.width - par3.width);
+
 			let vertex3D = par1.verticesOfFigure.concat(par2.verticesOfFigure.map((elem) => shiftCoordinate3D(elem, {
 					x: deltaX,
 					y: 0,
-					z: -0.5 * (par1.height + par2.height),
+					z: upperShiftZ,
 				})))
 				.concat(par3.verticesOfFigure.map((elem) => shiftCoordinate3D(elem, {
 					x: deltaX,
 					y: 0,
-					z: -0.5 * (par1.height + par2.height) - 0.5 * (par2.height - par3.height),
+					z: upperShiftZ - 0.5 * (par2.height - par3.height),
 				})));
 
 			vertex3D = vertex3D.map((elem) => shiftCoordinate3D(elem, {
@@ -111,7 +114,7 @@
 
 			genAssert((point2D[13].x - point2D[21].x).abs() > 40);
 
-			genAssert((0.5 * (par2.width - par3.width)).isZ());
+			genAssert(ledgeWidth.isZ());
 
 			let rand = sl1();
 
@@ -172,8 +175,8 @@
 				ctx.signSegmentInMiddle(point2D[9].x, point2D[9].y, point2D[14].x, point2D[14].y, par2.height, 5, 20);
 				ctx.signSegmentInMiddle(point2D[16].x, point2D[16].y, point2D[21].x, point2D[21].y, par3.height, 5, 20);
 				ctx.signSegmentInMiddle(point2D[0].x, point2D[0].y, point2D[1].x, point2D[1].y, par1.width, 18, 20);
-				ctx.signSegmentInMiddle(point2D[13].x, point2D[13].y, point2D[21].x, point2D[21].y, 0.5 * (par2.width - par3.width), 18, 20);
-				ctx.signSegmentInMiddle(point2D[22].x, point2D[22].y, point2D[14].x, point2D[14].y, 0.5 * (par2.width - par3.width), 18, 20);
+				ctx.signSegmentInMiddle(point2D[13].x, point2D[13].y, point2D[21].x, point2D[21].y, ledgeWidth, 18, 20);
+				ctx.signSegmentInMiddle(point2D[22].x, point2D[22].y, point2D[14].x, point2D[14].y, ledgeWidth, 18, 20);
 				ctx.signSegmentInMiddle(point2D[16].x, point2D[16].y, point2D[17].x, point2D[17].y, par3.width, 18, 20);
 				ctx.signSegmentInMiddle(point2D[1].x, point2D[1].y, point2D[2].x, point2D[2].y, par1.depth, 10, 20);
 			};
