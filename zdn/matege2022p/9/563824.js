@@ -17,7 +17,9 @@
 		let points = intPoints(f, {minX: minX, maxX: maxX, minY: -6, maxY: 5});
 		let left = points.filter(([x]) => x < vertexX);
 		let right = points.filter(([x]) => x > vertexX);
-		genAssert(left.length >= 2 && right.length >= 2, 'На каждой ветви нужны две целочисленные точки');
+		let pointsPerBranch = 2;
+		let markRadius = 0.15;
+		genAssert(left.length >= pointsPerBranch && right.length >= pointsPerBranch, 'На каждой ветви нужны две целочисленные точки');
 
 		let x = sl(8, 12).pm();
 		let rhs = a * x + d;
@@ -59,8 +61,8 @@
 				ct.scale(20, -20);
 				ct.lineWidth = 0.1;
 				graph9AdrawFunction(ct, f, {minX: minX, maxX: maxX, minY: -6.8, maxY: 6.8, step: 0.05});
-				graph9AmarkCircles(ct, left, 2, 0.15);
-				graph9AmarkCircles(ct, right, 2, 0.15);
+				graph9AmarkCircles(ct, left, pointsPerBranch, markRadius);
+				graph9AmarkCircles(ct, right, pointsPerBranch, markRadius);
 			},
 		});
 	}, 1000);
