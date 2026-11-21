@@ -26,7 +26,7 @@
 		if (sport === 1) {
 			let otherPositionM = ['вторым', 'третьим', 'предпоследним', sl(4, total) + '-м'].iz();
 			let descriptions = counts.map((n, i) => (i === groups - 1 ? n + ' —' : chislitlx(n, 'спортсмен')) + ' из ' + countries[i]);
-			text = 'В соревнованиях по толканию ядра участвуют ' + descriptions.slice(0, -1).join(', ') + ' и ' + descriptions[groups - 1] +
+			text = 'В соревнованиях по толканию ядра участвуют ' + descriptions.joinWithConjunction() +
 				'. Порядок, в котором выступают спортсмены, определяется жребием. Найдите вероятность того, что спортсмен, выступающий ' +
 				['первым', 'последним', otherPositionM][mode] + ', окажется из ' + countries[selected] + '.';
 		} else {
