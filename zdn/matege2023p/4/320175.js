@@ -7,7 +7,6 @@
 		let preference2 = ['lamps', 'terminals'];
 		let device = getSelectedPreferenceFromList(key, preference2);
 		let numberOfDevices = getSelectedPreferenceFromList(key, preference1) + 2;
-		let totalCombinations = Math.pow(2, numberOfDevices);
 		let eventMatrix = generateBinaryMatrix(numberOfDevices);
 
 		let zeroCounts = eventMatrix.map(event => event[event.length - 1]);
@@ -16,7 +15,7 @@
 		let requiredFailures = sl(1, numberOfDevices);
 
 		let probabilitySum = 0;
-		for (let i = 0; i < totalCombinations; i++) {
+		for (let i = 0; i < zeroCounts.length; i++) {
 			if (zeroCounts[i] >= requiredFailures) {
 				probabilitySum += Math.pow(failureProbability, zeroCounts[i]) * Math.pow(1 - failureProbability, numberOfDevices - zeroCounts[i]);
 			}
