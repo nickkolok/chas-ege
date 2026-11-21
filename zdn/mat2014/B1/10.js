@@ -10,7 +10,7 @@
 	NAtask.setTask({
 		text : t2.ie.toZagl()+' стоит '+chislitlx(a,'рубль')+'. '+
 			om.denned.pg['в'][t1].toZagl()+' '+om.denned.ve[t1]+' в магазине действует специальное предложение: '+
-			'заплатив за '+chislitM(b,t2.ve,t2.re,t2.rm)+', покупатель получает '+(b+c)+' ('+c+' - в подарок). '+
+			'заплатив за '+chislitlx(b,t2)+', покупатель получает '+(b+c)+' ('+c+' - в подарок). '+
 			'Сколько '+t2.rm+' можно получить на '+chislitlx(d,'рубль')+ ' '+om.denned.pg['в'][t1]+' '+om.denned.ve[t1]+'?',
 		answers : (d/a).floor()+(d/a/b).floor()*c,
 	});

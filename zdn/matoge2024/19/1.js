@@ -1,11 +1,25 @@
 retryWhileError(function() {
 	'use strict';
+	let key = '1';
+	let preference = ['numbersOfTrue1', 'numbersOfTrue2', 'numberOfTrue', 'numbersOfFalse1', 'numbersOfFalse2', 'numberOfFalse'];
+	let rand = getSelectedPreferenceFromList(key, preference);
+	
+	let flag = rand == 2 || rand == 5;
+	
 	let number = sl(3, 4);
-	let n = sl(sl1(), number);
-	let m = number - n;
+	let n = sl(flag ? 2 : sl1(), number);
+	let m = flag ? 1 : number - n;
+	
+	var v1 = Number(rand > 2);
+	
+	let text = ['Найдите номера ' + ['верных','неверных'][v1] +' утверждений.', 'Какие из следующих утверждений ' + ['верны','неверны'][v1] +'?', 'Какое из следующих утверждений является ' + ['истинным','ложным'][v1] +' высказыванием?'][rand%3];
 
-	var v1 = sl1();
-
+	if(rand%3<2){
+		text+= ' Если утверждений несколько, запишите их номера в порядке возрастания.';
+	}
+	
+	text+='<br>';
+	
 	let ver = [
 		//Список (на самом деле массив) правильных утверждений
 		"Точка, лежащая на серединном перпендикуляре к отрезку, равноудалена от концов этого отрезка.",
@@ -132,10 +146,10 @@ retryWhileError(function() {
 	]; //Внимание: после последнего элемента тоже ставится запятая. Её можно и не ставить, но так удобнее.
 
 	chas2.task.setTask({
-		text: 'Найдите номера ' + ['верных','неверных'][v1] +
-			' утверждений. Если утверждений несколько, запишите их номера в порядке возрастания.<br>',
+		text: text,
 		answers: v1 ? nev : ver,
 		wrongAnswers: v1 ? ver : nev,
+		preference: preference,
 	});
 	AtoB2(n, m);
 }, 10);

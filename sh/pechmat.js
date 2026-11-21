@@ -51,6 +51,7 @@ function readOptions() {
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
 	options.forceIntegers = $('#forceIntegers').is(':checked');
+	options.onlyIntegers = $('#onlyIntegers').is(':checked');
 	options.randomSeed = $('#randomSeed').val();
 	if (options.randomSeed === '') {
 		options.randomSeed = Date.now();
@@ -60,7 +61,8 @@ function readOptions() {
 		variantNumber = $('#start-number').val() - 1;
 	}
 
-	sluchch.forceIntegers = (options.forceIntegers) ? true : false;
+	sluchch.forceIntegers = !!options.forceIntegers;
+	sluchch.onlyIntegers = !!options.onlyIntegers;
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
@@ -68,7 +70,11 @@ function readOptions() {
 }
 
 
-function zapusk() {
+async function zapusk() {
+	//Если файлы подгружены, то запускаем их сразу
+	//Например, чтобы выставить ими количество вариантов.
+	await processArbitraryCodeFiles();
+
 	//Сохраняем параметры генерации
 	chasStorage.domData.save();
 
@@ -89,12 +95,12 @@ function zapusk() {
 	iZ = aZ.slice();
 	nZ = 0;
 	$('#panel').html('Тесты составляются, подождите...');
-	$('#gotov').show();
+	$('#readiness-message').show();
 	zadan();
 }
 
 function testGotov() {
-	$('#gotov').hide();
+	$('#readiness-message').hide();
 	if (options.editable) {
 		$('#rez, #otv, #rsh').attr('contenteditable', 'true');
 	}
@@ -128,13 +134,11 @@ function konecSozd() {
 	convertCanvasToImagesIfNeeded();
 	if (options.prepareLaTeX) {
 		for (var id in generatedTasks) {
-			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
+			tasksInLaTeX[id] = roughHTML2LaTeX(replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
-				generatedTasks[id].txt
-			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
+				generatedTasks[id].txt,
+				generatedTasks[id].taskCategory
+			));
 		}
 	}
 
@@ -386,7 +390,7 @@ function optimcopyd(n) {
 var startShell = function () {
 	window.vopr.txt = '';
 	$('#zadaniya').html(sozdKolvoHtml('pech'));
-	$('#gotov').hide();
+	$('#readiness-message').hide();
 	galkiKat('#galki_kat', 'pech');
 }
 
@@ -399,7 +403,7 @@ function grabCurrentTask(){
 	generatedTasks[vopr.taskId] = vopr.clone();
 	generatedTasks[vopr.taskId].address =
 		window.nabor.adres + dvig.getzadname(nZ) + '/' + window.nomer;
-
+		generatedTasks[vopr.taskId].taskCategory = vopr.taskCategory;
 }
 
 function renewTask() {
@@ -424,7 +428,7 @@ function renewTask() {
 		convertCanvasToImagesIfNeeded();
 		grabCurrentTask();
 		if (options.prepareLaTeX) {
-			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
+			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt, window.vopr.taskCategory);
 			refreshLaTeXarchive();
 		}
 		MathJax.Hub.Typeset(taskHtml[0]);
@@ -475,16 +479,23 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = "\n\\\\\n\\hline\n";
-	return (
-		'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
+	const maxRows = options.splitAnswersNumber || 60;
+	const hline = "\n\\\\\n\\hline\n";
+	const colFormat = (new Array(cellsInFirstRow)).fill('|l').join('') + '|';
+
+	let res = '';
+	for (let i = 0; i < answersParsedToTeX.length; i += maxRows) {
+		const chunk = answersParsedToTeX.slice(i, i + maxRows);
+		res += '\\begin{tabular}{' + colFormat + '}' +
 			'\n\\hline\n' +
-			answersParsedToTeX.join(hline) +
+			chunk.join(hline) +
 			hline +
-		'\\end{tabular}' +
-		'\n\n\n'
-	);
+			'\\end{tabular}' +
+			'\n\n\n';
+	}
+	return res;
 }
+
 
 function createLaTeXbunchAnswers(variantN) {
 
@@ -503,7 +514,7 @@ function createLaTeXbunchAnswers(variantN) {
 	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
 }
 
-function replaceCanvasWithImgInTask(element, text) {
+function replaceCanvasWithImgInTask(element, text, taskCategory) {
 	if (!(/<canvas/i.test(text))) {
 		// Nothing to do
 		return text;
@@ -513,7 +524,7 @@ function replaceCanvasWithImgInTask(element, text) {
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
-		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.4\\linewidth]{'+imageName+'}');
+		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[\\size{'+taskCategory+'}][\\scale{'+taskCategory+'}]{'+imageName+'}');
 	}
 	if (canvases.length) {
 		text =
@@ -549,7 +560,7 @@ function refreshLaTeXarchive() {
 	}
 	var zip = new JSZip();
 	var bunchTasks = "";
-	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>10)?6:variantsGenerated.length)+"}";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>6)?6:variantsGenerated.length)+"}";
 
 	for(var variantN of variantsGenerated){
 		var head =
@@ -579,4 +590,47 @@ function refreshLaTeXarchive() {
 		$('#latex-archive-placeholder').show();
 		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
 	});
+}
+
+function processArbitraryCodeFiles() {
+	const files = $('#arbitraryCodeInput')[0].files;
+
+	if (!files.length) {
+		console.log('Не найдено файлов для запуска произвольного кода.');
+		return Promise.resolve(); // resolve immediately if no files
+	}
+
+	console.log('Файлов для запуска произвольного кода: ' + files.length);
+
+	const promises = Array.from(files).map(file => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+
+			reader.onload = function (e) {
+				const content = e.target.result;
+				try {
+					eval(content);
+					console.log(`Исполнен файл ${file.name}`);
+					resolve();
+				} catch (err) {
+					console.error(`Не удалось исполнить файл ${file.name}:`, err);
+					resolve(); // or reject(err); depending on whether you want to halt on errors
+				}
+			};
+
+			reader.onerror = function () {
+				console.error(`Не удалось прочитать файл  ${file.name}`);
+				resolve(); // or reject() if you want to handle errors differently
+			};
+
+			reader.readAsText(file);
+		});
+	});
+
+	// Return a Promise that resolves when all files are processed
+	return Promise.all(promises);
+}
+
+function clearArbitraryCodeInput() {
+	document.getElementById('arbitraryCodeInput').value = '';
 }

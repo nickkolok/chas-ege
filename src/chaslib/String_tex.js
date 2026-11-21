@@ -66,6 +66,9 @@ String.prototype.toStandart = function(wrapComma) {
 	if (wrapComma) {
 		a = ' '+a.replace(/[,]/, '{,}')+' ';
 	}
+	if (a === '-0') {
+		return '0';
+	}
 	return a;
 };
 

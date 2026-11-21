@@ -1,3 +1,5 @@
+window.parsedJSON = window.parsedJSON || {};
+
 dvig.dgn=0;//Отключаем диагностический режим движка. Под корень.
 var flAce=0;
 var editor;
@@ -226,14 +228,37 @@ var templateTemplate = "(function() {\n \tretryWhileError(function() {\n\t\tNAin
 
 var startShell = function (){
 	spoiler();
+	$('#readiness-message').hide();
 	zagr("../ext/keyboard/keyboard.js");
 	if ($("#textarea-script").val() == "") {
 		$("#textarea-script").val(templateTemplate);
 		chasStorage.domData.save();
 	}
+	
+	if (window.parsedJSON.filepath) {
+		$('#filepath').val(window.parsedJSON.filepath);
+	}
+	
+	if (window.parsedJSON.autostartFile) {
+		var autostartInterval = setInterval(function() {
+			try {
+				if (window.parsedJSON.filepath) {
+					$('#filepath').val(window.parsedJSON.filepath);
+				}
+				createFromFile();
+				clearInterval(autostartInterval);
+			} catch (e) {
+				console.log('Не удалось выполнить автозапуск: ' + e.message);
+			}
+		}, 1000);
+	}
 }
 
-
+function displayReadinessMessage(message, timeout = 3000) {
+	$('#readiness-message').show();
+	$('#readiness-message').html(message);
+	setTimeout(() => $('#readiness-message').hide(), timeout);
+}
 
 function startExport(){
 	vopr.template = $("#filepath").val().replace(/^(\.\.\/)+/,'');
@@ -241,6 +266,21 @@ function startExport(){
 
 	replaceCanvasWithImgInTaskAndHTML($('#question')[0], vopr, function(){
 		var fillerCode = createFiller(vopr);
-		copyToClipboard(fillerCode)
+		copyToClipboard(fillerCode);
+		displayReadinessMessage('Код для экспорта на РешуЕГЭ скопирован');
+	});
+}
+
+function startQuickExportToTex(){
+	replaceCanvasWithImgInTaskAndHTML($('#question')[0], vopr, function(){
+		copyToClipboard([
+			'Текст задания:',
+			roughHTML2LaTeX(vopr.txt),
+			'Ответ:',
+			roughHTML2LaTeX(vopr.ver),
+			'Решение:'.esli(vopr.rsh),
+			roughHTML2LaTeX(vopr.rsh),
+		].join('\n\n'));
+		displayReadinessMessage('LaTeX-код скопирован');
 	});
 }
