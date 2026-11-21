@@ -651,4 +651,26 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  Canvas: заливка кольца  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: fillRing');
+
+    QUnit.test('ctx.fillRing закрашивает кольцо между концентрическими окружностями через evenodd', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.fillRing === 'function', 'метод fillRing определён');
+        var calls = [];
+        var ctx = {
+            beginPath: function () { calls.push(['beginPath']); },
+            arc: function () { calls.push(['arc'].concat(Array.prototype.slice.call(arguments))); },
+            moveTo: function () { calls.push(['moveTo'].concat(Array.prototype.slice.call(arguments))); },
+            fill: function () { calls.push(['fill'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        CanvasRenderingContext2D.prototype.fillRing.call(ctx, 3, -4, 50, 20);
+        assert.deepEqual(calls[0], ['beginPath'], 'начинает новый контур');
+        assert.deepEqual(calls[1], ['arc', 3, -4, 50, 0, 2 * Math.PI], 'внешняя окружность');
+        assert.deepEqual(calls[2], ['moveTo', 23, -4], 'переход к внутренней окружности без соединительной линии');
+        assert.deepEqual(calls[3], ['arc', 3, -4, 20, 0, 2 * Math.PI], 'внутренняя окружность');
+        assert.deepEqual(calls[4], ['fill', 'evenodd'], 'заливка по evenodd: внутренний круг остаётся пустым');
+    });
+
 };
