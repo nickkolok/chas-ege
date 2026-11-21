@@ -22,20 +22,20 @@
 		let countries = om.strany.re.concat(['Финляндии', 'Дании', 'Швеции', 'Норвегии', 'Македонии', 'Хорватии', 'Великобритании', 'Франции', 'Италии', 'Греции', 'Болгарии', 'Румынии', 'Венгрии', 'Японии', 'Кореи', 'США', 'Испании', 'Португалии', 'Аргентины', 'Парагвая', 'Украины', 'Белоруссии']).iz(groups);
 		let allKnown = dataMode === 2 || sport === 1;
 		let text;
-		let otherPosition = ['второй', 'третьей', 'предпоследней', sl(4, total) + '-й'].iz();
+		let otherPosition = [om.porchisl[2].t[1], om.porchisl[3].t[1], 'предпоследней', sl(4, total) + '-й'].iz();
 		if (sport === 1) {
-			let otherPositionM = ['вторым', 'третьим', 'предпоследним', sl(4, total) + '-м'].iz();
+			let otherPositionM = [om.porchisl[2].t[0], om.porchisl[3].t[0], 'предпоследним', sl(4, total) + '-м'].iz();
 			let descriptions = counts.map((n, i) => (i === groups - 1 ? n + ' —' : chislitlx(n, 'спортсмен')) + ' из ' + countries[i]);
 			text = 'В соревнованиях по толканию ядра участвуют ' + descriptions.joinWithConjunction() +
 				'. Порядок, в котором выступают спортсмены, определяется жребием. Найдите вероятность того, что спортсмен, выступающий ' +
-				['первым', 'последним', otherPositionM][mode] + ', окажется из ' + countries[selected] + '.';
+				[om.porchisl[1].t[0], 'последним', otherPositionM][mode] + ', окажется из ' + countries[selected] + '.';
 		} else {
 			let descriptions = counts.slice(0, allKnown ? groups : groups - 1).map((n, i) => n + ' из ' + countries[i]);
 			text = 'В чемпионате по ' + (sport === 0 ? 'гимнастике' : om.sport.pe.iz()) + ' участвуют ' +
 				(allKnown ? 'спортсменки: ' : chislitlx(total, 'спортсменка') + ': ') + descriptions.join(', ') +
 				(allKnown ? '' : ', остальные — из ' + countries[groups - 1]) + '. Порядок, в котором выступают ' +
 				(sport === 0 ? 'гимнастки' : 'спортсменки') + ', определяется жребием. Найдите вероятность того, что спортсменка, выступающая ' +
-				['первой', 'последней', otherPosition][mode] + ', окажется из ' + countries[selected] + '.';
+				[om.porchisl[1].t[1], 'последней', otherPosition][mode] + ', окажется из ' + countries[selected] + '.';
 		}
 		NAtask.setTask({text, answers: counts[selected] / total, preference: [preference1, preference2, preference3]});
 	}, 20000);
