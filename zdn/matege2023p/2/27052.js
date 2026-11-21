@@ -35,7 +35,7 @@
 				['диаметр основания', 2 * radiusBig, 2 * radiusSmall],
 				['радиус основания', radiusBig, radiusSmall],
 				['длина окружности основания', 2 * radiusBig + '\\pi', 2 * radiusSmall + '\\pi'],
-				['площадь окружности основания', radiusBig.pow(2) + '\\pi', radiusSmall.pow(2) + '\\pi']
+				['площадь основания', radiusBig.pow(2) + '\\pi', radiusSmall.pow(2) + '\\pi']
 			].iz(), ['образующая', generatrixConeBig.texsqrt(sl1()), generatrixConeSmall.texsqrt(sl1())],
 			['площадь осевого сечения', radiusBig * heightBig, radiusSmall * heightSmall],
 		];
@@ -43,7 +43,7 @@
 		if ((heightBig * radiusBig.pow(2) / 3).isZ() && (heightSmall * radiusSmall.pow(2) / 3).isZ())
 			variable.push(['объём', heightBig * radiusBig.pow(2) / 3 + '\\pi', heightSmall * radiusSmall.pow(2) / 3 + '\\pi']);
 
-		variable = variable.iz(3);
+		variable = variable.iz(2);
 
 		let name = sklonlxkand(variable.T()[0]);
 		let numberBig = variable.T()[1];
@@ -65,13 +65,13 @@
 		let NOD = ratio[1].nod(ratio[0]);
 		ratio = ratio.map((elem) => elem / NOD);
 
-		let verb = ['делит его так, что ' + secondWord + ' конусов ' + ['равны $' + numberSmall[1] + '$ и $' + numberBig[
+		let verb = ['делит его так, что ' + secondWord + ' отсекаемого и исходного конусов ' + ['равны $' + numberSmall[1] + '$ и $' + numberBig[
 				1] + '$',
 			'относятся, как $' + ratio.join(':') + '$'
-		].iz(), 'делящее ' + name[1].ve + ' в отношении ' + [ratio.join(':') + ', считая от вершины', ratio.reverse().join(
+		].iz(), 'делит ' + name[1].ve + ' в отношении ' + [ratio.join(':') + ', считая от вершины', ratio.reverse().join(
 			':') + ', считая от основания'].iz() + ' конуса'][variant];
 
-		let answer = numberSmall[2];
+		let answer = numberSmall[0];
 
 		let ps = '';
 		if (answer.isString)
@@ -138,16 +138,16 @@
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
-			text: name[0].ie.toZagl() + ' конуса ' + ['равен', 'равна'][name[0].rod] + ' $' + numberBig[0] +
+			text: 'Радиус основания конуса равен $' + radiusBig + '$, а высота равна $' + heightBig +
 				'$. Плоскость,' +
-				' параллельная плоскости основания конуса, ' + ' ' +
+				' параллельная плоскости основания конуса, ' +
 				verb + '. ' +
-				'Найдите ' + name[2].ve + ' ' + ['конуса, отсекаемого от данного конуса проведённой плоскостью',
+				'Найдите ' + name[0].ve + ' ' + ['конуса, отсекаемого от данного конуса проведённой плоскостью',
 					'меньшего конуса'
 				].iz() + '. ' + ps,
 			answers: '$' + answer + '$',
 			authors: ['Суматохина Александра'],
-			analys: name[2].ie.toZagl() + ': $' + numberSmall[2] + '$',
+			analys: name[0].ie.toZagl() + ': $' + numberSmall[0] + '$',
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 300,
