@@ -648,6 +648,30 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Canvas: отрезок до пересечения двух отрезков  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawLineToIntersectionOfTwoSegments');
+
+    QUnit.test('ctx.drawLineToIntersectionOfTwoSegments рисует от точки до пересечения двух отрезков', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawLineToIntersectionOfTwoSegments === 'function', 'метод определён');
+        var calls = [];
+        var ctx = {
+            drawLine: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        // Отрезки (0,0)-(2,2) и (0,2)-(2,0) пересекаются в (1,1)
+        var from = { x: 0, y: 0 };
+        var segments = [{ x: 0, y: 0 }, { x: 2, y: 2 }, { x: 0, y: 2 }, { x: 2, y: 0 }];
+        var point = CanvasRenderingContext2D.prototype.drawLineToIntersectionOfTwoSegments.call(ctx, from, segments);
+        assert.equal(calls.length, 1, 'drawLine вызван ровно один раз');
+        assert.deepEqual(calls[0], [0, 0, 1, 1], 'отрезок от from до точки пересечения');
+        assert.equal(point.x, 1, 'возвращена точка пересечения x');
+        assert.equal(point.y, 1, 'возвращена точка пересечения y');
+        assert.ok(point.status, 'пересечение внутри обоих отрезков');
+    });
+
+    // ============================================================
     //  chislit / chislitlx: отрицательные числа  (lib/func.js)
     // ============================================================
     QUnit.module('chislit / chislitlx: отрицательные числа');
