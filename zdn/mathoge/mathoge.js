@@ -1,0 +1,9 @@
+if(!window.nabor)
+	window.nabor={};
+window.nabor.importFrom({
+	nZad:11,
+	vykl:[false,true,true,true,true,true,true,true,true,true,true],
+	adres:'../zdn/mathoge/',
+	name:'mathoge',
+	prefix:'',
+});
