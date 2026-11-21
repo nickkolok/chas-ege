@@ -651,4 +651,32 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  linearBinomial  (lib/array.js)
+    // ============================================================
+    QUnit.module('linearBinomial');
+
+    QUnit.test('linearBinomial: нулевые коэффициенты', function (assert) {
+        assert.equal(linearBinomial(0, 0), '0', 'оба нуля → 0');
+        assert.equal(linearBinomial(0, 5), '5', 'нет икса → свободный член');
+        assert.equal(linearBinomial(0, -5), '-5', 'отрицательный свободный член');
+        assert.equal(linearBinomial(3, 0), '3x', 'нет свободного члена');
+        assert.equal(linearBinomial(-3, 0), '-3x', 'отрицательный коэффициент при x');
+    });
+
+    QUnit.test('linearBinomial: оба слагаемых ненулевые (порядок случаен)', function (assert) {
+        assert.ok(['3x+5', '5+3x'].includes(linearBinomial(3, 5)), '3x+5 в любом порядке');
+        assert.ok(['-2x+-7', '-7+-2x'].includes(linearBinomial(-2, -7)), '-2x+-7 в любом порядке (знаки не упрощаются)');
+    });
+
+    QUnit.test('linearBinomial: единичный коэффициент не упрощается', function (assert) {
+        assert.equal(linearBinomial(1, 0), '1x', '1x остаётся 1x (упрощает beautifyAlgebraicNotation)');
+        assert.equal(linearBinomial(-1, 0), '-1x', '-1x остаётся -1x');
+    });
+
+    QUnit.test('linearBinomial: дробные коэффициенты «по стандарту»', function (assert) {
+        assert.ok(['2x+0,5', '0,5+2x'].includes(linearBinomial(2, 0.5)), 'дробный свободный член с запятой');
+        assert.ok(['0,5x+2', '2+0,5x'].includes(linearBinomial(0.5, 2)), 'дробный коэффициент при x с запятой');
+    });
+
 };
