@@ -22,19 +22,18 @@
 				['длина окружности основания', 2 * radius + '\\pi'],
 				['площадь основания', radius.pow(2) + '\\pi'],
 				['диаметр основания', 2 * radius],
-			].iz(), 
+			].iz(),
 			['объём', height * radius.pow(2) + '\\pi'],
 			['площадь боковой поверхности', 2 * height * radius + '\\pi'],
 			['площадь полной поверхности', 2 * radius * (radius + height) + '\\pi'],
 		].iz(3);
-
 
 		let name = sklonlxkand(variable.T()[0]);
 		let number = variable.T()[1];
 		let answer = number[2];
 
 		let ps = '';
-		if (answer.includes('pi')) {
+		if (typeof answer === 'string' && answer.includes('pi')) {
 			answer = answer.replace('\\pi', '');
 			ps = 'Ответ разделите на $\\pi$.';
 		}
@@ -44,7 +43,7 @@
 			ctx.lineWidth = 2;
 			let height = 300;
 			//высота
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawLine(0, height, 0, 10);
 			ctx.drawLine(300, height, 300, 10);
 
