@@ -14,11 +14,7 @@
 		
 		let primeNumbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37];
 
-		let p_1 = primeNumbers.iz();
-		let p_2 = primeNumbers.iz();
-		let p_3 = primeNumbers.iz();
-
-		genAssert(p_1 != p_2 && p_1 != p_3 && p_2 != p_3, 'Не все числа различны');
+		let [p_1, p_2, p_3] = primeNumbers.iz(3);
 
 		let number = p_1 * p_2 * p_3;
 		let answer = (p_1 + 1) * (p_2 + 1) * (p_3 + 1);
