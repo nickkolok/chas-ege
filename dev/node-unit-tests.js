@@ -399,7 +399,7 @@ module.exports = function registerNodeTests(QUnit) {
         ['figure.js', 'project3DTo2D.js'].forEach(function (file) {
             vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'lib', file), 'utf8'), context);
         });
-        vm.runInContext('this.Cube = Cube; this.RegularPyramid = RegularPyramid; this.RegularPrism = RegularPrism;', context);
+        vm.runInContext('this.Cube = Cube; this.RegularPyramid = RegularPyramid; this.RegularPrism = RegularPrism; this.Parallelepiped = Parallelepiped;', context);
         return context;
     })();
 
@@ -488,6 +488,33 @@ module.exports = function registerNodeTests(QUnit) {
         assert.notOk(geometry.isOnVisibleFace(prismFaces, rVisibility, [2, 5]), 'боковое ребро 2-5 скрыто');
         assert.ok(geometry.isOnVisibleFace(prismFaces, rVisibility, [0, 1, 3, 4]),
             'отрезок между точками на рёбрах 0-1 и 3-4 лежит в видимой грани');
+    });
+
+    // ============================================================
+    //  Пунктир на заданных рёбрах  (lib/figure.js)
+    // ============================================================
+    QUnit.module('dashEdges');
+
+    QUnit.test('dashEdges: пунктир на заданных рёбрах, исходная матрица не меняется', function (assert) {
+        var box = new geometry.Parallelepiped({ depth: 4, width: 6, height: 5 });
+        var cm = box.connectionMatrix;
+        var dashed = geometry.dashEdges(cm, [[0, 3], [2, 3], [3, 4]]);
+        assert.deepEqual(dashed[2][0], [], 'ребро 3-0 пунктирное');
+        assert.deepEqual(dashed[2][2], [], 'ребро 3-2 пунктирное');
+        assert.deepEqual(dashed[3][3], [], 'ребро 4-3 пунктирное');
+        assert.equal(dashed[0][0], 1, 'ребро 1-0 сплошное');
+        assert.equal(dashed[6][6], 1, 'ребро 7-6 сплошное');
+        assert.deepEqual(cm, box.connectionMatrix, 'исходная матрица не изменилась');
+        assert.deepEqual(geometry.dashEdges(cm, [[3, 0]]), geometry.dashEdges(cm, [[0, 3]]), 'порядок вершин в паре не важен');
+        assert.deepEqual(geometry.dashEdges(cm, [[0, 3]], [7, 5])[2][0], [7, 5], 'свой штрих пунктира');
+        assert.deepEqual(geometry.dashEdges(cm, [[0, 2]]), cm, 'несуществующее ребро игнорируется');
+    });
+
+    QUnit.test('dashEdges: рваная матрица дополняется нулями', function (assert) {
+        var cm = [[1], [1], [1]]; // рёбра 1-0, 2-0, 3-0; нули в концах строк опущены
+        var dashed = geometry.dashEdges(cm, [[0, 3], [2, 3]]);
+        assert.deepEqual(dashed[2], [[], 0, 0], 'строка дополнена нулями, пунктир только на существующем ребре');
+        assert.deepEqual(cm[2], [1], 'исходная строка не изменилась');
     });
 
     // ============================================================
