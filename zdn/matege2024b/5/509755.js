@@ -13,24 +13,22 @@
 		genAssertZ1000(answers * 10);
 		relation--;
 
-		let objects = [
-			[`чёрным`, `зелёным`, `красным`, `белым`, `жёлтым`],
+		let objects = sklonlxkand([
+			[`чёрный`, `зелёный`, `красный`, `белый`, `жёлтый`],
 			om.trickyColors, 
 			['курица', 'гусь', 'индюк', 'перепел', 'утка', 'цесарка', 'страус']
-		][variant].iz(2);
+		][variant].iz(2));
 		
-		if (variant > 0)
-			objects = sklonlxkand(objects);
 		let container = [['ящике', 'ящика'], ['коробке', 'коробки']].iz();
 		let selected = majority ? 0 : 1;
 
 		NAtask.setTask({
 			questions: [
 				[{
-					text: `В коробке вперемешку лежат чайные пакетики с ${objects[0]} и ${objects[1]}
-						чаем, одинаковые на вид, причём пакетиков с ${objects[0]} чаем в ${chislitlx(relation, 'раз')}
-						больше, чем пакетиков с ${objects[1]}. Найдите вероятность того, что случайно
-						выбранный из этой коробки чайный пакетик окажется с ${objects[selected]} чаем.`,
+					text: `В коробке вперемешку лежат чайные пакетики с ${objects[0].te} и ${objects[1].te}
+						чаем, одинаковые на вид, причём пакетиков с ${objects[0].te} чаем в ${chislitlx(relation, 'раз')}
+						больше, чем пакетиков с ${objects[1].te}. Найдите вероятность того, что случайно
+						выбранный из этой коробки чайный пакетик окажется с ${objects[selected].te} чаем.`,
 					answers,
 				}, {
 					text: `В ${container[0]} находятся ${objects[0].im} и ${objects[1].im} шары, причём ${objects[0].rm} в ${chislitlx(relation, 'раз')}
