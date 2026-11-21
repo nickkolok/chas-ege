@@ -81,17 +81,13 @@
 				rotationZ: Math.PI / sl(10, 14),
 			};
 
-			let point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
-
-			autoScale(vertex3D, camera, point2D, {
+			let point2D = autoScale(vertex3D, camera, vertex3D.map((coord3D) => project3DTo2D(coord3D, camera)), {
 				startX: -180,
 				finishX: 160,
 				startY: -160,
 				finishY: 160,
 				maxScale: 100,
 			});
-
-			point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
 
 			genAssert(distanceFromPointToSegment(point2D[16], point2D[5], point2D[4]) > 10);
 			genAssert(distanceFromPointToSegment(point2D[16], point2D[8], point2D[11]) > 10);
