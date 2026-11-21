@@ -6,7 +6,7 @@
 		let volumeDown = sl(1, 10) * numerator.pow(3);
 		let volumeUp = volumeDown * denominator.pow(3) / numerator.pow(3);
 
-		let question=[['нужно долить, чтобы наполнить сосуд доверху',volumeUp-volumeDown], ['поместится в сосуде',volumeUp]].iz();
+		let question=[['нужно долить, чтобы наполнить сосуд доверху',volumeUp-volumeDown], ['вмещает такой сосуд',volumeUp]].iz();
 		
 		let paint1 = function(ctx) {
 			ctx.translate(0, 20);
@@ -55,7 +55,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
 			text: 'В сосуде, имеющем форму конуса, уровень жидкости достигает ' +
-				'$' + numerator.texfrac(denominator) + '$ высоты. Объём жидкости равен ' + volumeDown + 'мл. ' +
+				'$' + numerator.texfrac(denominator) + '$ высоты. Объём жидкости равен ' + volumeDown + ' мл. ' +
 				'Сколько миллилитров жидкости '+question[0]+'?',
 			answers: question[1],
 			authors: ['Суматохина Александра'],
