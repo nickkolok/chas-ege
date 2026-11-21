@@ -10,7 +10,7 @@
 		let pyr2 = new RegularPyramid({
 			height: pyr1.height,
 			baseSide: 0.5 * pyr1.baseSide,
-			numberSide: 3
+			numberSide: pyr1.numberSide
 		});
 
 		pyr1.verticesOfFigure.push(coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[1]));
