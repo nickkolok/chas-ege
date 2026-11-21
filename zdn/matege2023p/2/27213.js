@@ -79,7 +79,7 @@
 
 		let point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(vertex3D, camera, point2D, {
+		point2D = autoScale(vertex3D, camera, point2D, {
 			startX: -160,
 			finishX: 160,
 			startY: -160,
@@ -87,7 +87,6 @@
 			maxScale: 100,
 		});
 
-		point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
 		genAssert((point2D[12].y - point2D[3].y).abs() > 20);
 		genAssert((point2D[13].y - point2D[3].y).abs() > 20);
 		let rand = sl1();
