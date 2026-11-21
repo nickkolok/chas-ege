@@ -7,7 +7,7 @@
 		let preference = ['onlyNumber', 'numberWithFactorization'];
 		let preferenceOptions = preference.map((name, index) => ({preference: name, preferenceValue: index}));
 		// Старое написание сохраняем для уже сохранённых настроек.
-		preferenceOptions.push({preference: 'numberWithFractorization', preferenceValue: 1});
+		preferenceOptions.push({preference: 'numberWithFractorization', preferenceValue: preference.indexOf('numberWithFactorization')});
 		let rand = getListedPreference(key, preferenceOptions, sl(preference.length - 1));
 
 		let the_orderToFind = decor.orderToFind.iz();
