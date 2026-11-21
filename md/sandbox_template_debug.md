@@ -107,7 +107,7 @@ node -r ./font-setup.js dev/run-node-template.js \
 Свой harness: jsdom-окно с заглушками (`MathJax`, `CanvasRenderingContext2D`,
 `alert`) + бандл + шаблон; читать `window.vopr.txt/ver`, рисовать через
 `vopr.dey()`. **В конце обязательно `process.exit()`** — окно держит таймеры
-и само не завершится (см. «Подводные камни» в how_to_review_PR.md).
+и само не завершится (см. [«Подводные камни»](how_to_review_PR.md#подводные-камни) в how_to_review_PR.md).
 
 ## Побайтовое сравнение
 
@@ -226,7 +226,7 @@ SVG→PNG при необходимости — `resvg-js` (Rust, zero deps) и�
 ## Подводные камни песочницы
 
 - **`npm install --no-save` второй раз удаляет то, что поставил первый**
-  (см. how_to_review_PR.md). Ставить нужные пакеты одной командой.
+  (см. [«Подводные камни»](how_to_review_PR.md#подводные-камни) в how_to_review_PR.md). Ставить нужные пакеты одной командой.
 - **Частичный tarball битый.** Если скачивание node оборвалось по бюджету,
   файл есть, но `tar` скажет «File format not recognized». Проверять размер
   против `Content-Length` и перекачивать.
