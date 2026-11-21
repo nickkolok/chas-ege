@@ -508,6 +508,19 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(calls[0], [3, -4, 5], 'drawCircle(x центра, y центра, радиус)');
     });
 
+    QUnit.test('Circle.prototype.boundingPoints: четыре кардинальные точки на окружности', function (assert) {
+        var circle = new Circle(new Point(3, -4), 5);
+        var pts = circle.boundingPoints();
+        assert.equal(pts.length, 4, 'четыре точки');
+        var expected = [[8, -4], [-2, -4], [3, 1], [3, -9]];
+        pts.forEach(function (p, i) {
+            assert.ok(Math.abs(p.x - expected[i][0]) < 1e-12 && Math.abs(p.y - expected[i][1]) < 1e-12,
+                'точка ' + i + ' = (' + expected[i][0] + ', ' + expected[i][1] + ')');
+            assert.ok(Math.abs(Math.hypot(p.x - circle.pc.x, p.y - circle.pc.y) - circle.r) < 1e-12,
+                'точка ' + i + ' лежит на окружности');
+        });
+    });
+
     // ============================================================
     //  autoScale: уменьшение больших фигур  (lib/func.js)
     // ============================================================
