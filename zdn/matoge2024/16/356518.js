@@ -30,7 +30,7 @@
         let circumscribedCircleBounds = [];
         if (rand == 2) {
             let center = intersectPoint;
-            let R = center.distanceTo(triangle.vertices[0])[0];
+            let R = triangle.radiusOfCircumscribedCircle;
             circumscribedCircleBounds = [[R, 0], [-R, 0], [0, R], [0, -R]].map(([dx, dy]) => new Point(center.x + dx, center.y + dy));
         }
 
