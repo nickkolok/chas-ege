@@ -12,7 +12,7 @@
 			},
 		});
 
-		genAssert(rect.lengthDiagonalAC.isAlmostInteger(), 'Диагональ не целая');
+		genAssertAlmostInteger(rect.lengthDiagonalAC, 'Диагональ не целая');
 
 		NAtask.setTask({
 			text: `Обе диагонали параллелограмма равны $${rect.lengthDiagonalAC}$. Одна из сторон параллелограмма равна $${rect.lengthAB}$. Найдите сторону параллелограмма, соседнюю с данной.`,
