@@ -10,32 +10,34 @@
 		let question=[['нужно долить, чтобы наполнить сосуд доверху',volumeUp-volumeDown], ['вмещает такой сосуд',volumeUp]].iz();
 		
 		let paint1 = function(ctx) {
+			let apexX = 150, apexY = 150, baseY = 20, baseRX = 90, baseRY = 20;
+			let coneHeight = apexY - baseY;
 			ctx.translate(0, 20);
 			ctx.lineWidth = 2;
 			//образующие
-			ctx.drawLine(60, 20, 150, 150);
-			ctx.drawLine(240, 20, 150, 150);
+			ctx.drawLine(apexX - baseRX, baseY, apexX, apexY);
+			ctx.drawLine(apexX + baseRX, baseY, apexX, apexY);
 			//эллипс
 			ctx.beginPath();
-			ctx.ellipse(150, 20, 90, 20, 0, 0, 2 * Math.PI);
+			ctx.ellipse(apexX, baseY, baseRX, baseRY, 0, 0, 2 * Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 			
 			let frac = numerator / denominator;
-			let yLiq = 150 - 130 * frac;
-			let rxLiq = 90 * frac;
-			let ryLiq = 20 * frac;
+			let yLiq = apexY - coneHeight * frac;
+			let rxLiq = baseRX * frac;
+			let ryLiq = baseRY * frac;
 
 			ctx.fillStyle = "#61DC9A";
 			ctx.beginPath();
-			ctx.moveTo(150 - rxLiq, yLiq);
-			ctx.lineTo(150 + rxLiq, yLiq);
-			ctx.lineTo(150, 150);
+			ctx.moveTo(apexX - rxLiq, yLiq);
+			ctx.lineTo(apexX + rxLiq, yLiq);
+			ctx.lineTo(apexX, apexY);
 			ctx.closePath();
 			ctx.fill();
 
 			ctx.beginPath();
-			ctx.ellipse(150, yLiq, rxLiq, ryLiq, 0, 0, 2 * Math.PI);
+			ctx.ellipse(apexX, yLiq, rxLiq, ryLiq, 0, 0, 2 * Math.PI);
 			ctx.fill();
 			ctx.closePath();
 
@@ -43,11 +45,11 @@
 			ctx.lineWidth = 1;
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, yLiq, rxLiq, ryLiq, 0, Math.PI, 2 * Math.PI);
+			ctx.ellipse(apexX, yLiq, rxLiq, ryLiq, 0, Math.PI, 2 * Math.PI);
 			ctx.stroke();
 			ctx.setLineDash([]);
 			ctx.beginPath();
-			ctx.ellipse(150, yLiq, rxLiq, ryLiq, 0, 0, Math.PI);
+			ctx.ellipse(apexX, yLiq, rxLiq, ryLiq, 0, 0, Math.PI);
 			ctx.stroke();
 			ctx.closePath();
 
