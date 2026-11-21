@@ -42,13 +42,12 @@
             return `$${side}=${triangle['length'+side]}$`;
         });
 
-        let answer = [triangle.sinA, triangle.cosA, triangle.tgA, triangle.ctgA, triangle.sinC, triangle.cosC, triangle.tgC, triangle.ctgC][variant];
+        let answer = triangle[preference[variant]];
         genAssertZ1000(answer);
 
         let points = autoScale(triangle.vertices);
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
