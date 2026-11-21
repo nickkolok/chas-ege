@@ -1,11 +1,10 @@
 (function() {
 
-
 	retryWhileError(function() {
 
 		let volume = sl(100, 5000, 100);
 		let height = sluchDel(volume);
-		genAssert(height > 1, 'Сосуд высотой 1 единицу выглядит неправдоподобно');
+		genAssert(height > 1, 'Сосуд высотой в 1 единицу выглядит неправдоподобно');
 
 		let deltaHeight = sl(1, height);
 
@@ -35,16 +34,10 @@
 			ctx.drawLine(240, picHeight, 240, 10);
 
 			//эллипс верхний
-			ctx.beginPath();
-			ctx.ellipse(150, 10, 20, 90, Math.PI / 2, 0, 2 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(150, 10, 20, 90, Math.PI / 2, 0, 2 * Math.PI);
 
 			//эллипс нижний
-			ctx.beginPath();
-			ctx.ellipse(150, picHeight, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(150, picHeight, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
@@ -53,10 +46,8 @@
 			ctx.closePath();
 
 			//эллипс средний
-			ctx.beginPath();
-			ctx.ellipse(150, picHeight / k, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.setLineDash([]);
+			ctx.drawEllipse(150, picHeight / k, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
 			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
@@ -72,7 +63,7 @@
 				'Уровень воды при этом достигает высоты $' + height + '~\\mbox{' + unit + '}$. ' +
 				'В жидкость полностью погрузили деталь. ' +
 				'При этом уровень жидкости в сосуде поднялся ' + change + '. ' +
-				'Чему равен объём детали? Ответ выразите в $~\\mbox{' + unit + '}^3$.',
+				'Чему равен объём детали? Ответ выразите в $\\mbox{' + unit + '}^3$.',
 			answers: volume * deltaHeight / height,
 			authors: ['Суматохина Александра'],
 		});
