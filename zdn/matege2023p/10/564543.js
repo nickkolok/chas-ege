@@ -1,6 +1,8 @@
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
+	const canvasSize = 320;
+	const plotScale = 20;
 	const trig = ['sin', 'cos'].iz();
 	const a = sl(1, 6).pm();
 	const b = sl(2, 5);
@@ -61,11 +63,11 @@ retryWhileUndefined(function() {
 		analys: '$f(x)=' + solution.plusminus() + '$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
-		width: 320,
-		height: 320,
+		width: canvasSize,
+		height: canvasSize,
 		paint: function(ct) {
-			ct.drawCoordPlane(320, 320, { hor: 1, ver: 1 }, { x1: '1', y1: '1' }, 20);
-			ct.scale(20, -20);
+			ct.drawCoordPlane(canvasSize, canvasSize, { hor: 1, ver: 1 }, { x1: '1', y1: '1' }, plotScale);
+			ct.scale(plotScale, -plotScale);
 			ct.lineWidth = 0.1;
 			graph9AdrawFunction(ct, f, {
 				minX: -7,
