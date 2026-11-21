@@ -16,15 +16,13 @@
 
 		let x = sl(8, 12);
 		let value = f(x);
-		let lastRoot = (value - b) / k;
-		genAssertZ1000(lastRoot, 'Крайний корень должен иметь конечную десятичную запись');
 		let variants = [
 			['произведение $k\\cdot b$', k * b, false],
 			['сумму $k+b$', k + b, true],
 			['$f(' + x.pm() + ')$', value, false],
 			['коэффициент $k$', k, true],
-			['наибольшее $x$, при котором $f(x)=' + value.ts() + '$', lastRoot, false],
-			['наименьшее $x$, при котором $f(x)=' + value.ts() + '$', -lastRoot, false],
+			['наибольшее $x$, при котором $f(x)=' + value.ts() + '$', x, false],
+			['наименьшее $x$, при котором $f(x)=' + value.ts() + '$', -x, false],
 		];
 		if (!b.isZ()) {
 			variants.push(['коэффициент $b$', b, true]);
@@ -33,12 +31,12 @@
 		let restrictions = needsSign ? ', где $k>0$' : '';
 		let inner = (k.ts() + '\\lvert x\\rvert+' + b.ts()).plusminus();
 		NAtask.setTask({
-			text: 'На рисунке изображён график функции $f(x)=\\Bigl|k\\lvert x\\rvert+b\\Bigr|$' +
+			text: 'На рисунке изображён график функции $f(x)=\\Bigl\lvert k\\lvert x\\rvert+b\\Bigr\rvert$' +
 				restrictions + '. Найдите ' + question + '.',
 			answers: answer,
 			analys: 'На внешних ветвях графика $f(x)=k\\lvert x\\rvert+b$ при выборе $k>0$. ' +
 				'По двум отмеченным точкам с разными $\\lvert x\\rvert$ получаем ' +
-				'$f(x)=\\Bigl|' + inner + '\\Bigr|$.',
+				'$f(x)=\\Bigl\lvert ' + inner + '\\Bigr\rvert$.',
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 300,
