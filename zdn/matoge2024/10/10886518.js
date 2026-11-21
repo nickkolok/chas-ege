@@ -8,9 +8,8 @@
 
 	let paint = function (ctx) {
 		ctx.save();
-			let w = 400;
-			let h = 400;
-			ctx.translate(w / 2, h / 2 + 70);
+			ctx.translateToCenter();
+			ctx.translate(0, 70);
 			ctx.scale(20, -20);
 			ctx.lineWidth = 0.1;
 
