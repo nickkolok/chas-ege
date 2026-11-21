@@ -2,7 +2,7 @@
 	'use strict';
 	NAinfo.requireApiVersion(0, 2);
 	const gramsInPound = 400;
-	const denominator = sl(1, 3) * 10;
+	const denominator = sl(10, 30, 10);
 	const numerator = sl(1, denominator - 1);
 	let peopleInRecipe, requiredPeople, answer;
 	do {
