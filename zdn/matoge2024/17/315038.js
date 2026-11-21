@@ -76,7 +76,7 @@
 			});
 		};
 
-		let diagonal = [`AC`, `BD`][randDiagonal];
+		let diagonal = preference1[randDiagonal];
 		NAtask.setTask({
 			text: `Диагональ $${diagonal}$ параллелограмма $ABCD$ образует с его сторонами углы, равные $${[alpha, beta].shuffleJoin('^\\circ$ и $')}^\\circ$. Найдите ${[`больший`, `меньший`][randFind]} угол этого параллелограмма. Ответ дайте в градусах.`,
 			answers: [angleBigger, angleSmaller][randFind],
