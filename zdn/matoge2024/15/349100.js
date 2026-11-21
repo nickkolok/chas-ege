@@ -19,10 +19,10 @@
         let medianLength = sl(3, 60);
         genAssert(medianLength.mzhd(valueDano / 4, valueDano * 3 / 2), 'Медиана несоразмерна стороне — плохой чертёж');
 
-        // Середина стороны M — в начале координат, сторона горизонтальна,
-        // вершина, из которой проведена медиана, — на расстоянии medianLength от M
+        // Середина стороны D — в начале координат, сторона горизонтальна,
+        // вершина, из которой проведена медиана, — на расстоянии medianLength от D
         let phi = sl(40, 140) * Math.PI / 180;
-        let medianVertex = { x: medianLength * Math.cos(phi), y: medianLength * Math.sin(phi) };
+        let medianVertex = calculateEndpointLineAtAngle(0, 0, phi, medianLength);
         let sideEnds = [{ x: -valueDano / 2, y: 0 }, { x: valueDano / 2, y: 0 }];
         let vertices = sideEnds.slice();
         vertices.splice(variant, 0, medianVertex); // вершины A, B, C по порядку
@@ -34,14 +34,12 @@
             [0, 1, 2].map((i) => Number(i === variant)),
         ];
 
-        // По вертикали центрируем: autoScale масштабирует относительно начала координат
-        let points = autoScale(vertices.map((p) => ({ x: p.x, y: p.y - medianVertex.y / 2 })));
+        let points = autoScale(vertices, undefined, [], {center: true});
 
         let pointsSide = points.slice(0, 3);
         pointsSide.splice(variant, 1);
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
@@ -51,8 +49,7 @@
             ctx.drawFigure(points, connectionMatrix);
 
             ctx.strokeStyle = om.primaryBrandColors[1];
-            ctx.strokeInMiddleOfSegment(pointsSide[0].x, pointsSide[0].y, points[3].x, points[3].y, 10);
-            ctx.strokeInMiddleOfSegment(pointsSide[1].x, pointsSide[1].y, points[3].x, points[3].y, 10);
+            pointsSide.forEach(point => ctx.strokeInMiddleOfSegment(point.x, point.y, points[3].x, points[3].y, 10));
 
             ctx.scale(1, -1);
             ctx.font = '20px liberation_sans';
