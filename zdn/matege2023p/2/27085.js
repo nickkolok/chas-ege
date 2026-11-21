@@ -26,14 +26,6 @@
 			].iz(), ['объём', pyr2.volume / pyr1.volume]
 		].iz(2);
 
-		let strok = [5, 4];
-
-		let matrixPyr = [
-			[1],
-			[strok, 1],
-			[1, 1, 1],
-		];
-
 		let camera = {
 			x: 0,
 			y: 0,
@@ -57,6 +49,11 @@
 		});
 
 		point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		// Грани тетраэдра: основание и три боковые; невидимые рёбра считает dashHiddenEdges()
+		let faces = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [2, 0, 3]];
+		let matrixPyr = dashHiddenEdges(pyr1.connectionMatrix, faces,
+			facesVisibility(pyr1.verticesOfFigure, point2DPyr, faces), [5, 4]);
 
 		let paint1 = function(ctx) {
 
