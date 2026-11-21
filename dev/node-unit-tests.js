@@ -600,4 +600,55 @@ module.exports = function registerNodeTests(QUnit) {
         var label = labelPositionOutsideSegment({ x: 1, y: 1 }, { x: 0, y: 0 }, { x: 2, y: 2 }, { x: 0, y: 2 }, Math.SQRT2);
         assertPointClose(assert, label, { x: 2, y: 0 }, 'на расстоянии √2 по нормали');
     });
+
+    // ============================================================
+    //  Canvas: перенос начала координат  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: translateToCenter');
+
+    QUnit.test('ctx.translateToCenter переносит начало координат в центр холста', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.translateToCenter === 'function', 'метод translateToCenter определён');
+        var calls = [];
+        var ctx = {
+            canvas: { width: 400, height: 300 },
+            translate: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        CanvasRenderingContext2D.prototype.translateToCenter.call(ctx);
+        assert.equal(calls.length, 1, 'translate вызван ровно один раз');
+        assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
+    });
+
+    // ============================================================
+    //  chislit / chislitlx: отрицательные числа  (lib/func.js)
+    // ============================================================
+    QUnit.module('chislit / chislitlx: отрицательные числа');
+
+    QUnit.test('chislit: форма слова выбирается по модулю числа', function (assert) {
+        assert.equal(chislit(-4, 'день', 'дня', 'дней'), 'дня', '-4 → дня');
+        assert.equal(chislit(-21, 'день', 'дня', 'дней'), 'день', '-21 → день');
+        assert.equal(chislit(-22, 'день', 'дня', 'дней'), 'дня', '-22 → дня');
+        assert.equal(chislit(-5, 'день', 'дня', 'дней'), 'дней', '-5 → дней');
+        assert.equal(chislit(-11, 'день', 'дня', 'дней'), 'дней', '-11 → дней');
+        assert.equal(chislit(-101, 'день', 'дня', 'дней'), 'день', '-101 → день');
+        assert.equal(chislit(-100, 'день', 'дня', 'дней'), 'дней', '-100 → дней');
+        assert.equal(chislit(-1.5, 'день', 'дня', 'дней'), 'дня', '-1,5 → дня (дробное)');
+    });
+
+    QUnit.test('chislit: положительные числа не затронуты', function (assert) {
+        assert.equal(chislit(4, 'день', 'дня', 'дней'), 'дня', '4 → дня');
+        assert.equal(chislit(21, 'день', 'дня', 'дней'), 'день', '21 → день');
+        assert.equal(chislit(5, 'день', 'дня', 'дней'), 'дней', '5 → дней');
+        assert.equal(chislit(11, 'день', 'дня', 'дней'), 'дней', '11 → дней');
+    });
+
+    QUnit.test('chislitlx: отрицательное число с существительным', function (assert) {
+        assert.equal(chislitlx(-4, 'день'), '-4 дня', '-4 дня');
+        assert.equal(chislitlx(-21, 'день'), '-21 день', '-21 день');
+        assert.equal(chislitlx(-5, 'день'), '-5 дней', '-5 дней');
+        assert.equal(chislitlx(-12.6, 'день'), '-12,6 дня', '-12,6 дня');
+        assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
+    });
+
 };
