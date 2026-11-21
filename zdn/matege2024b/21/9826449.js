@@ -5,7 +5,7 @@
   NAinfo.requireApiVersion(0, 2);
 
   var pr = [2, 3, 5, 7, 11, 13, 17, 19, 23].iz(3);
-  var N = pr[0] * pr[1] * pr[2];
+  var N = pr.production();
   genAssert(N != 105 && N != 110, 'эти числа заняты прототипами банка');
   var p = Math.min(pr[0], pr[1], pr[2]);
   NAtask.setTask({
