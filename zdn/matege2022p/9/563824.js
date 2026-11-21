@@ -3,11 +3,11 @@
 	NAinfo.requireApiVersion(0, 2);
 
 	retryWhileError(function () {
-		let a = sl(1, 4).pm() / 2;
-		let b = sl(1, 4) / 2;
+		let a = sl(0.5, 2, 0.5).pm();
+		let b = sl(0.5, 2, 0.5);
 		let direction = (1).pm();
-		let vertexX = sl(-4, 4) / 2;
-		let vertexY = sl(-7, 7) / 2;
+		let vertexX = sl(-2, 2, 0.5);
+		let vertexY = sl(-3.5, 3.5, 0.5);
 		let c = -b * vertexX;
 		let d = vertexY - a * vertexX;
 		let sign = direction > 0 ? '+' : '-';
