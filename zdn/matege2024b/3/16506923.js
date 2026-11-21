@@ -5,7 +5,7 @@
 		let key = '16506923';
 		let preference = ['findHeight', 'findPressure'];
 		let variant = getSelectedPreferenceFromList(key, preference);
-		let offset = 20 * sl(-2, 2);
+		let offset = sl(-40, 40, 20);
 		let anchors = [760, 680, 600, 520, 440, 400, 360, 320, 280, 240, 200].map(value => value + offset);
 		let points = [];
 		for (let i = 0; i < anchors.length - 1; i++) {
