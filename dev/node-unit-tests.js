@@ -458,6 +458,51 @@ module.exports = function registerNodeTests(QUnit) {
         assert.notOk(visibility[1], 'верхнее основание не видно');
     });
 
+    QUnit.test('RegularPyramid.faces: грани согласованы с connectionMatrix и verticesOfFigure', function (assert) {
+        var pyramid3 = new geometry.RegularPyramid({ height: 4, baseSide: 4, numberSide: 3 });
+        assert.deepEqual(pyramid3.faces, [[0, 1, 2], [0, 1, 3], [1, 2, 3], [2, 0, 3]],
+            'тетраэдр: основание и три боковые грани');
+
+        var pyramid4 = new geometry.RegularPyramid({ height: 4, baseSide: 4, numberSide: 4 });
+        assert.deepEqual(pyramid4.faces, [[0, 1, 2, 3], [0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]],
+            'четырёхугольная пирамида: основание и четыре боковые грани');
+
+        [3, 4, 6].forEach(function (n) {
+            var pyramid = new geometry.RegularPyramid({ height: 4, baseSide: 4, numberSide: n });
+            var faces = pyramid.faces;
+            assert.equal(faces.length, n + 1, n + '-угольная пирамида: n + 1 граней');
+            assert.equal(faces[0].length, n, 'основание из n вершин');
+            pyramid.connectionMatrix.forEach(function (row, i) {
+                row.forEach(function (value, j) {
+                    if (!value) { return; }
+                    var edge = [i + 1, j];
+                    var incident = faces.filter(function (face) {
+                        return edge.every(function (v) { return face.includes(v); });
+                    });
+                    assert.equal(incident.length, 2, 'ребро ' + (i + 1) + '-' + j + ' лежит в двух гранях');
+                });
+            });
+        });
+    });
+
+    QUnit.test('RegularPyramid.faces: пунктир невидимых рёбер четырёхугольной пирамиды', function (assert) {
+        var pyramid = new geometry.RegularPyramid({ height: 30, baseSide: 24, numberSide: 4 });
+        var vertices = pyramid.verticesOfFigure;
+        // Ракурс, как в шаблоне zdn/matege2024p/3/3011.js
+        var cam = Object.assign({}, camera, { scale: 5, rotationX: -Math.PI / 2 + Math.PI / 14, rotationZ: Math.PI / 3 });
+        var visibility = geometry.facesVisibility(vertices, project(vertices, cam), pyramid.faces);
+        assert.deepEqual(visibility, [false, true, false, false, true], 'видны две боковые грани при передней вершине 0');
+        var dashed = geometry.dashHiddenEdges(pyramid.connectionMatrix, pyramid.faces, visibility, [5, 4]);
+        var hidden = [];
+        dashed.forEach(function (row, i) {
+            row.forEach(function (value, j) {
+                if (Array.isArray(value)) { hidden.push((i + 1) + '-' + j); }
+            });
+        });
+        assert.deepEqual(hidden, ['2-1', '3-2', '4-2'], 'пунктир: два ребра основания и боковое ребро при дальней вершине 2');
+        assert.deepEqual(pyramid.connectionMatrix[1], [0, 1], 'исходная матрица не изменилась');
+    });
+
     QUnit.test('Тетраэдр и треугольная призма: одна скрытая вершина, три пунктирных ребра', function (assert) {
         var pyramid = new geometry.RegularPyramid({ height: 4, baseSide: 4, numberSide: 3 });
         var pv = pyramid.verticesOfFigure;

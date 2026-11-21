@@ -62,6 +62,8 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+У правильной пирамиды (`RegularPyramid`) грани тоже есть — `pyramid.faces` (основание, затем боковые треугольники); вершина пирамиды — последняя вершина в `verticesOfFigure`.
+
 ## Примеры
 
 ### Планиметрия
