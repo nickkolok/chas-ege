@@ -18,7 +18,7 @@
 	let dilationCoefficient = sl(2, 3);
 	
 	let paint1 = function(ctx) {
-		ctx.translate(-10, -40);
+		ctx.translate(-10, -20);
 		ctx.lineWidth = 2;
 		
 		let isSurfaceArea = [measurements[0].name.ie, measurements[1].name.ie].includes('площадь поверхности');
@@ -97,7 +97,7 @@
 	});
 	NAtask.modifiers.addCanvasIllustration({
 		width: 400,
-		height: 250,
+		height: 270,
 		paint: paint1,
 	});
 })();
