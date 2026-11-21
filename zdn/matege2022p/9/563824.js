@@ -12,7 +12,9 @@
 		let d = vertexY - a * vertexX;
 		let sign = direction > 0 ? '+' : '-';
 		let f = x => a * x + d + direction * Math.abs(b * x + c);
-		let points = intPoints(f, {minX: -6, maxX: 7, minY: -6, maxY: 5});
+		let minX = -6;
+		let maxX = 7;
+		let points = intPoints(f, {minX: minX, maxX: maxX, minY: -6, maxY: 5});
 		let left = points.filter(([x]) => x < vertexX);
 		let right = points.filter(([x]) => x > vertexX);
 		genAssert(left.length >= 2 && right.length >= 2, 'На каждой ветви нужны две целочисленные точки');
@@ -56,7 +58,7 @@
 				ct.translate(140, 140);
 				ct.scale(20, -20);
 				ct.lineWidth = 0.1;
-				graph9AdrawFunction(ct, f, {minX: -6, maxX: 7, minY: -6.8, maxY: 6.8, step: 0.05});
+				graph9AdrawFunction(ct, f, {minX: minX, maxX: maxX, minY: -6.8, maxY: 6.8, step: 0.05});
 				graph9AmarkCircles(ct, left, 2, 0.15);
 				graph9AmarkCircles(ct, right, 2, 0.15);
 			},
