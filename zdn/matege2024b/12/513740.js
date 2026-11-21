@@ -18,8 +18,8 @@
 		// пифагорову тройку k(m² − n², 2mn, m² + n²); все данные и ответ целые, как в ФИПИ.
 		let m = sl(2, 7);
 		let n = sl(1, m - 1);
-		genAssertIrreducible(m, n, 'Тройка не примитивная');
-		genAssert((m - n) % 2 === 1, 'Тройка не примитивная');
+		genAssertIrreducible(m, n, 'Тройка непримитивная');
+		genAssert((m - n) % 2 === 1, 'Тройка непримитивная');
 		let k = sl(1, 13);
 		let side = k * (m * m + n * n);
 		genAssert(side <= 65, 'Слишком большая сторона');
