@@ -243,6 +243,15 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual([].generatePairs(), [], 'пары из 0');
     });
 
+    QUnit.test('Array.prototype.neighborPairs', function (assert) {
+        assert.deepEqual([[1, 2], [3, 4]].neighborPairs(), [[1, 2], [1, 3], [2, 4], [3, 4]], '2×2: четыре пары');
+        assert.deepEqual([[1, 2, 3]].neighborPairs(), [[1, 2], [2, 3]], 'одна строка');
+        assert.deepEqual([[1], [2], [3]].neighborPairs(), [[1, 2], [2, 3]], 'один столбец');
+        assert.deepEqual([[5]].neighborPairs(), [], 'одна клетка — пар нет');
+        assert.deepEqual([].neighborPairs(), [], 'пустая матрица');
+        assert.equal(generateMatrix(7, 9, 0, 1).neighborPairs().length, 2 * 7 * 9 - 7 - 9, '7×9: 2mn - m - n пар');
+    });
+
     // ============================================================
     //  Function Utilities  (lib/func.js)
     // ============================================================
