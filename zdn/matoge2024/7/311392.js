@@ -66,7 +66,7 @@
 			text: 'Одно из чисел ' + ['', '$' + numbersList + '$'][rand] + ' отмечено на прямой точкой $A$. Какое это число?',
 			answers: '$' + correct + '$',
 			wrongAnswers: wrAns.map(e => '$' + e + '$'),
-			preference: preference,
+			preference: [preference],
 		});
 		AtoB(3);
 
