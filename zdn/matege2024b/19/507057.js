@@ -5,8 +5,12 @@
 		let key = '507057';
 		let preference = ['min', 'any', 'gt500', 'lt500'];
 		let rand = getSelectedPreferenceFromList(key, preference);
+		let preferenceRelation = ['average', 'sum'];
+		let isSum = getSelectedPreferenceFromList(key, preferenceRelation);
+		let relation = isSum ? 'суммой' : 'средним арифметическим';
+		let digitMultiplier = isSum ? 1 : 2;
 
-		let pairs = [[6, 11], [4, 15], [6, 5], [8, 5]];
+		let pairs = isSum ? [[5, 16], [8, 10], [4, 5], [5, 12]] : [[6, 11], [4, 15], [6, 5], [8, 5]];
 		let pair = pairs[sl(0, pairs.length - 1)];
 		let A = pair[0];
 		let B = pair[1];
@@ -21,15 +25,15 @@
 			let c = x % 10;
 
 			if (conditionType === 'middle') {
-				if (b * 2 === a + c) {
+				if (b * digitMultiplier === a + c) {
 					validDigits.push(x);
 				}
 			} else if (conditionType === 'last') {
-				if (c * 2 === a + b) {
+				if (c * digitMultiplier === a + b) {
 					validDigits.push(x);
 				}
 			} else {
-				if (a * 2 === b + c) {
+				if (a * digitMultiplier === b + c) {
 					validDigits.push(x);
 				}
 			}
@@ -68,11 +72,11 @@
 
 		let digitCondText = '';
 		if (conditionType === 'middle') {
-			digitCondText = 'у которого средняя цифра является средним арифметическим двух крайних цифр';
+			digitCondText = 'у которого средняя цифра является ' + relation + ' двух крайних цифр';
 		} else if (conditionType === 'last') {
-			digitCondText = 'у которого последняя цифра является средним арифметическим двух других цифр';
+			digitCondText = 'у которого последняя цифра является ' + relation + ' двух других цифр';
 		} else {
-			digitCondText = 'у которого первая цифра является средним арифметическим двух других цифр';
+			digitCondText = 'у которого первая цифра является ' + relation + ' двух других цифр';
 		}
 
 		let taskText = textPrefix + ', которое при делении на $' + A + '$ и на $' + B + '$ даёт равные ненулевые остатки и ' + digitCondText + textSuffix + '.';
@@ -80,10 +84,11 @@
 		NAtask.setTask({
 			text: taskText,
 			answers: answers,
-			preference: preference,
+			preference: [preference, preferenceRelation],
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 20000);
 })();
 //https://mathb-ege.sdamgia.ru/test?likes=507057
 //zer00player
+// 0D9C49, 95E775
