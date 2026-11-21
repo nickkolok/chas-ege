@@ -4,26 +4,16 @@
         /* На рисунке точками показана среднесуточная температура воздуха в Москве в январе 2011 года. По горизонтали указываются числа месяца, по вертикали  — температура в градусах Цельсия. Для наглядности точки соединены линией. */
 
         function convert(value) {
-            return (value - [16, 0][rand]) + '${}^{\\circ} C$';
-        }
-
-        function wasLengthConstValue(interval) {
-            let length = 0;
-            for (let j = 1; j < interval.length; j++) {
-                if (interval[j] === interval[j - 1] && interval[j - 1] !== 0) {
-                    length++;
-                }
-            }
-            return length;
+            return (value - yOffset) + '${}^{\\circ} C$';
         }
 
         function answAboutConstN(intervals, answ) {
-            let lengthConsts = intervals.map(interval => wasLengthConstValue(interval));
+            let lengthConsts = intervals.map(interval => lengthConst(interval));
             let maxLength = lengthConsts.maxE();
-            let wasConstN = intervals.map((_, i) => lengthConsts[i] === maxLength && (maxLength == 3 || maxLength == 4));
+            let wasConstN = intervals.map((_, i) => lengthConsts[i] === maxLength && (maxLength === 4 || maxLength === 5));
             let constTexts = intervals.map((_, i) => {
-                let days = ['три', 'четыре'][lengthConsts[i] - 3];
-                return days + ' дня подряд среднесуточная температура принимала одно и то же значение';
+                let days = ['четыре дня', 'пять дней'][lengthConsts[i] - 4];
+                return days + ' подряд среднесуточная температура принимала одно и то же значение';
             });
             
             wasConstN.forEach((condition, i) => {
@@ -73,33 +63,21 @@
         }
 
         function answAboutIncrDescr(intervals, answ) {
-            let isIncreasingFirst = intervals.map(interval => {
-                let first = interval.slice(0, 4);
-                return isNonIncreasing(first);
-            });
-            if (sl1())
-                addUniqueAnsw(isIncreasingFirst, answ, 'в первой половине периода среднесуточная температура не повышалась');
-
-            let isDecreasingFirst = intervals.map(interval => {
-                let first = interval.slice(0, 4);
-                return isNonDecreasing(first);
-            });
-            if (sl1())
-                addUniqueAnsw(isDecreasingFirst, answ, 'в первой половине периода среднесуточная температура не понижалась');
-
-            let isIncreasingSecond = intervals.map(interval => {
-                let second = interval.slice(4);
-                return isNonIncreasing(second);
-            });
-            if (sl1())
-                addUniqueAnsw(isIncreasingSecond, answ, 'во второй половине периода среднесуточная температура не повышалась');
-
-            let isDecreasingSecond = intervals.map(interval => {
-                let second = interval.slice(4);
-                return isNonDecreasing(second);
-            });
-            if (sl1())
-                addUniqueAnsw(isDecreasingSecond, answ, 'во второй половине периода среднесуточная температура не понижалась');
+            const firstLength = 3;
+            const parts = [
+                {start: 0, end: firstLength, text: 'в первые три дня периода'},
+                {start: firstLength, end: undefined, text: 'в оставшиеся четыре дня периода'},
+            ];
+            const conditions = [
+                {check: isNonIncreasing, text: 'не повышалась'},
+                {check: isNonDecreasing, text: 'не понижалась'},
+            ];
+            parts.forEach(part => conditions.forEach(condition => {
+                const flags = intervals.map(interval => condition.check(interval.slice(part.start, part.end)));
+                if (sl1()) {
+                    addUniqueAnsw(flags, answ, part.text + ' среднесуточная температура ' + condition.text);
+                }
+            }));
         }
 
         function answAboutWasConstAtEnd(intervals, answ) {
@@ -124,11 +102,17 @@
         }
 
         let rand = sl1();
+        let yOffset = [16, 0][rand];
+        let randCity = sl1();
         let time = [0].zapMonot(31, 0, 1, 1);
         let values = [sl(18)];
         let count = sl1();
+        let attempts = 0;
 
-        for (; values.length <= time.length;) {
+        for (; values.length < time.length;) {
+            if (++attempts > 1000) {
+                throw new Error('Генерация ряда температур не сходится');
+            }
             let interI = ((time.length / sl(5, 7)).floor());
             for (let j = 0; j < interI; j++) {
                 let lastProduction = values[values.length - 1];
@@ -201,8 +185,8 @@
                 stepY: 1,
                 minX: 1,
                 maxX: 32,
-                minY: [-16, 0][rand],
-                maxY: [2, 18][rand],
+                minY: -yOffset,
+                maxY: 18 - yOffset,
                 stepByCeilX: 2,
                 stepByCeilY: 2,
                 arrowLengthX: 30.5,
@@ -219,14 +203,15 @@
             ctx.lineWidth = 2 / 15;
 
             for (let i = 0; i < time.length; i++) {
-                ctx.drawFilledCircle(time[i], values[i], 3 / 17);
+                let plotValue = values[i] - yOffset;
+                ctx.drawFilledCircle(time[i], plotValue, 3 / 17);
                 if (i < time.length - 1)
-                    ctx.drawLine(time[i], values[i], time[i + 1], values[i + 1]);
+                    ctx.drawLine(time[i], plotValue, time[i + 1], values[i + 1] - yOffset);
             }
         };
 
         NAtask.setCorrespondenceTask({
-            text: `На рисунке точками показана среднесуточная температура воздуха в ${['Москве', 'Челябинске'][rand]} в ${['январе', 'марте'][rand]} ${2000 + sl(25)} года. По горизонтали указываются числа месяца, по вертикали – температура в градусах Цельсия. Для наглядности точки соединены линией. Границы периодов времени показаны штриховыми линиями.`,
+            text: `На рисунке точками показана среднесуточная температура воздуха в ${['Москве', 'Челябинске'][randCity]} в ${['январе', 'марте'][rand]} ${2000 + sl(25)} года. По горизонтали указываются числа месяца, по вертикали – температура в градусах Цельсия. Для наглядности точки соединены линией. Границы периодов времени показаны штриховыми линиями.`,
             leftHeader: 'ИНТЕРВАЛЫ',
             left: listOfIntervals,
             rightHeader: 'ХАРАКТЕРИСТИКИ',
@@ -234,12 +219,13 @@
             postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику изменения температуры.',
             analys: listView.join('<br/>'),
         });
-        NAtask.modifiers.allDecimalsToStandard();
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 600,
             paint: paint1,
         });
+        NAtask.modifiers.allDecimalsToStandard();
     }, 500);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=510147
+
