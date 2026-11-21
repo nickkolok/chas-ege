@@ -53,6 +53,13 @@
   (или отрезок сечения с концами на рёбрах) в видимой грани;
 * `dashHiddenEdges(connectionMatrix, faces, visibility, dash)` - копия матрицы
   смежности для `drawFigure()` с пунктиром на невидимых рёбрах.
+* `dashEdges(connectionMatrix, edges, dash)` - копия матрицы смежности
+  с пунктиром на явно перечисленных рёбрах (`edges` - пары номеров вершин).
+  Для невыпуклых тел, где видимость ребра не сводится к видимости грани
+  выпуклого многогранника (например, параллелепипед со сквозным отверстием).
+  `dash` по умолчанию `[]` - стандартный пунктир `drawFigure()`.
+  Рёбра самой фигуры берите из её `connectionMatrix` (например,
+  `Parallelepiped.connectionMatrix`), а не переписывайте вручную.
 
 ```js
 let faces = [[0, 1, 2], [3, 4, 5], [0, 1, 4, 3], [1, 2, 5, 4], [2, 0, 3, 5]];
@@ -61,6 +68,12 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 ```
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
+
+Если часть скрытого ребра видна (например, сквозь сквозное отверстие),
+её рисуют сплошной поверх пунктира:
+`ctx.drawLineToIntersectionOfTwoSegments(from, [a, b, c, d])` рисует отрезок
+от точки `from` до пересечения отрезков `a-b` и `c-d` (четыре точки массивом,
+как в `mt_coordinatesOfIntersectionOfTwoSegments()`).
 
 ## Примеры
 
