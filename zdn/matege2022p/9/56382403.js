@@ -100,6 +100,7 @@ retryWhileUndefined(function() {
 			'$, где числа $b$, $c$ и $k$ — целые, $k' + sign[0] + '0$, $b' + sign[1] + '0$. Найдите ' + question + '.',
 		answers: answ,
 		analys: '$f(x)=|' + (k + 'x+' + b + '|+' + c).plusminus() + '$',
+		authors: ['Александра Суматохина'],
 	});
 	chas2.task.modifiers.addCanvasIllustration({
 		width: 300,
