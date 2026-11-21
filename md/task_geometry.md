@@ -39,6 +39,26 @@
 (например, угла в 1 градус в треугольнике).
 
 
+## Подписи точек на чертеже
+
+Подписи не должны наезжать на линии чертежа; готовые помощники лежат в `lib/func.js`:
+
+* `labelPositionAwayFrom(point, from, distance)` — подпись точки `point`
+  на расстоянии `distance` в направлении от `from`
+  (например, вершина фигуры — наружу от её центра);
+* `labelPositionOutsideSegment(point, segmentStart, segmentEnd, from, distance)` —
+  подпись точки на отрезке, по нормали со стороны без `from`;
+* `labelPositionAwayFromSegments(point, segments, distance, directions)` —
+  подпись точки в стороне от набора отрезков: из `directions` (по умолчанию 12)
+  равномерных направлений на расстоянии `distance` выбирается то,
+  где расстояние до ближайшего отрезка максимально;
+* `segmentsFromConnectionMatrix(points, connectionMatrix)` — отрезки фигуры
+  по матрице смежности в формате `ctx.drawFigure()`:
+  истинный `connectionMatrix[i][j]` даёт отрезок `points[i+1]`—`points[j]`.
+  Рёбра уже заданы матрицей — не перечисляйте их вручную второй раз.
+
+Расстояние от точки до отрезка: `distanceFromPointToSegment(point, segmentStart, segmentEnd)`.
+
 ## Невидимые рёбра многогранника
 
 Невидимые рёбра рисуются пунктиром (или не рисуются, если так в образце).
