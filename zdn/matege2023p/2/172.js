@@ -75,7 +75,7 @@
 					power: 1,
 				}, {
 					name: 'площадь основания',
-					power: 2
+					power: 2,
 				}, ].iz(), {
 					name: 'площадь боковой поверхности',
 					power: 1,
@@ -122,6 +122,7 @@
 			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 
+			ctx.setLineDash([]);
 			for (let i = 0; i < copy.length; i++) {
 				//радиус
 				if (copy[i].name.ie == 'радиус основания')
@@ -146,6 +147,7 @@
 			ctx.ellipse(150, 180, 10, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.stroke();
 
+			ctx.setLineDash([]);
 			for (let i = 0; i < copy.length; i++) {
 				//радиус
 				if (copy[i].name.ie == 'радиус основания')
