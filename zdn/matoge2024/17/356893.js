@@ -16,7 +16,6 @@
 		let rotateToDiagonal = sl1();
 
 		let paint1 = function(ctx) {
-
 			ctx.translateToCenter();
 			if (rotateToDiagonal) {
 				ctx.rotate(-rhombus.angleAInRadians / 2);
