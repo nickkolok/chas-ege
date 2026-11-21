@@ -39,7 +39,6 @@
         const lastIndex = (variant + 2) % 3;
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
