@@ -18,7 +18,7 @@
 				'Скольким градусам по шкале ' + reverseDegreeName + ' соответствует '
 				+ [chislitlx(degreeNumberCelsius, 'градус', '$'), chislitlx(degreeNumberFahrenheit, 'градус', '$')][rand] + ' по шкале ' + degreeName + '?',
 			answers: [degreeNumberFahrenheit, degreeNumberCelsius][rand],
-			preference: preference,
+			preference: [preference],
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000);
