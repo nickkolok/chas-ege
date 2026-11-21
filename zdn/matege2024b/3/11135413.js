@@ -10,8 +10,8 @@
 		let silver = countries.map(() => sl(1, 20));
 		let bronze = countries.map(() => sl(1, 20));
 		let rank = sl(1, countries.length);
-		let rows = [['Страна', 'Золото', 'Серебро', 'Бронза'].tr('th')];
-		rows = rows.concat(countries.map((name, i) => [name, gold[i], silver[i], bronze[i]].tr()));
+		const rows = [['Страна', 'Золото', 'Серебро', 'Бронза'].tr('th')]
+			.concat(countries.map((name, i) => [name, gold[i], silver[i], bronze[i]].tr()));
 		NAtask.setTask({
 			text: 'В таблице показано распределение медалей на спортивных соревнованиях. Страны расположены по убыванию числа золотых медалей.' +
 				rows.join('').toTable() + ' Сколько ' + ['бронзовых медалей', 'серебряных медалей', 'всего медалей'][variant] +
