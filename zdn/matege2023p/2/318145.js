@@ -18,10 +18,7 @@
 			ctx.drawLine(apexX - baseRX, baseY, apexX, apexY);
 			ctx.drawLine(apexX + baseRX, baseY, apexX, apexY);
 			//эллипс
-			ctx.beginPath();
-			ctx.ellipse(apexX, baseY, baseRX, baseRY, 0, 0, 2 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(apexX, baseY, baseRX, baseRY);
 			
 			let frac = numerator / denominator;
 			let yLiq = apexY - coneHeight * frac;
@@ -43,15 +40,10 @@
 
 			ctx.strokeStyle = "black";
 			ctx.lineWidth = 1;
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(apexX, yLiq, rxLiq, ryLiq, 0, Math.PI, 2 * Math.PI);
-			ctx.stroke();
+			ctx.drawEllipse(apexX, yLiq, rxLiq, ryLiq, 0, Math.PI, 2 * Math.PI);
 			ctx.setLineDash([]);
-			ctx.beginPath();
-			ctx.ellipse(apexX, yLiq, rxLiq, ryLiq, 0, 0, Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(apexX, yLiq, rxLiq, ryLiq, 0, 0, Math.PI);
 
 		};
 
