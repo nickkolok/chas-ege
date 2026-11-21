@@ -39,7 +39,7 @@
 
 		let point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(pyr1.verticesOfFigure, camera, point2DPyr, {
+		point2DPyr = autoScale(pyr1.verticesOfFigure, camera, point2DPyr, {
 			startX: -390 / 2,
 			finishX: 390 / 2,
 			startY: -390 / 2,
@@ -47,8 +47,6 @@
 			maxScale: 50,
 			step: 0.1,
 		});
-
-		point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
 		// Грани тетраэдра: основание и три боковые; невидимые рёбра считает dashHiddenEdges()
 		let faces = [[0, 1, 2], [0, 1, 3], [1, 2, 3], [2, 0, 3]];
