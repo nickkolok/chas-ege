@@ -46,10 +46,7 @@
 
 		//шар 1 - контур
 		ctx.strokeStyle = color1;
-		ctx.beginPath();
-		ctx.arc(100, 150, radius1, 0, Math.PI * 2, true);
-		ctx.stroke();
-		ctx.closePath();
+		ctx.drawCircle(100, 150, radius1);
 
 		ctx.drawEllipse(100, 150, 20, radius1, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
@@ -75,10 +72,7 @@
 
 		//шар 2 - контур
 		ctx.strokeStyle = color2;
-		ctx.beginPath();
-		ctx.arc(100, 150, radius2, 0, Math.PI * 2, true);
-		ctx.stroke();
-		ctx.closePath();
+		ctx.drawCircle(100, 150, radius2);
 
 		ctx.drawEllipse(100, 150, 20, radius2, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
