@@ -39,21 +39,15 @@
 			//эллипс нижний
 			ctx.drawEllipse(150, picHeight, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, picHeight, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(150, picHeight, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
 			//эллипс средний
 			ctx.setLineDash([]);
 			ctx.drawEllipse(150, picHeight / k, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, picHeight / k, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(150, picHeight / k, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
 		};
 
