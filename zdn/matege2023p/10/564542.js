@@ -1,6 +1,8 @@
 retryWhileUndefined(function() {
 	NAinfo.requireApiVersion(0, 2);
 
+	const canvasSize = 320;
+	const plotScale = 20;
 	const trig = ['sin', 'cos'].iz();
 	const a = sl(1, 6).pm();
 	// Оба экстремума должны помещаться на графике между y = -6 и y = 6.
@@ -9,14 +11,13 @@ retryWhileUndefined(function() {
 	const factor = sl(0.5, 1.5, 0.5);
 	const phase = factor * c;
 	const showA = sl1();
-	const knownA = a === 1 ? '' : a === -1 ? '-' : a;
 
 	function f(x) {
 		return a * Math[trig](Math.PI * (x + phase)) + d;
 	}
 
-	const formula = (showA ? knownA : 'a') + '\\' + trig +
-		'(\\pi x+' + factor.texfracpi(1) + ' c)+d';
+	const formula = ((showA ? a : 'a') + '\\' + trig +
+		'(\\pi x+' + factor.texfracpi(1) + ' c)+d').plusminus();
 	let limits = showA ? '' : ', $a' + (a > 0 ? '>' : '<') + '0$';
 	const variant = sl(1, 3);
 	let question, answer;
@@ -44,7 +45,7 @@ retryWhileUndefined(function() {
 	const extrema = [firstExtremum, firstExtremum + 1]
 		.map(x => [x, Math.round(f(x))]);
 
-	const solution = knownA + '\\' + trig + '(\\pi x' +
+	const solution = a + '\\' + trig + '(\\pi x' +
 		(phase ? '+' + phase.texfracpi(1) : '') + ')' + (d ? '+' + d : '');
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции $f(x)=' + formula +
@@ -54,11 +55,11 @@ retryWhileUndefined(function() {
 		analys: '$f(x)=' + solution.plusminus() + '$',
 	});
 	chas2.task.modifiers.addCanvasIllustration({
-		width: 320,
-		height: 320,
+		width: canvasSize,
+		height: canvasSize,
 		paint: function(ct) {
-			ct.drawCoordPlane(320, 320, { hor: 1, ver: 1 }, { x1: '1', y1: '1' }, 20);
-			ct.scale(20, -20);
+			ct.drawCoordPlane(canvasSize, canvasSize, { hor: 1, ver: 1 }, { x1: '1', y1: '1' }, plotScale);
+			ct.scale(plotScale, -plotScale);
 			ct.lineWidth = 0.1;
 			graph9AdrawFunction(ct, f, {
 				minX: -7,
