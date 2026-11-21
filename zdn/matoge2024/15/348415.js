@@ -15,7 +15,7 @@
             },
         });
 
-        genAssert(!Object.values(triangle.lengths).hasAlmostDuplicateNumbers(), 'Все стороны треугольника должны быть разными');
+        genAssert(!triangle.isIsosceles(), 'Все стороны треугольника должны быть разными');
         genAssertZ1000(triangle.lengthAB, 'Гипотенуза не целая');
 
         let dano = [
@@ -26,7 +26,6 @@
         let points = autoScale(triangle.vertices);
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
