@@ -6,7 +6,7 @@
 
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		let side = sl(4, 60);
+		let side = sl(4, 60, 2);
 
 		let letters = latbukv.slice(0, 3).concat(['K', 'N', 'M']);
 

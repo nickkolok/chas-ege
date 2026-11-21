@@ -16,7 +16,7 @@
 				angle: Math.PI / 2,
 			},
 		});
-		genAssert(!triangle.isEquilateral(), 'Все стороны треугольника должны быть разными');
+		genAssert(!triangle.isIsosceles(), 'Все стороны треугольника должны быть разными');
 
 		let funcDano = ['sin', 'cos', 'tg', 'ctg'][variant % 4] + ' ' + ['A', 'C'][variant < 4 ? 0 : 1];
 		let sides;
