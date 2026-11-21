@@ -4,7 +4,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let key = '529653';
-		let preference = ['findColumnHeight', 'findShadowLength', 'findDistance'];
+		let preference = ['findColumnHeight', 'findShadowLength', 'findDistance', 'findPersonHeight'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
 		let triples = [];
@@ -32,28 +32,30 @@
 			'Человек, рост которого равен $' + t.person.ts() + '$ м, стоит на расстоянии $' + t.distance + '$ м от столба, на котором висит фонарь. При этом длина тени человека равна $' + t.shadow + '$ м. Определите высоту столба (в метрах).',
 			'Фонарь висит на столбе высотой $' + t.column + '$ м. Человек, рост которого равен $' + t.person.ts() + '$ м, стоит на расстоянии $' + t.distance + '$ м от столба. Определите длину тени человека (в метрах).',
 			'Фонарь висит на столбе высотой $' + t.column + '$ м. Человек, рост которого равен $' + t.person.ts() + '$ м, стоит на некотором расстоянии от столба, при этом длина его тени равна $' + t.shadow + '$ м. Найдите расстояние от человека до столба (в метрах).',
+			'Человек стоит на расстоянии $' + t.distance + '$ м от столба, на котором висит фонарь, расположенный на высоте $' + t.column + '$ м. Длина тени человека равна $' + t.shadow + '$ м. Какого роста человек (в метрах)?',
 		][rand];
 
 		let analys = 'Луч света, идущий от фонаря через голову человека, достигает земли в конце его тени. ' +
 			'Прямоугольные треугольники, образованные столбом с тенью от столба до конца тени человека и человеком с его тенью, подобны, поэтому ' +
 			'$' + t.column + ':' + t.person.ts() + '=' + (t.distance + t.shadow) + ':' + t.shadow + '$. ' +
 			['Высота столба равна $' + t.column + '$ м.',
-				'Длина тени человека равна $' + t.shadow + '$ м.',
-				'Расстояние от человека до столба равно $' + t.distance + '$ м.'][rand];
+			'Длина тени человека равна $' + t.shadow + '$ м.',
+			'Расстояние от человека до столба равно $' + t.distance + '$ м.',
+			'Рост человека равен $\\frac{' + t.column + '\\cdot' + t.shadow + '}{' + (t.distance + t.shadow) + '}=' + t.person.ts() + '$ м.'][rand];
 
 		NAtask.setTask({
 			text: text,
 			analys: analys,
-			answers: [t.column, t.shadow, t.distance][rand],
+			answers: [t.column, t.shadow, t.distance, t.person][rand],
 			authors: ['chas-ege-selena'],
 			preference: preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 
-		let labelColumn = ['?', t.column + ' м', t.column + ' м'][rand];
-		let labelShadow = [t.shadow + ' м', '?', t.shadow + ' м'][rand];
-		let labelDistance = [t.distance + ' м', t.distance + ' м', '?'][rand];
-		let labelPerson = t.person.ts() + ' м';
+		let labelColumn = ['?', t.column + ' м', t.column + ' м', t.column + ' м'][rand];
+		let labelShadow = [t.shadow + ' м', '?', t.shadow + ' м', t.shadow + ' м'][rand];
+		let labelDistance = [t.distance + ' м', t.distance + ' м', '?', t.distance + ' м'][rand];
+		let labelPerson = [t.person.ts() + ' м', t.person.ts() + ' м', t.person.ts() + ' м', '?'][rand];
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 620,

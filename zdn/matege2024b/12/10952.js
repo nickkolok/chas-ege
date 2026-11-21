@@ -6,13 +6,12 @@
 		let count = [9, 10][getSelectedPreferenceFromList('10952', preference)];
 		let letters = latbukv.slice(0, count);
 		let rotate = sl(0, count - 1, 2);
-		let lettersRotate = letters.slice();
 
 		let delta = slKrome(count / 2, 1, count - 2);
 		let a = sl(1, count - 1 - delta);
 		let angleF = [a, 0, a + delta];
 
-		lettersRotate = angleF.map(i => lettersRotate[i]);
+		let lettersRotate = angleF.map(i => letters[i]);
 		let points = generatePolygonPoints(160, count);
 
 		let matrixConnections = {};
@@ -43,7 +42,10 @@
 
 			ctx.font = "20px liberation_sans";
 			ctx.scale(1, -1);
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i > 4) ? 25 : -5)));
+			points.forEach((elem, i) => {
+				const label = labelPositionAwayFrom(elem, {x: 0, y: 0}, 20);
+				ctx.fillText(letters[i], label.x, -label.y);
+			});
 
 		};
 
