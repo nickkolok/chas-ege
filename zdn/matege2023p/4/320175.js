@@ -17,7 +17,7 @@
 		let probabilitySum = 0;
 		for (let i = 0; i < zeroCounts.length; i++) {
 			if (zeroCounts[i] >= requiredFailures) {
-				probabilitySum += Math.pow(failureProbability, zeroCounts[i]) * Math.pow(1 - failureProbability, numberOfDevices - zeroCounts[i]);
+				probabilitySum += failureProbability.pow(zeroCounts[i]) * (1 - failureProbability).pow(numberOfDevices - zeroCounts[i]);
 			}
 		}
 
