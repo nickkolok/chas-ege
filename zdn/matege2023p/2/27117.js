@@ -15,12 +15,9 @@
 					height: cubeEdge / 1.5,
 					depth: cubeEdge / (2.5 * 1.5),
 					angle: 40
-				}, [0, 3, 4, 2, 6, 7, 10, ], false, [0, 0.1]);
+				}, [0, 3, 4, 2, 6, 7, 10], false, [0, 0.1]);
 
-				ctx.translate(0, cubeEdge * (40).cos());
-
-
-				ctx.translate(0, cubeEdge * (40).cos());
+				ctx.translate(0, 2 * cubeEdge * (40).cos());
 				ctx.drawParallelepiped({
 					width: cubeEdge / 1.5,
 					height: cubeEdge / 1.5,
@@ -58,7 +55,7 @@
 				ctx.drawParallelepiped({
 					width: cubeEdge / 7,
 					height: cubeEdge / 9,
-					depth: cubeEdge / (5),
+					depth: cubeEdge / 5,
 					angle: 40
 				}, [0, 3, 4, 5, 6, 8, 9, 10, 11], false, [0, 0.1]);
 
@@ -72,11 +69,10 @@
 			};
 			NAtask.setTask({
 				text: 'Найдите ' + question +
-					' пространственного креста, изображенного на рисунке и составленного из кубов со стороной равной $' + edge +
+					' пространственного креста, изображённого на рисунке и составленного из кубов со стороной, равной $' + edge +
 					'$.',
 				answers: answ,
 			});
-			NAtask.modifiers.multiplyAnswerBySqrt(3);
 			chas2.task.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
