@@ -143,13 +143,82 @@ PNG неудобен для разглядывания и диффа: бинар
 кладётся в дифф), для штрихового рисунка обычно компактнее.
 
 **Важно: текст должен остаться `<text>`, а не превратиться в кривые.**
-Иначе подписи нельзя выделить/скопировать и неудобно сравнивать. Готовые средства:
+Иначе подписи нельзя выделить/скопировать и неудобно сравнивать.
 
-- **`canvas2svg`** (чистый JS, без native): `new C2S(w, h, { document })` —
-  `fillText` даёт `<text>`. Нужен `document` (подойдёт jsdom-окно).
-- **`@napi-rs/canvas` `SVGCanvas`**: `new SVGCanvas(w, h)` **без** флага
-  `SvgExportFlag.ConvertTextToPaths` — тогда текст остаётся `<text>`.
-  С этим флагом текст превращается в кривые — это как раз то, чего НЕ надо.
+### Рабочий рецепт: `canvas2svg` как backend шаблона
+
+`@napi-rs/canvas` `SVGCanvas` в нашей песочнице падал (сигнал), поэтому надёжный
+путь — чистый JS **`canvas2svg`**: рисует в SVG по canvas-API, `fillText` даёт
+`<text>`. Нюансы, без которых не заводится:
+
+1. Конструктор — **одним объектом**: `new C2S({ width, height, document })`.
+   Вызов `new C2S(w, h, opts)` игнорирует `opts` (при `arguments.length > 1`
+   библиотека берёт только width/height), и `document` теряется.
+2. `global.XMLSerializer = window.XMLSerializer` — иначе `getSerializedSvg()`
+   падает (`XMLSerializer is not defined`).
+3. `document` — jsdom-окно. Внутри C2S создаёт measuring-канвас и зовёт
+   `getContext('2d')` для `measureText`, поэтому jsdom должен иметь реальный
+   backend (`@napi-rs/canvas` через shim, см. выше).
+4. Подменяем backend и навешиваем расширения `lib/canvas.js` на прототип C2S
+   (флаг `constructing` защищает от рекурсии — C2S внутри себя тоже зовёт
+   `getContext`):
+
+```js
+window.CanvasRenderingContext2D = C2S;  // drawFigure/arcBetweenSegments лягут на C2S.prototype
+let constructing = false;
+window.HTMLCanvasElement.prototype.getContext = function (type) {
+  if (type !== '2d') return null;
+  const w = this.width || 300, h = this.height || 150;
+  if (constructing) return napi.createCanvas(w, h).getContext('2d'); // measuring-канвас
+  if (!this.__c2s) {
+    constructing = true;
+    try { this.__c2s = new C2S({ width: w, height: h, document: window.document }); }
+    finally { constructing = false; }
+  }
+  return this.__c2s;
+};
+```
+
+5. **Полифиллы** методов, которых нет в canvas2svg, но которые зовёт
+   `lib/canvas.js` (иначе `dey()` падает):
+
+```js
+// пунктир
+C2S.prototype.setLineDash = function (d) {
+  this.__lineDash = d || [];
+  const e = this.__currentElement;
+  if (e) { if (this.__lineDash.length) e.setAttribute('stroke-dasharray', this.__lineDash.join(','));
+           else e.removeAttribute('stroke-dasharray'); }
+};
+C2S.prototype.getLineDash = function () { return this.__lineDash || []; };
+// шрифт: встроенный __parseFont не понимает подчёркивание в имени (liberation_sans)
+C2S.prototype.__parseFont = function () {
+  const f = this.font || '10px sans-serif';
+  const m = f.match(/([.\d]+(?:px|pt|em|ex|%|cm|mm|in|pc))\s*(.*)$/);
+  return { style: /italic|oblique/.test(f) ? 'italic' : 'normal',
+           size: m ? m[1] : '10px',
+           family: (m ? m[2] : 'sans-serif').trim() || 'sans-serif',
+           weight: /bold|[1-9]00/.test(f) ? 'bold' : 'normal',
+           decoration: 'normal', href: null };
+};
+```
+
+Дальше — как обычно: грузим бандл + шаблон, `vopr.dey()` рисует в C2S, затем
+`canvas.__c2s.getSerializedSvg()` даёт SVG. **Проверено на шаблоне 6623:
+6 `<path>` (стороны, биссектриса, дуги углов) + 4 `<text>` (подписи S/B/A/J) —
+текст остаётся текстом.**
+
+Мелочь: при «пустом» пунктире `setLineDash([0,0])` остаётся
+`stroke-dasharray="0,0"` (рендерится как сплошная линия); при желании полифилл
+можно научить убирать атрибут и для all-zero.
+
+### Альтернатива: `@napi-rs/canvas` `SVGCanvas`
+
+`new SVGCanvas(w, h)` **без** флага `SvgExportFlag.ConvertTextToPaths` — текст
+остаётся `<text>` (с флагом — кривые, это как раз НЕ наш вариант). В нашей
+песочнице экспорт падал с сигналом, поэтому основной рецепт — canvas2svg;
+в нормальном окружении `SVGCanvas` может оказаться удобнее (все методы canvas
+на месте, полифиллы не нужны).
 
 SVG→PNG при необходимости — `resvg-js` (Rust, zero deps) или `svg2png-wasm`
 (чистый WASM): оба без системного pango.
