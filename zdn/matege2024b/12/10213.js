@@ -28,7 +28,7 @@
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, connectionMatrix);
-            ctx.drawArc(0, 0, radius, 0, 2 * Math.PI);
+            circle.drawOnto(ctx);
             ctx.drawLine(points[0].x, points[0].y, tan[0][1].ps.x, tan[0][1].ps.y);
             ctx.drawLine(points[2].x, points[2].y, tan[1][1].ps.x, tan[1][1].ps.y);
 
