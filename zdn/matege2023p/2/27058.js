@@ -48,18 +48,12 @@
 			ctx.drawLine(300, height, 300, 10);
 
 			//эллипс верхний
-			ctx.beginPath();
-			ctx.ellipse(150, 10, 20, 150, Math.PI / 2, 0, 2 * Math.PI);
-			ctx.stroke();
+			ctx.drawEllipse(150, 10, 20, 150, Math.PI / 2);
 			//эллипс нижний
-			ctx.beginPath();
-			ctx.ellipse(150, height, 20, 150, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
+			ctx.drawEllipse(150, height, 20, 150, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, height, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
+			ctx.drawEllipse(150, height, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			//радиус
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 
