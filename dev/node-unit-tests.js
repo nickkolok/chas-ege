@@ -651,4 +651,93 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+
+    // ============================================================
+    //  Preference Functions  (lib/func.js)
+    // ============================================================
+    QUnit.module('Preference Functions');
+
+    QUnit.test('getSelectedPreferenceFromList: без настройки — случайный индекс из массива', function (assert) {
+        const savedNabor = global.nabor;
+        global.nabor = { preferences: {} };
+        try {
+            const preference = ['onlyNumber', 'numberWithFactorization'];
+            let allInRange = true;
+            for (let i = 0; i < 100; i++) {
+                const rand = getSelectedPreferenceFromList('unitTestNoSetting', preference);
+                if (rand !== 0 && rand !== 1) {
+                    allInRange = false;
+                }
+            }
+            assert.ok(allInRange, 'все 100 значений — индексы массива preference');
+        } finally {
+            if (savedNabor === undefined) {
+                delete global.nabor;
+            } else {
+                global.nabor = savedNabor;
+            }
+        }
+    });
+
+    QUnit.test('getSelectedPreferenceFromList: алиас старого имени preference', function (assert) {
+        const savedNabor = global.nabor;
+        const preference = ['onlyNumber', 'numberWithFactorization'];
+        const aliases = { numberWithFractorization: 'numberWithFactorization' };
+        try {
+            global.nabor = { preferences: { 'unitTestAlias': ['numberWithFractorization'] } };
+            assert.strictEqual(getSelectedPreferenceFromList('unitTestAlias', preference, aliases), 1, 'старое имя даёт индекс актуального');
+
+            global.nabor = { preferences: { 'unitTestAlias': ['numberWithFactorization'] } };
+            assert.strictEqual(getSelectedPreferenceFromList('unitTestAlias', preference, aliases), 1, 'актуальное имя работает как раньше');
+
+            global.nabor = { preferences: { 'unitTestAlias': ['onlyNumber'] } };
+            assert.strictEqual(getSelectedPreferenceFromList('unitTestAlias', preference, aliases), 0, 'остальные preference не затронуты');
+
+            const reordered = ['numberWithFactorization', 'onlyNumber'];
+            global.nabor = { preferences: { 'unitTestAlias': ['numberWithFractorization'] } };
+            assert.strictEqual(getSelectedPreferenceFromList('unitTestAlias', reordered, aliases), 0, 'алиас следует за позицией актуального имени');
+        } finally {
+            if (savedNabor === undefined) {
+                delete global.nabor;
+            } else {
+                global.nabor = savedNabor;
+            }
+        }
+    });
+
+    QUnit.test('getSelectedPreferenceFromList: без алиасов поведение не меняется', function (assert) {
+        const savedNabor = global.nabor;
+        try {
+            global.nabor = { preferences: { 'unitTestPlain': ['numberWithFactorization'] } };
+            assert.strictEqual(getSelectedPreferenceFromList('unitTestPlain', ['onlyNumber', 'numberWithFactorization']), 1, 'выбор по актуальному имени');
+        } finally {
+            if (savedNabor === undefined) {
+                delete global.nabor;
+            } else {
+                global.nabor = savedNabor;
+            }
+        }
+    });
+
+    QUnit.test('getSelectedPreferenceFromList: алиас на неизвестное имя — ошибка', function (assert) {
+        const savedNabor = global.nabor;
+        global.nabor = { preferences: {} };
+        try {
+            let thrown = null;
+            try {
+                getSelectedPreferenceFromList('unitTestBadAlias', ['onlyNumber'], { oldName: 'missingName' });
+            } catch (e) {
+                thrown = e;
+            }
+            assert.ok(thrown instanceof Error && thrown.message.indexOf('неизвестное preference') !== -1, 'опечатка в цели алиаса видна сразу');
+        } finally {
+            if (savedNabor === undefined) {
+                delete global.nabor;
+            } else {
+                global.nabor = savedNabor;
+            }
+        }
+    });
+
+
 };
