@@ -102,7 +102,7 @@
 				text: 'Найдите ' + ['площадь поверхности', 'объём'][rand] +	' многогранника, изображённого на рисунке.',
 				answers: [par1.surfaceArea - deltaWidth * (par2.height + par2.depth) + 2 * par2.height * par2.depth + 2 *
 					diagonal * par2.depth,
-					par1.volume - par2.height * (par1.width - par2.width) * par2.width
+					par1.volume - par2.height * deltaWidth * par2.width
 				][rand],
 				author: ['Суматохина Александра']
 			});
