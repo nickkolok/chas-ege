@@ -6,8 +6,7 @@
 
   var m = sl(4, 11);
   var n = sl(4, 11);
-  var grid = [];
-  for (var i = 0; i < m; i++) { grid.push([]); for (var j = 0; j < n; j++) grid[i].push(sl1()); }
+  var grid = generateMatrix(m, n, 0, 1);
   var X = 0, Y = 0;
   for (var i2 = 0; i2 < m; i2++)
    for (var j2 = 0; j2 < n; j2++) {
