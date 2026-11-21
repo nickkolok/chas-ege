@@ -23,8 +23,7 @@
         genAssertZ1000(par.lengthDiagonalAC.pow(2));
         genAssertZ1000(par.lengthDiagonalBD);
 
-        let answ = par.pointD.distanceTo(new Point(0, 0))[0];
-        genAssertZ1000(answ);
+        let answ = par.lengthDiagonalBD / 2;
 
         par.connectVerticesInConnectionMatrix([
             [0, 2],
@@ -34,7 +33,6 @@
         let points = autoScale(par.vertices);
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
@@ -44,7 +42,7 @@
             ctx.drawFigure(points, par.connectionMatrix);
 
             ctx.scale(1, -1);
-            ctx.font = "20px liberation_sans";
+            ctx.font = '20px liberation_sans';
             ctx.fillText(letters[4], 0, 0);
             points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
         };
