@@ -55,9 +55,7 @@
                 ctx.drawLine(points[3].x, points[3].y, foot[0], foot[1]);
                 ctx.arcBetweenSegments([points[3].x, points[3].y, foot[0], foot[1], points[1].x, points[1].y], 10, true);
                 ctx.fillStyle = om.secondaryBrandColors.iz();
-                ctx.beginPath();
-                ctx.arc(points[3].x, points[3].y, 3, 0, 2 * Math.PI);
-                ctx.fill();
+                ctx.drawFilledCircle(points[3].x, points[3].y, 3);
                 ctx.scale(1, -1);
                 ctx.font = '20px liberation_sans';
                 ctx.textAlign = 'center';
