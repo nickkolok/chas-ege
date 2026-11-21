@@ -50,10 +50,10 @@
             ctx.drawFigure(points, triangle.connectionMatrix);
             if (rand == 2) {
                 // Как на чертеже ФИПИ: описанная окружность, центр O и перпендикуляр из O к стороне AB
-                let foot = { x: (points[0].x + points[1].x) / 2, y: (points[0].y + points[1].y) / 2 };
+                let foot = coordinatesMiddleOfSegment(points[0].x, points[0].y, points[1].x, points[1].y);
                 new Circle(new Point(points[3].x, points[3].y), Math.hypot(points[0].x - points[3].x, points[0].y - points[3].y)).drawOnto(ctx);
-                ctx.drawLine(points[3].x, points[3].y, foot.x, foot.y);
-                ctx.arcBetweenSegments([points[3].x, points[3].y, foot.x, foot.y, points[1].x, points[1].y], 10, true);
+                ctx.drawLine(points[3].x, points[3].y, foot[0], foot[1]);
+                ctx.arcBetweenSegments([points[3].x, points[3].y, foot[0], foot[1], points[1].x, points[1].y], 10, true);
                 ctx.fillStyle = om.secondaryBrandColors.iz();
                 ctx.beginPath();
                 ctx.arc(points[3].x, points[3].y, 3, 0, 2 * Math.PI);
