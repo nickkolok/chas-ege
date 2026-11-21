@@ -22,11 +22,11 @@
 		}
 
 		let taskDescription = requiredFailures === numberOfDevices ? 'все лампы' : `хотя бы ${chislitlx(requiredFailures, 'лампа', '$')}`;
-		let verb = requiredFailures > 1 ? 'перегорят' : 'перегорит';
+		let verb = chislit(requiredFailures, 'перегорит', 'перегорят', 'перегорят');
 
 		genAssertZ1000(probabilitySum * 100, 'Кривой ответ');
 		NAtask.setTask({
-			text: (device === 1 ? `В магазине установлены платёжные автоматы, всего ${chislitlx(numberOfDevices, 'автомат', '$')}. Вероятность неисправности каждого из них равна $${failureProbability.ts()}$. Неисправности независимы. Найдите вероятность того, что ${requiredFailures === 1 ? 'неисправен' : 'неисправны'} ${requiredFailures === numberOfDevices ? 'все автоматы' : 'хотя бы ' + chislitlx(requiredFailures, 'автомат', '$')}.` : `Помещение освещается ${lampDescriptions[numberOfDevices - 2]} лампами. ` +
+			text: (device === 1 ? `В магазине установлены платёжные автоматы, всего ${chislitlx(numberOfDevices, 'автомат', '$')}. Вероятность неисправности каждого из них равна $${failureProbability.ts()}$. Неисправности независимы. Найдите вероятность того, что ${chislit(requiredFailures, 'неисправен', 'неисправны', 'неисправны')} ${requiredFailures === numberOfDevices ? 'все автоматы' : 'хотя бы ' + chislitlx(requiredFailures, 'автомат', '$')}.` : `Помещение освещается ${lampDescriptions[numberOfDevices - 2]} лампами. ` +
 				  `Вероятность перегорания каждой лампы в течение года равна $${failureProbability.ts()}$. ` +
 				  `Лампы перегорают независимо друг от друга. Найдите вероятность того, ` +
 				  `что в течение года ${taskDescription} ${verb}.`),
