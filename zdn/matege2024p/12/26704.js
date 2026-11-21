@@ -1,19 +1,23 @@
 (function() {
+	'use strict';
+	NAinfo.requireApiVersion(0, 2);
 	retryWhileError(function() {
-		'use strict';
-		let a = sl(1, 9, 0.5);
-		let b = sl(1, 100);
-		let arr1 = ['+', '-'];
-		let arr2 = [' ', '-'];
-		let maxmin1 = sl(0, 1);
-		let maxmin2 = (maxmin1 + 1) % 2;
+		const a = sl(3, 50);
+		const b = sl(1, 100);
+		const direction = (1).pm();
+		const rootSign = (1).pm();
+		const isMinimum = direction * rootSign > 0;
 		NAtask.setMinimaxFunctionTask({
-			expr: '' + arr2[maxmin1] + (a * 2) + 'tan(x)' + arr1[maxmin2] + (a * 4) + 'x' + arr1[maxmin1] + a + 'pi' + arr1[
-				maxmin2] + b,
-			leftEnd: '-pi/3',
-			rightEnd: 'pi/3',
-			primaryStep: 0.001,
-			authors: ['Алендарь Сергей'],
+			expr: direction * a + 'tan(x) - ' + direction * 2 * a + 'x + ' +
+				direction * rootSign * a / 2 + ' pi + ' + b,
+			leftEnd: rootSign > 0 ? '0' : '-pi/3',
+			rightEnd: rootSign > 0 ? 'pi/3' : '0',
+			primaryStep: Math.PI / 12,
+			secondaryStep: Math.PI / 1200,
+			forbidMinY: !isMinimum,
+			forbidMaxY: isMinimum,
+			authors: ['Алендарь Сергей', 'Николай Авдеев'],
 		});
-	}, 10);
+	}, 100);
 })();
+// 26704

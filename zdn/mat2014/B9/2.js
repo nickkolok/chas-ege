@@ -1,29 +1,21 @@
-(function() {
+(function() { 'use strict'; retryWhileError(function() {
+    let a=sluchch(2,9).pm();
+    let g=sluchch(1,9).pm();
+    let d=sluchch(2,2*a*g-1).pm();
+    let b=(2*a*g+d);
+    let f=sluchch(1,a*g*g-1).pm();
+    let c=(a*g*g+f);
+    let h=2*(a*(c-f)).sqrt();
+    let m1=[d-h,d+h];
+    let t1=['меньше','больше'];
+    let v1=sluchch(1);
+    NAtask.setTask({
+    	text: ('Прямая $y='+d+'x+'+f+'$ является касательной к графику функции $y='+a+'x^{2}+bx+'+c+'$. Найдите $b$, зная, что оно '+t1[v1]+' $'+sluchch(m1[0]+1,m1[1]-1)+'$.').plusminus(),
+    	answers: m1[v1],
+    });
+    NAtask.modifiers.allDecimalsToStandard(/*true*/);
+}, 20000);})();
 
-var a=sluchch(2,9).pm();
-var g=sluchch(1,9).pm();
-
-var d=sluchch(2,2*a*g-1).pm();
-var b=(2*a*g+d);
-
-var f=sluchch(1,a*g*g-1).pm();
-var c=(a*g*g+f);
-
-var m=[a,c,d,f];
-var n=['a','c','d','f'];
-var h=sluchch(0,3);
-
-window.vopr.txt=('Прямая $y='+((h-2)?(d):('d'))+'x+'+((h-3)?(f):('f'))+
-					'$ является касательной к графику функции $y='+
-					((h)?(a):('a'))+'x^{2}+'+b+'x+'+((h-1)?(c):('c'))+'$. Найдите $'+n[h]+'$.'
-				).plusminus();
-window.vopr.ver=[''+m[h]];
-
-window.vopr.kat['log']=0;
-window.vopr.kat['prz']=0;
-window.vopr.kat['drs']=0;
-window.vopr.kat['tri']=0;
-})();
 /*119974 121217 121715 513707 525017 525040 121219 121221 121223 121225 121227 
 121229 121231 121233 121235 121237 121239 121241 121243 121245 121247 121249 
 121251 121253 121255 121257 121259 121261 121263 121265 121267 121269 121271 
