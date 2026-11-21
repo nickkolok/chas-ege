@@ -14,7 +14,7 @@
 	if (power % 2) {
 		c *= [1, -1].iz();
 	}
-	var x = sluchch(-100, 100) / 2;
+	var x = sluchch(-50, 50, 0.5);
 	if (rand2 === 3) {
 		x = c * c;
 	}
