@@ -87,16 +87,10 @@
 			ctx.drawLine(60, 180, 150, 10);
 			ctx.drawLine(240, 180, 150, 10);
 			//эллипс
-			ctx.beginPath();
-			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(150, 180, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
 			let frac = heightSmall / heightBig;
 			let add = -3;
@@ -123,17 +117,11 @@
 			}
 
 			//конус поменьше
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, 180 * (1 - frac), 10, 90 * (1 - frac) + add, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(150, 180 * (1 - frac), 10, 90 * (1 - frac) + add, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
-			ctx.beginPath();
 			ctx.setLineDash([0, 0]);
-			ctx.ellipse(150, 180 * (1 - frac), 10, 90 * (1 - frac) + add, Math.PI / 2, -Math.PI / 2, -1.5 * Math.PI);
-			ctx.stroke();
-			ctx.closePath();
+			ctx.drawEllipse(150, 180 * (1 - frac), 10, 90 * (1 - frac) + add, Math.PI / 2, -Math.PI / 2, -1.5 * Math.PI);
 		};
 
 		NAinfo.requireApiVersion(0, 2);
