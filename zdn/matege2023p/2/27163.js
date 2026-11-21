@@ -7,7 +7,7 @@
 		let radiuses = [sl(1, 20)];
 		radiuses.push(slKrome(radiuses[0], 1, 20));
 
-		let radiusNew = [radiuses.reduce((a, b) => a.pow(2) + b.pow(2)), ['площадь поверхности', 'площадь большого круга']
+		let radiusNew = [radiuses.reduce((a, b) => a + b.pow(2), 0), ['площадь поверхности', 'площадь большого круга']
 			.iz()
 		];
 
@@ -35,6 +35,7 @@
 
 			ctx.setLineDash([5, 5]);
 			ctx.drawEllipse(100, 150, 20, 80, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.setLineDash([]);
 			ctx.drawLine(100, 150, 180, 150);
 
 			//шар 2
@@ -58,6 +59,7 @@
 			ctx.setLineDash([5, 5]);
 			ctx.drawEllipse(100, 150, 20, 100, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
+			ctx.setLineDash([]);
 			ctx.drawLine(100, 150, 200, 150);
 		};
 
@@ -65,7 +67,8 @@
 		NAtask.setTask({
 			text: 'Радиусы двух шаров равны $' + radiuses.join('$ и $') + '$. ' +
 				'Найдите радиус шара, ' + radiusNew[1] + ' которого равна ' +
-				'сумме ' + sklonlxkand(radiusNew[1]).rm + ' двух данных шаров.',
+				'сумме ' + (radiusNew[1] === 'площадь большого круга' ? 'площадей больших кругов' :
+					sklonlxkand(radiusNew[1]).rm) + ' двух данных шаров.',
 			answers: radiusNew[0].sqrt(),
 			authors: ['Суматохина Александра'],
 		});
