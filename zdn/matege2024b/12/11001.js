@@ -20,17 +20,19 @@
 
 		let points = autoScale(triangle.vertices);
 
+		let triangleColor = om.secondaryBrandColors.iz();
+		let angleColor = om.primaryBrandColors.iz();
 		let paint1 = function(ctx) {
 
 			ctx.translateToCenter();
 
 			ctx.scale(1, -1);
-			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.strokeStyle = triangleColor;
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
-			ctx.strokeStyle = om.primaryBrandColors.iz();
+			ctx.strokeStyle = angleColor;
 			ctx.arcBetweenSegments([points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y], 20);
 		};
 
