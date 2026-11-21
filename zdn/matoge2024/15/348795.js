@@ -30,7 +30,6 @@
         let pointForAngleAndMarked = pointToLine.splice(randomLine, 1)[0];
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
