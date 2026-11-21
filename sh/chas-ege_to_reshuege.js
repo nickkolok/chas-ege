@@ -24,6 +24,8 @@ var fillerTemplate = function(){
 				break;
 			}
 		}
+		/*
+		// Поле "Источник" куда-то убрали. Возможно, временно, поэтому оставляем вот так!
 		if(sourceField){
 			console.log(sourceField);
 			console.log(sourceField.getElementsByTagName('input')[1]);
@@ -32,6 +34,7 @@ var fillerTemplate = function(){
 		} else {
 			alert('Не найдено поле "Источник!"');
 		}
+		*/
 
 		$('#body_preview')[0].scrollIntoView({
 			behavior: "smooth",
@@ -54,9 +57,9 @@ function createFiller(vopr){
 
 function escapeText(text){
 	return text.
-		replace(/'/g,'\\\'').
 		replace(/\n/g,' ').
-		replace(/[\\]/g,'\\\\');
+		replace(/[\\]/g,'\\\\').
+		replace(/'/g,"\\'");
 
 }
 
@@ -110,7 +113,7 @@ function replaceCanvasWithImgInTaskAndHTML(element, vopr, callback){
 	console.log(canvases);
 	for(var i = 0; i < canvases.length; i++){
 		var img = createImgFromCanvas(canvases[i]);
-		vopr.txt = vopr.txt.replace(/<canvas.*?<\/canvas>/, img.outerHTML);
+		vopr.txt = vopr.txt.replace(/<canvas.*?<\/canvas>/, img.outerHTML + '\n');
 	}
 	callback();
 }
