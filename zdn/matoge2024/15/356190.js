@@ -17,27 +17,18 @@
 		});
 
 		// Продолжение стороны AB за вершину B (для внешнего угла) — на 2/3 длины AB
-		let [pA, pB] = triangle.vertices;
-		let pE = {
+		let vertices = triangle.vertices;
+		let [pA, pB] = vertices;
+		let pointExtension = {
 			x: pB.x + (pB.x - pA.x) * 2 / 3,
 			y: pB.y + (pB.y - pA.y) * 2 / 3,
 		};
-		// Центрируем всё по габаритам: autoScale масштабирует относительно начала координат,
-		// и без этого плоский треугольник (угол B около 180°) прижимался к краю и был мелким
-		let figure = triangle.vertices.concat([pE]);
-		let xs = figure.map((p) => p.x);
-		let ys = figure.map((p) => p.y);
-		let shift = {
-			x: -(Math.min(...xs) + Math.max(...xs)) / 2,
-			y: -(Math.min(...ys) + Math.max(...ys)) / 2,
-		};
-		let scaled = autoScale(figure.map((p) => ({ x: p.x + shift.x, y: p.y + shift.y })));
+		let scaled = autoScale(vertices.concat(pointExtension), undefined, [], {center: true});
 		let points = scaled.slice(0, 3);
 		let pointExt = scaled[3];
 		let letters = om.latbukv.slice(0, 3);
 
 		let paint1 = function (ctx) {
-
 			ctx.translateToCenter();
 
 			ctx.scale(1, -1);

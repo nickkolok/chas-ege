@@ -11,8 +11,11 @@
  * 2. Install puppeteer: `npm install puppeteer@^23.0.0` (compatible with Node.js 22.7.0)
  * 
  * Usage:
- *   node headless-debug.mjs --filepath <path-to-template> [--iterations <count>] [--headless]
- * 
+ *   node headless-debug.mjs --filepath <path-to-template> [--iterations <count>] [--headless] [--fast]
+ *
+ *   --fast  do not wait for MathJax and for the page to settle: many generations quickly;
+ *           the LaTeX is exported all the same (it is made from the source of the task)
+ *
  * Example:
  *   node sh/headless-debug.mjs --filepath zdn/matege2024p/10/15.js --browser `which chromium` --temp-profile --iterations 5 --headless
 
@@ -45,6 +48,7 @@ let iterations = 1;
 let headless = false; // Default to visible mode
 let browserPath = '';
 let tempProfile = false;
+let fast = false;
 
 for (let i = 0; i < args.length; i++) {
     if (args[i] === '--filepath' && args[i + 1]) {
@@ -60,13 +64,15 @@ for (let i = 0; i < args.length; i++) {
         i++;
     } else if (args[i] === '--temp-profile') {
         tempProfile = true;
+    } else if (args[i] === '--fast') {
+        fast = true;
     }
 }
 
 
 
 if (!filepath) {
-    console.error('Usage: node headless-debug.mjs --filepath <path> [--iterations <count>] [--headless]');
+    console.error('Usage: node headless-debug.mjs --filepath <path> [--iterations <count>] [--headless] [--fast]');
     process.exit(1);
 }
 
@@ -171,18 +177,108 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
     }
     
     // Wait for page to be ready
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    if (!fast) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+    }
     
-    for (let i = 0; i < iterations; i++) {
-        console.log(`\n=== Iteration ${i + 1} of ${iterations} ===`);
+    // First generation (auto-started by otladka.js via parsedJSON.autostartFile)
+    try {
+        await page.waitForFunction(
+            () => {
+                const question = document.getElementById('question');
+                return question && 
+                       question.innerHTML !== 'Задание составляется, подождите...' &&
+                       question.innerHTML !== '';
+            },
+            { timeout: 30000 }
+        );
+    } catch (error) {
+        console.log('Timeout waiting for first generation, continuing...');
+    }
+
+    // Check for preference after first generation
+    let preference = await page.evaluate(() => {
+        return window.vopr && window.vopr.preference ? window.vopr.preference : null;
+    });
+    
+    let combinations = [];
+    
+    if (preference && Array.isArray(preference) && preference.length > 0) {
+        console.error(`\n[PREFERENCE DETECTED] Task has preferences: ${JSON.stringify(preference, null, 2)}`);
         
+        // generateVariations - handles both flat and nested arrays (Cartesian product)
+        function generateVariations(arrays) {
+            if (!arrays || arrays.length === 0) return [];
+            if (!Array.isArray(arrays[0])) {
+                return arrays.map(item => [item]);
+            }
+            let result = arrays[0].map(item => [item]);
+            for (let i = 1; i < arrays.length; i++) {
+                const temp = [];
+                for (let existingComb of result) {
+                    for (let newElement of arrays[i]) {
+                        temp.push([...existingComb, newElement]);
+                    }
+                }
+                result = temp;
+            }
+            return result;
+        }
+
+        combinations = generateVariations(preference);
+        console.error(`\n[VARIATIONS] Total combinations: ${combinations.length}`);
+        combinations.forEach((combo, idx) => {
+            console.error(`  Combination ${idx + 1}: ${JSON.stringify(combo)}`);
+        });
+        
+        // Setup Proxy for nabor.preferences to force specific combinations
+        // getListedPreference reads nabor.preferences[key] — the Proxy returns our
+        // current combination array regardless of which key the task uses
+        await page.evaluate(() => {
+            if (!window.__originalNaborPreferences) {
+                window.__originalNaborPreferences = window.nabor.preferences;
+                window.nabor.preferences = new Proxy({}, {
+                    get(target, key) {
+                        return window.__currentPreferences || [];
+                    }
+                });
+            }
+        });
+    } else {
+        console.error(`\n[NO PREFERENCE] Task has no preferences defined.`);
+    }
+    
+    // Determine total runs: if preferences exist, generate `iterations` examples for each combination
+    const totalRuns = combinations.length > 0 ? combinations.length * iterations : iterations;
+    
+    for (let i = 0; i < totalRuns; i++) {
+        let comboIdx = 0;
+        let iterIdx = i;
+        
+        if (combinations.length > 0) {
+            comboIdx = Math.floor(i / iterations);
+            iterIdx = i % iterations;
+        }
+        
+        const runLabel = combinations.length > 0 
+            ? `Combination ${comboIdx + 1}/${combinations.length} [${JSON.stringify(combinations[comboIdx])}], Example ${iterIdx + 1}/${iterations}`
+            : `Example ${i + 1}/${iterations}`;
+        console.log(`\n=== ${runLabel} ===`);
+        
+        if (combinations.length > 0) {
+            // Set current combination
+            await page.evaluate((combo) => {
+                window.__currentPreferences = combo;
+            }, combinations[comboIdx]);
+        }
+        
+        // Regenerate task (except for the very first generation which already happened)
         if (i > 0) {
-            // For subsequent iterations, trigger generation manually
-            // (the first one is auto-started by otladka.js via parsedJSON.autostartFile)
             await page.evaluate(() => {
                 createFromFile();
             });
         }
+        // i === 0: first generation already done (auto-started by otladka.js)
         
         // Wait for question to be generated
         try {
@@ -198,13 +294,20 @@ console.log(`Mode: ${headless ? 'headless' : 'visible'}`);
         } catch (error) {
             console.log('Timeout waiting for question generation, continuing...');
         }
-        
+
         // Wait for MathJax
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        if (!fast) {
+            await new Promise(resolve => setTimeout(resolve, 1500));
+        }
         
+        
+        // Output preference marker before LaTeX block
+        if (combinations.length > 0) {
+            console.log(`=== PREFERENCE: ${JSON.stringify(combinations[comboIdx])} ===`);
+        }
         // Click LaTeX export button
         await page.evaluate(() => {
-            window.__latexExported = false; // Reset flag before export
+            window.__latexExported = false;
             if (typeof startQuickExportToTex === 'function') {
                 startQuickExportToTex();
             } else {
