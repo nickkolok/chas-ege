@@ -509,6 +509,31 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Triangle  (lib/triangle.js)
+    // ============================================================
+    QUnit.module('Triangle');
+
+    QUnit.test('Triangle.prototype.addHeightToConnectionMatrix соединяет основание высоты с вершиной', function (assert) {
+        [0, 1, 2].forEach(function (vertexIndex) {
+            var triangle = new Triangle({
+                lengths: { lengthAB: 6, lengthBC: 6, lengthCA: 6 },
+                supplementary: { calculateHeights: true },
+            });
+            var rowsBefore = triangle.connectionMatrix.map(function (row) { return row.slice(); });
+            var foot = triangle['height' + 'ABC'[vertexIndex] + 'EndPoint'];
+
+            triangle.addHeightToConnectionMatrix(vertexIndex);
+
+            assert.equal(triangle.vertices.length, 4, 'вершина ' + vertexIndex + ': основание высоты добавлено в vertices');
+            assert.strictEqual(triangle.vertices[3], foot, 'вершина ' + vertexIndex + ': новая точка — основание высоты');
+            assert.equal(triangle.connectionMatrix.length, 3, 'вершина ' + vertexIndex + ': появилась строка матрицы');
+            assert.equal(triangle.connectionMatrix[2][vertexIndex], 1, 'вершина ' + vertexIndex + ': ребро вершина—основание');
+            assert.deepEqual(triangle.connectionMatrix[0], rowsBefore[0], 'вершина ' + vertexIndex + ': строка 0 не изменилась');
+            assert.deepEqual(triangle.connectionMatrix[1], rowsBefore[1], 'вершина ' + vertexIndex + ': строка 1 не изменилась');
+        });
+    });
+
+    // ============================================================
     //  autoScale: уменьшение больших фигур  (lib/func.js)
     // ============================================================
     QUnit.module('autoScale: shrink');
