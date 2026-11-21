@@ -7,8 +7,8 @@
   var key = '10556397';
   var preference = ['bearCookies', 'mashaCookies'];
   var rand = getSelectedPreferenceFromList(key, preference);
-  var C = 5 * sluchch(12, 400, 1);
-  // C = 5*sluchch(12,400,1) всегда кратно 5 и не меньше 60, поэтому из чисел
+  var C = sluchch(60, 2000, 5);
+  // C = sluchch(60,2000,5) всегда кратно 5 и не меньше 60, поэтому из чисел
   // прототипов банка (A113ED и соседние) достижимы только эти.
   var bank = [85, 100, 110, 115, 120, 140, 160];
   genAssert(bank.indexOf(C) < 0, 'это число занято прототипом банка');
