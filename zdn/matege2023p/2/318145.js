@@ -3,8 +3,9 @@
 		let denominator = sl(3, 10);
 		let numerator = sl(1, denominator - 1);
 
-		let volumeDown = sl(1, 10) * numerator.pow(3);
-		let volumeUp = volumeDown * denominator.pow(3) / numerator.pow(3);
+		let n3 = numerator.pow(3);
+		let volumeDown = sl(n3, 10 * n3, n3);
+		let volumeUp = volumeDown * denominator.pow(3) / n3;
 
 		let question=[['нужно долить, чтобы наполнить сосуд доверху',volumeUp-volumeDown], ['вмещает такой сосуд',volumeUp]].iz();
 		
