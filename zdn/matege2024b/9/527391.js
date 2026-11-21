@@ -64,7 +64,7 @@
 
 			ctx.translateToCenter();
 
-			ctx.regularGrid(scale, 5);
+			ctx.regularGrid(scale, width / (2 * scale));
 
 			ctx.scale(scale, -scale);
 			ctx.lineWidth = 2 / scale;
