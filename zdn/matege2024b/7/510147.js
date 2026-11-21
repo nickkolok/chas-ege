@@ -7,22 +7,8 @@
             return (value - yOffset) + '${}^{\\circ} C$';
         }
 
-        function wasLengthConstValue(interval) {
-            let maxLength = 0;
-            let currentLength = 0;
-            for (let i = 0; i < interval.length; i++) {
-                if (interval[i] !== 0 && i > 0 && interval[i] === interval[i - 1]) {
-                    currentLength++;
-                } else {
-                    currentLength = interval[i] === 0 ? 0 : 1;
-                }
-                maxLength = Math.max(maxLength, currentLength);
-            }
-            return maxLength;
-        }
-
         function answAboutConstN(intervals, answ) {
-            let lengthConsts = intervals.map(interval => wasLengthConstValue(interval));
+            let lengthConsts = intervals.map(interval => lengthConst(interval));
             let maxLength = lengthConsts.maxE();
             let wasConstN = intervals.map((_, i) => lengthConsts[i] === maxLength && (maxLength === 4 || maxLength === 5));
             let constTexts = intervals.map((_, i) => {
@@ -77,33 +63,21 @@
         }
 
         function answAboutIncrDescr(intervals, answ) {
-            let isNonIncreasingFirst = intervals.map(interval => {
-                let first = interval.slice(0, 3);
-                return isNonIncreasing(first);
-            });
-            if (sl1())
-                addUniqueAnsw(isNonIncreasingFirst, answ, 'в первые три дня периода среднесуточная температура не повышалась');
-
-            let isNonDecreasingFirst = intervals.map(interval => {
-                let first = interval.slice(0, 3);
-                return isNonDecreasing(first);
-            });
-            if (sl1())
-                addUniqueAnsw(isNonDecreasingFirst, answ, 'в первые три дня периода среднесуточная температура не понижалась');
-
-            let isNonIncreasingSecond = intervals.map(interval => {
-                let second = interval.slice(3);
-                return isNonIncreasing(second);
-            });
-            if (sl1())
-                addUniqueAnsw(isNonIncreasingSecond, answ, 'в оставшиеся четыре дня периода среднесуточная температура не повышалась');
-
-            let isNonDecreasingSecond = intervals.map(interval => {
-                let second = interval.slice(3);
-                return isNonDecreasing(second);
-            });
-            if (sl1())
-                addUniqueAnsw(isNonDecreasingSecond, answ, 'в оставшиеся четыре дня периода среднесуточная температура не понижалась');
+            const firstLength = 3;
+            const parts = [
+                {start: 0, end: firstLength, text: 'в первые три дня периода'},
+                {start: firstLength, end: undefined, text: 'в оставшиеся четыре дня периода'},
+            ];
+            const conditions = [
+                {check: isNonIncreasing, text: 'не повышалась'},
+                {check: isNonDecreasing, text: 'не понижалась'},
+            ];
+            parts.forEach(part => conditions.forEach(condition => {
+                const flags = intervals.map(interval => condition.check(interval.slice(part.start, part.end)));
+                if (sl1()) {
+                    addUniqueAnsw(flags, answ, part.text + ' среднесуточная температура ' + condition.text);
+                }
+            }));
         }
 
         function answAboutWasConstAtEnd(intervals, answ) {
@@ -211,8 +185,8 @@
                 stepY: 1,
                 minX: 1,
                 maxX: 32,
-                minY: [-16, 0][rand],
-                maxY: [2, 18][rand],
+                minY: -yOffset,
+                maxY: 18 - yOffset,
                 stepByCeilX: 2,
                 stepByCeilY: 2,
                 arrowLengthX: 30.5,
@@ -254,3 +228,4 @@
     }, 500);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=510147
+
