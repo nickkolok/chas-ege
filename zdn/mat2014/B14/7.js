@@ -1,8 +1,11 @@
 (function() {
+	'use strict';
+	NAinfo.requireApiVersion(0, 2);
 	let key = "7";
-	let variant = getSelectedPreferenceFromList(key, ['river_speed', 'boat_speed', 'time_difference', 'total_distance']);
+	const preference = ['river_speed', 'boat_speed', 'time_difference', 'total_distance'];
+	const variant = getSelectedPreferenceFromList(key, preference);
 	
-	var b = 0.5, x, a, s;
+	let b = 0.5, x, a, s;
 	for (; !(b.isZ() && b > 0);) {
 		x = sluchch(5, 20);
 		a = sluchch(2, x - 1);
@@ -42,10 +45,11 @@
 		nmn: 'км'
 	}, ], {
 		preambula: 'Моторная лодка прошла против течения реки и вернулась в пункт отправления. ',
-	});
+	}, {preference});
 })();
 	 
 //Обзад 26585 26586
 //Николай Авдеев
 //Рефактринг проводил  Shellge
 //Довела до ума Суматохина Александра
+

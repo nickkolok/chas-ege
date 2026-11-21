@@ -2,7 +2,7 @@ if (!window.nabor)
 	window.nabor = {};
 window.nabor.importFrom({
 	nZad: 13,
- 	adres: '../zdn/misc_text_tasks_movement_on_water/',
+	adres: '../zdn/misc_text_tasks_movement_on_water/',
 	name: 'misc_text_tasks_movement_on_water',
 });
 
@@ -17,5 +17,5 @@ window.nabor.importFrom({
 523375
 5999
 525375
-99602  
+99602
 26590*/

@@ -12,6 +12,8 @@
 {% endblock %}
 
 {% block content %}
+	<div id="readiness-message">
+	</div>
 	<div id="typesettable-wrap">
 		<div id="question" class="question"></div>
 		<div id="resh" class="question"></div>
@@ -28,6 +30,11 @@
 					<button id="export" onclick="startExport()" title="Экспорт в РешуЕГЭ">
 						<span>
 							&#x2398;
+						</span>
+					</button>
+					<button id="export" onclick="startQuickExportToTex()" title="Экспорт в TeX">
+						<span>
+							&#x29C9;
 						</span>
 					</button>
 				</span>

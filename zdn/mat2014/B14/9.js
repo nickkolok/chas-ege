@@ -1,6 +1,9 @@
 (function() {
+	'use strict';
+	NAinfo.requireApiVersion(0, 2);
 	let key = "9";
-	let variant = getSelectedPreferenceFromList(key, ['distance_between_marinas', 'speed_difference', 'time_difference', 'speed_of_first', 'speed_of_second']);
+	const preference = ['distance_between_marinas', 'speed_difference', 'time_difference', 'speed_of_first', 'speed_of_second'];
+	const variant = getSelectedPreferenceFromList(key, preference);
 
 	let b = 0.5, x, a, s;
 	for (; !(b.isZ());) {
@@ -15,6 +18,22 @@
 	а через 1 час после этого следом за ним, со скоростью на 1 км/ч большей, отправился второй.
 	Найдите скорость первого теплохода, если в пункт В оба теплохода прибыли одновременно. Ответ дайте в км/ч.
 	*/
+
+	const speeds = [{
+			vel: 'скорость первого теплохода',
+			zna: x - a,
+			rod: 1,
+			nah: (variant == 3),
+			nmn: 'км/ч'
+		}, {
+			vel: 'скорость второго теплохода',
+			zna: x + a,
+			rod: 1,
+			nah: (variant == 4),
+			nmn: 'км/ч'
+		}];
+	const speedIndex = ['speed_of_first', 'speed_of_second'].indexOf(preference[variant]);
+	const selectedSpeed = speedIndex < 0 ? speeds.iz() : speeds[speedIndex];
 
 	chas2.task.setCountableTask([{
 			vel: 'расстояние между пристанями',
@@ -36,24 +55,13 @@
 			vpr: 'на сколько часов позже первого парохода вышел второй',
 			zna: b,
 			nah: (variant == 2),
-		}, [{
-			vel: 'скорость первого теплохода',
-			zna: x - a,
-			rod: 1,
-			nah: 1,
-			nmn: 'км/ч'
-		}, {
-			vel: 'скорость второго теплохода',
-			zna: x + a,
-			rod: 1,
-			nah: 1,
-			nmn: 'км/ч'
-		}][variant < 3 ? sl1() : variant % 3],
+		}, selectedSpeed,
 	], {
 		preambula: 'От пристани ' + t1[0] + ' к пристани ' + t1[1] +
-			'  отправился с постоянной скоростью первый теплоход, ' +
+			' отправился с постоянной скоростью первый теплоход, ' +
 			'через некоторое время следом за ним отправился второй. '
-	});
+	}, {preference});
 })();
 //Обзад 26590 26591
 //Николай Авдеев
+

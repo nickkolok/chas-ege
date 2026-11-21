@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block content %}
-	<div id="gotov">
+	<div id="readiness-message">
 		<div id="pr0">
 			<div id="t0" class="tx">
 				0%
@@ -91,6 +91,9 @@
 			<input type="checkbox" id="forceIntegers" data-chasstorage-id="pech-forceIntegers"/><label for="forceIntegers">
 				Генерировать преимущественно натуральные числа
 			</label>
+			<input type="checkbox" id="onlyIntegers" data-chasstorage-id="pech-onlyIntegers"/><label for="onlyIntegers">
+				Генерировать ТОЛЬКО целые числа (может сломать логику некоторых задач)
+			</label>
 			<br/>
 			<input type="checkbox" id="uniqueAnswersAndSolutions" data-chasstorage-id="pech-uniqueAnswersAndSolutions"/><label for="uniqueAnswersAndSolutions">
 				Требовать уникальных ответов, решений или сигнатур (осторожно, ответов может не хватить!)
@@ -112,6 +115,10 @@
 			<br/>
 			Зерно ГПСЧ (random seed):
 			<input value="" id="randomSeed" data-chasstorage-id="pech-randomSeed"/>
+			<br/>
+			Выполнить код перед генерацией:
+			<input type="file" id="arbitraryCodeInput" multiple />
+			<button onclick="clearArbitraryCodeInput()">Очистить файлы</button>
 			<br/>
 		</div>
 	</div>

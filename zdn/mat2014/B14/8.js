@@ -1,9 +1,12 @@
 (function() {
+	'use strict';
+	NAinfo.requireApiVersion(0, 2);
 	let key = "8";
-	let variant = getSelectedPreferenceFromList(key, ['river_speed', 'boat_speed', 'parking_duration', 'total_time', 'distance_between_points']);
+	const preference = ['river_speed', 'boat_speed', 'parking_duration', 'total_time', 'distance_between_points'];
+	const variant = getSelectedPreferenceFromList(key, preference);
 	
 	let b = 0.5, x, a, s, t;
-	for (; !(b.isZ() && b > 0);) {
+	for (; !(b.isZ());) {
 		x = sluchch(5, 20);
 		a = sluchch(2, x - 1);
 		s = sluchch(10, 200);
@@ -17,7 +20,7 @@
 	* Найдите скорость течения, если скорость теплохода в неподвижной воде равна 15 км/ч, стоянка длится 10 часов,
 	* а в пункт отправления теплоход возвращается через 40 часов после отплытия из него. Ответ дайте в км/ч.
 	*/
-	let f = svVel([{
+	chas2.task.setCountableTask([{
 		vel: 'скорость течения',
 		zna: a,
 		rod: 1,
@@ -45,18 +48,11 @@
 		rod: 2,
 		nah: (variant == 4),
 		nmn: 'км'
-	}, ]);
-
-	window.vopr.ver = ['' + f.splice(0, 1)];
-	window.vopr.txt =
-		'Теплоход проходит по течению реки до пункта назначения и после стоянки возвращается в пункт отправления. ' + f.shuffle()
-		.soed();
-
-	window.vopr.kat['log'] = 0;
-	window.vopr.kat['prz'] = 0;
-	window.vopr.kat['drs'] = 0;
-	window.vopr.kat['tri'] = 0;
+	}, ], {
+		preambula: 'Теплоход проходит по течению реки до пункта назначения и после стоянки возвращается в пункт отправления. ',
+	}, {preference, tags: {log: 0, prz: 0, drs: 0, tri: 0}});
 })();
 
 //Обзад 26588 26589
 //Николай Авдеев
+
