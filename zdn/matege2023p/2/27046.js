@@ -15,12 +15,16 @@
 			['меньше', height * ratio.pow(2)]
 		][variant];
 
+		let kBase = sl(2.1, 4, 0.1);
+		let strokeColor = om.secondaryBrandColors.iz();
+		let liquidColor = om.primaryBrandColors.iz();
+
 		let paint1 = function(ctx) {
 			ctx.translate(20, 40);
 			ctx.lineWidth = 2;
 			let drawHeight = 250;
-			ctx.strokeStyle = om.secondaryBrandColors.iz();
-			ctx.fillStyle = om.primaryBrandColors.iz();
+			ctx.strokeStyle = strokeColor;
+			ctx.fillStyle = liquidColor;
 			ctx.setLineDash([]);
 
 			let drawCylinder = function(a, k) {
@@ -70,7 +74,6 @@
 			};
 
 			let b = 20;
-			let kBase = sl(2.1, 4, 0.1);
 
 			let a1 = [70, 100][variant];
 			let k1 = [kBase, kBase / 2][variant];
