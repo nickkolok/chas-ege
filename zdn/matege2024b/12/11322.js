@@ -5,9 +5,13 @@
 		let letters = latbukv.slice(0, 3).concat('M');
 
 		let key = "11322";
-		let preference = ['side_AB_by_height', 'side_AB_by_median', 'bisector'];
+		let preference = ['side_AC_by_height', 'side_AC_by_median', 'bisector'];
 
-		let rand = getSelectedPreferenceFromList(key, preference);
+		let rand = getListedPreference(key, [
+			...preference.map((preference, preferenceValue) => ({preference, preferenceValue})),
+			{preference: 'side_AB_by_height', preferenceValue: 0},
+			{preference: 'side_AB_by_median', preferenceValue: 1},
+		], sl(preference.length - 1));
 
 		let triangle = new Triangle({
 			lengths: {
@@ -76,6 +80,7 @@
 				}][rand]
 			],
 			authors: ['Александра Суматохина'],
+			preference,
 		});
 		NAtask.modifiers.variativeABC(letters);
 
