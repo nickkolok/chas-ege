@@ -7,11 +7,12 @@
 		let preference = ['BH_by_sin', 'CH_by_cos'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		let a = sl(5, 50);
+		let minLeg = 5, maxLeg = 50;
+		let a = sl(minLeg, maxLeg);
 		let triangle = new Triangle({
 			lengths: {
 				lengthCA: a,
-				lengthBC: slKrome(a, 5, 50),
+				lengthBC: slKrome(a, minLeg, maxLeg),
 			},
 			angles: {
 				angle: Math.PI / 2,
