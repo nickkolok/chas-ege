@@ -3,7 +3,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let [a, b] = om.pifagtr.iz();
-		let coefficient = sl(1, 100) / 10;
+		let coefficient = sl(0.1, 10, 0.1);
 
 		let triangle = new Triangle({
 			lengths: {
