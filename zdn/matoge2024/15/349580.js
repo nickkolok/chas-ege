@@ -24,7 +24,7 @@
 
         let letters = om.latbukv.slice(0, 5);
         let sidesMiddle = letters.slice(0, 3);
-        sidesMiddle.generatePairs();
+        sidesMiddle = sidesMiddle.generatePairs();
         sidesMiddle = sidesMiddle.map(side => side.shuffleJoin());
         [sidesMiddle[1], sidesMiddle[2]] = [sidesMiddle[2], sidesMiddle[1]];
         sidesMiddle.splice(variant, 1);
