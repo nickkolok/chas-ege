@@ -25,40 +25,17 @@
 		// Стороны из вершины V: первая — вдоль оси x, вторая — под углом α + β.
 		// По теореме синусов (треугольник из двух сторон и диагонали) отношение сторон sin β : sin α,
 		// тогда диагональ образует с первой стороной угол α, со второй — β.
-		let angleVRad = angleV * Math.PI / 180;
-		let side1 = { x: Math.sin(beta * Math.PI / 180), y: 0 };
-		let side2 = { x: Math.sin(alpha * Math.PI / 180) * Math.cos(angleVRad), y: Math.sin(alpha * Math.PI / 180) * Math.sin(angleVRad) };
-		let pV = { x: 0, y: 0 };
-		let pS1 = side1;
-		let pOpposite = { x: side1.x + side2.x, y: side1.y + side2.y };
-		let pS2 = side2;
-
-		// Вершины A, B, C, D по порядку обхода; диагональ — из V в противоположную вершину
-		let vertices = randDiagonal === 0 ?
-			[pV, pS1, pOpposite, pS2] : // V = A: AB — первая сторона, AD — вторая, диагональ AC
-			[pS1, pV, pS2, pOpposite]; // V = B: BA — первая сторона, BC — вторая, диагональ BD
+		let par = new Parallelogram({
+			lengths: {lengthAB: 10 * Math.sin(beta * Math.PI / 180), lengthBC: 10 * Math.sin(alpha * Math.PI / 180)},
+			angles: {angle: {angleA: randDiagonal ? 180 - angleV : angleV}, angleInDegree: true},
+		});
 		let indexV = randDiagonal;
 		let indexOpposite = randDiagonal + 2;
-
-		// Центрируем по габаритам и уменьшаем: autoScale масштабирует относительно начала координат
-		let xs = vertices.map((p) => p.x);
-		let ys = vertices.map((p) => p.y);
-		let centerX = (Math.min(...xs) + Math.max(...xs)) / 2;
-		let centerY = (Math.min(...ys) + Math.max(...ys)) / 2;
-		let size = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-		let points = autoScale(vertices.map((p) => ({ x: (p.x - centerX) / size * 10, y: (p.y - centerY) / size * 10 })), undefined, [], {
-			startX: -165, finishX: 165, startY: -150, finishY: 150,
-		});
-
-		let connectionMatrix = [
-			[1],
-			[0, 1],
-			[1, 0, 1],
-		];
-		connectionMatrix[indexOpposite - 1][indexV] = 1;
+		par.connectVerticesInConnectionMatrix([indexV, indexOpposite]);
+		let points = autoScale(par.vertices, undefined, [], {startX: -165, finishX: 165, startY: -150, finishY: 150, center: true});
+		let connectionMatrix = par.connectionMatrix;
 
 		let paint1 = function(ctx) {
-
 			ctx.translateToCenter();
 
 			ctx.scale(1, -1);
@@ -75,7 +52,7 @@
 			], 25 + 6 * i));
 
 			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
+			ctx.font = '20px liberation_sans';
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
 			if (randAngleValues) {
@@ -86,19 +63,16 @@
 					let v = points[indexV];
 					let d = points[indexOpposite];
 					let side = points[j];
-					let sideLength = Math.hypot(side.x - v.x, side.y - v.y);
-					let diagonalLength = Math.hypot(d.x - v.x, d.y - v.y);
-					let dx = (side.x - v.x) / sideLength + (d.x - v.x) / diagonalLength;
-					let dy = (side.y - v.y) / sideLength + (d.y - v.y) / diagonalLength;
+					let sideLength = [side, v].mt_rasst();
+					let direction = new Angle(new Point(side.x, side.y), new Point(v.x, v.y), new Point(d.x, d.y)).bisectorVector;
 					let radius = Math.min(sideLength * 0.6, 65 + i * 35);
-					let factor = radius / Math.hypot(dx, dy);
-					ctx.fillText([alpha, beta][i] + '°', v.x + dx * factor, -(v.y + dy * factor));
+					ctx.fillText([alpha, beta][i] + '°', v.x + direction.x * radius, -(v.y + direction.y * radius));
 				});
 			}
 			// Подписи — снаружи: от центра через вершину
 			points.forEach((elem, i) => {
-				let len = Math.hypot(elem.x, elem.y);
-				ctx.fillText(letters[i], elem.x + elem.x / len * 16, -(elem.y + elem.y / len * 16));
+				let label = labelPositionAwayFrom(elem, {x: 0, y: 0}, 16);
+				ctx.fillText(letters[i], label.x, -label.y);
 			});
 		};
 
