@@ -15,7 +15,7 @@
 		for (let i = 0; i < groups - 1; i++) {
 			counts.push(sl(2, Math.floor(total * 0.6)));
 		}
-		counts.push(total - counts.reduce((a, b) => a + b, 0));
+		counts.push(total - counts.sum());
 		genAssert(counts[groups - 1] > 0);
 		let selected = sl(0, groups - 1);
 		genAssertZ1000(counts[selected] / total);
