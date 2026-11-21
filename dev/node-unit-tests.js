@@ -227,6 +227,14 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal([3, 1, 2].maxE(), 3, 'maxE = 3');
     });
 
+    QUnit.test('Array.prototype.pointsWithMidpoints', function (assert) {
+        assert.deepEqual([10, 20, 30].pointsWithMidpoints(),
+            [[0, 10], [0.5, 15], [1, 20], [1.5, 25], [2, 30]],
+            'точки с полуцелыми серединами');
+        assert.deepEqual([5].pointsWithMidpoints(), [[0, 5]], 'один элемент');
+        assert.deepEqual([].pointsWithMidpoints(), [], 'пустой массив');
+    });
+
     // ============================================================
     //  Array General Functions  (lib/array_general.js)
     // ============================================================
