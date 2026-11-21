@@ -1,66 +1,78 @@
-(function() {
-	NAinfo.requireApiVersion(0, 2);
+(function () {
+	retryWhileError(function () {
+		NAinfo.requireApiVersion(0, 2);
 
-	function giperbl(k, x, a) {
-		return k / (x + a);
-	}
+		function f(x) {
+			return k / (x + a);
+		}
 
-	function f(x) {
-		return giperbl(k, x, a);
-	}
+		let key = '508971';
+		let preference1 = ['functionOfX', 'valueX'];
+		let preference2 = ['withA', 'withoutA'];
+		let randFind = getSelectedPreferenceFromList(key, preference1);
+		let randA = getSelectedPreferenceFromList(key, preference2);
 
-	function drawGraph(ct) {
-		ct.translate(h / 2, h / 2);
-		ct.scale(20, -20);
-		ct.lineWidth = 0.1;
-		for (let i = -5.5; i < 6.5; i += 0.1)
-			if (f(i - 0.1) < 5.5)
-				if (f(i - 0.1) > -6.8)
-					ct.drawLine(i - 0.1, f(i - 0.1), i, f(i));
-	}
-	let find, answ, chisl, k, a;
-	do {
-		a = sluchch(0, 6).pm();
-		k = sluchch(1, 8).pm();
-		chisl = sluchch(1, 30, 0.5).pm();
-	} while (!(1000 * f(chisl)).isZ() || Math.abs(f(chisl)) < 7);
-	if (sl1()) {
-		find = `$f(${chisl.ts()})$`;
-		answ = f(chisl);
-	} else {
-		answ = chisl;
-		find = `значение $x$, при котором $f(x)=${f(chisl).ts()}$`;
-	}
-	let X = [],
-		Y = [];
-	for (let i = -5; i < 6; i++)
-		if (f(i).isZ() && Math.abs(f(i)) < 6)
-			if (f(i)) {
-				X.push(i);
-				Y.push(f(i));
+		let a = [sluchch(1, 6).pm(), 0][randA];
+		let k = sluchch(1, 8).pm();
+		let x = -a + [0.25, 0.5].iz().pm();
+		let y = f(x);
+		genAssert(Math.abs(y) >= 10, 'Спрашиваемое f(x) видно на графике');
+
+		let find = randFind ? `значение $x$, при котором $f(x)=${y}$` : `$f(${x})$`;
+		let answ = randFind ? x : y;
+		let denominator = ('x' + ('+' + a).esli(a)).plusminus();
+
+		let points = intPoints(f, {
+			minX: -8,
+			maxX: 9,
+			minY: -8,
+			maxY: 8
+		});
+		let paint1 = function (ctx) {
+			let h = 400;
+			let w = 400;
+			//Оси координат
+			ctx.drawCoordinatePlane(w, h, {
+				hor: 1,
+				ver: 1
+			}, {
+				x1: '1',
+				y1: '1',
+				sh1: 13,
+			}, 20);
+
+			ctx.lineWidth = 0.1;
+			ctx.scale(20, -20);
+
+			//график
+
+			graph9AdrawFunction(ctx, f, {
+				minX: -8.5,
+				maxX: 8.5,
+				minY: -9.5,
+				maxY: 8.7,
+				step: 0.05,
+			});
+			//точки
+			graph9AmarkCircles(ctx, points, 2, 0.15);
+			// Вертикальная асимптота при ненулевом сдвиге
+			if (a) {
+				ctx.setLineDash([0.25, 0.5]);
+				ctx.drawLine(-a, -9, -a, 9);
 			}
-	let paint1 = function(ct) {
-		h = 300;
-		//Оси координат
-		graph9AdrawAxes_20_300(ct);
-		ct.translate(-10, -10);
-		//график
-		drawGraph(ct);
-		//точки
-		graph9AmarkCircles(ct, [X, Y].T(), 2, 0.15);
-		//всп полоска
-		ct.setLineDash([0.25, 0.5]);
-		ct.drawLine(-a, -7, -a, 6);
-	};
-	NAtask.setTask({
-		text: `На рисунке изображён график функции $f(x)=\\frac{k}{x+a}$. Найдите ${find}.`,
-		answers: answ,
-		analys: `$f(x)=\\frac {${k}}{` + (`x+` + a).replace('+0', '').plusminus() + `}$`,
-	});
-	chas2.task.modifiers.addCanvasIllustration({
-		width: 300,
-		height: 300,
-		paint: paint1,
+		};
+		NAtask.setTask({
+			text: `На рисунке изображён график функции $f(x)=\\frac{k}{x${`+a`.esli(!randA)}}$. Найдите ${find}.`,
+			answers: answ,
+			analys: `$f(x)=\\frac{${k}}{${denominator}}$`,
+			preference: [preference1, preference2],
+		});
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
+			paint: paint1,
+		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	});
 })();
 //508971 508983
