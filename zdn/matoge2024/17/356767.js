@@ -30,7 +30,7 @@
             }
         });
 
-        let heights = [area / a, area / b];
+        let heights = [par.lengthHeightDAB, par.lengthHeightDBC];
         let height = rand ? heights.minE() : heights.maxE();
 
         // Высоты из вершины D тупого угла, как на чертеже ФИПИ
