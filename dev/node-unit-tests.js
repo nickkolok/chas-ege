@@ -651,4 +651,54 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  Canvas: график по точкам поверх сетки  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawPointGraph');
+
+    QUnit.test('ctx.drawPointGraph рисует точки и отрезки в координатах сетки', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawPointGraph === 'function', 'метод drawPointGraph определён');
+        var calls = [];
+        var ctx = {
+            lineWidth: null,
+            save: function () { calls.push(['save']); },
+            restore: function () { calls.push(['restore']); },
+            translate: function (x, y) { calls.push(['translate', x, y]); },
+            scale: function (x, y) { calls.push(['scale', x, y]); },
+            drawFilledCircle: function (x, y, r) { calls.push(['point', x, y, r]); },
+            drawLine: function (x1, y1, x2, y2) { calls.push(['line', x1, y1, x2, y2]); },
+        };
+        CanvasRenderingContext2D.prototype.drawPointGraph.call(ctx, [0, 1, 2], [1, 3, 2], { cellWidth: 20, cellHeight: 30, originYCells: 8 });
+        assert.deepEqual(calls[0], ['save'], 'save перед рисованием');
+        assert.deepEqual(calls[1], ['translate', 20, 240], 'translate(cellWidth, originYCells * cellHeight)');
+        assert.deepEqual(calls[2], ['scale', 20, -30], 'scale(cellWidth, -cellHeight)');
+        assert.equal(ctx.lineWidth, 2 / 30, 'lineWidth = lineWidth / cellHeight');
+        assert.deepEqual(calls[3], ['point', 0, 1, 3 / 30], 'первая точка');
+        assert.deepEqual(calls[4], ['line', 0, 1, 1, 3], 'отрезок к следующей точке');
+        assert.deepEqual(calls[5], ['point', 1, 3, 3 / 30], 'вторая точка');
+        assert.deepEqual(calls[6], ['line', 1, 3, 2, 2], 'второй отрезок');
+        assert.deepEqual(calls[7], ['point', 2, 2, 3 / 30], 'последняя точка');
+        assert.deepEqual(calls[8], ['restore'], 'restore после рисования');
+        assert.equal(calls.length, 9, 'ровно 9 вызовов: save, translate, scale, 3 точки, 2 отрезка, restore');
+    });
+
+    QUnit.test('ctx.drawPointGraph: одна точка — без отрезков, значения по умолчанию', function (assert) {
+        var calls = [];
+        var ctx = {
+            lineWidth: null,
+            save: function () { calls.push(['save']); },
+            restore: function () { calls.push(['restore']); },
+            translate: function (x, y) { calls.push(['translate', x, y]); },
+            scale: function (x, y) { calls.push(['scale', x, y]); },
+            drawFilledCircle: function (x, y, r) { calls.push(['point', x, y, r]); },
+            drawLine: function () { calls.push(['line']); },
+        };
+        CanvasRenderingContext2D.prototype.drawPointGraph.call(ctx, [5], [7]);
+        assert.deepEqual(calls[1], ['translate', 30, 0], 'по умолчанию cellWidth = cellHeight = 30, originYCells = 0');
+        assert.deepEqual(calls[2], ['scale', 30, -30], 'scale(30, -30)');
+        assert.equal(ctx.lineWidth, 2 / 30, 'lineWidth по умолчанию 2px');
+        assert.deepEqual(calls[3], ['point', 5, 7, 3 / 30], 'единственная точка радиусом 3px');
+        assert.equal(calls.filter(function (c) { return c[0] === 'line'; }).length, 0, 'отрезков нет');
+    });
+
 };
