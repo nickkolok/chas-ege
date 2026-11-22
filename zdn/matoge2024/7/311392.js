@@ -32,8 +32,8 @@
 					})),
 					{ value: a, mark: "dot", label: "A", labelPos: "overAxis" }
 				],
-				width: 400,
-				height: 100,
+				width: ct.canvas.width,
+				height: ct.canvas.height,
 				margin: 20
 			});
 		};
