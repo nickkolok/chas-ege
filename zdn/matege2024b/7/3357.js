@@ -110,11 +110,12 @@
 
         // Отрисовка графика
         let paint1 = function (ctx) {
+            let cell = 30; // размер клетки в пикселях
             ctx.drawGridWithArrows({
                 gridWidth: 751,
                 gridHeight: 240,
-                cellWidth: 30,
-                cellHeight: 30,
+                cellWidth: cell,
+                cellHeight: cell,
                 stepX: 1,
                 stepY: speedStep,
                 maxX: 25,
@@ -124,9 +125,9 @@
                 arrowLengthY: 5.8,
             });
 
-            ctx.translate(30, 30 * 6);
-            ctx.scale(30, -30);
-            ctx.lineWidth = 2 / 30;
+            ctx.translate(cell, cell * 6);
+            ctx.scale(cell, -cell);
+            ctx.lineWidth = 2 / cell;
 
             for (let i = 0; i < time.length - 1; i++) {
                 ctx.drawLine(time[i], value[i], time[i + 1], value[i + 1]);
