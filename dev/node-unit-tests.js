@@ -730,6 +730,8 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal([1, 0].scalprod([0, 1]), 0, 'ортогональные → 0');
         assert.equal([1, 2, 3].scalprod([4, 5, 6]), 32, '3D: 4+10+18 = 32');
         assert.equal([-1, 1].scalprod([-3, -3]), 0, '(-1,1)·(-3,-3) = 0');
+        assert.throws(function () { [1].scalprod([3, 4]); }, 'разная размерность (первый короче) — исключение');
+        assert.throws(function () { [1, 2].scalprod([3]); }, 'разная размерность (второй короче) — исключение');
     });
 
     QUnit.test('Array.prototype.coordVect', function (assert) {
