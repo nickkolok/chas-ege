@@ -65,12 +65,15 @@
 				return checkSign2(bestNum) + '\\frac{' + Math.abs(bestNum) + '}{' + bestDen + '}';
 			}
 
+			//Знаменатели табличных углов (в долях \pi)
+			const tableAngleDenominators = [1, 2, 3, 4, 6];
+
 			function toPiFraction(angle) {
 				let ratio = angle / Math.PI;
 				let bestNum = 0,
 					bestDen = 1,
 					bestError = Math.abs(ratio);
-				let denCandidates = [1, 2, 3, 4, 6];
+				let denCandidates = tableAngleDenominators;
 				for (let den of denCandidates) {
 					let num = Math.round(ratio * den);
 					let error = Math.abs(ratio - num / den);
@@ -96,7 +99,7 @@
 
 			function isTableAngle(angle) {
 				let ratio = angle / Math.PI;
-				let denCandidates = [1, 2, 3, 4, 6];
+				let denCandidates = tableAngleDenominators;
 				for (let den of denCandidates) {
 					let num = Math.round(ratio * den);
 					if (Math.abs(ratio - num / den) < 1e-5) {
