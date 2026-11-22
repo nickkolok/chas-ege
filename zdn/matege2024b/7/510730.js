@@ -11,9 +11,7 @@
                 'батискаф ровно ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1) * 15, 'секунда', 'value') + ' оставался на одной глубине',
                 'в течение ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1) * 15, 'секунда', 'value') + ' подряд батискаф оставался на одной глубине'
             ];
-            if (hasNoDuplicateValue(wasStop, true)) {
-                answ[index].solution.push(stopTexts[variable]);
-            }
+            addUniqueAnsw(wasStop, answ, stopTexts[variable]);
         }
 
         function answAboutMax(intervals, answ) {
