@@ -79,17 +79,13 @@
 
         let beginTime = sl(0, 4);
 
-        let intervals = Array.from({ length: 4 }, (_, i) =>
-            value.slice(beginTime + i * 4, beginTime + i * 4 + 5));
-
-        let listOfIntervals = Array.from({ length: 4 }, (_, i) => {
-            let startTime = beginTime + i * 4;
-            let endTime = startTime + 4;
-            return {
-                expr: startTime + '-' + endTime + ' мин.',
-                solution: [],
-            };
-        });
+        let intervalMinutes = 4; // длительность интервала в минутах; точек на одну больше
+        let intervalStarts = Array.from({ length: 4 }, (_, i) => beginTime + i * intervalMinutes);
+        let intervals = intervalStarts.map(startTime => value.slice(startTime, startTime + intervalMinutes + 1));
+        let listOfIntervals = intervalStarts.map(startTime => ({
+            expr: startTime + '-' + (startTime + intervalMinutes) + ' мин.',
+            solution: [],
+        }));
 
         let lessV = sl(1, 2);
         let moreV = sl(3, 4);
