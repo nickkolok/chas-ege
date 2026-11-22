@@ -755,4 +755,28 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 11, 'заливка (4 вызова) + контур + две половины экватора + пунктир + сброс + радиус + сброс');
     });
 
+    QUnit.test('ctx.drawSphere с radius: false рисует только контур и экватор (вариант #1058)', function (assert) {
+        var calls = [];
+        var ctx = {
+            drawCircle: function () { calls.push(['drawCircle'].concat(Array.prototype.slice.call(arguments))); },
+            drawEllipse: function () { calls.push(['drawEllipse'].concat(Array.prototype.slice.call(arguments))); },
+            drawLine: function () { calls.push(['drawLine'].concat(Array.prototype.slice.call(arguments))); },
+            setLineDash: function () { calls.push(['setLineDash'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        var r = 150;
+        CanvasRenderingContext2D.prototype.drawSphere.call(ctx, 0, 0, r, {
+            flat: 20 / r, dash: [5, 5], hiddenHalf: true, radius: false,
+        });
+        assert.deepEqual(calls[0], ['drawCircle', 0, 0, 150], 'контур: drawCircle(cx, cy, radius)');
+        assert.equal(calls[1][0], 'drawEllipse', 'ближняя половина экватора');
+        assert.deepEqual(calls[1].slice(1, 4), [0, 0, 150], 'центр и большая полуось');
+        assert.ok(Math.abs(calls[1][4] - 20) < 1e-9, 'малая полуось 20');
+        assert.deepEqual(calls[1].slice(5), [0, 0, Math.PI], 'ближняя половина сплошная');
+        assert.deepEqual(calls[2], ['setLineDash', [5, 5]], 'перед дальней половиной включается пунктир');
+        assert.equal(calls[3][0], 'drawEllipse', 'дальняя половина экватора');
+        assert.deepEqual(calls[3].slice(5), [0, Math.PI, 2 * Math.PI], 'дальняя половина пунктиром');
+        assert.deepEqual(calls[4], ['setLineDash', []], 'пунктир сброшен');
+        assert.equal(calls.length, 5, 'ровно пять вызовов: радиус не рисуется');
+    });
+
 };
