@@ -663,4 +663,14 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(coordinatesOfVector(-2, -3, -2, 5), [0, 8], 'вертикальный вектор');
     });
 
+    QUnit.test('segmentIntersectionCount: пересекающиеся отрезки', function (assert) {
+        assert.equal(segmentIntersectionCount(0, 0, 2, 2, 0, 2, 2, 0), 1, 'крест-накрест');
+        assert.equal(segmentIntersectionCount(0, 0, 4, 0, 2, -2, 2, 2), 1, 'вертикальный пересекает горизонтальный');
+    });
+
+    QUnit.test('segmentIntersectionCount: непересекающиеся отрезки', function (assert) {
+        assert.equal(segmentIntersectionCount(0, 0, 1, 0, 0, 1, 1, 1), 0, 'параллельные');
+        assert.equal(segmentIntersectionCount(0, 0, 1, 0, 2, 1, 3, 2), 0, 'прямые пересекаются вне отрезков');
+    });
+
 };
