@@ -27,7 +27,7 @@
 		answ = answ[0];
 		genAssertZ1000(answ, 'Ответ слишком нецелый');
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.translate(10,40);
 			ctx.lineWidth = 2;
 			let heightConst = 180;
@@ -121,7 +121,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 500,
 			height: 250,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();

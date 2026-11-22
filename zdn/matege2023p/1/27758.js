@@ -9,7 +9,7 @@
 
 		let vertices = om.latbukv.iz(4);
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
@@ -44,7 +44,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();

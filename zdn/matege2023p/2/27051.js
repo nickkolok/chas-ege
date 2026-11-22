@@ -20,7 +20,7 @@
 				['площадь боковой поверхности', cyl.sideSurfaceArea / Math.PI, cone.sideSurfaceArea / Math.PI]
 			][rand2];
 
-			let paint1 = function(ctx) {
+			let paint = function(ctx) {
 				let drawRadius = 180;
 				let drawHeight = 300;
 				ctx.translate(200, 200);
@@ -61,7 +61,7 @@
 			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
-				paint: paint1,
+				paint,
 			});
 		},
 		10000);

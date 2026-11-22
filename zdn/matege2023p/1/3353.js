@@ -19,7 +19,7 @@
 		let subangle = [vertices[1],[vertices[0], vertices[2]].iz(), vertices[3]];
 		vertices=(angle<90)?vertices.slice().permuteCyclic(1):vertices.slice();
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawLine(100, 80, 350, 80);
@@ -46,7 +46,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();

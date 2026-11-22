@@ -4,7 +4,7 @@
 
 		let a = sl(2, 89);
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.lineWidth = 2;
 
 			ctx.drawLineAtAngle(200, 10, 5*Math.PI/12, 350);
@@ -26,7 +26,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();

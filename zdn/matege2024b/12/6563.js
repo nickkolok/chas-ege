@@ -26,7 +26,7 @@
 		let angleA = (2*Math.atan((diag2 / 2) / (diag1 * r))*180/Math.PI).ceil();
 		let angleC = (2*Math.atan((diag2 / 2) / (diag1 * (1-r)))*180/Math.PI).ceil();
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			let h = 400;
 			let w = 400;
 
@@ -67,7 +67,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 

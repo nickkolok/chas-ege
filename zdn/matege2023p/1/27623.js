@@ -12,7 +12,7 @@
 
 		genAssertZ1000(answ, 'Кривой ответ');
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.lineWidth = 2;
 
 			ctx.drawLine(10, 370, 390, 370);
@@ -42,7 +42,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();

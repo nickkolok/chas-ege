@@ -9,7 +9,7 @@
 
 		genAssertZ1000(a / (1 - b.pow(2)).sqrt(), 'Кривой ответ');
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.lineWidth = 2;
 
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
@@ -52,7 +52,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();

@@ -12,7 +12,7 @@
 				['площадь боковой поверхности', radius * (2 * height).pow(2), 'делённую на $\\pi$']
 			].iz();
 
-			let paint1 = function(ct) {
+			let paint = function(ct) {
 				ct.scale = (60, 60);
 				radius = 180;
 				height = 300;
@@ -77,7 +77,7 @@
 			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
-				paint: paint1,
+				paint,
 			});
 		},
 		1000);

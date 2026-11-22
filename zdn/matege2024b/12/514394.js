@@ -39,7 +39,7 @@
 		let angleGiven = [acuteAngle, 180 - acuteAngle].iz();
 		let bases = [bigBase, smallBase].shuffle(); // порядок оснований в тексте
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			let h = 400;
 			let w = 400;
 
@@ -68,7 +68,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 2000);
 })();

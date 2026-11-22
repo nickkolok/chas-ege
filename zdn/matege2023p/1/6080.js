@@ -4,7 +4,7 @@
 
 		let angle = sl(2, 88);
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.lineWidth = 2;
 
 			let arc = Math.PI/2.9;
@@ -43,7 +43,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();

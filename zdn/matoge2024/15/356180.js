@@ -62,7 +62,7 @@
 		let pointsAngle = points.slice(0, 3);
 		let pointCentralAngle = pointsAngle.splice(variant, 1)[0];
 
-		let paint1 = function (ctx) {
+		let paint = function (ctx) {
 			let h = 400;
 			let w = 400;
 
@@ -95,7 +95,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 

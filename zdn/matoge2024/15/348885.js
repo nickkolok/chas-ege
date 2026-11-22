@@ -13,7 +13,7 @@
 		genAssert(!triangle.isIsosceles(), 'Все стороны треугольника должны быть разными');
 		genAssert(triangle.minAngleInDegrees() > 35, 'Треугольник имеет очень острый угол');
 		
-		let paint1 = function (ctx) {
+		let paint = function (ctx) {
 			let h = 400;
 			let w = 400;
 
@@ -36,7 +36,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 

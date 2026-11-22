@@ -7,7 +7,7 @@
 		let question = angle < 90 ? [vertices.slice(0,2).iz(), vertices[2], 180 - 2 * angle] : [vertices[2], vertices.slice(0,2).iz(), 0.5 * (180 -
 			angle)];
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			
@@ -37,7 +37,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();
