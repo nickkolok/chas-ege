@@ -19,17 +19,13 @@
 
 	let total = sluchch(500, 2000, 100);
 
-	let c0 = sluchch(prizes.cBounds[0][0], prizes.cBounds[0][1], prizes.divs[0]);
-	let c1 = sluchch(prizes.cBounds[1][0], prizes.cBounds[1][1], prizes.divs[1]);
-	let c2 = sluchch(prizes.cBounds[2][0], prizes.cBounds[2][1], prizes.divs[2]);
-	let c3 = sluchch(prizes.cBounds[3][0], prizes.cBounds[3][1], prizes.divs[3]);
-	let c4 = sluchch(prizes.cBounds[4][0], prizes.cBounds[4][1], prizes.divs[4]);
+	let c = prizes.cBounds.map((b, i) => sluchch(b[0], b[1], prizes.divs[i]));
 
-	let s = (prizes.weights[0]*c0 + prizes.weights[1]*c1 + prizes.weights[2]*c2 + prizes.weights[3]*c3 + prizes.weights[4]*c4) / total;
+	let s = prizes.weights.map((w, i) => w * c[i]).sum() / total;
 	genAssertZ1000(s, 'Ответ должен быть целым числом');
 
 	let wStr = prizes.weights.map(x => x.toLocaleString('ru-RU'));
-	let cStr = [c0, c1, c2, c3, c4].map(x => x.toLocaleString('ru-RU'));
+	let cStr = c.map(x => x.toLocaleString('ru-RU'));
 	let tStr = total.toLocaleString('ru-RU');
 
 	let w = ['Масса украшения (в граммах)'].concat(wStr).tr('th');
