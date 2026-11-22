@@ -45,6 +45,7 @@
 		let find = randFind ? `значение $x$, при котором $f(x)=${y}$` : `$f(${x})$`;
 		let answ = randFind ? x : y;
 		let w = 400, h = 400;
+		let scale = 20;
 		let paint1 = function (ct) {
 			//Оси координат
 			ct.drawCoordinatePlane(w, h, {
@@ -54,9 +55,9 @@
 				x1: '1',
 				y1: '1',
 				sh1: 13,
-			}, 20);
+			}, scale);
 			//график
-			ct.scale(20, -20);
+			ct.scale(scale, -scale);
 			ct.lineWidth = 0.1;
 
 			graph9AdrawFunction(ct, f, {
