@@ -651,4 +651,57 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  Canvas: произвольные подписи оси X drawGridWithArrows  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawGridWithArrows labelsX');
+
+    function gridLabelStubCtx(labels) {
+        return {
+            lineWidth: 0, font: '', textAlign: '', textBaseline: '',
+            save: function () {}, restore: function () {},
+            translate: function () {}, scale: function () {},
+            setLineDash: function () {},
+            fillText: function (text) { labels.push(text); },
+            irregularGrid: function () {},
+            drawArrow: function () {},
+            drawLine: function () {},
+        };
+    }
+
+    QUnit.test('typeX=custom: подписи оси X берутся из labelsX по порядку', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawGridWithArrows === 'function', 'метод drawGridWithArrows определён');
+        var labels = [];
+        var ctx = gridLabelStubCtx(labels);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, {
+            typeX: 'custom', labelsX: ['янв', 'фев', 'мар'],
+            gridWidth: 120, gridHeight: 60, cellWidth: 40, cellHeight: 40,
+            stepX: 1, stepByCeilX: 1, minX: 0, maxX: 12, maxY: 3,
+        });
+        // подписи оси X рисуются раньше подписей оси Y: первые три fillText — кастомные
+        assert.deepEqual(labels.slice(0, 3), ['янв', 'фев', 'мар'], 'подписи оси X взяты из labelsX');
+    });
+
+    QUnit.test('typeX=custom: лишние засечки получают пустую подпись, а не undefined', function (assert) {
+        var labels = [];
+        var ctx = gridLabelStubCtx(labels);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, {
+            typeX: 'custom', labelsX: ['a', 'b'],
+            gridWidth: 160, gridHeight: 60, cellWidth: 40, cellHeight: 40,
+            stepX: 1, stepByCeilX: 1, minX: 0, maxX: 12, maxY: 3,
+        });
+        // 4 засечки по X (i=0,40,80,120), подписей всего 2
+        assert.deepEqual(labels.slice(0, 4), ['a', 'b', '', ''], 'недостающие подписи — пустая строка');
+    });
+
+    QUnit.test('без typeX=custom сохраняются числовые подписи', function (assert) {
+        var labels = [];
+        var ctx = gridLabelStubCtx(labels);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, {
+            gridWidth: 120, gridHeight: 60, cellWidth: 40, cellHeight: 40,
+            stepX: 1, stepByCeilX: 1, minX: 0, maxX: 12, maxY: 3,
+        });
+        assert.deepEqual(labels.slice(0, 3), [(0).ts(), (1).ts(), (2).ts()], 'по умолчанию подписи числовые');
+    });
+
 };
