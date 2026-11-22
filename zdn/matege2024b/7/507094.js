@@ -3,8 +3,10 @@
 	retryWhileError(function () {
 		/* На рисунке точками показано потребление воды городской ТЭЦ на протяжении суток. По горизонтали указывается время, по вертикали – объём воды в кубометрах в час. Для наглядности точки соединены линией.*/
 
+		let valuePerCellY = 10; // кубометров в час на клетку по вертикали
+
 		function convert(P) {
-			return P * 10;
+			return P * valuePerCellY;
 		}
 
 		function answAboutMax(intervals, answ) {
@@ -236,7 +238,7 @@
 				cellHeight: cellHeight,
 				stepX: 1,
 				typeX: 'time',
-				stepY: 10,
+				stepY: valuePerCellY,
 				maxX: 24,
 				maxY: 70,
 				stepByCeilX: 3,
