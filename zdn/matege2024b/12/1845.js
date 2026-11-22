@@ -17,7 +17,7 @@
 		}, 'E');
 
 		let EB = [rect.vertices[1], rect.vertices[4]].mt_rasst();
-		genAssert(EB.isAlmostInteger(), 'EB не целая');
+		genAssertAlmostInteger(EB, 'EB не целая');
 
 		rect.connectVerticesInConnectionMatrix(
 			[
