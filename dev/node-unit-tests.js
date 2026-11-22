@@ -651,4 +651,16 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  Vector coordinates / segment intersection (lib/func.js)
+    // ============================================================
+    QUnit.module('coordinatesOfVector, segmentIntersectionCount');
+
+    QUnit.test('coordinatesOfVector: конец минус начало', function (assert) {
+        assert.deepEqual(coordinatesOfVector(1, 2, 4, 6), [3, 4], '(1,2)->(4,6) = (3,4)');
+        assert.deepEqual(coordinatesOfVector(5, 5, 2, 1), [-3, -4], '(5,5)->(2,1) = (-3,-4)');
+        assert.deepEqual(coordinatesOfVector(0, 0, 0, 0), [0, 0], 'нулевой вектор');
+        assert.deepEqual(coordinatesOfVector(-2, -3, -2, 5), [0, 8], 'вертикальный вектор');
+    });
+
 };
