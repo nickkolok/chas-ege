@@ -6,10 +6,11 @@
         function answAboutStop(intervals, answ, variable) {
             let wasStop = intervals.map(interval => lengthOfZeroInterval(interval) > 1);
             let index = wasStop.indexOf(true);
+            let stopSeconds = (lengthOfZeroInterval(intervals[index]) - 1) * 15;
             let stopTexts = [
-                'батискаф остановился ровно на ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1) * 15, 'секунда', 'value'),
-                'батискаф ровно ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1) * 15, 'секунда', 'value') + ' оставался на одной глубине',
-                'в течение ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1) * 15, 'секунда', 'value') + ' подряд батискаф оставался на одной глубине'
+                'батискаф остановился ровно на ' + chislitlx(stopSeconds, 'секунда', 'value'),
+                'батискаф ровно ' + chislitlx(stopSeconds, 'секунда', 'value') + ' оставался на одной глубине',
+                'в течение ' + chislitlx(stopSeconds, 'секунда', 'value') + ' подряд батискаф оставался на одной глубине'
             ];
             addUniqueAnsw(wasStop, answ, stopTexts[variable]);
         }
