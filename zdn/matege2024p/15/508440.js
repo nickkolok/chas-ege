@@ -129,8 +129,8 @@
 				checkZeroWithCases(down[2]) + '}' + ['\\ge', '\\le'][Math.abs(1 + [0, -1][slSign])] + '0' +
 				'\\Leftrightarrow' +
 				'\\frac{' + denominator + 'x^2' +
-				sign[checkSign(denominator * up[0] + numerator)] + checkOne(Math.abs(denominator * up[0] + numerator)) + 'x' +
-				sign2[checkSign(up[0] * numerator)] + checkZero(Math.abs(up[0] * numerator)) + '}{' +
+				sign[checkSign(bm)] + checkOne(Math.abs(bm)) + 'x' +
+				sign2[checkSign(cm)] + checkZero(Math.abs(cm)) + '}{' +
 				checkZeroWithCases(down[0]) +
 				checkZeroWithCases(down[1]) +
 				checkZeroWithCases(down[2]) + '}' + ['\\le', '\\ge'][slSign2] + '0' +
