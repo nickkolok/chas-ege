@@ -25,21 +25,21 @@
 					break;
 				case 1: // ±a·m ; ОДЗ тривиален
 					a = sl(1, 2).pm();
-					latex = (a === -1 ? '-' : (a === 1 ? '' : a)) + 'm';
+					latex = (a + 'm').beautifyAlgebraicNotation();
 					v = a * m;
 					ok = true;
 					break;
 				case 2: // ±a·m + b ; ОДЗ тривиален
 					a = sl(1, 2).pm();
 					b = sl(1, 3).pm();
-					latex = (a === -1 ? '-' : (a === 1 ? '' : a)) + 'm' + (b ? (b > 0 ? '+' : '-') + Math.abs(b) : '');
+					latex = (a + 'm+' + b).beautifyAlgebraicNotation();
 					v = a * m + b;
 					ok = true;
 					break;
 				case 3: // b − a·m ; ОДЗ тривиален
 					a = sl(1, 2);
 					b = sl(1, 9);
-					latex = b + '-' + (a === 1 ? '' : a) + 'm';
+					latex = (b + '-' + a + 'm').beautifyAlgebraicNotation();
 					v = b - a * m;
 					ok = true;
 					break;
