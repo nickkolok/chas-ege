@@ -737,5 +737,6 @@ module.exports = function registerNodeTests(QUnit) {
     QUnit.test('Array.prototype.coordVect', function (assert) {
         assert.deepEqual([1, 2, 4, 6].coordVect(), [3, 4], 'конец минус начало');
         assert.deepEqual([5, 5, 5, 5].coordVect(), [0, 0], 'вырожденный → [0,0]');
+        assert.deepEqual([1, 2, 3, 4, 6, 8].coordVect(), [3, 4, 5], 'в пространстве: [x1,y1,z1,x2,y2,z2]');
     });
 };
