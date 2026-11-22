@@ -83,6 +83,28 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+## Векторы на координатной плоскости
+
+Векторы в шаблонах задаются массивами координат `[x, y]` (или `[x, y, z]`),
+а вектор-отрезок — плоским массивом концов `[x1, y1, x2, y2]`.
+Готовые операции — методы массивов в `lib/array.js`:
+
+* `[x1, y1, x2, y2].coordVect()` — координаты вектора по концам (в пространстве — `[x1, y1, z1, x2, y2, z2]`);
+* `a.scalprod(b)` — скалярное произведение;
+* `a.veclength()` и `a.veclengthSquared()` — длина вектора и её квадрат;
+* `a.veccos(b)` — косинус угла между ненулевыми векторами (без потери точности для целых координат);
+* `a.vecangleInDegrees(b)` — угол между ненулевыми векторами в градусах.
+
+Пересекаются ли два вектора-отрезка, проверяет `segmentIntersectionCount` (`lib/func.js`):
+
+```js
+let coordA = vectorA.coordVect();
+genAssert(!segmentIntersectionCount(...vectorA, ...vectorB), 'Векторы A и B пересекаются');
+let cos = coordA.veccos(vectorB.coordVect());
+```
+
+Эти формулы не нужно переписывать в шаблоне или копировать из соседнего шаблона.
+
 ## Примеры
 
 ### Планиметрия
