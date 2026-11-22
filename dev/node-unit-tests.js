@@ -115,6 +115,16 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal((0).nod(5), 5, 'НОД(0, 5) = 5');
     });
 
+    QUnit.test('Number.prototype.nok (НОК)', function (assert) {
+        assert.equal((12).nok(18), 36, 'НОК(12, 18) = 36');
+        assert.equal((7).nok(13), 91, 'НОК(7, 13) = 91');
+        assert.equal((4).nok(6), 12, 'НОК(4, 6) = 12');
+        assert.equal((5).nok(5), 5, 'НОК(5, 5) = 5');
+        assert.equal((-4).nok(6), 12, 'НОК(-4, 6) = 12 (знак не важен)');
+        assert.equal((0).nok(5), 0, 'НОК(0, 5) = 0');
+        assert.equal((5).nok(0), 0, 'НОК(5, 0) = 0');
+    });
+
     QUnit.test('Number.prototype.kratno (кратность)', function (assert) {
         assert.strictEqual((12).kratno(6), true, '12 кратно 6');
         assert.strictEqual((0).kratno(5), true, '0 кратно 5');
