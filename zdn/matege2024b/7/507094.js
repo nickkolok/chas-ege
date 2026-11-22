@@ -227,12 +227,13 @@
 
 
 		let paint1 = function (ctx) {
+			let cellWidth = 20, cellHeight = 30;
 			ctx.translate(30, 0);
 			ctx.drawGridWithArrows({
 				gridWidth: 481,
 				gridHeight: 301,
-				cellWidth: 20,
-				cellHeight: 30,
+				cellWidth: cellWidth,
+				cellHeight: cellHeight,
 				stepX: 1,
 				typeX: 'time',
 				stepY: 10,
@@ -245,12 +246,12 @@
 				drawArrowY: false,
 			});
 
-			ctx.translate(20, 30 * 8);
-			ctx.scale(20, -30);
-			ctx.lineWidth = 2 / 30;
+			ctx.translate(cellWidth, cellHeight * 8);
+			ctx.scale(cellWidth, -cellHeight);
+			ctx.lineWidth = 2 / cellHeight;
 
 			for (let i = 0; i < time.length; i++) {
-				ctx.drawFilledCircle(time[i], p[i], 3 / 30);
+				ctx.drawFilledCircle(time[i], p[i], 3 / cellHeight);
 				if (i < time.length - 1)
 					ctx.drawLine(time[i], p[i], time[i + 1], p[i + 1]);
 			}
