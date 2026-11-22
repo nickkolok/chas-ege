@@ -48,25 +48,14 @@
 		let answer = ["(-∞;" + [b, a][A] + ")U" + ["[" + c, "(" + b][B] + ";" + [d + ")", c + "]"][C] + "U(" + [e, d][D] + ";" + ["+∞", e][E] + ")",
 			"(" + [b, a][A] + ";" + [c + "]", b + ")"][B] + "U" + ["(" + d, "[" + c][C] + ";" + [e, d][D] + ")"][slSign2];
 
-		function gcd(a, b) {
-			a = Math.abs(a);
-			b = Math.abs(b);
-			while (b !== 0) {
-				let t = b;
-				b = a % b;
-				a = t;
-			}
-			return a;
-		}
-
 		function lcm(a, b) {
-			return Math.abs(a * b) / gcd(a, b);
+			return Math.abs(a * b) / a.nod(b);
 		}
 
 		function toFraction(value, eps = 1e-9) {
 			let num = Math.round(value * 1e9);
 			let den = 1e9;
-			let g = gcd(num, den);
+			let g = num.nod(den);
 			return {
 				num: num / g,
 				den: den / g
@@ -96,7 +85,7 @@
 		let C_int = fracC.num * (commonDen / fracC.den);
 
 		//Сокращение общего множителя
-		let g_all = gcd(gcd(Math.abs(A_int), Math.abs(B_int)), Math.abs(C_int));
+		let g_all = Math.abs(A_int).nod(Math.abs(B_int)).nod(Math.abs(C_int));
 		if (g_all > 1) {
 			A_int /= g_all;
 			B_int /= g_all;
