@@ -649,6 +649,23 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 0, 'drawLine не вызывался');
     });
 
+    QUnit.test('ctx.drawPolyline с dotRadius: точка в каждой вершине, затем отрезок к следующей', function (assert) {
+        var calls = [];
+        var ctx = {
+            drawLine: function () { calls.push(['line'].concat(Array.prototype.slice.call(arguments))); },
+            drawFilledCircle: function () { calls.push(['dot'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [0, 1, 2], [3, 1, 4], 0.5);
+        assert.deepEqual(calls, [
+            ['dot', 0, 3, 0.5], ['line', 0, 3, 1, 1],
+            ['dot', 1, 1, 0.5], ['line', 1, 1, 2, 4],
+            ['dot', 2, 4, 0.5],
+        ], 'порядок как в шаблонах: точка i, отрезок i→i+1');
+        calls = [];
+        CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [5], [7], 0.5);
+        assert.deepEqual(calls, [['dot', 5, 7, 0.5]], 'одна точка — только точка');
+    });
+
     QUnit.test('ctx.drawPolyline: NaN в рисуемых точках — предупреждение в консоль', function (assert) {
         var ctx = { drawLine: function () {} };
         var warnings = [];
