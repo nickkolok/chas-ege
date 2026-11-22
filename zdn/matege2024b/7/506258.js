@@ -168,12 +168,14 @@
         let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
 
         let paint1 = function (ctx) {
+            let cell = 40; // размер клетки сетки, px
+            let gridHeight = 440; // высота сетки, px
             ctx.translate(0, 60);
             ctx.drawGridWithArrows({
                 gridWidth: 420,
-                gridHeight: 440,
-                cellWidth: 40,
-                cellHeight: 40,
+                gridHeight: gridHeight,
+                cellWidth: cell,
+                cellHeight: cell,
                 stepX: 1,
                 stepY: degreesPerUnit,
                 maxX: duration,
@@ -184,9 +186,9 @@
                 arrowLengthY: 8.9,
             });
 
-            ctx.translate(40, 40 * 9);
-            ctx.scale(40, -40);
-            ctx.lineWidth = 2 / 40;
+            ctx.translate(cell, gridHeight - 2 * cell); // начало координат сетки, как в drawGridWithArrows
+            ctx.scale(cell, -cell);
+            ctx.lineWidth = 2 / cell;
 
             for (let i = 1; i < temperatures.length; i++) {
                 ctx.drawLine((i - 1) / samplesPerMinute, temperatures[i - 1], i / samplesPerMinute, temperatures[i]);
