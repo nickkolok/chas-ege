@@ -40,7 +40,7 @@
 
 		let correct = (numeratorA + sum * denominatorA).texfrac(denominatorA);
 		let wrAns = [];
-		let usedNumerators = [numeratorA]; 
+		let usedNumerators = [numeratorA];
 
 		while (wrAns.length < 3) {
 			let wrongNumerator = slKrome(function (x) {
