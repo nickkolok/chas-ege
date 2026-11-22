@@ -1,8 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let letter = om.latbukv.iz(2);
-		letter = letter.map((element) => element.toLowerCase());
+		let letter = window.smallLatinLetters.iz(2);
 
 		let vectorA = generateMatrix(1, 4, 1, 13).iz();
 		let vectorB = generateMatrix(1, 4, 1, 13).iz();
