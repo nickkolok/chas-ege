@@ -18,7 +18,7 @@
         }
 
         function answAboutConst(intervals, answ) {
-            let wasConst = intervals.map(interval => interval[0] === interval[1] && interval[1] === interval[2]);
+            let wasConst = intervals.map(interval => constValueByFirst(interval));
             let wasConstTwoFirst = intervals.map(interval => interval[0] === interval[1] && interval[1] !== interval[2]);
             let wasConstTwoLast = intervals.map(interval => interval[0] !== interval[1] && interval[1] === interval[2]);
 
