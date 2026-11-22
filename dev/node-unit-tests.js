@@ -651,4 +651,45 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+
+    // ============================================================
+    //  Векторная алгебра  (lib/figure.js)
+    // ============================================================
+    QUnit.module('Векторная алгебра (vectorCoordinates, scalarProduct, vectorLength, cosAngleBetweenVectors)');
+
+    QUnit.test('vectorCoordinates: координаты вектора по началу и концу', function (assert) {
+        assert.deepEqual(geometry.vectorCoordinates(1, 2, 4, 6), [3, 4], 'конец минус начало');
+        assert.deepEqual(geometry.vectorCoordinates(4, 6, 1, 2), [-3, -4], 'обратный вектор');
+        assert.deepEqual(geometry.vectorCoordinates(5, 5, 5, 5), [0, 0], 'нулевой вектор');
+    });
+
+    QUnit.test('scalarProduct: скалярное произведение', function (assert) {
+        assert.equal(geometry.scalarProduct([1, 2], [3, 4]), 11, '1*3 + 2*4 = 11');
+        assert.equal(geometry.scalarProduct([1, 0], [0, 1]), 0, 'перпендикулярные');
+        assert.equal(geometry.scalarProduct([2, 3], [-2, -3]), -13, 'противоположные');
+        assert.equal(geometry.scalarProduct([1, 2, 3], [4, 5, 6]), 32, 'трёхмерный случай');
+    });
+
+    QUnit.test('vectorLengthSquared и vectorLength', function (assert) {
+        assert.equal(geometry.vectorLengthSquared([3, 4]), 25, 'квадрат длины 3-4-5');
+        assert.equal(geometry.vectorLengthSquared([0, 0]), 0, 'нулевой вектор');
+        assert.equal(geometry.vectorLength([3, 4]), 5, 'длина 3-4-5');
+        assert.equal(geometry.vectorLength([-3, -4]), 5, 'знак координат не важен');
+    });
+
+    QUnit.test('cosAngleBetweenVectors: косинус угла между векторами', function (assert) {
+        assert.equal(geometry.cosAngleBetweenVectors([1, 0], [0, 1]), 0, 'прямой угол');
+        assert.equal(geometry.cosAngleBetweenVectors([2, 0], [3, 0]), 1, 'сонаправленные');
+        assert.equal(geometry.cosAngleBetweenVectors([2, 0], [-3, 0]), -1, 'противоположные');
+        assert.ok(Math.abs(geometry.cosAngleBetweenVectors([1, 1], [1, 0]) - Math.SQRT1_2) < 1e-10, '45 градусов');
+        assert.throws(function () { geometry.cosAngleBetweenVectors([0, 0], [1, 0]); }, 'нулевой вектор');
+    });
+
+    QUnit.test('angleBetweenVectorsInDegrees: угол в градусах', function (assert) {
+        assert.equal(geometry.angleBetweenVectorsInDegrees([1, 0], [0, 1]), 90, 'прямой угол');
+        assert.equal(geometry.angleBetweenVectorsInDegrees([2, 0], [3, 0]), 0, 'сонаправленные');
+        assert.equal(geometry.angleBetweenVectorsInDegrees([2, 0], [-3, 0]), 180, 'противоположные');
+        assert.ok(Math.abs(geometry.angleBetweenVectorsInDegrees([1, 0], [1, 1]) - 45) < 1e-10, '45 градусов');
+    });
+
 };
