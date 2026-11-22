@@ -15,27 +15,30 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			let cx = 200, cy = 280; //центр основания
+			let r = 120, ry = 36; //полуоси эллипса основания
+			let apexY = 72; //вершина конуса над центром основания
 			
 			//эллипс (передняя часть)
-			ctx.drawEllipse(200, 280, 120, 36, 0, 0, Math.PI);
+			ctx.drawEllipse(cx, cy, r, ry, 0, 0, Math.PI);
 
 			//эллипс (задняя часть, пунктиром)
 			ctx.setLineDash([5, 5]);
-			ctx.drawEllipse(200, 280, 120, 36, 0, Math.PI, 2 * Math.PI);
+			ctx.drawEllipse(cx, cy, r, ry, 0, Math.PI, 2 * Math.PI);
 			ctx.setLineDash([]);
 
 			//образующие
-			ctx.drawLine(80, 280, 200, 72);
-			ctx.drawLine(320, 280, 200, 72);
+			ctx.drawLine(cx - r, cy, cx, apexY);
+			ctx.drawLine(cx + r, cy, cx, apexY);
 
 			//радиус (синий)
 			ctx.strokeStyle = "blue";
-			ctx.drawLine(200, 280, 320, 280);
+			ctx.drawLine(cx, cy, cx + r, cy);
 			
 			//высота (красная, пунктирная)
 			ctx.strokeStyle = "red";
 			ctx.setLineDash([5, 5]);
-			ctx.drawLine(200, 280, 200, 72);
+			ctx.drawLine(cx, cy, cx, apexY);
 			ctx.setLineDash([]);
 			
 			ctx.strokeStyle = "black";
