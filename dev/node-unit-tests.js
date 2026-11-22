@@ -651,4 +651,56 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+
+    // ============================================================
+    //  Canvas: drawPolylineWithDots  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawPolylineWithDots');
+
+    QUnit.test('ctx.drawPolylineWithDots рисует точки и соединяющие отрезки', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawPolylineWithDots === 'function', 'метод drawPolylineWithDots определён');
+        var dots = [], lines = [];
+        var ctx = {
+            drawFilledCircle: function (x, y, r) { dots.push([x, y, r]); },
+            drawLine: function (x1, y1, x2, y2) { lines.push([x1, y1, x2, y2]); },
+        };
+        CanvasRenderingContext2D.prototype.drawPolylineWithDots.call(ctx, [0, 1, 2], [5, 7, 6], 0.5);
+        assert.deepEqual(dots, [[0, 5, 0.5], [1, 7, 0.5], [2, 6, 0.5]], 'закрашенная точка в каждой вершине');
+        assert.deepEqual(lines, [[0, 5, 1, 7], [1, 7, 2, 6]], 'отрезки между соседними вершинами');
+    });
+
+    QUnit.test('ctx.drawPolylineWithDots: одна вершина — только точка, без отрезков', function (assert) {
+        var dots = [], lines = [];
+        var ctx = {
+            drawFilledCircle: function (x, y, r) { dots.push([x, y, r]); },
+            drawLine: function () { lines.push(Array.prototype.slice.call(arguments)); },
+        };
+        CanvasRenderingContext2D.prototype.drawPolylineWithDots.call(ctx, [3], [9], 1);
+        assert.deepEqual(dots, [[3, 9, 1]], 'одна точка');
+        assert.equal(lines.length, 0, 'отрезков нет');
+    });
+
+    // ============================================================
+    //  Diagram: intervalDeltas  (lib/diagram.js)
+    // ============================================================
+    QUnit.module('Diagram: intervalDeltas');
+
+    // lib/diagram.js загружаем в отдельный контекст (как lib/figure.js выше):
+    // intervalDeltas использует только арифметику, mathjs ей не нужен.
+    var diagramCtx = (function () {
+        var vm = require('vm');
+        var fs = require('fs');
+        var path = require('path');
+        var context = vm.createContext({ Math: Math });
+        vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'lib', 'diagram.js'), 'utf8'), context);
+        return context;
+    })();
+
+    QUnit.test('intervalDeltas: разности соседних значений', function (assert) {
+        assert.deepEqual(diagramCtx.intervalDeltas([2, 5, 3, 8]), [3, -2, 5], 'разности соседних значений');
+        assert.deepEqual(diagramCtx.intervalDeltas([7]), [], 'один элемент — пустой массив');
+        assert.deepEqual(diagramCtx.intervalDeltas([]), [], 'пустой интервал — пустой массив');
+    });
+
+
 };
