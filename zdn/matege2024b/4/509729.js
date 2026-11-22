@@ -2,7 +2,7 @@
 	'use strict';
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
-		let key = '509729'
+		let key = '509729';
 		let preference = ['CelToFar', 'FarToCel'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 		
