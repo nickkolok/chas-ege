@@ -41,19 +41,8 @@
 			] + "U" + ["[", "("][checkAnswer(e)] + e + ";+∞)"
 		][slSign2];
 
-		function gcd(a, b) {
-			a = Math.abs(a);
-			b = Math.abs(b);
-			while (b !== 0) {
-				let t = b;
-				b = a % b;
-				a = t;
-			}
-			return a;
-		}
-
 		function lcm(a, b) {
-			return Math.abs(a * b) / gcd(a, b);
+			return Math.abs(a * b) / a.nod(b);
 		}
 
 		let k1 = -down[0];
@@ -79,7 +68,7 @@
 		let C_int = fracC.numerator * (commonDen / fracC.denominator);
 
 		//Сокращение общего множителя
-		let g_all = gcd(gcd(Math.abs(A_int), Math.abs(B_int)), Math.abs(C_int));
+		let g_all = A_int.nod(B_int).nod(C_int);
 		if (g_all > 1) {
 			A_int /= g_all;
 			B_int /= g_all;
