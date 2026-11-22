@@ -651,4 +651,29 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+
+    // ============================================================
+    //  Array vector functions  (lib/array.js)
+    // ============================================================
+    QUnit.module('Array vector functions');
+
+    QUnit.test('Array.prototype.veclength', function (assert) {
+        assert.equal([3, 4].veclength(), 5, '|[3,4]| = 5');
+        assert.equal([0, 0].veclength(), 0, '|[0,0]| = 0');
+        assert.equal([1, 2, 2].veclength(), 3, '|[1,2,2]| = 3 (3D)');
+        assert.equal([-3, -4].veclength(), 5, '|[-3,-4]| = 5');
+    });
+
+    QUnit.test('Array.prototype.scalprod', function (assert) {
+        assert.equal([1, 2].scalprod([3, 4]), 11, '(1,2)·(3,4) = 11');
+        assert.equal([1, 0].scalprod([0, 1]), 0, 'ортогональные → 0');
+        assert.equal([1, 2, 3].scalprod([4, 5, 6]), 32, '3D: 4+10+18 = 32');
+        assert.equal([-1, 1].scalprod([-3, -3]), 0, '(-1,1)·(-3,-3) = 0');
+    });
+
+    QUnit.test('Array.prototype.coordVect', function (assert) {
+        assert.deepEqual([1, 2, 4, 6].coordVect(), [3, 4], 'конец минус начало');
+        assert.deepEqual([5, 5, 5, 5].coordVect(), [0, 0], 'вырожденный → [0,0]');
+    });
+
 };
