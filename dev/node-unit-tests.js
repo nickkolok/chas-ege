@@ -761,4 +761,14 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual([5, 5, 5, 5].coordVect(), [0, 0], 'вырожденный → [0,0]');
         assert.deepEqual([1, 2, 3, 4, 6, 8].coordVect(), [3, 4, 5], 'в пространстве: [x1,y1,z1,x2,y2,z2]');
     });
+
+    QUnit.test('segmentIntersectionCount: пересекающиеся отрезки', function (assert) {
+        assert.equal(segmentIntersectionCount(0, 0, 2, 2, 0, 2, 2, 0), 1, 'крест-накрест');
+        assert.equal(segmentIntersectionCount(0, 0, 4, 0, 2, -2, 2, 2), 1, 'вертикальный пересекает горизонтальный');
+    });
+
+    QUnit.test('segmentIntersectionCount: непересекающиеся отрезки', function (assert) {
+        assert.equal(segmentIntersectionCount(0, 0, 1, 0, 0, 1, 1, 1), 0, 'параллельные');
+        assert.equal(segmentIntersectionCount(0, 0, 1, 0, 2, 1, 3, 2), 0, 'прямые пересекаются вне отрезков');
+    });
 };
