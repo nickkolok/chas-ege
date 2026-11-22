@@ -62,6 +62,19 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+## Векторы на координатной плоскости
+
+Векторы в шаблонах удобно задавать массивами координат `[x, y]`.
+Готовые операции — в `lib/figure.js`:
+
+* `vectorCoordinates(x1, y1, x2, y2)` — координаты вектора по координатам начала и конца;
+* `scalarProduct(v1, v2)` — скалярное произведение;
+* `vectorLength(v)` и `vectorLengthSquared(v)` — длина вектора и её квадрат;
+* `cosAngleBetweenVectors(v1, v2)` — косинус угла между ненулевыми векторами;
+* `angleBetweenVectorsInDegrees(v1, v2)` — угол между ненулевыми векторами в градусах.
+
+Эти формулы не нужно переписывать в шаблоне или копировать из соседнего шаблона.
+
 ## Примеры
 
 ### Планиметрия
