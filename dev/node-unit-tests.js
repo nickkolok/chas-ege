@@ -651,4 +651,25 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+
+    // ============================================================
+    //  Array.prototype.withSubscriptedCopy  (lib/array_general.js)
+    // ============================================================
+    QUnit.module('Array.prototype.withSubscriptedCopy');
+
+    QUnit.test('withSubscriptedCopy: буквы двух оснований призмы', function (assert) {
+        assert.deepEqual(['A', 'B', 'C'].withSubscriptedCopy(),
+            ['A', 'B', 'C', 'A₁', 'B₁', 'C₁'], 'по умолчанию индекс ₁');
+        assert.deepEqual(['A', 'B', 'C', 'D', 'E', 'F'].withSubscriptedCopy(),
+            ['A', 'B', 'C', 'D', 'E', 'F', 'A₁', 'B₁', 'C₁', 'D₁', 'E₁', 'F₁'],
+            'шестиугольная призма');
+    });
+
+    QUnit.test('withSubscriptedCopy: свой индекс, неизменность исходного массива, пустой массив', function (assert) {
+        var base = ['A', 'B'];
+        assert.deepEqual(base.withSubscriptedCopy('₂'), ['A', 'B', 'A₂', 'B₂'], 'свой индекс');
+        assert.deepEqual(base, ['A', 'B'], 'исходный массив не изменился');
+        assert.deepEqual([].withSubscriptedCopy(), [], 'пустой массив');
+    });
+
 };
