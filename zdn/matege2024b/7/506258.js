@@ -118,24 +118,19 @@
             rangeIntervals.push(sl(1, 3));
         rangeIntervals.push(duration - rangeIntervals.sum());
 
+        let boundaries = [0];
+        rangeIntervals.forEach(d => boundaries.push(boundaries.at(-1) + d));
+
         let intervals = Array.from({
             length: 4
-        }, (_, i) => {
-            let start = rangeIntervals.slice(0, i).sum();
-            let end = start + rangeIntervals[i];
-            return temperatures.slice(start * samplesPerMinute, end * samplesPerMinute + 1);
-        });
+        }, (_, i) => temperatures.slice(boundaries[i] * samplesPerMinute, boundaries[i + 1] * samplesPerMinute + 1));
 
         let listOfIntervals = Array.from({
             length: 4
-        }, (_, i) => {
-            let startTime = rangeIntervals.slice(0, i).sum();
-            let endTime = startTime + rangeIntervals[i];
-            return {
-                expr: startTime + '-' + endTime + ' мин.',
-                solution: [],
-            };
-        });
+        }, (_, i) => ({
+            expr: boundaries[i] + '-' + boundaries[i + 1] + ' мин.',
+            solution: [],
+        }));
 
         let [less1, less2, lower] = arrayOfUniqueValues(3, 1, 4);
         let [more1, more2, upper] = arrayOfUniqueValues(3, 4, 7);
