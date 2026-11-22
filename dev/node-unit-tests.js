@@ -71,6 +71,15 @@ module.exports = function registerNodeTests(QUnit) {
         assert.ok(Math.abs((Math.PI).cos() + 1) < 1e-10, 'cos(π) = -1');
     });
 
+    QUnit.test('Number.prototype.arcctg', function (assert) {
+        assert.ok(Math.abs((1).arcctg() - Math.PI / 4) < 1e-10, 'arcctg(1) = π/4');
+        assert.ok(Math.abs((0).arcctg() - Math.PI / 2) < 1e-10, 'arcctg(0) = π/2');
+        assert.ok(Math.abs((-1).arcctg() - 3 * Math.PI / 4) < 1e-10, 'arcctg(-1) = 3π/4');
+        assert.ok((-2).arcctg() > Math.PI / 2 && (-2).arcctg() < Math.PI, 'arcctg(-2) ∈ (π/2, π)');
+        assert.ok((2).arcctg() > 0 && (2).arcctg() < Math.PI / 2, 'arcctg(2) ∈ (0, π/2)');
+        assert.ok(Math.abs(((-2).arcctg()).ctg() + 2) < 1e-10, 'ctg(arcctg(-2)) = -2');
+    });
+
     // ============================================================
     //  Number Utility Functions  (lib/number.js)
     // ============================================================
