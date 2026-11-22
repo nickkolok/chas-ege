@@ -78,14 +78,8 @@
                 return sec;
             });
 
-            wasCondition.forEach((condition, i) => {
-                if (condition) {
-                    let text = 'скорость погружения уменьшалась, а затем произошла остановка на ' + secTexts[i];
-                    if (hasNoDuplicateValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
-                        answ[i].solution.push(text);
-                    }
-                }
-            });
+            let index = wasCondition.indexOf(true);
+            addUniqueAnsw(wasCondition, answ, 'скорость погружения уменьшалась, а затем произошла остановка на ' + secTexts[index]);
         }
 
         function answAboutConstNSec(intervals, answ) {
