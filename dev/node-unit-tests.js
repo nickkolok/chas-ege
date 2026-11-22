@@ -651,4 +651,30 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  diagram: pickIntervalSolutions  (lib/diagram.js)
+    // ============================================================
+    QUnit.module('diagram: pickIntervalSolutions');
+
+    QUnit.test('выбирает по одному решению на интервал и возвращает их', function (assert) {
+        var list = [
+            { expr: 'A', solution: ['x'] },
+            { expr: 'B', solution: ['y'] },
+            { expr: 'C', solution: ['z'] },
+        ];
+        var sols = pickIntervalSolutions(list);
+        assert.deepEqual(sols, ['x', 'y', 'z'], 'по одному решению на интервал');
+        assert.equal(list[0].solution, 'x', 'solution интервала заменён выбранным значением');
+    });
+
+    QUnit.test('пустой набор характеристик интервала отбраковывается', function (assert) {
+        var list = [{ expr: 'A', solution: [] }, { expr: 'B', solution: ['y'] }];
+        assert.throws(function () { pickIntervalSolutions(list); }, 'пустой solution → исключение для retry');
+    });
+
+    QUnit.test('одинаковые решения у разных интервалов отбраковываются', function (assert) {
+        var list = [{ expr: 'A', solution: ['same'] }, { expr: 'B', solution: ['same'] }];
+        assert.throws(function () { pickIntervalSolutions(list); }, 'дубликаты решений → исключение');
+    });
+
 };
