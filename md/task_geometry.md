@@ -62,6 +62,27 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+## Стандартный ракурс параллелепипеда
+
+В задачах на угол между прямыми в параллелепипеде (`zdn/matege2024p/3/`)
+ракурс повторяется от шаблона к шаблону: масштаб холста 10, `lineWidth` 0.2,
+шрифт 2.5px liberation_sans, глубина — половина ребра, `angle: 40`, `scale: 20`,
+невидимые рёбра `[0, 3, 4]` пунктиром `[0.4, 0.5]`.
+Этот набор записан один раз в `ctx.drawStandardParallelepiped(letters, o)`
+(`lib/canvas.js`):
+
+```js
+let paint1 = function(ctx) {
+	ctx.drawStandardParallelepiped(allLet, {edge: 25, width: 25 * 1.1, height: 25 * 0.9, x: 95});
+};
+```
+
+`letters` — восемь подписей вершин: нижнее основание, затем верхнее.
+В `o` можно передать `edge` (ребро, по умолчанию 25), `width`/`height`
+передней грани (по умолчанию равны `edge` — куб), `x`/`y` сдвига начала
+координат (105/50) и `font` подписей ("2.5px liberation_sans").
+Остальные параметры `drawParallelepiped` остаются стандартными.
+
 ## Примеры
 
 ### Планиметрия
