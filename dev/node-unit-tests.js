@@ -611,6 +611,53 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Canvas: заливка кольца  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: fillRing');
+
+    QUnit.test('ctx.fillRing закрашивает кольцо между концентрическими окружностями через evenodd', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.fillRing === 'function', 'метод fillRing определён');
+        var calls = [];
+        var ctx = {
+            beginPath: function () { calls.push(['beginPath']); },
+            arc: function () { calls.push(['arc'].concat(Array.prototype.slice.call(arguments))); },
+            moveTo: function () { calls.push(['moveTo'].concat(Array.prototype.slice.call(arguments))); },
+            fill: function () { calls.push(['fill'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        CanvasRenderingContext2D.prototype.fillRing.call(ctx, 3, -4, 50, 20);
+        assert.deepEqual(calls[0], ['beginPath'], 'начинает новый контур');
+        assert.deepEqual(calls[1], ['arc', 3, -4, 50, 0, 2 * Math.PI], 'внешняя окружность');
+        assert.deepEqual(calls[2], ['moveTo', 23, -4], 'переход к внутренней окружности без соединительной линии');
+        assert.deepEqual(calls[3], ['arc', 3, -4, 20, 0, 2 * Math.PI], 'внутренняя окружность');
+        assert.deepEqual(calls[4], ['fill', 'evenodd'], 'заливка по evenodd: внутренний круг остаётся пустым');
+    });
+
+    // ============================================================
+    //  Canvas: клетчатая бумага  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: gridPaper');
+
+    QUnit.test('ctx.gridPaper готовит клетчатую бумагу и переводит координаты в клетки', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.gridPaper === 'function', 'метод gridPaper определён');
+        var calls = [];
+        var ctx = {
+            canvas: { width: 400, height: 400 },
+            fillRect: function () { calls.push(['fillRect'].concat(Array.prototype.slice.call(arguments))); },
+            translateToCenter: function () { calls.push(['translateToCenter']); },
+            regularGrid: function () { calls.push(['regularGrid'].concat(Array.prototype.slice.call(arguments))); },
+            scale: function () { calls.push(['scale'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        CanvasRenderingContext2D.prototype.gridPaper.call(ctx, 30, 6);
+        assert.deepEqual(calls[0], ['fillRect', 0, 0, 400, 400], 'белый фон на весь холст');
+        assert.equal(ctx.fillStyle, '#fff', 'цвет фона');
+        assert.equal(ctx.strokeStyle, '#888', 'цвет сетки');
+        assert.equal(ctx.lineWidth, 1, 'толщина линий сетки');
+        assert.deepEqual(calls[1], ['translateToCenter'], 'начало координат — в центре холста');
+        assert.deepEqual(calls[2], ['regularGrid', 30, 6], 'сетка ±6 клеток по 30 px');
+        assert.deepEqual(calls[3], ['scale', 30, -30], 'масштаб в клетки, ось Y вверх');
+    });
+
+    // ============================================================
     //  Canvas: перенос начала координат  (lib/canvas.js)
     // ============================================================
     QUnit.module('Canvas: translateToCenter');
