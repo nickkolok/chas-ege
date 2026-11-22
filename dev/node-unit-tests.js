@@ -237,6 +237,65 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Array vector functions  (lib/array.js)
+    // ============================================================
+    QUnit.module('Array vector functions');
+
+    QUnit.test('Array.prototype.veclength', function (assert) {
+        assert.equal([3, 4].veclength(), 5, '|[3,4]| = 5');
+        assert.equal([0, 0].veclength(), 0, '|[0,0]| = 0');
+        assert.equal([1, 2, 2].veclength(), 3, '|[1,2,2]| = 3 (3D)');
+        assert.equal([-3, -4].veclength(), 5, '|[-3,-4]| = 5');
+    });
+
+    QUnit.test('Array.prototype.scalprod', function (assert) {
+        assert.equal([1, 2].scalprod([3, 4]), 11, '(1,2)·(3,4) = 11');
+        assert.equal([1, 0].scalprod([0, 1]), 0, 'ортогональные → 0');
+        assert.equal([1, 2, 3].scalprod([4, 5, 6]), 32, '3D: 4+10+18 = 32');
+        assert.equal([-1, 1].scalprod([-3, -3]), 0, '(-1,1)·(-3,-3) = 0');
+        assert.throws(function () { [1].scalprod([3, 4]); }, 'разная размерность (первый короче) — исключение');
+        assert.throws(function () { [1, 2].scalprod([3]); }, 'разная размерность (второй короче) — исключение');
+    });
+
+    QUnit.test('Array.prototype.veclengthSquared', function (assert) {
+        assert.equal([3, 4].veclengthSquared(), 25, 'квадрат длины 3-4-5');
+        assert.equal([0, 0].veclengthSquared(), 0, 'нулевой вектор');
+        assert.equal([1, 2, 2].veclengthSquared(), 9, 'трёхмерный случай');
+    });
+
+    QUnit.test('Array.prototype.veccos', function (assert) {
+        assert.equal([1, 0].veccos([0, 1]), 0, 'прямой угол');
+        assert.equal([2, 0].veccos([3, 0]), 1, 'сонаправленные');
+        assert.equal([2, 0].veccos([-3, 0]), -1, 'противоположные');
+        assert.ok(Math.abs([1, 1].veccos([1, 0]) - Math.SQRT1_2) < 1e-10, '45 градусов');
+        assert.strictEqual([6, 3].veccos([5, 10]), 0.8, '(6;3) и (5;10): ровно 0,8, без потери точности');
+        assert.throws(function () { [0, 0].veccos([1, 0]); }, 'нулевой вектор — исключение');
+    });
+
+    QUnit.test('Array.prototype.vecangleInDegrees', function (assert) {
+        assert.equal([1, 0].vecangleInDegrees([0, 1]), 90, 'прямой угол');
+        assert.equal([2, 0].vecangleInDegrees([3, 0]), 0, 'сонаправленные');
+        assert.equal([2, 0].vecangleInDegrees([-3, 0]), 180, 'противоположные');
+        assert.ok(Math.abs([1, 0].vecangleInDegrees([1, 1]) - 45) < 1e-10, '45 градусов');
+    });
+
+    QUnit.test('Array.prototype.coordVect', function (assert) {
+        assert.deepEqual([1, 2, 4, 6].coordVect(), [3, 4], 'конец минус начало');
+        assert.deepEqual([5, 5, 5, 5].coordVect(), [0, 0], 'вырожденный → [0,0]');
+        assert.deepEqual([1, 2, 3, 4, 6, 8].coordVect(), [3, 4, 5], 'в пространстве: [x1,y1,z1,x2,y2,z2]');
+    });
+
+    QUnit.test('segmentIntersectionCount: пересекающиеся отрезки', function (assert) {
+        assert.equal(segmentIntersectionCount(0, 0, 2, 2, 0, 2, 2, 0), 1, 'крест-накрест');
+        assert.equal(segmentIntersectionCount(0, 0, 4, 0, 2, -2, 2, 2), 1, 'вертикальный пересекает горизонтальный');
+    });
+
+    QUnit.test('segmentIntersectionCount: непересекающиеся отрезки', function (assert) {
+        assert.equal(segmentIntersectionCount(0, 0, 1, 0, 0, 1, 1, 1), 0, 'параллельные');
+        assert.equal(segmentIntersectionCount(0, 0, 1, 0, 2, 1, 3, 2), 0, 'прямые пересекаются вне отрезков');
+    });
+
+    // ============================================================
     //  Array General Functions  (lib/array_general.js)
     // ============================================================
     QUnit.module('Array General Functions');
@@ -714,61 +773,56 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
-    //  Array vector functions  (lib/array.js)
+    //  Canvas: пунктирная сетка drawGridWithArrows  (lib/canvas.js)
     // ============================================================
-    QUnit.module('Array vector functions');
+    QUnit.module('Canvas: drawGridWithArrows gridLineDash');
 
-    QUnit.test('Array.prototype.veclength', function (assert) {
-        assert.equal([3, 4].veclength(), 5, '|[3,4]| = 5');
-        assert.equal([0, 0].veclength(), 0, '|[0,0]| = 0');
-        assert.equal([1, 2, 2].veclength(), 3, '|[1,2,2]| = 3 (3D)');
-        assert.equal([-3, -4].veclength(), 5, '|[-3,-4]| = 5');
+    function gridStubCtx(events) {
+        return {
+            lineWidth: 0, font: '', textAlign: '', textBaseline: '',
+            save: function () { events.push(['save']); },
+            restore: function () { events.push(['restore']); },
+            translate: function () { events.push(['translate']); },
+            scale: function () { events.push(['scale']); },
+            setLineDash: function (d) { events.push(['dash', Array.prototype.slice.call(d)]); },
+            fillText: function () { events.push(['label']); },
+            irregularGrid: function () { events.push(['grid']); },
+            drawArrow: function () { events.push(['arrow']); },
+            drawLine: function () { events.push(['tick']); },
+        };
+    }
+
+    QUnit.test('gridLineDash применяется к сетке, а до осей состояние восстанавливается', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawGridWithArrows === 'function', 'метод drawGridWithArrows определён');
+        var events = [];
+        var ctx = gridStubCtx(events);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, {
+            gridLineDash: [3, 3], gridWidth: 60, gridHeight: 60, cellWidth: 10, cellHeight: 10, maxX: 3, maxY: 3,
+        });
+        var gi = -1, ai = -1, i;
+        for (i = 0; i < events.length; i++) {
+            if (events[i][0] === 'grid' && gi < 0) gi = i;
+            if (events[i][0] === 'arrow' && ai < 0) ai = i;
+        }
+        assert.ok(gi >= 0 && ai > gi, 'сетка рисуется до осей');
+        var dashBeforeGrid = null;
+        for (i = 0; i < gi; i++) if (events[i][0] === 'dash') dashBeforeGrid = events[i][1];
+        assert.deepEqual(dashBeforeGrid, [3, 3], 'перед сеткой установлен пунктир [3, 3]');
+        var restoreBetween = false;
+        for (i = gi + 1; i < ai; i++) if (events[i][0] === 'restore') restoreBetween = true;
+        assert.ok(restoreBetween, 'после сетки и до осей — restore(): оси рисуются в прежнем состоянии');
     });
 
-    QUnit.test('Array.prototype.scalprod', function (assert) {
-        assert.equal([1, 2].scalprod([3, 4]), 11, '(1,2)·(3,4) = 11');
-        assert.equal([1, 0].scalprod([0, 1]), 0, 'ортогональные → 0');
-        assert.equal([1, 2, 3].scalprod([4, 5, 6]), 32, '3D: 4+10+18 = 32');
-        assert.equal([-1, 1].scalprod([-3, -3]), 0, '(-1,1)·(-3,-3) = 0');
-        assert.throws(function () { [1].scalprod([3, 4]); }, 'разная размерность (первый короче) — исключение');
-        assert.throws(function () { [1, 2].scalprod([3]); }, 'разная размерность (второй короче) — исключение');
-    });
-
-    QUnit.test('Array.prototype.veclengthSquared', function (assert) {
-        assert.equal([3, 4].veclengthSquared(), 25, 'квадрат длины 3-4-5');
-        assert.equal([0, 0].veclengthSquared(), 0, 'нулевой вектор');
-        assert.equal([1, 2, 2].veclengthSquared(), 9, 'трёхмерный случай');
-    });
-
-    QUnit.test('Array.prototype.veccos', function (assert) {
-        assert.equal([1, 0].veccos([0, 1]), 0, 'прямой угол');
-        assert.equal([2, 0].veccos([3, 0]), 1, 'сонаправленные');
-        assert.equal([2, 0].veccos([-3, 0]), -1, 'противоположные');
-        assert.ok(Math.abs([1, 1].veccos([1, 0]) - Math.SQRT1_2) < 1e-10, '45 градусов');
-        assert.strictEqual([6, 3].veccos([5, 10]), 0.8, '(6;3) и (5;10): ровно 0,8, без потери точности');
-        assert.throws(function () { [0, 0].veccos([1, 0]); }, 'нулевой вектор — исключение');
-    });
-
-    QUnit.test('Array.prototype.vecangleInDegrees', function (assert) {
-        assert.equal([1, 0].vecangleInDegrees([0, 1]), 90, 'прямой угол');
-        assert.equal([2, 0].vecangleInDegrees([3, 0]), 0, 'сонаправленные');
-        assert.equal([2, 0].vecangleInDegrees([-3, 0]), 180, 'противоположные');
-        assert.ok(Math.abs([1, 0].vecangleInDegrees([1, 1]) - 45) < 1e-10, '45 градусов');
-    });
-
-    QUnit.test('Array.prototype.coordVect', function (assert) {
-        assert.deepEqual([1, 2, 4, 6].coordVect(), [3, 4], 'конец минус начало');
-        assert.deepEqual([5, 5, 5, 5].coordVect(), [0, 0], 'вырожденный → [0,0]');
-        assert.deepEqual([1, 2, 3, 4, 6, 8].coordVect(), [3, 4, 5], 'в пространстве: [x1,y1,z1,x2,y2,z2]');
-    });
-
-    QUnit.test('segmentIntersectionCount: пересекающиеся отрезки', function (assert) {
-        assert.equal(segmentIntersectionCount(0, 0, 2, 2, 0, 2, 2, 0), 1, 'крест-накрест');
-        assert.equal(segmentIntersectionCount(0, 0, 4, 0, 2, -2, 2, 2), 1, 'вертикальный пересекает горизонтальный');
-    });
-
-    QUnit.test('segmentIntersectionCount: непересекающиеся отрезки', function (assert) {
-        assert.equal(segmentIntersectionCount(0, 0, 1, 0, 0, 1, 1, 1), 0, 'параллельные');
-        assert.equal(segmentIntersectionCount(0, 0, 1, 0, 2, 1, 3, 2), 0, 'прямые пересекаются вне отрезков');
+    QUnit.test('без gridLineDash пунктир контекста не трогается (поведение по умолчанию)', function (assert) {
+        var events = [];
+        var ctx = gridStubCtx(events);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, {
+            gridWidth: 60, gridHeight: 60, cellWidth: 10, cellHeight: 10, maxX: 3, maxY: 3,
+        });
+        var dashCalls = 0;
+        for (var i = 0; i < events.length; i++) {
+            if (events[i][0] === 'dash') dashCalls++;
+        }
+        assert.equal(dashCalls, 0, 'setLineDash не вызывается');
     });
 };
