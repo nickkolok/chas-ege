@@ -651,4 +651,35 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+
+    // ============================================================
+    //  diagram: характеристика интервалов по предикату  (lib/diagram.js)
+    // ============================================================
+    QUnit.module('diagram: addUniqueAnswByPredicate');
+
+    QUnit.test('addUniqueAnswByPredicate: единственный подходящий интервал', function (assert) {
+        var intervals = [[1, 2], [2, 2], [3, 1]];
+        var answ = intervals.map(function () { return { solution: [] }; });
+        addUniqueAnswByPredicate(intervals, answ, isIncreasing, 'рост');
+        assert.deepEqual(answ[0].solution, ['рост'], 'текст добавлен единственному растущему интервалу');
+        assert.deepEqual(answ[1].solution, [], 'постоянному интервалу не добавлено');
+        assert.deepEqual(answ[2].solution, [], 'убывающему интервалу не добавлено');
+    });
+
+    QUnit.test('addUniqueAnswByPredicate: несколько подходящих интервалов — ничего не добавляет', function (assert) {
+        var intervals = [[1, 2], [2, 3], [3, 1]];
+        var answ = intervals.map(function () { return { solution: [] }; });
+        addUniqueAnswByPredicate(intervals, answ, isIncreasing, 'рост');
+        assert.deepEqual(answ.map(function (a) { return a.solution; }), [[], [], []], 'два растущих интервала — текст не добавлен');
+    });
+
+    QUnit.test('addUniqueAnswByPredicate: предикат вызывается только с интервалом', function (assert) {
+        var intervals = [[5], [7]];
+        var answ = intervals.map(function () { return { solution: [] }; });
+        var argCounts = [];
+        addUniqueAnswByPredicate(intervals, answ, function (iv) { argCounts.push(arguments.length); return iv[0] > 6; }, 'больше 6');
+        assert.deepEqual(argCounts, [1, 1], 'предикат получает один аргумент (без индекса)');
+        assert.deepEqual(answ[1].solution, ['больше 6'], 'текст добавлен интервалу [7]');
+    });
+
 };
