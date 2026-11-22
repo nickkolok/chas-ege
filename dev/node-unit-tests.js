@@ -651,4 +651,53 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  Canvas: стандартный ракурс параллелепипеда  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawStandardParallelepiped');
+
+    QUnit.test('drawStandardParallelepiped: настройка контекста и стандартный ракурс', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawStandardParallelepiped === 'function', 'метод drawStandardParallelepiped определён');
+        var calls = { translate: [], scale: [], box: [] };
+        var ctx = {
+            translate: function () { calls.translate.push(Array.prototype.slice.call(arguments)); },
+            scale: function () { calls.scale.push(Array.prototype.slice.call(arguments)); },
+            drawParallelepiped: function () { calls.box.push(Array.prototype.slice.call(arguments)); },
+        };
+        var letters = ['A', 'B', 'C', 'D', 'A₁', 'B₁', 'C₁', 'D₁'];
+        CanvasRenderingContext2D.prototype.drawStandardParallelepiped.call(ctx, letters, { edge: 25, width: 27.5, height: 22.5, x: 95 });
+        assert.deepEqual(calls.translate, [[95, 50]], 'translate(x, 50)');
+        assert.deepEqual(calls.scale, [[10, 10]], 'масштаб холста 10');
+        assert.equal(ctx.lineWidth, 0.2, 'lineWidth 0.2');
+        assert.equal(ctx.font, '2.5px liberation_sans', 'шрифт 2.5px liberation_sans');
+        assert.equal(calls.box.length, 1, 'drawParallelepiped вызван ровно один раз');
+        assert.deepEqual(calls.box[0][0], { width: 27.5, height: 22.5, depth: 12.5, angle: 40, scale: 20, lettersOnVertex: letters }, 'глубина — половина ребра, angle 40, scale 20, подписи вершин');
+        assert.deepEqual(calls.box[0][1], [0, 3, 4], 'невидимые рёбра 0, 3, 4');
+        assert.strictEqual(calls.box[0][2], false, 'диагональ не рисуется');
+        assert.deepEqual(calls.box[0][3], [0.4, 0.5], 'пунктир [0.4, 0.5]');
+    });
+
+    QUnit.test('drawStandardParallelepiped: по умолчанию куб с ребром 25', function (assert) {
+        var box = null;
+        var ctx = {
+            translate: function () {},
+            scale: function () {},
+            drawParallelepiped: function (o) { box = o; },
+        };
+        CanvasRenderingContext2D.prototype.drawStandardParallelepiped.call(ctx, []);
+        assert.deepEqual(box, { width: 25, height: 25, depth: 12.5, angle: 40, scale: 20, lettersOnVertex: [] }, 'edge 25, передняя грань 25×25, глубина 12.5');
+    });
+
+    QUnit.test('drawStandardParallelepiped: свои положение и шрифт', function (assert) {
+        var tr = [];
+        var ctx = {
+            translate: function () { tr.push(Array.prototype.slice.call(arguments)); },
+            scale: function () {},
+            drawParallelepiped: function () {},
+        };
+        CanvasRenderingContext2D.prototype.drawStandardParallelepiped.call(ctx, [], { edge: 24, x: 110, y: 60, font: '3px liberation_sans' });
+        assert.deepEqual(tr, [[110, 60]], 'свои x и y');
+        assert.equal(ctx.font, '3px liberation_sans', 'свой шрифт');
+    });
+
 };
