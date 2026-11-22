@@ -44,9 +44,8 @@
 
 		let find = randFind ? `значение $x$, при котором $f(x)=${y}$` : `$f(${x})$`;
 		let answ = randFind ? x : y;
+		let w = 400, h = 400;
 		let paint1 = function (ct) {
-			let h = 400;
-			let w = 400;
 			//Оси координат
 			ct.drawCoordinatePlane(w, h, {
 				hor: 1,
@@ -77,8 +76,8 @@
 			preference: [preference1, preference2, preference3],
 		});
 		NAtask.modifiers.addCanvasIllustration({
-			width: 400,
-			height: 400,
+			width: w,
+			height: h,
 			paint: paint1,
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
