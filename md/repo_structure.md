@@ -139,7 +139,8 @@ src/
 - `scripts/` — вспомогательные скрипты (fast_set и др.)
 - `parser/` — скрипты, которые очень помогают с лексическим модулем
 - `txtdocs/` — текстовая документация (vocabulary.txt, random.txt)
-- `node-unit-tests.js`, `run-node-tests.js` — node-тесты
+- `node-unit-tests.js`, `run-node-tests.js` — node-тесты; тесты сгруппированы по `QUnit.module`,
+  новый тест кладётся в раздел своего модуля, а не в конец файла — иначе параллельные PR конфликтуют
 - `nabor-override-*.js` — переопределения наборов для отладки
 - `zdn_ustar/` — устаревшие задачи
 
