@@ -7,7 +7,7 @@
 		let right = b + sl(0.5, 5, 0.5);
 		let sign = [' ', '-'].iz();
 		NAtask.setMinimaxFunctionTask({
-			expr: sign + '(' + ['x', b].shuffle().join('-') + ')^2*e^(' + ['x', a].shuffle().join('-') + ')',
+			expr: sign + '(' + ['x', b].shuffleJoin('-') + ')^2*e^(' + ['x', a].shuffleJoin('-') + ')',
 			leftEnd: left + '',
 			rightEnd: right + '',
 			forbiddenAnswers: [0, '-0'],
