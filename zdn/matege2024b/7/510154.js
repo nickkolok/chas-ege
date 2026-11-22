@@ -3,8 +3,10 @@
     retryWhileError(function () {
         /* На рисунке точками показан годовой объём добычи угля в России открытым способом в период с 2001 по 2010 год. По горизонтали указывается год, по вертикали – объём добычи угля в миллионах тонн. Для наглядности точки соединены линиями. */
 
+        let minY = 150, stepY = 25;
+
         function convert(value) {
-            return 150 + value * 25 + ' млн т';
+            return minY + value * stepY + ' млн т';
         }
 
         function answAboutMin(intervals, answ) {
@@ -160,10 +162,10 @@
                 cellWidth: 60,
                 cellHeight: 60,
                 stepX: 1,
-                stepY: 25,
+                stepY: stepY,
                 minX: 2001,
                 maxX: 2010,
-                minY: 150,
+                minY: minY,
                 maxY: 250,
                 stepByCeilX: 1,
                 arrowLengthX: 8.5,
