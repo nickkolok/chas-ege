@@ -19,7 +19,7 @@
 			switch (sl(0, 4)) {
 				case 0: // ±a/m ; ОДЗ: m != 0
 					a = sl(1, 7).pm();
-					latex = (a < 0 ? '-' : '') + '\\frac{' + Math.abs(a) + '}{m}';
+					latex = a.texfrac('m');
 					v = a / m;
 					ok = m !== 0;
 					break;
