@@ -3,12 +3,15 @@
     retryWhileError(function () {
         /* 'На рисунке точками показаны ежемесячные объёмы продаж холодильников в магазине бытовой техники. По горизонтали указываются месяцы, по вертикали – количество проданных холодильников. Для наглядности точки соединены линией.' */
 
+        let priceStep = 100; // шаг шкалы продаж: подписи оси Y идут с этим шагом
+        let priceMin = 100;  // значение продаж в начале отсчёта по оси Y
+
         function convert(P) {
-            return P * 100 + 100;
+            return P * priceStep + priceMin;
         }
 
         function convertDelta(delta) {
-            return delta * 100;
+            return delta * priceStep;
         }
 
         function answAboutMax(intervals, answ) {
@@ -145,10 +148,10 @@
                 cellWidth: 40,
                 cellHeight: 40,
                 stepX: 1,
-                stepY: 100,
+                stepY: priceStep,
                 typeX: 'custom',
                 labelsX: monthView,
-                minY: 100,
+                minY: priceMin,
                 maxY: 700,
                 stepByCeilX: 1,
                 arrowLengthX: 10.5,
