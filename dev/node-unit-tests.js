@@ -736,6 +736,71 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Canvas: ломаная по массивам точек  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawPolyline');
+
+    QUnit.test('ctx.drawPolyline соединяет соседние точки отрезками', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawPolyline === 'function', 'метод drawPolyline определён');
+        var calls = [];
+        var ctx = {
+            drawLine: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [0, 1, 2], [3, 1, 4]);
+        assert.deepEqual(calls, [[0, 3, 1, 1], [1, 1, 2, 4]], 'два отрезка: (0,3)-(1,1) и (1,1)-(2,4)');
+    });
+
+    QUnit.test('ctx.drawPolyline: ноль или одна точка — ничего не рисуется', function (assert) {
+        var calls = [];
+        var ctx = {
+            drawLine: function () {
+                calls.push(Array.prototype.slice.call(arguments));
+            },
+        };
+        CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [], []);
+        CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [5], [7]);
+        assert.equal(calls.length, 0, 'drawLine не вызывался');
+    });
+
+    QUnit.test('ctx.drawPolyline с dotRadius: точка в каждой вершине, затем отрезок к следующей', function (assert) {
+        var calls = [];
+        var ctx = {
+            drawLine: function () { calls.push(['line'].concat(Array.prototype.slice.call(arguments))); },
+            drawFilledCircle: function () { calls.push(['dot'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [0, 1, 2], [3, 1, 4], 0.5);
+        assert.deepEqual(calls, [
+            ['dot', 0, 3, 0.5], ['line', 0, 3, 1, 1],
+            ['dot', 1, 1, 0.5], ['line', 1, 1, 2, 4],
+            ['dot', 2, 4, 0.5],
+        ], 'порядок как в шаблонах: точка i, отрезок i→i+1');
+        calls = [];
+        CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [5], [7], 0.5);
+        assert.deepEqual(calls, [['dot', 5, 7, 0.5]], 'одна точка — только точка');
+    });
+
+    QUnit.test('ctx.drawPolyline: NaN или разная длина массивов — предупреждение в консоль', function (assert) {
+        var ctx = { drawLine: function () {} };
+        var warnings = [];
+        var originalWarn = console.warn;
+        console.warn = function () { warnings.push(arguments[0]); };
+        try {
+            CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [0, 1, 2], [3, 1, 4]);
+            assert.equal(warnings.length, 0, 'корректные данные — без предупреждения');
+            CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [0, 1, 2], [3, NaN, 4]);
+            assert.equal(warnings.length, 1, 'NaN в ординатах — предупреждение');
+            CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [0, 1, 2], [3, 1]);
+            assert.equal(warnings.length, 2, 'ys короче xs — предупреждение');
+            CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [0, 1], [3, 1, 4]);
+            assert.equal(warnings.length, 3, 'ys длиннее xs — тоже предупреждение');
+        } finally {
+            console.warn = originalWarn;
+        }
+    });
+
+    // ============================================================
     //  chislit / chislitlx: отрицательные числа  (lib/func.js)
     // ============================================================
     QUnit.module('chislit / chislitlx: отрицательные числа');
