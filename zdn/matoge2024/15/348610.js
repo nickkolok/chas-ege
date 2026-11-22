@@ -51,8 +51,7 @@
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.arcBetweenSegments([pointsAngle[0].x, pointsAngle[0].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y], 30);
-			ctx.arcBetweenSegments([pointsAngle[1].x, pointsAngle[1].y, pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y], 30);
+			pointsAngle.forEach(p => ctx.arcBetweenSegments([p.x, p.y, pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y], 30));
 
 			ctx.scale(1, -1);
 			ctx.font = '20px liberation_sans';
