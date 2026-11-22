@@ -651,4 +651,36 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+
+    // ============================================================
+    //  Expectation helpers  (lib/expectation.js)
+    // ============================================================
+    QUnit.module('Expectation helpers');
+
+    QUnit.test('weightedMean: среднее взвешенное', function (assert) {
+        assert.equal(weightedMean([1, 2, 5], [10, 20, 30]), (1*10 + 2*20 + 5*30)/60, 'определение');
+        assert.equal(weightedMean([2, 4], [1, 1]), 3, 'равные веса = обычное среднее');
+        assert.equal(weightedMean([7], [5]), 7, 'один элемент');
+        assert.ok(Math.abs(weightedMean([1, 2, 5, 10, 0.5], [19, 15, 5, 11, 7]) - 187.5/57) < 1e-12, 'дробное значение');
+    });
+
+    QUnit.test('distributionTable: таблица распределения', function (assert) {
+        var t = distributionTable([1, 2], [10, 20], 'Номинал', 'Количество');
+        assert.ok(t.indexOf('<table') !== -1, 'обёрнуто в table');
+        assert.ok(t.indexOf('<th>Номинал</th>') !== -1, 'заголовок значений в th');
+        assert.ok(t.indexOf('<th>1</th>') !== -1, 'значение в th');
+        assert.ok(t.indexOf('<td>Количество</td>') !== -1, 'заголовок количеств в td');
+        assert.ok(t.indexOf('<td>20</td>') !== -1, 'количество в td');
+    });
+
+    QUnit.test('expectationFormulaTex: TeX-запись матожидания', function (assert) {
+        var f = expectationFormulaTex([2000, 3000], [10, 6]);
+        assert.ok(f.indexOf('M(X) = ') === 0, 'начинается с M(X)');
+        assert.ok(f.indexOf('\\cdot') !== -1, 'есть \\cdot');
+        assert.ok(f.indexOf('\\frac{10}{16}') !== -1, 'дробь через texfrac');
+        assert.ok(f.indexOf(' = ' + (2000*10 + 3000*6)/16) !== -1, 'итог = среднее взвешенное');
+        assert.strictEqual(f.indexOf('\x0c'), -1, 'нет управляющих символов');
+    });
+
+
 };
