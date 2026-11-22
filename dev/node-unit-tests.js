@@ -651,4 +651,30 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  Случайные положительные веса с заданной суммой  (lib/func.js)
+    // ============================================================
+    QUnit.module('sluchaynyeVesa');
+
+    QUnit.test('сумма и длина сохраняются, веса целые >= 1', function (assert) {
+        var cases = [[3, 10], [6, 10], [4, 20], [5, 50], [6, 50], [3, 50]];
+        cases.forEach(function (pair) {
+            var n = pair[0], summa = pair[1];
+            for (var t = 0; t < 100; t++) {
+                var w = sluchaynyeVesa(n, summa);
+                assert.equal(w.length, n, 'длина ' + n);
+                assert.equal(w.sum(), summa, 'сумма ' + summa);
+                assert.ok(w.every(function (x) { return x.isZ() && x >= 1; }), 'веса целые >= 1');
+            }
+        });
+    });
+
+    QUnit.test('при summa === n все веса равны 1', function (assert) {
+        assert.deepEqual(sluchaynyeVesa(5, 5), [1, 1, 1, 1, 1], 'единственное разбиение');
+    });
+
+    QUnit.test('негодные параметры отбраковываются', function (assert) {
+        assert.throws(function () { sluchaynyeVesa(5, 3); }, /summa >= n/, 'summa < n');
+    });
+
 };
