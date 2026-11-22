@@ -79,15 +79,13 @@
 				step: 0.01
 			});
 
-			graph9AmarkCircles(ct, [
+			let ends = [
 				[maxX, f(maxX)],
 				[minX, f(minX)]
-			], 2, 0.2);
+			];
+			graph9AmarkCircles(ct, ends, 2, 0.2);
 			ct.fillStyle = "white";
-			graph9AmarkCircles(ct, [
-				[maxX, f(maxX)],
-				[minX, f(minX)]
-			], 2, 0.1);
+			graph9AmarkCircles(ct, ends, 2, 0.1);
 		};
 		NAtask.setTask({
 			text: 'На рисунке изображен график функции $y = f(x)$, определенной на интервале $(' + minX + '; ' + maxX +
