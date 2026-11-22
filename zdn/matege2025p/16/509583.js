@@ -30,7 +30,7 @@
 		S = monthlyPrincipal * N;
 		xPercent = sluchch(2, 20, 1);
 		let x = xPercent / 100;
-		let sumInterest = x * S / N * (n * (2 * N - n + 1) / 2);
+		let sumInterest = x * S / N * new ArithmeticProgression(N, -1).sum(n);
 		yPercent = (((n * monthlyPrincipal + sumInterest) / S) - 1) * 100;
 		rez = n * monthlyPrincipal + sumInterest;
 		if (n == N) {
