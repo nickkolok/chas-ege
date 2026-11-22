@@ -734,6 +734,28 @@ module.exports = function registerNodeTests(QUnit) {
         assert.throws(function () { [1, 2].scalprod([3]); }, 'разная размерность (второй короче) — исключение');
     });
 
+    QUnit.test('Array.prototype.veclengthSquared', function (assert) {
+        assert.equal([3, 4].veclengthSquared(), 25, 'квадрат длины 3-4-5');
+        assert.equal([0, 0].veclengthSquared(), 0, 'нулевой вектор');
+        assert.equal([1, 2, 2].veclengthSquared(), 9, 'трёхмерный случай');
+    });
+
+    QUnit.test('Array.prototype.veccos', function (assert) {
+        assert.equal([1, 0].veccos([0, 1]), 0, 'прямой угол');
+        assert.equal([2, 0].veccos([3, 0]), 1, 'сонаправленные');
+        assert.equal([2, 0].veccos([-3, 0]), -1, 'противоположные');
+        assert.ok(Math.abs([1, 1].veccos([1, 0]) - Math.SQRT1_2) < 1e-10, '45 градусов');
+        assert.strictEqual([6, 3].veccos([5, 10]), 0.8, '(6;3) и (5;10): ровно 0,8, без потери точности');
+        assert.throws(function () { [0, 0].veccos([1, 0]); }, 'нулевой вектор — исключение');
+    });
+
+    QUnit.test('Array.prototype.vecangleInDegrees', function (assert) {
+        assert.equal([1, 0].vecangleInDegrees([0, 1]), 90, 'прямой угол');
+        assert.equal([2, 0].vecangleInDegrees([3, 0]), 0, 'сонаправленные');
+        assert.equal([2, 0].vecangleInDegrees([-3, 0]), 180, 'противоположные');
+        assert.ok(Math.abs([1, 0].vecangleInDegrees([1, 1]) - 45) < 1e-10, '45 градусов');
+    });
+
     QUnit.test('Array.prototype.coordVect', function (assert) {
         assert.deepEqual([1, 2, 4, 6].coordVect(), [3, 4], 'конец минус начало');
         assert.deepEqual([5, 5, 5, 5].coordVect(), [0, 0], 'вырожденный → [0,0]');
