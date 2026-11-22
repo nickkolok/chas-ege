@@ -621,6 +621,37 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  chislit / chislitlx: отрицательные числа  (lib/func.js)
+    // ============================================================
+    QUnit.module('chislit / chislitlx: отрицательные числа');
+
+    QUnit.test('chislit: форма слова выбирается по модулю числа', function (assert) {
+        assert.equal(chislit(-4, 'день', 'дня', 'дней'), 'дня', '-4 → дня');
+        assert.equal(chislit(-21, 'день', 'дня', 'дней'), 'день', '-21 → день');
+        assert.equal(chislit(-22, 'день', 'дня', 'дней'), 'дня', '-22 → дня');
+        assert.equal(chislit(-5, 'день', 'дня', 'дней'), 'дней', '-5 → дней');
+        assert.equal(chislit(-11, 'день', 'дня', 'дней'), 'дней', '-11 → дней');
+        assert.equal(chislit(-101, 'день', 'дня', 'дней'), 'день', '-101 → день');
+        assert.equal(chislit(-100, 'день', 'дня', 'дней'), 'дней', '-100 → дней');
+        assert.equal(chislit(-1.5, 'день', 'дня', 'дней'), 'дня', '-1,5 → дня (дробное)');
+    });
+
+    QUnit.test('chislit: положительные числа не затронуты', function (assert) {
+        assert.equal(chislit(4, 'день', 'дня', 'дней'), 'дня', '4 → дня');
+        assert.equal(chislit(21, 'день', 'дня', 'дней'), 'день', '21 → день');
+        assert.equal(chislit(5, 'день', 'дня', 'дней'), 'дней', '5 → дней');
+        assert.equal(chislit(11, 'день', 'дня', 'дней'), 'дней', '11 → дней');
+    });
+
+    QUnit.test('chislitlx: отрицательное число с существительным', function (assert) {
+        assert.equal(chislitlx(-4, 'день'), '-4 дня', '-4 дня');
+        assert.equal(chislitlx(-21, 'день'), '-21 день', '-21 день');
+        assert.equal(chislitlx(-5, 'день'), '-5 дней', '-5 дней');
+        assert.equal(chislitlx(-12.6, 'день'), '-12,6 дня', '-12,6 дня');
+        assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
+    });
+
+    // ============================================================
     //  Canvas: подписи вершин фигуры  (lib/canvas.js)
     // ============================================================
     QUnit.module('Canvas: signVertices');
