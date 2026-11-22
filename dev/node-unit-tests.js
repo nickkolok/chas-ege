@@ -651,4 +651,60 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  Canvas: пирамида с отсечённой пирамидой  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawRightPyramid4WithMidsection');
+
+    QUnit.test('ctx.drawRightPyramid4WithMidsection: отсечённая пирамида вдвое меньше, вершины совпадают', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawRightPyramid4WithMidsection === 'function', 'метод определён');
+        var events = [];
+        var pyramidCalls = [];
+        var ctx = {
+            lineWidth: 0.2,
+            save: function () { events.push('save'); },
+            restore: function () { events.push('restore'); },
+            translate: function (x, y) { events.push(['translate', x, y]); },
+            drawRightPyramid4: function (o, dottedLine, setLineDash) {
+                pyramidCalls.push({ o: o, dottedLine: dottedLine, setLineDash: setLineDash, lineWidth: this.lineWidth });
+                events.push('pyramid');
+            },
+        };
+        CanvasRenderingContext2D.prototype.drawRightPyramid4WithMidsection.call(
+            ctx, { edge: 21, angle: Math.PI / 4, height: -23, scale: 10 }, [0, 2, 5], [1, 0.7], 'red', 0.3
+        );
+        assert.equal(pyramidCalls.length, 2, 'drawRightPyramid4 вызван дважды');
+        assert.equal(pyramidCalls[0].o.edge, 21, 'большая пирамида: ребро 21');
+        assert.equal(pyramidCalls[0].lineWidth, 0.2, 'большая пирамида рисуется текущей толщиной линий');
+        assert.equal(pyramidCalls[1].o.edge, 10.5, 'отсечённая: ребро вдвое меньше');
+        assert.equal(pyramidCalls[1].o.height, -11.5, 'отсечённая: высота вдвое меньше');
+        assert.equal(pyramidCalls[1].o.angle, Math.PI / 4, 'отсечённая: тот же угол поворота');
+        assert.equal(pyramidCalls[1].o.strokeStyle, 'red', 'отсечённая: заданный цвет');
+        assert.deepEqual(pyramidCalls[1].dottedLine, [0, 2, 5], 'отсечённая: те же пунктирные рёбра');
+        assert.deepEqual(pyramidCalls[1].setLineDash, [1, 0.7], 'отсечённая: тот же пунктир');
+        assert.equal(pyramidCalls[1].lineWidth, 0.3, 'отсечённая: заданная толщина линий');
+        var shifts = events.filter(function (e) { return Array.isArray(e); });
+        assert.equal(shifts.length, 1, 'ровно один сдвиг');
+        var c = 21 * Math.cos(Math.PI / 4);
+        assert.ok(Math.abs(shifts[0][1] - (21 + c) / 4) < 1e-9, 'сдвиг по x - половина абсциссы вершины');
+        assert.ok(Math.abs(shifts[0][2] - (-(21 + c) / 4 - 23 / 2)) < 1e-9, 'сдвиг по y - половина ординаты вершины');
+        assert.deepEqual(events.filter(function (e) { return !Array.isArray(e); }),
+            ['pyramid', 'save', 'pyramid', 'restore'], 'порядок: большая пирамида, затем отсечённая, состояние восстановлено');
+    });
+
+    QUnit.test('ctx.drawRightPyramid4WithMidsection: цвет по умолчанию, толщина линий не меняется', function (assert) {
+        var pyramidCalls = [];
+        var ctx = {
+            lineWidth: 0.2,
+            save: function () {},
+            restore: function () {},
+            translate: function () {},
+            drawRightPyramid4: function (o) { pyramidCalls.push(o); },
+        };
+        CanvasRenderingContext2D.prototype.drawRightPyramid4WithMidsection.call(ctx, { edge: 10, angle: Math.PI / 4, height: -12 }, [], [1, 0.7]);
+        assert.equal(pyramidCalls.length, 2, 'drawRightPyramid4 вызван дважды');
+        assert.ok(om.primaryBrandColors.indexOf(pyramidCalls[1].strokeStyle) !== -1, 'цвет отсечённой пирамиды - из om.primaryBrandColors');
+        assert.equal(ctx.lineWidth, 0.2, 'без midsectionLineWidth толщина линий не меняется');
+    });
+
 };
