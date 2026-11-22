@@ -142,10 +142,8 @@
 				checkZeroWithCases(down[2]) + '}' + ['\\le', '\\ge'][slSign2] + '0' +
 				'\\Leftrightarrow' +
 				'\\left[\\begin{aligned} x ' + [['\\le', '<'][checkAnswer(a)] + a, ['\\ge', '>'][checkAnswer(e)] + e][slSign2] +
-				',\\\\' + [b + ['\\le', '<'][checkAnswer(b)], sign3[Math.abs(checkSign(numerator))] + '\\frac{' +
-				Math.abs(numerator) + '}{' + denominator + '}' + '\\le'][slSign2] + ' x ' +
-				['\\le' + sign3[Math.abs(checkSign(numerator))] + '\\frac{' +
-				Math.abs(numerator) + '}{' + denominator + '}', ['\\le', '<'][checkAnswer(d)] + d ][slSign2] +
+				',\\\\' + [b + ['\\le', '<'][checkAnswer(b)], numerator.texfrac(denominator) + '\\le'][slSign2] + ' x ' +
+				['\\le' + numerator.texfrac(denominator), ['\\le', '<'][checkAnswer(d)] + d ][slSign2] +
 				',\\\\' + [d + ['\\le', '<'][checkAnswer(d)], a + ['\\le', '<'][checkAnswer(a)]][slSign2] + ' x ' +
 				[['\\le', '<'][checkAnswer(e)] + e, ['\\le', '<'][checkAnswer(b)] + b ][slSign2] +
 				'.\\end{aligned}\\right.$$',
