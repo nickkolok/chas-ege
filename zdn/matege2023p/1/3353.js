@@ -18,7 +18,7 @@
 		]);
         
         let angleQ = [[[`A`,`C`].shuffleJoin()+[ `B`, `D`,].iz(), rhombus.angleAInDegrees/2],[[ `B`, `D`,].shuffleJoin() + [ `A`, `C`,].iz(), rhombus.angleBInDegrees/2]][rand];
-        angleQ[0]=sl1()?angleQ[0]:angleQ[0].split(``).reverse().join(``);
+        angleQ[0]=sl1()?angleQ[0]:angleQ[0].reverse();
 		
 		let points = autoScale(rhombus.rotate(rhombus.angleAInRadians / 2).vertices);
 
