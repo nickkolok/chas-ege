@@ -34,7 +34,7 @@
 			ctx.scale = (100, 100);
 
 			ctx.translate(0, 80);
-			ctx.drawArc(100, 80, 180, 0, 2 * Math.PI);
+			ctx.drawCircle(100, 80, 180);
 
 			ctx.setLineDash([4, 5]);
 			ctx.strokeStyle = om.primaryBrandColors.iz();
