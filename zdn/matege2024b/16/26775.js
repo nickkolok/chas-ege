@@ -47,7 +47,7 @@
 		denominator = '\\sqrt{' + squareRoot + '}';
 		fraction = Math.abs(numerator) / Math.sqrt(squareRoot);
 		genAssert(fraction < 1, 'Значение должно быть меньше 1');
-		givenValue = (signGiven === -1 ? '-' : '') + '\\frac{' + Math.abs(numerator) + '}{\\sqrt{' + squareRoot + '}}';
+		givenValue = (signGiven * Math.abs(numerator)).texfrac(squareRoot.texsqrt());
 
 		let otherValue = Math.sqrt(1 - fraction * fraction);
 		let tgValue;
