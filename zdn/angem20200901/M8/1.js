@@ -5,7 +5,7 @@
 	do {
 		a = sluchch(2, 100);
 		c = sluchch(1, 90);
-		b = Math.pow(Math.pow(a, 2) - Math.pow(c, 2), 0.5);
+		b = (a.sqr() - c.sqr()).sqrt();
 		e = c / a;
 	} while ((b <= 0) || !(b * 100).isZ() || !(e * 100000).isZ());
 	if (a < b) {
@@ -51,7 +51,7 @@
 	}
 	NAtask.setTask({
 		text: `Какая из точек является фокусом эллипса, находящегося в каноническом положении, если ${varis}?`,
-		answers: `$F(${c*Math.pow(-1,c%3)},0)$`,
+		answers: `$F(${c*(-1).pow(c%3)},0)$`,
 		wrongAnswers: wrAns,
 	});
 	AtoB(n);
