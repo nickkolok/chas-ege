@@ -107,11 +107,9 @@
 
         let splineI = new Spline(time.slice(0, peakTime + 1), values.slice(0, peakTime + 1));
         let splineD = new Spline(time.slice(peakTime), values.slice(peakTime));
+        let temperatureAt = minute => (minute <= peakTime ? splineI : splineD).at(minute);
         let samplesPerMinute = 10;
-        let temperatures = Array.from({length: duration * samplesPerMinute + 1}, (_, i) => {
-            let minute = i / samplesPerMinute;
-            return (minute <= peakTime ? splineI : splineD).at(minute);
-        });
+        let temperatures = Array.from({length: duration * samplesPerMinute + 1}, (_, i) => temperatureAt(i / samplesPerMinute));
 
         let rangeIntervals = [];
         for (let i = 0; i < 3; i++)
@@ -185,9 +183,7 @@
             ctx.scale(cell, -cell);
             ctx.lineWidth = 2 / cell;
 
-            for (let i = 1; i < temperatures.length; i++) {
-                ctx.drawLine((i - 1) / samplesPerMinute, temperatures[i - 1], i / samplesPerMinute, temperatures[i]);
-            }
+            graph9AdrawFunction(ctx, temperatureAt, {minX: 1 / samplesPerMinute, maxX: duration, step: 1 / samplesPerMinute});
         };
 
         NAtask.setCorrespondenceTask({
