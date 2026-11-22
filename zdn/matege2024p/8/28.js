@@ -50,8 +50,8 @@
 		
 		let paint1 = function(ct) {
 			let scale = 30;
-			let h = 400;
-			let w = 500;
+			let h = ct.canvas.height;
+			let w = ct.canvas.width;
 			ct.drawCoordinatePlane(w, h, {
 				hor: 1,
 				ver: 1
