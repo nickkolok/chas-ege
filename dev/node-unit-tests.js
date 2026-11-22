@@ -713,4 +713,61 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(labels.slice(0, 3), [(0).ts(), (1).ts(), (2).ts()], 'по умолчанию подписи числовые');
     });
 
+
+    // ============================================================
+    //  drawCoordinatePlane: произвольное начало координат (lib/canvas.js)
+    // ============================================================
+    QUnit.module('drawCoordinatePlane: origin');
+
+    function planeStubCtx() {
+        var calls = { translate: [], drawArrow: [], fillText: [], drawLine: [], irregularGrid: [] };
+        return {
+            lineWidth: 0, font: '',
+            irregularGrid: function () { calls.irregularGrid.push(Array.prototype.slice.call(arguments)); },
+            translate: function () { calls.translate.push(Array.prototype.slice.call(arguments)); },
+            drawArrow: function () { calls.drawArrow.push(Array.prototype.slice.call(arguments)); },
+            fillText: function () { calls.fillText.push(Array.prototype.slice.call(arguments)); },
+            drawLine: function () { calls.drawLine.push(Array.prototype.slice.call(arguments)); },
+            _calls: calls,
+        };
+    }
+
+    QUnit.test('без origin начало координат в центре холста (поведение по умолчанию)', function (assert) {
+        var ctx = planeStubCtx();
+        CanvasRenderingContext2D.prototype.drawCoordinatePlane.call(ctx, 400, 400, { hor: 1, ver: 1 }, { x1: '1', y1: '1', sh1: 13 }, 20);
+        assert.deepEqual(ctx._calls.translate[0], [200, 200], 'translate в центр холста');
+        assert.deepEqual(ctx._calls.drawArrow[0], [0, 190, 0, -190], 'ось Y от height/2-10 до -height/2+10');
+        assert.deepEqual(ctx._calls.drawArrow[1], [-190, 0, 190, 0], 'ось X от -width/2+10 до width/2-10');
+    });
+
+    QUnit.test('origin сдвигает начало координат, оси доходят до краёв холста', function (assert) {
+        var ctx = planeStubCtx();
+        CanvasRenderingContext2D.prototype.drawCoordinatePlane.call(ctx, 400, 400, { hor: 1, ver: 1 }, { x1: '1', y1: '1', sh1: 13 }, 20, { x: 100, y: 200 });
+        assert.deepEqual(ctx._calls.translate[0], [100, 200], 'translate в заданное начало');
+        assert.deepEqual(ctx._calls.drawArrow[1], [-90, 0, 290, 0], 'ось X от 10-originX до width-originX-10');
+        assert.deepEqual(ctx._calls.fillText[0], ['x', 280, 15], 'подпись x у правого края холста');
+    });
+
+    // ============================================================
+    //  graph9AdrawParametric: параметрическая кривая (lib/func.js)
+    // ============================================================
+    QUnit.module('graph9AdrawParametric');
+
+    QUnit.test('ломаная по параметру: moveTo в начальной точке, lineTo по шагам, один stroke', function (assert) {
+        assert.ok(typeof graph9AdrawParametric === 'function', 'функция graph9AdrawParametric определена');
+        var moves = [], lines = [], strokes = 0, begins = 0;
+        var ctx = {
+            beginPath: function () { begins++; },
+            moveTo: function () { moves.push(Array.prototype.slice.call(arguments)); },
+            lineTo: function () { lines.push(Array.prototype.slice.call(arguments)); },
+            stroke: function () { strokes++; },
+        };
+        graph9AdrawParametric(ctx, function (t) { return t * t; }, function (t) { return 2 * t; }, { minT: 0, maxT: 2, segments: 4 });
+        assert.equal(begins, 1, 'один beginPath');
+        assert.deepEqual(moves[0], [0, 0], 'moveTo в (fx(minT), fy(minT))');
+        assert.equal(lines.length, 4, 'по одному lineTo на каждый из 4 отрезков');
+        assert.deepEqual(lines[3], [4, 4], 'последняя точка (fx(maxT), fy(maxT))');
+        assert.equal(strokes, 1, 'один stroke');
+    });
+
 };
