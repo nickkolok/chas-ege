@@ -14,20 +14,22 @@
 		let radiusView = radiuses.map((elem) => elem.texcbrt(1));
 
 		let paint1 = function(ctx) {
+			ctx.translateToCenter();
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.lineWidth = 2;
+			let r = 150;
 			//шар 1
-			ctx.drawArc(200, 200, 150, 0, Math.PI * 2, true); 
+			ctx.drawCircle(r);
 			
 			// Внешняя окружность
-			ctx.drawEllipse(200, 200, 20, 150, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+			ctx.drawEllipse(0, 0, 20, r, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
 			ctx.setLineDash([5, 5]);
-			ctx.drawEllipse(200, 200, 20, 150, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.drawEllipse(0, 0, 20, r, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.setLineDash([]);
-			ctx.drawLine(200, 200, 200, 50);
+			ctx.drawLine(0, 0, 0, -r);
 		};
 
 		NAinfo.requireApiVersion(0, 2);
