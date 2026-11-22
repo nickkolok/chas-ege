@@ -13,6 +13,7 @@
  *   node dev/run-node-template.js --filepath zdn/matege2024p/10/15.js [опции]
  *   node dev/run-node-template.js --filepath t1.js --filepath t2.js ...   (пакетно)
  *   find zdn -name '*.js' | node dev/run-node-template.js --batch-stdin --json
+ *   node dev/run-node-template.js --eval '(-1).arcctg()' --eval '(12).nod(18)'
  *
  * Опции:
  *   --filepath <путь>   путь к шаблону (.js или .cpp); можно указать несколько
@@ -22,6 +23,9 @@
  *   --no-tex            не печатать LaTeX-блок
  *   --json              машинный вывод: JSON-массив результатов
  *   --quiet             не транслировать console.log из недр библиотек
+ *   --eval <выражение>  вычислить выражение в окружении бандла (как в консоли
+ *                       otladka.html) и напечатать результат; можно указать
+ *                       несколько; с --filepath не сочетается
  *
  * Канвасы: если установлен npm-пакет «canvas» (node-canvas), jsdom получает
  * настоящие 2D-контексты: vopr.dey() рисует, а <canvas> в тексте задания
@@ -45,7 +49,7 @@ const projectRoot = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
 const opts = {
 	filepaths: [], batchStdin: false, iterations: 1,
-	seed: null, tex: true, json: false, quiet: false,
+	seed: null, tex: true, json: false, quiet: false, evals: [],
 };
 for (let i = 0; i < args.length; i++) {
 	if (args[i] === '--filepath' && args[i + 1]) {
@@ -63,6 +67,8 @@ for (let i = 0; i < args.length; i++) {
 		opts.quiet = true;
 	} else if (args[i] === '--quiet') {
 		opts.quiet = true;
+	} else if (args[i] === '--eval' && args[i + 1] !== undefined) {
+		opts.evals.push(args[++i]);
 	} else if (!args[i].startsWith('--')) {
 		opts.filepaths.push(args[i]); // позиционные пути тоже принимаем
 	}
@@ -74,9 +80,17 @@ if (opts.batchStdin) {
 	);
 }
 
-if (!opts.filepaths.length) {
+if (!opts.filepaths.length && !opts.evals.length) {
 	console.error('Использование: node dev/run-node-template.js --filepath <путь> [--iterations N] [--seed S] [--no-tex] [--json] [--quiet] [--batch-stdin]');
+	console.error('         или: node dev/run-node-template.js --eval <выражение> [--eval …] [--seed S] [--json]');
 	process.exit(1);
+}
+if (opts.filepaths.length && opts.evals.length) {
+	console.error('--eval не сочетается с --filepath: запустите их отдельными командами.');
+	process.exit(1);
+}
+if (opts.evals.length) {
+	opts.quiet = true; // в stdout — только результаты выражений
 }
 
 const t0 = Date.now();
@@ -223,6 +237,28 @@ if (opts.seed !== null) {
 		process.exit(1);
 	}
 	window.Math.seedrandom(String(opts.seed));
+}
+
+// ---------------------------------------------------------------------------
+// 3.1. --eval: вычислить выражения в окружении бандла и выйти
+// ---------------------------------------------------------------------------
+if (opts.evals.length) {
+	const show = (v) => (v === undefined ? 'undefined' : typeof v === 'function' ? String(v) : JSON.stringify(v));
+	const evalResults = [];
+	let evalFailed = false;
+	for (const expr of opts.evals) {
+		try {
+			const value = evalInWindow(expr, '<eval>');
+			evalResults.push({ expr: expr, type: typeof value, result: typeof value === 'function' ? String(value) : value });
+			if (!opts.json) console.log(show(value));
+		} catch (e) {
+			evalFailed = true;
+			evalResults.push({ expr: expr, error: String(e && e.message || e) });
+			console.error('Ошибка в --eval ' + JSON.stringify(expr) + ': ' + (e && e.message || e));
+		}
+	}
+	if (opts.json) console.log(JSON.stringify(evalResults, null, 2));
+	process.exit(evalFailed ? 1 : 0);
 }
 
 // ---------------------------------------------------------------------------
