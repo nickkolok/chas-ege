@@ -66,6 +66,9 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Цилиндрический сосуд (бак, стакан, кружку) не нужно рисовать по дугам вручную:
 
+* `ctx.drawCylinder({cx, yTop, yBottom, r, ry, strokeStyle, dash})` - каркас цилиндра:
+  верхнее основание целиком, образующие, нижнее основание с невидимой пунктирной
+  половиной. Сосуд `drawCylinderVessel` рисует каркас через него;
 * `ctx.drawCylinderVessel({cx, yTop, yBottom, r, ry, liquidY, strokeStyle, liquidColor, dash})` -
   сосуд с открытым верхом: ободок, стенки и дно; если задан `liquidY`, ещё и жидкость
   до этого уровня. Жидкость заливается одним контуром, чтобы полупрозрачный цвет
@@ -105,10 +108,11 @@ ct.drawDimensionArrow(170 + 75 + 25, 255, 137, 'h');
 ```
 
 Ручной набор того же чертежа - `zdn/matege2024b/11/16460866.js` и `508394.js`.
+Каркас цилиндра вручную набирают `zdn/matege2023p/2/27051.js` и `5077.js` (PR #1083).
 В `508394.js` конус вершиной вниз, а образующие проведены в точки касания эллипса;
 этот вариант `drawCone` пока не покрывает.
 
-В `drawCylinderVessel`, `drawCone` и `drawDimensionArrow` ось Y направлена вниз, как на холсте
+В `drawCylinder`, `drawCylinderVessel`, `drawCone` и `drawDimensionArrow` ось Y направлена вниз, как на холсте
 без `ctx.scale(1, -1)`. Радиус и уровень жидкости здесь - величины чертежа, а не
 данные задачи: если они уже есть у объекта (например, у `Cylinder` из `lib/figure.js`),
 в `paint` их дублировать не нужно.
