@@ -86,13 +86,7 @@
             let wasConst = intervals.map(interval => lengthConst(interval) > 1);
             let constTexts = intervals.map(interval => 'батискаф ' + chislitlx((lengthConst(interval) - 1) * 15, 'секунда') + ' погружался с постоянной ненулевой скоростью');
 
-            wasConst.forEach((condition, i) => {
-                if (condition) {
-                    if (hasNoDuplicateValue(wasConst, true) || wasConst.filter(c => c).length === 1) {
-                        answ[i].solution.push(constTexts[i]);
-                    }
-                }
-            });
+            addUniqueAnsw(wasConst, answ, constTexts[wasConst.indexOf(true)]);
         }
 
         let time = [0].zapMonot(22, 0, 1, 1); // шкала времени
