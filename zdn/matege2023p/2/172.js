@@ -114,13 +114,10 @@
 			ctx.drawLine(60, 180, 150, 10);
 			ctx.drawLine(240, 180, 150, 10);
 			//эллипс
-			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
+			ctx.drawEllipse(150, 180, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
+			ctx.drawEllipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
 			ctx.setLineDash([]);
 			for (let i = 0; i < copy.length; i++) {
@@ -139,13 +136,10 @@
 			ctx.drawLine(60, 180, 150, 50);
 			ctx.drawLine(240, 180, 150, 50);
 			//эллипс
-			ctx.ellipse(150, 180, 10, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
+			ctx.drawEllipse(150, 180, 10, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, 180, 10, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
+			ctx.drawEllipse(150, 180, 10, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
 			ctx.setLineDash([]);
 			for (let i = 0; i < copy.length; i++) {
