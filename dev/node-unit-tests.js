@@ -766,4 +766,30 @@ module.exports = function registerNodeTests(QUnit) {
         }
         assert.equal(dashCalls, 0, 'setLineDash не вызывается');
     });
+
+    // ============================================================
+    //  getWeekdays: рабочие дни месяца  (lib/func.js)
+    // ============================================================
+    QUnit.module('getWeekdays: рабочие дни месяца');
+
+    QUnit.test('getWeekdays: первые 12 рабочих дней января 2024 (с 1 января)', function (assert) {
+        assert.deepEqual(getWeekdays(2024, 0, 1, 12), [1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 15, 16], 'пропущены выходные 6-7 и 13-14');
+    });
+
+    QUnit.test('getWeekdays: старт с выходного (6 января 2024 — суббота)', function (assert) {
+        assert.deepEqual(getWeekdays(2024, 0, 6, 5), [8, 9, 10, 11, 12], 'первый рабочий день после 6 января — 8-е');
+    });
+
+    QUnit.test('getWeekdays: count по умолчанию — все рабочие дни до конца месяца', function (assert) {
+        assert.deepEqual(getWeekdays(2024, 0, 29), [29, 30, 31], '29-31 января 2024 — пн-ср');
+    });
+
+    QUnit.test('getWeekdays: месяц начинается с выходных (июнь 2024)', function (assert) {
+        assert.deepEqual(getWeekdays(2024, 5, 1, 3), [3, 4, 5], '1-2 июня — выходные, первые рабочие 3-5');
+    });
+
+    QUnit.test('getWeekdays: февраль 2024, первые 12 рабочих дней', function (assert) {
+        assert.deepEqual(getWeekdays(2024, 1, 1, 12), [1, 2, 5, 6, 7, 8, 9, 12, 13, 14, 15, 16], 'пропущены 3-4 и 10-11');
+    });
+
 };
