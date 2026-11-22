@@ -62,6 +62,19 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+## Пирамида, отсечённая плоскостью через середины боковых рёбер
+
+Для правильной четырёхугольной пирамиды есть готовый составной рисунок:
+`ctx.drawRightPyramid4WithMidsection(o, dottedLine, setLineDash, midsectionStrokeStyle, midsectionLineWidth)`
+(`lib/canvas.js`) рисует пирамиду через `drawRightPyramid4` и выделяет цветом
+пирамиду, отсечённую плоскостью, проходящей через середины боковых рёбер.
+Отсечённая пирамида подобна исходной с коэффициентом 1/2 и имеет с ней общую вершину;
+сдвиг для совмещения вершин вычисляется из `edge`, `angle` и `height`,
+поэтому подбирать `ctx.translate(...)` вручную не нужно.
+Поля `o`, `dottedLine` и `setLineDash` те же, что у `drawRightPyramid4`;
+цвет отсечённой пирамиды по умолчанию - `om.primaryBrandColors.iz()`,
+толщина линий - текущая `ctx.lineWidth`.
+
 ## Примеры
 
 ### Планиметрия
