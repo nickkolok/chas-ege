@@ -56,16 +56,6 @@
 			return Math.abs(a * b) / gcd(a, b);
 		}
 
-		function toFraction(value, eps = 1e-9) {
-			let num = Math.round(value * 1e9);
-			let den = 1e9;
-			let g = gcd(num, den);
-			return {
-				num: num / g,
-				den: den / g
-			};
-		}
-
 		let k1 = -down[0];
 		let k2 = -down[1];
 		let k3 = -down[2];
@@ -78,15 +68,15 @@
 		let N_C = (am * k3 * k3 + bm * k3 + cm) / ((k3 - k1) * (k3 - k2));
 
 		//Приведение к общему знаменателю
-		let fracA = toFraction(N_A);
-		let fracB = toFraction(N_B);
-		let fracC = toFraction(N_C);
+		let fracA = new Fraction(N_A);
+		let fracB = new Fraction(N_B);
+		let fracC = new Fraction(N_C);
 
-		let commonDen = lcm(lcm(fracA.den, fracB.den), fracC.den);
+		let commonDen = lcm(lcm(fracA.denominator, fracB.denominator), fracC.denominator);
 
-		let A_int = fracA.num * (commonDen / fracA.den);
-		let B_int = fracB.num * (commonDen / fracB.den);
-		let C_int = fracC.num * (commonDen / fracC.den);
+		let A_int = fracA.numerator * (commonDen / fracA.denominator);
+		let B_int = fracB.numerator * (commonDen / fracB.denominator);
+		let C_int = fracC.numerator * (commonDen / fracC.denominator);
 
 		//Сокращение общего множителя
 		let g_all = gcd(gcd(Math.abs(A_int), Math.abs(B_int)), Math.abs(C_int));
