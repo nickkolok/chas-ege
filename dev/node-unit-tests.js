@@ -651,4 +651,44 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  diagram: addUniqueAnsw  (lib/diagram.js)
+    // ============================================================
+    QUnit.module('diagram: addUniqueAnsw');
+
+    QUnit.test('addUniqueAnsw: строка — текст попадает в единственный подходящий интервал', function (assert) {
+        const answ = [{solution: []}, {solution: []}, {solution: []}];
+        addUniqueAnsw([false, true, false], answ, 'текст');
+        assert.deepEqual(answ.map(a => a.solution), [[], ['текст'], []], 'текст добавлен только во второй интервал');
+    });
+
+    QUnit.test('addUniqueAnsw: ноль или несколько подходящих интервалов — ничего не добавляется', function (assert) {
+        const answ = [{solution: []}, {solution: []}, {solution: []}];
+        addUniqueAnsw([true, true, false], answ, 'текст');
+        addUniqueAnsw([false, false, false], answ, 'текст');
+        assert.deepEqual(answ.map(a => a.solution), [[], [], []], 'ни один интервал не затронут');
+    });
+
+    QUnit.test('addUniqueAnsw: функция text(index) вычисляется только для найденного интервала', function (assert) {
+        const answ = [{solution: []}, {solution: []}, {solution: []}];
+        const calls = [];
+        addUniqueAnsw([false, false, true], answ, function (index) {
+            calls.push(index);
+            return 'текст ' + index;
+        });
+        assert.deepEqual(calls, [2], 'функция вызвана один раз с индексом 2');
+        assert.deepEqual(answ[2].solution, ['текст 2'], 'текст вычислен по индексу');
+        addUniqueAnsw([true, true, false], answ, function (index) {
+            calls.push(index);
+            return 'не должен вызваться';
+        });
+        assert.deepEqual(calls, [2], 'при неоднозначности функция не вызывается');
+    });
+
+    QUnit.test('addUniqueAnsw: массив текстов по индексам', function (assert) {
+        const answ = [{solution: []}, {solution: []}, {solution: []}];
+        addUniqueAnsw([true, false, false], answ, ['нулевой', 'первый', 'второй']);
+        assert.deepEqual(answ.map(a => a.solution), [['нулевой'], [], []], 'взят текст с тем же индексом');
+    });
+
 };
