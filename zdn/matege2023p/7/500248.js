@@ -98,7 +98,7 @@
 			for (let i = 0; i < points.length; i++) {
 				ct.font = "17px liberation_sans";
 
-				if (f(points[i][0]) < 0) {
+				if (points[i][1] < 0) {
 					ct.fillText('x', points[i][0] * 20, -3);
 					ct.font = "14px liberation_sans";
 					ct.fillText((i + 1).toString(), (points[i][0] + 0.4) * 20, 0);
