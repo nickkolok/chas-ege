@@ -651,4 +651,24 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  Доменные данные: игральный кубик  (lib/osnmas.js)
+    // ============================================================
+    QUnit.module('osnmas: названия граней кубика');
+
+    QUnit.test('window.kubik: шесть граней в порядке 1..6', function (assert) {
+        const fs = require('fs');
+        const path = require('path');
+        const source = fs.readFileSync(path.join(__dirname, '..', 'lib', 'osnmas.js'), 'utf8');
+        const win = {};
+        // osnmas.js пишет в window; Array.prototype.iz уже загружен из chas-lib.js
+        new Function('window', source)(win);
+        assert.ok(Array.isArray(win.kubik), 'kubik — массив');
+        assert.strictEqual(win.kubik.length, 6, 'ровно шесть граней');
+        assert.deepEqual(win.kubik, ['единица', 'двойка', 'тройка', 'четвёрка', 'пятёрка', 'шестёрка'], 'названия граней 1..6 по порядку');
+        assert.strictEqual(win.kubik[0], 'единица', 'грань 1 → единица');
+        assert.strictEqual(win.kubik[5], 'шестёрка', 'грань 6 → шестёрка');
+    });
+
+
 };
