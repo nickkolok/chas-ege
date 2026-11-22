@@ -95,9 +95,9 @@
         let production = [sl(2, 5)]; // шкала продаж
         let count = 1;
 
-        for (; production.length <= time.length && count < 100;) {
+        for (; production.length < time.length && count < 100;) {
             let interI = (time.length / 3).floor();
-            for (let j = 0; j < interI; j++) {
+            for (let j = 0; j < interI && production.length < time.length; j++) {
                 let lastProduction = production[production.length - 1];
                 let newProduction = [0, 0, 0, 1].iz() ? lastProduction : lastProduction + (sl(0.5, 1.5, 0.5) * (-1).pow(count % 2));
                 if (newProduction > 1 && newProduction <= 6)
@@ -105,6 +105,7 @@
             }
             count++;
         }
+        genAssert(production.length === time.length, 'Значений продаж должно быть ровно по одному на месяц');
 
         let intervals = Array.from({
             length: 4
