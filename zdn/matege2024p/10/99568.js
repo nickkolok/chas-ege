@@ -4,7 +4,7 @@
 	let p_1 = sluchch(40, 70),
 		uvel = sluchch(2, 4),
 		umin = sluchch(2, 4),
-		p_2 = umin * sluchch(2, 3),
+		p_2 = sluchch(2 * umin, 3 * umin, umin),
 		p_3 = 100 - p_1 - p_2,
 		rand = sluchch(0, 1),
 		coeff = ['', 'вдвое', 'втрое', 'вчетверо'],
