@@ -25,12 +25,12 @@
 
         function answAboutNonLess(intervals, answ, V) {
             let wasNonLess = intervals.map(interval => isNotLess(interval, V));
-            addUniqueAnsw(wasNonLess, answ, 'скорость автобуса была не меньше ' + V * 20 + ' км/ч на всём интервале');
+            addUniqueAnsw(wasNonLess, answ, 'скорость автобуса была не меньше ' + V * speedStep + ' км/ч на всём интервале');
         }
 
         function answAboutNonMore(intervals, answ, V) {
             let wasNonMore = intervals.map(interval => isNotMore(interval, V));
-            addUniqueAnsw(wasNonMore, answ, 'скорость автобуса была не больше ' + V * 20 + ' км/ч на всём интервале');
+            addUniqueAnsw(wasNonMore, answ, 'скорость автобуса была не больше ' + V * speedStep + ' км/ч на всём интервале');
         }
 
         function answAboutNonIncreasing(intervals, answ) {
@@ -87,6 +87,7 @@
             solution: [],
         }));
 
+        let speedStep = 20; // км/ч на одну клетку графика
         let lessV = sl(1, 2);
         let moreV = sl(3, 4);
 
@@ -115,7 +116,7 @@
                 cellWidth: 30,
                 cellHeight: 30,
                 stepX: 1,
-                stepY: 20,
+                stepY: speedStep,
                 maxX: 25,
                 maxY: 100,
                 stepByCeilX: 2,
