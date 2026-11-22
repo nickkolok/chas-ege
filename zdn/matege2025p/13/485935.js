@@ -41,17 +41,6 @@
 			const checkZero = (member) => member == 0 ? '' : member;
 
 			//ФУНКЦИИ ДЛЯ РАБОТЫ С ДРОБЯМИ
-			function gcd(a, b) {
-				a = Math.abs(a);
-				b = Math.abs(b);
-				while (b !== 0) {
-					let t = b;
-					b = a % b;
-					a = t;
-				}
-				return a;
-			}
-
 			function toFraction(value, maxDenom = 20) {
 				if (Math.abs(value) < 1e-9) return '0';
 				if (Number.isInteger(value)) return value.toString();
@@ -68,7 +57,7 @@
 						bestDen = den;
 					}
 				}
-				let divisor = gcd(bestNum, bestDen);
+				let divisor = bestNum.nod(bestDen);
 				bestNum /= divisor;
 				bestDen /= divisor;
 
@@ -91,7 +80,7 @@
 						bestDen = den;
 					}
 				}
-				let divisor = gcd(bestNum, bestDen);
+				let divisor = bestNum.nod(bestDen);
 				let num = bestNum / divisor;
 				let den = bestDen / divisor;
 				let sign = num < 0 ? '-' : '';
@@ -296,7 +285,7 @@
 						return val + '\\pi';
 					}
 					let numerator = Math.round(val * denominator);
-					let divisor = gcd(Math.abs(numerator), denominator);
+					let divisor = numerator.nod(denominator);
 					numerator /= divisor;
 					let den = denominator / divisor;
 					if (den === 1) {
