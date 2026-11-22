@@ -156,11 +156,12 @@
         let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
 
         let paint1 = function (ctx) {
+            let cell = 60;
             ctx.drawGridWithArrows({
                 gridWidth: 570,
                 gridHeight: 420,
-                cellWidth: 60,
-                cellHeight: 60,
+                cellWidth: cell,
+                cellHeight: cell,
                 stepX: 1,
                 stepY: stepY,
                 minX: 2001,
@@ -172,12 +173,12 @@
                 arrowLengthY: 4.9,
             });
 
-            ctx.translate(60, 60 * 5);
-            ctx.scale(60, -60);
-            ctx.lineWidth = 2 / 60;
+            ctx.translate(cell, cell * 5);
+            ctx.scale(cell, -cell);
+            ctx.lineWidth = 2 / cell;
 
             for (let i = 0; i < time.length; i++) {
-                ctx.drawFilledCircle(time[i], production[i], 3 / 60);
+                ctx.drawFilledCircle(time[i], production[i], 3 / cell);
                 if (i < time.length - 1)
                     ctx.drawLine(time[i], production[i], time[i + 1], production[i + 1]);
             }
