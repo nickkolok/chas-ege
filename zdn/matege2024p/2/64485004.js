@@ -1,9 +1,7 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let letter = om.latbukv.iz(4);
-
-		letter = letter.map((element) => element.toLowerCase());
+		let letter = window.smallLatinLetters.iz(4);
 
 		let letterForQuestion = letter.pop();
 
