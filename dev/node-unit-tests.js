@@ -651,4 +651,28 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
     });
 
+    // ============================================================
+    //  logAB: логарифм по произвольному основанию  (lib/func.js)
+    // ============================================================
+    QUnit.module('logAB: логарифм по произвольному основанию');
+
+    QUnit.test('logAB: целые значения (основание и аргумент — степени)', function (assert) {
+        assert.equal(logAB(2, 8), 3, 'log_2(8) = 3');
+        assert.equal(logAB(2, 16), 4, 'log_2(16) = 4');
+        assert.equal(logAB(3, 9), 2, 'log_3(9) = 2');
+        assert.equal(logAB(4, 2), 0.5, 'log_4(2) = 0,5');
+        assert.equal(logAB(0.5, 8), -3, 'log_{0,5}(8) = -3');
+        assert.equal(logAB(0.25, 16), -2, 'log_{0,25}(16) = -2');
+    });
+
+    QUnit.test('logAB: граничные случаи', function (assert) {
+        assert.equal(logAB(7, 1), 0, 'log_a(1) = 0');
+        assert.equal(logAB(5, 5), 1, 'log_a(a) = 1');
+    });
+
+    QUnit.test('logAB: десятичные основания (с погрешностью)', function (assert) {
+        assert.ok(Math.abs(logAB(10, 1000) - 3) < 1e-9, 'log_10(1000) ≈ 3');
+        assert.ok(Math.abs(logAB(0.2, 0.008) - 3) < 1e-9, 'log_{0,2}(0,008) ≈ 3');
+    });
+
 };
