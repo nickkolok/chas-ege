@@ -74,4 +74,4 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 ### Стереометрия
 
-[`zdn/matege2023p/3`](https://github.com/nickkolok/chas-ege/tree/devel/zdn/matege2023p/3)
+[`zdn/matege2023p/2`](https://github.com/nickkolok/chas-ege/tree/devel/zdn/matege2023p/2)
