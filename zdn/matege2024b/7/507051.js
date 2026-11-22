@@ -3,8 +3,11 @@
     retryWhileError(function () {
         /* На графике изображена зависимость крутящего момента двигателя от числа оборотов в минуту. На горизонтальной оси отмечено число оборотов в минуту, на вертикальной оси – крутящий момент в Н⋅м. */
 
+        let nmPerUnit = 20; // Н·м на единицу сетки — цена деления по вертикали
+        let rpmPerUnit = 500; // об./мин на единицу сетки — цена деления по горизонтали
+
         function convert(value) {
-            return value * 20 + ' Н$\\cdot$м';
+            return value * nmPerUnit + ' Н$\\cdot$м';
         }
 
         function answAboutNonLess(intervals, answ, value) {
@@ -158,7 +161,7 @@
             let startTime = rangeIntervals.slice(0, i).sum();
             let endTime = startTime + rangeIntervals[i];
             return {
-                expr: startTime * 500 + '-' + endTime * 500 + ' об./мин.',
+                expr: startTime * rpmPerUnit + '-' + endTime * rpmPerUnit + ' об./мин.',
                 solution: [],
             };
         });
@@ -191,8 +194,8 @@
                 gridHeight: 400,
                 cellWidth: 40,
                 cellHeight: 40,
-                stepX: 500,
-                stepY: 20,
+                stepX: rpmPerUnit,
+                stepY: nmPerUnit,
                 maxX: 6000,
                 minY: 0,
                 maxY: 140,
