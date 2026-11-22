@@ -132,13 +132,13 @@
 				'\\left[\\begin{aligned}' +
 				['x' + '<' + [b, a][A] +
 				',\\\\' + 
-				[sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(numerator) + '}{' + denominator + '} \\le ', b + '<'][B] + ' x ' + 
-				['<' + d, '\\le' + sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(numerator) + '}{' + denominator + '}'][C] +
+				[numerator.texfrac(denominator) + ' \\le ', b + '<'][B] + ' x ' + 
+				['<' + d, '\\le' + numerator.texfrac(denominator)][C] +
 				',\\\\' +
 				'x ' + '>' + [e, d][D],
-				[b, a][A] + '<' + ' x ' + ['\\le' + sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(numerator) + '}{' + denominator + '}', '<' + b][B] +
+				[b, a][A] + '<' + ' x ' + ['\\le' + numerator.texfrac(denominator), '<' + b][B] +
 				',\\\\' + 
-				[d + '<', sign3[Math.abs(checkSign(numerator))] + '\\frac{' + Math.abs(numerator) + '}{' + denominator + '} \\le '][C] + ' x ' + 
+				[d + '<', numerator.texfrac(denominator) + ' \\le '][C] + ' x ' + 
 				'<' + [e, d][D]][slSign2] +
 				'.\\end{aligned}\\right.$$',
 			answers: answer,
