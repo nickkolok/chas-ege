@@ -47,15 +47,7 @@
 
 		triangle.addVertexToConnectionMatrix(triangle.medianC.pe, 'C');
 
-		// autoScale масштабирует относительно начала координат и требует, чтобы исходные координаты
-		// уже помещались в поле (±160); при сторонах до 105 это не так. Поэтому сначала центрируем
-		// фигуру по габаритам и уменьшаем, а увеличит её уже autoScale
-		let xs = triangle.vertices.map((p) => p.x);
-		let ys = triangle.vertices.map((p) => p.y);
-		let centerX = (Math.min(...xs) + Math.max(...xs)) / 2;
-		let centerY = (Math.min(...ys) + Math.max(...ys)) / 2;
-		let size = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-		let points = autoScale(triangle.vertices.map((p) => ({ x: (p.x - centerX) / size * 10, y: (p.y - centerY) / size * 10 })));
+		let points = autoScale(triangle.vertices, undefined, [], {center: true, shrink: true});
 
 		let paint1 = function(ctx) {
 
