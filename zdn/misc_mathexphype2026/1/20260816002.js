@@ -17,12 +17,8 @@
 	let p=coins.weights;
 	let counts=coins.counts;
 	
-	let sumCoins = counts.reduce((a, b) => a + b, 0);
-	let s = 0;
-	for(let i=0; i<p.length; i++){
-		s += p[i] * counts[i];
-	}
-	s = s / sumCoins;
+	let sumCoins = counts.sum();
+	let s = p.map((x, i) => x * counts[i]).sum() / sumCoins;
 	
 	let pStr=p.map(x=>x.toLocaleString('ru-RU'));
 	let cStr=counts.map(x=>x.toLocaleString('ru-RU'));
