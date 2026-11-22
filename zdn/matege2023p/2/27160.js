@@ -17,15 +17,11 @@
 			ctx.lineWidth = 2;
 			
 			//эллипс (передняя часть)
-			ctx.beginPath();
-			ctx.ellipse(200, 280, 120, 36, 0, 0, Math.PI);
-			ctx.stroke();
+			ctx.drawEllipse(200, 280, 120, 36, 0, 0, Math.PI);
 
 			//эллипс (задняя часть, пунктиром)
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(200, 280, 120, 36, 0, Math.PI, 2 * Math.PI);
-			ctx.stroke();
+			ctx.drawEllipse(200, 280, 120, 36, 0, Math.PI, 2 * Math.PI);
 			ctx.setLineDash([]);
 
 			//образующие
