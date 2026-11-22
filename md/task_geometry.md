@@ -62,6 +62,24 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+## Векторы на координатной плоскости
+
+Для задач, где векторы заданы координатами начала и конца на клетчатой плоскости
+(например, `zdn/matege2024p/2`), в `lib/func.js` есть
+
+* `coordinatesOfVector(x1, y1, x2, y2)` — координаты вектора по концам:
+  `[x2 - x1, y2 - y1]`. Заменяет самодельную лямбду
+  `(V) => [V[2] - V[0], V[3] - V[1]]`, кочующую по шаблонам;
+* `segmentIntersectionCount(x1, y1, x2, y2, x3, y3, x4, y4)` — число точек
+  пересечения двух отрезков по плоским координатам концов (обёртка над
+  `Array.prototype.mt_otrPeres`, `lib/array_mt.js`): 0, 1 или Infinity.
+  Удобно для отбраковки пересекающихся векторов через `genAssert(!...)`.
+
+```js
+let coordA = coordinatesOfVector(...vectorA);
+genAssert(!segmentIntersectionCount(...vectorA, ...vectorB), 'Векторы A и B пересекаются');
+```
+
 ## Примеры
 
 ### Планиметрия
