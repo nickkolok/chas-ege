@@ -77,8 +77,8 @@
 		}), 'Не влезло');
 
 		let paint1 = function(ctx) {
-			let h = 400;
-			let w = 500;
+			let h = ctx.canvas.height;
+			let w = ctx.canvas.width;
 
 			ctx.translate(w / 4, h / 2);
 			ctx.lineWidth = 2;
