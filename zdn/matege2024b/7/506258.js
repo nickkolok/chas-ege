@@ -3,8 +3,11 @@
     retryWhileError(function () {
         /* На графике изображена зависимость температуры от времени в процессе разогрева двигателя легкового автомобиля. На горизонтальной оси отмечено время в минутах, прошедшее с момента запуска двигателя, на вертикальной оси – температура двигателя в градусах Цельсия. */
 
+        let degreesPerUnit = 10; // цена одной клетки по вертикали, °C
+        let maxUnits = 8; // высота сетки по вертикали, в клетках
+
         function convert(value) {
-            return value * 10 + '${}^{\\circ} C$';
+            return value * degreesPerUnit + '${}^{\\circ} C$';
         }
 
         function answAboutNonLess(intervals, answ, value) {
@@ -98,7 +101,7 @@
         for (let minute = values.length; minute <= duration; minute++) {
             let delta = minute <= peakTime ? sl(0.5, 1, 0.1) : -sl(0.1, 0.8, 0.1);
             let currentValue = values.at(-1) + delta;
-            genAssert(currentValue.mzhd(1, 8, true), 'График вышел за пределы сетки');
+            genAssert(currentValue.mzhd(1, maxUnits, true), 'График вышел за пределы сетки');
             values.push(currentValue);
         }
 
@@ -172,10 +175,10 @@
                 cellWidth: 40,
                 cellHeight: 40,
                 stepX: 1,
-                stepY: 10,
+                stepY: degreesPerUnit,
                 maxX: duration,
                 minY: 0,
-                maxY: 80,
+                maxY: maxUnits * degreesPerUnit,
                 stepByCeilX: 1,
                 arrowLengthX: 9.5,
                 arrowLengthY: 8.9,
