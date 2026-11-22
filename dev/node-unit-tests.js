@@ -666,7 +666,7 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(calls, [['dot', 5, 7, 0.5]], 'одна точка — только точка');
     });
 
-    QUnit.test('ctx.drawPolyline: NaN в рисуемых точках — предупреждение в консоль', function (assert) {
+    QUnit.test('ctx.drawPolyline: NaN или разная длина массивов — предупреждение в консоль', function (assert) {
         var ctx = { drawLine: function () {} };
         var warnings = [];
         var originalWarn = console.warn;
@@ -677,9 +677,9 @@ module.exports = function registerNodeTests(QUnit) {
             CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [0, 1, 2], [3, NaN, 4]);
             assert.equal(warnings.length, 1, 'NaN в ординатах — предупреждение');
             CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [0, 1, 2], [3, 1]);
-            assert.equal(warnings.length, 2, 'ys короче xs (рисуется undefined) — предупреждение');
+            assert.equal(warnings.length, 2, 'ys короче xs — предупреждение');
             CanvasRenderingContext2D.prototype.drawPolyline.call(ctx, [0, 1], [3, 1, 4]);
-            assert.equal(warnings.length, 2, 'ys длиннее xs — лишнее не рисуется, без предупреждения');
+            assert.equal(warnings.length, 3, 'ys длиннее xs — тоже предупреждение');
         } finally {
             console.warn = originalWarn;
         }
