@@ -111,20 +111,10 @@ retryWhileUndefined(function() {
 	let denominator2 = 2 * k1;
 
 	//НОД
-	let gcd = (a, b) => {
-		a = Math.abs(a);
-		b = Math.abs(b);
-		while (b !== 0) {
-			let t = b;
-			b = a % b;
-			a = t;
-		}
-		return a;
-	};
-	let common = gcd(numerator1, denominator1);
+	let common = numerator1.nod(denominator1);
 	numerator1 /= common;
 	denominator1 /= common;
-	common = gcd(numerator2, denominator2);
+	common = numerator2.nod(denominator2);
 	numerator2 /= common;
 	denominator2 /= common;
 	// Приводим знак к знаменателю > 0
