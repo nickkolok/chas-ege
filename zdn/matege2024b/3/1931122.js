@@ -19,11 +19,11 @@
 		let departures = Array.from({length: 5}, (_, i) => first + 25 * i + sl(0, 10));
 		let durations = Array.from({length: 21}, (_, i) => 120 + 5 * i).iz(5);
 		let through = [true, !!sl1(), !!sl1(), true, true];
-		let numbers = departures.map((_, i) => i + 1);
+		let numbers = [].N(departures.length);
 		let passenger = departures[sl(0, 3)] + sl(0, 12);
 		let suitable = departures.map((_, i) => i).filter(i => through[i] && (shortestJourney || departures[i] >= passenger));
 		genAssertNonempty(suitable);
-		let selected = suitable.slice().sort((a, b) => shortestJourney ? durations[a] - durations[b] : departures[a] - departures[b])[0];
+		let selected = suitable[suitable.map(i => shortestJourney ? durations[i] : departures[i]).min()];
 		let table = [
 		    ['Станция / поезд'].concat(numbers).tr('th'),
 		    [stations[0]].concat(departures.map(time => time.toDvoet())).tr(),
@@ -43,3 +43,4 @@
 	}, 1000);
 })();
 // 1D7772, 599C62, 696037, 6E7E4D, 90832B, A157EC, F74C4F, 9D7C69, DE1571, 92D54F, A8535E, D13E8E, B0946D, 8D89AB, B6A3F1
+
