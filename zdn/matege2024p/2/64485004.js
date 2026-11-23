@@ -35,12 +35,10 @@
 
 		vectors = vectors.map((elem, index) => objUmn(elem, coeffs[index][0] / coeffs[index][1]));
 
-		let scal =(coordA,coordB)=> coordA[0] * coordB[0] + coordA[1] * coordB[1];
-		
 		let finalVector = objSum(vectors[1],vectors[2]);
 		genAssert(!finalVector.sum(), 'Cкобка занулилась');
 		
-		finalVector = scal(finalVector,vectors[0]);
+		finalVector = finalVector.scalprod(vectors[0]);
 
 		genAssertZ1000(finalVector, 'Нецелое скалярное произведение');
 
