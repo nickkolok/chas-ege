@@ -11,7 +11,15 @@
 		// (sin A = 0,25, cos A = 0,7 и т. п.); катет AC при этом обычно не целый, в условие он не входит
 		let BC = sl(4, 50);
 		let trigA = sl(2, 16) / 20;
-		let tgA = [trigA / (1 - trigA * trigA).sqrt(), (1 - trigA * trigA).sqrt() / trigA][rand];
+		// КОСТЫЛЬ: чертёж при малом синусе (косинусе) рисуется не в масштабе.
+		// Отрезок BH (в варианте с косинусом — AH) равен AB·sin²A (AB·cos²A): при 0,1 это
+		// 1 % гипотенузы, около 3 пикселей, подписи B и H сливаются, треугольник почти отрезок.
+		// Поэтому треугольник triangle строится только для чертежа и при значении меньше 0,25
+		// рисуется так, будто оно равно 0,25 (как у 47BD49, где чертёж читается).
+		// Условие и ответ берут настоящее trigA, а не triangle. Так же поступает ФИПИ:
+		// у B03DFF (sin A = 0,1) картинка не в масштабе.
+		let trigDrawn = Math.max(trigA, 0.25);
+		let tgA = [trigDrawn / (1 - trigDrawn * trigDrawn).sqrt(), (1 - trigDrawn * trigDrawn).sqrt() / trigDrawn][rand];
 		let triangle = new Triangle({
 			lengths: {
 				lengthCA: BC / tgA,
@@ -24,8 +32,6 @@
 				calculateHeights: true,
 			}
 		});
-
-		genAssertZ1000([triangle.sinA, triangle.heightCLength][rand]);
 
 		triangle.addVertexToConnectionMatrix(triangle.heightCEndPoint, 'C');
 
@@ -55,10 +61,10 @@
 			questions: [
 				[{
 					text: `$\\sin A=${trigA}$. Найдите длину отрезка $BH$.`,
-					answers: triangle.pointB[0].distanceTo(triangle.heightCEndPoint)[0],
+					answers: BC * trigA, // BH = BC·sin A; не из triangle: он нарисован с trigDrawn
 				}, {
 					text: `$\\cos A=${trigA}$. Найдите высоту $CH$.`,
-					answers: triangle.heightCLength,
+					answers: BC * trigA, // CH = BC·cos A; не из triangle: он нарисован с trigDrawn
 				}][rand]
 			],
 			authors: ['Александра Суматохина'],
