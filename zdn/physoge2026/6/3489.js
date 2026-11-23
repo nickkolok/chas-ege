@@ -64,25 +64,12 @@
 				let x2 = ct.canvas.width - x1;
 				let dot1 = 130;
 				let dot2 = 330;
-				let headLength = 14;
-				let headWidth = 7;
 
-				// нить
+				// нить со стрелками наружу: два отрезка от середины, острия на концах
 				ct.strokeStyle = 'black';
 				ct.lineWidth = 3;
-				ct.drawLine(x1, y, x2, y);
-
-				// острия стрелок, направленные наружу
-				ct.beginPath();
-				ct.moveTo(x1, y);
-				ct.lineTo(x1 + headLength, y - headWidth);
-				ct.moveTo(x1, y);
-				ct.lineTo(x1 + headLength, y + headWidth);
-				ct.moveTo(x2, y);
-				ct.lineTo(x2 - headLength, y - headWidth);
-				ct.moveTo(x2, y);
-				ct.lineTo(x2 - headLength, y + headWidth);
-				ct.stroke();
+				ct.drawArrow((x1 + x2) / 2, y, x1, y);
+				ct.drawArrow((x1 + x2) / 2, y, x2, y);
 
 				// точки приложения сил
 				ct.fillStyle = 'black';
