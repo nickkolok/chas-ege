@@ -3,12 +3,17 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let side = sl(4, 100);
+		// Основание бывает и с корнем из 3: AC = 12√3 (D7BD68), тогда синус равен 0,5.
+		// Такой вариант выбирается в каждой четвёртой попытке, и в итоге он примерно у каждой
+		// пятой задачи, как в ФИПИ (одно задание из пяти)
+		let baseRadicand = sl(1, 4) == 1 ? 3 : 1;
+		let baseFactor = sl(4, 120, 2);
 
 		let letters = latbukv.slice(0, 3);
 
 		let triangle = new Triangle({
 			lengths: {
-				lengthAB: sl(4, 120, 2),
+				lengthAB: baseFactor * baseRadicand.sqrt(),
 				lengthBC: side,
 				lengthCA: side,
 			},
@@ -34,7 +39,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ известно, что $BC=CA=${triangle.lengthBC}$, $AB=${triangle.lengthAB}$. Найдите синус угла $${['CAB', 'ABC'].iz()}$.`,
+			text: `В треугольнике $ABC$ известно, что $BC=CA=${triangle.lengthBC}$, $AB=${(baseFactor * baseFactor * baseRadicand).texsqrt(1)}$. Найдите синус угла $${['CAB', 'ABC'].iz()}$.`,
 			answers: triangle.sinA,
 			authors: ['Александра Суматохина'],
 		});
