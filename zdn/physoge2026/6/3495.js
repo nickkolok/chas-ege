@@ -137,7 +137,7 @@
 				// Параметры наклонной плоскости
 				let inclineDirX = topX - baseLeftX;
 				let inclineDirY = topY - baseLeftY;
-				let inclineLen = Math.sqrt(inclineDirX * inclineDirX + inclineDirY * inclineDirY);
+				let inclineLen = [inclineDirX, inclineDirY].veclength();
 				let inclineNormX = inclineDirX / inclineLen;
 				let inclineNormY = inclineDirY / inclineLen;
 
