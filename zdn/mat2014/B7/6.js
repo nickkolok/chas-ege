@@ -12,10 +12,10 @@
 	var power = rand1 + 2;
 	var c = sluchch(1, 12);
 	if (power % 2) {
-		c *= [1, -1].iz();
+		c = c.pm();
 	}
 	var x = sluchch(-50, 50, 0.5);
-	if (rand2 === 3) {
+	if (rand2 === preference2.indexOf('reciprocalSquareRoot')) {
 		x = c * c;
 	}
 	var a = c.pow(power) - b * x;
@@ -37,11 +37,11 @@
 	chas2.task.setEquationTask({
 		parts: parts,
 		roots: x,
-		enablePartsSubtraction: rand2 !== 3,
-		customPreamble: ['Найдите корень уравнения', 'Решите уравнение'].iz(),
+		enablePartsSubtraction: rand2 !== preference2.indexOf('reciprocalSquareRoot'),
 		preference: [preference1, preference2],
 	});
 	NAtask.modifiers.allDecimalsToStandard();
 })();
 // В том числе РешуЕГЭ 501205
 // 67E07E, B24E2D, B1E129, C24306, C859C1, 57B229, F54472, F8C0A8, 1B6980, BEDBF2, 0594AE, BD2AE1, C3E34A, D8000C, 9FEE01, 02F6B5, 1C6FC9, 859866, 64F731, 934D07, 8EDC07, 94EBB4, 744D55, EB63E4, 61C59D, 75896E, F3734B, 90C341, 9857FF, FCD672, 3F1FAC
+
