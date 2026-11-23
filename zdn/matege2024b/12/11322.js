@@ -8,7 +8,7 @@
 		let preference = ['side_AC_by_height', 'side_AC_by_median', 'bisector'];
 
 		let rand = getListedPreference(key, [
-			...preference.map((preference, preferenceValue) => ({preference, preferenceValue})),
+			...preference.map((pref, preferenceValue) => ({preference: pref, preferenceValue})),
 			{preference: 'side_AB_by_height', preferenceValue: 0},
 			{preference: 'side_AB_by_median', preferenceValue: 1},
 		], sl(preference.length - 1));
@@ -38,26 +38,19 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
-
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			switch (rand) {
-			case 0:
+			if (rand === 0) {
 				ctx.arcBetweenSegments([points[0].x, points[0].y, points[3].x, points[3].y, points[2].x, points[2].y], 15);
-				ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[2].x, points[2].y, 7, 2);
-				ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[2].x, points[2].y, 7, 2);
-				break;
-			case 1:
+			} else {
 				ctx.arcBetweenSegments([points[0].x, points[0].y, points[2].x, points[2].y, points[3].x, points[3].y], 15);
 				ctx.arcBetweenSegments([points[1].x, points[1].y, points[2].x, points[2].y, points[3].x, points[3].y], 15);
+			}
+			if (rand === 1) {
 				ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[3].x, points[3].y, 7);
 				ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[3].x, points[3].y, 7);
-				break;
-			case 2:
-				ctx.arcBetweenSegments([points[0].x, points[0].y, points[2].x, points[2].y, points[3].x, points[3].y], 15);
-				ctx.arcBetweenSegments([points[1].x, points[1].y, points[2].x, points[2].y, points[3].x, points[3].y], 15);
+			} else {
 				ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[2].x, points[2].y, 7, 2);
 				ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[2].x, points[2].y, 7, 2);
-				break;
 			}
 
 			ctx.scale(1, -1);
