@@ -51,6 +51,8 @@
 			authors: ['Александра Суматохина'],
 		});
 
+		NAtask.modifiers.allDecimalsToStandard(true);
+
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
@@ -58,6 +60,5 @@
 		});
 
 	}, 2000);
-	NAtask.modifiers.allDecimalsToStandard(true);
 })();
 // https://base.mathege.ru/clones/?position=16&parent=6708
