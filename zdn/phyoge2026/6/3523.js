@@ -32,3 +32,4 @@
 })();
 // https://phys-oge.sdamgia.ru/problem?id=29673
 //zer00player
+// ФИПИ 40CDC8
