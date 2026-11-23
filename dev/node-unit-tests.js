@@ -343,6 +343,44 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  genPifagDo: пифагоровы тройки с ограниченной гипотенузой  (lib/func.js)
+    // ============================================================
+    QUnit.module('genPifagDo');
+
+    QUnit.test('genPifagDo: тройка целая, пифагорова, гипотенуза не больше maxSide', function (assert) {
+        for (var i = 0; i < 200; i++) {
+            var t = genPifagDo(65);
+            var a = t[0], b = t[1], c = t[2];
+            assert.ok(a > 0 && b > 0 && c > 0, 'положительные: ' + t);
+            assert.ok(a.isZ() && b.isZ() && c.isZ(), 'целые: ' + t);
+            assert.equal(a * a + b * b, c * c, 'a²+b²=c²: ' + t);
+            assert.ok(c <= 65, 'гипотенуза ≤ 65: ' + t);
+            assert.ok(c > a && c > b, 'гипотенуза — наибольшая: ' + t);
+        }
+    });
+
+    QUnit.test('genPifagDo(5): единственная тройка 3-4-5', function (assert) {
+        for (var i = 0; i < 20; i++) {
+            assert.deepEqual(genPifagDo(5), [3, 4, 5], '3-4-5');
+        }
+    });
+
+    QUnit.test('genPifagDo: maxSide меньше 5 отбраковывается', function (assert) {
+        var threw = false;
+        try { genPifagDo(4); } catch (e) { threw = true; }
+        assert.ok(threw, 'genPifagDo(4) бросает исключение');
+    });
+
+    QUnit.test('genPifagDo: покрывает тройки вне om.pifagtr', function (assert) {
+        var seen = {};
+        for (var i = 0; i < 2000; i++) {
+            seen[genPifagDo(65)[2]] = true;
+        }
+        assert.ok(seen[29] || seen[37] || seen[41] || seen[53] || seen[61],
+            'встречаются гипотенузы 29/37/41/53/61, которых нет в om.pifagtr');
+    });
+
+    // ============================================================
     //  Ограничение числа знаков после запятой  (lib/func_assert.js)
     // ============================================================
     QUnit.module('genAssertDecimalPlaces');
@@ -893,44 +931,6 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(chislitlx(-5, 'день'), '-5 дней', '-5 дней');
         assert.equal(chislitlx(-12.6, 'день'), '-12,6 дня', '-12,6 дня');
         assert.equal(chislitlx(21, 'день'), '21 день', '21 день (положительное не затронуто)');
-    });
-
-    // ============================================================
-    //  genPifagDo: пифагоровы тройки с ограниченной гипотенузой  (lib/func.js)
-    // ============================================================
-    QUnit.module('genPifagDo');
-
-    QUnit.test('genPifagDo: тройка целая, пифагорова, гипотенуза не больше maxSide', function (assert) {
-        for (var i = 0; i < 200; i++) {
-            var t = genPifagDo(65);
-            var a = t[0], b = t[1], c = t[2];
-            assert.ok(a > 0 && b > 0 && c > 0, 'положительные: ' + t);
-            assert.ok(a.isZ() && b.isZ() && c.isZ(), 'целые: ' + t);
-            assert.equal(a * a + b * b, c * c, 'a²+b²=c²: ' + t);
-            assert.ok(c <= 65, 'гипотенуза ≤ 65: ' + t);
-            assert.ok(c > a && c > b, 'гипотенуза — наибольшая: ' + t);
-        }
-    });
-
-    QUnit.test('genPifagDo(5): единственная тройка 3-4-5', function (assert) {
-        for (var i = 0; i < 20; i++) {
-            assert.deepEqual(genPifagDo(5), [3, 4, 5], '3-4-5');
-        }
-    });
-
-    QUnit.test('genPifagDo: maxSide меньше 5 отбраковывается', function (assert) {
-        var threw = false;
-        try { genPifagDo(4); } catch (e) { threw = true; }
-        assert.ok(threw, 'genPifagDo(4) бросает исключение');
-    });
-
-    QUnit.test('genPifagDo: покрывает тройки вне om.pifagtr', function (assert) {
-        var seen = {};
-        for (var i = 0; i < 2000; i++) {
-            seen[genPifagDo(65)[2]] = true;
-        }
-        assert.ok(seen[29] || seen[37] || seen[41] || seen[53] || seen[61],
-            'встречаются гипотенузы 29/37/41/53/61, которых нет в om.pifagtr');
     });
 
     // ============================================================
