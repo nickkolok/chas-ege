@@ -11,6 +11,7 @@
 		let c = slKrome(a, 1, 20);
 		let height = sl(1, 30, 0.5);
 		genAssert(height >= Math.max(a, c) / 8, 'Слишком плоская трапеция — плохой чертёж');
+		genAssert(Math.min(a, c) >= Math.max(a, c) / 8, 'Основания слишком разные — подписи короткого наезжают друг на друга');
 		let trp = new Trapezoid({
 			lengths: {
 				lengthAB: a,
