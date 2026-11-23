@@ -7,7 +7,7 @@
         let maxUnits = 8; // высота сетки по вертикали, в клетках
 
         function convert(value) {
-            return value * degreesPerUnit + '${}^{\\circ} C$';
+            return '$' + value * degreesPerUnit + '{}^{\\circ}\\mathrm{C}$';
         }
 
         function answAboutNonLess(intervals, answ, value) {
@@ -158,7 +158,7 @@
         let solutions = listOfIntervals.map(item => item.solution);
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
             let cell = 40; // размер клетки сетки, px
