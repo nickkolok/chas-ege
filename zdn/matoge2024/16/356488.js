@@ -5,7 +5,6 @@
         let preference = ['radius', 'side'];
         let rand = getSelectedPreferenceFromList(key, preference);
 
-        // Окружность по центру и точке: центр в (0,0), радиус задан явно
         let circle = new Circle(new Point(0, 0), sl(1, 20) * [1, (3).sqrt()][rand]);
 
         let AB = circle.chordByAngles(90, 210, {
@@ -22,10 +21,10 @@
         ];
 
         let points = autoScale([AB.ps, AB.pe, C]);
+        // Окружность по центру и точке после масштабирования треугольника
         let scaledCircle = CircleByPoints.fromCenterAndPoint(circle.pc, new Point(points[0].x, points[0].y));
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
@@ -41,24 +40,22 @@
             questions: [
                 [{
                     text: `Сторона равностороннего треугольника равна $${AB.length.pow(2).round().texsqrt(1)}$. Найдите радиус окружности, описанной около этого треугольника.`,
-                    answers: circle.r
+                    answers: circle.r,
                 }, {
                     text: `Радиус окружности, описанной около равностороннего треугольника, равен $${circle.r.pow(2).round().texsqrt(1)}$. Найдите длину стороны этого треугольника.`,
-                    answers: AB.length
+                    answers: AB.length,
                 }][rand]
             ],
             authors: ['Александра Суматохина'],
         });
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(true);
     }, 1000);
 
 })();
 // https://oge.sdamgia.ru/test?likes=356488
 // https://oge.sdamgia.ru/problem?id=356533
-
-

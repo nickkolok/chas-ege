@@ -123,6 +123,14 @@ QUnit.test('Базовые расширения (iz, sl)', function (assert) {
     assert.ok(typeof sl === 'function', "Функция sl() доступна");
 });
 
+try {
+    const registerTaskCorrespondenceTests = require('./node-unit-tests-task-correspondence.js');
+    registerTaskCorrespondenceTests(QUnit);
+    console.log('✅ Тесты setCorrespondenceTask (node-unit-tests-task-correspondence.js) подключены.');
+} catch (err) {
+    console.error('⚠️  Не удалось загрузить node-unit-tests-task-correspondence.js:', err.message);
+}
+
 QUnit.test('Triangle', function(assert) {
     assert.ok(typeof Triangle !== 'undefined', "Triangle определён в глобальной области");
     
@@ -155,6 +163,30 @@ try {
     console.log('✅ Дополнительные тесты (node-unit-tests.js) подключены.');
 } catch (err) {
     console.error('⚠️  Не удалось загрузить node-unit-tests.js:', err.message);
+}
+
+try {
+    const registerMathFunctionsTests = require('./node-unit-tests-math-functions.js');
+    registerMathFunctionsTests(QUnit);
+    console.log('✅ Тесты lib/math_functions.js (node-unit-tests-math-functions.js) подключены.');
+} catch (err) {
+    console.error('⚠️  Не удалось загрузить node-unit-tests-math-functions.js:', err.message);
+}
+
+try {
+    const registerTaskGraphDerivativeTests = require('./node-unit-tests-task-graph-derivative.js');
+    registerTaskGraphDerivativeTests(QUnit);
+    console.log('✅ Тесты setTaskWithGraphOfFunctionDerivative (node-unit-tests-task-graph-derivative.js) подключены.');
+} catch (err) {
+    console.error('⚠️  Не удалось загрузить node-unit-tests-task-graph-derivative.js:', err.message);
+}
+
+try {
+    const registerSeedrandomTests = require('./node-unit-tests-seedrandom.js');
+    registerSeedrandomTests(QUnit);
+    console.log('✅ Тесты seedrandom в бандле (node-unit-tests-seedrandom.js) подключены.');
+} catch (err) {
+    console.error('⚠️  Не удалось загрузить node-unit-tests-seedrandom.js:', err.message);
 }
 
 QUnit.testDone(function (details) {
