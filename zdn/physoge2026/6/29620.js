@@ -60,6 +60,7 @@
 				analys: analys,
 				preference: [preference],
 			});
+			NAtask.modifiers.allDecimalsToStandard(true);
 		} else {
 			// Вариант: найти путь (s = g * t^2 / 2)
 			let s = g * t * t / 2;
@@ -85,6 +86,7 @@
 				analys: analys,
 				preference: [preference],
 			});
+			NAtask.modifiers.allDecimalsToStandard(true);
 		}
 	}, 1000);
 })();
