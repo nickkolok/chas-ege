@@ -8,7 +8,8 @@
 		let sign2 = ['-', '+', ''];
 		let sign3 = ['-', ''];
 		let denominator = sluchch(2, 5);
-		let numerator = denominator * [b, d][slNum] - [b, d][slNum] / Math.abs([b, d][slNum]);
+		let root = [b, d][slNum];
+		let numerator = denominator * root - root.sgn();
 
 		genAssertIrreducible(numerator, denominator, 'Дробь должна быть несократима');
 		genAssert(numerator / denominator > b, 'Правый конец должен быть больше левого');
