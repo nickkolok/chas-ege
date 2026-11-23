@@ -25,7 +25,7 @@
 				height: drawC,
 				depth: drawB,
 				angle: 30,
-				strokeStyle: om.secondaryBrandColors,
+				strokeStyle: om.secondaryBrandColors.iz(),
 			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 
