@@ -6,19 +6,12 @@
 		let vectorA = generateMatrix(1, 4, 1, 13).iz();
 		let vectorB = generateMatrix(1, 4, 1, 13).iz();
 
-		let coordVect = (V) => [V[2] - V[0], V[3] - V[1]];
-
-		let coordA = coordVect(vectorA);
-		let coordB = coordVect(vectorB);
+		let coordA = vectorA.coordVect();
+		let coordB = vectorB.coordVect();
 
 		genAssert(!coordA.equalAr(coordB));
 
-		let lengthA = coordA.map((elem) => elem.pow(2)).sum();
-		let lengthB = coordB.map((elem) => elem.pow(2)).sum();
-
-		let scal = coordA[0] * coordB[0] + coordA[1] * coordB[1];
-
-		let cos = (scal / ((lengthA * lengthB).sqrt()));
+		let cos = coordA.veccos(coordB);
 
 		let angle = cos.arccos() * 180 / Math.PI;
 
