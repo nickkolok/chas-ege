@@ -14,10 +14,10 @@
 			[sl(1, 10).pm(), sl(2, 20)]
 		];
 
-		let lengthA = coordA.map((elem) => elem.pow(2)).sum();
-		let lengthB = coordB.map((elem) => elem.pow(2)).sum();
+		let lengthA = coordA.veclengthSquared();
+		let lengthB = coordB.veclengthSquared();
 
-		let scal = coordA[0] * coordB[0] + coordA[1] * coordB[1];
+		let scal = coordA.scalprod(coordB);
 
 		let finalyVector = [0, 0];
 		let condition = [];
@@ -33,7 +33,7 @@
 		let finalyVectorView = finalyVector.slice().map((elem) => elem.ts());
 
 		let question = [
-			['длину вектора', finalyVector.map((elem) => elem.pow(2)).sum().sqrt()],
+			['длину вектора', finalyVector.veclength()],
 			['сумму координат', finalyVector.sum()],
 			['произведение координат', finalyVector.production()],
 			[
@@ -50,6 +50,7 @@
 			text: 'Длины векторов $\\vec{' + letter[0] + '}$ и $\\vec{' + letter[1] + '}$ равны соответственно $' +
 				lengthA.texsqrt(sl1()) + '$ и $' + lengthB.texsqrt(sl1()) + '$, ' +
 				'а их скалярное произведение равно $' + scal + '$. ' +
+				(question[0] === 'длину вектора' ? '' : 'Координаты этих векторов равны $(' + coordA.join('; ') + ')$ и $(' + coordB.join('; ') + ')$. ') +
 				'Найдите ' + question + ' $\\vec{' + letter[2] + '}$, если $\\vec{' + letter[2] + '}=' + resultExpr +
 				'$.',
 			answers: answ,
@@ -61,3 +62,4 @@
 	}, 1000);
 })();
 //644544198
+
