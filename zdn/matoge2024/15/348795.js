@@ -2,10 +2,11 @@
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
 
-        let key = "348795";
+        let key = '348795';
         let variant = getSelectedPreferenceFromList(key, ['find_median', 'find_bisector', 'find_height', 'find_side_from_median', 'find_side_from_bisector', 'find_side_from_height']);
 
-        let side = sl(5, 20) * ((variant < 3) ? (3).sqrt() : 1);
+        let sideStep = (variant < 3) ? (3).sqrt() : 1;
+        let side = sl(5 * sideStep, 20 * sideStep, sideStep);
 
         let triangle = new Triangle({
             lengths: {
@@ -20,9 +21,10 @@
 
         let randomLine = sl(0, 2);
 
-        triangle.addVertexToConnectionMatrix(Object.values(triangle.heightEndPoints)[randomLine], ['A', 'B', 'C'][randomLine]);
+        let vertexName = ['A', 'B', 'C'][randomLine];
+        triangle.addVertexToConnectionMatrix(triangle['height' + vertexName + 'EndPoint'], vertexName);
 
-        let height = Object.values(triangle.heightLengths)[randomLine];
+        let height = triangle['height' + vertexName + 'Length'];
         genAssertZ1000(height.pow(2) / 100);
 
         let points = autoScale(triangle.vertices);
@@ -56,31 +58,20 @@
 
         NAtask.setTask({
             text: `${[`Медиана`, `Биссектриса`, `Высота`, `Сторона`][(variant < 3) ? 3 : (variant % 3)]} равностороннего треугольника равна $${[side, height][(variant < 3) ? 0 : 1].pow(2).texsqrt(true)}$. Найдите `,
-            questions: [
-                [{
-                    text: 'медиану',
-                    answers: height,
-                }, {
-                    text: 'биссектрису',
-                    answers: height,
-                }, {
-                    text: 'высоту',
-                    answers: height,
-                }, {
-                    text: 'сторону',
-                    answers: side,
-                }][(variant < 3) ? variant : 3]
-            ],
+            questions: [{
+                text: ['медиану', 'биссектрису', 'высоту', 'сторону'][(variant < 3) ? variant : 3],
+                answers: (variant < 3) ? height : side,
+            }],
             postquestion: ` этого треугольника.`,
             authors: ['Александра Суматохина'],
         });
 
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(true);
     }, 2000);
 
 })();
