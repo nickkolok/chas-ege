@@ -86,50 +86,14 @@
 		let shiftY = (Math.min(...points2D.map((p) => p.y)) + Math.max(...points2D.map((p) => p.y))) / 2;
 		points2D = points2D.map((p) => ({ x: p.x - shiftX, y: p.y - shiftY }));
 
-		// Видимость граней - по знаку ориентированной площади проекции при обходе,
-		// согласованном с внешней нормалью (признак откалиброван на одобренном 513803.js).
-		// Ребро пунктирно, когда невидимы обе смежные грани.
-		let n = vertices.length;
-		let centroid = { x: 0, y: 0, z: 0 };
-		vertices.forEach(function (vertex) {
-			centroid.x += vertex.x / n;
-			centroid.y += vertex.y / n;
-			centroid.z += vertex.z / n;
-		});
+		// Видимость граней - facesVisibility() из lib/figure.js;
+		// ребро пунктирно, когда невидимы обе смежные грани (dashHiddenEdges()).
 		let faces = [[0, 1, 2, 3, 4, 5]];
 		for (let i = 0; i < 6; i++) {
 			faces.push([i, (i + 1) % 6, 6]);
 		}
-		let facesVisible = faces.map(function (face) {
-			let p0 = vertices[face[0]], p1 = vertices[face[1]], p2 = vertices[face[2]];
-			let u = { x: p1.x - p0.x, y: p1.y - p0.y, z: p1.z - p0.z };
-			let w = { x: p2.x - p0.x, y: p2.y - p0.y, z: p2.z - p0.z };
-			let normal = { x: u.y * w.z - u.z * w.y, y: u.z * w.x - u.x * w.z, z: u.x * w.y - u.y * w.x };
-			let fc = {
-				x: (p0.x + p1.x + p2.x) / 3 - centroid.x,
-				y: (p0.y + p1.y + p2.y) / 3 - centroid.y,
-				z: (p0.z + p1.z + p2.z) / 3 - centroid.z,
-			};
-			let orient = (normal.x * fc.x + normal.y * fc.y + normal.z * fc.z) < 0 ? -1 : 1;
-			let q0 = points2D[face[0]], q1 = points2D[face[1]], q2 = points2D[face[2]];
-			return orient * ((q1.x - q0.x) * (q2.y - q0.y) - (q2.x - q0.x) * (q1.y - q0.y)) > 0;
-		});
-		let matrix = drawPyramid.connectionMatrix.map((row) => row.slice());
-		let dash = [7, 5];
-		let setDash = function (u, v) {
-			matrix[Math.max(u, v) - 1][Math.min(u, v)] = dash;
-		};
-		for (let i = 0; i < 6; i++) {
-			let j = (i + 1) % 6;
-			// ребро основания (i, j): смежные грани - основание и боковая i
-			if (!facesVisible[0] && !facesVisible[1 + i]) {
-				setDash(i, j);
-			}
-			// боковое ребро (i, 6): смежные грани - боковые i-1 и i
-			if (!facesVisible[1 + ((i + 5) % 6)] && !facesVisible[1 + i]) {
-				setDash(i, 6);
-			}
-		}
+		let visibility = facesVisibility(vertices, points2D, faces);
+		let matrix = dashHiddenEdges(drawPyramid.connectionMatrix, faces, visibility, [7, 5]);
 
 		let paint1 = function (ct) {
 			ct.translate(200, 175);
