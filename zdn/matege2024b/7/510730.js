@@ -3,14 +3,17 @@
     retryWhileError(function () {
         /* На графике изображена зависимость скорости погружения батискафа от времени. На вертикальной оси отмечена скорость в м/с, на горизонтальной – время в секундах, прошедшее с начала погружения. */
 
+        let secondsPerUnit = 15, speedPerUnit = 0.1;
+
         function answAboutStop(intervals, answ, variable) {
             let wasStop = intervals.map(interval => lengthOfZeroInterval(interval) > 1);
             let index = wasStop.indexOf(true);
-            let stopSeconds = (lengthOfZeroInterval(intervals[index]) - 1) * 15;
+            if (index < 0) return;
+            let stopSeconds = (lengthOfZeroInterval(intervals[index]) - 1) * secondsPerUnit;
             let stopTexts = [
-                'батискаф остановился ровно на ' + chislitlx(stopSeconds, 'секунда', 'value'),
-                'батискаф ровно ' + chislitlx(stopSeconds, 'секунда', 'value') + ' оставался на одной глубине',
-                'в течение ' + chislitlx(stopSeconds, 'секунда', 'value') + ' подряд батискаф оставался на одной глубине'
+                'батискаф остановился ровно на ' + chislitlx(stopSeconds, 'секунда', 'v'),
+                'батискаф ровно ' + chislitlx(stopSeconds, 'секунда', 'v') + ' оставался на одной глубине',
+                'в течение ' + chislitlx(stopSeconds, 'секунда', 'r') + ' подряд батискаф оставался на одной глубине'
             ];
             addUniqueAnsw(wasStop, answ, stopTexts[variable]);
         }
@@ -19,7 +22,7 @@
             let maxValue = value.maxE();
             let firstMaxIndex = value.indexOf(maxValue);
             let wasMax = intervals.map((_, i) => {
-                let startIndex = beginTime + i * 4;
+                let startIndex = intervalStarts[i];
                 let endIndex = startIndex + 4;
                 return firstMaxIndex >= startIndex && firstMaxIndex <= endIndex;
             });
@@ -28,12 +31,12 @@
 
         function answAboutNonMore(intervals, answ, V) {
             let wasNonMore = intervals.map(interval => isNotMore(interval, V));
-            addUniqueAnsw(wasNonMore, answ, 'скорость погружения не больше ' + V * 0.1 + ' м/с на всём интервале');
+            addUniqueAnsw(wasNonMore, answ, 'скорость погружения не больше ' + V * speedPerUnit + ' м/с на всём интервале');
         }
 
         function answAboutNonLess(intervals, answ, V) {
             let wasNonLess = intervals.map(interval => isNotLess(interval, V));
-            addUniqueAnsw(wasNonLess, answ, 'скорость погружения не меньше ' + V * 0.1 + ' м/с на всём интервале');
+            addUniqueAnsw(wasNonLess, answ, 'скорость погружения не меньше ' + V * speedPerUnit + ' м/с на всём интервале');
         }
 
         function answAboutIncreasing(intervals, answ) {
@@ -71,9 +74,9 @@
 
         function answAboutDecreasingAfterZero(intervals, answ) {
             let wasCondition = intervals.map(interval => isDecreasingAfterZero(interval));
-            let length = intervals.map(interval => (lengthOfZeroInterval(interval) - 1) * 15);
+            let length = intervals.map(interval => (lengthOfZeroInterval(interval) - 1) * secondsPerUnit);
             let secTexts = intervals.map((_, i) => {
-                let sec = chislitlx(length[i], 'секунда', 'value');
+                let sec = chislitlx(length[i], 'секунда', 'v');
                 if (length[i] == 60) sec = 'минуту';
                 if (length[i] == 30 && sl1()) sec = 'полминуты';
                 return sec;
@@ -85,7 +88,7 @@
 
         function answAboutConstNSec(intervals, answ) {
             let wasConst = intervals.map(interval => lengthConst(interval) > 1);
-            let constTexts = intervals.map(interval => 'батискаф ' + chislitlx((lengthConst(interval) - 1) * 15, 'секунда') + ' погружался с постоянной ненулевой скоростью');
+            let constTexts = intervals.map(interval => 'батискаф ' + chislitlx((lengthConst(interval) - 1) * secondsPerUnit, 'секунда', 'v') + ' погружался с постоянной ненулевой скоростью');
 
             addUniqueAnsw(wasConst, answ, constTexts[wasConst.indexOf(true)]);
         }
@@ -107,15 +110,13 @@
         }
 
         let beginTime = sl(4);
+        let intervalStarts = Array.from({length: 4}, (_, i) => beginTime + i * 4);
 
-        let intervals = Array.from({
-            length: 4
-        }, (_, i) =>
-            value.slice(beginTime + i * 4, beginTime + i * 4 + 5));
+        let intervals = intervalStarts.map(start => value.slice(start, start + 5));
 
         let listOfIntervals = intervals.map((interval, i) => {
             return {
-                expr: (beginTime + i * 4) * 15 + '–' + (beginTime + i * 4 + 4) * 15 + ' с',
+                expr: intervalStarts[i] * secondsPerUnit + '–' + (intervalStarts[i] + 4) * secondsPerUnit + ' с',
                 solution: []
             };
         });
@@ -165,16 +166,17 @@
         solutions.forEach(item => genAssertNonempty(item));
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
+            let cellWidth = 30, cellHeight = 30;
             ctx.drawGridWithArrows({
                 gridWidth: 645,
                 gridHeight: 240,
-                cellWidth: 30,
-                cellHeight: 30,
-                stepX: 15,
-                stepY: 0.1,
+                cellWidth: cellWidth,
+                cellHeight: cellHeight,
+                stepX: secondsPerUnit,
+                stepY: speedPerUnit,
                 maxX: 300,
                 maxY: 0.5,
                 stepByCeilX: 4,
@@ -182,13 +184,11 @@
                 arrowLengthY: 5.8,
             });
 
-            ctx.translate(30, 30 * 6);
-            ctx.scale(30, -30);
-            ctx.lineWidth = 2 / 30;
+            ctx.translate(cellWidth, cellHeight * 6);
+            ctx.scale(cellWidth, -cellHeight);
+            ctx.lineWidth = 2 / cellHeight;
 
-            for (let i = 0; i < time.length - 1; i++) {
-                ctx.drawLine(time[i], value[i], time[i + 1], value[i + 1]);
-            }
+            ctx.drawPolyline(time, value);
         };
 
         NAtask.setCorrespondenceTask({
