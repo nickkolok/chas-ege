@@ -2,7 +2,7 @@
 	retryWhileError(function () {
 		NAinfo.requireApiVersion(0, 2);
 
-		let key = "348610";
+		let key = '348610';
 		let preference = ['A', 'B', 'C']; // из какой вершины проведена биссектриса
 		let variant = getSelectedPreferenceFromList(key, preference);
 
@@ -12,13 +12,16 @@
 		let angleFind = [angleGiven.iz(), centralAngle, letters[3]].randomReverse().join('');
 		angleGiven.splice(1, 0, centralAngle);
 
+		let angleA = sl(20, 80);
+		let angleB = sl(20, 80);
+		let angleC = 180 - angleA - angleB;
 		let triangle = new Triangle({
 			lengths: {
-				lengthAB: sl(5, 10),
-				lengthBC: sl(5, 10),
+				lengthAB: 10 * Math.sin(angleC * Math.PI / 180),
+				lengthBC: 10 * Math.sin(angleA * Math.PI / 180),
 			},
 			angles: {
-				angle: sl(20, 80),
+				angle: angleB,
 				angleInDegree: true
 			},
 			supplementary: {
@@ -27,7 +30,7 @@
 		});
 		genAssert(!triangle.isIsosceles(), 'Все стороны треугольника должны быть разными');
 
-		let valueAngle = [triangle.angleAInDegrees, triangle.angleBInDegrees, triangle.angleCInDegrees][variant].ceil();
+		let valueAngle = [angleA, angleB, angleC][variant];
 		triangle.addVertexToConnectionMatrix(Object.values(triangle.bisectorEndPoints)[variant], ['A', 'B', 'C'][variant]);
 
 		// Поле чуть уже холста, чтобы подписи вершин не обрезались у края
@@ -78,12 +81,12 @@
 		});
 		NAtask.modifiers.variativeABC(letters);
 
+		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
 		});
-		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 
 })();
