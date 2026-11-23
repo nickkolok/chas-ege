@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block content %}
-	<div id="gotov">
+	<div id="readiness-message">
 		<div id="pr0">
 			<div id="t0" class="tx">
 				0%
@@ -115,6 +115,10 @@
 			<br/>
 			Зерно ГПСЧ (random seed):
 			<input value="" id="randomSeed" data-chasstorage-id="pech-randomSeed"/>
+			<br/>
+			Выполнить код перед генерацией:
+			<input type="file" id="arbitraryCodeInput" multiple />
+			<button onclick="clearArbitraryCodeInput()">Очистить файлы</button>
 			<br/>
 		</div>
 	</div>
