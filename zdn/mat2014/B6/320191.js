@@ -10,7 +10,8 @@
 		let rooms = style === 2 ? sl(3, 10) : 3;
 		let total = sl(100, 1000);
 		let each = sl(10, Math.floor((total - 1) / (rooms - 1)));
-		let answer = (outside ? each * (rooms - 1) : total - each * (rooms - 1)) / total;
+		let inMainRooms = each * (rooms - 1);
+		let answer = (outside ? inMainRooms : total - inMainRooms) / total;
 		genAssertZ1000(answer);
 		let subject = ['русскому языку', 'обществознанию', 'химии', 'географии', 'математике', 'физике', 'биологии', 'английскому языку', 'истории'].iz();
 		let not = outside ? ' не' : '';
@@ -35,4 +36,5 @@
 	}, 20000);
 })();
 // 0FF842, B4BC07, 8384DF, CE9AE8, 606D80, 6CB2D4, E96242
+
 
