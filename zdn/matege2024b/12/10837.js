@@ -38,7 +38,12 @@
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 3) ? 20 : -5)));
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			points.forEach((elem, i) => {
+				let label = labelPositionAwayFrom(elem, circle.pc, 12);
+				ctx.fillText(letters[i], label.x, -label.y);
+			});
 		};
 
 		NAtask.setTask({
