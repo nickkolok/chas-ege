@@ -53,7 +53,7 @@
 			questions: [
 				[{
 					text: `$\\sin A=${triangle.sinA.pow(2).texsqrtfrac(1)}$. Найдите длину отрезка $BH$.`,
-					answers: triangle.lengthAB - triangle.lengthCA * triangle.cosA,
+					answers: triangle.pointB[0].distanceTo(triangle.heightCEndPoint)[0],
 				}, {
 					text: `$\\cos A=${triangle.cosA.pow(2).texsqrtfrac(1)}$. Найдите высоту $CH$.`,
 					answers: triangle.heightCLength,
