@@ -9,7 +9,7 @@
 		let f = x => Math.abs(k * Math.abs(x) + b);
 		let vertex = -b / k;
 		genAssert(b > 0 || vertex < 5.5, 'Излом должен быть виден на графике');
-		let points = intPoints(f, {minX: 1, maxX: 7, minY: 1, maxY: 5})
+		let points = intPoints(f, {minX: 1, maxX: 6, minY: 1, maxY: 5})
 			.filter(([x]) => k * x + b > 0);
 		genAssert(points.length >= 2, 'Нужны две точки с разными модулями абсцисс');
 		let marks = points.iz(2).map(([x, y]) => [x.pm(), y]);
@@ -31,12 +31,12 @@
 		let restrictions = needsSign ? ', где $k>0$' : '';
 		let inner = (k.ts() + '\\lvert x\\rvert+' + b.ts()).plusminus();
 		NAtask.setTask({
-			text: 'На рисунке изображён график функции $f(x)=\\Bigl\lvert k\\lvert x\\rvert+b\\Bigr\rvert$' +
+			text: 'На рисунке изображён график функции $f(x)=\\Bigl\\lvert k\\lvert x\\rvert+b\\Bigr\\rvert$' +
 				restrictions + '. Найдите ' + question + '.',
 			answers: answer,
 			analys: 'На внешних ветвях графика $f(x)=k\\lvert x\\rvert+b$ при выборе $k>0$. ' +
 				'По двум отмеченным точкам с разными $\\lvert x\\rvert$ получаем ' +
-				'$f(x)=\\Bigl\lvert ' + inner + '\\Bigr\rvert$.',
+				'$f(x)=\\Bigl\\lvert ' + inner + '\\Bigr\\rvert$.',
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 300,
