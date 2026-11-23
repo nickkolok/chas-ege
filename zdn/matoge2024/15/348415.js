@@ -3,7 +3,7 @@
         NAinfo.requireApiVersion(0, 2);
 
         let key = '348415';
-        let variant = getSelectedPreferenceFromList(key, ['hypotenuse', 'area', 'catheter']);
+        let variant = getSelectedPreferenceFromList(key, ['hypotenuse', 'area', 'leg']);
 
         let triangle = new Triangle({
             lengths: {
@@ -35,7 +35,7 @@
             ctx.drawFigure(points, triangle.connectionMatrix);
 
             ctx.strokeStyle = om.primaryBrandColors.iz();
-            ctx.arcBetweenSegments([points[0].x, points[0].y, points[2].x, points[2].y, points[1].x, points[1].y], 20);
+            ctx.arcBetweenSegments([points[0].x, points[0].y, points[2].x, points[2].y, points[1].x, points[1].y]);
         };
 
         NAtask.setTask({
@@ -56,12 +56,12 @@
             authors: ['Александра Суматохина'],
         });
 
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(true);
     }, 1000);
 
 })();
