@@ -33,16 +33,17 @@
 		transport.rm = transport.rm.replace('ёжей', 'ежей').replace('метл', 'метёл');
 
 		let colors = om.trickyColors.iz(transportArray.length);
-		let transportColor = colors.map((color, index) => '$' + transportArray[index] + '$ ' + color.replace(/(?:ый|ой)$/, 'ых').replace(/ий$/, 'их'));
+		let transportColor = colors.map((color, index) => {
+			let singular = color.slice(0, -2) + (color === 'синий' ? ['ий', 'яя', 'ее'] : [color.slice(-2), 'ая', 'ое'])[transport.rod];
+			let plural = color.replace(/(?:ый|ой)$/, 'ых').replace(/ий$/, 'их');
+			return '$' + transportArray[index] + '$ ' + chislit(transportArray[index], singular, plural, plural);
+		});
 
 		let selectedColor = colors[selectedTransport];
 		let endings = selectedColor === 'синий' ? ['ий', 'яя', 'ее'] : [selectedColor.slice(-2), 'ая', 'ое'];
 
 		NAtask.setTask({
-			text: `В фирме такси в данный момент свободно ${chislitM(numberOfTransport, transport.ie, transport.re, transport.rm, '$')}:
-			${transportColor.joinLast(` и `)}.
-			По вызову ${move} ${[`один`, `одна`, `одно`][transport.rod]} из ${transport.rm}, случайно оказавш${[`ий`, `ая`, `ее`][transport.rod]}ся ближе всего к заказчику.
-			Найдите вероятность того, что к нему ${move} ${selectedColor.slice(0, -2) + endings[transport.rod]} ${transport.ie}.`,
+			text: `В фирме такси в данный момент свободно ${chislitM(numberOfTransport, transport.ie, transport.re, transport.rm, '$')}: ${transportColor.joinLast(` и `)}. По вызову ${move} ${[`один`, `одна`, `одно`][transport.rod]} из ${transport.rm}, случайно оказавш${[`ий`, `ая`, `ее`][transport.rod]}ся ближе всего к заказчику. Найдите вероятность того, что к нему ${move} ${selectedColor.slice(0, -2) + endings[transport.rod]} ${transport.ie}.`,
 			answers: answer,
 			authors: ['Суматохина Александра'],
 		});
@@ -52,4 +53,5 @@
 // 1011 1012 1013 1014 1015 1016 1017 1018 1019 1020 320193 522432 522452 522472 522492 530288
 // 92BD71, 031317, C77611, C8DE96, DA37BB, A52B3C
 // B3D11A, B941D6
+
 
