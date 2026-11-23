@@ -842,7 +842,7 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 0, 'пустой список вершин - ни одной подписи');
     });
 
-    QUnit.test('ctx.signVertices: необязательный список above задаёт вершины для подписи сверху', function (assert) {
+    QUnit.test('ctx.signVertices: настройка above задаёт вершины для подписи сверху', function (assert) {
         var calls = [];
         var ctx = {
             font: '',
@@ -852,12 +852,15 @@ module.exports = function registerNodeTests(QUnit) {
             fillText: function (text, x, y) { calls.push({ text: text, x: x, y: y }); },
         };
         var points = [{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }, { x: 4, y: 4 }];
-        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C', 'K', 'M'], [2, 3]);
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C', 'K', 'M'], { above: [2, 3] });
         assert.deepEqual(calls.map(function (c) { return c.y; }), [25, 24, -7, -8, 21], 'вершины 2 и 3 сверху (-5), остальные снизу (+25)');
         assert.deepEqual(calls.map(function (c) { return c.text; }), ['A', 'B', 'C', 'K', 'M'], 'буквы в порядке вершин');
         calls = [];
         CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C', 'K', 'M']);
         assert.deepEqual(calls.map(function (c) { return c.y; }), [25, 24, 23, -8, -9], 'без above сохраняется правило половин');
+        assert.throws(function () {
+            CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C', 'K', 'M'], [2, 3]);
+        }, /above/, 'массив третьим аргументом — ошибка с подсказкой про {above: [...]}');
     });
 
     QUnit.test('ctx.signVertices: необязательные настройки options', function (assert) {
@@ -875,13 +878,13 @@ module.exports = function registerNodeTests(QUnit) {
             };
         }
         var points = [{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 }];
-        CanvasRenderingContext2D.prototype.signVertices.call(makeCtx(), points, ['A', 'B', 'C'], null, {
+        CanvasRenderingContext2D.prototype.signVertices.call(makeCtx(), points, ['A', 'B', 'C'], {
             font: '16px liberation_sans', textAlign: 'center', textBaseline: 'middle', fillStyle: '#f00', offsetBelow: 20, offsetAbove: -10,
         });
-        assert.deepEqual(calls.map(function (c) { return c.y; }), [20, 19, -12], 'отступы из options, above = null — правило половин');
+        assert.deepEqual(calls.map(function (c) { return c.y; }), [20, 19, -12], 'отступы из options, без above — правило половин');
         assert.deepEqual([calls[0].font, calls[0].textAlign, calls[0].textBaseline, calls[0].fillStyle],
             ['16px liberation_sans', 'center', 'middle', '#f00'], 'шрифт, выравнивание и цвет из options');
-        CanvasRenderingContext2D.prototype.signVertices.call(makeCtx(), points, ['A', 'B', 'C'], [0], { textAlign: 'center' });
+        CanvasRenderingContext2D.prototype.signVertices.call(makeCtx(), points, ['A', 'B', 'C'], { above: [0], textAlign: 'center' });
         assert.deepEqual(calls.map(function (c) { return c.y; }), [-5, 24, 23], 'не заданные отступы — по умолчанию');
         assert.deepEqual([calls[0].font, calls[0].textAlign, calls[0].textBaseline, calls[0].fillStyle],
             ['20px liberation_sans', 'center', 'alphabetic', '#000'], 'не заданное — шрифт по умолчанию, остальное из контекста');
