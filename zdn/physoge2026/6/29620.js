@@ -58,7 +58,7 @@
 				text: taskText,
 				answers: v,
 				analys: analys,
-				preference: preference,
+				preference: [preference],
 			});
 		} else {
 			// Вариант: найти путь (s = g * t^2 / 2)
@@ -83,7 +83,7 @@
 				text: taskText,
 				answers: s,
 				analys: analys,
-				preference: preference,
+				preference: [preference],
 			});
 		}
 	}, 1000);
