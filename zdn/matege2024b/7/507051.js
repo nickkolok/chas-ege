@@ -78,7 +78,7 @@
         }
 
         function answAboutConst(intervals, answ) {
-            let wasConst = intervals.map(interval => interval[0] === interval[interval.length - 1]);
+            let wasConst = intervals.map(interval => constValueByFirst(interval));
             addUniqueAnsw(wasConst, answ, ['крутящий момент не меняется на всём интервале',
                 'при увеличении числа оборотов крутящий момент не меняется'
             ].iz());
@@ -186,14 +186,15 @@
         solutions.forEach(item => genAssertNonempty(item));
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
+            let cellWidth = 40, cellHeight = 40;
             ctx.drawGridWithArrows({
                 gridWidth: 500,
                 gridHeight: 400,
-                cellWidth: 40,
-                cellHeight: 40,
+                cellWidth: cellWidth,
+                cellHeight: cellHeight,
                 stepX: rpmPerUnit,
                 stepY: nmPerUnit,
                 maxX: 6000,
@@ -204,9 +205,9 @@
                 arrowLengthY: 7.9,
             });
 
-            ctx.translate(40, 40 * 8);
-            ctx.scale(40, -40);
-            ctx.lineWidth = 2 / 40;
+            ctx.translate(cellWidth, cellHeight * 8);
+            ctx.scale(cellWidth, -cellHeight);
+            ctx.lineWidth = 2 / cellHeight;
 
             for (let i = 0; i < valuesView.length - 1; i++) {
                 ctx.drawLine(i * 0.1, valuesView[i], (i + 1) * 0.1, valuesView[i + 1]);
