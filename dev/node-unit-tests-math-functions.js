@@ -1750,4 +1750,19 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assert.ok(labels[0][3] > 0, 'график выше оси — подпись ниже оси');
         assert.ok(labels[1][3] < 0, 'график ниже оси — подпись выше оси');
     });
+
+    QUnit.test('paintSpline: отмеченные точки с произвольными буквами', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintSpline(Object.assign({}, paintOptions, { points: [-4.5, 2], markedPoints: { type: 'letter', letters: ['a', 'b'] } }))(ctx);
+        assert.deepEqual(textsOf(calls).slice(-2), ['a', 'b'], 'точки подписаны заданными буквами');
+    });
+
+    QUnit.test('paintMarkedPoints: буквы ставятся по другую сторону оси от графика', function (assert) {
+        const { ctx, calls } = recordingContext();
+        global.paintMarkedPoints(ctx, [1, 4], x => (x < 2 ? 3 : -3), { scale: 20 }, { type: 'letter', letters: ['a', 'b'] });
+        const labels = calls.filter(call => call[0] === 'fillText');
+        assert.deepEqual(labels.map(call => call[1]), ['a', 'b'], 'подписи — заданные буквы');
+        assert.ok(labels[0][3] > 0, 'график выше оси — подпись ниже оси');
+        assert.ok(labels[1][3] < 0, 'график ниже оси — подпись выше оси');
+    });
 };
