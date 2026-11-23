@@ -6,7 +6,7 @@
 		let preference = ['fanTime', 'firstTemperature'];
 		let variant = getSelectedPreferenceFromList(key, preference);
 		let fan = sl(5, 8);
-		let initial = 10 * sl(1, 2);
+		let initial = sl(10, 20, 10);
 		let values = Array.from({length: 13}, (_, i) => i <= fan ? initial + 10 * i : initial + 10 * fan - 5 * (i - fan));
 		let first = sl(1, fan - 1);
 		let target = values[first];
@@ -20,11 +20,11 @@
 		});
 		NAtask.modifiers.addJqplot({
 			dataArray: [values.map((value, i) => [i, value])], width: '700px', height: '380px',
-			options: {axes: {xaxis: {min: 0, max: 12, tickInterval: 1}, yaxis: {min: 0, max: 120, tickInterval: 10}},
+			options: {axes: {xaxis: {min: 0, max: values.length - 1, tickInterval: 1}, yaxis: {min: 0, max: 120, tickInterval: 10}},
 				seriesDefaults: {showMarker: false}},
 		});
 	}, 1000);
 })();
-// ФИПИ, ЕГЭ база, задание 3.
-// 3.76: 883023
-// 3.84: 87DF19
+// 883023
+// 87DF19
+
