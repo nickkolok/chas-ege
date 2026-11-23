@@ -68,6 +68,7 @@
 			answers: resultN,
 			analys: analys,
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 // ФИПИ C8FB81 E18D8C F7869E 83C331
