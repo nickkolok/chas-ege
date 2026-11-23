@@ -3,7 +3,7 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		function f(x) {
-			return Math.log(x) / Math.log(a) + b;
+			return math.log(x, a) + b;
 		}
 
 		let key = '509009';
