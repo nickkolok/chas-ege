@@ -2,7 +2,7 @@
 	'use strict';
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-		let key = window.nomer === 285923 ? '285923' : '6';
+		let key = nabor.preferences && nabor.preferences['285923'] ? '285923' : '6';
 		let preference1 = ['first_day', 'last_day', 'third_day'];
 		let preference2 = ['conference', 'contest'];
 		let preference3 = ['fipi', 'extended'];
@@ -39,7 +39,7 @@
 				initial + '. окажется запланированным на ' + ordinal + ' день конференции?';
 		} else {
 			text = ['Научная конференция', 'Песенный конкурс'][context] + ' проводится в ' + chislitlx(days, 'день') +
-				'. Всего запланировано ' + chislitlx(total, 'выступление') + ' — ' + (earlyDays === 1 ? (specialLast ? 'в последний день — ' : 'в первый день — ') :
+				'. Всего запланировано ' + chislitlx(total, 'выступление') + ': ' + (earlyDays === 1 ? (specialLast ? 'в последний день — ' : 'в первый день — ') :
 				(specialLast ? 'последние ' : 'первые ') + chislitlx(earlyDays, 'день') + ' по ') + chislitlx(early, 'выступление') +
 				restPhrase +
 				'Какова вероятность, что выступление товарища ' + initial + '. окажется запланированным на ' + ordinal + ' день мероприятия?';
@@ -48,4 +48,5 @@
 	}, 20000);
 })();
 // 452E1F, 0D6E8F, 4465E7, 93A088, 0ECCC1, 2989CE, C7DCB3, 6E23DD, CCBCCB, 1155EB, 3EE7EA, BD0EED, 3B77EE, 2A1BBF
+
 
