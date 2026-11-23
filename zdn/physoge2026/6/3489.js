@@ -50,6 +50,7 @@
 			text: text,
 			answers: F,
 			analys: analys,
+			preference: [preference],
 		});
 
 		// Рисунок: нить, растягиваемая в разные стороны силами F
