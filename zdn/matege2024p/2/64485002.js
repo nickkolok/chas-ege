@@ -12,22 +12,16 @@
 		genAssert(!segmentIntersectionCount(...vectorA, ...vectorC), 'Вектора A и C пересекаются');
 		genAssert(!segmentIntersectionCount(...vectorB, ...vectorC), 'Вектора B и C пересекаются');
 
-		let coordVect = (V) => [V[2] - V[0], V[3] - V[1]];
-
-		let coordA = coordVect(vectorA);
-		let coordB = coordVect(vectorB);
-		let coordC = coordVect(vectorC);
+		let coordA = vectorA.coordVect();
+		let coordB = vectorB.coordVect();
+		let coordC = vectorC.coordVect();
 
 		genAssert(!coordA.equalAr(coordB), 'Вектора A и B совпадают');
 		genAssert(!coordA.equalAr(coordC), 'Вектора A и C совпадают');
 
-		let lengthA = coordA.map((elem) => elem.pow(2)).sum();
-		let lengthB = coordB.map((elem) => elem.pow(2)).sum();
-		let lengthC = coordC.map((elem) => elem.pow(2)).sum();
-
-		genAssert(lengthA.sqrt() > 3, 'Вектор A слишком маленький');
-		genAssert(lengthB.sqrt() > 3, 'Вектор B слишком маленький');
-		genAssert(lengthC.sqrt() > 3, 'Вектор C слишком маленький');
+		genAssert(coordA.veclength() > 3, 'Вектор A слишком маленький');
+		genAssert(coordB.veclength() > 3, 'Вектор B слишком маленький');
+		genAssert(coordC.veclength() > 3, 'Вектор C слишком маленький');
 
 		let vectors = [coordA, coordB, coordC];
 
@@ -45,7 +39,7 @@
 		}
 
 		genAssert(finalyVector.production(), 'Слишком простой вектор');
-		let answ = finalyVector.map((elem) => elem.pow(2)).sum().sqrt();
+		let answ = finalyVector.veclength();
 
 		let resultExpr = condition.shuffle().slag().plusminus();
 
