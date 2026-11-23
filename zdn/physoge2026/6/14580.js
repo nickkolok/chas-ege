@@ -32,3 +32,4 @@
 })();
 //https://phys-oge.sdamgia.ru/problem?id=14580
 //zer00player
+// ФИПИ CE6366
