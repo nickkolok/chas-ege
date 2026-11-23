@@ -19,8 +19,8 @@
 		});
 
 		genAssert(trp.area().isAlmostInteger(), 'Площадь трапеции не целая');
-		genAssert(trp.angleCInRadians != Math.PI / 2, 'Получилась прямоугольная трапеция');
-		genAssert(trp.angleDInRadians != Math.PI / 2, 'Получилась прямоугольная трапеция');
+		genAssert(!trp.angleCInRadians.isAlmostEqual(Math.PI / 2, 1e-9), 'Получилась прямоугольная трапеция');
+		genAssert(!trp.angleDInRadians.isAlmostEqual(Math.PI / 2, 1e-9), 'Получилась прямоугольная трапеция');
 
 
 		let trian = new Triangle({
