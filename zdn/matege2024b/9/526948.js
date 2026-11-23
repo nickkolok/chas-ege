@@ -29,16 +29,7 @@
         }
 
         let paint1 = function (ctx) {
-            let h = ctx.canvas.height;
-            let w = ctx.canvas.width;
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(0, 0, w, h);
-            ctx.strokeStyle = '#888';
-            ctx.lineWidth = 1;
-            ctx.translateToCenter();
-            ctx.regularGrid(40, 5);
-
-            ctx.scale(40, -40);
+            ctx.gridPaper(40, 5);
             ctx.strokeStyle = om.secondaryBrandColors[0];
 
             ctx.lineWidth = 3.5 / 40;
