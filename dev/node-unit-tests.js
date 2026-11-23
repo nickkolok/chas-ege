@@ -582,24 +582,35 @@ module.exports = function registerNodeTests(QUnit) {
     // ============================================================
     QUnit.module('Diagram: intervalDeltas, findMaxDeltaInIntervals, findMinDeltaInIntervals');
 
+    // lib/diagram.js в chas-lib.js не отдаёт свои функции в global, а math.* берёт из mathjs,
+    // который грузится уже после chas-lib.js, поэтому загружаем его в отдельный контекст
+    var diagram = (function () {
+        var vm = require('vm');
+        var fs = require('fs');
+        var path = require('path');
+        var context = vm.createContext({ Math: Math, math: require('mathjs') });
+        vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'lib', 'diagram.js'), 'utf8'), context);
+        return context;
+    })();
+
     QUnit.test('intervalDeltas: приращения соседних значений', function (assert) {
-        assert.deepEqual(intervalDeltas([0, 1, 3, 6]), [1, 2, 3], 'возрастающий интервал');
-        assert.deepEqual(intervalDeltas([5, 5, 5]), [0, 0], 'постоянный интервал');
-        assert.deepEqual(intervalDeltas([7]), [], 'одно значение — приращений нет');
-        assert.deepEqual(intervalDeltas([]), [], 'пустой интервал');
+        assert.deepEqual(diagram.intervalDeltas([0, 1, 3, 6]), [1, 2, 3], 'возрастающий интервал');
+        assert.deepEqual(diagram.intervalDeltas([5, 5, 5]), [0, 0], 'постоянный интервал');
+        assert.deepEqual(diagram.intervalDeltas([7]), [], 'одно значение — приращений нет');
+        assert.deepEqual(diagram.intervalDeltas([]), [], 'пустой интервал');
     });
 
     QUnit.test('findMaxDeltaInIntervals: уникальный самый быстрый рост', function (assert) {
-        assert.strictEqual(findMaxDeltaInIntervals([[0, 1, 3], [3, 4, 5], [5, 5, 5]]), 0, 'максимальное приращение 2 в первом интервале');
-        assert.strictEqual(findMaxDeltaInIntervals([[0, 2], [0, 2]]), null, 'одинаковый рост — интервал не единственный');
-        assert.strictEqual(findMaxDeltaInIntervals([[5], [3]]), null, 'нет приращений');
-        assert.strictEqual(findMaxDeltaInIntervals([[0, 5], [7]]), 0, 'интервал без приращений не участвует');
+        assert.strictEqual(diagram.findMaxDeltaInIntervals([[0, 1, 3], [3, 4, 5], [5, 5, 5]]), 0, 'максимальное приращение 2 в первом интервале');
+        assert.strictEqual(diagram.findMaxDeltaInIntervals([[0, 2], [0, 2]]), null, 'одинаковый рост — интервал не единственный');
+        assert.strictEqual(diagram.findMaxDeltaInIntervals([[5], [3]]), null, 'нет приращений');
+        assert.strictEqual(diagram.findMaxDeltaInIntervals([[0, 5], [7]]), 0, 'интервал без приращений не участвует');
     });
 
     QUnit.test('findMinDeltaInIntervals: уникальное самое быстрое падение', function (assert) {
-        assert.strictEqual(findMinDeltaInIntervals([[0, 1, 2], [2, 1, 0], [0, 0]]), 1, 'минимальное приращение -1 во втором интервале');
-        assert.strictEqual(findMinDeltaInIntervals([[0, -2], [0, -2]]), null, 'одинаковое падение — интервал не единственный');
-        assert.strictEqual(findMinDeltaInIntervals([[0, 1, 3], [3, 4, 5], [5, 5, 5]]), 2, 'нулевое приращение — наименьшее');
+        assert.strictEqual(diagram.findMinDeltaInIntervals([[0, 1, 2], [2, 1, 0], [0, 0]]), 1, 'минимальное приращение -1 во втором интервале');
+        assert.strictEqual(diagram.findMinDeltaInIntervals([[0, -2], [0, -2]]), null, 'одинаковое падение — интервал не единственный');
+        assert.strictEqual(diagram.findMinDeltaInIntervals([[0, 1, 3], [3, 4, 5], [5, 5, 5]]), 2, 'нулевое приращение — наименьшее');
     });
 
     // ============================================================
