@@ -40,7 +40,7 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, connectionMatrix);
-			ctx.drawArc(0, 0, 180, 0, 2 * Math.PI);
+			circle.drawOnto(ctx);
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
@@ -71,3 +71,4 @@
 })();
 // https://base.mathege.ru/clones/?position=16&parent=10915
 // 63B321, 5A5BE2, CFA93A, CB8748, 78927F, 4407A7, 51BF93, C74767, 12C334, 546339, DB2C45, 7A7DD0, 66C150, 31FE56, 0140CF, 6B1594, 543585, 0DBAD3, B98255, 39461A
+

@@ -20,25 +20,27 @@
 		width: 360,
 		height: 360,
 		paint: function (ctx) {
-			let radius = 132;
-			ctx.translate(180, 180);
+			let circle = new Circle(new Point(0, 0), 132);
+			ctx.translateToCenter();
 			let radians = angles.map(angle => angle * Math.PI / 180);
-			let points = radians.map(angle => [radius * Math.cos(angle), radius * Math.sin(angle)]);
+			let points = angles.map(angle => circle.pointOnCircle(angle, {angleInDegrees: true}));
 			ctx.strokeStyle = '#333';
 			ctx.lineWidth = 2;
-			ctx.drawCircle(radius);
-			ctx.drawLine(...points[0], ...points[2]);
-			ctx.drawLine(...points[1], ...points[3]);
+			circle.drawOnto(ctx);
+			ctx.drawLine(points[0].x, points[0].y, points[2].x, points[2].y);
+			ctx.drawLine(points[1].x, points[1].y, points[3].x, points[3].y);
 			ctx.lineWidth = 4;
-			ctx.drawArc(0, 0, radius, radians[0], radians[1]);
-			ctx.drawArc(0, 0, radius, radians[2], radians[3]);
+			ctx.drawArc(circle.pc.x, circle.pc.y, circle.r, radians[0], radians[1]);
+			ctx.drawArc(circle.pc.x, circle.pc.y, circle.r, radians[2], radians[3]);
 			ctx.font = '17px liberation_sans';
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
-			radians.forEach((angle, i) => {
-				ctx.fillText(['A', 'K', 'B', 'M'][i], (radius + 16) * Math.cos(angle), (radius + 16) * Math.sin(angle));
+			points.forEach((point, i) => {
+				let label = labelPositionAwayFrom(point, circle.pc, 16);
+				ctx.fillText(['A', 'K', 'B', 'M'][i], label.x, label.y);
 			});
 		},
 	});
 })();
 // 9BFCD8, 70985D
+
