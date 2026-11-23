@@ -57,3 +57,4 @@
 // https://github.com/nickkolok/chas-ege/issues/3488
 // https://phys-oge.sdamgia.ru/problem?id=32437
 // https://phys-oge.sdamgia.ru/problem?id=32590
+// ФИПИ C62340 0CC928
