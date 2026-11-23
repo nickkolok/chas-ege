@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	NAinfo.requireApiVersion(0, 2);
-	let pass = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯA'.split('').iz();
+	let pass = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯА'.split('').iz();
 	let located = sl1();
 
 	retryWhileError(function() {
@@ -34,4 +34,5 @@
 // B32F8B, 41F7EA
 // 334D4A, F7EF69
 // EF1B7C
+
 
