@@ -19,7 +19,7 @@
 		});
 
 		genAssertZ1000(triangle.sinA.pow(2));
-		genAssert((triangle.sinA-0.5).abs()>0.1, 'Задача теряет смысл с sinA=1/2');
+		genAssert(2 * sinA.n != sinA.d, 'Задача теряет смысл с sinA=1/2');
 		genAssertZ1000(triangle.lengthBC.pow(2));
 
 		let a = triangle.vertices[0];
