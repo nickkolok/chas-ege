@@ -2,6 +2,8 @@
 	let probabilityA = sl(0.01, 0.95, 0.01);
 	let probabilityB = sl(0.01, 1 - probabilityA - 0.02, 0.01);
 
+	let probabilitySum = probabilityA + probabilityB;
+
 	let key = '14';
 	let preference = ['analysis', 'geometry'];
 	let age = getSelectedPreferenceFromList(key, preference);
@@ -15,10 +17,10 @@
 			'Вероятность того, что это вопрос по теме "' + themes[0] + '", равна $' + probabilityA.ts() + '$. Вероятность того, что это вопрос по ' +
 			'теме "' + themes[1] + '", равна $' + probabilityB.ts() + '$. Вопросов, которые одновременно относятся к этим двум темам, нет. ' +
 			'Найдите вероятность того, что ' + ['студенту', 'школьнику'][age] + ' достанется вопрос по одной из этих двух тем.',
-		answers: probabilityA + probabilityB,
+		answers: probabilitySum,
 		preference,
 		analys: 'Вероятность одного из несовместных событий равна сумме вероятностей этих событий: ' +
-			'$' + probabilityA.ts() + '+' + probabilityB.ts() + '=' + (probabilityA + probabilityB).ts() + '$.',
+			'$' + probabilityA.ts() + '+' + probabilityB.ts() + '=' + probabilitySum.ts() + '$.',
 		authors: ['dev-nulls', 'Авдеев Николай', 'Суматохина Александра'],
 	});
 })();
