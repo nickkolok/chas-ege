@@ -6,7 +6,8 @@
 		let angleB = Math.PI / [6, 3].iz();
 		let AC = sl(1,50);
 		let sinB = angleB.sin();
-		let sinA = {n:sl(1,6), d:sl(7,10)};
+		let sinA = {d: sl(3, 10)}; // как в ФИПИ: 4/7, 2/5, 3/5, 1/4, 2/3
+		sinA.n = sl(1, sinA.d - 1);
 
 		let triangle = new Triangle({
 			lengths: {
@@ -18,7 +19,6 @@
 			},
 		});
 
-		genAssertZ1000(triangle.sinA.pow(2));
 		genAssert(2 * sinA.n != sinA.d, 'Задача теряет смысл с sinA=1/2');
 		genAssertZ1000(triangle.lengthBC.pow(2));
 
@@ -47,7 +47,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ известно, что $BC=${triangle.lengthBC.pow(2).texsqrtfrac(1)}$, $\\sin A=${triangle.sinA.pow(2).texsqrtfrac(1)}$, внешний угол при вершине $B$ равен $${180 - triangle.angleBInDegrees}^\\circ$. Найдите $AC$.`,
+			text: `В треугольнике $ABC$ известно, что $BC=${triangle.lengthBC.pow(2).texsqrtfrac(1)}$, $\\sin A=${sinA.n.texfrac(sinA.d)}$, внешний угол при вершине $B$ равен $${180 - triangle.angleBInDegrees}^\\circ$. Найдите $AC$.`,
 			answers: triangle.lengthCA,
 			authors: ['Александра Суматохина'],
 		});
