@@ -22,7 +22,7 @@
 			}
 		});
 
-		genAssertZ1000(triangle.heightBLength);
+		genAssertZ1000([triangle.heightBLength, triangle.lengthCA][rand]);
 
 		let points = autoScale(triangle.vertices);
 
