@@ -13,23 +13,24 @@
 		genAssert(points.every(point => Math.abs(point[1]) <= 7), 'Точки касательной вне сетки');
 		genAssert(Math.abs(touchY) > 0.5, 'Точка касания слишком близка к оси абсцисс');
 		const letter = slLetter(['x', 'y']);
-		const paintGraph = paintSpline({func, minX: -10, maxX: 10, minY: -9, maxY: 9,
-			width: 500, height: 400, definedOnInterval: false, markedPoints: {type: 'number'}});
+		const bounds = {minX: -10, maxX: 10, minY: -9, maxY: 9};
+		const width = 500, height = 400, scale = 20;
+		const paintGraph = paintSpline({func, ...bounds, width, height, scale, definedOnInterval: false});
 		NAtask.setTask({
 			text: 'На рисунке изображены график функции $y=f(x)$ и касательная к нему в точке с абсциссой $' +
 				letter + '$. Найдите значение производной функции $f(x)$ в точке $' + letter + '$.',
 			answers: slope,
 			analys: 'Значение производной в точке касания равно угловому коэффициенту касательной $y=' +
-				(slope.ts() + 'x+' + intercept.ts()).plusminus() + '$.',
+				(slope.ts() + 'x' + ('+' + intercept.ts()).esli(intercept)).plusminus() + '$.',
 		});
 		NAtask.modifiers.addCanvasIllustration({
-			width: 500, height: 400,
+			width, height,
 			paint: function(ctx) {
 				paintGraph(ctx);
 				ctx.save();
-				ctx.scale(20, -20);
+				ctx.scale(scale, -scale);
 				ctx.lineWidth = 0.1;
-				graph9AdrawFunction(ctx, tangent, {minX: -10, maxX: 10, minY: -9, maxY: 9, step: 0.01});
+				graph9AdrawFunction(ctx, tangent, {...bounds, step: 0.01});
 				ctx.fillStyle = 'green';
 				graph9AmarkCircles(ctx, points, 2, 0.15);
 				ctx.strokeStyle = 'green';
@@ -37,7 +38,7 @@
 				ctx.drawLine(touchX, touchY, touchX, 0);
 				ctx.restore();
 				ctx.font = '15px liberation_sans';
-				ctx.fillText(letter, 20 * touchX + 10, touchY > 0 ? 16 : -10);
+				ctx.fillText(letter, scale * touchX + 10, touchY > 0 ? 16 : -10);
 			},
 		});
 	}, 1000);
