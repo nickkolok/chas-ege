@@ -90,3 +90,4 @@
 	}, 1000);
 })();
 // https://phys-oge.sdamgia.ru/problem?id=24636
+// ФИПИ 29E7E8
