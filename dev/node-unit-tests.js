@@ -759,6 +759,15 @@ module.exports = function registerNodeTests(QUnit) {
         assertPointClose(assert, labelPositionAwayFromSegments({ x: 3, y: 4 }, below, 20, 4), { x: 3, y: 24 }, 'отсчёт от point, directions = 4');
     });
 
+    QUnit.test('labelPositionAwayFromSegments: неверные distance и directions', function (assert) {
+        var below = [[{ x: -100, y: -10 }, { x: 100, y: -10 }]];
+        assert.throws(function () { labelPositionAwayFromSegments({ x: 0, y: 0 }, below); }, TypeError, 'без distance');
+        assert.throws(function () { labelPositionAwayFromSegments({ x: 0, y: 0 }, below, NaN); }, TypeError, 'distance = NaN');
+        assert.throws(function () { labelPositionAwayFromSegments({ x: 0, y: 0 }, below, 20, 0); }, RangeError, 'directions = 0');
+        assert.throws(function () { labelPositionAwayFromSegments({ x: 0, y: 0 }, below, 20, -4); }, RangeError, 'directions < 0');
+        assert.throws(function () { labelPositionAwayFromSegments({ x: 0, y: 0 }, below, 20, 2.5); }, RangeError, 'directions не целое');
+    });
+
     QUnit.test('labelPositionAwayFromSegments: при равенстве — первое направление', function (assert) {
         var symmetric = [[{ x: -100, y: -10 }, { x: 100, y: -10 }], [{ x: -100, y: 10 }, { x: 100, y: 10 }]];
         assertPointClose(assert, labelPositionAwayFromSegments({ x: 0, y: 0 }, symmetric, 20), { x: 20, y: 0 }, 'симметрия — направление k = 0');
