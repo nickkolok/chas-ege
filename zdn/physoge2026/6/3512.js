@@ -81,7 +81,7 @@
 				ct.textBaseline = 'top';
 				ct.fillText('Fтр, Н', 4, 4);
 				ct.textAlign = 'right';
-				ct.fillText('N, Н', 336, oy + 6);
+				ct.fillText('N, Н', 336, oy + 22); // ниже оцифровки, чтобы не налезать на «40»
 				// прямые 1 и 2
 				ct.lineWidth = 2;
 				ct.drawLine(ox, oy, ox + nMax * kx, oy - mu1 * nMax * ky);
