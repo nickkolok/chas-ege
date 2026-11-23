@@ -19,9 +19,10 @@
 		NAtask.setTask({
 			text: 'В учебной таблице представлены налоговые ставки на автомобили.' + rows.join('').toTable() +
 				' Какова налоговая ставка (в рублях за 1 л.с. в год) на автомобиль мощностью ' + power + ' л.с.?',
-			answers: rates[selected], preference,
+			answers: rates[selected],
+			preference,
 		});
 	}, 1000);
 })();
-// ФИПИ, ЕГЭ база, задание 3.
-// 3.56: 44CBC3, F327E2, A3AB1A, D744C2
+// 44CBC3, F327E2, A3AB1A, D744C2
+
