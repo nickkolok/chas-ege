@@ -1,4 +1,4 @@
 window.nomer=[
 	3522,
-].iz()
+].iz();
 window.comment='Расчётная задача (Механика)';
