@@ -28,21 +28,20 @@
 			minY: -8,
 			maxY: 8
 		});
+		const width = 400, height = 400, scale = 20;
 		let paint1 = function (ctx) {
-			let h = 400;
-			let w = 400;
 			//Оси координат
-			ctx.drawCoordinatePlane(w, h, {
+			ctx.drawCoordinatePlane(width, height, {
 				hor: 1,
 				ver: 1
 			}, {
 				x1: '1',
 				y1: '1',
 				sh1: 13,
-			}, 20);
+			}, scale);
 
 			ctx.lineWidth = 0.1;
-			ctx.scale(20, -20);
+			ctx.scale(scale, -scale);
 
 			//график
 
@@ -68,8 +67,8 @@
 			preference: [preference1, preference2],
 		});
 		NAtask.modifiers.addCanvasIllustration({
-			width: 400,
-			height: 400,
+			width,
+			height,
 			paint: paint1,
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
