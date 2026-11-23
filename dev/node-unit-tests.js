@@ -1034,4 +1034,31 @@ module.exports = function registerNodeTests(QUnit) {
         }
         assert.equal(dashCalls, 0, 'setLineDash не вызывается');
     });
+
+    // ============================================================
+    //  Прототипные обёртки chislitM / chislitlx  (lib/number.js)
+    // ============================================================
+    QUnit.module('Number.prototype.chislitM / chislitlx: проброс аргументов');
+
+    QUnit.test('chislitM: tex, nots и separator доходят до функции', function (assert) {
+        assert.equal((2).chislitM('метр', 'метра', 'метров'), '2 метра', 'без флагов — как раньше');
+        assert.equal((2).chislitM('метр', 'метра', 'метров', true), '$ 2 $ метра', 'tex пробрасывается');
+        assert.equal((2).chislitM('метр', 'метра', 'метров', true, true), '$2$ метра', 'nots пробрасывается');
+        assert.equal((2).chislitM('метр', 'метра', 'метров', false, false, '~'), '2~метра', 'separator пробрасывается');
+        assert.equal((2).chislitM('метр', 'метра', 'метров', true), chislitM(2, 'метр', 'метра', 'метров', true), 'обёртка совпадает с функцией');
+    });
+
+    QUnit.test('chislitlx: separator доходит до функции', function (assert) {
+        assert.equal((2).chislitlx('метр'), '2 метра', 'без разделителя — как раньше');
+        assert.equal((2).chislitlx('метр', '$'), '$ 2 $ метра', 'падеж и флаги работают');
+        assert.equal((2).chislitlx('метр', '$', '~'), '$ 2 $~метра', 'separator пробрасывается');
+        assert.equal((2).chislitlx('метр', '$', '~'), chislitlx(2, 'метр', '$', '~'), 'обёртка совпадает с функцией');
+    });
+
+    QUnit.test('Регресс: соседние обёртки не затронуты', function (assert) {
+        assert.equal((5).chislit('день', 'дня', 'дней'), 'дней');
+        assert.equal((90).toChMin(), '1 час 30 минут');
+        assert.equal((1500).rub(), '1500 рублей');
+        assert.equal((2).chislitlx('населённый пункт'), '2 населённых пункта', 'счётная форма r2 сохраняется');
+    });
 };
