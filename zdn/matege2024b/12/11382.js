@@ -10,7 +10,7 @@
 
 		// Равнобедренный треугольник с основанием AB: медиана CM — она же высота,
 		// так что медиана, половина основания и боковая сторона — прямоугольный треугольник.
-		let median, side, base, areaTex;
+		let median, side, base, areaTex = '';
 		if (rand < 2) {
 			// Первые два варианта (как в ФИПИ): все данные и ответ целые —
 			// медиана, половина основания и боковая сторона образуют пифагорову тройку k(m² − n², 2mn, m² + n²)
@@ -29,8 +29,9 @@
 			// половина основания и площадь — вообще говоря, иррациональные, площадь пишется как k√n
 			side = sl(3, 15);
 			median = sl(2, side - 1);
-			base = 2 * (side * side - median * median).sqrt();
-			areaTex = (median * median * (side * side - median * median)).texsqrt(1);
+			let halfBaseSquared = side * side - median * median;
+			base = 2 * halfBaseSquared.sqrt();
+			areaTex = (median * median * halfBaseSquared).texsqrt(1);
 		}
 		genAssert(median.mzhd(base / 14, base * 3), 'Медиана несоразмерна основанию — плохой чертёж');
 
