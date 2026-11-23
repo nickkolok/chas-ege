@@ -58,6 +58,5 @@
 	}, 1000);
 })();
 // https://github.com/nickkolok/chas-ege/issues/3514
-// DAC30E
 //zer00player
 // ФИПИ F30512
