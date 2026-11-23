@@ -26,7 +26,7 @@
 			case 4:
 				return [(a < 0 ? '-' : '') + root('m' + signed(b)), m => Math.sign(a) * Math.sqrt(m + b)];
 			case 5:
-				return [root(b + '-m'), m => Math.sqrt(b - m)];
+				return [root((b || '') + '-m'), m => Math.sqrt(b - m)];
 			case 6:
 				return ['-' + root('-m'), m => -Math.sqrt(-m)];
 			case 7:
@@ -38,9 +38,9 @@
 			case 10:
 				return [root('m') + signed(b), m => Math.sqrt(m) + b];
 			case 11:
-				return [b + '+m', m => b + m];
+				return [b ? b + '+m' : 'm', m => b + m];
 			case 12:
-				return [root(b + '+m'), m => Math.sqrt(b + m)];
+				return [root(b ? b + '+m' : 'm'), m => Math.sqrt(b + m)];
 			case 13:
 				return ['m^{' + c + '}' + signed(b / 2), m => m ** c + b / 2];
 
@@ -147,3 +147,4 @@
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=506360
 // B08673, 34F836, D45446, 43C366, A346D5, 553918, A611DA, 64747A, 70EAAF, 00511A, 787F51, 7B8937, 1F7492, 07DA0A, 9EC776, 0B6292, 034F55, C85877, 0531D1, 2F5C04, C78362, C7B75E, 260A20, 0E46D8, 374891, FBAD4D, AF39EB, 1C659A, 7D3F14, 6FB940, E2598D, D80090, 53E97D, 7878FA, 35954E, 633BCB, C11B2B, C02CE2
+
