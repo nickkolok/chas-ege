@@ -41,9 +41,6 @@
 			] + "U" + ["[", "("][checkAnswer(e)] + e + ";+∞)"
 		][slSign2];
 
-		function lcm(a, b) {
-			return Math.abs(a * b) / a.nod(b);
-		}
 
 		let k1 = -down[0];
 		let k2 = -down[1];
@@ -61,7 +58,7 @@
 		let fracB = new Fraction(N_B);
 		let fracC = new Fraction(N_C);
 
-		let commonDen = lcm(lcm(fracA.denominator, fracB.denominator), fracC.denominator);
+		let commonDen = fracA.denominator.nok(fracB.denominator, fracC.denominator);
 
 		let A_int = fracA.numerator * (commonDen / fracA.denominator);
 		let B_int = fracB.numerator * (commonDen / fracB.denominator);
