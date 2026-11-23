@@ -38,19 +38,18 @@
 			finalyVector = objSum(finalyVector, objUmn(vectors[i], coeffs[i][0] / coeffs[i][1]));
 		}
 
+		genAssertZ1000(finalyVector[0]);
+		genAssertZ1000(finalyVector[1]);
 		genAssert(finalyVector.production(), 'Слишком простой вектор');
 		let answ = finalyVector.veclength();
 
 		let resultExpr = condition.shuffle().slag().plusminus();
 
+		const scale = 25;
+		const scaledVectors = [vectorA, vectorB, vectorC].map(vector => vector.map(value => value * scale));
 		let paint1 = function(ctx) {
 			ctx.translate(-320, 0);
 
-			let scale = 25;
-
-			vectorA = vectorA.map((num) => num * scale);
-			vectorB = vectorB.map((num) => num * scale);
-			vectorC = vectorC.map((num) => num * scale);
 			let h = 700;
 			let w = 700;
 			//Оси координат
@@ -66,19 +65,19 @@
 			ctx.scale(1, -1);
 
 			ctx.lineWidth = 3;
-			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.drawArrow(vectorA[0], vectorA[1], vectorA[2], vectorA[3]);
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawArrow(scaledVectors[0][0], scaledVectors[0][1], scaledVectors[0][2], scaledVectors[0][3]);
 			ctx.strokeStyle = om.primaryBrandColors[0];
-			ctx.drawArrow(vectorB[0], vectorB[1], vectorB[2], vectorB[3]);
+			ctx.drawArrow(scaledVectors[1][0], scaledVectors[1][1], scaledVectors[1][2], scaledVectors[1][3]);
 			ctx.strokeStyle = om.primaryBrandColors[1];
-			ctx.drawArrow(vectorC[0], vectorC[1], vectorC[2], vectorC[3]);
+			ctx.drawArrow(scaledVectors[2][0], scaledVectors[2][1], scaledVectors[2][2], scaledVectors[2][3]);
 
 
-			ctx.font = "22px liberation_sans";
+			ctx.font = '22px liberation_sans';
 			ctx.scale(1, -1);
-			ctx.signSegmentInMiddle(vectorA[0], -vectorA[1], vectorA[2], -vectorA[3], letter[0] + "⃗", 15, 15);
-			ctx.signSegmentInMiddle(vectorB[0], -vectorB[1], vectorB[2], -vectorB[3], letter[1] + "⃗", 15, 15);
-			ctx.signSegmentInMiddle(vectorC[0], -vectorC[1], vectorC[2], -vectorC[3], letter[2] + "⃗", 15, 15);
+			ctx.signSegmentInMiddle(scaledVectors[0][0], -scaledVectors[0][1], scaledVectors[0][2], -scaledVectors[0][3], letter[0] + "⃗", 15, 15);
+			ctx.signSegmentInMiddle(scaledVectors[1][0], -scaledVectors[1][1], scaledVectors[1][2], -scaledVectors[1][3], letter[1] + "⃗", 15, 15);
+			ctx.signSegmentInMiddle(scaledVectors[2][0], -scaledVectors[2][1], scaledVectors[2][2], -scaledVectors[2][3], letter[2] + "⃗", 15, 15);
 
 		};
 
@@ -100,3 +99,4 @@
 	}, 100000);
 })();
 //64485002
+
