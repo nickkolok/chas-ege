@@ -29,10 +29,11 @@
         }
 
         let paint1 = function (ctx) {
-            ctx.gridPaper(40, 5);
+            let scale = 40;
+            ctx.gridPaper(scale, 5);
             ctx.strokeStyle = om.secondaryBrandColors[0];
 
-            ctx.lineWidth = 3.5 / 40;
+            ctx.lineWidth = 3.5 / scale;
             ctx.rotate(Math.PI * sl(5, 20, 5) / 10);
             ctx.drawFigure(triangle.vertices, triangle.connectionMatrix);
         };
@@ -55,3 +56,4 @@
 })();
 //https://mathb-ege.sdamgia.ru/problem?id=526948
 // 7AE6F7, 55027F, 2C7ED8, 50E9DC, 9C1693, 3A4036, FBE613, FE0CCC, DA924B, 87824F, 4F1EF4, 0122F2, 5F2E0B, 122BB2, 2FD374, A9F672, 250EB4, 02E61A, 503217, CDAA18, 225ED1, 8BAF18, 0A072F, 582B2F, 529420, 6F712D, 4B025A, E29854, F696C7, D993C1, 5D42CD, 9F3894, 26E6E9, C91AE4, 968EE0, B8236A, 949369, 68506F, 79AB33, DAFE37, DDDB3D, F68688, 57638A, AAEB81, 4B1214, FE24FF, 1190FD, 42597F, 5E22BA, 4A8BED
+
