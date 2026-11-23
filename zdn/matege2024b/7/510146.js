@@ -10,7 +10,7 @@
         function answAboutMax(intervals, answ) {
             let maxIndex = findMaxInIntervals(intervals, price);
             let wasMax = intervals.map((_, i) => i === maxIndex);
-            addUniqueAnsw(wasMax, answ, `цена достигла максимума за весь период с ${monthDays[0]} по ${monthDays[11]} ${monthView}`);
+            addUniqueAnsw(wasMax, answ, `цена достигла максимума за весь период с ${monthDays[0]} по ${monthDays[monthDays.length - 1]} ${monthView}`);
         }
 
         function answAboutNonMoreP(intervals, answ, threshold) {
@@ -139,7 +139,7 @@
             return result;
         }
 
-        let minY = sl(50, 200) * 10;
+        let minY = sl(500, 2000, 10);
         let stepY = [20, 50].iz();
         let maxY = minY + stepY * 8;
 
@@ -228,15 +228,16 @@
         solutions.forEach(item => genAssertNonempty(item));
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
+            let cellWidth = 30, cellHeight = 30;
             ctx.translate(15, 0);
             ctx.drawGridWithArrows({
                 gridWidth: 341,
                 gridHeight: 331,
-                cellWidth: 30,
-                cellHeight: 30,
+                cellWidth: cellWidth,
+                cellHeight: cellHeight,
                 stepY,
                 typeX: 'custom',
                 labelsX: monthDays,
@@ -246,19 +247,15 @@
                 arrowLengthY: 8.7,
             });
 
-            ctx.translate(30, 30 * 9);
-            ctx.scale(30, -30);
-            ctx.lineWidth = 2 / 30;
+            ctx.translate(cellWidth, cellHeight * 9);
+            ctx.scale(cellWidth, -cellHeight);
+            ctx.lineWidth = 2 / cellHeight;
 
-            for (let i = 0; i < time.length; i++) {
-                ctx.drawFilledCircle(time[i], price[i], 3 / 30);
-                if (i < time.length - 1)
-                    ctx.drawLine(time[i], price[i], time[i + 1], price[i + 1]);
-            }
+            ctx.drawPolyline(time, price, 3 / cellHeight);
         };
 
         NAtask.setCorrespondenceTask({
-            text: `На рисунке показана цена акции компании на момент закрытия биржевых торгов во все рабочие дни в период с ${monthDays[0]} по ${monthDays[11]} ${monthView} ${year} года. По горизонтали указываются числа месяца, по вертикали – цена акции в рублях за штуку. Для наглядности точки соединены линией.`,
+            text: `На рисунке показана цена акции компании на момент закрытия биржевых торгов во все рабочие дни в период с ${monthDays[0]} по ${monthDays[monthDays.length - 1]} ${monthView} ${year} года. По горизонтали указываются числа месяца, по вертикали – цена акции в рублях за штуку. Для наглядности точки соединены линией.`,
             leftHeader: 'ИНТЕРВАЛЫ',
             left: listOfIntervals,
             rightHeader: 'ХАРАКТЕРИСТИКИ',
