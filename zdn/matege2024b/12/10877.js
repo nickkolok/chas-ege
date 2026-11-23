@@ -7,12 +7,15 @@
 		let preference = ['BH_by_sin', 'CH_by_cos'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		let minLeg = 5, maxLeg = 50;
-		let a = sl(minLeg, maxLeg);
+		// Как в ФИПИ: BC целое, синус или косинус угла A — десятичная дробь от 0,1 до 0,8
+		// (sin A = 0,25, cos A = 0,7 и т. п.); катет AC при этом обычно не целый, в условие он не входит
+		let BC = sl(4, 50);
+		let trigA = sl(2, 16) / 20;
+		let tgA = [trigA / (1 - trigA * trigA).sqrt(), (1 - trigA * trigA).sqrt() / trigA][rand];
 		let triangle = new Triangle({
 			lengths: {
-				lengthCA: a,
-				lengthBC: slKrome(a, minLeg, maxLeg),
+				lengthCA: BC / tgA,
+				lengthBC: BC,
 			},
 			angles: {
 				angle: Math.PI / 2,
@@ -22,7 +25,6 @@
 			}
 		});
 
-		genAssertZ1000([triangle.sinA, triangle.cosA][rand].pow(2));
 		genAssertZ1000([triangle.sinA, triangle.heightCLength][rand]);
 
 		triangle.addVertexToConnectionMatrix(triangle.heightCEndPoint, 'C');
@@ -52,10 +54,10 @@
 			text: `В треугольнике $ABC$ угол $C$ равен $90^\\circ$, $CH$ – высота, $BC=${triangle.lengthBC}$, `,
 			questions: [
 				[{
-					text: `$\\sin A=${triangle.sinA.pow(2).texsqrtfrac(1)}$. Найдите длину отрезка $BH$.`,
+					text: `$\\sin A=${trigA}$. Найдите длину отрезка $BH$.`,
 					answers: triangle.pointB[0].distanceTo(triangle.heightCEndPoint)[0],
 				}, {
-					text: `$\\cos A=${triangle.cosA.pow(2).texsqrtfrac(1)}$. Найдите высоту $CH$.`,
+					text: `$\\cos A=${trigA}$. Найдите высоту $CH$.`,
 					answers: triangle.heightCLength,
 				}][rand]
 			],
