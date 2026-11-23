@@ -215,22 +215,11 @@ window.dvig.dgn = 0;
 evalInWindow('window.__originalNaborPreferences = window.nabor.preferences;', '<save-prefs>');
 
 if (opts.seed !== null) {
-	// В dev-репозитории ext/seedrandom.min.js отсутствует (concat молча его
-	// пропускает), зато seedrandom@3 есть в dependencies — грузим в окно:
-	// UMD без module сам навесит Math.seedrandom (как urljson.js и ожидает).
-	const seedrandomCandidates = [
-		path.join(projectRoot, 'node_modules', 'seedrandom', 'seedrandom.min.js'),
-		// для копии раннера в build/: node_modules лежит в корне репозитория
-		path.join(projectRoot, '..', 'node_modules', 'seedrandom', 'seedrandom.min.js'),
-	];
-	const seedrandomPath = seedrandomCandidates.find((p) => fs.existsSync(p));
-	if (!seedrandomPath) {
-		console.error('Не найден seedrandom.min.js (искал: ' + seedrandomCandidates.join(', ') + ') — выполните `npm install`.');
-		process.exit(1);
-	}
-	evalInWindow(fs.readFileSync(seedrandomPath, 'utf8'), 'seedrandom.min.js');
+	// seedrandom теперь внутри бандла chas-uijs.js (lib/load-chas-lib.js берёт его
+	// через choosePath из node_modules, как остальные npm-библиотеки).
+	// UMD без module сам навешивает Math.seedrandom — отдельная загрузка не нужна.
 	if (typeof window.Math.seedrandom !== 'function') {
-		console.error('Не удалось инициализировать seedrandom');
+		console.error('Math.seedrandom не найден в бандле chas-uijs.js — выполните `grunt`.');
 		process.exit(1);
 	}
 	window.Math.seedrandom(String(opts.seed));

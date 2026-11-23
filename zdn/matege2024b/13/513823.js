@@ -105,56 +105,24 @@
 		let shiftY = (Math.min(...points2D.map((p) => p.y)) + Math.max(...points2D.map((p) => p.y))) / 2;
 		points2D = points2D.map((p) => ({ x: p.x - shiftX, y: p.y - shiftY }));
 
-		// Видимость граней tetraэдра - по знаку ориентированной площади проекции
-		// (приём откалиброван на одобренном 513803.js). Нормаль грани ориентируем
-		// наружу по центру тяжести: у выпуклого тела внешняя нормаль сонаправлена
-		// с вектором из центра тела в центр грани.
-		let centroid = {
-			x: vertices.reduce((s, v) => s + v.x, 0) / 4,
-			y: vertices.reduce((s, v) => s + v.y, 0) / 4,
-			z: vertices.reduce((s, v) => s + v.z, 0) / 4,
-		};
+		// Видимость граней тетраэдра - facesVisibility() из lib/figure.js
+		// (для камеры и пирамиды одобренного 513803.js он даёт ровно одно скрытое
+		// ребро (0,1) - то самое, что в том шаблоне зашито как matrixPyr[0][0] = [5, 3]).
+		// Ребро невидимо, если невидимы обе смежные грани.
 		let faceIndices = [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]];
-		let facesVisible = faceIndices.map(function (f) {
-			let p0 = vertices[f[0]], p1 = vertices[f[1]], p2 = vertices[f[2]];
-			let u = { x: p1.x - p0.x, y: p1.y - p0.y, z: p1.z - p0.z };
-			let w = { x: p2.x - p0.x, y: p2.y - p0.y, z: p2.z - p0.z };
-			let n = { x: u.y * w.z - u.z * w.y, y: u.z * w.x - u.x * w.z, z: u.x * w.y - u.y * w.x };
-			let fc = {
-				x: (p0.x + p1.x + p2.x) / 3 - centroid.x,
-				y: (p0.y + p1.y + p2.y) / 3 - centroid.y,
-				z: (p0.z + p1.z + p2.z) / 3 - centroid.z,
-			};
-			// Знак площади берём от обхода, согласованного с ВНЕШНЕЙ нормалью:
-			// если перечисление вершин грани даёт нормаль внутрь, площадь берём с минусом.
-			// Признак откалиброван на одобренном 513803.js: для его камеры и пирамиды
-			// он даёт ровно одно скрытое ребро (0,1) - то самое, что в том шаблоне
-			// зашито как matrixPyr[0][0] = [5, 3].
-			let orient = (n.x * fc.x + n.y * fc.y + n.z * fc.z) < 0 ? -1 : 1;
-			let q0 = points2D[f[0]], q1 = points2D[f[1]], q2 = points2D[f[2]];
-			let area = (q1.x - q0.x) * (q2.y - q0.y) - (q2.x - q0.x) * (q1.y - q0.y);
-			return orient * area > 0;
-		});
-		// Ребро невидимо, если невидимы обе смежные грани
+		let visibility = facesVisibility(vertices, points2D, faceIndices);
 		let tetraEdges = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]];
 		let isHidden = function (edge) {
-			return !faceIndices.some(function (f, k) {
-				return facesVisible[k] && f.includes(edge[0]) && f.includes(edge[1]);
-			});
+			return !isOnVisibleFace(faceIndices, visibility, edge);
 		};
 
 		// Матрица в формате drawFigure: строка i, столбец j - ребро между точками i+1 и j
-		let matrix = [
+		let dash = [7, 5];
+		let matrix = dashHiddenEdges([
 			[1],
 			[1, 1],
 			[1, 1, 1],
-		];
-		let dash = [7, 5];
-		tetraEdges.forEach(function (edge) {
-			if (isHidden(edge)) {
-				matrix[Math.max(edge[0], edge[1]) - 1][Math.min(edge[0], edge[1])] = dash;
-			}
-		});
+		], faceIndices, visibility, dash);
 
 		let paint1 = function (ctx) {
 			ctx.translate(200, 200);
