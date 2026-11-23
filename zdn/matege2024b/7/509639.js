@@ -140,14 +140,15 @@
         solutions.forEach(item => genAssertNonempty(item));
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
+            let cellWidth = 40, cellHeight = 40;
             ctx.drawGridWithArrows({
                 gridWidth: 460,
                 gridHeight: 360,
-                cellWidth: 40,
-                cellHeight: 40,
+                cellWidth: cellWidth,
+                cellHeight: cellHeight,
                 stepX: 1,
                 stepY: priceStep,
                 typeX: 'custom',
@@ -159,15 +160,11 @@
                 arrowLengthY: 6.9,
             });
 
-            ctx.translate(40, 40 * 7);
-            ctx.scale(40, -40);
-            ctx.lineWidth = 2 / 40;
+            ctx.translate(cellWidth, cellHeight * 7);
+            ctx.scale(cellWidth, -cellHeight);
+            ctx.lineWidth = 2 / cellHeight;
 
-            for (let i = 0; i < time.length; i++) {
-                ctx.drawFilledCircle(time[i], production[i], 3 / 40);
-                if (i < time.length - 1)
-                    ctx.drawLine(time[i], production[i], time[i + 1], production[i + 1]);
-            }
+            ctx.drawPolyline(time, production, 3 / cellHeight);
         };
 
         NAtask.setCorrespondenceTask({
