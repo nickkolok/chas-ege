@@ -23,3 +23,4 @@
 })();
 // https://github.com/nickkolok/chas-ege/issues/3503
 //zer00player
+// ФИПИ 250AC0
