@@ -3,7 +3,7 @@
         NAinfo.requireApiVersion(0, 2);
         let letters = om.latbukv.slice(0, 3);
 
-        let key = "356159";
+        let key = '356159';
         let preference = ['B', 'A', 'C']; // при какой вершине данный угол
         let variant = getSelectedPreferenceFromList(key, preference);
 
@@ -70,12 +70,12 @@
         });
         NAtask.modifiers.variativeABC(letters);
 
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(true);
     }, 1000);
 
 })();
