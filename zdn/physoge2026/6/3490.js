@@ -19,15 +19,16 @@
 			substanceName = 'машинного масла';
 		}
 		
-		let V = sl(50, 150, 10); // объём в литрах
+		// Ёмкость, л: бак трактора — десятки и сотни литров, канистра — до 40 л (DC23AC: 40 л)
+		let vessel = [
+			{full: 'Топливный бак трактора', noun: 'бак', V: [50, 150]},
+			{full: 'Канистра', noun: 'канистра', V: [10, 40]},
+		].iz();
+		let V = sl(vessel.V[0], vessel.V[1], 10); // объём в литрах
 		let m = V * density; // масса вещества в кг
 		
 		genAssert(m.isAlmostInteger(), "масса должна быть целым числом");
 
-		let vessel = [
-			{full: 'Топливный бак трактора', noun: 'бак'},
-			{full: 'Канистра', noun: 'канистра'},
-		].iz();
 		let vesselRe = sklonlxkand(vessel.noun).re;
 		
 		NAtask.setTask({
