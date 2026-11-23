@@ -4,13 +4,14 @@
         let rand = sl1();
 
         let side = sl(10, 20);
-        let a = sl(1, 20);
+        const baseRange = [1, 20];
+        let a = sl(...baseRange);
 
         const trp = new Trapezoid({
             lengths: {
                 lengthAB: a,
                 lengthBC: side,
-                lengthCD: slKrome(a, 1, 20),
+                lengthCD: slKrome(a, ...baseRange),
                 lengthDA: side,
             },
             supplementary: {
@@ -48,9 +49,10 @@
                 ctx.scale(1, -1);
                 ctx.font = '20px liberation_sans';
                 points.slice(0, 4).forEach((elem, i) => {
-                    let offsetX = (i == 0 || i == 3) ? -15 : 5;
-                    let offsetY = (i < 2) ? 25 : -5;
-                    ctx.fillText(letters[i], elem.x + offsetX, -elem.y + offsetY);
+                    let label = labelPositionAwayFrom(elem, { x: 0, y: 0 }, 18);
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(letters[i], label.x, -label.y);
                 });
             }
         };
@@ -61,13 +63,13 @@
             authors: ['Александра Суматохина'],
             preference
         });
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
 
-        NAtask.modifiers.allDecimalsToStandard(true);
 
     }, 2000);
 })();
