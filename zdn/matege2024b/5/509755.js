@@ -10,7 +10,7 @@
 		let variant = getSelectedPreferenceFromList(key, preference1);
 		let majority = getSelectedPreferenceFromList(key, preference2);
 		let answers = (majority ? relation - 1 : 1) / relation;
-		genAssertZ1000(answers * 10);
+		genAssertZ1000(answers * 10, 'Ответ должен иметь не более четырёх знаков после запятой');
 		relation--;
 
 		let objects = [
@@ -21,7 +21,7 @@
 
 		if (variant > 0)
 			objects = sklonlxkand(objects);
-		let container = [['ящике', 'ящика'], ['коробке', 'коробки']].iz();
+		let container = variant === 1 ? [['ящике', 'ящика'], ['коробке', 'коробки']].iz() : [];
 		let selected = majority ? 0 : 1;
 
 		NAtask.setTask({
@@ -44,7 +44,8 @@
 					answers,
 				}][variant]
 			],
-			authors: ['Суматохина Александра'], preference: [preference1, preference2],
+			authors: ['Суматохина Александра'],
+			preference: [preference1, preference2],
 		});
 	}, 1000);
 })();
@@ -56,4 +57,3 @@
 // FA27E6, 1D5F8F
 // C3E952, 823297, DA4C41, AE9FFC, 6A58FE, 7E2FC1, E406E3, 634E6B, BEB1D7, 1901C5, A00C8C
 // D257B9, EE68AE, 9B2F60
-
