@@ -13,21 +13,22 @@
 
 		let cos = coordA.veccos(coordB);
 
-		let angle = cos.arccos() * 180 / Math.PI;
+		let angle = coordA.vecangleInDegrees(coordB);
 
-		genAssert((cos * 1000).isZ() || angle.isZ(), 'Оба значения не подходят для ответа');
+		genAssert((cos * 1000).isZ() || angle.isAlmostInteger(), 'Оба значения не подходят для ответа');
 
-		let answ = angle.isZ() ? [angle, 'угол (в градусах)'] : [cos, 'косинус угла'];
+		let answ = angle.isAlmostInteger() ? [Math.round(angle), 'угол (в градусах)'] : [cos, 'косинус угла'];
 
 		let question = answ.pop();
 
 		NAtask.setTask({
 			text: 'Найдите ' + question + ' между векторами $\\overrightarrow{' + letter[0] + '}$ и $\\overrightarrow{' +
-				letter[1] + '}$, если известно, что  $\\overrightarrow{' + letter[0] + '}(' + coordA.join(' ;') + ')$ и ' +
-				'$\\overrightarrow{' + letter[1] + '}(' + coordB.join(' ;') + ')$.',
+				letter[1] + '}$, если известно, что $\\overrightarrow{' + letter[0] + '}(' + coordA.join('; ') + ')$ и ' +
+				'$\\overrightarrow{' + letter[1] + '}(' + coordB.join('; ') + ')$.',
 			answers: answ,
 			author: 'Суматохина Александра',
 		});
 	}, 1000);
 })();
 //2774101
+
