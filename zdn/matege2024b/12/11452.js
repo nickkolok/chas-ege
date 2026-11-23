@@ -29,13 +29,13 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
-			ctx.drawLine(points[1].x, points[1].y, 160, points[1].y);
-			ctx.drawLine(points[0].x, points[0].y, -160, points[0].y);
+			let rightRayEnd = ctx.drawLineAtAngle(points[1].x, points[1].y, 0, 160 - points[1].x);
+			let leftRayEnd = ctx.drawLineAtAngle(points[0].x, points[0].y, Math.PI, 160 + points[0].x);
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, 160, points[1].y], 15);
+			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, rightRayEnd.x, rightRayEnd.y], 15);
 
-			ctx.arcBetweenSegments([-160, points[0].y, points[0].x, points[0].y, points[2].x, points[2].y], 15);
+			ctx.arcBetweenSegments([leftRayEnd.x, leftRayEnd.y, points[0].x, points[0].y, points[2].x, points[2].y], 15);
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
