@@ -10,7 +10,9 @@
 		ctx.save();
 			ctx.translateToCenter();
 			ctx.translate(0, 70);
-			ctx.scale(20, -20);
+			let unit = 20;
+			ctx.save();
+			ctx.scale(unit, -unit);
 			ctx.lineWidth = 0.1;
 
 			//SA
@@ -26,41 +28,45 @@
 			//SANB
 			ctx.drawLine(-5, 4, -3, -1);
 
-			ctx.font = "18px liberation_sans";
-			ctx.scale(1 / 20, -1 / 20);
+			ctx.restore();
+			ctx.font = '18px liberation_sans';
 			ctx.lineWidth = 1;
 
-			//SA
-			ctx.signSegmentInMiddle(0, -12*20, -7*20, -6*20, SA.ts(), 15, 30);
-			//SAB
-			ctx.signSegmentInMiddle(-8*20, -4*20, -6*20, 1*20, SAB.ts(), 15, 30);
-			//SANB
-			ctx.signSegmentInMiddle(-4*20, -4*20, -2*20, 1*20, SANB.ts(), 15, 30);
-
-			//SNA
-			ctx.signSegmentInMiddle(0, -12*20, 5*20, -6*20, SNA.ts(), 15, 30);
-			//SNAB
-			ctx.signSegmentInMiddle(2*20, -4*20, 1*20, 1*20, SNAB.ts(), 15, 30);
-			//SNANB
-			ctx.signSegmentInMiddle(7*20, -4*20, 8*20, 1*20, SNANB.ts(), 15, 30);
-
+			ctx.save();
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			[
+				[0, -10, -5, -4, SA, 5, -4],
+				[-5, -4, -7, 1, SAB, -3, 1],
+				[-5, -4, -3, 1, SANB, -7, 1],
+				[0, -10, 5, -4, SNA, -5, -4],
+				[5, -4, 3, 1, SNAB, 7, 1],
+				[5, -4, 7, 1, SNANB, 3, 1],
+			].forEach(([x1, y1, x2, y2, probability, insideX, insideY]) => {
+				let start = { x: x1 * unit, y: y1 * unit };
+				let end = { x: x2 * unit, y: y2 * unit };
+				let [x, y] = coordinatesMiddleOfSegment(start.x, start.y, end.x, end.y);
+				let label = labelPositionOutsideSegment({ x, y }, start, end, { x: insideX * unit, y: insideY * unit }, 20);
+				ctx.fillText(probability.ts(), label.x, label.y);
+			});
+			ctx.restore();
 
 			//S
-			ctx.fillText('S', 0, -10.2*20);
+			ctx.fillText('S', 0, -10.2* unit);
 
 			//A
-			ctx.drawLine(5.2*20, -4.8 * 20, 5.9*20, -4.8 * 20);
-			ctx.fillText('A', 5*20 + 5, -4*20);
-			ctx.fillText('A', -5*20 - 15, -4*20);
+			ctx.drawLine(5.2* unit, -4.8 * unit, 5.9* unit, -4.8 * unit);
+			ctx.fillText('A', 5* unit + 5, -4* unit);
+			ctx.fillText('A', -5* unit - 15, -4* unit);
 
 			//B
-			ctx.drawLine(7.6*20, 1.2 * 20, 6.9*20, 1.2 * 20);
-			ctx.fillText('B', 7*20, 1*20 +20);
-			ctx.fillText('B', 3*20, 1*20 +20);
+			ctx.drawLine(7.6* unit, 1.2 * unit, 6.9* unit, 1.2 * unit);
+			ctx.fillText('B', 7* unit, 1* unit +20);
+			ctx.fillText('B', 3* unit, 1* unit +20);
 
-			ctx.drawLine(-2.4*20, 1.2 * 20, -3.1*20, 1.2 * 20);
-			ctx.fillText('B', -7*20, 1*20 +20);
-			ctx.fillText('B', -3*20, 1*20 +20);
+			ctx.drawLine(-2.4* unit, 1.2 * unit, -3.1* unit, 1.2 * unit);
+			ctx.fillText('B', -7* unit, 1* unit +20);
+			ctx.fillText('B', -3* unit, 1* unit +20);
 		ctx.restore();
 	};
 
@@ -78,12 +84,12 @@
 		postquestion: '.',
 		authors: ['Александра Суматохина'],
 	});
+	NAtask.modifiers.allDecimalsToStandard(/*true*/);
 	NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint,
 		});
-	NAtask.modifiers.allDecimalsToStandard(/*true*/);
 }, 2000);})();
 //10886518
 //Открытый банк заданий A61D76
