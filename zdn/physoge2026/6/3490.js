@@ -43,6 +43,7 @@
 				'$$V = \\frac{' + m + '}{' + density + '} = ' + V + ' \\text{ л}.$$ ' +
 				'Таким образом, ёмкость ' + vesselRe + ' составляет $' + V + '$ литров.',
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 // https://phys-oge.sdamgia.ru/problem?id=24872
