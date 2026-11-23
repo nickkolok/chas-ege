@@ -2,7 +2,9 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let rand = sl1();
+        let key = '518393';
+        let preference = ['longRivePart', 'shortRivePart'];
+        let rand = getSelectedPreferenceFromList(key, preference);
         let riverLength = ['большей', 'меньшей'][rand];
         let shortOrLong = ['длиннее', 'короче'].iz();
         let shortRivePart = sl(3, 7, 1);
@@ -17,6 +19,7 @@
                 ', при этом одна из них ' + shortOrLong + ' другой на ' + (longRivePart - shortRivePart) * unitOfLenght + ' км. Найдите длину ' +
                 riverLength + ' реки. Ответ дайте в километрах.',
             answers: unitOfLenght * [longRivePart, shortRivePart][rand],
+            preference: preference,
         });
     }, 100);
 })();

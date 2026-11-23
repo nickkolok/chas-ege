@@ -2,6 +2,10 @@
     'use strict';
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
+        let key = '506569';
+        let preference = ['findWinner', 'findLoser'];
+        let rand = getSelectedPreferenceFromList(key, preference);
+        let randPartOf100 = sl(0, 5);
 
         let post = ['председателя', 'заместителя председателя', 'секретаря', 'президента', 'заместителя президента'].iz();
 
@@ -9,9 +13,6 @@
 
         let clubName = ['Любители сериалов', 'Тарологи', 'Шамбала', 'Адская кухня', 'Астрономы', 'Настольщики',
             'Исповедь сценариста', 'СПГС', 'Спортивный центр', 'Юный физик', 'Шабаш тимлида', 'Фото-охота', 'Бета-тестеры', 'Любители чтения', 'Музыкант', 'Юный химик', 'Во все тяжкие'].iz();
-
-        let rand = sl1();
-        let randPartOf100 = sl(0, 5);
 
         let winOrLose = ['победитель', 'проигравший'][rand];
         let ratio = [100, 50, 25, 20, 10, 5][randPartOf100];
@@ -29,6 +30,7 @@
                 loserRatio + ':' + winnerRatio + '$' + '. Сколько голосов получил ' + winOrLose + ' в процентах?',
 
             answers: percent,
+            preference: preference,
         });
     }, 100);
 })();
