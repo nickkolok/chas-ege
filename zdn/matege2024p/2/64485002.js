@@ -8,53 +8,9 @@
 		let vectorB = generateMatrix(1, 4, 1, 13).iz();
 		let vectorC = generateMatrix(1, 4, 1, 13).iz();
 
-		let check1 = [{
-			x: vectorA[0],
-			y: vectorA[1]
-		}, {
-			x: vectorA[2],
-			y: vectorA[3]
-		}, {
-			x: vectorB[0],
-			y: vectorB[1]
-		}, {
-			x: vectorB[2],
-			y: vectorB[3]
-		}].mt_otrPeres();
-
-		genAssert(!check1, 'Вектора A и B пересекаются');
-
-		let check2 = [{
-			x: vectorA[0],
-			y: vectorA[1]
-		}, {
-			x: vectorA[2],
-			y: vectorA[3]
-		}, {
-			x: vectorC[0],
-			y: vectorC[1]
-		}, {
-			x: vectorC[2],
-			y: vectorC[3]
-		}].mt_otrPeres();
-
-		genAssert(!check2, 'Вектора A и C пересекаются');
-
-		let check3 = [{
-			x: vectorB[0],
-			y: vectorB[1]
-		}, {
-			x: vectorB[2],
-			y: vectorB[3]
-		}, {
-			x: vectorC[0],
-			y: vectorC[1]
-		}, {
-			x: vectorC[2],
-			y: vectorC[3]
-		}].mt_otrPeres();
-
-		genAssert(!check3, 'Вектора B и C пересекаются');
+		genAssert(!segmentIntersectionCount(...vectorA, ...vectorB), 'Вектора A и B пересекаются');
+		genAssert(!segmentIntersectionCount(...vectorA, ...vectorC), 'Вектора A и C пересекаются');
+		genAssert(!segmentIntersectionCount(...vectorB, ...vectorC), 'Вектора B и C пересекаются');
 
 		let coordVect = (V) => [V[2] - V[0], V[3] - V[1]];
 
