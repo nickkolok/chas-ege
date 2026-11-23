@@ -51,7 +51,7 @@
         };
 
         NAtask.setTask({
-            text: `В треугольнике $ABC$ сторона $AB = ${triangle.lengthAB.pow(2).texsqrt(1)}$, $CM$ – медиана, $CH$ – высота, $${[`BC`, `CA`][rand]}=CM$. Найдите длину отрезка $${[`A`, `B`][rand]}H$.`,
+            text: `В треугольнике $ABC$ сторона $AB = ${triangle.lengthAB}$, $CM$ – медиана, $CH$ – высота, $${[`BC`, `CA`][rand]}=CM$. Найдите длину отрезка $${[`A`, `B`][rand]}H$.`,
             answers: answ,
             authors: ['Александра Суматохина'],
         });
