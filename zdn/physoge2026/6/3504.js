@@ -21,6 +21,7 @@
 			answers: m,
 			analys: 'По закону Гука сила упругости равна $F = kx$, где $k$ — жёсткость пружины, $x$ — её растяжение. В состоянии равновесия сила упругости уравновешивает силу тяжести: $mg = kx$. Отсюда масса груза равна $m = \\frac{kx}{g} = \\frac{' + k + ' \\cdot ' + x_m + '}{' + g + '} = ' + m + '$ кг.',
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 // https://phys-oge.sdamgia.ru/problem?id=25631
