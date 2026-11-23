@@ -24,11 +24,7 @@
             ctx.strokeStyle = '#888';
             ctx.translateToCenter();
             ctx.fillStyle = '#b0b0b0';
-            ctx.beginPath();
-            ctx.arc(0, 0, outerRadius * cell, 0, 2 * Math.PI);
-            ctx.moveTo(innerRadius * cell, 0);
-            ctx.arc(0, 0, innerRadius * cell, 0, 2 * Math.PI);
-            ctx.fill('evenodd');
+            ctx.fillRing(0, 0, outerRadius * cell, innerRadius * cell);
             ctx.lineWidth = 1;
             ctx.regularGrid(cell, outerRadius + 1);
             ctx.lineWidth = 1.5;
