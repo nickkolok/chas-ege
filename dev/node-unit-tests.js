@@ -669,6 +669,24 @@ module.exports = function registerNodeTests(QUnit) {
             expected, 'угол больше π уменьшается на π');
     });
 
+    QUnit.test('parallelepipedVertices и parallelepipedSize не меняют переданный объект', function (assert) {
+        var box = { width: 3, height: 5, depth: 2, angle: 40 };
+        canvasLib.parallelepipedVertices(box);
+        canvasLib.parallelepipedSize(box);
+        assert.equal(box.angle, 40, 'угол остался как был');
+        var noAngle = { width: 3, height: 5, depth: 2 };
+        canvasLib.parallelepipedSize(noAngle);
+        assert.ok(!('angle' in noAngle), 'угол не дописан');
+    });
+
+    QUnit.test('drawParallelepiped по-прежнему записывает нормализованный угол в o', function (assert) {
+        var ctx = { setLineDash: function () {}, drawLine: function () {} };
+        var box = { width: 3, height: 5, depth: 2, angle: 40, strokeStyle: '#000000', diagonalStrokeStyle: '#000000' };
+        canvasLib.CanvasRenderingContext2D.prototype.drawParallelepiped.call(ctx, box);
+        assert.ok(Math.abs(box.angle - (40 - 12 * Math.PI)) < 1e-12, '40 → 40 - 12π');
+        assert.equal(canvasLib.parallelepipedAngle(undefined), Math.PI / 6, 'без угла - π/6');
+    });
+
     QUnit.test('parallelepipedSize: габариты проекции', function (assert) {
         var size = canvasLib.parallelepipedSize({ width: 3, height: 5, depth: 2, angle: Math.PI / 4 });
         assert.ok(Math.abs(size.width - (3 + Math.SQRT2)) < 1e-12, 'ширина 3 + √2');
