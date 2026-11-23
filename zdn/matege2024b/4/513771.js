@@ -16,10 +16,10 @@
 		let answer = +energy.toFixed(5);
 		NAtask.setTask({
 			text: 'Энергия заряженного конденсатора $W$ (в ' + ['Дж', 'джоулях'][wording] + ') вычисляется по формуле $' +
-				['W=\\frac{q^2}{2C}', 'W=\\frac{CU^2}{2}'][formula] + '$, где $C$ — ёмкость в фарадах, ' +
-				(formula === 0 ? '$q$ — заряд на одной обкладке в кулонах.' : '$U$ — разность потенциалов в вольтах.') +
+				['W=\\frac{q^2}{2C}', 'W=\\frac{CU^2}{2}'][formula] + '$, где $C$ — ёмкость (в ' + ['Ф', 'фарадах'][wording] + '), ' +
+				(formula === 0 ? '$q$ — заряд на одной обкладке (в ' + ['Кл', 'кулонах'][wording] + ').' : '$U$ — разность потенциалов (в ' + ['В', 'вольтах'][wording] + ').') +
 				' Найдите энергию, если $C=' + coefficient + '\\cdot10^{-4}$ Ф и $' +
-				['q=' + q.ts(true) + '$ Кл.', 'U=' + U + '$ В.'][formula] + ' Ответ дайте в джоулях.',
+				['q=' + q.ts(true) + '$ Кл.', 'U=' + U + '$ В.'][formula] + ' Ответ дайте в ' + ['Дж', 'джоулях'][wording] + '.',
 			answers: answer,
 			preference: [preference1, preference2],
 		});
@@ -30,3 +30,4 @@
 //https://mathb-ege.sdamgia.ru/problem?id=513771
 //https://mathb-ege.sdamgia.ru/problem?id=513811
 // BB836B, B18BA1, F47F83, EE3E4A, B80856, 9E6080, E76124, BA7487, 662485, 9331CD, 49AF19, BA932F, 8394C4, EE23EF, F8B874, 49BEEB, 598136, 727E60, 17EC80, CCB181, E9B484
+
