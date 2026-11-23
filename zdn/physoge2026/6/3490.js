@@ -33,7 +33,7 @@
 		let vesselRe = sklonlxkand(vessel.noun).re;
 		
 		NAtask.setTask({
-			text: vessel.full + ' вмещает ' + m + ' ' + substanceName + '. ' +
+			text: vessel.full + ' вмещает ' + m.ts() + ' кг ' + substanceName + '. ' +
 				'Чему равна ёмкость ' + vesselRe + '? Ответ запишите в литрах.',
 			answers: V,
 			analys: 'Для решения задачи используем формулу связи массы и объёма через плотность: ' +
