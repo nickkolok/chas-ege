@@ -98,3 +98,4 @@
 })();
 // https://github.com/nickkolok/chas-ege/issues/3489
 // https://phys-oge.sdamgia.ru/problem?id=26079
+// ФИПИ EED5F3
