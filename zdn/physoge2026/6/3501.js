@@ -43,26 +43,28 @@
 		// Формируем текст задачи
 		let rVerb = dirR === 1 ? 'увеличили' : 'уменьшили';
 		let vVerb = dirV === 1 ? 'увеличили' : 'уменьшили';
-		let conjunction = dirR === dirV ? ', тоже ' : ', а ';
+		// «в $4$ раза», «в $5$ раз»; «тоже» — как у ФИПИ, только если скорость изменили так же, как радиус
+		let rTimes = multiplierPhrase(rCoeff, false);
+		let vTimes = useSqrt ? 'в $\\sqrt{2}$ раза' : multiplierPhrase(vCoeff, false);
+		let same = dirR === dirV && !useSqrt && rCoeff === vCoeff;
 		
-		let rText = rCoeff.toString();
-		let vText = useSqrt ? '\\sqrt{2}' : vCoeff.toString();
-		
-		let text = 'Радиус окружности, по которой движется тело, ' + rVerb + ' в $' + rText + '$ раз(а)' +
-			conjunction + 'линейную скорость тела ' + vVerb + ' в $' + vText + '$ раз(а). ' +
+		let text = 'Радиус окружности, по которой движется тело, ' + rVerb + ' ' + rTimes + ', ' +
+			(dirR === dirV ? '' : 'а ') + 'линейную скорость тела ' + (same ? 'тоже ' : '') + vVerb + ' ' + vTimes + '. ' +
 			'Во сколько раз ' + resultVerb + ' центростремительное ускорение тела?';
 		
 		// Формируем решение
-		let v2Text = useSqrt ? '2' : '$' + vCoeff + '^2$';
+		let v2Times = useSqrt ? multiplierPhrase(2, false) :
+			'в $' + vCoeff + '^2 = ' + vCoeff * vCoeff + '$ ' + chislit(vCoeff * vCoeff, 'раз', 'раза', 'раз');
+		resultN = Math.round(resultN);
 		let rAction = dirR === 1 ? 'увеличении' : 'уменьшении';
 		let rEffect = dirR === 1 ? 'уменьшается' : 'увеличивается';
 		let vAction = dirV === 1 ? 'увеличении' : 'уменьшении';
 		let vEffect = dirV === 1 ? 'увеличивается' : 'уменьшается';
 		
 		let analys = 'Центростремительное ускорение тела вычисляется по формуле $a = \\frac{v^2}{R}$. ' +
-			'При ' + rAction + ' радиуса в $' + rText + '$ раз(а) ускорение ' + rEffect + ' в $' + rText + '$ раз(а). ' +
-			'При ' + vAction + ' скорости в $' + vText + '$ раз(а) квадрат скорости, а значит и ускорение, ' + vEffect + ' в $' + v2Text + '$ раз(а). ' +
-			'Таким образом, итоговое изменение ускорения составляет $' + resultN + '$ раз(а).';
+			'При ' + rAction + ' радиуса ' + rTimes + ' ускорение ' + rEffect + ' ' + rTimes + '. ' +
+			'При ' + vAction + ' скорости ' + vTimes + ' квадрат скорости, а значит и ускорение, ' + vEffect + ' ' + v2Times + '. ' +
+			'Таким образом, центростремительное ускорение ' + resultVerb + ' ' + multiplierPhrase(resultN, false) + '.';
 		
 		NAtask.setTask({
 			text: text,
