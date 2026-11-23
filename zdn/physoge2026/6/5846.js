@@ -20,3 +20,4 @@
 	}, 1000);
 })();
 // https://phys-oge.sdamgia.ru/problem?id=5846
+// ФИПИ F88AA9
