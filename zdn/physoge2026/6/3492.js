@@ -20,5 +20,7 @@
 		});
 	}, 1000);
 })();
+// https://github.com/nickkolok/chas-ege/issues/3492
+// Открытый банк ФИПИ, ОГЭ физика: https://oge.fipi.ru/bank/questions.php?proj=B24AFED7DE6AB5BC461219556CCA4F9B
 //zer00player
 // ФИПИ 3E2EF2
