@@ -956,4 +956,95 @@ module.exports = function registerNodeTests(QUnit) {
         }
         assert.equal(dashCalls, 0, 'setLineDash не вызывается');
     });
+
+    // ============================================================
+    //  Canvas: подписи осей drawGridWithArrows  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawGridWithArrows textAlignY / zeroLabel');
+
+    function gridAxisStubCtx(rec) {
+        return {
+            lineWidth: 0, font: '', textAlign: '', textBaseline: '',
+            save: function () {}, restore: function () {},
+            translate: function () {}, scale: function () {},
+            setLineDash: function () {},
+            fillText: function (text, x, y) {
+                rec.labels.push({ text: text, x: x, y: y, align: this.textAlign, baseline: this.textBaseline });
+            },
+            irregularGrid: function () {},
+            drawArrow: function () {},
+            drawLine: function (x1, y1, x2, y2) { rec.ticks.push([x1, y1, x2, y2]); },
+        };
+    }
+
+    // три засечки по каждой оси: i = 0, 40, 80 (значения 0, 1, 2)
+    function gridAxisOptions(extra) {
+        var o = {
+            gridWidth: 120, gridHeight: 120, cellWidth: 40, cellHeight: 40,
+            stepX: 1, stepY: 1, stepByCeilX: 1, stepByCeilY: 1,
+            minX: 0, minY: 0, maxX: 3, maxY: 3, tickSize: 3,
+            textAlign: 'center', textBaseline: 'top',
+        };
+        for (var key in extra) o[key] = extra[key];
+        return o;
+    }
+
+    function gridAxisTexts(rec) {
+        return rec.labels.map(function (l) { return l.text; });
+    }
+
+    QUnit.test('textAlignY / textBaselineY применяются только к подписям оси Y', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawGridWithArrows === 'function', 'метод drawGridWithArrows определён');
+        var rec = { labels: [], ticks: [] };
+        var ctx = gridAxisStubCtx(rec);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, gridAxisOptions({
+            textAlignY: 'right', textBaselineY: 'middle',
+        }));
+        assert.equal(rec.labels.length, 6, 'по три подписи на каждой оси');
+        var i;
+        for (i = 0; i < 3; i++) {
+            assert.equal(rec.labels[i].align, 'center', 'ось X: выравнивание из textAlign');
+            assert.equal(rec.labels[i].baseline, 'top', 'ось X: базовая линия из textBaseline');
+        }
+        for (i = 3; i < 6; i++) {
+            assert.equal(rec.labels[i].align, 'right', 'ось Y: выравнивание из textAlignY');
+            assert.equal(rec.labels[i].baseline, 'middle', 'ось Y: базовая линия из textBaselineY');
+        }
+    });
+
+    QUnit.test('без textAlignY / textBaselineY подписи оси Y наследуют выравнивание оси X', function (assert) {
+        var rec = { labels: [], ticks: [] };
+        var ctx = gridAxisStubCtx(rec);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, gridAxisOptions({}));
+        assert.equal(rec.labels[3].align, 'center', 'выравнивание оси Y по умолчанию как у оси X');
+        assert.equal(rec.labels[3].baseline, 'top', 'базовая линия оси Y по умолчанию как у оси X');
+    });
+
+    QUnit.test('по умолчанию ноль подписывается на обеих осях', function (assert) {
+        var rec = { labels: [], ticks: [] };
+        var ctx = gridAxisStubCtx(rec);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, gridAxisOptions({}));
+        assert.deepEqual(gridAxisTexts(rec), [(0).ts(), (1).ts(), (2).ts(), (0).ts(), (1).ts(), (2).ts()],
+            'поведение по умолчанию не изменилось');
+    });
+
+    QUnit.test('zeroLabel=none: нулевых подписей и засечек в нуле нет', function (assert) {
+        var rec = { labels: [], ticks: [] };
+        var ctx = gridAxisStubCtx(rec);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, gridAxisOptions({ zeroLabel: 'none' }));
+        assert.deepEqual(gridAxisTexts(rec), [(1).ts(), (2).ts(), (1).ts(), (2).ts()], 'ноль не подписан ни на одной оси');
+        var zeroTicks = rec.ticks.filter(function (t) {
+            return (t[0] === 0 && t[1] === 3) || (t[1] === 0 && t[0] === -3);
+        });
+        assert.equal(zeroTicks.length, 0, 'засечки в нуле не рисуются');
+        assert.equal(rec.ticks.length, 4, 'остальные засечки на месте');
+    });
+
+    QUnit.test('zeroLabel=y: ноль остаётся только на оси Y', function (assert) {
+        var rec = { labels: [], ticks: [] };
+        var ctx = gridAxisStubCtx(rec);
+        CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, gridAxisOptions({ zeroLabel: 'y' }));
+        assert.deepEqual(gridAxisTexts(rec), [(1).ts(), (2).ts(), (0).ts(), (1).ts(), (2).ts()],
+            'на оси X нуля нет, на оси Y есть');
+    });
 };
