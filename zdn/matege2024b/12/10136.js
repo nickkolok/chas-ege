@@ -2,13 +2,13 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let side = sl(4, 60);
+		let side = sl(4, 100);
 
 		let letters = latbukv.slice(0, 3);
 
 		let triangle = new Triangle({
 			lengths: {
-				lengthAB: sl(4, 60, 2),
+				lengthAB: sl(4, 120, 2),
 				lengthBC: side,
 				lengthCA: side,
 			},
@@ -45,7 +45,7 @@
 			paint: paint1,
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
-	}, 1000);
+	}, 10000);
 
 })();
 // https://base.mathege.ru/clones/?position=16&parent=10136
