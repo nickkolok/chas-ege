@@ -24,3 +24,4 @@
 	}, 1000);
 })();
 // https://phys-oge.sdamgia.ru/problem?id=25631
+// ФИПИ 901941 07C6DE
