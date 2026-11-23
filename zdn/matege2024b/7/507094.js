@@ -98,7 +98,7 @@
 				if (condition) {
 					let deltaFloor = deltaValues[i];
 					let text = 'в течение всего периода потребление воды выросло более чем ' + times[(deltaFloor - 2)];
-					if (hasNoDuplicateValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
+					if (hasNoDuplicateValue(wasCondition, true)) {
 						answ[i].solution.push(text);
 					}
 				}
@@ -130,7 +130,7 @@
 				if (condition) {
 					let deltaFloor = deltaValues[i];
 					let text = 'в течение всего периода потребление воды упало более чем ' + times[(deltaFloor - 2)];
-					if (hasNoDuplicateValue(wasCondition, true) || wasCondition.filter(c => c).length === 1) {
+					if (hasNoDuplicateValue(wasCondition, true)) {
 						answ[i].solution.push(text);
 					}
 				}
@@ -140,7 +140,7 @@
 		let time = [0].zapMonot(25, 0, 1, 1); // шкала времени
 		let p = [sl(1, 5.9, 0.1)]; // шкала потребления воды
 		let count = 0;
-		let times = ['вдвое', 'втрое', 'вчетверо', 'впятеро', 'вшестеро', 'всемеро', 'восьмеро'];
+		let times = ['вдвое', 'втрое', 'вчетверо', 'впятеро'];
 
 		for (; p.length < time.length && count < 100;) {
 			let interI = ((time.length / (sl(1.5, 2.5, 0.5))).floor());
@@ -210,10 +210,10 @@
 		}
 
 		if (variableDI) {
-			// добавляем ответ про понижение потребления воды а потом увеличение
+			// добавляем ответ про понижение потребления воды, а потом увеличение
 			answAboutDecreasingAfterIncreasing(intervals, listOfIntervals);
 		} else {
-			// добавляем ответ про увеличение потребления воды а потом понижение
+			// добавляем ответ про увеличение потребления воды, а потом понижение
 			answAboutIncreasingAfterDecreasing(intervals, listOfIntervals);
 		}
 
@@ -225,7 +225,7 @@
 		solutions.forEach(item => genAssertNonempty(item));
 		genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-		let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+		let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
 
 		let paint1 = function (ctx) {
@@ -252,11 +252,7 @@
 			ctx.scale(cellWidth, -cellHeight);
 			ctx.lineWidth = 2 / cellHeight;
 
-			for (let i = 0; i < time.length; i++) {
-				ctx.drawFilledCircle(time[i], p[i], 3 / cellHeight);
-				if (i < time.length - 1)
-					ctx.drawLine(time[i], p[i], time[i + 1], p[i + 1]);
-			}
+			ctx.drawPolyline(time, p, 3 / cellHeight);
 		};
 
 		NAtask.setCorrespondenceTask({
