@@ -31,6 +31,9 @@
 Чтобы перенести начало координат в центр холста, используйте `ctx.translateToCenter()`:
 размеры берутся из самого холста, поэтому дублировать `width`/`height`
 из `addCanvasIllustration` в `paint` не нужно.
+Ломаную через последовательные точки `(xs[i], ys[i])` рисует `ctx.drawPolyline(xs, ys)`
+(например, график по массивам времён и значений); стиль линий — текущие `strokeStyle`/`lineWidth`,
+третий аргумент `dotRadius` добавляет закрашенные точки в вершинах.
 Следует использовать классы `Triangle` и т.д., если это требуется в задаче.
 Чертёж должен соответствовать условию задачи
 (т.е. его элементы должны быть пропорциональны тем, что описаны в условии);
@@ -59,6 +62,27 @@
 
 Расстояние от точки до отрезка: `distanceFromPointToSegment(point, segmentStart, segmentEnd)`.
 
+## Клетчатая бумага и кольцо
+
+Для задач на квадратной решётке («план местности», фигуры на клетчатой бумаге)
+не нужно повторять в `paint` подготовку холста: белый фон, серая сетка,
+перенос начала координат в центр и масштабирование в единицы клетки делает
+`ctx.gridPaper(cell, cells)` (`lib/canvas.js`). После него координаты фигур
+задаются в клетках, а толщина линий фигуры — как `lineWidth / cell`:
+
+```js
+ctx.gridPaper(30, 6);
+ctx.strokeStyle = om.secondaryBrandColors[0];
+ctx.lineWidth = 4 / 30;
+ctx.drawFigure(figure.vertices, figure.connectionMatrix);
+```
+
+Закрасить кольцо между двумя концентрическими окружностями (например,
+заштрихованную фигуру между внутренним и внешним кругом) можно одним вызовом
+`ctx.fillRing(x, y, outerRadius, innerRadius)` (`lib/canvas.js`); цвет берётся
+из текущего `fillStyle`, внутренний круг остаётся пустым. Обводку окружностей
+делайте отдельно — `ctx.drawCircle(...)` или `circle.drawOnto(ctx)`.
+
 ## Невидимые рёбра многогранника
 
 Невидимые рёбра рисуются пунктиром (или не рисуются, если так в образце).
@@ -82,6 +106,28 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
+## Векторы на координатной плоскости
+
+Векторы в шаблонах задаются массивами координат `[x, y]` (или `[x, y, z]`),
+а вектор-отрезок — плоским массивом концов `[x1, y1, x2, y2]`.
+Готовые операции — методы массивов в `lib/array.js`:
+
+* `[x1, y1, x2, y2].coordVect()` — координаты вектора по концам (в пространстве — `[x1, y1, z1, x2, y2, z2]`);
+* `a.scalprod(b)` — скалярное произведение;
+* `a.veclength()` и `a.veclengthSquared()` — длина вектора и её квадрат;
+* `a.veccos(b)` — косинус угла между ненулевыми векторами (без потери точности для целых координат);
+* `a.vecangleInDegrees(b)` — угол между ненулевыми векторами в градусах.
+
+Пересекаются ли два вектора-отрезка, проверяет `segmentIntersectionCount` (`lib/func.js`):
+
+```js
+let coordA = vectorA.coordVect();
+genAssert(!segmentIntersectionCount(...vectorA, ...vectorB), 'Векторы A и B пересекаются');
+let cos = coordA.veccos(vectorB.coordVect());
+```
+
+Эти формулы не нужно переписывать в шаблоне или копировать из соседнего шаблона.
+
 ## Примеры
 
 ### Планиметрия
@@ -94,4 +140,4 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 
 ### Стереометрия
 
-[`zdn/matege2023p/3`](https://github.com/nickkolok/chas-ege/tree/devel/zdn/matege2023p/3)
+[`zdn/matege2023p/2`](https://github.com/nickkolok/chas-ege/tree/devel/zdn/matege2023p/2)
