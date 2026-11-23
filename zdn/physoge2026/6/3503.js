@@ -19,6 +19,7 @@
 				'$$\\rho = \\frac{' + m + '}{' + Vm3 + '} = ' + rho + ' \\text{ кг/м}^3.$$ ' +
 				'Таким образом, плотность вещества составляет $' + rho + '$ кг/м$^3$.',
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 // https://github.com/nickkolok/chas-ege/issues/3503
