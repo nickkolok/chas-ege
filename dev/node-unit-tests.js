@@ -956,4 +956,46 @@ module.exports = function registerNodeTests(QUnit) {
         }
         assert.equal(dashCalls, 0, 'setLineDash не вызывается');
     });
+
+    // ============================================================
+    //  Нарезка ряда на интервалы  (lib/diagram.js)
+    // ============================================================
+    QUnit.module('diagram: intervalsOfLength');
+
+    QUnit.test('intervalsOfLength: год по месяцам — четыре квартала по три', function (assert) {
+        assert.ok(typeof intervalsOfLength === 'function', 'функция intervalsOfLength определена');
+        var year = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        assert.deepEqual(intervalsOfLength(year, 3), [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]], 'четыре интервала по три');
+        assert.deepEqual(intervalsOfLength(year, 3), Array.from({ length: 4 }, function (_, i) { return year.slice(i * 3, i * 3 + 3); }), 'совпадает с нарезкой из шаблона');
+    });
+
+    QUnit.test('intervalsOfLength: неполный хвост отбрасывается', function (assert) {
+        assert.deepEqual(intervalsOfLength([1, 2, 3, 4, 5, 6, 7], 3), [[1, 2, 3], [4, 5, 6]], 'остаток из одного элемента не попадает в интервалы');
+        assert.deepEqual(intervalsOfLength([1, 2], 3), [], 'ряд короче интервала — пусто');
+    });
+
+    QUnit.test('intervalsOfLength: сдвиг начала нарезки', function (assert) {
+        var month = [];
+        for (var i = 0; i < 31; i++) month.push(i);
+        var weeks = intervalsOfLength(month, 7, 3);
+        assert.equal(weeks.length, 4, 'месяц из 31 дня со сдвигом 3 — четыре недели');
+        assert.deepEqual(weeks[0], [3, 4, 5, 6, 7, 8, 9], 'первая неделя начинается со сдвига');
+        assert.deepEqual(weeks, Array.from({ length: 4 }, function (_, i) { return month.slice(i * 7 + 3, i * 7 + 7 + 3); }), 'совпадает с нарезкой из шаблона');
+    });
+
+    QUnit.test('intervalsOfLength: вырожденные параметры', function (assert) {
+        assert.deepEqual(intervalsOfLength([], 3), [], 'пустой ряд');
+        assert.deepEqual(intervalsOfLength([1, 2, 3], 0), [], 'нулевая длина интервала');
+        assert.deepEqual(intervalsOfLength([1, 2, 3], -2), [], 'отрицательная длина интервала');
+        assert.deepEqual(intervalsOfLength([1, 2, 3], 2, 3), [], 'сдвиг за конец ряда');
+        assert.deepEqual(intervalsOfLength([1, 2, 3, 4], 2, -1), [[1, 2], [3, 4]], 'отрицательный сдвиг трактуется как ноль');
+    });
+
+    QUnit.test('intervalsOfLength: исходный массив не меняется', function (assert) {
+        var values = [1, 2, 3, 4, 5, 6];
+        var intervals = intervalsOfLength(values, 3);
+        intervals[0][0] = 99;
+        assert.deepEqual(values, [1, 2, 3, 4, 5, 6], 'интервалы — копии, а не ссылки на исходный ряд');
+    });
+
 };
