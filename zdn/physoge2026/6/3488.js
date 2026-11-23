@@ -51,6 +51,7 @@
 			text: text,
 			answers: answers,
 			analys: analys,
+			preference: [preference],
 		});
 	}, 1000);
 })();
