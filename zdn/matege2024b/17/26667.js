@@ -70,9 +70,9 @@ chas2.task.setAdditiveEquationTask({
     preference: preference,
     parts: [
         a+'x^2',
-        (-1)*a*(x1+x2)+'x',
-        a*x1*x2,
-    ].filter(term => term !== '0x^2' && term !== '0x' && term !== 0),
+        ...((x1+x2) ? [(-1)*a*(x1+x2)+'x'] : []),
+        ...(x1*x2 ? [a*x1*x2] : []),
+    ],
     enablePartsDivision: 0,
     roots: x1,
 });
@@ -82,3 +82,4 @@ chas2.task.setAdditiveEquationTask({
 //Белозоров Никита
 
 // A56777, B904D2, DB03C1, AD604F, 147DC0, 215385, 6264AA, B8EC0F, F8CD61, AC5265, 374E6B, 4D6A35, FDD8B8, BAFE47, 00AD5C, 2941A5, 46188A, 7D221B, F1F824, EE82C0, 6539B5, 780511, BC6D9B, EB0E65, D4B103, 044AA7, 6A4D3C, BFB48F, 8D616C, 474905, 61E1D7, 209F6F, 3F16E7, 476338, 588436, 4E653D, 4AF886, B8752B, 2D050E
+
