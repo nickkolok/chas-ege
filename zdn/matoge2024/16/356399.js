@@ -24,7 +24,6 @@
         let vertex = autoScale(square.vertices);
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
@@ -53,13 +52,13 @@
             authors: ['Александра Суматохина'],
             preference,
         });
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
 
-        NAtask.modifiers.allDecimalsToStandard(true);
 
     }, 2000);
 })();
