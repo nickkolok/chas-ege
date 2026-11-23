@@ -1074,4 +1074,40 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(tri.p, 'трёх', 'предложный: была опечатка «трех»');
         assert.equal(sklonlxkand('четыре').p, 'четырёх', 'соседнее числительное для сравнения');
     });
+
+    // ============================================================
+    //  Словарь: кукла  (lib/lx.js)
+    // ============================================================
+    QUnit.module('lx: кукла');
+
+    QUnit.test('Счётные формы: 5 кукол, а не «5 кукл»', function (assert) {
+        assert.equal(chislitlx(1, 'кукла'), '1 кукла');
+        assert.equal(chislitlx(2, 'кукла'), '2 куклы');
+        assert.equal(chislitlx(5, 'кукла'), '5 кукол');
+        assert.equal(chislitlx(11, 'кукла'), '11 кукол');
+        assert.equal(chislitlx(21, 'кукла'), '21 кукла');
+        assert.equal(chislitlx(1.5, 'кукла'), '1,5 куклы');
+    });
+
+    QUnit.test('Винительный падеж', function (assert) {
+        assert.equal(chislitlx(1, 'кукла', 'v'), '1 куклу');
+        assert.equal(chislitlx(2, 'кукла', 'v'), '2 куклы');
+        assert.equal(chislitlx(5, 'кукла', 'v'), '5 кукол');
+        assert.equal(chislitlx(21, 'кукла', 'v'), '21 куклу');
+    });
+
+    QUnit.test('Формы слова и признаки', function (assert) {
+        var k = sklonlxkand('кукла');
+        assert.equal(k.re, 'куклы');
+        assert.equal(k.te, 'куклой');
+        assert.equal(k.pe, 'кукле');
+        assert.equal(k.im, 'куклы');
+        assert.equal(k.rm, 'кукол', 'беглая гласная: кукла — кукол');
+        assert.equal(k.dm, 'куклам');
+        assert.equal(k.vm, 'кукол');
+        assert.equal(k.tm, 'куклами');
+        assert.equal(k.pm, 'куклах');
+        assert.equal(k.rod, 1, 'женский род');
+        assert.equal(k.skl, 1, 'первое склонение');
+    });
 };
