@@ -602,6 +602,16 @@ function processArbitraryCodeFiles() {
 
 	console.log('Файлов для запуска произвольного кода: ' + files.length);
 
+	const fileNames = Array.from(files).map(file => file.name).join(', ');
+	const confirmed = window.confirm(
+		'Внимание! Вы собираетесь выполнить код из файлов (' + fileNames + ') ' +
+		'с полными правами страницы. Запускайте только файлы, которым доверяете. Продолжить?'
+	);
+	if (!confirmed) {
+		console.log('Выполнение произвольного кода отменено пользователем.');
+		return Promise.resolve();
+	}
+
 	const promises = Array.from(files).map(file => {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
