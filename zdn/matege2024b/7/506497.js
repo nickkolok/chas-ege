@@ -3,8 +3,10 @@
 	retryWhileError(function () {
 		/* На рисунке точками показано атмосферное давление в некотором городе на протяжении трёх суток с 4 по 6 апреля 2013 года. В течение суток давление измеряется 4 раза: в 0:00, в 6:00, в 12:00 и в 18:00. По горизонтали указывается время и дата, по вертикали – давление в миллиметрах ртутного столба. Для наглядности точки соединены линиями.*/
 
+		let pressureMin = 752, pressureStep = 2;
+
 		function convert(P) {
-			return 752 + P * 2 + ' мм рт. ст.';
+			return pressureMin + P * pressureStep + ' мм рт. ст.';
 		}
 
 		function answAboutMax(intervals, answ, value) {
@@ -176,38 +178,35 @@
 		solutions.forEach(item => genAssertNonempty(item));
 		genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-		let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+		let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
 
 		let paint1 = function (ctx) {
+			let cellWidth = 40, cellHeight = 30;
 			ctx.drawGridWithArrows({
 				gridWidth: 500,
 				gridHeight: 300,
-				cellWidth: 40,
-				cellHeight: 30,
+				cellWidth: cellWidth,
+				cellHeight: cellHeight,
 				stepX: 6,
 				typeX: 'time',
 				cycleTime: true,
-				stepY: 2,
+				stepY: pressureStep,
 				maxX: 72,
-				minY: 752,
-				maxY: 766,
+				minY: pressureMin,
+				maxY: pressureMin + 7 * pressureStep,
 				stepByCeilX: 1,
 				arrowLengthX: 11.5,
 				arrowLengthY: 7.8,
 			});
 
-			ctx.translate(40, 30 * 8);
-			ctx.scale(40, -30);
-			ctx.lineWidth = 2 / 30;
+			ctx.translate(cellWidth, cellHeight * 8);
+			ctx.scale(cellWidth, -cellHeight);
+			ctx.lineWidth = 2 / cellHeight;
 
-			for (let i = 0; i < time.length; i++) {
-				ctx.drawFilledCircle(time[i], value[i], 3 / 30);
-				if (i < time.length - 1)
-					ctx.drawLine(time[i], value[i], time[i + 1], value[i + 1]);
-			}
+			ctx.drawPolyline(time, value, 3 / cellHeight);
 
-			ctx.scale(1 / 40, -1 / 30);
+			ctx.scale(1 / cellWidth, -1 / cellHeight);
 			ctx.font = '12px serif';
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
