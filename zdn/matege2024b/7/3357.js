@@ -129,9 +129,7 @@
             ctx.scale(cell, -cell);
             ctx.lineWidth = 2 / cell;
 
-            for (let i = 0; i < time.length - 1; i++) {
-                ctx.drawLine(time[i], value[i], time[i + 1], value[i + 1]);
-            }
+            ctx.drawPolyline(time, value);
         };
 
         NAtask.setCorrespondenceTask({
