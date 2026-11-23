@@ -18,9 +18,9 @@
         }
 
         function answAboutConst(intervals, answ, flag) {
-            let wasConst = intervals.map(interval => interval[0] === interval[1] && interval[1] === interval[2]);
-            let wasConstTwoFirst = intervals.map(interval => interval[0] === interval[1] && interval[1] !== interval[2]);
-            let wasConstTwoLast = intervals.map(interval => interval[0] !== interval[1] && interval[1] === interval[2]);
+            let wasConst = intervals.map(interval => constValueByFirst(interval));
+            let wasConstTwoFirst = intervals.map(interval => constValueByFirst(interval.slice(0, 2)) && !constValueByFirst(interval));
+            let wasConstTwoLast = intervals.map(interval => constValueByFirst(interval.slice(1)) && !constValueByFirst(interval));
 
             let genderConst = gender[flag].rm;
 
@@ -139,7 +139,7 @@
         solutions.forEach(item => genAssertNonempty(item));
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
             let scale = 40;
@@ -163,18 +163,10 @@
             ctx.scale(scale, -scale);
             ctx.lineWidth = 2 / scale;
 
-            for (let i = 0; i < time.length; i++) {
-                ctx.drawFilledCircle(time[i], valueM[i], 3 / scale);
-                if (i < time.length - 1)
-                    ctx.drawLine(time[i], valueM[i], time[i + 1], valueM[i + 1]);
-            }
+            ctx.drawPolyline(time, valueM, 3 / scale);
 
             ctx.setLineDash([8 / scale, 5 / scale]);
-            for (let i = 0; i < time.length; i++) {
-                ctx.drawFilledCircle(time[i], valueW[i], 3 / scale);
-                if (i < time.length - 1)
-                    ctx.drawLine(time[i], valueW[i], time[i + 1], valueW[i + 1]);
-            }
+            ctx.drawPolyline(time, valueW, 3 / scale);
         };
 
         NAtask.setCorrespondenceTask({
