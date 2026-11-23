@@ -6,14 +6,14 @@
 		let preference = ['height', 'diagonal'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		let side = sl(5, 20);
-		let a = sl(5, 20);
+		let side = sl(5, 85);
+		let a = sl(5, 110);
 
 		const trp = new Trapezoid({
 			lengths: {
 				lengthAB: a,
 				lengthBC: side,
-				lengthCD: slKrome(a, 5, 20),
+				lengthCD: slKrome(a, 5, 110),
 				lengthDA: side,
 			},
 			supplementary: {
