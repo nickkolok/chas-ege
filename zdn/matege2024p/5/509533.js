@@ -1,94 +1,57 @@
 (function() {
+	'use strict';
+	NAinfo.requireApiVersion(0, 2);
 	retryWhileError(function() {
-		NAinfo.requireApiVersion(0, 2);
-
-		let uniqueCount = sluchch(3, 4);
-		
-		// Генерируем сами уникальные значения (от 1 до 9)
-		let uniqueValues = arrayOfUniqueValues(uniqueCount, 1, 9);
-
-		// Генерируем случайное количество повторов для каждого элемента (от 1 до 5)
-		let xValues = uniqueValues.flatMap(item => {
-			return Array(sl(2,5)).fill(item);
-		}).shuffle();
-		let n = xValues.length;
-
-		// 4. Генерация вероятностей (сумма = 1)
-		// Используем знаменатель 10 или 20 для красивых дробей
-		let denominator = [10, 20].iz();
-		let weights = [];
-
-		for (let i = 0; i < n - 1; i++) {
-			weights.push(sl(1, 10));
-		}
-		let currentSum = weights.sum();
-		
-		genAssert(denominator - currentSum > 0, 'Вероятностей не хватило');
-		weights.push(denominator - currentSum);
-
-		let probs = weights.map(w => w / denominator);
-
-		// 5. Координаты точек внутри прямоугольника
-		let coords = [arrayOfUniqueValues(n, -8, 7, 1.5), arrayOfUniqueValues(n, -6, 6)].T();
-
-		// 6. Выбор целевого значения для вопроса
-		let targetX = uniqueValues.iz();
-
-		// Считаем вероятность события {X = targetX} суммированием
-		let terms = probs.filter((p, i) => xValues[i] === targetX); // Для вывода в решении
-		let probTarget = terms.sum();
-		
-		genAssertZ1000(probTarget);
-
-		let paint = function(ctx) {
-			let w = ctx.canvas.width;
-			let h = ctx.canvas.height;
-
-			// Рамка прямоугольника
-			ctx.strokeStyle = "black";
-			ctx.lineWidth = 1;
-			ctx.strokeRect(20, 20, w - 40, h - 40);
-
-			ctx.translateToCenter();
-			ctx.scale(20, -20);
-			ctx.lineWidth = 0.1;
-			
-			graph9AmarkCircles(ctx, coords, n, 0.18);
-
-			// Подпись S
-			ctx.font = "16px liberation_sans";
-			ctx.scale(1 / 20, -1 / 20);
-			ctx.fillText('S', w - 50, 30);
-			
-			// Рисуем точки и подписи
-			for (let i = 0; i < n; i++) {
-				let x = coords[i][0];
-				let y = coords[i][1];
-
-				// Значение X
-				ctx.font = "bold 16px liberation_sans";
-				ctx.fillText(xValues[i].ts(), x * 20, (-y * 20) - 6);
-
-				// Вероятность
-				ctx.font = "13px liberation_sans";
-				ctx.fillText(probs[i].ts(), x * 20, (-y * 20) + 16);
+		const uniqueCount = sl(3, 4);
+		const uniqueValues = arrayOfUniqueValues(uniqueCount, 1, 9);
+		const xValues = uniqueValues.flatMap(value => Array(sl(2, 5)).fill(value)).shuffle();
+		const n = xValues.length;
+		const denominator = [10, 20, 50].filter(value => value >= n).iz();
+		const cuts = [0].concat(arrayOfUniqueValues(n - 1, 1, denominator - 1).sortNumeric(), denominator);
+		const weights = cuts.slice(1).map((value, i) => value - cuts[i]).shuffle();
+		const probs = weights.map(weight => weight / denominator);
+		const positions = [];
+		for (const y of [80, 160, 240, 320]) {
+			for (const x of [60, 130, 200, 270, 340]) {
+				positions.push([x, y]);
 			}
-		};
-
+		}
+		const coords = positions.iz(n);
+		const targetX = uniqueValues.iz();
+		const terms = probs.filter((probability, i) => xValues[i] === targetX);
+		const probTarget = terms.sum();
+		genAssertZ1000(probTarget);
 		NAtask.setTask({
-			text: `На диаграмме Эйлера схематически показан случайный опыт $S$. Точками изображены все элементарные события. Около каждой точки указано значение случайной величины $X$ и вероятность этого элементарного события. Найдите вероятность события $\{X = ${targetX}\}$.`,
+			text: 'На диаграмме Эйлера схематически показан случайный опыт $S$. Точками изображены все элементарные события. ' +
+				'Около каждой точки указано значение случайной величины $X$ и вероятность этого элементарного события. ' +
+				'Найдите вероятность события $\\{X=' + targetX + '\\}$.',
 			answers: probTarget,
-			analys: `Событию $\{X = ${targetX}\}$ благоприятствуют все элементарные исходы, у которых значение случайной величины равно ${targetX}.` +
-				`<br/>Так как таких исходов несколько, нужно просуммировать их вероятности:` +
-				`<br/>$P(X = ${targetX}) = ${terms.map(t => t.ts()).join(' + ')} = ${probTarget.ts()}$.`
+			analys: 'Событию $\\{X=' + targetX + '\\}$ благоприятствуют исходы со значением случайной величины ' + targetX +
+				'. Сложим их вероятности: $P(X=' + targetX + ')=' + terms.map(value => value.ts()).join('+') + '=' + probTarget.ts() + '$.',
 		});
-
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint,
+			paint: function(ctx) {
+				ctx.save();
+				ctx.strokeStyle = 'black';
+				ctx.fillStyle = 'black';
+				ctx.lineWidth = 1;
+				ctx.strokeRect(20, 20, ctx.canvas.width - 40, ctx.canvas.height - 40);
+				ctx.font = '18px liberation_sans';
+				ctx.textAlign = 'center';
+				ctx.fillText('S', ctx.canvas.width - 40, 45);
+				coords.forEach(([x, y], i) => {
+					ctx.drawFilledCircle(x, y, 3.6);
+					ctx.font = 'bold 16px liberation_sans';
+					ctx.fillText(xValues[i].ts(), x, y - 8);
+					ctx.font = '13px liberation_sans';
+					ctx.fillText(probs[i].ts(), x, y + 18);
+				});
+				ctx.restore();
+			},
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
-	});
+	}, 1000);
 })();
-//509533
+// 509533
