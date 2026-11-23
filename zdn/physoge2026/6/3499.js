@@ -38,7 +38,7 @@ retryWhileError(function(){
 		text: text + question,
 		answers: answer,
 		analys: analys,
-		preference: preference,
+		preference: [preference],
 	});
 }, 1000);
 })();
