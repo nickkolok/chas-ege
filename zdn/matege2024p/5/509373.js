@@ -27,8 +27,8 @@
 
 		// 3. Используем MathJS для нормировки и расчетов
 		// Превращаем веса в вероятности: P = weights / sum(weights)
-		// math.divide поддерживает деление массива на число
-		let probs = math.divide(weights, denominator);
+		// toSum нормирует веса так, чтобы сумма вероятностей была равна 1
+		let probs = weights.toSum();
 
 		// Расчет матожидания: E(X) = sum(x * p)
 		// math.dotMultiply делает поэлементное умножение векторов
@@ -57,7 +57,7 @@
 			</table>`.replace(/<td>/g, '<td style="padding: 5px 10px; min-width: 60px;">');
 
 		// Создаем массив строк вида "x * p"
-		let terms = math.dotMultiply(xVals, probs).map((val, idx) => 
+		let terms = xVals.map((val, idx) => 
 			`(${xVals[idx].ts()}) \\cdot ${probs[idx].ts()}`
 		);
 
