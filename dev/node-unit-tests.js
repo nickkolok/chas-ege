@@ -773,6 +773,23 @@ module.exports = function registerNodeTests(QUnit) {
         assertPointClose(assert, labelPositionAwayFromSegments({ x: 0, y: 0 }, symmetric, 20), { x: 20, y: 0 }, 'симметрия — направление k = 0');
     });
 
+    QUnit.test('labelPositionAwayFromSegments: зазоры сравниваются с допуском', function (assert) {
+        // Короткий отрезок за каждым из четырёх направлений: зазор направления 0 — 5,
+        // направления 1 — 5 + delta, направлений 2 и 3 — 1
+        function segmentsWithDelta(delta) {
+            return [
+                [{ x: 25, y: -1 }, { x: 25, y: 1 }],
+                [{ x: -1, y: 25 + delta }, { x: 1, y: 25 + delta }],
+                [{ x: -21, y: -1 }, { x: -21, y: 1 }],
+                [{ x: -1, y: -21 }, { x: 1, y: -21 }],
+            ];
+        }
+        assertPointClose(assert, labelPositionAwayFromSegments({ x: 0, y: 0 }, segmentsWithDelta(1e-12), 20, 4), { x: 20, y: 0 },
+            'разница меньше допуска — равенство, первое направление');
+        assertPointClose(assert, labelPositionAwayFromSegments({ x: 0, y: 0 }, segmentsWithDelta(1e-6), 20, 4), { x: 0, y: 20 },
+            'разница больше допуска — направление с большим зазором');
+    });
+
     // ============================================================
     //  Canvas: заливка кольца  (lib/canvas.js)
     // ============================================================
