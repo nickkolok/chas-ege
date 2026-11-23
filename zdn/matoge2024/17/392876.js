@@ -54,12 +54,12 @@
         });
         NAtask.modifiers.variativeABC(letters);
 
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(true);
     }, 2000);
 })();
 // https://oge.sdamgia.ru/problem?id=392876
