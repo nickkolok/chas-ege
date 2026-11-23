@@ -37,6 +37,7 @@
 				'Прямая ' + asked + ' проходит через узел сетки с координатами $(' + nMax + '; ' + F + ')$, значит, ' +
 				'$mu = \\frac{F}{N} = \\frac{' + F + '}{' + nMax + '} = ' + mu + '.$',
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 
 		NAtask.modifiers.addCanvasIllustration({
 			width: 340,
