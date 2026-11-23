@@ -8,17 +8,15 @@
 		// - Машинное масло: 900 кг/м³ = 0.9 кг/л
 		// Ответ должен быть целым числом литров
 		
-		let preference = ['керосин', 'машинное масло'].iz();
-		let density, substanceName, declensionFunc;
+		let substance = ['керосин', 'машинное масло'].iz();
+		let density, substanceName;
 		
-		if (preference === 'керосин') {
+		if (substance === 'керосин') {
 			density = 0.8;
 			substanceName = 'керосина';
-			declensionFunc = function(n) { return 'кг'; };
 		} else {
 			density = 0.9;
 			substanceName = 'машинного масла';
-			declensionFunc = function(n) { return 'кг'; };
 		}
 		
 		let V = sl(50, 150, 10); // объём в литрах
