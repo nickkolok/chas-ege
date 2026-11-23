@@ -2,7 +2,7 @@
 	retryWhileError(function() {
 		'use strict';
 		NAinfo.requireApiVersion(0, 2);
-		let key = "509755";
+		let key = '509755';
 
 		let relation = sl(3, 200);
 		let preference1 = ['tea', 'balls', 'birds'];
@@ -14,12 +14,12 @@
 		relation--;
 
 		let objects = sklonlxkand([
-			[`чёрный`, `зелёный`, `красный`, `белый`, `жёлтый`],
+			['чёрный', 'зелёный', 'красный', 'белый', 'жёлтый'],
 			om.trickyColors, 
 			['курица', 'гусь', 'индюк', 'перепел', 'утка', 'цесарка', 'страус']
 		][variant].iz(2));
 		
-		let container = [['ящике', 'ящика'], ['коробке', 'коробки']].iz();
+		let container = sklonlxkand(['ящик', 'коробка'].iz());
 		let selected = majority ? 0 : 1;
 
 		NAtask.setTask({
@@ -31,8 +31,8 @@
 						выбранный из этой коробки чайный пакетик окажется с ${objects[selected].te} чаем.`,
 					answers,
 				}, {
-					text: `В ${container[0]} находятся ${objects[0].im} и ${objects[1].im} шары, причём ${objects[0].rm} в ${chislitlx(relation, 'раз')}
-						больше, чем ${objects[1].rm}. Из ${container[1]} случайным образом достали один шар.
+					text: `В ${container.pe} находятся ${objects[0].im} и ${objects[1].im} шары, причём ${objects[0].rm} в ${chislitlx(relation, 'раз')}
+						больше, чем ${objects[1].rm}. Из ${container.re} случайным образом достали один шар.
 						Найдите вероятность того, что он будет ${objects[selected].te}.`,
 					answers,
 				}, {
@@ -54,3 +54,4 @@
 // FA27E6, 1D5F8F
 // C3E952, 823297, DA4C41, AE9FFC, 6A58FE, 7E2FC1, E406E3, 634E6B, BEB1D7, 1901C5, A00C8C
 // D257B9, EE68AE, 9B2F60
+
