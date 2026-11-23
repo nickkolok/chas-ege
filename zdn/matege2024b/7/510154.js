@@ -153,7 +153,7 @@
         solutions.forEach(item => genAssertNonempty(item));
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
             let cell = 60;
@@ -177,11 +177,7 @@
             ctx.scale(cell, -cell);
             ctx.lineWidth = 2 / cell;
 
-            for (let i = 0; i < time.length; i++) {
-                ctx.drawFilledCircle(time[i], production[i], 3 / cell);
-                if (i < time.length - 1)
-                    ctx.drawLine(time[i], production[i], time[i + 1], production[i + 1]);
-            }
+            ctx.drawPolyline(time, production, 3 / cell);
         };
 
         NAtask.setCorrespondenceTask({
