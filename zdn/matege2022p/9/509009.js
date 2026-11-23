@@ -19,20 +19,16 @@
 		let b = [sluchch(1, 7).pm(), 0][randB];
 		let exponent = sluchch(1, 5);
 		if (randA)
-			exponent = exponent.pm();
+			exponent = -exponent;
 		let x = a ** exponent;
 		let y = exponent + b;
 
 		genAssert(x < 1000);
 		genAssertZ1000(x);
 		x = Math.round(x * 1000) / 1000;
-		if (randA && exponent > 0) {
-			genAssert(x < 0.05 && Math.abs(y) >= 2);
-		} else {
-			genAssert(x > 8.5);
-			if (!randA)
-				genAssert(Math.abs(y) > [6, 2][randB]);
-		}
+		genAssert(x > 8.5, 'Аргумент должен находиться за пределами изображённого участка графика');
+		if (!randA)
+			genAssert(Math.abs(y) > [6, 2][randB]);
 
 		let points = intPoints(f, {
 			minX: 1,
@@ -85,3 +81,4 @@
 	}, 1000);
 })();
 //509009
+
