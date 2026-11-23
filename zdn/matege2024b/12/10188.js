@@ -25,9 +25,9 @@
 		let a = triangle.vertices[0];
 		let b = triangle.vertices[1];
 		let extension = [a, b].mt_vectorDivisionPoint(3, -1); // точка на продолжении AB за B: AP:PB = 3:(-1)
-		let scaled = autoScale([...triangle.vertices, extension]);
-		let points = scaled.slice(0, 3);
-		let rayEnd = scaled[3];
+		triangle.addVertexToConnectionMatrix(extension, 'B');
+		let points = autoScale(triangle.vertices);
+		let rayEnd = points[3];
 
 		let paint1 = function(ctx) {
 
@@ -38,13 +38,12 @@
 
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
-			ctx.drawLine(points[1].x, points[1].y, rayEnd.x, rayEnd.y);
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, rayEnd.x, rayEnd.y], 20);
 
 			ctx.scale(1, -1);
 			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
+			points.slice(0, letters.length).forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
