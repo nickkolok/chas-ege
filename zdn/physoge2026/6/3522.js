@@ -18,3 +18,4 @@
 })();
 // https://3.shkolkovo.online/catalog/3067/71216
 // https://github.com/nickkolok/chas-ege/issues/3522
+// ФИПИ D2CAED
