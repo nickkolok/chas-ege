@@ -69,7 +69,7 @@
         }
 
         function answAboutConst(intervals, answ) {
-            let wasConst = intervals.map(interval => indexConst(interval).length === 3);
+            let wasConst = intervals.map(interval => constValueByFirst(interval));
             addUniqueAnsw(wasConst, answ, 'ежемесячный объём продаж не менялся в течение всего периода');
         }
 
@@ -145,7 +145,7 @@
         solutions.forEach(item => genAssertNonempty(item));
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
             ctx.translate(0, -10);
@@ -169,11 +169,7 @@
             ctx.scale(40, -40);
             ctx.lineWidth = 2 / 40;
 
-            for (let i = 0; i < time.length; i++) {
-                ctx.drawFilledCircle(time[i], production[i], 3 / 40);
-                if (i < time.length - 1)
-                    ctx.drawLine(time[i], production[i], time[i + 1], production[i + 1]);
-            }
+            ctx.drawPolyline(time, production, 3 / 40);
 
             ctx.scale(1 / 40, -1 / 40);
             ctx.lineWidth = 1;
