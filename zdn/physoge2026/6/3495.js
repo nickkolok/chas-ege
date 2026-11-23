@@ -230,3 +230,4 @@
 })();
 // https://phys-oge.sdamgia.ru/problem?id=24910
 //chas-ege-selena
+// ФИПИ BEB240
