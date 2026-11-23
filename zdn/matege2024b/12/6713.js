@@ -27,6 +27,7 @@
 		} else {
 			genAssertAlmostInteger(trp.lengthHeightACD, 'Высота не целая');
 		}
+		genAssert(trp.lengthHeightACD >= Math.max(trp.lengthAB, trp.lengthCD) / 8, 'Слишком плоская трапеция — плохой чертёж');
 
 		if (rand == 1) {
 			trp.connectVerticesInConnectionMatrix([
