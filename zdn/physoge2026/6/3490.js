@@ -47,3 +47,4 @@
 })();
 // https://phys-oge.sdamgia.ru/problem?id=24872
 //zer00player
+// ФИПИ A93201 DC23AC
