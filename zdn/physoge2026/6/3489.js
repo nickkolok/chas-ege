@@ -8,7 +8,7 @@
 		let rand = getSelectedPreferenceFromList(key, preference);
 
 		// Сила натяжения, при которой нить разорвётся, Н
-		let F = sl(2, 20) * 5;
+		let F = sl(10, 100, 5);
 
 		// Все существительные женского рода — согласования стабильны
 		let obj = sklonlxkand(['нить', 'верёвка', 'леска', 'бечёвка'].iz());
