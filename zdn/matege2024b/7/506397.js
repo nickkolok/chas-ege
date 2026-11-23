@@ -3,6 +3,8 @@
     retryWhileError(function () {
         /* На графике изображена зависимость скорости движения легкового автомобиля от времени. На вертикальной оси отмечена скорость легкового автомобиля в км/ч, на горизонтальной – время в секундах, прошедшее с начала движения автомобиля. */
        
+        let secondsPerUnit = 15, speedPerUnit = 20;
+
         function answAboutStop(intervals, answ) {
             let wasStop = intervals.map(interval => lengthOfZeroInterval(interval) > 1);
 
@@ -23,12 +25,12 @@
 
         function answAboutNonIncreasingNonMoreV(intervals, answ, V) {
             let wasCondition = intervals.map(interval => isNonIncreasing(interval) && isNotMore(interval, V));
-            addUniqueAnsw(wasCondition, answ, 'скорость автомобиля не увеличивалась и не превышала ' + V * 20 + ' км/ч');
+            addUniqueAnsw(wasCondition, answ, 'скорость автомобиля не увеличивалась и не превышала ' + V * speedPerUnit + ' км/ч');
         }
 
         function answAboutNonDecreasingNonLessV(intervals, answ, V) {
             let wasCondition = intervals.map(interval => isNonDecreasing(interval) && isNotLess(interval, V));
-            addUniqueAnsw(wasCondition, answ, 'скорость автомобиля не уменьшалась и не была менее ' + V * 20 + ' км/ч');
+            addUniqueAnsw(wasCondition, answ, 'скорость автомобиля не уменьшалась и не была менее ' + V * speedPerUnit + ' км/ч');
         }
 
         function answAboutIncreasing(intervals, answ) {
@@ -80,22 +82,17 @@
 
             let index = wasConstFlags.indexOf(true);
             let text = 'автомобиль ровно ' +
-                chislitlx((lengthConst(intervals[index]) - 1) * 15, 'секунда') +
+                chislitlx((lengthConst(intervals[index]) - 1) * secondsPerUnit, 'секунда') +
                 ' ехал с постоянной скоростью';
             answ[index].solution.push(text);
         }
 
         function answAboutConstMoreNSec(intervals, answ) {
             let seconds = 15;
-            let wasConstFlags = intervals.map(interval => (lengthConst(interval) - 1) * 15 > seconds);
+            let wasConstFlags = intervals.map(interval => (lengthConst(interval) - 1) * secondsPerUnit > seconds);
 
-            if (!hasNoDuplicateValue(wasConstFlags, true)) {
-                return;
-            }
-
-            let index = wasConstFlags.indexOf(true);
             let text = 'автомобиль более ' + chislitlx(seconds, 'секунда', 'r') + ' ехал с постоянной скоростью';
-            answ[index].solution.push(text);
+            addUniqueAnsw(wasConstFlags, answ, text);
         }
 
         let time = [0].zapMonot(11, 0, 1, 1); // шкала времени
@@ -117,19 +114,17 @@
                     value.push(0);
                 }
         }
-        genAssert(value[9] != 0, 'Предпоследняя точка 0');
-        value = value.slice(0, 11);
+        genAssert(value[time.length - 2] != 0, 'Предпоследняя точка 0');
+        value = value.slice(0, time.length);
 
         let beginTime = sl1();
+        let intervalStarts = Array.from({length: 4}, (_, i) => beginTime + i * 2);
 
-        let intervals = Array.from({
-            length: 4
-        }, (_, i) =>
-            value.slice(beginTime + i * 2, beginTime + i * 2 + 3));
+        let intervals = intervalStarts.map(start => value.slice(start, start + 3));
 
         let listOfIntervals = intervals.map((interval, i) => {
             return {
-                expr: (beginTime + i * 2) * 15 + '–' + (beginTime + i * 2 + 2) * 15 + ' с',
+                expr: intervalStarts[i] * secondsPerUnit + '–' + (intervalStarts[i] + 2) * secondsPerUnit + ' с',
                 solution: []
             };
         });
@@ -198,16 +193,17 @@
         let solutions = listOfIntervals.map(item => item.solution);
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
+            let cellWidth = 60, cellHeight = 60;
             ctx.drawGridWithArrows({
                 gridWidth: 640,
                 gridHeight: 420,
-                cellWidth: 60,
-                cellHeight: 60,
-                stepX: 15,
-                stepY: 20,
+                cellWidth: cellWidth,
+                cellHeight: cellHeight,
+                stepX: secondsPerUnit,
+                stepY: speedPerUnit,
                 maxX: 260,
                 maxY: 80,
                 stepByCeilX: 1,
@@ -215,13 +211,11 @@
                 arrowLengthY: 4.8,
             });
 
-            ctx.translate(60, 60 * 5);
-            ctx.scale(60, -60);
-            ctx.lineWidth = 2 / 60;
+            ctx.translate(cellWidth, cellHeight * 5);
+            ctx.scale(cellWidth, -cellHeight);
+            ctx.lineWidth = 2 / cellHeight;
 
-            for (let i = 0; i < time.length - 1; i++) {
-                ctx.drawLine(time[i], value[i], time[i + 1], value[i + 1]);
-            }
+            ctx.drawPolyline(time, value);
         };
 
         NAtask.setCorrespondenceTask({
