@@ -42,3 +42,4 @@
 	}, 1000);
 })();
 //https://phys-oge.sdamgia.ru/problem?id=26186
+// ФИПИ 7064E6 9F0DED
