@@ -25,6 +25,7 @@
 			(dirV === 1 ? vCoeff*vCoeff : 1/(vCoeff*vCoeff));
 		
 		let aFactor = v2Factor / rFactor;
+		genAssert(Math.abs(aFactor - 1) > 1e-9, 'Ускорение не изменилось');
 		
 		// Определяем глагол результата
 		let resultVerb, resultN;
