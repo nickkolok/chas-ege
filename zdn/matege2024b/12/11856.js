@@ -4,8 +4,8 @@
 
 		const rect = new Rectangle({
 			lengths: {
-				lengthAB: sl(1, 50),
-				lengthBC: sl(1, 50),
+				lengthAB: sl(1, 60),
+				lengthBC: sl(1, 60),
 			},
 			supplementary: {
 				calculateDiagonals: true,
