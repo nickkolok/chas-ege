@@ -15,7 +15,7 @@ retryWhileError(function(){
 	
 	let t_sec = t * 60;
 
-	let text = 'За ' + t + ' мин. пропеллер вентилятора совершает ' + N + ' оборотов. ';
+	let text = 'За ' + t + ' мин. пропеллер вентилятора совершает ' + chislitlx(N, 'оборот') + '. ';
 	let question = '';
 	let answer = 0;
 	let analys = '';
