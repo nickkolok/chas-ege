@@ -4,14 +4,24 @@
 
 		let letters = latbukv.slice(0, 4);
 
-		let a = sl(5, 40);
-		let b = slKrome(a, 10, 20);
+		// Боковые стороны в ответ не входят, поэтому трапеция строится по основаниям, высоте и углу,
+		// а не по четырём целым сторонам: так достижимы данные ФИПИ — основания от 1,
+		// высота бывает полуцелой (AD = 8, BC = 4, площадь 21)
+		let a = sl(1, 40);
+		let c = slKrome(a, 1, 20);
+		let height = sl(1, 30, 0.5);
+		genAssert(height >= Math.max(a, c) / 8, 'Слишком плоская трапеция — плохой чертёж');
 		let trp = new Trapezoid({
 			lengths: {
 				lengthAB: a,
-				lengthBC: b,
-				lengthCD: slKrome([a, b], 10, 20),
-				lengthDA: slKrome([a, b], 5, 20),
+				lengthCD: c,
+			},
+			height: height,
+			angles: {
+				angle: {
+					angleA: sl(40, 80),
+				},
+				angleInDegree: true,
 			},
 			supplementary: {
 				calculateDiagonals: true,
@@ -30,6 +40,7 @@
 				lengthCA: trp.lengthDA,
 			},
 		});
+		genAssertAlmostInteger(trian.area(), 'Площадь треугольника не целая');
 
 		trp.connectVerticesInConnectionMatrix([
 			[0, 2],
