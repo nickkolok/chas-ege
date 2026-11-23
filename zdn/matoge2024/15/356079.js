@@ -3,7 +3,7 @@
         NAinfo.requireApiVersion(0, 2);
         let letters = om.latbukv.slice(0, 3);
 
-        let key = "356079";
+        let key = '356079';
         let preference = ['sinA', 'cosA', 'tgA', 'ctgA', 'sinC', 'cosC', 'tgC', 'ctgC'];
         let variant = getSelectedPreferenceFromList(key, preference);
 
@@ -57,7 +57,7 @@
             ctx.drawFigure(points, triangle.connectionMatrix);
 
             ctx.strokeStyle = om.primaryBrandColors.iz();
-            ctx.arcBetweenSegments([points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y], 20);
+            ctx.arcBetweenSegments([points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y]);
 
             ctx.scale(1, -1);
             ctx.font = '20px liberation_sans';
@@ -72,12 +72,12 @@
         });
         NAtask.modifiers.variativeABC(letters);
 
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(true);
     }, 2000);
 
 })();
