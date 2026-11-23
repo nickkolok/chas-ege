@@ -21,9 +21,9 @@ retryWhileError(function() {
 					['пылинки', 1, 5],
 					['песчинки', 1, 10],
 					['таблетки лекарства', 300, 500],
-					['комара', 15, 50],
-					['мухи', 25, 70],
-					['божьей коровки', 35, 90],
+					['комара', 2, 5],
+					['мухи', 10, 20],
+					['божьей коровки', 20, 30],
 					['капли воды', 10, 100],
 					['иголки', 70, 150],
 					['пчелы', 150, 350],
@@ -101,7 +101,7 @@ retryWhileError(function() {
 			]
 		},
 		1: {
-			measurements: ['с', 'мин', 'ч', 'дн'],
+			measurements: ['с', 'мин', 'ч', 'сут'],
 			timeSuffix: ['', '15 мин', '30 мин', '45 мин'].iz(),
 			arrays: [
 				[
@@ -151,8 +151,8 @@ retryWhileError(function() {
 					['длительность сезона сериала', 4, 16],
 					['длительность чтения одной книги', 5, 30],
 					['время поездки на электричке', 1, 6],
-					['время путешествия на поезде Москва-СПб', 4, 8],
-					['время авиаперелёта Москва-Владивосток', 7, 9],
+					['время путешествия на поезде Москва — СПб', 4, 8],
+					['время авиаперелёта Москва — Владивосток', 7, 9],
 					['длительность перелёта между странами', 4, 12]
 				],
 				[
@@ -257,7 +257,7 @@ retryWhileError(function() {
 					['расстояние от Земли до Луны', 363300, 405500, 100],
 					['толщина земной коры', 5, 80],
 					['высота горы', 1, 8, 0.5],
-					['длина горного хребта', 1, 8],
+					['длина горного хребта', 50, 500, 10],
 					['длина гоночной трассы', 5, 7],
 					['длина реки', 1.5, 7, 0.5],
 					['длина линии метро', 15, 50],
@@ -402,23 +402,16 @@ retryWhileError(function() {
 		objectsArray4 = currentData.arrays[3];
 	}
 
+	let left;
+
 	// Логика для mixed (typeIndex = 5)
 	if (typeIndex === 5) {
 		let availableTypes = [0, 1, 2, 3, 4];
 		availableTypes.shuffle();
 		let selectedTypes = availableTypes.slice(0, 4);
 
-		// Префиксы для типов величин (как в оригинальном коде)
-		const typePrefixes = {
-			0: 'масса',
-			1: '',
-			2: '',
-			3: 'площадь',
-			4: 'объём'
-		};
 
-		let left = [];
-		let right = [];
+		left = [];
 
 		for (let t of selectedTypes) {
 			let data = dataByType[t];
@@ -435,35 +428,16 @@ retryWhileError(function() {
 			let val = sluchch(min, max, step);
 			let unit = data.measurements[arrIndex];
 
-			let prefix = typePrefixes[t];
+			let prefix = value[t];
 			let exprName = prefix ? prefix + ' ' + name : name;
 
 			left.push({
 				expr: exprName,
 				solution: val.ts() + ' ' + unit + (t === 1 && arrIndex === 2 && data.timeSuffix ? ' ' + data.timeSuffix : '')
 			});
-			right.push(left[left.length - 1].solution);
 		}
 
-		let uniqueNames = new Set(left.map(l => l.expr));
-		if (uniqueNames.size !== left.length) {
-			throw new Error('Повторяющиеся названия объектов');
-		}
-
-		NAtask.setCorrespondenceTask({
-			text: 'Установите соответствие между величинами и их возможными значениями: к каждому элементу первого столбца подберите соответствующий элемент из второго столбца.',
-			leftHeader: 'Величины',
-			rightHeader: 'Значения',
-			left,
-			right,
-			postText: '',
-			autoLaTeXLeft: false,
-			autoLaTeXRight: false,
-			preference: measurementTypes,
-		});
-
-		return;
-	}
+	} else {
 
 	// Общая логика для типов 0-4
 	objectsArray1.sort((a, b) => a[1] - b[1]);
@@ -549,11 +523,6 @@ retryWhileError(function() {
 		[bigObjects[sluchIndexBigObject][0], mediumObjects[newSluchIndexMediumObject][0]][turnValueBToValueM]
 	];
 
-	let uniqueNames = new Set(arrayObjects);
-	if (uniqueNames.size !== arrayObjects.length) {
-    		throw new Error('Повторяющиеся названия объектов');
-	}
-
 
 	let arrayValue = [
 		valueVS.ts() + ' ' + [measurements[0], measurements[1]][sluchValueS],
@@ -562,12 +531,15 @@ retryWhileError(function() {
 		valueB.ts() + ' ' + [measurements[3], measurements[2]][sluchValueM]
 	];
 
-	let left = arrayObjects.map((obj, i) => ({
+	left = arrayObjects.map((obj, i) => ({
 		expr: (value[typeIndex] + ' ' + obj).trim(),
 		solution: arrayValue[i]
 	}));
 
-	let right = arrayValue.slice();
+	}
+
+	genAssert(new Set(left.map(item => item.expr)).size === left.length, 'Повторяющиеся названия объектов');
+	let right = left.map(item => item.solution);
 
 
 	// setCorrespondenceTask сам перемешивает left и right
