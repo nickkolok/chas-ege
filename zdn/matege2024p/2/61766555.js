@@ -5,7 +5,7 @@
 		let vectorA = generateMatrix(1, 4, 1, 13).iz();
 
 		let coordA = vectorA.coordVect();
-		let coordB = [sl(1, 13),sl(1, 13)];
+		let coordB = [sl(1, 13), sl(1, 13)];
 
 		genAssert(!coordA.equalAr(coordB));
 
@@ -15,11 +15,12 @@
 
 		let cos = coordA.veccos(coordB);
 
-		let angle = cos.arccos() * 180 / Math.PI;
+		let angle = coordA.vecangleInDegrees(coordB);
 
 		genAssert(cos.abs() != 1, 'вектора коллинеарны');
 
-		genAssert(angle.isZ() && angle != 90, 'Оба значения не подходят для ответа');
+		genAssert(angle.isAlmostInteger() && Math.round(angle) !== 90, 'Оба значения не подходят для ответа');
+		angle = Math.round(angle);
 
 
 		NAtask.setTask({
@@ -34,3 +35,4 @@
 		NAtask.modifiers.variativeABC();
 	}, 1000);
 })();
+
