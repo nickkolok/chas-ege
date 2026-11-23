@@ -46,3 +46,4 @@ retryWhileError(function(){
 // https://phys-oge.sdamgia.ru/problem?id=29554
 // https://phys-oge.sdamgia.ru/problem?id=29576
 // https://github.com/nickkolok/chas-ege/issues/3499
+// ФИПИ 537ADD 102DC1 4BE6D0 4EE106 4070BA
