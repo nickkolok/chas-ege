@@ -40,8 +40,8 @@
 		}
 		let [question, answer, needsSign] = variants.iz();
 		let restrictions = needsSign ? ', где $b>0$' : '';
-		let inner = (b.ts() + 'x+' + c.ts()).plusminus();
-		let formula = (a.ts() + 'x+' + d.ts()).plusminus() + sign + '\\left|' + inner + '\\right|';
+		let inner = (b.ts() + 'x' + ('+' + c.ts()).esli(c)).plusminus();
+		let formula = (a.ts() + 'x' + ('+' + d.ts()).esli(d)).plusminus() + sign + '\\left|' + inner + '\\right|';
 
 		NAtask.setTask({
 			text: 'На рисунке изображён график функции вида $f(x)=ax+d' + sign +
