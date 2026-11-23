@@ -17,7 +17,7 @@ retryWhileUndefined(function() {
 	}
 
 	const formula = ((showA ? a : 'a') + '\\' + trig +
-		'(\\pi x+' + factor.texfracpi(1) + ' c)+d').plusminus();
+		'(\\pi x+' + (2 * factor).texfracpi(2) + ' c)+d').plusminus();
 	let limits = showA ? '' : ', $a' + (a > 0 ? '>' : '<') + '0$';
 	const variant = sl(1, 3);
 	let question, answer;
@@ -46,7 +46,7 @@ retryWhileUndefined(function() {
 		.map(x => [x, Math.round(f(x))]);
 
 	const solution = a + '\\' + trig + '(\\pi x' +
-		(phase ? '+' + phase.texfracpi(1) : '') + ')' + (d ? '+' + d : '');
+		(phase ? '+' + (2 * phase).texfracpi(2) : '') + ')' + (d ? '+' + d : '');
 	NAtask.setTask({
 		text: 'На рисунке изображён график функции $f(x)=' + formula +
 			'$, где ' + (showA ? '' : '$a$, ') + '$c$ и $d$ — целые' + limits +
