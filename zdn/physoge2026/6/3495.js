@@ -76,7 +76,7 @@
 			answers: answer,
 			analys: analysTexts[rand],
 			authors: ['chas-ege-selena'],
-			preference: preference,
+			preference: [preference],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
