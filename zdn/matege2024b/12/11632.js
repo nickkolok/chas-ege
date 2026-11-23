@@ -16,7 +16,7 @@
             length: [sl(5, 20), side][Number(rand > 2)],
             angles: {
                 angle: {
-                    angleA: [[1, 2].iz() * Math.PI / 3, 2 * Math.atan(d2 / d1)][Number(rand > 2)],
+                    angleA: [sl(1, 2) * Math.PI / 3, 2 * Math.atan(d2 / d1)][Number(rand > 2)],
                 },
             }
         });
@@ -24,7 +24,8 @@
         let angleBAC = new Angle(rhombus.pointB, rhombus.pointA, rhombus.pointC).angleInRadians;
         let angleABD = new Angle(rhombus.pointA, rhombus.pointB, rhombus.pointD).angleInRadians;
 
-        genAssertZ1000([angleBAC.sin(), angleABD.sin(), angleBAC.sin(), angleBAC.tg(), angleBAC.tg()][rand]);
+        let answer = [angleBAC.sin(), angleABD.sin(), angleBAC.sin(), angleBAC.tg(), angleBAC.tg()][rand];
+        genAssertZ1000(answer);
 
         rhombus.connectVerticesInConnectionMatrix([
             [0, 2],
@@ -44,7 +45,7 @@
             ctx.drawFigure(points, rhombus.connectionMatrix);
 
             ctx.scale(1, -1);
-            ctx.font = "20px liberation_sans";
+            ctx.font = '20px liberation_sans';
             points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i == 1) ? 25 : -5)));
         };
 
@@ -53,19 +54,19 @@
             questions: [
                 [{
                     text: `диагональ $AC=${rhombus.lengthDiagonalAC.pow(2).texsqrt(1)}$, диагональ $BD=${rhombus.lengthDiagonalBD.pow(2).texsqrt(1)}$. Найдите синус угла $BAC$.`,
-                    answers: angleBAC.sin(),
+                    answers: answer,
                 }, {
                     text: `известно, что $AB=${rhombus.lengthAB}$, $BD=${rhombus.lengthDiagonalBD.pow(2).texsqrt(1)}$. Найдите синус угла $ABD$.`,
                     answers: angleABD.sin(),
                 }, {
                     text: `известно, что $AB=${rhombus.lengthAB}$, $AC=${rhombus.lengthDiagonalAC.pow(2).texsqrt(1)}$. Найдите синус угла $BAC$.`,
-                    answers: angleBAC.sin(),
+                    answers: answer,
                 }, {
                     text: `диагональ $AC=${rhombus.lengthDiagonalAC.pow(2).texsqrt(1)}$, сторона $AB=${rhombus.lengthAB.pow(2).texsqrt(1)}$. Найдите тангенс угла $BAC$.`,
-                    answers: angleBAC.tg(),
+                    answers: answer,
                 }, {
                     text: `диагональ $AC=${rhombus.lengthDiagonalAC.pow(2).texsqrt(1)}$, площадь ромба равна $${rhombus.area()}$. Найдите тангенс угла $BAC$.`,
-                    answers: angleBAC.tg(),
+                    answers: answer,
                 }][rand]
             ],
             authors: ['Александра Суматохина'],
