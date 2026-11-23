@@ -24,6 +24,11 @@
 Если «верхние» вершины не совпадают со второй половиной, их номера передают
 третьим аргументом: `ctx.signVertices(points, letters, [2, 3])` - вершины 2 и 3
 подписываются над вершиной, остальные - под вершиной.
+Четвёртый необязательный аргумент - настройки подписей: `font`, `textAlign`,
+`textBaseline`, `fillStyle`, `offsetBelow` (по умолчанию 25) и `offsetAbove`
+(по умолчанию -5); не заданные берутся из контекста или по умолчанию.
+Если `above` не нужен, вместо него передают `null`:
+`ctx.signVertices(points, letters, null, {textAlign: 'center'})`.
 
 ```js
 ctx.drawFigure(points, triangle.connectionMatrix);

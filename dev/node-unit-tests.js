@@ -860,6 +860,33 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(calls.map(function (c) { return c.y; }), [25, 24, 23, -8, -9], 'без above сохраняется правило половин');
     });
 
+    QUnit.test('ctx.signVertices: необязательные настройки options', function (assert) {
+        var calls;
+        function makeCtx() {
+            calls = [];
+            return {
+                font: 'контекст', textAlign: 'start', textBaseline: 'alphabetic', fillStyle: '#000',
+                save: function () {},
+                restore: function () {},
+                scale: function () {},
+                fillText: function (text, x, y) {
+                    calls.push({ text: text, y: y, font: this.font, textAlign: this.textAlign, textBaseline: this.textBaseline, fillStyle: this.fillStyle });
+                },
+            };
+        }
+        var points = [{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 }];
+        CanvasRenderingContext2D.prototype.signVertices.call(makeCtx(), points, ['A', 'B', 'C'], null, {
+            font: '16px liberation_sans', textAlign: 'center', textBaseline: 'middle', fillStyle: '#f00', offsetBelow: 20, offsetAbove: -10,
+        });
+        assert.deepEqual(calls.map(function (c) { return c.y; }), [20, 19, -12], 'отступы из options, above = null — правило половин');
+        assert.deepEqual([calls[0].font, calls[0].textAlign, calls[0].textBaseline, calls[0].fillStyle],
+            ['16px liberation_sans', 'center', 'middle', '#f00'], 'шрифт, выравнивание и цвет из options');
+        CanvasRenderingContext2D.prototype.signVertices.call(makeCtx(), points, ['A', 'B', 'C'], [0], { textAlign: 'center' });
+        assert.deepEqual(calls.map(function (c) { return c.y; }), [-5, 24, 23], 'не заданные отступы — по умолчанию');
+        assert.deepEqual([calls[0].font, calls[0].textAlign, calls[0].textBaseline, calls[0].fillStyle],
+            ['20px liberation_sans', 'center', 'alphabetic', '#000'], 'не заданное — шрифт по умолчанию, остальное из контекста');
+    });
+
     // ============================================================
     //  Canvas: ломаная по массивам точек  (lib/canvas.js)
     // ============================================================
