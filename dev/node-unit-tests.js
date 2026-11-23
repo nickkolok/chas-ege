@@ -695,6 +695,13 @@ module.exports = function registerNodeTests(QUnit) {
         var left = canvasLib.parallelepipedSize({ width: 3, height: 5, depth: 2, angle: 2 * Math.PI / 3 });
         assert.ok(Math.abs(left.width - 4) < 1e-12, 'глубина влево: ширина 3 + 1');
         assert.ok(Math.abs(left.height - 6) < 1e-12, 'высота от знака косинуса не зависит');
+        assert.equal(size.minX, 0, 'глубина вправо: габарит начинается в нуле');
+        assert.equal(size.minY, 0, 'по вертикали габарит начинается в нуле');
+        assert.ok(Math.abs(left.minX + 1) < 1e-12, 'глубина влево: габарит начинается в x = -1');
+        // angle: 40, как в большинстве шаблонов: 40 - 12π ≈ 2,30, глубина влево
+        var common = canvasLib.parallelepipedSize({ width: 25, height: 25, depth: 12.5, angle: 40 });
+        assert.ok(Math.abs(common.minX - 12.5 * Math.cos(40 - 12 * Math.PI)) < 1e-12, 'angle: 40 - minX = depth·cos(angle) < 0');
+        assert.ok(Math.abs(common.minX + common.width - 25) < 1e-12, 'правый край - передняя правая грань');
     });
 
     QUnit.test('drawParallelepiped рисует рёбра между теми же вершинами', function (assert) {
