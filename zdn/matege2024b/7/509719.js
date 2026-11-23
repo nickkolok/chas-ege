@@ -3,8 +3,10 @@
     retryWhileError(function () {
         /* На графике изображена зависимость частоты пульса гимнаста от времени в течение и после его выступления в вольных упражнениях. На горизонтальной оси отмечено время (в минутах), прошедшее с начала выступления гимнаста, на вертикальной оси – частота пульса (в ударах в минуту). */
 
+        let pulseMin = 40, pulseStep = 20;
+
         function convert(value) {
-            return value * 20 + 40 + ' уд./мин.';
+            return value * pulseStep + pulseMin + ' уд./мин.';
         }
 
         function isIncreasing(arr) {
@@ -280,9 +282,9 @@
                 cellWidth: 40,
                 cellHeight: 40,
                 stepX: 1,
-                stepY: 20,
+                stepY: pulseStep,
                 maxX: 8,
-                minY: 40,
+                minY: pulseMin,
                 maxY: 140,
                 stepByCeilX: 1,
                 arrowLengthX: 7.5,
