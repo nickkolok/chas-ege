@@ -375,6 +375,20 @@ module.exports = function registerNodeTests(QUnit) {
         }, /Удлинение имеет слишком много знаков/, 'сообщение автора шаблона сохранено');
     });
 
+    QUnit.test('все функции lib/func_assert.js доступны в node', function (assert) {
+        [
+            'retryWhileUndefined', 'retryWhileError', 'genAssert', 'genAssertNonempty',
+            'genAssertDecimalPlaces', 'genAssertZ1000', 'genAssertAlmostInteger', 'genAssertIrreducible',
+            'genAssertSaneDecomposition', 'genAssertGraphIntersectsPointWithNeighborhood',
+        ].forEach(function (name) {
+            assert.equal(typeof global[name], 'function', name + ' экспортирована в global');
+        });
+        assert.equal(retryWhileError(function () { return 42; }, 1), 42, 'retryWhileError вызывается');
+        assert.throws(function () {
+            genAssertAlmostInteger(1.5, 'Не целое');
+        }, /Не целое/, 'genAssertAlmostInteger вызывается');
+    });
+
     QUnit.test('genAssertZ1000 ведёт себя как раньше', function (assert) {
         genAssertZ1000(0.001);
         genAssertZ1000(2);
