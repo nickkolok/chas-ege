@@ -116,3 +116,4 @@
 })();
 // https://phys-oge.sdamgia.ru/problem?id=29620
 // https://phys-oge.sdamgia.ru/problem?id=29718
+// ФИПИ 4A0706 C5CA08 DEEC24 F9015E EAE31B 17701B 68802E 441492 77581A 0B45BD
