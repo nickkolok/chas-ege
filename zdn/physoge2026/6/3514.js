@@ -30,6 +30,7 @@
 			analys: 'По графику определяем, что при растяжении пружины на $x = ' + xText + '$ см $= ' + (xText/100) + '$ м сила упругости равна $F_{\\text{упр}} = ' + FText + '$ Н. ' +
 				'Согласно закону Гука, $F_{\\text{упр}} = kx$, откуда жёсткость пружины $k = \\frac{F_{\\text{упр}}}{x} = \\frac{' + FText + '}{' + (xText/100) + '} = ' + k + '$ Н/м.',
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 
 		NAtask.modifiers.addJqplot({
 			dataArray: [data],
