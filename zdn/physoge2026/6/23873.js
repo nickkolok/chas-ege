@@ -21,3 +21,4 @@
 	}, 1000);
 })();
 // https://phys-oge.sdamgia.ru/problem?id=23873
+// ФИПИ 3E2AD4 67E0F4
