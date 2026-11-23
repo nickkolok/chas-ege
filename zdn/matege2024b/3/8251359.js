@@ -9,9 +9,10 @@
 		let period = getSelectedPreferenceFromList(key, preferencePeriod);
 		let start = period ? sl(1, 10) : 0;
 		let count = period ? 16 : 24;
-		let values = Array.from({length: count}, () => 10 * sl(1, 15));
+		let visitorsStep = 10, visitorsMax = 150;
+		let values = [].zapslch(0, count - 1, visitorsStep, visitorsMax, visitorsStep);
 		let extremum = question ? values.minE() : values.maxE();
-		genAssert(values.filter(value => value === extremum).length === 1, 'Экстремум должен быть единственным');
+		genAssert(values.sovp(extremum) === 1, 'Экстремум должен быть единственным');
 		NAtask.setTask({
 			text: 'На диаграмме показано количество посетителей сайта ' +
 				(period ? 'во все дни с ' + start + ' по ' + (start + count - 1) + ' ноября.' : 'в течение каждого часа одних суток.') +
@@ -27,15 +28,15 @@
 			options: {
 				axes: {
 					xaxis: {min: start - 0.5, max: start + count - 0.5, ticks: [[start - 0.5, '']].concat(values.map((_, i) => [start + i, '' + (start + i)]), [[start + count - 0.5, '']])},
-					yaxis: {min: 0, max: 160, tickInterval: 10},
+					yaxis: {min: 0, max: visitorsMax + visitorsStep, tickInterval: visitorsStep},
 				},
 				seriesDefaults: {renderer: $.jqplot.BarRenderer, rendererOptions: {barWidth: 17}},
 			},
 		});
 	}, 1000);
 })();
-// ФИПИ, ЕГЭ база, задание 3.
-// 3.29: 7DE7DF
-// 3.30: CB860B
-// 3.31: C2BB83
-// 3.32: 8DF5A1
+// 7DE7DF
+// CB860B
+// C2BB83
+// 8DF5A1
+
