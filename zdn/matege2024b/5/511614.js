@@ -7,6 +7,8 @@
 		let preference = ['two_boys', 'two_girls', 'boy', 'girl', 'boy_and_girl'];
 		let variant = getListedPreference(key, [...preference.map((preference, preferenceValue) => ({preference, preferenceValue})), {preference: 'two_girl', preferenceValue: 1}], sl(preference.length - 1));
 		let age = sl(0, 2);
+		let boy = ['мальчик', 'юноша', 'мужчина'][age];
+		let girl = ['девочка', 'девушка', 'женщина'][age];
 
 		let question;
 		switch (variant) {
@@ -17,13 +19,13 @@
 				question = 'обе пришедшие оказались ' + ['девочками', 'девушками', 'женщинами'][age];
 				break;
 			case 2:
-				question = 'среди пришедших есть хотя бы один ' + ['мальчик', 'юноша', 'мужчина'][age];
+				question = 'среди пришедших есть хотя бы один ' + boy;
 				break;
 			case 3:
-				question = 'среди пришедших есть хотя бы одна ' + ['девочка', 'девушка', 'женщина'][age];
+				question = 'среди пришедших есть хотя бы одна ' + girl;
 				break;
 			case 4:
-				question = 'пришли ' + ['мальчик', 'юноша', 'мужчина'][age] + ' и ' + ['девочка', 'девушка', 'женщина'][age];
+				question = 'пришли ' + boy + ' и ' + girl;
 				break;
 		}
 
