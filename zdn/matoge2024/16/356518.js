@@ -40,7 +40,6 @@
         });
 
         let paint1 = function (ctx) {
-
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
@@ -88,12 +87,12 @@
             preference
         });
 
+        NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard(true);
     }, 2000);
 })();
 // https://oge.sdamgia.ru/problem?id=356518
