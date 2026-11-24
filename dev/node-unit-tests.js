@@ -661,7 +661,7 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('берёг', 1), 'берегла');
         assert.equal(selectVerbGender('шёл', 1), 'шла');
         assert.equal(selectVerbGender('вёл', 1), 'вела');
-        assert.equal(selectVerbGender('цвёл', 1), 'цвела', 'самое длинное окончание: цвёл, а не вёл');
+        assert.equal(selectVerbGender('цвёл', 1), 'цвела', 'цв+ёл берётся окончанием вёл: цв+ела');
         assert.equal(selectVerbGender('плёл', 3), 'плели');
         assert.equal(selectVerbGender('мёл', 1), 'мела');
         assert.equal(selectVerbGender('счёл', 1), 'сочла');
