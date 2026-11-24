@@ -16,7 +16,7 @@
 				angle: Math.PI / 2,
 			},
 		});
-		genAssert(!triangle.isEquilateral(), 'Все стороны треугольника должны быть разными');
+		genAssert(!triangle.isIsosceles(), 'Все стороны треугольника должны быть разными');
 
 		let funcDano = ['sin', 'cos', 'tg', 'ctg'][variant % 4] + ' ' + ['A', 'C'][variant < 4 ? 0 : 1];
 		let sides;
@@ -64,9 +64,7 @@
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.arcBetweenSegments([points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y], 20);
 
-			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
+			ctx.signVertices(points, letters);
 		};
 
 		NAtask.setTask({
