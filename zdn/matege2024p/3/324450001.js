@@ -3,7 +3,7 @@
 
 		let a = sl(2, 20);
 		let v = a.pow(3) / (24 * (2).sqrt());
-		let s = a.pow(2) * (0.75).sqrt();
+		let s = a.pow(2) * (3).sqrt() / 4;
 		let h = 0.5 * a / (2).sqrt();
 
 		let question = [
@@ -13,26 +13,21 @@
 		].iz();
 
 		let paint1 = function(ctx) {
-			ctx.translate(0, 500);
-			ctx.scale(10, 10);
-			ctx.lineWidth = 2 / 15;
-			ctx.drawRightPyramid4({
-				edge: 21,
-				angle: Math.PI / 4,
-				height: -23,
-				scale: 10,
-			}, [0, 2, 5], [1, 0.7]);
-
-			ctx.translate(9, -20.5);
-			ctx.lineWidth = 3 / 15;
-			ctx.drawRightPyramid4({
-				edge: 21 / 2,
-				angle: Math.PI / 4,
-				height: -23 / 2,
-				scale: 10,
-				strokeStyle: om.primaryBrandColors.iz(),
-			}, [0, 2, 5], [1, 0.7]);
-		};
+            let pyramid = new RegularPyramid({height: 1 / Math.sqrt(2), baseSide: 1, numberSide: 4});
+            let vertices = pyramid.verticesOfFigure;
+            let apex = vertices[pyramid.numberSide];
+            let cutVertices = vertices.map(vertex => coordinatesMiddleOfSegment3D(vertex, apex));
+            let camera = {x:0,y:0,z:0,scale:1,rotationX:-Math.PI/2+Math.PI/9,rotationY:0,rotationZ:Math.PI/5};
+            let points = autoScale(vertices, camera, [], {startX:-150,finishX:150,startY:-150,finishY:150,maxScale:200,shrink:true});
+            let cutPoints = cutVertices.map(vertex => project3DTo2D(vertex,camera));
+            let faces = [[0,1,2,3],[0,1,4],[1,2,4],[2,3,4],[3,0,4]];
+            ctx.translateToCenter();
+            ctx.lineWidth=2;
+            ctx.strokeStyle=om.secondaryBrandColors.iz();
+            ctx.drawFigure(points,dashHiddenEdges(pyramid.connectionMatrix,faces,facesVisibility(vertices,points,faces),[5,4]));
+            ctx.strokeStyle=om.primaryBrandColors.iz();
+            ctx.drawFigure(cutPoints,dashHiddenEdges(pyramid.connectionMatrix,faces,facesVisibility(cutVertices,cutPoints,faces),[5,4]));
+        };
 
 		NAtask.setTask({
 			text: 'В правильной четырёхугольной пирамиде все рёбра равны $' + a + '$. ' +
