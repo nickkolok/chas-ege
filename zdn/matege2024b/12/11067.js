@@ -22,7 +22,14 @@
 			}
 		});
 
-		genAssertZ1000([triangle.heightBLength, triangle.lengthCA][rand]);
+		let question = [{
+			text: `В прямоугольном треугольнике катеты равны $${triangle.lengthAB}$ и $${triangle.lengthBC}$. Найдите высоту, опущенную на гипотенузу.`,
+			answers: triangle.heightBLength,
+		},{
+			text: `Площадь прямоугольного треугольника равна $${triangle.area()}$. Один из катетов равен $${[triangle.lengthAB, triangle.lengthBC].iz()}$. Найдите гипотенузу этого треугольника.`,
+			answers: triangle.lengthCA,
+		}][rand];
+		genAssertZ1000(question.answers);
 
 		let points = autoScale(triangle.vertices);
 
@@ -42,13 +49,7 @@
 
 		NAtask.setTask({
 			text: ``,
-			questions: [[{
-				text: `В прямоугольном треугольнике катеты равны $${triangle.lengthAB}$ и $${triangle.lengthBC}$. Найдите высоту, опущенную на гипотенузу.`,
-				answers: triangle.heightBLength,
-			},{
-				text: `Площадь прямоугольного треугольника равна $${triangle.area()}$. Один из катетов равен $${[triangle.lengthAB, triangle.lengthBC].iz()}$. Найдите гипотенузу этого треугольника.`,
-				answers: triangle.lengthCA,
-			}][rand]],
+			questions: [question],
 			authors: ['Александра Суматохина'],
 			preference: preference,
 		});
@@ -64,3 +65,4 @@
 })();
 // https://base.mathege.ru/clones/?position=16&parent=11067
 // https://base.mathege.ru/clones/?position=16&parent=10983
+
