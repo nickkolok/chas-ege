@@ -12,19 +12,17 @@
 		let a = sl(1, 20);
 
 		let paint1 = function(ctx) {
-			ctx.translate(110, 50);
-			let edge = 25;
-			ctx.scale(10, 10);
-			ctx.lineWidth = 0.2;
-			ctx.font = "3px liberation_sans";
-			ctx.drawPrism({
-				width: edge,
-				height: edge * 0.8,
-				depth: edge * 0.8,
-				angle: Math.PI / 1.8,
-				scale: 10,
-				lettersOnVertex: allLet,
-			}, [0, 3, 4], [0.4, 0.5]);
+			let figure = new RegularPrism({height:1,baseSide:1,numberSide:3});
+			let vertices = figure.verticesOfFigure;
+			let camera = {x:0,y:0,z:0,scale:1,rotationX:-Math.PI/2+Math.PI/9,rotationY:0,rotationZ:Math.PI/5};
+			let points = autoScale(vertices,camera,[],{startX:-150,finishX:150,startY:-150,finishY:150,maxScale:200,shrink:true,center:true});
+			let faces = [[0,1,2],[3,4,5],[0,1,4,3],[1,2,5,4],[2,0,3,5]];
+			ctx.translateToCenter();
+			ctx.lineWidth=2;
+			ctx.strokeStyle=om.secondaryBrandColors.iz();
+			ctx.drawFigure(points,dashHiddenEdges(figure.connectionMatrix,faces,facesVisibility(vertices,points,faces),[5,4]));
+			ctx.font = '20px liberation_sans';
+			points.forEach((point,i) => {let label=labelPositionAwayFrom(point,{x:0,y:0},18);ctx.fillText(allLet[i],label.x,label.y);});
 		};
 
 
@@ -42,4 +40,4 @@
 		});
 	});
 })();
-//https://ege314.ru/8-stereometriya-ege/reshenie-956/
+//956
