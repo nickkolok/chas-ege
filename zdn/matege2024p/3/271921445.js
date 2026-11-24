@@ -56,6 +56,8 @@
 
 			let deltaX = par1.width * sl(-0.5, 0.5, 0.1);
 
+			let contactWidth = Math.max(0, Math.min(par1.width / 2, -deltaX + par2.width / 2) - Math.max(-par1.width / 2, -deltaX - par2.width / 2));
+
 			let upperShiftZ = -0.5 * (par1.height + par2.height);
 			let ledgeWidth = 0.5 * (par2.width - par3.width);
 
@@ -68,9 +70,7 @@
 					x: deltaX,
 					y: 0,
 					z: upperShiftZ - 0.5 * (par2.height - par3.height),
-				})));
-
-			vertex3D = vertex3D.map((elem) => shiftCoordinate3D(elem, {
+				}))).map((elem) => shiftCoordinate3D(elem, {
 				x: 0,
 				y: 0,
 				z: 0.5 * par2.height,
@@ -104,7 +104,6 @@
 			genAssert([point2D[5], point2D[8]].mt_rasst() > 20);
 			genAssert([point2D[6], point2D[9]].mt_rasst() > 20);
 
-
 			genAssert((point2D[17].x - point2D[3].x).abs() > 10);
 			genAssert((point2D[7].x - point2D[9].x).abs() > 10);
 			genAssert((point2D[8].x - point2D[4].x).abs() > 10);
@@ -124,56 +123,55 @@
 			let paint1 = function(ctx) {
 				ctx.translateToCenter();
 				ctx.lineWidth = 2;
-				ctx.strokeStyle = om.secondaryBrandColors;
+				ctx.strokeStyle = om.secondaryBrandColors.iz();
 				ctx.drawFigureVer2(point2D, matrixConnections);
 
 				let point;
 
 				switch (true) {
-				case (point2D[2].x > point2D[9].x && point2D[2].x > point2D[6].x && point2D[2].x > point2D[10].x):
-					ctx.drawLine(point2D[2].x, point2D[2].y, point2D[7].x, point2D[7].y);
-					ctx.drawLine(point2D[6].x, point2D[6].y, point2D[7].x, point2D[7].y);
-					ctx.drawLine(point2D[10].x, point2D[10].y, point2D[7].x, point2D[7].y);
-					break;
-				case (point2D[2].x < point2D[9].x):
-					point = [point2D[2], point2D[7], point2D[9], point2D[6]].mt_coordinatesOfIntersectionOfTwoSegments();
-					ctx.drawLine(point2D[2].x, point2D[2].y, point.x, point.y);
-					break;
-				case (point2D[2].x >= point2D[9].x && point2D[2].x <= point2D[10].x):
-					point = [point2D[2], point2D[7], point2D[9], point2D[10]].mt_coordinatesOfIntersectionOfTwoSegments();
-					ctx.drawLine(point2D[2].x, point2D[2].y, point.x, point.y);
-					break;
+					case (point2D[2].x > point2D[9].x && point2D[2].x > point2D[6].x && point2D[2].x > point2D[10].x):
+						ctx.drawLine(point2D[2].x, point2D[2].y, point2D[7].x, point2D[7].y);
+						ctx.drawLine(point2D[6].x, point2D[6].y, point2D[7].x, point2D[7].y);
+						ctx.drawLine(point2D[10].x, point2D[10].y, point2D[7].x, point2D[7].y);
+						break;
+					case (point2D[2].x < point2D[9].x):
+						point = [point2D[2], point2D[7], point2D[9], point2D[6]].mt_coordinatesOfIntersectionOfTwoSegments();
+						ctx.drawLine(point2D[2].x, point2D[2].y, point.x, point.y);
+						break;
+					case (point2D[2].x >= point2D[9].x && point2D[2].x <= point2D[10].x):
+						point = [point2D[2], point2D[7], point2D[9], point2D[10]].mt_coordinatesOfIntersectionOfTwoSegments();
+						ctx.drawLine(point2D[2].x, point2D[2].y, point.x, point.y);
+						break;
 				}
 
 				switch (true) {
-				case (point2D[4].x < point2D[8].x):
-					ctx.drawLine(point2D[5].x, point2D[5].y, point2D[4].x, point2D[4].y);
-					point = [point2D[4], point2D[11], point2D[8], point2D[13]].mt_coordinatesOfIntersectionOfTwoSegments();
-					ctx.drawLine(point2D[4].x, point2D[4].y, point.x, point.y);
-					break;
-				case (point2D[5].x < point2D[8].x):
-					point = [point2D[4], point2D[5], point2D[8], point2D[13]].mt_coordinatesOfIntersectionOfTwoSegments();
-					ctx.drawLine(point2D[5].x, point2D[5].y, point.x, point.y);
-					break;
+					case (point2D[4].x < point2D[8].x):
+						ctx.drawLine(point2D[5].x, point2D[5].y, point2D[4].x, point2D[4].y);
+						point = [point2D[4], point2D[11], point2D[8], point2D[13]].mt_coordinatesOfIntersectionOfTwoSegments();
+						ctx.drawLine(point2D[4].x, point2D[4].y, point.x, point.y);
+						break;
+					case (point2D[5].x < point2D[8].x):
+						point = [point2D[4], point2D[5], point2D[8], point2D[13]].mt_coordinatesOfIntersectionOfTwoSegments();
+						ctx.drawLine(point2D[5].x, point2D[5].y, point.x, point.y);
+						break;
 				}
 
 				switch (true) {
-				case (point2D[19].x < point2D[17].x):
-					ctx.drawLine(point2D[19].x, point2D[19].y, point2D[16].x, point2D[16].y);
-					point = [point2D[18], point2D[19], point2D[17], point2D[22]].mt_coordinatesOfIntersectionOfTwoSegments();
-					ctx.drawLine(point2D[19].x, point2D[19].y, point.x, point.y);
-					ctx.drawLine(point2D[19].x, point2D[19].y, point2D[20].x, point2D[20].y);
-					break;
-				case (point2D[19].x > point2D[17].x):
-					point = [point2D[16], point2D[19], point2D[17], point2D[22]].mt_coordinatesOfIntersectionOfTwoSegments();
-					ctx.drawLine(point2D[16].x, point2D[16].y, point.x, point.y);
-					point = [point2D[20], point2D[19], point2D[23], point2D[22]].mt_coordinatesOfIntersectionOfTwoSegments();
-					ctx.drawLine(point2D[20].x, point2D[20].y, point.x, point.y);
-					break;
+					case (point2D[19].x < point2D[17].x):
+						ctx.drawLine(point2D[19].x, point2D[19].y, point2D[16].x, point2D[16].y);
+						point = [point2D[18], point2D[19], point2D[17], point2D[22]].mt_coordinatesOfIntersectionOfTwoSegments();
+						ctx.drawLine(point2D[19].x, point2D[19].y, point.x, point.y);
+						ctx.drawLine(point2D[19].x, point2D[19].y, point2D[20].x, point2D[20].y);
+						break;
+					case (point2D[19].x > point2D[17].x):
+						point = [point2D[16], point2D[19], point2D[17], point2D[22]].mt_coordinatesOfIntersectionOfTwoSegments();
+						ctx.drawLine(point2D[16].x, point2D[16].y, point.x, point.y);
+						point = [point2D[20], point2D[19], point2D[23], point2D[22]].mt_coordinatesOfIntersectionOfTwoSegments();
+						ctx.drawLine(point2D[20].x, point2D[20].y, point.x, point.y);
+						break;
 				}
 
-
-				ctx.font = "20px liberation_sans";
+				ctx.font = '20px liberation_sans';
 				ctx.signSegmentInMiddle(point2D[1].x, point2D[1].y, point2D[6].x, point2D[6].y, par1.height, 5, 20);
 				ctx.signSegmentInMiddle(point2D[9].x, point2D[9].y, point2D[14].x, point2D[14].y, par2.height, 5, 20);
 				ctx.signSegmentInMiddle(point2D[16].x, point2D[16].y, point2D[21].x, point2D[21].y, par3.height, 5, 20);
@@ -186,7 +184,7 @@
 			NAtask.setTask({
 				text: 'Найдите ' + ['площадь поверхности', 'объём'][rand] +
 					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
-					answers: [par1.surfaceArea - [2 * par2.baseArea, 2 * par1.baseArea].minE() + par2.surfaceArea + 2 * par3.height * par3.depth - 2 * par3.height * par3.width, par1.volume + par2.volume - par3.volume][rand],
+				answers: [par1.surfaceArea - 2 * contactWidth * par1.depth + par2.surfaceArea + 2 * par3.height * par3.depth - 2 * par3.height * par3.width, par1.volume + par2.volume - par3.volume][rand],
 			});
 			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
@@ -197,4 +195,4 @@
 		10000);
 
 })();
-//27192144
+//271921445
