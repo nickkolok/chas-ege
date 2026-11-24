@@ -1,18 +1,17 @@
 (function () {
     'use strict';
     retryWhileError(function () {
-        /* На графике изображена зависимость скорости движения рейсового автобуса от времени. 
-           На вертикальной оси отмечена скорость автобуса в км/ч, 
+        /* На графике изображена зависимость скорости движения рейсового автобуса от времени.
+           На вертикальной оси отмечена скорость автобуса в км/ч,
            на горизонтальной – время в минутах, прошедшее с начала движения автобуса. */
 
-        
         function answAboutStop(intervals, answ) {
             let wasStop = intervals.map(interval => lengthOfZeroInterval(interval) > 1);
             let index = wasStop.indexOf(true);
 
             if (index !== -1 && hasNoDuplicateValue(wasStop, true)) {
                 let text = 'автобус сделал остановку длительностью ' +
-                    chislitlx(lengthOfZeroInterval(intervals[index]) - 1, 'минута');
+                    chislitlx(lengthOfZeroInterval(intervals[index]) - 1, 'минута', 'v');
                 answ[index].solution.push(text);
             }
         }
@@ -48,7 +47,7 @@
             let index = constFlags.indexOf(true);
 
             if (index !== -1 && hasNoDuplicateValue(constFlags, true)) {
-                let text = chislitlx(lengthConst(intervals[index]) - 1, 'минута') +
+                let text = chislitlx(lengthConst(intervals[index]) - 1, 'минута', 'v') +
                     ' автобус двигался с постоянной ненулевой скоростью';
                 answ[index].solution.push(text);
             }
@@ -106,7 +105,7 @@
         solutions.forEach(item => genAssertNonempty(item));
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         // Отрисовка графика
         let paint1 = function (ctx) {
@@ -142,7 +141,7 @@
             rightHeader: 'ХАРАКТЕРИСТИКИ',
             right: solutions,
             postText: 'Пользуясь графиком, поставьте в соответствие каждому интервалу времени характеристику движения автобуса на этом интервале.',
-            analys: listView.join(' <br/>'),
+            analys: listView.join('<br/>'),
         });
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
@@ -152,4 +151,5 @@
         NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
-// https://ege314.ru/14-analiz-grafikov-i-diagramm/reshenie-3357/
+// 3357
+
