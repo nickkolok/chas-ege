@@ -15,26 +15,15 @@
 			'Ирина', 'Настя', 'Ирма', 'Кристина', 'Мила', 'Любовь', 'Вера', 'Надежда', 'Снежана',
 		].iz(kol - k) : [];
 		let persons = person1.concat(person2).shuffle();
-		
+
 		let preference1 = ['person', 'girl', 'boy', 'pair'];
 		let preference2 = ['direct', 'complement'];
 		let pair = persons.iz(2);
 		let variant = getSelectedPreferenceFromList(key, preference1);
 		let uslov = [persons.iz(), 'девочка', 'мальчик', pair.join(' или ')][variant];
 		let must = (variant === 0 && person1.includes(uslov) && sl1()) ? 'должен будет' : 'будет';
-		let answ;
-		switch (uslov) {
-			case ('мальчик'):
-				answ = k / kol;
-				break;
-			case ('девочка'):
-				answ = (kol - k) / kol;
-				break;
-			default:
-				answ = (uslov.includes(' или ') ? 2 : 1) / kol;
-				break;
-		}
-		
+		let answ = [1, kol - k, k, 2][variant] / kol;
+
 		if (getSelectedPreferenceFromList(key, preference2)) {
 			uslov = 'не ' + uslov;
 			uslov = uslov.replace(/или /, 'и не ');
@@ -61,4 +50,3 @@
 // B5DE0B
 // 4FF948
 // 3E6001
-
