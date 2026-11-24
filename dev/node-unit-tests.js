@@ -342,11 +342,26 @@ module.exports = function registerNodeTests(QUnit) {
         }
     });
 
-    QUnit.test('genPifag: тройка по умолчанию — гипотенуза до 125, катеты по возрастанию', function (assert) {
-        for (var i = 0; i < 100; i++) {
-            var t = genPifag();
-            assert.ok(t[0] > 0 && t[0] < t[1] && t[2] <= 125 && t[0] * t[0] + t[1] * t[1] === t[2] * t[2], 'тройка ' + t);
+    // genPifag() выбирает тройку через sl(), то есть через Math.random:
+    // на время теста подставляется генератор с постоянным зерном,
+    // чтобы тест каждый раз проверял одни и те же тройки
+    function withSeedGenPifag(seed, fn) {
+        var originalRandom = Math.random;
+        Math.random = require('seedrandom')(seed);
+        try {
+            fn();
+        } finally {
+            Math.random = originalRandom;
         }
+    }
+
+    QUnit.test('genPifag: тройка по умолчанию — гипотенуза до 125, катеты по возрастанию', function (assert) {
+        withSeedGenPifag('genPifag по умолчанию', function () {
+            for (var i = 0; i < 100; i++) {
+                var t = genPifag();
+                assert.ok(t[0] > 0 && t[0] < t[1] && t[2] <= 125 && t[0] * t[0] + t[1] * t[1] === t[2] * t[2], 'тройка ' + t);
+            }
+        });
         assert.equal(genPifag.cache.maxSide, 125, 'кэш покрывает гипотенузы до 125');
         assert.equal(genPifag.cache.triples.length, 71, 'все 71 тройка с гипотенузой до 125');
         [[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25]].forEach(function (base) {
@@ -361,21 +376,25 @@ module.exports = function registerNodeTests(QUnit) {
         var allowed = genPifag.cache.triples.filter(function (t) { return t[2] <= 65; }).map(function (t) { return t.join(); });
         assert.equal(allowed.length, 31, 'с гипотенузой до 65 ровно 31 тройка');
         var seen = {};
-        for (var i = 0; i < 2000; i++) {
-            seen[genPifag(65).join()] = true;
-        }
+        withSeedGenPifag('genPifag(65)', function () {
+            for (var i = 0; i < 2000; i++) {
+                seen[genPifag(65).join()] = true;
+            }
+        });
         assert.ok(Object.keys(seen).every(function (t) { return allowed.indexOf(t) !== -1; }), 'выпадают только тройки с гипотенузой до 65');
         assert.ok(seen['16,63,65'] && seen['20,21,29'], 'в том числе 16-63-65 и 20-21-29, которых нет среди кратных om.pifagtr');
         assert.deepEqual(genPifag(5), [3, 4, 5], 'genPifag(5) — только 3-4-5');
     });
 
     QUnit.test('genPifag: кэш достраивается, тройка — копия', function (assert) {
-        var t = genPifag(1000);
-        assert.ok(t[2] <= 1000 && t[0] * t[0] + t[1] * t[1] === t[2] * t[2], 'тройка ' + t);
-        assert.equal(genPifag.cache.maxSide, 1000, 'кэш покрывает гипотенузы до 1000');
-        assert.equal(genPifag.cache.triples.length, 881, 'все 881 тройка с гипотенузой до 1000');
-        assert.ok(genPifag.cache.triples.every(function (t, i, a) { return i === 0 || a[i - 1][2] <= t[2]; }), 'кэш отсортирован по гипотенузе');
-        assert.ok(genPifag(30)[2] <= 30, 'после расширения малые maxSide работают');
+        withSeedGenPifag('genPifag(1000)', function () {
+            var t = genPifag(1000);
+            assert.ok(t[2] <= 1000 && t[0] * t[0] + t[1] * t[1] === t[2] * t[2], 'тройка ' + t);
+            assert.equal(genPifag.cache.maxSide, 1000, 'кэш покрывает гипотенузы до 1000');
+            assert.equal(genPifag.cache.triples.length, 881, 'все 881 тройка с гипотенузой до 1000');
+            assert.ok(genPifag.cache.triples.every(function (t, i, a) { return i === 0 || a[i - 1][2] <= t[2]; }), 'кэш отсортирован по гипотенузе');
+            assert.ok(genPifag(30)[2] <= 30, 'после расширения малые maxSide работают');
+        });
         var copy = genPifag(5);
         copy[0] = 100;
         assert.deepEqual(genPifag(5), [3, 4, 5], 'изменение возвращённой тройки не портит кэш');
