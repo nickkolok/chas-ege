@@ -2,8 +2,7 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
-		let preference = ['nonagon', 'decagon'];
-		let count = [9, 10][getSelectedPreferenceFromList('10952', preference)];
+		let count = 9;
 		let letters = latbukv.slice(0, count);
 		let rotate = sl(0, count - 1, 2);
 
@@ -12,14 +11,16 @@
 		let angleF = [a, 0, a + delta];
 
 		let lettersRotate = angleF.map(i => letters[i]);
-		let points = generatePolygonPoints(160, count);
+		let points = generatePolygonPoints(140, count);
 
 		let matrixConnections = {};
 		for (let i = 0; i < count; i++) {
 			matrixConnections[i] = [(i + 1) % count];
 		}
 
-		points = autoScale(points).map(point => {
+		points = autoScale(points, undefined, undefined, {
+			startX: -150, finishX: 150, startY: -150, finishY: 150,
+		}).map(point => {
 			let angle = -rotate * Math.PI / count;
 			return {x: point.x * Math.cos(angle) - point.y * Math.sin(angle),
 				y: point.x * Math.sin(angle) + point.y * Math.cos(angle)};
@@ -50,10 +51,9 @@
 		};
 
 		NAtask.setTask({
-			text: `$${letters.join('')}$ – правильный ${count === 9 ? 'девятиугольник' : 'десятиугольник'}. Найдите угол $${lettersRotate.join('')}$. Ответ дайте в градусах.`,
+			text: `$${letters.join('')}$ – правильный девятиугольник. Найдите угол $${lettersRotate.join('')}$. Ответ дайте в градусах.`,
 			answers: 180 / count * delta,
 			authors: ['Александра Суматохина'],
-			preference: preference,
 		});
 		NAtask.modifiers.variativeABC(letters);
 		NAtask.modifiers.allDecimalsToStandard(true);
@@ -67,3 +67,4 @@
 
 })();
 // https://base.mathege.ru/clones/?position=&parent=10952
+
