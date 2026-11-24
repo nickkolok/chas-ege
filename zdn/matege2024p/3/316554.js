@@ -44,7 +44,6 @@
 				angle: 40,
 				scale: 20,
 				lettersOnVertex: allLet,
-				diagonalStrokeStyle: om.primaryBrandColors.iz(),
 			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 		NAtask.setTask({
