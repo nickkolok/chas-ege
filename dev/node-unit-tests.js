@@ -308,6 +308,8 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('вышел', 1), 'вышла', 'после ударной вы- ё не бывает');
         assert.equal(selectVerbGender('вышел', 2), 'вышло');
         assert.equal(selectVerbGender('вычел', 1), 'вычла');
+        assert.equal(selectVerbGender('расчёл', 1), 'разочла', 'не ра+сочла');
+        assert.equal(selectVerbGender('расчел', 3), 'разочли');
         assert.equal(selectVerbGender('учел', 1), 'учла');
         assert.equal(selectVerbGender('счел', 1), 'сочла');
         assert.equal(selectVerbGender('выжег', 1), 'выжгла');
