@@ -8,7 +8,7 @@
         let variant = getSelectedPreferenceFromList(key, preference);
         if (variant !== 0) {
             let percent = variant === 1 ? sl(5, 35, 5) : sl(5, 30, 5);
-            let price = variant === 1 ? sl(10, 40) * 10 : sl(20, 150) * 100;
+            let price = variant === 1 ? sl(100, 400, 10) : sl(2000, 15000, 100);
             let count = variant === 1 ? sl(2, 8) : 1;
             let text = variant === 1 ?
                 'Магазин детских товаров закупает погремушки по оптовой цене $' + price +
@@ -25,14 +25,14 @@
             return;
         }
         let item = sklonlxkand((om.meltov.ie).iz());
-        let prise = sl(200, 1000, 10);
-        let payment = sl(10, 5000, 5) + prise * 2;
+        let price = sl(200, 1000, 10);
+        let payment = sl(10, 5000, 5) + price * 2;
         let percent = sl(3, 80);
         let count = sl(2, 20);
-        let priceInKopecks = prise * (100 - percent);
+        let priceInKopecks = price * (100 - percent);
 
         NAtask.setTask({
-            text: 'Набор ' + item.rm + ', который стоил ' + '$' + prise + '$' +
+            text: 'Набор ' + item.rm + ', который стоил ' + '$' + price + '$' +
                 ' рублей, продаётся со скидкой ' + '$' + percent + '$' + '%. ',
             questions: [
                 {
@@ -44,9 +44,11 @@
                     text: 'Сколько рублей будут стоить ' + chislitlx(count, 'набор', '$') + ' ' + item.rm + ', купленных в этом магазине',
                     answers: priceInKopecks * count / 100,
                 }
-            ], postquestion: '?',
+            ],
+            postquestion: '?',
             preference,
-        }); NAtask.modifiers.allDecimalsToStandard();
+        });
+        NAtask.modifiers.allDecimalsToStandard();
     }, 100);
 })();
 //zer00player

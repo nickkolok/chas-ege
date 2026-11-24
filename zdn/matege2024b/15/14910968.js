@@ -15,14 +15,14 @@
 			percent2 + '$%-го раствора этого же вещества.';
 	} else if (variant === 3) {
 		let step = (first + second) / first.nod(second);
-		percent1 = step * sl(1, Math.floor(65 / step));
+		percent1 = sl(step, step * Math.floor(65 / step), step);
 		percent2 = 0;
 		condition = 'К ' + chislitlx(first, 'килограмм', 'd$') + ' $' + percent1 +
 			'$%-го водного раствора вещества добавили ' + chislitlx(second, 'килограмм', 'v$') + ' воды.';
 	} else {
 		let total = first + second;
 		let low = sl(5, 30);
-		let high = low + total * sl(1, Math.floor((75 - low) / total));
+		let high = sl(low + total, low + total * Math.floor((75 - low) / total), total);
 		[percent1, percent2] = [low, high].shuffle();
 		let unit = variant === 0 ? 'килограмм' : 'литр';
 		condition = 'Смешали ' + chislitlx(first, unit, 'v$') + ' $' + percent1 + '$%-го раствора вещества и ' +
