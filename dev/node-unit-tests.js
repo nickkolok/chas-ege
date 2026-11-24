@@ -1540,4 +1540,117 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(k.rod, 1, 'женский род');
         assert.equal(k.skl, 1, 'первое склонение');
     });
+
+    // ============================================================
+    //  Проекция параллелепипеда  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('parallelepipedVertices, parallelepipedSize');
+
+    // lib/canvas.js, как и lib/figure.js, не отдаёт свои функции в global,
+    // поэтому загружаем его в отдельный контекст
+    var canvasLib = (function () {
+        var vm = require('vm');
+        var fs = require('fs');
+        var path = require('path');
+        var context = vm.createContext({
+            Math: Math,
+            CanvasRenderingContext2D: { prototype: {} },
+            om: { primaryBrandColors: ['#000000'] },
+        });
+        vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'lib', 'canvas.js'), 'utf8'), context);
+        return context;
+    })();
+
+    function assertVertexClose(assert, actual, expected, message) {
+        assert.ok(Math.abs(actual[0] - expected[0]) < 1e-12 && Math.abs(actual[1] - expected[1]) < 1e-12,
+            message + ': ожидалось [' + expected + '], получено [' + actual + ']');
+    }
+
+    QUnit.test('parallelepipedVertices: глубина уходит на depth*cos(angle) вправо и depth/2 вверх', function (assert) {
+        var v = canvasLib.parallelepipedVertices({ width: 3, height: 5, depth: 2, angle: Math.PI / 4 });
+        var dx = Math.SQRT2, dy = 1;
+        assert.equal(v.length, 8, 'восемь вершин');
+        assertVertexClose(assert, v[5], [0, 0], 'передняя нижняя левая - начало координат');
+        assertVertexClose(assert, v[6], [3, 0], 'передняя нижняя правая');
+        assertVertexClose(assert, v[1], [0, 5], 'передняя верхняя левая');
+        assertVertexClose(assert, v[2], [3, 5], 'передняя верхняя правая');
+        assertVertexClose(assert, v[4], [dx, dy], 'задняя нижняя левая');
+        assertVertexClose(assert, v[0], [dx, 5 + dy], 'задняя верхняя левая');
+        assertVertexClose(assert, v[7], [3 + dx, dy], 'задняя нижняя правая');
+        assertVertexClose(assert, v[3], [3 + dx, 5 + dy], 'задняя верхняя правая');
+    });
+
+    QUnit.test('parallelepipedVertices: угол нормализуется, как в drawParallelepiped', function (assert) {
+        var expected = [2 * Math.cos(Math.PI / 6), 1];
+        assertVertexClose(assert, canvasLib.parallelepipedVertices({ width: 1, height: 1, depth: 2 })[4],
+            expected, 'без угла - π/6');
+        assertVertexClose(assert, canvasLib.parallelepipedVertices({ width: 1, height: 1, depth: 2, angle: Math.PI / 2 })[4],
+            expected, 'π/2 заменяется на π/6');
+        assertVertexClose(assert, canvasLib.parallelepipedVertices({ width: 1, height: 1, depth: 2, angle: Math.PI + Math.PI / 6 })[4],
+            expected, 'угол больше π уменьшается на π');
+    });
+
+    QUnit.test('parallelepipedVertices и parallelepipedSize не меняют переданный объект', function (assert) {
+        var box = { width: 3, height: 5, depth: 2, angle: 40 };
+        canvasLib.parallelepipedVertices(box);
+        canvasLib.parallelepipedSize(box);
+        assert.equal(box.angle, 40, 'угол остался как был');
+        var noAngle = { width: 3, height: 5, depth: 2 };
+        canvasLib.parallelepipedSize(noAngle);
+        assert.ok(!('angle' in noAngle), 'угол не дописан');
+    });
+
+    QUnit.test('drawParallelepiped по-прежнему записывает нормализованный угол в o', function (assert) {
+        var ctx = { setLineDash: function () {}, drawLine: function () {} };
+        var box = { width: 3, height: 5, depth: 2, angle: 40, strokeStyle: '#000000', diagonalStrokeStyle: '#000000' };
+        canvasLib.CanvasRenderingContext2D.prototype.drawParallelepiped.call(ctx, box);
+        assert.ok(Math.abs(box.angle - (40 - 12 * Math.PI)) < 1e-12, '40 → 40 - 12π');
+        assert.equal(canvasLib.parallelepipedAngle(undefined), Math.PI / 6, 'без угла - π/6');
+    });
+
+    QUnit.test('parallelepipedSize: габариты проекции', function (assert) {
+        var size = canvasLib.parallelepipedSize({ width: 3, height: 5, depth: 2, angle: Math.PI / 4 });
+        assert.ok(Math.abs(size.width - (3 + Math.SQRT2)) < 1e-12, 'ширина 3 + √2');
+        assert.ok(Math.abs(size.height - 6) < 1e-12, 'высота 5 + 1');
+        // При угле больше π/2 глубина уходит влево, габарит всё равно положительный
+        var left = canvasLib.parallelepipedSize({ width: 3, height: 5, depth: 2, angle: 2 * Math.PI / 3 });
+        assert.ok(Math.abs(left.width - 4) < 1e-12, 'глубина влево: ширина 3 + 1');
+        assert.ok(Math.abs(left.height - 6) < 1e-12, 'высота от знака косинуса не зависит');
+        assert.equal(size.minX, 0, 'глубина вправо: габарит начинается в нуле');
+        assert.equal(size.minY, 0, 'по вертикали габарит начинается в нуле');
+        assert.ok(Math.abs(left.minX + 1) < 1e-12, 'глубина влево: габарит начинается в x = -1');
+        // angle: 40, как в большинстве шаблонов: 40 - 12π ≈ 2,30, глубина влево
+        var common = canvasLib.parallelepipedSize({ width: 25, height: 25, depth: 12.5, angle: 40 });
+        assert.ok(Math.abs(common.minX - 12.5 * Math.cos(40 - 12 * Math.PI)) < 1e-12, 'angle: 40 - minX = depth·cos(angle) < 0');
+        assert.ok(Math.abs(common.minX + common.width - 25) < 1e-12, 'правый край - передняя правая грань');
+    });
+
+    QUnit.test('drawParallelepiped рисует рёбра между теми же вершинами', function (assert) {
+        var v = canvasLib.parallelepipedVertices({ width: 3, height: 5, depth: 2, angle: Math.PI / 4 })
+            .map(function (p) { return [p[0], p[1]]; });
+        var edges = [[5, 1], [6, 2], [5, 6], [1, 2], [1, 0], [2, 3], [5, 4], [6, 7], [4, 0], [7, 3], [4, 7], [0, 3]];
+        var lines = [], dashes = [], current = [];
+        var ctx = {
+            strokeStyle: '',
+            setLineDash: function (d) { current = d.slice(); },
+            drawLine: function (x1, y1, x2, y2) {
+                lines.push([x1, y1, x2, y2]);
+                dashes.push(current);
+            },
+        };
+        canvasLib.CanvasRenderingContext2D.prototype.drawParallelepiped.call(ctx, {
+            width: 3, height: 5, depth: 2, angle: Math.PI / 4,
+            strokeStyle: '#000000', diagonalStrokeStyle: '#000000',
+        }, [6, 8, 10], false, [6, 4]);
+        assert.equal(lines.length, edges.length, 'нарисовано 12 рёбер');
+        edges.forEach(function (e, i) {
+            assertVertexClose(assert, [lines[i][0], lines[i][1]], v[e[0]], 'ребро ' + i + ', начало');
+            assertVertexClose(assert, [lines[i][2], lines[i][3]], v[e[1]], 'ребро ' + i + ', конец');
+        });
+        assert.deepEqual(dashes[6], [6, 4], 'невидимое ребро 6 - пунктиром');
+        assert.deepEqual(dashes[8], [6, 4], 'невидимое ребро 8 - пунктиром');
+        assert.deepEqual(dashes[10], [6, 4], 'невидимое ребро 10 - пунктиром');
+        assert.deepEqual(dashes[0], [], 'видимое ребро - сплошное');
+    });
+
 };
