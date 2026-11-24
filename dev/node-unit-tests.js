@@ -302,6 +302,31 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('стерёг', 1), 'стерегла');
     });
 
+    QUnit.test('Неправильные формы без ё', function (assert) {
+        assert.equal(selectVerbGender('пошел', 1), 'пошла', 'ё в шаблонах пишут не всегда');
+        assert.equal(selectVerbGender('пришел', 3), 'пришли');
+        assert.equal(selectVerbGender('вышел', 1), 'вышла', 'после ударной вы- ё не бывает');
+        assert.equal(selectVerbGender('вышел', 2), 'вышло');
+        assert.equal(selectVerbGender('вычел', 1), 'вычла');
+        assert.equal(selectVerbGender('учел', 1), 'учла');
+        assert.equal(selectVerbGender('счел', 1), 'сочла');
+        assert.equal(selectVerbGender('выжег', 1), 'выжгла');
+        assert.equal(selectVerbGender('зажег', 3), 'зажгли');
+        assert.equal(selectVerbGender('разошелся', 1), 'разошлась', 'возвратный без ё');
+    });
+
+    QUnit.test('Без ё правило верно и без словаря', function (assert) {
+        assert.equal(selectVerbGender('вел', 1), 'вела');
+        assert.equal(selectVerbGender('вывел', 1), 'вывела');
+        assert.equal(selectVerbGender('нес', 1), 'несла');
+        assert.equal(selectVerbGender('вынес', 3), 'вынесли');
+        assert.equal(selectVerbGender('вез', 1), 'везла');
+        assert.equal(selectVerbGender('лег', 1), 'легла');
+        assert.equal(selectVerbGender('берег', 1), 'берегла');
+        assert.equal(selectVerbGender('греб', 1), 'гребла');
+        assert.equal(selectVerbGender('мел', 1), 'мела');
+    });
+
     QUnit.test('Неправильные возвратные глаголы', function (assert) {
         assert.equal(selectVerbGender('нёсся', 0), 'нёсся');
         assert.equal(selectVerbGender('нёсся', 1), 'неслась');
