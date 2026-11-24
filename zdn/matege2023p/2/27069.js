@@ -18,6 +18,8 @@
 
 		let name = question.T()[0];
 		let number = question.T()[1];
+		genAssert(!name.slice(0, 2).every(value => ['площадь основания', 'сторона основания'].includes(value)),
+			'Даны независимые размеры пирамиды');
 
 		let camera = {
 			x: 0,
