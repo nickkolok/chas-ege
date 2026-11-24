@@ -23,7 +23,8 @@
 			['диаметр', sphere.diameter]
 		].iz();
 		let sphereHasPi = ['площадь поверхности', 'объём'].includes(nameSphere[0]);
-		let sphereValue = sphereHasPi ? Number((nameSphere[1] / Math.PI).toFixed(10)) + '\\pi' : nameSphere[1];
+		let sphereValue = nameSphere[0] === 'объём' ? cube.baseSide.pow(3).texfrac(6) + '\\pi' :
+			(sphereHasPi ? cube.baseSide.pow(2) + '\\pi' : nameSphere[1]);
 		let cubeValue = nameCube[0] === 'диагональ' ? (3 * cube.baseSide.pow(2)).texsqrt(1) : nameCube[1];
 		let answer = rand ? nameCube[1] : (sphereHasPi ? nameSphere[1] / Math.PI : nameSphere[1]);
 		let ps = !rand && sphereHasPi ? ' Ответ разделите на $\\pi$.' : '';
