@@ -16,7 +16,7 @@
             length: [sl(5, 20), side][Number(rand > 2)],
             angles: {
                 angle: {
-                    angleA: [sl(1, 2) * Math.PI / 3, 2 * Math.atan(d2 / d1)][Number(rand > 2)],
+                    angleA: [sl(Math.PI / 3, 2 * Math.PI / 3, Math.PI / 3), 2 * Math.atan(d2 / d1)][Number(rand > 2)],
                 },
             }
         });
@@ -44,9 +44,8 @@
             ctx.lineWidth = 2;
             ctx.drawFigure(points, rhombus.connectionMatrix);
 
+            ctx.signVertices(points, letters, {above: [0, 2, 3]});
             ctx.scale(1, -1);
-            ctx.font = '20px liberation_sans';
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i == 1) ? 25 : -5)));
         };
 
         NAtask.setTask({
@@ -57,7 +56,7 @@
                     answers: answer,
                 }, {
                     text: `известно, что $AB=${rhombus.lengthAB}$, $BD=${rhombus.lengthDiagonalBD.pow(2).texsqrt(1)}$. Найдите синус угла $ABD$.`,
-                    answers: angleABD.sin(),
+                    answers: answer,
                 }, {
                     text: `известно, что $AB=${rhombus.lengthAB}$, $AC=${rhombus.lengthDiagonalAC.pow(2).texsqrt(1)}$. Найдите синус угла $BAC$.`,
                     answers: answer,
@@ -86,3 +85,4 @@
 // https://base.mathege.ru/clones/?position=16&parent=10126
 // https://base.mathege.ru/clones/?position=16&parent=11602
 // https://base.mathege.ru/clones/?position=16&parent=11622
+
