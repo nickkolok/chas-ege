@@ -824,6 +824,34 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Canvas: дуга угла и значок прямого угла  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: arcBetweenSegments');
+
+    // Что нарисовал arcBetweenSegments для угла при вершине (0, 0) между лучами
+    // под углами a и b (в радианах): 'дуга' или 'прямой' (два отрезка)
+    function arcKind(a, b) {
+        var calls = [];
+        var ctx = {
+            drawArc: function () { calls.push('дуга'); },
+            drawLineAtAngle: function () { calls.push('отрезок'); },
+        };
+        CanvasRenderingContext2D.prototype.arcBetweenSegments.call(ctx,
+            [10 * Math.cos(a), 10 * Math.sin(a), 0, 0, 10 * Math.cos(b), 10 * Math.sin(b)], 5);
+        return calls.join() === 'дуга' ? 'дуга' : calls.join() === 'отрезок,отрезок' ? 'прямой' : calls.join();
+    }
+
+    QUnit.test('arcBetweenSegments: значок прямого угла — по величине угла, а не по направлениям сторон', function (assert) {
+        var deg = Math.PI / 180;
+        assert.equal(arcKind(0, 90 * deg), 'прямой', 'прямой угол со сторонами по осям');
+        assert.equal(arcKind(45 * deg, -45 * deg), 'прямой', 'прямой угол, повёрнутый на 45°');
+        assert.equal(arcKind(170 * deg, 260 * deg), 'прямой', 'прямой угол, стороны по разные стороны от оси x');
+        assert.equal(arcKind(0.2, -1.77), 'дуга', 'угол ≈113° — дуга (раньше рисовался как прямой)');
+        assert.equal(arcKind(10 * deg, 70 * deg), 'дуга', 'острый угол 60° — дуга');
+        assert.equal(arcKind(0, 150 * deg), 'дуга', 'тупой угол 150° — дуга');
+    });
+
+    // ============================================================
     //  Canvas: заливка кольца  (lib/canvas.js)
     // ============================================================
     QUnit.module('Canvas: fillRing');
