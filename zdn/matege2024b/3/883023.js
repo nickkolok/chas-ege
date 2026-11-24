@@ -16,15 +16,22 @@
 				'после чего двигатель начинает охлаждаться. ' + (variant ?
 					'Через какое наименьшее количество минут температура двигателя будет равна ' + target + ' градусам Цельсия?' :
 					'Сколько минут прошло от запуска двигателя до первого включения вентилятора?'),
-			answers: variant ? first : fan, preference,
+			answers: variant ? first : fan,
+			preference,
 		});
 		NAtask.modifiers.addJqplot({
-			dataArray: [values.map((value, i) => [i, value])], width: '700px', height: '380px',
-			options: {axes: {xaxis: {min: 0, max: values.length - 1, tickInterval: 1}, yaxis: {min: 0, max: 120, tickInterval: 10}},
-				seriesDefaults: {showMarker: false}},
+			dataArray: [values.map((value, i) => [i, value])],
+			width: '700px',
+			height: '380px',
+			options: {
+				axes: {
+					xaxis: {min: 0, max: values.length - 1, tickInterval: 1},
+					yaxis: {min: 0, max: 120, tickInterval: 10},
+				},
+				seriesDefaults: {showMarker: false},
+			},
 		});
 	}, 1000);
 })();
 // 883023
 // 87DF19
-
