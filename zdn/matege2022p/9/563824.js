@@ -23,11 +23,12 @@
 
 		let x = sl(8, 12).pm();
 		let rhs = a * x + d;
-		genAssertZ1000(a * b * c * d);
+		let product = a * b * c * d;
+		genAssertZ1000(product);
 		let variants = [
 			['корень уравнения $ax+d=' + rhs.ts() + '$', x, false],
 			['сумму $a+b+c+d$', a + b + c + d, true],
-			['произведение $a\\cdot b\\cdot c\\cdot d$', a * b * c * d, true],
+			['произведение $a\\cdot b\\cdot c\\cdot d$', product, true],
 			['коэффициент $a$', a, false],
 			['коэффициент $b$', b, true],
 			['коэффициент $c$', c, true],
