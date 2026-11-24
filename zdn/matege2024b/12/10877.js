@@ -10,7 +10,7 @@
 		// Как в ФИПИ: BC целое, синус или косинус угла A — десятичная дробь от 0,1 до 0,8
 		// (sin A = 0,25, cos A = 0,7 и т. п.); катет AC при этом обычно не целый, в условие он не входит
 		let BC = sl(4, 50);
-		let trigA = sl(2, 16) / 20;
+		let trigA = sl(0.1, 0.8, 0.05);
 		// КОСТЫЛЬ: чертёж при малом синусе (косинусе) рисуется не в масштабе.
 		// Отрезок BH (в варианте с косинусом — AH) равен AB·sin²A (AB·cos²A): при 0,1 это
 		// 1 % гипотенузы, около 3 пикселей, подписи B и H сливаются, треугольник почти отрезок.
@@ -19,7 +19,8 @@
 		// Условие и ответ берут настоящее trigA, а не triangle. Так же поступает ФИПИ:
 		// у B03DFF (sin A = 0,1) картинка не в масштабе.
 		let trigDrawn = Math.max(trigA, 0.25);
-		let tgA = [trigDrawn / (1 - trigDrawn * trigDrawn).sqrt(), (1 - trigDrawn * trigDrawn).sqrt() / trigDrawn][rand];
+		let otherTrig = (1 - trigDrawn * trigDrawn).sqrt();
+		let tgA = [trigDrawn / otherTrig, otherTrig / trigDrawn][rand];
 		let triangle = new Triangle({
 			lengths: {
 				lengthCA: BC / tgA,
@@ -51,9 +52,8 @@
 			ctx.arcBetweenSegments([points[0].x, points[0].y, points[2].x, points[2].y, points[1].x, points[1].y], 15);
 			ctx.arcBetweenSegments([points[0].x, points[0].y, points[3].x, points[3].y, points[2].x, points[2].y], 20);
 
+			ctx.signVertices(points, letters, {above: [2]});
 			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
@@ -82,3 +82,4 @@
 
 })();
 // https://base.mathege.ru/clones/?position=16&parent=10877
+
