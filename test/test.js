@@ -166,3 +166,9 @@ test('clone', function() {
 	oldArray[0] = 3;
 	expect(newArray[0]).to.eql(1);
 });
+
+test('roughHTML2LaTeX: знак ударения', function() {
+	expect(roughHTML2LaTeX('вторая втрое у\u0301же первой')).to.be.equal('вторая втрое \\\'{у}же первой');
+	expect(roughHTML2LaTeX('с бо\u0301льшим числом')).to.be.equal('с б\\\'{о}льшим числом');
+	expect(roughHTML2LaTeX('без ударения')).to.be.equal('без ударения');
+});

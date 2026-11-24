@@ -13,7 +13,7 @@
 			['ребро', cube.baseSide],
 			['площадь поверхности', cube.surfaceArea],
 			['объём', cube.volume],
-			['квадрат диагонали', cube.mainDiagonal.pow(2)],
+			['квадрат диагонали', 3 * cube.baseSide.pow(2)],
 			['диагональ', cube.mainDiagonal]
 		].iz();
 		let nameSphere = [
@@ -22,6 +22,11 @@
 			['объём', sphere.volume],
 			['диаметр', sphere.diameter]
 		].iz();
+		let sphereHasPi = ['площадь поверхности', 'объём'].includes(nameSphere[0]);
+		let sphereValue = sphereHasPi ? Number((nameSphere[1] / Math.PI).toFixed(10)) + '\\pi' : nameSphere[1];
+		let cubeValue = nameCube[0] === 'диагональ' ? (3 * cube.baseSide.pow(2)).texsqrt(1) : nameCube[1];
+		let answer = rand ? nameCube[1] : (sphereHasPi ? nameSphere[1] / Math.PI : nameSphere[1]);
+		let ps = !rand && sphereHasPi ? ' Ответ разделите на $\\pi$.' : '';
 
 		let strok = [5, 4];
 
@@ -43,18 +48,12 @@
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.lineWidth = 2;
-			ctx.drawFigure(point2DPar, [
-				[strok],
-				[0, 1],
-				[strok, 0, 1],
-				[0, 0, 0, 1],
-				[strok, 0, 0, 0, 1],
-				[0, 1, 0, 0, 0, 1],
-				[0, 0, 1, 0, 1, 0, 1],
-			]);
+			let faces = [[0, 1, 2, 3], [5, 6, 7, 4], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+			let visibility = facesVisibility(parForPaint.verticesOfFigure, point2DPar, faces);
+			ctx.drawFigure(point2DPar, dashHiddenEdges(parForPaint.connectionMatrix, faces, visibility, strok));
 
 			ctx.setLineDash([4, 5]);
 			ctx.strokeStyle = om.primaryBrandColors.iz();
@@ -63,13 +62,12 @@
 		};
 
 		NAtask.setTask({
-			text: ['В куб с ' + sklonlxkand(nameCube[0]).te + ' $' + nameCube[1] + '$ вписан шар. Найдите ' + sklonlxkand(nameSphere[0]).ve + ' этого шара.',
-				'Прямоугольный параллелепипед описан около сферы c ' + sklonlxkand(nameSphere[0]).te + ' $' + nameSphere[1].texpi() +
+			text: ['В куб с ' + sklonlxkand(nameCube[0]).te + ' $' + cubeValue + '$ вписан шар. Найдите ' + sklonlxkand(nameSphere[0]).ve + ' этого шара.' + ps,
+				'Прямоугольный параллелепипед описан около сферы с ' + sklonlxkand(nameSphere[0]).te + ' $' + sphereValue +
 				'$. Найдите его ' +	sklonlxkand(nameCube[0]).ve + '.',
 			][rand],
-			answers: [nameSphere[1], nameCube[1]][rand],
+			answers: answer,
 		});
-		NAtask.modifiers.multiplyAnswerByPI();
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
 		NAtask.modifiers.assertSaneDecimals();
 		NAtask.modifiers.addCanvasIllustration({
@@ -82,3 +80,4 @@
 
 })();
 //4883,27043
+
