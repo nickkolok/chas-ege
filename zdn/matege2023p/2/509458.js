@@ -18,10 +18,8 @@
 		});
 
 		let data = [
-			[
-				['объём', pyr1.volume, pyr2.volume, pyr2.volume / pyr1.volume],
-				['площадь боковой поверхности', pyr1.sideSurfaceArea, pyr2.sideSurfaceArea, pyr2.sideSurfaceArea / pyr1.sideSurfaceArea]
-			].iz(), ['сторона основания', pyr1.baseSide, pyr2.baseSide, pyr2.baseSide / pyr1.baseSide],
+			['объём', pyr1.volume, pyr2.volume, pyr2.volume / pyr1.volume],
+			['сторона основания', pyr1.baseSide, pyr2.baseSide, pyr2.baseSide / pyr1.baseSide],
 			['высота', pyr1.height, pyr2.height, pyr2.height / pyr1.height]
 		].shuffle();
 
