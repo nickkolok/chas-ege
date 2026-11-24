@@ -10,21 +10,18 @@
 			numberSide: 3
 		});
 
-		let pyr2 = new RegularPyramid({
-			height: pyr1.height * ratio,
-			baseSide: pyr1.baseSide * ratio,
-			numberSide: 3
-		});
-
-		let name = [
-			['ребро', pyr2.baseSide / pyr1.baseSide],
-			['высота', pyr2.height / pyr1.height],
-			[
-				['площадь боковой поверхности', pyr2.sideSurfaceArea / pyr1.sideSurfaceArea],
-				['площадь грани', pyr2.baseArea / pyr1.baseArea],
-				['полная площадь поверхности', pyr2.surfaceArea / pyr1.surfaceArea]
-			].iz(), ['объём', pyr2.volume / pyr1.volume]
+		lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
+		lx_declareClarifiedPhrase('площадь', 'грани');
+		lx_declareClarifiedPhrase('полная площадь', 'поверхности');
+		let measurements = [
+			{ name: 'ребро', power: 1 },
+			{ name: 'высота', power: 1 },
+			{ name: 'площадь боковой поверхности', power: 2 },
+			{ name: 'площадь грани', power: 2 },
+			{ name: 'полная площадь поверхности', power: 2 },
+			{ name: 'объём', power: 3 },
 		].iz(2);
+		measurements[1].primary = true;
 
 		let camera = {
 			x: 0,
@@ -40,10 +37,10 @@
 		let point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
 		point2DPyr = autoScale(pyr1.verticesOfFigure, camera, point2DPyr, {
-			startX: -390 / 2,
-			finishX: 390 / 2,
-			startY: -390 / 2,
-			finishY: 390 / 2,
+			startX: -360 / 2,
+			finishX: 360 / 2,
+			startY: -360 / 2,
+			finishY: 360 / 2,
 			maxScale: 50,
 			step: 0.1,
 		});
@@ -57,16 +54,16 @@
 
 			ctx.translateToCenter();
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.drawFigure(point2DPyr, matrixPyr);
 
 		};
-		NAtask.setTask({
-			text: 'Во сколько раз увеличится ' + sklonlxkand(name[0][0]).ie + ' правильного тетраэдра, ' +
-				'если его ' + sklonlxkand(name[1][0]).ve + ' увеличить ' + ' в $' + chislitlx(name[1][1], '$ раз') + '?',
-
-			answers: name[0][1],
+		NAtask.setDilationTask({
+			measurements: measurements,
+			figureName: 'правильный тетраэдр',
+			dilationCoefficient: ratio,
+			choosePhrase: 2,
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
@@ -76,3 +73,5 @@
 	}, 10000);
 
 })();
+
+
