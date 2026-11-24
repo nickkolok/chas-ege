@@ -22,6 +22,32 @@
 
 		let answer = question === 'объём' ? detail.volume() : detail.surfaceArea();
 
+		// Решение: деталь — нижний параллелепипед a × d × c и верхний a × (d − s) × (h − c)
+		let upperDepth = d - s;
+		let upperHeight = h - c;
+		let analys = 'Деталь составлена из двух прямоугольных параллелепипедов: ' +
+			'нижнего с рёбрами $' + a + '$, $' + d + '$ и $' + h + '-' + upperHeight + '=' + c + '$ ' +
+			'и верхнего с рёбрами $' + a + '$, $' + d + '-' + s + '=' + upperDepth + '$ и $' + upperHeight + '$. ';
+		let lowerVolume = a * d * c;
+		let upperVolume = a * upperDepth * upperHeight;
+		let lowerArea = 2 * (a * d + a * c + d * c);
+		let upperArea = 2 * (a * upperDepth + a * upperHeight + upperDepth * upperHeight);
+		let contactArea = 2 * a * upperDepth;
+		if (question === 'объём') {
+			genAssert(lowerVolume + upperVolume === answer, 'решение расходится с ответом');
+			analys += 'Объём детали равен сумме их объёмов: ' +
+				'$' + a + '\\cdot' + d + '\\cdot' + c + '+' + a + '\\cdot' + upperDepth + '\\cdot' + upperHeight + '=' +
+				lowerVolume + '+' + upperVolume + '=' + answer + '$ см$^3$.';
+		} else {
+			genAssert(lowerArea + upperArea - contactArea === answer, 'решение расходится с ответом');
+			analys += 'Площадь поверхности детали равна сумме площадей поверхностей параллелепипедов ' +
+				'без двух прямоугольников $' + a + '\\times' + upperDepth + '$, которыми они соприкасаются: ' +
+				'$2\\cdot(' + a + '\\cdot' + d + '+' + a + '\\cdot' + c + '+' + d + '\\cdot' + c + ')+' +
+				'2\\cdot(' + a + '\\cdot' + upperDepth + '+' + a + '\\cdot' + upperHeight + '+' + upperDepth + '\\cdot' + upperHeight + ')-' +
+				'2\\cdot' + a + '\\cdot' + upperDepth + '=' +
+				lowerArea + '+' + upperArea + '-' + contactArea + '=' + answer + '$ см$^2$.';
+		}
+
 		let paint1 = function (ct) {
 			ct.drawRectilinearSolid(detail, {
 				labels: [
@@ -40,6 +66,7 @@
 				'Найдите ' + question + ' этой детали. ' +
 				'Ответ дайте в ' + (question === 'объём' ? 'кубических' : 'квадратных') + ' сантиметрах.',
 			answers: answer,
+			analys: analys,
 			preference: [preferenceQuestion],
 		});
 
