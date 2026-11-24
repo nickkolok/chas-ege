@@ -15,31 +15,32 @@
 
 		let radius = sl(1, 50);
 		let height = sl(1, 50);
-		let generatrixСone = radius.pow(2) + height.pow(2);
-		genAssert(generatrixСone.sqrt().isZ(), 'Образующая нормальная');
+		let cone = new Cone({radius: radius, height: height});
+				let volume = Number((cone.volume / Math.PI).toFixed(10));
+		genAssert(cone.generatrix.isZ(), 'Образующая нормальная');
 		let variable = [
 
 			['высота', height],
 			[
-				['диаметр основания', 2 * radius],
+				['диаметр основания', cone.diameter],
 				['радиус основания', radius],
 				['длина окружности основания', 2 * radius + '\\pi'],
-				['площадь окружности основания', radius.pow(2) + '\\pi']
-			].iz(), ['образующая', generatrixСone.texsqrt(sl1())],
+				['площадь окружности основания', Number((cone.baseArea / Math.PI).toFixed(10)) + '\\pi']
+			].iz(), ['образующая', cone.generatrix],
 			[
 				['площадь осевого сечения', radius * height],
-				['площадь боковой поверхности', (radius.pow(2) * generatrixСone).texsqrt(sl1()) + '\\pi']
+				['площадь боковой поверхности', Number((cone.sideSurfaceArea / Math.PI).toFixed(10)) + '\\pi']
 			].iz()
 		];
 
-		if ((height * radius.pow(2) / 3).isZ())
-			variable.push(['объём', height * radius.pow(2) / 3 + '\\pi']);
+		if (volume.isZ())
+			variable.push(['объём', volume + '\\pi']);
 
 		variable = variable.iz(3);
 
 		let name = sklonlxkand(variable.T()[0]);
 		let number = variable.T()[1];
-		let answer = number[2];
+		let answer = String(number[2]);
 
 		let ps = '';
 		if (answer.includes('pi')) {
@@ -49,25 +50,24 @@
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
+			let cx = ctx.canvas.width / 2, baseY = 180, apexY = 10, r = 90, ry = 20;
 			//образующие
-			ctx.drawLine(60, 180, 150, 10);
-			ctx.drawLine(240, 180, 150, 10);
+			ctx.drawLine(cx - r, baseY, cx, apexY);
+			ctx.drawLine(cx + r, baseY, cx, apexY);
 			//эллипс
-			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-			ctx.stroke();
+			ctx.drawEllipse(cx, baseY, ry, r, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-			ctx.beginPath();
 			ctx.setLineDash([5, 5]);
-			ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.stroke();
+			ctx.drawEllipse(cx, baseY, ry, r, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.setLineDash([]);
 			//радиус
 			if (variable.T()[0].includes('радиус основания'))
-				ctx.drawLine(150, 180, 240, 180);
+				ctx.drawLine(cx, baseY, cx + r, baseY);
 			//высота
 			if (variable.T()[0].includes('высота') || variable.T()[0].includes('площадь осевого сечения'))
-				ctx.drawLine(150, 180, 150, 10);
-			if (variable.T()[0].includes('площадь осевого сечения') || variable.T()[0].includes('диаметр')) {
-				ctx.drawLine(60, 180, 240, 180);
+				ctx.drawLine(cx, baseY, cx, apexY);
+			if (variable.T()[0].includes('площадь осевого сечения') || variable.T()[0].includes('диаметр основания')) {
+				ctx.drawLine(cx - r, baseY, cx + r, baseY);
 			}
 		};
 
@@ -88,3 +88,4 @@
 	}, 1000);
 })();
 //27135 75647 75691 75649 75651 75653 75655 75657 75659 75661 75663 75665 75667 75669 75671 75673 75675 75677 75679 75681 75683 75685 75687 75689 75693 75695 324456 325565 325567 325569 325571 325573 325575 325577 325579 325581 325583 325585 325587 325589 325591 325593 325595 325597 325599 325601
+
