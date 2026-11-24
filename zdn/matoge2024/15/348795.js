@@ -1,78 +1,76 @@
 (function () {
-    retryWhileError(function () {
-        NAinfo.requireApiVersion(0, 2);
+	retryWhileError(function () {
+		NAinfo.requireApiVersion(0, 2);
 
-        let key = '348795';
-        let variant = getSelectedPreferenceFromList(key, ['find_median', 'find_bisector', 'find_height', 'find_side_from_median', 'find_side_from_bisector', 'find_side_from_height']);
+		let key = '348795';
+		let variant = getSelectedPreferenceFromList(key, ['find_median', 'find_bisector', 'find_height', 'find_side_from_median', 'find_side_from_bisector', 'find_side_from_height']);
 
-        let sideStep = (variant < 3) ? (3).sqrt() : 1;
-        let side = sl(5 * sideStep, 20 * sideStep, sideStep);
+		let sideStep = (variant < 3) ? (3).sqrt() : 1;
+		let side = sl(6 * sideStep, 20 * sideStep, 2 * sideStep);
 
-        let triangle = new Triangle({
-            lengths: {
-                lengthAB: side,
-                lengthBC: side,
-                lengthCA: side,
-            },
-            supplementary: {
-                calculateHeights: true,
-            }
-        });
+		let triangle = new Triangle({
+			lengths: {
+				lengthAB: side,
+				lengthBC: side,
+				lengthCA: side,
+			},
+			supplementary: {
+				calculateHeights: true,
+			}
+		});
 
-        let randomLine = sl(0, 2);
+		let randomLine = sl(0, 2);
 
-        let vertexName = ['A', 'B', 'C'][randomLine];
-        triangle.addVertexToConnectionMatrix(triangle['height' + vertexName + 'EndPoint'], vertexName);
+		let vertexName = ['A', 'B', 'C'][randomLine];
+		triangle.addVertexToConnectionMatrix(triangle['height' + vertexName + 'EndPoint'], vertexName);
 
-        let height = triangle['height' + vertexName + 'Length'];
-        genAssertZ1000(height.pow(2) / 100);
+		let height = triangle['height' + vertexName + 'Length'];
+		genAssertZ1000(height.pow(2) / 100);
 
-        let points = autoScale(triangle.vertices);
-        let pointToLine = points.slice(0, 3);
-        let pointForAngleAndMarked = pointToLine.splice(randomLine, 1)[0];
+		let points = autoScale(triangle.vertices);
+		let pointToLine = points.slice(0, 3);
+		let pointForAngleAndMarked = pointToLine.splice(randomLine, 1)[0];
 
-        let paint1 = function (ctx) {
-            ctx.translateToCenter();
+		let paint1 = function (ctx) {
+			ctx.translateToCenter();
 
-            ctx.scale(1, -1);
-            ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.scale(1, -1);
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
-            ctx.lineWidth = 2;
-            ctx.drawFigure(points, triangle.connectionMatrix);
+			ctx.lineWidth = 2;
+			ctx.drawFigure(points, triangle.connectionMatrix);
 
-            ctx.strokeStyle = om.primaryBrandColors.iz();
-            switch (variant % 3) {
-                case 0:
-                    ctx.strokeInMiddleOfSegment(pointToLine[0].x, pointToLine[0].y, points[3].x, points[3].y, 7);
-                    ctx.strokeInMiddleOfSegment(pointToLine[1].x, pointToLine[1].y, points[3].x, points[3].y, 7);
-                    break;
-                case 1:
-                    ctx.arcBetweenSegments([pointToLine[0].x, pointToLine[0].y, pointForAngleAndMarked.x, pointForAngleAndMarked.y, points[3].x, points[3].y], 30);
-                    ctx.arcBetweenSegments([pointToLine[1].x, pointToLine[1].y, pointForAngleAndMarked.x, pointForAngleAndMarked.y, points[3].x, points[3].y], 30);
-                    break;
-                case 2:
-                    ctx.arcBetweenSegments([pointForAngleAndMarked.x, pointForAngleAndMarked.y, points[3].x, points[3].y, pointToLine[0].x, pointToLine[0].y], 15, true);
-                    break;
-            }
-        };
+			ctx.strokeStyle = om.primaryBrandColors.iz();
+			switch (variant % 3) {
+				case 0:
+					pointToLine.forEach(point => ctx.strokeInMiddleOfSegment(point.x, point.y, points[3].x, points[3].y, 7));
+					break;
+				case 1:
+					pointToLine.forEach(point => ctx.arcBetweenSegments([point.x, point.y, pointForAngleAndMarked.x, pointForAngleAndMarked.y, points[3].x, points[3].y], 30));
+					break;
+				case 2:
+					ctx.arcBetweenSegments([pointForAngleAndMarked.x, pointForAngleAndMarked.y, points[3].x, points[3].y, pointToLine[0].x, pointToLine[0].y], 15, true);
+					break;
+			}
+		};
 
-        NAtask.setTask({
-            text: `${[`Медиана`, `Биссектриса`, `Высота`, `Сторона`][(variant < 3) ? 3 : (variant % 3)]} равностороннего треугольника равна $${[side, height][(variant < 3) ? 0 : 1].pow(2).texsqrt(true)}$. Найдите `,
-            questions: [{
-                text: ['медиану', 'биссектрису', 'высоту', 'сторону'][(variant < 3) ? variant : 3],
-                answers: (variant < 3) ? height : side,
-            }],
-            postquestion: ` этого треугольника.`,
-            authors: ['Александра Суматохина'],
-        });
+		NAtask.setTask({
+			text: `${[`Медиана`, `Биссектриса`, `Высота`, `Сторона`][(variant < 3) ? 3 : (variant % 3)]} равностороннего треугольника равна $${[side, height][(variant < 3) ? 0 : 1].pow(2).texsqrt(true)}$. Найдите `,
+			questions: [{
+				text: ['медиану', 'биссектрису', 'высоту', 'сторону'][(variant < 3) ? variant : 3],
+				answers: (variant < 3) ? height : side,
+			}],
+			postquestion: ` этого треугольника.`,
+			authors: ['Александра Суматохина'],
+		});
 
-        NAtask.modifiers.allDecimalsToStandard(true);
-        NAtask.modifiers.addCanvasIllustration({
-            width: 400,
-            height: 400,
-            paint: paint1,
-        });
-    }, 2000);
+		NAtask.modifiers.allDecimalsToStandard(true);
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
+			paint: paint1,
+		});
+	}, 2000);
 
 })();
 // 348795 349227 349645 352131 401255 401564 401849 403461
