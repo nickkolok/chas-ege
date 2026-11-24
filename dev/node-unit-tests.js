@@ -244,6 +244,157 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Лексика: род глагола в прошедшем времени  (lib/func.js + lib/lxglagol.js)
+    // ============================================================
+    QUnit.module('selectVerbGender');
+
+    QUnit.test('Обычные глаголы на -л', function (assert) {
+        assert.equal(selectVerbGender('купил', 0), 'купил', 'мужской род - как есть');
+        assert.equal(selectVerbGender('купил', 1), 'купила');
+        assert.equal(selectVerbGender('купил', 2), 'купило');
+        assert.equal(selectVerbGender('купил', 3), 'купили');
+        assert.equal(selectVerbGender('выехал', 1), 'выехала');
+    });
+
+    QUnit.test('Возвратные глаголы на -лся', function (assert) {
+        assert.equal(selectVerbGender('умылся', 0), 'умылся');
+        assert.equal(selectVerbGender('умылся', 1), 'умылась');
+        assert.equal(selectVerbGender('умылся', 2), 'умылось');
+        assert.equal(selectVerbGender('умылся', 3), 'умылись');
+        assert.equal(selectVerbGender('занялся', 1), 'занялась');
+        assert.equal(selectVerbGender('спасся', 1), 'спаслась', 'регресс: -сся, а не -лся');
+    });
+
+    QUnit.test('Глаголы без -л, где правило даёт верную форму', function (assert) {
+        assert.equal(selectVerbGender('мог', 1), 'могла');
+        assert.equal(selectVerbGender('рос', 1), 'росла');
+        assert.equal(selectVerbGender('тёр', 1), 'тёрла', 'ё сохраняется');
+        assert.equal(selectVerbGender('мёрз', 2), 'мёрзло');
+        assert.equal(selectVerbGender('умер', 3), 'умерли');
+        assert.equal(selectVerbGender('лез', 1), 'лезла');
+    });
+
+    QUnit.test('Неправильные формы прошедшего времени', function (assert) {
+        assert.equal(selectVerbGender('нёс', 1), 'несла');
+        assert.equal(selectVerbGender('нёс', 2), 'несло');
+        assert.equal(selectVerbGender('нёс', 3), 'несли');
+        assert.equal(selectVerbGender('вёз', 1), 'везла');
+        assert.equal(selectVerbGender('пёк', 1), 'пекла');
+        assert.equal(selectVerbGender('жёг', 1), 'жгла');
+        assert.equal(selectVerbGender('берёг', 1), 'берегла');
+        assert.equal(selectVerbGender('шёл', 1), 'шла');
+        assert.equal(selectVerbGender('вёл', 1), 'вела');
+        assert.equal(selectVerbGender('цвёл', 1), 'цвела', 'цв+ёл берётся окончанием вёл: цв+ела');
+        assert.equal(selectVerbGender('плёл', 3), 'плели');
+        assert.equal(selectVerbGender('мёл', 1), 'мела');
+        assert.equal(selectVerbGender('счёл', 1), 'сочла');
+    });
+
+    QUnit.test('Приставочные глаголы берутся из словаря автоматически', function (assert) {
+        assert.equal(selectVerbGender('нашёл', 1), 'нашла');
+        assert.equal(selectVerbGender('пришёл', 1), 'пришла');
+        assert.equal(selectVerbGender('перешёл', 2), 'перешло');
+        assert.equal(selectVerbGender('привёз', 1), 'привезла');
+        assert.equal(selectVerbGender('принёс', 3), 'принесли');
+        assert.equal(selectVerbGender('поджёг', 1), 'поджгла');
+        assert.equal(selectVerbGender('приобрёл', 1), 'приобрела');
+        assert.equal(selectVerbGender('свёл', 1), 'свела');
+        assert.equal(selectVerbGender('стерёг', 1), 'стерегла');
+    });
+
+    QUnit.test('Неправильные возвратные глаголы', function (assert) {
+        assert.equal(selectVerbGender('нёсся', 0), 'нёсся');
+        assert.equal(selectVerbGender('нёсся', 1), 'неслась');
+        assert.equal(selectVerbGender('нёсся', 2), 'неслось');
+        assert.equal(selectVerbGender('нёсся', 3), 'неслись');
+        assert.equal(selectVerbGender('вёзся', 1), 'везлась');
+    });
+
+    QUnit.test('Род из объекта, числа, строки и слова', function (assert) {
+        assert.equal(selectVerbGender('купил', { rod: 1 }), 'купила', 'объект с полем rod');
+        assert.equal(selectVerbGender('купил', { rod: 2 }), 'купило');
+        assert.equal(selectVerbGender('купил', '1'), 'купила', 'род строкой');
+        assert.equal(selectVerbGender('купил', '0'), 'купил', 'род нулём строкой');
+        assert.equal(selectVerbGender('купил', 'час'), 'купил', "lx['час'].rod === 0");
+        assert.equal(selectVerbGender('нёс', 'конференция'), 'несла', 'род определяется по словарю');
+        assert.equal(selectVerbGender('нёс', sklonlxkand('конференция')), 'несла', 'Word-объект');
+    });
+
+    QUnit.test('Аргументы обязательны', function (assert) {
+        assert.throws(function () { selectVerbGender(); }, /Verb must be defined/);
+        assert.throws(function () { selectVerbGender('купил'); }, /nounOrRod must be defined/);
+    });
+
+    QUnit.test('Глаголы на -ёк: весь класс -ечь одной записью', function (assert) {
+        assert.equal(selectVerbGender('пёк', 1), 'пекла');
+        assert.equal(selectVerbGender('испёк', 1), 'испекла');
+        assert.equal(selectVerbGender('сёк', 1), 'секла');
+        assert.equal(selectVerbGender('отсёк', 1), 'отсекла');
+        assert.equal(selectVerbGender('пересёк', 1), 'пересекла');
+        assert.equal(selectVerbGender('тёк', 1), 'текла');
+        assert.equal(selectVerbGender('истёк', 1), 'истекла');
+        assert.equal(selectVerbGender('утёк', 1), 'утекла');
+        assert.equal(selectVerbGender('стёк', 1), 'стекла');
+        assert.equal(selectVerbGender('протёк', 1), 'протекла');
+        assert.equal(selectVerbGender('отёк', 1), 'отекла');
+        assert.equal(selectVerbGender('влёк', 1), 'влекла');
+        assert.equal(selectVerbGender('увлёк', 1), 'увлекла');
+        assert.equal(selectVerbGender('привлёк', 1), 'привлекла');
+        assert.equal(selectVerbGender('извлёк', 1), 'извлекла');
+        assert.equal(selectVerbGender('развлёк', 1), 'развлекла');
+        assert.equal(selectVerbGender('облёк', 1), 'облекла');
+        assert.equal(selectVerbGender('изрёк', 1), 'изрекла');
+        assert.equal(selectVerbGender('нарёк', 1), 'нарекла');
+        assert.equal(selectVerbGender('прорёк', 1), 'прорекла');
+        assert.equal(selectVerbGender('обрёк', 1), 'обрекла');
+    });
+
+    QUnit.test('Глаголы на -ёк: средний род, множественное число, возвратные', function (assert) {
+        assert.equal(selectVerbGender('извлёк', 2), 'извлекло');
+        assert.equal(selectVerbGender('истёк', 3), 'истекли');
+        assert.equal(selectVerbGender('сёк', 0), 'сёк', 'мужской род не трогаем');
+        assert.equal(selectVerbGender('отрёкся', 1), 'отреклась');
+        assert.equal(selectVerbGender('увлёкся', 1), 'увлеклась');
+        assert.equal(selectVerbGender('облёкся', 2), 'облеклось');
+        assert.equal(selectVerbGender('извлёкся', 3), 'извлеклись');
+    });
+
+    QUnit.test('Формы без ё и ё под ударением на основе', function (assert) {
+        assert.equal(selectVerbGender('выпек', 1), 'выпекла', 'ударение на приставке, ё нет');
+        assert.equal(selectVerbGender('высек', 1), 'высекла');
+        assert.equal(selectVerbGender('вытек', 1), 'вытекла');
+        assert.equal(selectVerbGender('тёр', 1), 'тёрла', 'ё на основе сохраняется');
+        assert.equal(selectVerbGender('пёр', 1), 'пёрла');
+        assert.equal(selectVerbGender('мёрз', 1), 'мёрзла');
+    });
+
+    QUnit.test('Глаголы на -ёг: лёг, берёг и жёг ведут себя по-разному', function (assert) {
+        assert.equal(selectVerbGender('лёг', 1), 'легла');
+        assert.equal(selectVerbGender('лёг', 2), 'легло');
+        assert.equal(selectVerbGender('лёг', 3), 'легли');
+        assert.equal(selectVerbGender('прилёг', 1), 'прилегла');
+        assert.equal(selectVerbGender('залёг', 1), 'залегла');
+        assert.equal(selectVerbGender('налёг', 1), 'налегла');
+        assert.equal(selectVerbGender('влёг', 1), 'влегла');
+        assert.equal(selectVerbGender('жёг', 1), 'жгла', 'здесь гласная выпадает');
+        assert.equal(selectVerbGender('сжёг', 1), 'сжгла');
+        assert.equal(selectVerbGender('поджёг', 1), 'поджгла');
+        assert.equal(selectVerbGender('берёг', 1), 'берегла');
+        assert.equal(selectVerbGender('стерёг', 1), 'стерегла');
+        assert.equal(selectVerbGender('сберёг', 1), 'сберегла');
+        assert.equal(selectVerbGender('пренебрёг', 1), 'пренебрегла');
+    });
+
+    QUnit.test('Возвратные глаголы на -ёг', function (assert) {
+        assert.equal(selectVerbGender('улёгся', 0), 'улёгся');
+        assert.equal(selectVerbGender('улёгся', 1), 'улеглась');
+        assert.equal(selectVerbGender('улёгся', 2), 'улеглось');
+        assert.equal(selectVerbGender('улёгся', 3), 'улеглись');
+        assert.equal(selectVerbGender('берёгся', 1), 'береглась');
+        assert.equal(selectVerbGender('жёгся', 1), 'жглась');
+    });
+
+    // ============================================================
     //  Function Utilities  (lib/func.js)
     // ============================================================
     QUnit.module('Function Utilities');
@@ -619,158 +770,4 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(calls.length, 1, 'translate вызван ровно один раз');
         assert.deepEqual(calls[0], [200, 150], 'translate(width/2, height/2)');
     });
-
-    // ============================================================
-    //  Лексика: род глагола в прошедшем времени  (lib/func.js + lib/lxglagol.js)
-    // ============================================================
-    QUnit.module('selectVerbGender');
-
-    QUnit.test('Обычные глаголы на -л', function (assert) {
-        assert.equal(selectVerbGender('купил', 0), 'купил', 'мужской род - как есть');
-        assert.equal(selectVerbGender('купил', 1), 'купила');
-        assert.equal(selectVerbGender('купил', 2), 'купило');
-        assert.equal(selectVerbGender('купил', 3), 'купили');
-        assert.equal(selectVerbGender('выехал', 1), 'выехала');
-    });
-
-    QUnit.test('Возвратные глаголы на -лся', function (assert) {
-        assert.equal(selectVerbGender('умылся', 0), 'умылся');
-        assert.equal(selectVerbGender('умылся', 1), 'умылась');
-        assert.equal(selectVerbGender('умылся', 2), 'умылось');
-        assert.equal(selectVerbGender('умылся', 3), 'умылись');
-        assert.equal(selectVerbGender('занялся', 1), 'занялась');
-        assert.equal(selectVerbGender('спасся', 1), 'спаслась', 'регресс: -сся, а не -лся');
-    });
-
-    QUnit.test('Глаголы без -л, где правило даёт верную форму', function (assert) {
-        assert.equal(selectVerbGender('мог', 1), 'могла');
-        assert.equal(selectVerbGender('рос', 1), 'росла');
-        assert.equal(selectVerbGender('тёр', 1), 'тёрла', 'ё сохраняется');
-        assert.equal(selectVerbGender('мёрз', 2), 'мёрзло');
-        assert.equal(selectVerbGender('умер', 3), 'умерли');
-        assert.equal(selectVerbGender('лез', 1), 'лезла');
-    });
-
-    QUnit.test('Неправильные формы прошедшего времени', function (assert) {
-        assert.equal(selectVerbGender('нёс', 1), 'несла');
-        assert.equal(selectVerbGender('нёс', 2), 'несло');
-        assert.equal(selectVerbGender('нёс', 3), 'несли');
-        assert.equal(selectVerbGender('вёз', 1), 'везла');
-        assert.equal(selectVerbGender('пёк', 1), 'пекла');
-        assert.equal(selectVerbGender('жёг', 1), 'жгла');
-        assert.equal(selectVerbGender('берёг', 1), 'берегла');
-        assert.equal(selectVerbGender('шёл', 1), 'шла');
-        assert.equal(selectVerbGender('вёл', 1), 'вела');
-        assert.equal(selectVerbGender('цвёл', 1), 'цвела', 'цв+ёл берётся окончанием вёл: цв+ела');
-        assert.equal(selectVerbGender('плёл', 3), 'плели');
-        assert.equal(selectVerbGender('мёл', 1), 'мела');
-        assert.equal(selectVerbGender('счёл', 1), 'сочла');
-    });
-
-    QUnit.test('Приставочные глаголы берутся из словаря автоматически', function (assert) {
-        assert.equal(selectVerbGender('нашёл', 1), 'нашла');
-        assert.equal(selectVerbGender('пришёл', 1), 'пришла');
-        assert.equal(selectVerbGender('перешёл', 2), 'перешло');
-        assert.equal(selectVerbGender('привёз', 1), 'привезла');
-        assert.equal(selectVerbGender('принёс', 3), 'принесли');
-        assert.equal(selectVerbGender('поджёг', 1), 'поджгла');
-        assert.equal(selectVerbGender('приобрёл', 1), 'приобрела');
-        assert.equal(selectVerbGender('свёл', 1), 'свела');
-        assert.equal(selectVerbGender('стерёг', 1), 'стерегла');
-    });
-
-    QUnit.test('Неправильные возвратные глаголы', function (assert) {
-        assert.equal(selectVerbGender('нёсся', 0), 'нёсся');
-        assert.equal(selectVerbGender('нёсся', 1), 'неслась');
-        assert.equal(selectVerbGender('нёсся', 2), 'неслось');
-        assert.equal(selectVerbGender('нёсся', 3), 'неслись');
-        assert.equal(selectVerbGender('вёзся', 1), 'везлась');
-    });
-
-    QUnit.test('Род из объекта, числа, строки и слова', function (assert) {
-        assert.equal(selectVerbGender('купил', { rod: 1 }), 'купила', 'объект с полем rod');
-        assert.equal(selectVerbGender('купил', { rod: 2 }), 'купило');
-        assert.equal(selectVerbGender('купил', '1'), 'купила', 'род строкой');
-        assert.equal(selectVerbGender('купил', '0'), 'купил', 'род нулём строкой');
-        assert.equal(selectVerbGender('купил', 'час'), 'купил', "lx['час'].rod === 0");
-        assert.equal(selectVerbGender('нёс', 'конференция'), 'несла', 'род определяется по словарю');
-        assert.equal(selectVerbGender('нёс', sklonlxkand('конференция')), 'несла', 'Word-объект');
-    });
-
-    QUnit.test('Аргументы обязательны', function (assert) {
-        assert.throws(function () { selectVerbGender(); }, /Verb must be defined/);
-        assert.throws(function () { selectVerbGender('купил'); }, /nounOrRod must be defined/);
-    });
-
-
-    QUnit.test('Глаголы на -ёк: весь класс -ечь одной записью', function (assert) {
-        assert.equal(selectVerbGender('пёк', 1), 'пекла');
-        assert.equal(selectVerbGender('испёк', 1), 'испекла');
-        assert.equal(selectVerbGender('сёк', 1), 'секла');
-        assert.equal(selectVerbGender('отсёк', 1), 'отсекла');
-        assert.equal(selectVerbGender('пересёк', 1), 'пересекла');
-        assert.equal(selectVerbGender('тёк', 1), 'текла');
-        assert.equal(selectVerbGender('истёк', 1), 'истекла');
-        assert.equal(selectVerbGender('утёк', 1), 'утекла');
-        assert.equal(selectVerbGender('стёк', 1), 'стекла');
-        assert.equal(selectVerbGender('протёк', 1), 'протекла');
-        assert.equal(selectVerbGender('отёк', 1), 'отекла');
-        assert.equal(selectVerbGender('влёк', 1), 'влекла');
-        assert.equal(selectVerbGender('увлёк', 1), 'увлекла');
-        assert.equal(selectVerbGender('привлёк', 1), 'привлекла');
-        assert.equal(selectVerbGender('извлёк', 1), 'извлекла');
-        assert.equal(selectVerbGender('развлёк', 1), 'развлекла');
-        assert.equal(selectVerbGender('облёк', 1), 'облекла');
-        assert.equal(selectVerbGender('изрёк', 1), 'изрекла');
-        assert.equal(selectVerbGender('нарёк', 1), 'нарекла');
-        assert.equal(selectVerbGender('прорёк', 1), 'прорекла');
-        assert.equal(selectVerbGender('обрёк', 1), 'обрекла');
-    });
-
-    QUnit.test('Глаголы на -ёк: средний род, множественное число, возвратные', function (assert) {
-        assert.equal(selectVerbGender('извлёк', 2), 'извлекло');
-        assert.equal(selectVerbGender('истёк', 3), 'истекли');
-        assert.equal(selectVerbGender('сёк', 0), 'сёк', 'мужской род не трогаем');
-        assert.equal(selectVerbGender('отрёкся', 1), 'отреклась');
-        assert.equal(selectVerbGender('увлёкся', 1), 'увлеклась');
-        assert.equal(selectVerbGender('облёкся', 2), 'облеклось');
-        assert.equal(selectVerbGender('извлёкся', 3), 'извлеклись');
-    });
-
-    QUnit.test('Формы без ё и ё под ударением на основе', function (assert) {
-        assert.equal(selectVerbGender('выпек', 1), 'выпекла', 'ударение на приставке, ё нет');
-        assert.equal(selectVerbGender('высек', 1), 'высекла');
-        assert.equal(selectVerbGender('вытек', 1), 'вытекла');
-        assert.equal(selectVerbGender('тёр', 1), 'тёрла', 'ё на основе сохраняется');
-        assert.equal(selectVerbGender('пёр', 1), 'пёрла');
-        assert.equal(selectVerbGender('мёрз', 1), 'мёрзла');
-    });
-
-
-    QUnit.test('Глаголы на -ёг: лёг, берёг и жёг ведут себя по-разному', function (assert) {
-        assert.equal(selectVerbGender('лёг', 1), 'легла');
-        assert.equal(selectVerbGender('лёг', 2), 'легло');
-        assert.equal(selectVerbGender('лёг', 3), 'легли');
-        assert.equal(selectVerbGender('прилёг', 1), 'прилегла');
-        assert.equal(selectVerbGender('залёг', 1), 'залегла');
-        assert.equal(selectVerbGender('налёг', 1), 'налегла');
-        assert.equal(selectVerbGender('влёг', 1), 'влегла');
-        assert.equal(selectVerbGender('жёг', 1), 'жгла', 'здесь гласная выпадает');
-        assert.equal(selectVerbGender('сжёг', 1), 'сжгла');
-        assert.equal(selectVerbGender('поджёг', 1), 'поджгла');
-        assert.equal(selectVerbGender('берёг', 1), 'берегла');
-        assert.equal(selectVerbGender('стерёг', 1), 'стерегла');
-        assert.equal(selectVerbGender('сберёг', 1), 'сберегла');
-        assert.equal(selectVerbGender('пренебрёг', 1), 'пренебрегла');
-    });
-
-    QUnit.test('Возвратные глаголы на -ёг', function (assert) {
-        assert.equal(selectVerbGender('улёгся', 0), 'улёгся');
-        assert.equal(selectVerbGender('улёгся', 1), 'улеглась');
-        assert.equal(selectVerbGender('улёгся', 2), 'улеглось');
-        assert.equal(selectVerbGender('улёгся', 3), 'улеглись');
-        assert.equal(selectVerbGender('берёгся', 1), 'береглась');
-        assert.equal(selectVerbGender('жёгся', 1), 'жглась');
-    });
-
 };
