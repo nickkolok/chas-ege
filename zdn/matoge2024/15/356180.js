@@ -77,9 +77,7 @@
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.arcBetweenSegments([pointCentralAngle.x, pointCentralAngle.y, points[3].x, points[3].y, pointsAngle[0].x, pointsAngle[0].y], 15, true);
 
-			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
+			ctx.signVertices(points, letters);
 		};
 
 		NAtask.setTask({
