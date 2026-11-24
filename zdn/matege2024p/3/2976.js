@@ -27,9 +27,10 @@
 		let b = slKrome(a, 1, 20);
 		let c = sl(1, 20);
 
+		let baseDiagonal = (a.pow(2) + b.pow(2)).sqrt();
 		let question = [
-			['косинус', b / (a.pow(2) + b.pow(2)).sqrt()],
-			['синус', a / (a.pow(2) + b.pow(2)).sqrt()]
+			['косинус', b / baseDiagonal],
+			['синус', a / baseDiagonal]
 		].iz();
 
 		let answ = question.pop();
@@ -38,7 +39,7 @@
 			ctx.translate(105, 50);
 			let edge = 24;
 			ctx.scale(10, 10);
-			ctx.font = "2.5px liberation_sans";
+			ctx.font = '2.5px liberation_sans';
 
 			ctx.lineWidth = 0.2;
 			ctx.drawParallelepiped({
