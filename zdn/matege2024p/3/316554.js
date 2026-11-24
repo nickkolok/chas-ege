@@ -36,7 +36,7 @@
 			ct.lineWidth = 2 / 10;
 			let cubeEdge = 26;
 
-			ct.font = "2.5px liberation_sans";
+			ct.font = '2.5px liberation_sans';
 			ct.drawParallelepiped({
 				width: cubeEdge,
 				height: cubeEdge,
@@ -44,7 +44,7 @@
 				angle: 40,
 				scale: 20,
 				lettersOnVertex: allLet,
-				strokeStyle: om.secondaryBrandColors,
+				strokeStyle: om.secondaryBrandColors.iz(),
 				diagonalStrokeStyle: om.primaryBrandColors.iz(),
 			}, [0, 3, 4], false, [0.5, 0.2]);
 		};

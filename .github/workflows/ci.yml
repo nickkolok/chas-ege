@@ -30,6 +30,15 @@ jobs:
     - name: Run default Grunt build
       run: ./node_modules/.bin/grunt
 
+    - name: Upload built libraries as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: lib-bundle
+        path: |
+          build/lib/chas-uijs.js
+          build/lib/chas-lib.js
+        if-no-files-found: error
+
     - name: Check task sets
       run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets
 
@@ -38,3 +47,41 @@ jobs:
 
     - name: Check task sets
       run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets
+
+  publish-devel-bundle:
+    # Rolling-релиз с собранными библиотеками: только push в devel,
+    # только после успешных сборки и тестов (needs: build).
+    if: github.event_name == 'push' && github.ref == 'refs/heads/devel'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: publish-devel-bundle
+      cancel-in-progress: false
+
+    steps:
+    - name: Download built libraries
+      uses: actions/download-artifact@v4
+      with:
+        name: lib-bundle
+        path: build/lib
+
+    - name: Publish rolling release devel-bundle-latest
+      env:
+        GH_TOKEN: ${{ github.token }}
+        TAG: devel-bundle-latest
+      run: |
+        set -euo pipefail
+        gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --latest=false --title "devel bundle" \
+            --notes "Rolling-сборка build/lib из ветки devel."
+        # Тег — движущийся указатель: всегда на коммите, чья сборка опубликована.
+        gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/$TAG" \
+          -f sha="$GITHUB_SHA" -F force=true
+        gh release upload "$TAG" --repo "$GITHUB_REPOSITORY" \
+          build/lib/chas-uijs.js build/lib/chas-lib.js --clobber
+        gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" \
+          --title "devel bundle @ ${GITHUB_SHA:0:9}" \
+          --notes "Автосборка build/lib (chas-uijs.js, chas-lib.js) из devel @ ${GITHUB_SHA}. Не минифицировано. Тег rolling: прямые ссылки всегда на свежую сборку; точный коммит — здесь и в заголовке."
