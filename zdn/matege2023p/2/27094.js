@@ -51,16 +51,6 @@
 			}, {
 				name: 'объём',
 				power: 1,
-			}],
-			[{
-				name: 'образующая',
-				power: 1,
-			}, {
-				name: 'высота',
-				wordToClarify: true,
-			}, {
-				name: 'объём',
-				power: 1,
 			}]
 		].iz(), [
 			[{
