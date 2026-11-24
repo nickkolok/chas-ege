@@ -21,22 +21,20 @@
 		question = sklonlxkand(question.T()[0]);
 
 		let paint1 = function(ctx) {
-			ctx.translate(110, 10);
-			let edge = 30;
-			ctx.scale(10, 10);
-			ctx.lineWidth = 0.2;
-			ctx.drawPrism({
-				width: edge,
-				height: edge * 0.8,
-				depth: edge * 0.9,
-				angle: Math.PI / 1.8,
-				scale: 20,
-			}, [0, 3, 4], [0.4, 0.5]);
+			let figure = new RectangularPrismWithRightAngledTriangleAtBase({height:h,sideA:a,sideB:b});
+			let vertices = figure.verticesOfFigure;
+			let camera = {x:0,y:0,z:0,scale:1,rotationX:-Math.PI/2+Math.PI/9,rotationY:0,rotationZ:Math.PI/5};
+			let points = autoScale(vertices,camera,[],{startX:-150,finishX:150,startY:-150,finishY:150,maxScale:200,shrink:true,center:true});
+			let faces = [[0,1,2],[3,4,5],[0,1,4,3],[1,2,5,4],[2,0,3,5]];
+			ctx.translateToCenter();
+			ctx.lineWidth=2;
+			ctx.strokeStyle=om.secondaryBrandColors.iz();
+			ctx.drawFigure(points,dashHiddenEdges(figure.connectionMatrix,faces,facesVisibility(vertices,points,faces),[5,4]));
 		};
 
 
 		NAtask.setTask({
-			text: 'Основанием прямой треугольной призмы является прямоугольный треугольник с катетамии $' + a + '$ и $' + b +
+			text: 'Основанием прямой треугольной призмы является прямоугольный треугольник с катетами $' + a + '$ и $' + b +
 				'$, а ' + question[0].ie + ' призмы рав' + ['ен', 'на', 'но'][question[0].rod] + ' $' + number[0].ts() +
 				'$. Найдите ' +
 				question[1].ve + ' призмы.',
