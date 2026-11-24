@@ -10,7 +10,7 @@
 	lx_declareClarifiedPhrase('радиус', 'основания');
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 	lx_declareClarifiedPhrase('длина', 'окружности основания');
-	lx_declareClarifiedPhrase('площадь', 'окружности основания');
+	lx_declareClarifiedPhrase('площадь', 'основания');
 	lx_declareClarifiedPhrase('площадь', 'осевого сечения');
 	lx_declareClarifiedPhrase('диаметр', 'основания');
 	retryWhileError(function() {
@@ -23,11 +23,13 @@
 
 		genAssert(heightSmall.isZ(), 'высота нормальная');
 
-		let generatrixConeBig = radiusBig.pow(2) + heightBig.pow(2);
-		let generatrixConeSmall = radiusSmall.pow(2) + heightSmall.pow(2);
+		let coneBig = new Cone({radius: radiusBig, height: heightBig});
+		let coneSmall = new Cone({radius: radiusSmall, height: heightSmall});
+		let volumeBig = Number((coneBig.volume / Math.PI).toFixed(10));
+		let volumeSmall = Number((coneSmall.volume / Math.PI).toFixed(10));
 
-		genAssert(generatrixConeBig.sqrt().isZ(), 'Образующая нормальная');
-		genAssert(generatrixConeSmall.sqrt().isZ(), 'Образующая нормальная');
+		genAssert(coneBig.generatrix.isZ(), 'Образующая нормальная');
+		genAssert(coneSmall.generatrix.isZ(), 'Образующая нормальная');
 		let variable = [
 
 			['высота', heightBig, heightSmall],
@@ -36,12 +38,12 @@
 				['радиус основания', radiusBig, radiusSmall],
 				['длина окружности основания', 2 * radiusBig + '\\pi', 2 * radiusSmall + '\\pi'],
 				['площадь основания', radiusBig.pow(2) + '\\pi', radiusSmall.pow(2) + '\\pi']
-			].iz(), ['образующая', generatrixConeBig.texsqrt(sl1()), generatrixConeSmall.texsqrt(sl1())],
+			].iz(), ['образующая', coneBig.generatrix, coneSmall.generatrix],
 			['площадь осевого сечения', radiusBig * heightBig, radiusSmall * heightSmall],
 		];
 
-		if ((heightBig * radiusBig.pow(2) / 3).isZ() && (heightSmall * radiusSmall.pow(2) / 3).isZ())
-			variable.push(['объём', heightBig * radiusBig.pow(2) / 3 + '\\pi', heightSmall * radiusSmall.pow(2) / 3 + '\\pi']);
+		if (volumeBig.isZ() && volumeSmall.isZ())
+			variable.push(['объём', volumeBig + '\\pi', volumeSmall + '\\pi']);
 
 		variable = variable.iz(2);
 
@@ -68,7 +70,7 @@
 		let verb = ['делит его так, что ' + secondWord + ' отсекаемого и исходного конусов ' + ['равны $' + numberSmall[1] + '$ и $' + numberBig[
 				1] + '$',
 			'относятся, как $' + ratio.join(':') + '$'
-		].iz(), 'делит ' + name[1].ve + ' в отношении ' + [ratio.join(':') + ', считая от вершины', ratio.reverse().join(
+		].iz(), 'делит ' + name[1].ve + ' в отношении ' + [ratio.join(':') + ', считая от вершины', ratio.slice().reverse().join(
 			':') + ', считая от основания'].iz() + ' конуса'][variant];
 
 		let answer = numberSmall[0];
@@ -93,35 +95,29 @@
 			ctx.drawEllipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
 			let frac = heightSmall / heightBig;
-			let add = -3;
-			if (frac < 0.5) {
-				frac = 2 / 3;
-				add = -4;
-			} else
-			if (frac > 0.5) {
-				frac = 1 / 3;
-				add = -3;
-			}
+			let sectionY = 10 + 170 * frac;
+			let sectionR = 90 * frac;
+			let sectionRY = 20 * frac;
 
 			//радиус
 			if (variable.T()[0].includes('радиус основания')) {
 				ctx.drawLine(150, 180, 240, 180);
-				ctx.drawLine(150, 180 * (1 - frac), 150 + (90 * (1 - frac) + add), 180 * (1 - frac));
+				ctx.drawLine(150, sectionY, 150 + sectionR, sectionY);
 			}
 			//высота
 			ctx.drawLine(150, 180, 150, 10);
 			//диаметр
-			if (variable.T()[0].includes('площадь осевого сечения') || variable.T()[0].includes('диаметр')) {
+			if (variable.T()[0].includes('площадь осевого сечения') || variable.T()[0].includes('диаметр основания')) {
 				ctx.drawLine(60, 180, 240, 180);
-				ctx.drawLine(150 - (90 * (1 - frac) + add), 180 * (1 - frac), 150 + (90 * (1 - frac) + add), 180 * (1 - frac));
+				ctx.drawLine(150 - sectionR, sectionY, 150 + sectionR, sectionY);
 			}
 
 			//конус поменьше
 			ctx.setLineDash([5, 5]);
-			ctx.drawEllipse(150, 180 * (1 - frac), 10, 90 * (1 - frac) + add, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+			ctx.drawEllipse(150, sectionY, sectionRY, sectionR, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
-			ctx.setLineDash([0, 0]);
-			ctx.drawEllipse(150, 180 * (1 - frac), 10, 90 * (1 - frac) + add, Math.PI / 2, -Math.PI / 2, -1.5 * Math.PI);
+			ctx.setLineDash([]);
+			ctx.drawEllipse(150, sectionY, sectionRY, sectionR, Math.PI / 2, -Math.PI / 2, -1.5 * Math.PI);
 		};
 
 		NAinfo.requireApiVersion(0, 2);
@@ -145,3 +141,4 @@
 	}, 10000);
 })();
 //27052 5021 72353 548506 548525 5023 5025 5027 5029 5031 5033 5035 27119 72305 72307 72309 72311 72313 72315 72317 72319 72321 72323 72325 72327 72329 72331 72333 72335 72337 72339 72341 72343 72345 72347 72349 72351 27161 76299 76343 76301 76303 76305 76307 76309 76311 76313 76315 76317 76319 76321 76323 76325 76327 76329 76331 76333 76335 76337 76339 76341 76345 76347
+
