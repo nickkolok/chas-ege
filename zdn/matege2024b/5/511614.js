@@ -5,7 +5,7 @@
 		let key = "511614";
 
 		let preference = ['two_boys', 'two_girls', 'boy', 'girl', 'boy_and_girl'];
-		let variant = getListedPreference(key, [...preference.map((preference, preferenceValue) => ({preference, preferenceValue})), {preference: 'two_girl', preferenceValue: 1}], sl(preference.length - 1));
+		let variant = getSelectedPreferenceFromList(key, preference);
 		let age = sl(0, 2);
 		let boy = ['мальчик', 'юноша', 'мужчина'][age];
 		let girl = ['девочка', 'девушка', 'женщина'][age];
@@ -30,9 +30,7 @@
 		}
 
 		NAtask.setTask({
-			text: `$${sl(1, 28)}$ ${[`апреля`, `июля`, sklonlxkand(om.months.iz()).re][age]} на ${[`запись в первый класс`, `подачу документов`, `собеседование`][age]} независимо друг от друга пришли
-			два будущих ${[`первоклассника`, `студента`, `работника`][age]}. Считая, что приходы ${['мальчика', 'юноши', 'мужчины'][age]} и ${['девочки', 'девушки', 'женщины'][age]}
-			равновероятны, найдите вероятность того, что ${question}.`,
+			text: `$${sl(1, 28)}$ ${[`апреля`, `июля`, sklonlxkand(om.months.iz()).re][age]} на ${[`запись в первый класс`, `подачу документов`, `собеседование`][age]} независимо друг от друга пришли два будущих ${[`первоклассника`, `студента`, `работника`][age]}. Считая, что приходы ${['мальчика', 'юноши', 'мужчины'][age]} и ${['девочки', 'девушки', 'женщины'][age]} равновероятны, найдите вероятность того, что ${question}.`,
 			answers: [0.25, 0.25, 0.75, 0.75, 0.5][variant],
 			authors: ['Суматохина Александра'], preference,
 		});
@@ -44,4 +42,5 @@
 // B306C9
 // 2D6259
 // 998481
+
 
