@@ -250,18 +250,31 @@ if (opts.evals.length) {
 	const specialNumber = (x) => (typeof x !== 'number' ? null :
 		Object.is(x, -0) ? '-0' : Number.isFinite(x) ? null : String(x));
 	const marker = '\u0000number:';
+	// Одной строкой и не длиннее 2000 знаков: window и подобные объекты огромны
+	const inspectShort = function (v) {
+		const s = require('util').inspect(v, { depth: 2, compact: true, breakLength: Infinity, maxArrayLength: 20, maxStringLength: 200 });
+		return s.length > 2000 ? s.slice(0, 2000) + ' …' : s;
+	};
 	// repr — строка, как значение печатается без --json; lossless — значение
 	// можно записать в JSON без потерь
 	const describe = function (v) {
 		if (v === undefined) return { repr: 'undefined', lossless: false };
 		if (typeof v === 'function') return { repr: String(v), lossless: false };
 		let special = false;
-		const json = JSON.stringify(v, function (key, x) {
-			const s = specialNumber(x);
-			if (s === null) return x;
-			special = true;
-			return marker + s;
-		});
+		let json;
+		try {
+			json = JSON.stringify(v, function (key, x) {
+				const s = specialNumber(x);
+				if (s === null) return x;
+				special = true;
+				return marker + s;
+			});
+		} catch (e) {
+			// Циклические ссылки (window), BigInt: выражение вычислилось,
+			// а в JSON значение не записывается — печатаем его как node
+			return { repr: inspectShort(v), lossless: false };
+		}
+		if (json === undefined) return { repr: inspectShort(v), lossless: false }; // Symbol
 		if (!special) return { repr: json, lossless: true };
 		return { repr: json.replace(/"\\u0000number:([^"]*)"/g, '$1'), lossless: false };
 	};
