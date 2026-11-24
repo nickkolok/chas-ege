@@ -55,11 +55,10 @@
 				'$.',
 			answers: answ,
 			analys: '$\\vec{' + letter[2] + '}=\\{' + (finalyVectorView.join('; ')).plusminus() + '\\}$' + '<br>' +
-				'$\\vec{' + letter[0] + '}=\\{' + coordA.join(' ;') + '\\}$' + '<br>' +
-				'$\\vec{' + letter[1] + '}=\\{' + coordB.join(' ;') + '\\}$',
+				'$\\vec{' + letter[0] + '}=\\{' + coordA.join('; ') + '\\}$' + '<br>' +
+				'$\\vec{' + letter[1] + '}=\\{' + coordB.join('; ') + '\\}$',
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
 	}, 1000);
 })();
 //644544198
-
