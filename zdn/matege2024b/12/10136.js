@@ -3,23 +3,24 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let side = sl(4, 100);
-		// Основание бывает и с корнем из 3: AC = 12√3 (D7BD68), тогда синус равен 0,5.
+		// Основание бывает и с корнем из 3: AB = 12√3 (D7BD68), тогда синус равен 0,5.
 		// Такой вариант выбирается в каждой четвёртой попытке, и в итоге он примерно у каждой
 		// пятой задачи, как в ФИПИ (одно задание из пяти)
 		let baseRadicand = sl(1, 4) == 1 ? 3 : 1;
 		let baseFactor = sl(4, 120, 2);
+		let baseSqr = baseFactor * baseFactor * baseRadicand;
 
 		let letters = latbukv.slice(0, 3);
 
 		let triangle = new Triangle({
 			lengths: {
-				lengthAB: baseFactor * baseRadicand.sqrt(),
+				lengthAB: baseSqr.sqrt(),
 				lengthBC: side,
 				lengthCA: side,
 			},
 		});
 
-		genAssert((triangle.sinA * 100).isAlmostInteger(), 'sinA треугольника не целый');
+		genAssertDecimalPlaces(triangle.sinA, 2, 'sinA треугольника не целый');
 
 		let points = autoScale(triangle.vertices);
 
@@ -33,13 +34,12 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
+			ctx.signVertices(points, letters, {above: [2]});
 			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ известно, что $BC=CA=${triangle.lengthBC}$, $AB=${(baseFactor * baseFactor * baseRadicand).texsqrt(1)}$. Найдите синус угла $${['CAB', 'ABC'].iz()}$.`,
+			text: `В треугольнике $ABC$ известно, что $BC=CA=${triangle.lengthBC}$, $AB=${baseSqr.texsqrt(1)}$. Найдите синус угла $${['CAB', 'ABC'].iz()}$.`,
 			answers: triangle.sinA,
 			authors: ['Александра Суматохина'],
 		});
@@ -54,3 +54,4 @@
 
 })();
 // https://base.mathege.ru/clones/?position=16&parent=10136
+
