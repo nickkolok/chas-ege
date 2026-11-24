@@ -353,7 +353,6 @@ module.exports = function registerNodeTests(QUnit) {
 
         assert.equal(c1.norma(), 5, '|1+2i|² = 5');
     });
-    });
 
     // ============================================================
     //  RectilinearSolid  (lib/rectilinearSolid.js)
@@ -397,6 +396,7 @@ module.exports = function registerNodeTests(QUnit) {
         assert.notOk(box.isPointHidden([2, 0, 2], toViewer), 'передняя верхняя правая вершина видна');
         assert.ok(box.isPointHidden([0, 2, 0], toViewer), 'задняя нижняя левая вершина не видна');
         assert.ok(box.isPointHidden([1, 2, 0], toViewer), 'точка заднего нижнего ребра не видна');
+    });
 
     // ============================================================
     //  Progressions  (lib/arithm_progression.js, lib/geom_progression.js)
