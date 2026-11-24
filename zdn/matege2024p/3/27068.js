@@ -38,7 +38,7 @@
 
 		let point2DPrism = prism.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(prism, camera, point2DPrism, {
+		point2DPrism = autoScale(prism.verticesOfFigure, camera, point2DPrism, {
 			startX: -180,
 			finishX: 160,
 			startY: -160,
@@ -46,33 +46,34 @@
 			maxScale: 100,
 		});
 
-		point2DPrism = prism.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
-		
 		genAssert((point2DPrism[1].x-point2DPrism[6].x).abs()>20, 'Сечение слилось с ребром');
 
-		let strok = [5, 4];
+		let dash = [5, 4];
+
+		let faces = [[0,1,2],[3,4,5],[0,1,4,3],[1,2,5,4],[2,0,3,5]];
+		let visibility = facesVisibility(prism.verticesOfFigure.slice(0, 6), point2DPrism, faces);
+		let figureMatrix = dashHiddenEdges(prism.connectionMatrix, faces, visibility, dash);
+		if (!figureMatrix[5]) figureMatrix[5] = [];
+		figureMatrix[5][9] = 1;
+		if (!figureMatrix[6]) figureMatrix[6] = [];
+		figureMatrix[6][6] = dash;
+		if (!figureMatrix[6]) figureMatrix[6] = [];
+		figureMatrix[6][8] = dash;
+		if (!figureMatrix[7]) figureMatrix[7] = [];
+		figureMatrix[7][9] = 1;
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.drawFigure(point2DPrism, [
-				[strok],
-				[1, strok],
-				[1, 0, 0],
-				[0, strok, 0, 1],
-				[0, 0, 1, 1, 1],
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-				[0, 0, 0, 0, 0, 0, strok, 0, strok],
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-			]);
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawFigure(point2DPrism, figureMatrix);
 		};
 
 		NAtask.setTask({
 			text: 'Через среднюю линию основания треугольной призмы проведена плоскость, параллельная боковому ребру. ' +
 				question.ie.toZagl() +
-				' отсечённой'.esli(rand2) + ' призмы рав' + ['ен', 'на'][question.rod] + ' $' + number +
-				'$. Найдите  ' + question.ve + ' ' + ['отсечённой', 'исходной'][rand2] + ' треугольной призмы.',
+				' отсечённой'.esli(rand2) + ' призмы рав' + ['ен', 'на'][question.rod] + ' $' + number.ts() +
+				'$. Найдите ' + question.ve + ' ' + ['отсечённой', 'исходной'][rand2] + ' треугольной призмы.',
 			answers: [number * ratio, number / ratio][rand2],
 			analys: '',
 		});
