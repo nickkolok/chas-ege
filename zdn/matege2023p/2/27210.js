@@ -18,6 +18,15 @@
 		// Координаты ступеньки: они же — концы подписываемых рёбер
 		let yStep = d - e;
 		let zStep = H - c;
+		// Глубина рисуется под углом depthAngle с сокращением depthScale,
+		// поэтому заднее ребро сдвинуто вправо на depthScale·cos(depthAngle)·e
+		// относительно переднего ребра верхнего параллелепипеда
+		let depthScale = 0.6;
+		let depthAngle = Math.PI / 4;
+		// Полная высота H подписана у заднего пунктирного ребра, как в прототипе.
+		// Это ребро должно лежать внутри передней грани верхнего параллелепипеда
+		// с запасом на подпись: иначе H читается как длина его правого ребра (а это c)
+		genAssert(w - depthScale * Math.cos(depthAngle) * e >= 1.1, 'подпись высоты у правого ребра верхнего параллелепипеда');
 
 		let polyhedron = new RectilinearSolid([
 			[0, 0, 0, a, d, zStep],
@@ -26,6 +35,8 @@
 
 		let paint1 = function (ct) {
 			ct.drawRectilinearSolid(polyhedron, {
+				depthScale: depthScale,
+				depthAngle: depthAngle,
 				labels: [
 					{ from: [0, yStep, H], to: [0, d, H], text: e },
 					{ from: [0, d, H], to: [w, d, H], text: w },
