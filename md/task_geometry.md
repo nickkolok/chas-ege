@@ -66,6 +66,29 @@ ctx.signVertices(points, letters, {above: [2, 3]});
 (например, угла в 1 градус в треугольнике).
 
 
+## Подписи точек на чертеже
+
+Подписи не должны наезжать на линии чертежа; готовые помощники лежат в `lib/func.js`:
+
+* `labelPositionAwayFrom(point, from, distance)` — подпись точки `point`
+  на расстоянии `distance` в направлении от `from`
+  (например, вершина фигуры — наружу от её центра);
+* `labelPositionOutsideSegment(point, segmentStart, segmentEnd, from, distance)` —
+  подпись точки на отрезке, по нормали со стороны без `from`;
+* `labelPositionAwayFromSegments(point, segments, distance, directions)` —
+  подпись точки в стороне от набора отрезков: из `directions` (по умолчанию 12)
+  равномерных направлений на расстоянии `distance` выбирается то,
+  где расстояние до ближайшего отрезка максимально; при равенстве — первое
+  (вдоль оси X). Расстояния сравниваются с допуском `1e-9`, поэтому направления,
+  равные геометрически (например, симметричные), остаются равными и после
+  округления. Расстояние отсчитывается от точки привязки текста, поэтому подпись
+  рисуют с `ctx.textAlign = 'center'` и `ctx.textBaseline = 'middle'`;
+* `segmentsFromConnectionMatrix(points, connectionMatrix)` — отрезки фигуры
+  по матрице смежности в формате `ctx.drawFigure()`:
+  истинный `connectionMatrix[i][j]` даёт отрезок `points[i+1]`—`points[j]`.
+  Рёбра уже заданы матрицей — не перечисляйте их вручную второй раз.
+
+Расстояние от точки до отрезка: `distanceFromPointToSegment(point, segmentStart, segmentEnd)`.
 Расстояние между двумя точками плоскости (например, вершинами после `autoScale()`)
 считает `lengthInPlane(p1, p2)` из `lib/figure.js`; `lengthInSpace()` — для точек с координатой `z`.
 
