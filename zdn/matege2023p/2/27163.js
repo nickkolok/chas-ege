@@ -4,75 +4,49 @@
 
 	retryWhileError(function() {
 
-		let radiuses = [sl(1, 20)];
-		radiuses.push(slKrome(radiuses[0], 1, 20));
+		let radiuses = [[3, 4], [5, 12], [8, 15], [7, 24], [20, 21]].iz();
+		let scale = sl(1, 5);
+		radiuses = radiuses.map(radius => radius * scale);
 
 		let radiusNew = [radiuses.reduce((a, b) => a + b.pow(2), 0), ['площадь поверхности', 'площадь большого круга']
 			.iz()
 		];
 
 
+		let greatCircle = radiusNew[1] === 'площадь большого круга';
 		let paint1 = function(ctx) {
 			ctx.translate(-10, 0);
 			ctx.lineWidth = 2;
-
-
-			ctx.beginPath();
-			if (radiusNew[1] == 'площадь большого круга') {
-				ctx.ellipse(100, 150, 20, 80, Math.PI / 2, 0, 2 * Math.PI);
-			} else
-				ctx.arc(100, 150, 80, 0, Math.PI * 2, true);
-				
-			ctx.fillStyle = "#61DC9A";
-			ctx.fill();
-			ctx.closePath();
-
-
-			//шар 1
-			ctx.drawCircle(100, 150, 80); // Внешняя окружность
-
-			ctx.drawEllipse(100, 150, 20, 80, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-
-			ctx.setLineDash([5, 5]);
-			ctx.drawEllipse(100, 150, 20, 80, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			ctx.setLineDash([]);
-			ctx.drawLine(100, 150, 180, 150);
-
-			//шар 2
-			ctx.translate(200, 0);
-			ctx.beginPath();
-			if (radiusNew[1] == 'площадь большого круга') {
-				ctx.ellipse(100, 150, 20, 100, Math.PI / 2, 0, 2 * Math.PI);
-			} else {
-				ctx.arc(100, 150, 100, 0, Math.PI * 2, true);
-			}
-				
-			ctx.fillStyle = "#61DC9A";
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.setLineDash([0, 0]);
-			ctx.drawCircle(100, 150, 100); // Внешняя окружность
-
-			ctx.drawEllipse(100, 150, 20, 100, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-
-			ctx.setLineDash([5, 5]);
-			ctx.drawEllipse(100, 150, 20, 100, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-
-			ctx.setLineDash([]);
-			ctx.drawLine(100, 150, 200, 150);
+			ctx.fillStyle = '#61DC9A';
+			let drawScale = 100 / radiuses.maxE();
+			radiuses.forEach((radius, i) => {
+				let cx = 120 + 220 * i, cy = 150;
+				let r = radius * drawScale, ry = r / 4;
+				if (greatCircle) {
+					ctx.beginPath();
+					ctx.ellipse(cx, cy, r, ry, 0, 0, 2 * Math.PI);
+					ctx.fill();
+				} else {
+					ctx.fillKrug(cx, cy, r);
+				}
+				ctx.drawCircle(cx, cy, r);
+				ctx.drawEllipse(cx, cy, r, ry, 0, 0, Math.PI);
+				ctx.setLineDash([5, 5]);
+				ctx.drawEllipse(cx, cy, r, ry, 0, Math.PI, 2 * Math.PI);
+				ctx.setLineDash([]);
+				ctx.drawLine(cx, cy, cx + r, cy);
+			});
 		};
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
 			text: 'Радиусы двух шаров равны $' + radiuses.join('$ и $') + '$. ' +
 				'Найдите радиус шара, ' + radiusNew[1] + ' которого равна ' +
-				'сумме ' + (radiusNew[1] === 'площадь большого круга' ? 'площадей больших кругов' :
+				'сумме ' + (greatCircle ? 'площадей больших кругов' :
 					sklonlxkand(radiusNew[1]).rm) + ' двух данных шаров.',
 			answers: radiusNew[0].sqrt(),
 			authors: ['Суматохина Александра'],
 		});
-		NAtask.modifiers.multiplyAnswerBySqrt(7);
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 500,
 			height: 300,
@@ -81,3 +55,5 @@
 	}, 1000);
 })();
 //27163 76361 76377 76363 76365 76367 76369 76371 76373 76375 76379 76381
+
+
