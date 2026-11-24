@@ -4,6 +4,7 @@
         /* На графике изображена зависимость скорости погружения батискафа от времени. На вертикальной оси отмечена скорость в м/с, на горизонтальной – время в секундах, прошедшее с начала погружения. */
 
         let secondsPerUnit = 15, speedPerUnit = 0.1;
+        const intervalCells = 4;
 
         function answAboutStop(intervals, answ, variable) {
             let wasStop = intervals.map(interval => lengthOfZeroInterval(interval) > 1);
@@ -23,7 +24,7 @@
             let firstMaxIndex = value.indexOf(maxValue);
             let wasMax = intervals.map((_, i) => {
                 let startIndex = intervalStarts[i];
-                let endIndex = startIndex + 4;
+                let endIndex = startIndex + intervalCells;
                 return firstMaxIndex >= startIndex && firstMaxIndex <= endIndex;
             });
             addUniqueAnsw(wasMax, answ, 'скорость погружения впервые достигла максимума за всё время погружения');
@@ -31,12 +32,12 @@
 
         function answAboutNonMore(intervals, answ, V) {
             let wasNonMore = intervals.map(interval => isNotMore(interval, V));
-            addUniqueAnsw(wasNonMore, answ, 'скорость погружения не больше ' + V * speedPerUnit + ' м/с на всём интервале');
+            addUniqueAnsw(wasNonMore, answ, 'скорость погружения не больше ' + (V * speedPerUnit).ts() + ' м/с на всём интервале');
         }
 
         function answAboutNonLess(intervals, answ, V) {
             let wasNonLess = intervals.map(interval => isNotLess(interval, V));
-            addUniqueAnsw(wasNonLess, answ, 'скорость погружения не меньше ' + V * speedPerUnit + ' м/с на всём интервале');
+            addUniqueAnsw(wasNonLess, answ, 'скорость погружения не меньше ' + (V * speedPerUnit).ts() + ' м/с на всём интервале');
         }
 
         function answAboutIncreasing(intervals, answ) {
@@ -109,14 +110,15 @@
                 }
         }
 
-        let beginTime = sl(4);
-        let intervalStarts = Array.from({length: 4}, (_, i) => beginTime + i * 4);
+        value = value.slice(0, time.length);
+        let beginTime = sl(intervalCells);
+        let intervalStarts = Array.from({length: 4}, (_, i) => beginTime + i * intervalCells);
 
-        let intervals = intervalStarts.map(start => value.slice(start, start + 5));
+        let intervals = intervalStarts.map(start => value.slice(start, start + intervalCells + 1));
 
         let listOfIntervals = intervals.map((interval, i) => {
             return {
-                expr: intervalStarts[i] * secondsPerUnit + '–' + (intervalStarts[i] + 4) * secondsPerUnit + ' с',
+                expr: intervalStarts[i] * secondsPerUnit + '–' + (intervalStarts[i] + intervalCells) * secondsPerUnit + ' с',
                 solution: []
             };
         });
@@ -211,5 +213,5 @@
         NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=510730
+// 510730
 
