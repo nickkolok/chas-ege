@@ -155,9 +155,9 @@
         let price = [sl(0, 8, 0.5)]; // шкала цены
         let count = 0;
 
-        for (; price.length <= time.length;) {
-            let interI = ((time.length / (sl(3, 8, 0.5))).floor());
-            for (let j = 0; j < interI; j++) {
+        for (; price.length < time.length;) {
+            let interI = (time.length / sl(3, 8, 0.5)).floor();
+            for (let j = 0; j < interI && price.length < time.length; j++) {
                 let lastPrice = price[price.length - 1];
                 let newPrice = lastPrice + ([1, 1, 1, 0].iz() ? sl(0.1, 3, 0.1) * (-1).pow(count % 2) : 0);
                 if (newPrice > 1 && newPrice < 8)
@@ -194,7 +194,7 @@
             // добавляем ответ про понижение цены
             answAboutDecreasing(intervals, listOfIntervals);
         }
-        // добавляем ответ про цена акции не менялась
+        // добавляем ответ про то, что цена акции не менялась
         answAboutConst(intervals, listOfIntervals);
         if (aAboutNonIncrOrDecr) {
             // добавляем ответ про цена была не более
@@ -204,7 +204,7 @@
             answAboutNonLessP(intervals, listOfIntervals, LessP);
         }
 
-        // добавляем ответ про максимальную цена
+        // добавляем ответ про максимальную цену
         answAboutMax(intervals, listOfIntervals);
 
         if (aAboutDelta) {
@@ -271,4 +271,5 @@
         NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=510146
+// 510146
+
