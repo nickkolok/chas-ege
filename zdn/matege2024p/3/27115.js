@@ -1,6 +1,6 @@
 (function() {
 	retryWhileError(function() {
-		
+
 		let pyr1 = new RegularPyramid({
 			height: sl(10, 30)*(3).sqrt(),
 			baseSide: sl(20, 50),
@@ -16,7 +16,7 @@
 		pyr1.verticesOfFigure.push(coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[1]));
 		pyr1.verticesOfFigure.push(coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[2]));
 
-		let strok = [5, 4];
+		let dash = [5, 4];
 
 		let camera = {
 			x: 0,
@@ -31,7 +31,7 @@
 
 		let point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(pyr1, camera, point2DPyr, {
+		point2DPyr = autoScale(pyr1.verticesOfFigure, camera, point2DPyr, {
 			startX: -180,
 			finishX: 160,
 			startY: -160,
@@ -39,28 +39,30 @@
 			maxScale: 50,
 		});
 
-		point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+		let faces = [[0,1,2],[0,1,3],[1,2,3],[2,0,3]];
+		let visibility = facesVisibility(pyr1.verticesOfFigure.slice(0, 4), point2DPyr, faces);
+		let figureMatrix = dashHiddenEdges(pyr1.connectionMatrix, faces, visibility, dash);
+		if (!figureMatrix[2]) figureMatrix[2] = [];
+		figureMatrix[2][4] = 1;
+		if (!figureMatrix[2]) figureMatrix[2] = [];
+		figureMatrix[2][5] = dash;
+		if (!figureMatrix[3]) figureMatrix[3] = [];
+		figureMatrix[3][5] = dash;
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.drawFigure(point2DPyr, [
-				[1],
-				[strok, strok],
-				[1, 1, strok, 0, 1, strok],
-				[0, 0, 0, 0, 0, strok]
-			]);
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawFigure(point2DPyr, figureMatrix);
 		};
 
 		NAtask.setTask({
-			text: ' Объём треугольной пирамиды равен $' + pyr1.volume.pow(2).texsqrt(1) + '$. ' +
+			text: 'Объём треугольной пирамиды равен $' + pyr1.volume.ts() + '$. ' +
 				'Через вершину пирамиды и среднюю линию её основания проведена плоскость (см. рисунок). ' +
 				'Найдите объём отсечённой треугольной пирамиды.',
 			answers: pyr2.volume,
 			author: ['Суматохина Александра'],
 		});
-		NAtask.modifiers.multiplyAnswerBySqrt(13);
 		NAtask.modifiers.assertSaneDecimals();
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
