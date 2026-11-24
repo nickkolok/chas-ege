@@ -132,7 +132,7 @@
 		};
 		let q1 = markPoint(1, 0), q2 = markPoint(1, 1), q3 = markPoint(0, 1);
 
-		let paint1 = function (ctx) {
+		let paint = function (ctx) {
 			ctx.translate(200, 200);
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.lineWidth = 2;
@@ -156,7 +156,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 		// При нечётном произведении катетов площадь основания дробная (4,5 и т.п.)
 		NAtask.modifiers.allDecimalsToStandard(true);

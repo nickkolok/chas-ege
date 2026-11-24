@@ -22,7 +22,7 @@
 		});
 		NAtask.modifiers.addJqplot({
 			dataArray: [points], width: '700px', height: '460px',
-			options: {axes: {xaxis: {min: 0, max: 10, tickInterval: 0.5}, yaxis: {min: 0, max: 800, tickInterval: 20}},
+			options: {axes: {xaxis: {min: 0, max: anchors.length - 1, tickInterval: 0.5}, yaxis: {min: 0, max: 800, tickInterval: 20}},
 				seriesDefaults: {showMarker: false}},
 		});
 	}, 1000);
