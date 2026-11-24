@@ -38,7 +38,7 @@
 		}
 		
 		// Проверяем, что результат - целое число
-		genAssert(resultN.isAlmostInteger(), "Результат не целое число");
+		genAssertAlmostInteger(resultN, "Результат не целое число");
 		
 		// Формируем текст задачи
 		let rVerb = dirR === 1 ? 'увеличили' : 'уменьшили';
