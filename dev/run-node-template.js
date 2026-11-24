@@ -450,6 +450,10 @@ exitAfterFlush(hadFailures ? 1 : 0);
  * @param {number} code - код возврата
  */
 function exitAfterFlush(code) {
+	// Пока вывод дописывается, окно jsdom не должно ничего исполнять:
+	// иначе успевают сработать его события и таймеры (например, обработчик
+	// load из бандла) и напечатать в stderr постороннюю ошибку
+	window.close();
 	process.stdout.write('', () => {
 		process.stderr.write('', () => process.exit(code));
 	});
