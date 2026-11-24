@@ -12,7 +12,7 @@
 		let q = sl(0.0001, 0.09, 0.0001);
 		let U = sl(2, 20);
 		let energy = formula === 0 ? q * q / (2 * C) : C * U * U / 2;
-		genAssert((energy * 100000).isAlmostInteger(), 'Ответ должен иметь не более пяти знаков после запятой');
+		genAssertDecimalPlaces(energy, 5, 'Ответ должен иметь не более пяти знаков после запятой');
 		let answer = +energy.toFixed(5);
 		NAtask.setTask({
 			text: 'Энергия заряженного конденсатора $W$ (в ' + ['Дж', 'джоулях'][wording] + ') вычисляется по формуле $' +
