@@ -4,7 +4,7 @@
 		let letters = ['A', 'B', 'C', 'D'];
 		let letterWithIndex = letters.map((elem) => elem + '₁');
 		let allLet = letters.concat(letterWithIndex);
-		
+
 
 		let paint1 = function(ctx) {
 			ctx.translate(95, 50);
@@ -12,7 +12,7 @@
 			ctx.scale(10, 10);
 
 			ctx.lineWidth = 0.2;
-			ctx.font = "2.5px liberation_sans";
+			ctx.font = '2.5px liberation_sans';
 			ctx.drawParallelepiped({
 				width: edge*1.1,
 				height: edge*0.9,
