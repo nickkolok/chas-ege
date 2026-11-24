@@ -17,7 +17,7 @@
                 calculateHeights: true,
             }
         });
-        genAssert(trp.lengthHeightACD.isAlmostInteger(), 'Высота не целая');
+        genAssertAlmostInteger(trp.lengthHeightACD, 'Высота не целая');
 
         let points = autoScale(trp.vertices);
 
@@ -40,7 +40,7 @@
             let shortBase = bases[1];
             let left = longBase[0].x < longBase[1].x ? longBase[0] : longBase[1];
             let right = left == longBase[0] ? longBase[1] : longBase[0];
-            let legEnd = [shortBase[0], shortBase[1]].sort((p1, p2) => p1.x - p2.x)[0];
+            let legEnd = [shortBase[0], shortBase[1]].sortBy(['x'])[0];
 
             ctx.strokeStyle = om.primaryBrandColors.iz();
             ctx.arcBetweenSegments([right.x, right.y, left.x, left.y, legEnd.x, legEnd.y], 30);
@@ -51,7 +51,8 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             let up = Math.sign(shortBase[0].y - longBase[0].y);
-            ctx.fillText('45°', left.x + 55, -(left.y + up * 14));
+            let baseAngle = trp.lengthAB > trp.lengthCD ? trp.angleAInDegrees : trp.angleCInDegrees;
+            ctx.fillText(baseAngle.round().ts() + '°', left.x + 55, -(left.y + up * 14));
             bases.forEach(([p1, p2, length], i) => {
                 let [x, y] = coordinatesMiddleOfSegment(p1.x, p1.y, p2.x, p2.y);
                 let middle = {x, y};
