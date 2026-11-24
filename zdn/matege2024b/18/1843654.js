@@ -27,7 +27,7 @@
 		let c = sl(1, 6);
 		let d = slKrome(c, 1, 8);
 		left = [[a, b], [-b, -a], [-c, d], [-d, c]].map(([first, second], i) => {
-			let expr = ['x^2', first + second ? -(first + second) + 'x' : 0, first * second].slag0().beautifyAlgebraicNotation();
+			let expr = ['x^2', -(first + second) + 'x', first * second].slag0().beautifyAlgebraicNotation();
 			let solution = i < 2 ?
 				union(halfline(first, false, true), halfline(second, true, true)) :
 				'[' + first + ';' + second + ']';
@@ -59,7 +59,7 @@
 		let power = base + '^x';
 		let log = '\\log_{' + base + '}';
 		left = [
-			{expr: power + '>' + log + ' ' + base, solution: halfline(0, true, false)},
+			{expr: power + '>' + log + '{' + base + '}', solution: halfline(0, true, false)},
 			{expr: power + '>' + base ** a, solution: halfline(a, true, false)},
 			{expr: power + '<' + base ** b, solution: halfline(b, false, false)},
 			{expr: power + '>' + log + '{' + (1).texfrac(base) + '}', solution: '\\mathbb{R}'},

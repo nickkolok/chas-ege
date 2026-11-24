@@ -6,4 +6,3 @@ window.nomer=[
 ].iz();
 
 window.comment = 'Неревенства';
-

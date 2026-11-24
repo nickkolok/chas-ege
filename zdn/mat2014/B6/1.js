@@ -1,11 +1,11 @@
-(function () {
-	retryWhileError(function () {
+(function() {
+	retryWhileError(function() {
 		'use strict';
 		NAinfo.requireApiVersion(0, 0);
-		let key = "283467";
+		let key = window.nomer === 283467 ? '283467' : '1';
 
 		let preference1 = ['two_tosses', 'three_tosses', 'four_tosses'];
-		let preference2 = ['equal', 'more', 'less', 'moreOrEqual', 'lesseOrEqual'];
+		let preference2 = ['equal', 'more', 'less', 'moreOrEqual', 'lessOrEqual'];
 		// Количество бросков (2-4)
 		let totalTosses = getListedPreference(key, preference1.map((pref, index) => ({
 			preference: pref,
@@ -16,10 +16,10 @@
 		let successfulTosses = sl(0, totalTosses);
 
 		// Тип сравнения
-		let comparisonType = getListedPreference(key, preference2.map((pref, index) => ({
+		let comparisonType = getListedPreference(key, [...preference2.map((pref, index) => ({
 			preference: pref,
-			preferenceValue: index
-		})), (totalTosses == successfulTosses || successfulTosses == 0) ? 0 : sl(preference1.length-1));
+			preferenceValue: index,
+		})), {preference: 'lesseOrEqual', preferenceValue: preference2.indexOf('lessOrEqual')}], (totalTosses == successfulTosses || successfulTosses == 0) ? 0 : sl(preference2.length-1));
 
 		// Варианты формулировки количества выпадений
 		const resultOptions = [
@@ -49,25 +49,26 @@
 				}
 				outcomeDescription = 'менее ' + outcomeDescription;
 				break;
-			case 3: // не более
-				for (let count = 0; count <= successfulTosses; count++) {
-					probability += math.combinations(totalTosses, count) * (0.5).pow(totalTosses);
-				}
-				outcomeDescription = 'не более ' + outcomeDescription;
-				break;
-			case 4: // не менее
+			case 3: // не менее
 				for (let count = successfulTosses; count <= totalTosses; count++) {
 					probability += math.combinations(totalTosses, count) * (0.5).pow(totalTosses);
 				}
 				outcomeDescription = 'не менее ' + outcomeDescription;
 				break;
+			case 4: // не более
+				for (let count = 0; count <= successfulTosses; count++) {
+					probability += math.combinations(totalTosses, count) * (0.5).pow(totalTosses);
+				}
+				outcomeDescription = 'не более ' + outcomeDescription;
+				break;
 		}
 
-		genAssert(probability.mzhd(0, 1), 'Вероятность не в диапозоне (0, 1)');
+		genAssert(successfulTosses > 0 || comparisonType === 0, 'Для сравнения нужен положительный порог');
+		genAssert(probability.mzhd(0, 1), 'Вероятность не в диапазоне (0, 1)');
 
 		NAtask.setTask({
-			text: `В случайном эксперименте симметричную монету бросают ${chislitlx(totalTosses, `раз`, `$`)}. 
-		Какова вероятность того, что ${window.moneta.iz()} выпадет ${outcomeDescription}?`.replace(/выпадет ни разу/, 'ни разу не выпадет'),
+			text: (`В случайном эксперименте симметричную монету бросают ${chislitlx(totalTosses, `раз`, `$`)}. ` +
+				`Какова вероятность того, что ${window.moneta.iz()} выпадет ${outcomeDescription}?`).replace(/выпадет ни разу/, 'ни разу не выпадет'),
 			answers: probability,
 			authors: ['Авдеев Николай', 'Суматохина Александра'],
 			preference: [preference1, preference2],
@@ -76,3 +77,11 @@
 })();
 
 // https://ege.sdamgia.ru/problem?id=283467
+// C2F594
+// 8B11EA
+// 3C5EE2
+// 7492F0
+// 6EF6E1
+// F07186
+// 99ADE8
+
