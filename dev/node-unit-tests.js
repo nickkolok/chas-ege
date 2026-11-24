@@ -415,7 +415,7 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('прилёг', 1), 'прилегла');
         assert.equal(selectVerbGender('залёг', 1), 'залегла');
         assert.equal(selectVerbGender('налёг', 1), 'налегла');
-        assert.equal(selectVerbGender('влёг', 1), 'влегла');
+        assert.equal(selectVerbGender('слёг', 1), 'слегла');
         assert.equal(selectVerbGender('жёг', 1), 'жгла', 'здесь гласная выпадает');
         assert.equal(selectVerbGender('сжёг', 1), 'сожгла', 'после приставки на согласный — о');
         assert.equal(selectVerbGender('поджёг', 1), 'подожгла');
