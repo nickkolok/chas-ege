@@ -302,6 +302,16 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('стерёг', 1), 'стерегла');
     });
 
+    QUnit.test('обрести: обрёл, приобрёл, изобрёл — по записи брёл', function (assert) {
+        // приобрёл встречается в шаблонах: physoge2026/6/3488 (машина приобрела скорость)
+        assert.equal(selectVerbGender('приобрёл', 1), 'приобрела', 'не приобрёла');
+        assert.equal(selectVerbGender('приобрёл', 2), 'приобрело');
+        assert.equal(selectVerbGender('приобрёл', 3), 'приобрели');
+        assert.equal(selectVerbGender('приобрел', 1), 'приобрела', 'без ё — правилом');
+        assert.equal(selectVerbGender('обрёл', 1), 'обрела');
+        assert.equal(selectVerbGender('изобрёл', 3), 'изобрели');
+    });
+
     QUnit.test('Неправильные формы без ё', function (assert) {
         assert.equal(selectVerbGender('пошел', 1), 'пошла', 'ё в шаблонах пишут не всегда');
         assert.equal(selectVerbGender('пришел', 3), 'пришли');
