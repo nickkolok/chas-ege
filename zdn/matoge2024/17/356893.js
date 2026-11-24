@@ -13,11 +13,11 @@
 		});
 
 		let points = autoScale(rhombus.vertices);
-		let rotateToDiagonal = sl1();
+		let rotateToSide = sl1();
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
-			if (rotateToDiagonal) {
+			if (rotateToSide) {
 				ctx.rotate([rhombus.pointA, rhombus.pointB].mt_arctgUnakl());
 			}
 
