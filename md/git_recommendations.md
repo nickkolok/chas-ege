@@ -174,3 +174,102 @@ window.nomer=[
 ```
 Pull-Request-URL: https://...
 ```
+
+### `silentpr` по шагам
+
+В командах ниже `upstream` — основной репозиторий, `me` — remote своего форка
+(свои форки здесь называют по нику, см. «Удалённые репозитории»).
+
+**Головы всех пуллреквестов** скачиваются за секунды; дальше голова PR 1234 — `upstream/pr/1234`.
+Скачивать заново перед каждой проверкой: головы меняются,
+когда автор принимает `silentpr` или сливает `devel`.
+
+```bash
+git fetch upstream '+refs/pull/*/head:refs/remotes/upstream/pr/*'
+```
+
+**Автор и ветка пуллреквеста.** Если автор неизвестен, можно перебрать форки
+и найти ветку с хешем головы PR:
+
+```bash
+N=3720
+h=$(git rev-parse upstream/pr/$N)
+for u in chas-ege-selena chas-ege-ulyana chas-ege-ellariya kira-dry-everywhere sugarhedgehog kalendar2 zer00player; do
+	git ls-remote https://github.com/$u/chas-ege | grep "^$h" | grep refs/heads/ | sed "s|^|$u |"
+done
+# chas-ege-ulyana 24ba28dfa…	refs/heads/lib-selectverbgender-irregular
+# chas-ege-ellariya 24ba28dfa…	refs/heads/silentpr/chas-ege-ulyana/lib-selectverbgender-irregular
+```
+
+Ветка PR — та, что не `silentpr/…`; вторая строка — уже принятый `silentpr`
+на ту же голову. Список форков неполный: если ничего не нашлось,
+автор и ветка — в шапке страницы PR («wants to merge … from автор:ветка»).
+Ветка может содержать `/`, тогда и в имени `silentpr` она остаётся как есть:
+`silentpr/chas-ege-ellariya/claude/genpifag-cache`.
+
+**Подготовка.** `silentpr` строится от головы PR, а не от `devel`:
+
+```bash
+git checkout -B sp-3720 upstream/pr/3720
+# … коммиты …
+git push me sp-3720:refs/heads/silentpr/chas-ege-ulyana/lib-selectverbgender-irregular
+```
+
+- `Pull-Request-URL` идёт первым трейлером в конце сообщения, остальные трейлеры
+  (`Co-Authored-By` и т. п.) — после него, без пустой строки между ними.
+  Видит ли git трейлер: `git log -1 --format='%(trailers:key=Pull-Request-URL,valueonly)'`.
+- Сливать с `devel` нельзя (п. 3 выше), но проверять слияние — нужно: локально,
+  без push. `git merge-tree --write-tree sp-3720 upstream/devel` печатает только хеш дерева
+  и выходит с кодом 0, если конфликта нет; тесты и прогоны шаблонов — на локальном слиянии
+  (см. [ревью пуллреквеста](how_to_review_PR.md), «Несколько PR сразу»).
+- Одна и та же правка, нужная нескольким PR (общий коммит, скопированный в серию PR),
+  переносится в каждый `silentpr` одним и тем же коммитом через `git cherry-pick`;
+  меняется только `Pull-Request-URL`. Дифф одинаковый, поэтому после мержа одного PR
+  остальные сольются без конфликта.
+- Если в `silentpr` переносится чужой коммит (например, шаблон из PR, который закроют),
+  `git cherry-pick` сохраняет автора и дату; откуда коммит и зачем перенесён —
+  в сообщении.
+- Новые коммиты к уже принятому `silentpr` кладутся поверх текущей головы PR,
+  и push проходит как обычно. Если push отклонён, значит, в ветке есть непринятые
+  коммиты, а PR ушёл вперёд: сначала разобраться (см. ниже), `--force` не использовать.
+
+**Принят ли `silentpr`.** `silentpr` может быть принят частично, до какого-то коммита,
+поэтому смотрят не на голову ветки, а на коммиты, которых ещё нет в PR:
+
+```bash
+git fetch upstream '+refs/pull/*/head:refs/remotes/upstream/pr/*'
+git fetch me --prune
+git log --oneline upstream/pr/3720..me/silentpr/chas-ege-ulyana/lib-selectverbgender-irregular
+# пусто — принят целиком; иначе — ещё не принятые коммиты
+```
+
+Все `silentpr` своего форка сразу:
+
+```bash
+for b in $(git branch -r --list 'me/silentpr/*'); do
+	echo "$b: не принято коммитов — $(git rev-list --count $b --not upstream/devel --remotes='upstream/pr/*')"
+done
+```
+
+Смёржен ли сам PR: `git merge-base --is-ancestor upstream/pr/3720 upstream/devel && echo смёржен`
+(PR вливаются merge-коммитом, поэтому голова смёрженного PR — предок `devel`).
+Закрыт ли PR без мержа, по git не узнать: это видно только на странице PR.
+
+**Удаление.** `silentpr` удаляют, когда он принят целиком или PR смёржен:
+
+```bash
+git push me --delete silentpr/bob/foo silentpr/bob/bar
+```
+
+Частично принятый `silentpr` не удаляют: непринятые коммиты ещё ждут решения.
+Ветки, из которых открыты PR (не `silentpr`), не удаляют, пока PR открыт:
+GitHub закроет PR вместе с веткой.
+
+Иногда бывает, что ветку удалить нельзя: например, у ассистента в песочнице
+push с удалением отклоняется (HTTP 403). В таком случае надо вывести команду удаления
+тому, кто может её выполнить, — одной строкой, со всеми ветками и полным адресом форка,
+чтобы она работала без настроенных remote:
+
+```bash
+git push https://github.com/<свой-ник>/chas-ege --delete silentpr/… silentpr/…
+```
