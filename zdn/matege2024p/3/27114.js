@@ -43,11 +43,10 @@
 		let visibility = facesVisibility(pyr1.verticesOfFigure.slice(0, 5), point2DPyr, faces);
 		let figureMatrix = dashHiddenEdges(pyr1.connectionMatrix, faces, visibility, dash);
 		if (!figureMatrix[2]) figureMatrix[2] = [];
-		figureMatrix[2][1] = dash;
+		figureMatrix[2][1] = isOnVisibleFace(faces, visibility, [1, 3]) ? 1 : dash;
 		if (!figureMatrix[4]) figureMatrix[4] = [];
-		figureMatrix[4][1] = 1;
-		if (!figureMatrix[4]) figureMatrix[4] = [];
-		figureMatrix[4][3] = 1;
+		figureMatrix[4][1] = isOnVisibleFace(faces, visibility, [pyr1.numberSide, 0, 1]) ? 1 : dash;
+		figureMatrix[4][3] = isOnVisibleFace(faces, visibility, [pyr1.numberSide, 0, 3]) ? 1 : dash;
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
