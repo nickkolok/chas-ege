@@ -50,8 +50,6 @@
 
 		let paint1 = function (ct) {
 			ct.drawRectilinearSolid(detail, {
-				width: 300,
-				height: 300,
 				labels: [
 					{ from: [0, s, c], to: [0, s, h], text: h - c },
 					{ from: [0, 0, c], to: [0, s, c], text: s, direction: [-1, 0] },
