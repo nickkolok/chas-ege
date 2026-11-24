@@ -88,6 +88,14 @@ ctx.signVertices(points, letters, {above: [2, 3]});
   истинный `connectionMatrix[i][j]` даёт отрезок `points[i+1]`—`points[j]`.
   Рёбра уже заданы матрицей — не перечисляйте их вручную второй раз.
 
+Подпись у середины ребра (например, вероятность на ветви дерева) рисует
+`ctx.signSegmentInMiddle(x1, y1, x2, y2, letter, length, maxLength)` из `lib/canvas.js`;
+сторона отрезка выбирается случайно. Если сторона важна, используйте
+`ctx.signSegmentOnSide(x1, y1, x2, y2, letter, length, maxLength, side)`:
+`side = 1` — по нормали, повёрнутой на +90° от направления отрезка, `side = -1` —
+по противоположной. Нормаль считается через `atan2`, поэтому при перестановке
+концов отрезка сторона меняется на противоположную.
+
 Расстояние от точки до отрезка: `distanceFromPointToSegment(point, segmentStart, segmentEnd)`.
 Расстояние между двумя точками плоскости (например, вершинами после `autoScale()`)
 считает `lengthInPlane(p1, p2)` из `lib/figure.js`; `lengthInSpace()` — для точек с координатой `z`.
