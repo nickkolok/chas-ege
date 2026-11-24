@@ -4,6 +4,7 @@
 		/* На рисунке точками показано атмосферное давление в некотором городе на протяжении трёх суток с 4 по 6 апреля 2013 года. В течение суток давление измеряется 4 раза: в 0:00, в 6:00, в 12:00 и в 18:00. По горизонтали указывается время и дата, по вертикали – давление в миллиметрах ртутного столба. Для наглядности точки соединены линиями.*/
 
 		let pressureMin = 752, pressureStep = 2;
+		const pressureMaxK = 7;
 
 		function convert(P) {
 			return pressureMin + P * pressureStep + ' мм рт. ст.';
@@ -92,15 +93,17 @@
 		let month = sklonlxkand(om.months.iz()).re;
 		let beginDay = sl(1, 20);
 
-		let time = [1].zapMonot(13, 0, 1, 1); // шкала времени
-		let value = [sl(0, 7, 0.5)]; // шкала давления
+		let time = [0].zapMonot(13, 0, 1, 1); // шкала времени
+		let value = [sl(0, pressureMaxK, 0.5)]; // шкала давления
 
 		for (; value.length <= time.length;) {
 			let interI = (time.length / sl(2, 8)).floor();
 			for (let j = 0; j < interI; j++) {
-				value.push([sl(0, 7, 0.5), value[value.length - 1]][Number([0, 0, 0, 1].iz() && value[value.length - 1] != 0)]);
+				value.push([sl(0, pressureMaxK, 0.5), value[value.length - 1]][Number([0, 0, 0, 1].iz() && value[value.length - 1] != 0)]);
 			}
 		}
+
+		value = value.slice(0, time.length);
 
 		let intervalsTime = Array.from({ length: time.length - 1 }, (_, i) =>
 			time.slice(i, i + 2)
@@ -124,11 +127,10 @@
 			};
 		});
 
-		let LessP1 = sl(0, 7);
-		let LessP2 = sl(0, 7);
-		let MoreP1 = sl(0, 7);
-		let MoreP2 = sl(0, 7);
-
+		let LessP1 = sl(0, pressureMaxK);
+		let LessP2 = sl(0, pressureMaxK);
+		let MoreP1 = sl(0, pressureMaxK);
+		let MoreP2 = sl(0, pressureMaxK);
 
 		if (sl1()) {
 			// добавляем ответ про повышение давления
@@ -180,12 +182,11 @@
 
 		let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
-
 		let paint1 = function (ctx) {
-			let cellWidth = 40, cellHeight = 30;
+			let cellWidth = 40, cellHeight = 30, gridHeight = 300;
 			ctx.drawGridWithArrows({
 				gridWidth: 500,
-				gridHeight: 300,
+				gridHeight: gridHeight,
 				cellWidth: cellWidth,
 				cellHeight: cellHeight,
 				stepX: 6,
@@ -194,13 +195,13 @@
 				stepY: pressureStep,
 				maxX: 72,
 				minY: pressureMin,
-				maxY: pressureMin + 7 * pressureStep,
+				maxY: pressureMin + pressureMaxK * pressureStep,
 				stepByCeilX: 1,
 				arrowLengthX: 11.5,
 				arrowLengthY: 7.8,
 			});
 
-			ctx.translate(cellWidth, cellHeight * 8);
+			ctx.translate(cellWidth, gridHeight - 2 * cellHeight);
 			ctx.scale(cellWidth, -cellHeight);
 			ctx.lineWidth = 2 / cellHeight;
 
@@ -212,7 +213,7 @@
 			ctx.textBaseline = 'middle';
 
 			for (let i = 0; i < 3; i++) {
-				ctx.fillText((i + 1 + beginDay) + ' ' + month, 80 + 160 * i, 40);
+				ctx.fillText((i + 1 + beginDay) + ' ' + month, cellWidth * (2 + 4 * i), 40);
 			}
 		};
 
@@ -236,4 +237,5 @@
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
-//https://mathb-ege.sdamgia.ru/problem?id=506497
+// 506497
+
