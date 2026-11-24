@@ -18,7 +18,7 @@
 			].iz();
 		}
 		let numbersOfPlace = sl(3, 10);
-		let num = ['двух', 'трёх', 'четырёх', 'пяти', 'шести', 'семи', 'восемь', 'девяти', 'десяти'];
+		let num = ['двух', 'трёх', 'четырёх', 'пяти', 'шести', 'семи', 'восьми', 'девяти', 'десяти'];
 
 		let numbersOfPartic = sl(100, 1000);
 		let particInOne = sl(10, numbersOfPartic / numbersOfPlace - 1);
