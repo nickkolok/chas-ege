@@ -15,7 +15,8 @@
 		c = c.pm();
 	}
 	var x = sluchch(-50, 50, 0.5);
-	if (rand2 === preference2.indexOf('reciprocalSquareRoot')) {
+	var reciprocal = preference2[rand2] === 'reciprocalSquareRoot';
+	if (reciprocal) {
 		x = c * c;
 	}
 	var a = c.pow(power) - b * x;
@@ -26,9 +27,9 @@
 
 	var parts = [
 		['\\sqrt' + textpower + '{' + [a, b + 'x'].slag0() + '}', c],
-		['\\sqrt' + textpower + '{\\frac{' + numerator.pow(power) * multiplier + '}{' + [a * multiplier, b * multiplier + 'x'].slag0() + '}}', numerator.texrndfrac(c)],
+		['\\sqrt' + textpower + '{\\frac{' + numerator.pow(power) * multiplier + '}{' + [a * multiplier, b * multiplier + 'x'].slag0() + '}}', (c < 0 ? numerator.texfrac(c) : numerator.texrndfrac(c))],
 		['\\sqrt' + textpower + '{\\frac{' + [a * multiplier, b * multiplier + 'x'].slag0() +
-			'}{' + numerator.pow(power) * multiplier + '}}', c.texrndfrac(numerator)
+			'}{' + numerator.pow(power) * multiplier + '}}', (c < 0 ? c.texfrac(numerator) : c.texrndfrac(numerator))
 		],
 		[(1).texfrac('\\sqrt{x}'), (1).texfrac(c.abs())],
 	][rand2];
@@ -37,7 +38,7 @@
 	chas2.task.setEquationTask({
 		parts: parts,
 		roots: x,
-		enablePartsSubtraction: rand2 !== preference2.indexOf('reciprocalSquareRoot'),
+		enablePartsSubtraction: !reciprocal,
 		preference: [preference1, preference2],
 	});
 	NAtask.modifiers.allDecimalsToStandard();
