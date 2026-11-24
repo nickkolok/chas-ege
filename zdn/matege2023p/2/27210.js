@@ -48,9 +48,36 @@
 			});
 		};
 
+		let answer = question === 'объём' ? polyhedron.volume() : polyhedron.surfaceArea();
+
+		// Решение: многогранник — нижний параллелепипед a × d × (H − c) и верхний w × e × c
+		let analys = 'Многогранник составлен из двух прямоугольных параллелепипедов: ' +
+			'нижнего с рёбрами $' + a + '$, $' + d + '$ и $' + H + '-' + c + '=' + zStep + '$ ' +
+			'и верхнего с рёбрами $' + w + '$, $' + e + '$ и $' + c + '$. ';
+		let lowerVolume = a * d * zStep;
+		let upperVolume = w * e * c;
+		let lowerArea = 2 * (a * d + a * zStep + d * zStep);
+		let upperArea = 2 * (w * e + w * c + e * c);
+		let contactArea = 2 * w * e;
+		if (question === 'объём') {
+			genAssert(lowerVolume + upperVolume === answer, 'решение расходится с ответом');
+			analys += 'Объём многогранника равен сумме их объёмов: ' +
+				'$' + a + '\\cdot' + d + '\\cdot' + zStep + '+' + w + '\\cdot' + e + '\\cdot' + c + '=' +
+				lowerVolume + '+' + upperVolume + '=' + answer + '$.';
+		} else {
+			genAssert(lowerArea + upperArea - contactArea === answer, 'решение расходится с ответом');
+			analys += 'Площадь поверхности многогранника равна сумме площадей поверхностей параллелепипедов ' +
+				'без двух прямоугольников $' + w + '\\times' + e + '$, которыми они соприкасаются: ' +
+				'$2\\cdot(' + a + '\\cdot' + d + '+' + a + '\\cdot' + zStep + '+' + d + '\\cdot' + zStep + ')+' +
+				'2\\cdot(' + w + '\\cdot' + e + '+' + w + '\\cdot' + c + '+' + e + '\\cdot' + c + ')-' +
+				'2\\cdot' + w + '\\cdot' + e + '=' +
+				lowerArea + '+' + upperArea + '-' + contactArea + '=' + answer + '$.';
+		}
+
 		NAtask.setTask({
 			text: 'Найдите ' + question + ' многогранника, изображённого на рисунке (все двугранные углы прямые).',
-			answers: question === 'объём' ? polyhedron.volume() : polyhedron.surfaceArea(),
+			answers: answer,
+			analys: analys,
 			preference: [preferenceQuestion],
 		});
 
