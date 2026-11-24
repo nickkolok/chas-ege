@@ -27,29 +27,24 @@
 
 			rotationX: -Math.PI / 2 + Math.PI / 13,
 			rotationY: 0,
-			rotationZ: -2 * Math.PI / (pyr.numberSide*1.5),
+			rotationZ: -2 * Math.PI / (pyr.numberSide * 1.5),
 		};
 
 		let point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
 		point2DPyr = autoScale(pyr.verticesOfFigure, camera, point2DPyr, {
-			startX: -390 / 2,
-			finishX: 390 / 2,
-			startY: -390 / 2,
-			finishY: 390 / 2,
+			startX: -360 / 2,
+			finishX: 360 / 2,
+			startY: -360 / 2,
+			finishY: 360 / 2,
 			maxScale: 50,
 		});
-		
-		let connectionMatrix= [
-			[1],
-			[1,1]
-			];
 
 		let paint1 = function(ctx) {
 
 			ctx.translateToCenter();
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.secondaryBrandColors;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 
 			ctx.drawFigure(point2DPyr, pyr.connectionMatrix);
 
@@ -57,7 +52,7 @@
 
 		NAtask.setTask({
 			text: 'В правильной ' + ['тре', 'четырёх', 'пяти', 'шести', 'семи', 'восьми', 'девяти', 'десяти'][pyr.numberSide - 3] +
-				'угольной пирамиде ' + name[0] + [' составляет ', ' равна '].iz() + '$' + number[0] + '$; ' + name[1] + 
+				'угольной пирамиде ' + name[0] + [' составляет ', ' равна '].iz() + '$' + number[0] + '$; ' + name[1] +
 				[' составляет ', ' равна '].iz() + '$' + number[1] +
 				'$. Чему равна ' + name[2] + ' пирамиды?',
 			answers: number[2],
@@ -71,3 +66,5 @@
 		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 10000);
 })();
+
+
