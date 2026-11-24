@@ -83,14 +83,15 @@
             addUniqueAnsw(wasCondition, answ, 'в течение периода объём добычи сначала рос, а затем стал падать');
         }
 
+        const year0 = 2001;
         let time = [0].zapMonot(10, 0, 1, 1); // шкала времени
         let production = [sl(2, 4)]; // шкала добычи
         let count = 0;
         let maxAttempts = 100;
 
-        for (; production.length <= time.length && count < maxAttempts;) {
+        for (; production.length < time.length && count < maxAttempts;) {
             let interI = (time.length / sl(3, 8, 0.5)).floor();
-            for (let j = 0; j < interI; j++) {
+            for (let j = 0; j < interI && production.length < time.length; j++) {
                 let lastProduction = production[production.length - 1];
                 let newProduction = lastProduction + (sl(0.1, 2, 0.1) * (-1).pow(count % 2));
                 if (newProduction > 1 && newProduction <= 4)
@@ -101,7 +102,7 @@
             count++;
         }
 
-        genAssert(production.length > time.length, 'Не удалось сгенерировать значения объёма добычи');
+        genAssert(production.length === time.length, 'Не удалось сгенерировать значения объёма добычи');
 
         let beginYear = sl1();
 
@@ -110,9 +111,9 @@
         }, (_, i) =>
             production.slice(i * 2 + beginYear, i * 2 + 3 + beginYear));
 
-        let listOfIntervals = intervals.map((interval, i) => {
+        let listOfIntervals = intervals.map((_, i) => {
             return {
-                expr: `${2001 + i * 2 + beginYear}-${2001 + i * 2 + 2 + beginYear}`,
+                expr: `${year0 + i * 2 + beginYear}-${year0 + i * 2 + 2 + beginYear}`,
                 solution: []
             };
         });
@@ -131,10 +132,10 @@
             answAboutDecreasing(intervals, listOfIntervals);
         }
         if (aIncrAfterDecr) {
-            // добавляем ответ про понижение добычи а потом увеличение
+            // добавляем ответ про понижение добычи, а потом увеличение
             answAboutDecreasingAfterIncreasing(intervals, listOfIntervals);
         } else {
-            // добавляем ответ про увеличение добычи а потом понижение
+            // добавляем ответ про увеличение добычи, а потом понижение
             answAboutIncreasingAfterDecreasing(intervals, listOfIntervals);
         }
 
@@ -156,16 +157,16 @@
         let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
-            let cell = 60;
+            let cell = 60, gridHeight = 420;
             ctx.drawGridWithArrows({
                 gridWidth: 570,
-                gridHeight: 420,
+                gridHeight: gridHeight,
                 cellWidth: cell,
                 cellHeight: cell,
                 stepX: 1,
                 stepY: stepY,
-                minX: 2001,
-                maxX: 2010,
+                minX: year0,
+                maxX: year0 + time.length - 1,
                 minY: minY,
                 maxY: 250,
                 stepByCeilX: 1,
@@ -173,7 +174,7 @@
                 arrowLengthY: 4.9,
             });
 
-            ctx.translate(cell, cell * 5);
+            ctx.translate(cell, gridHeight - 2 * cell);
             ctx.scale(cell, -cell);
             ctx.lineWidth = 2 / cell;
 
@@ -197,4 +198,5 @@
         NAtask.modifiers.allDecimalsToStandard();
     }, 2000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=510154
+// 510154
+
