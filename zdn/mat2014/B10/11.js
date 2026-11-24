@@ -3,7 +3,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		let width = sl(5, 15);
 		let height = sl(5, 12);
-		let depth = sl(5, 12);
+		let depth = sl(5, 10);
 		let diagonal = (width.pow(2) + height.pow(2) + depth.pow(2));
 		let question = [
 			['площадь основания', (depth * width).pow(2)],
@@ -28,7 +28,7 @@
 			ct.drawParallelepiped({
 				width: width,
 				height: height,
-				depth: depth / 1.5,
+				depth: depth,
 				angle: 40,
 				lengthOfEdge: true,
 				scale: scale,

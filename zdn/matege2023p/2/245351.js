@@ -2,13 +2,13 @@
 	lx_declareClarifiedPhrase('площадь', 'поверхности');
 	lx_declareClarifiedPhrase('диаметр', 'основания');
 	lx_declareClarifiedPhrase('радиус', 'основания');
-	lx_declareClarifiedPhrase('площадь', ' боковой поверхности');
+	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 		let rand = sl1();
 
-		let sphere = new Sphere(sl(1, 100) * [1, (2).sqrt(), ][rand]);
+		let sphere = new Sphere(3 * sl(1, 33));
 		let cone = new Cone({
 			radius: sphere.radius,
 			height: sphere.radius
@@ -26,46 +26,45 @@
 			['объём', sphere.volume],
 		].iz();
 
+		const known = [nameCone, nameSphere][rand];
+		const asked = [nameSphere, nameCone][rand];
+		const containsPi = measurement => measurement[0].includes('площадь') || measurement[0] === 'объём';
+		const coefficient = known[1] / (containsPi(known) ? Math.PI : 1);
+		const givenTex = coefficient.pow(2).round().texsqrt(1) + (containsPi(known) ? '\\pi' : '');
+		const answer = asked[1] / (containsPi(asked) ? Math.PI : 1);
+		const ps = containsPi(asked) ? ' Ответ разделите на $\\pi$.' : '';
+
 		let paint1 = function(ctx) {
-
+			ctx.translateToCenter();
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.translate(100, 40);
-			ctx.scale = (100, 100);
-
-			ctx.translate(0, 80);
-			ctx.drawCircle(100, 80, 180);
-
-			ctx.setLineDash([4, 5]);
+			const drawRadius = 180;
+			const equatorRadius = 30;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawCircle(0, 0, drawRadius);
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.drawEllipse(100, 80, 180, 30, 0, Math.PI, 2 * Math.PI);
-
-			ctx.setLineDash([0, 0]);
-			ctx.drawEllipse(100, 80, 180, 30, 0, 0, Math.PI);
-
-			//пирамида
 			ctx.setLineDash([4, 5]);
-			ctx.drawEllipse(100, 80, 180, 30, 0, Math.PI, 2 * Math.PI);
-			ctx.drawLine(100 - 180, 80, 100, 80 - 180);
-			ctx.drawLine(100 + 180, 80, 100, 80 - 180);
-
+			ctx.drawEllipse(0, 0, drawRadius, equatorRadius, 0, Math.PI, 2 * Math.PI);
+			ctx.setLineDash([]);
+			ctx.drawEllipse(0, 0, drawRadius, equatorRadius, 0, 0, Math.PI);
+			ctx.drawLine(-drawRadius, 0, 0, -drawRadius);
+			ctx.drawLine(drawRadius, 0, 0, -drawRadius);
 		};
 		NAtask.setTask({
 			text: ['Около конуса описана сфера (сфера содержит окружность основания конуса и его вершину)',
 				'Конус вписан в шар (см. рисунок)'
 			].iz() + '. ' + ['Центр сферы совпадает с центром основания конуса',
-				' Радиус основания конуса равен радиусу шара'
+				'Радиус основания конуса равен радиусу шара'
 			].iz() + '. ' + [
 				nameCone[0].toZagl() + ' конуса ' + ['равен', 'равна'][sklonlxkand(nameCone[0]).rod] + ' $' +
-				nameCone[1].texpi() + '$. Найдите ' + sklonlxkand(nameSphere[0]).ve + ' шара',
+				givenTex + '$. Найдите ' + sklonlxkand(nameSphere[0]).ve + ' шара',
 				nameSphere[0].toZagl() + ' шара ' + ['равен', 'равна'][sklonlxkand(nameSphere[0]).rod] + ' $' +
-				nameSphere[1].texpi() + '$. Найдите ' + sklonlxkand(nameCone[0]).ve.replace('образующаю', 'образующую') +
+				givenTex + '$. Найдите ' + sklonlxkand(nameCone[0]).ve.replace('образующаю', 'образующую') +
 				' конуса'
-			][rand] + '.',
-			answers: [nameSphere[1], nameCone[1]][rand],
+			][rand] + '.' + ps,
+			answers: answer,
 		});
-		
-		NAtask.modifiers.multiplyAnswerByPI();
+
+		NAtask.modifiers.multiplyAnswerBySqrt(2);
 		NAtask.modifiers.assertSaneDecimals();
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
@@ -77,3 +76,4 @@
 
 })();
 //245351 269439 509561 509603 269441 269443 269445 269447 269449 269451 269453 269455 269457 269459 269461 269463 269465 269467 269469 269471 269473 269475 269477 269479 269481 269483 269485 269487 269489
+
