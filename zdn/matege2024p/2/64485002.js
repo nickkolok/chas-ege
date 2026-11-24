@@ -18,6 +18,7 @@
 
 		genAssert(!coordA.equalAr(coordB), 'Вектора A и B совпадают');
 		genAssert(!coordA.equalAr(coordC), 'Вектора A и C совпадают');
+		genAssert(!coordB.equalAr(coordC), 'Вектора B и C совпадают');
 
 		genAssert(coordA.veclength() > 3, 'Вектор A слишком маленький');
 		genAssert(coordB.veclength() > 3, 'Вектор B слишком маленький');
@@ -30,18 +31,18 @@
 			[sl(1, 10).pm(), sl(2, 20)],
 			[sl(1, 10).pm(), sl(2, 20)]
 		];
-		let finalyVector = [0, 0];
+		let finalVector = [0, 0];
 		let condition = [];
 
 		for (let i = 0; i < 3; i++) {
 			condition.push('' + coeffs[i][0].texrndfrac(coeffs[i][1]) + '\\vec{' + letter[i] + '}');
-			finalyVector = objSum(finalyVector, objUmn(vectors[i], coeffs[i][0] / coeffs[i][1]));
+			finalVector = objSum(finalVector, objUmn(vectors[i], coeffs[i][0] / coeffs[i][1]));
 		}
 
-		genAssertZ1000(finalyVector[0]);
-		genAssertZ1000(finalyVector[1]);
-		genAssert(finalyVector.production(), 'Слишком простой вектор');
-		let answ = finalyVector.veclength();
+		genAssertZ1000(finalVector[0]);
+		genAssertZ1000(finalVector[1]);
+		genAssert(finalVector.production(), 'Слишком простой вектор');
+		let answ = finalVector.veclength();
 
 		let resultExpr = condition.shuffle().slag().plusminus();
 
@@ -87,7 +88,7 @@
 				].shuffle().joinWithConjunction() +
 				'. Найдите длину вектора $' + resultExpr + '$.',
 			answers: answ,
-			analys: '$' + resultExpr + '=(' + finalyVector[0].ts() + ' ;' + finalyVector[1].ts() + ')$',
+			analys: '$' + resultExpr + '=(' + finalVector[0].ts() + '; ' + finalVector[1].ts() + ')$',
 			author: 'Суматохина Александра',
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
@@ -99,4 +100,3 @@
 	}, 100000);
 })();
 //64485002
-
