@@ -31,24 +31,15 @@
 		let probs = weights.toSum();
 
 		// Расчет матожидания: E(X) = sum(x * p)
-		// math.dotMultiply делает поэлементное умножение векторов
-		// math.sum суммирует элементы массива
-		let EX = math.sum(math.dotMultiply(xVals, probs));
+		let EX = math.dot(xVals, probs);
 
 		// Проверки
 		genAssertZ1000(EX);
 		genAssert(Math.abs(EX) > 0.01, "Матожидание слишком близко к 0");
 
 		// Формирование таблицы
-		let rowsX = '<tr><td>Значения $X$</td>';
-		let rowsP = '<tr><td>Вероятности</td>';
-
-		for (let i = 0; i < n; i++) {
-			rowsX += `<td>${xVals[i].ts()}</td>`;
-			rowsP += `<td>${probs[i].ts()}</td>`;
-		}
-		rowsX += '</tr>';
-		rowsP += '</tr>';
+		let rowsX = ['Значения $X$', ...xVals.map(x => x.ts())].tr();
+		let rowsP = ['Вероятности', ...probs.map(p => p.ts())].tr();
 
 		let tableHtml = `
 			<table border="1" style="border-collapse: collapse; text-align: center; margin: 15px auto;">
@@ -58,7 +49,7 @@
 
 		// Создаем массив строк вида "x * p"
 		let terms = xVals.map((val, idx) => 
-			`(${xVals[idx].ts()}) \\cdot ${probs[idx].ts()}`
+			`(${val.ts()}) \\cdot ${probs[idx].ts()}`
 		);
 
 		NAtask.setTask({
@@ -66,7 +57,7 @@
 				  `<br/>${tableHtml}`,
 			answers: EX,
 			analys: `Математическое ожидание дискретной случайной величины вычисляется как сумма произведений значений на их вероятности: $E(X) = \\sum x_i \\cdot p_i$.` +
-					(`<br/>$E(X) = ${terms.join(' + ')} = ${EX.ts()}$.`).ts()
+					`<br/>$E(X) = ${terms.join(' + ')} = ${EX.ts()}$.`
 		});
 
 		NAtask.modifiers.allDecimalsToStandard(true);
