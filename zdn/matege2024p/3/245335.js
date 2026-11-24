@@ -13,25 +13,15 @@
             width: width
         });
 
-        let prism = new IrregularTriangularPrism({
+        let prism = new RectangularPrismWithRightAngledTriangleAtBase({
             height: height,
             sideA: width,
-            sideB: depth,
-            sideC: par.DWDiagonal
+            sideB: depth
         });
 
         let letter = ['A', 'B', 'C', 'D', 'D₁', 'A₁', 'B₁', 'C₁',];
-        let strok = [5, 4];
+        let dash = [5, 4];
 
-        let matrixPar = [
-            [strok],
-            [[strok, 0][v], 1],
-            [strok, 0, 1],
-            [0, 0, [1, 0][1 - v], 1],
-            [strok, [strok, 0][1 - v], 0, 0, 1],
-            [0, 1, 0, 0, 0, 1],
-            [0, 0, 1, 0, 1, [1, 0][v], 1],
-        ];
 
         let camera = {
             x: 0,
@@ -47,7 +37,7 @@
         let point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
         genAssert((point2DPar[0].x - point2DPar[2].x).abs() > 20, 'Сечение не видно');
 
-        autoScale(par, camera, point2DPar, {
+        point2DPar = autoScale(par.verticesOfFigure, camera, point2DPar, {
             startX: -180,
             finishX: 160,
             startY: -160,
@@ -55,15 +45,24 @@
             maxScale: 50,
         });
 
-        point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+		let faces = [[0,1,2,3],[5,6,7,4],[0,1,6,5],[1,2,7,6],[2,3,4,7],[3,0,5,4]];
+		let visibility = facesVisibility(par.verticesOfFigure.slice(0, 8), point2DPar, faces);
+		let figureMatrix = dashHiddenEdges(par.connectionMatrix, faces, visibility, dash);
+		if (!figureMatrix[1]) figureMatrix[1] = [];
+		figureMatrix[1][0] = [dash, 0][v];
+		if (!figureMatrix[3]) figureMatrix[3] = [];
+		figureMatrix[3][2] = [1, 0][1 - v];
+		if (!figureMatrix[4]) figureMatrix[4] = [];
+		figureMatrix[4][1] = [dash, 0][1 - v];
+		if (!figureMatrix[6]) figureMatrix[6] = [];
+		figureMatrix[6][5] = [1, 0][v];
 
-        let paint1 = function (ctx) {
+		let paint1 = function (ctx) {
             ctx.translateToCenter();
             ctx.lineWidth = 2;
-            ctx.strokeStyle = om.primaryBrandColors[0];
-            ctx.strokeStyle = om.secondaryBrandColors;
-            ctx.drawFigure(point2DPar, matrixPar);
-            ctx.font = "25px liberation_sans";
+            ctx.strokeStyle = om.secondaryBrandColors.iz();
+            ctx.drawFigure(point2DPar, figureMatrix);
+            ctx.font = '25px liberation_sans';
 
             point2DPar.forEach((elem, i) => ctx.fillText(letter[i], elem.x, elem.y + ((i < point2DPar.length / 2) ? 15 : -10)));
         };
