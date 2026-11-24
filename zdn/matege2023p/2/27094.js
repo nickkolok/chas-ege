@@ -102,25 +102,24 @@
 	let copy = measurements.slice();
 	let paint1 = function(ctx) {
 		ctx.lineWidth = 2;
+		let cx = ctx.canvas.width / 2, baseY = 180, apexY = 10, r = 90, ry = 20;
 		//образующие
-		ctx.drawLine(60, 180, 150, 10);
-		ctx.drawLine(240, 180, 150, 10);
+		ctx.drawLine(cx - r, baseY, cx, apexY);
+		ctx.drawLine(cx + r, baseY, cx, apexY);
 		//эллипс
-		ctx.ellipse(150, 180, 20, 90, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
-		ctx.stroke();
+		ctx.drawEllipse(cx, baseY, ry, r, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
-		ctx.beginPath();
 		ctx.setLineDash([5, 5]);
-		ctx.ellipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-		ctx.stroke();
+		ctx.drawEllipse(cx, baseY, ry, r, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
+		ctx.setLineDash([]);
 		for (let i = 0; i < copy.length; i++) {
 			//радиус
 			if (copy[i].name.ie == 'радиус основания')
-				ctx.drawLine(150, 180, 240, 180);
+				ctx.drawLine(cx, baseY, cx + r, baseY);
 			//высота
 			if (copy[i].name.ie == 'высота')
-				ctx.drawLine(150, 180, 150, 10);
+				ctx.drawLine(cx, baseY, cx, apexY);
 		}
 	};
 
@@ -145,3 +144,4 @@
 	});
 })();
 // 27094 74259 500893 501191 526210 74261 74263 74265 74267 74269 74271 74273 74275 74277 74279 74281 74283 74285 74287 74289 74291 74293 74295 74297 74299 74301 74303 74305 27095 74307 548260 548288 561170 561222 74309 74311 74313 74315 74317 74319 74321 74323 74325 74327 74329 74331 74333 74335 74337 74339 74341 74343 74345 74347 74349 74351 74353 27136 75697 75699 75701 75703 75705 75707 75709 75711 75713 75715 75717 75719 75721 75723 75725 75727 75729 75731 75733 75735 75737 75739 75741
+
