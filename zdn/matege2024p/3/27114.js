@@ -27,7 +27,7 @@
 
 		let point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(pyr1, camera, point2DPyr, {
+		point2DPyr = autoScale(pyr1.verticesOfFigure, camera, point2DPyr, {
 			startX: -180,
 			finishX: 160,
 			startY: -160,
@@ -35,24 +35,27 @@
 			maxScale: 50,
 		});
 
-		point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
-
 		let letters = ['A', 'B', 'C', 'D', 'S', 'E'];
-		let strok = [5, 4];
+		let dash = [5, 4];
+
+		
+		let faces = [[0,1,2,3],[0,1,4],[1,2,4],[2,3,4],[3,0,4]];
+		let visibility = facesVisibility(pyr1.verticesOfFigure.slice(0, 5), point2DPyr, faces);
+		let figureMatrix = dashHiddenEdges(pyr1.connectionMatrix, faces, visibility, dash);
+		if (!figureMatrix[2]) figureMatrix[2] = [];
+		figureMatrix[2][1] = dash;
+		if (!figureMatrix[4]) figureMatrix[4] = [];
+		figureMatrix[4][1] = 1;
+		if (!figureMatrix[4]) figureMatrix[4] = [];
+		figureMatrix[4][3] = 1;
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.drawFigure(point2DPyr, [
-				[1],
-				[0, strok],
-				[1, strok, strok],
-				[1, 1, strok, 1, ],
-				[0, 1, 0, 1, 0]
-			]);
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawFigure(point2DPyr, figureMatrix);
 
-			ctx.font = "30px liberation_sans";
+			ctx.font = '30px liberation_sans';
 			point2DPyr.forEach((elem, i) => ctx.fillText(letters[i], elem.x, elem.y + ((i <= point2DPyr.length - 3) ? 15 : -
 				10)));
 

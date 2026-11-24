@@ -7,16 +7,61 @@
  * @param {Array} actionsArray - Массив действий.
  * @returns {string} - HTML-код задания.
  */
-function generateHtmlForTask(category, taskNumber, actionsArray) {
+
+/**
+ * Создает информацию о варианте, если их несколько или есть явные предпочтения
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Текущий вариант
+ * @param {number} totalVariants - Общее количество вариантов
+ * @returns {string} HTML
+ */
+function createVariantInfoIfNeeded(taskNumber, variant, totalVariants) {
+    const hasExplicitPreferences = window.nabor.preferences && window.nabor.preferences[taskNumber];
+    
+    if (totalVariants > 1 || hasExplicitPreferences) {
+        const variation = formatVariantInfo(taskNumber, variant);
+        return `<div class="variant-info">Вариация: '${variation}'</div>`;
+    }
+    return '';
+}
+
+/**
+ * Форматирует информацию о варианте в специальном синтаксисе
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Текущий вариант
+ * @returns {string} Отформатированная строка
+ */
+function formatVariantInfo(taskNumber, variant) {
+    const parts = [taskNumber];
+    if (Array.isArray(variant)) {
+        parts.push(variant.join('_'), variant.join(' '));
+    } else {
+        parts.push(variant, variant);
+    }
+    return parts.join(' ');
+}
+
+function generateHtmlForTask(category, taskNumber, actionsArray, alreadyGenerated, variant = null, totalVariants = 1) {
 	try {
 		let htmlContent = '';
+		// Always regenerate the task to ensure correct vopr state
 		vopr.podg();
+		nabor.upak[category][taskNumber]();
 		const currentTaskPath = `${nabor.adres}${category}/${taskNumber}.js`;
 
-		// Execute the task generator
-		nabor.upak[category][taskNumber]();
-		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}">`;
+		// === ВРЕМЕННЫЕ ЛОГИ ДЛЯ ОТЛАДКИ ===
+		const hasPreference = vopr.preference && Array.isArray(vopr.preference) && vopr.preference.length > 0;
+		if (hasPreference) {
+			console.log(`[DEBUG] Задание ${category}/${taskNumber} имеет preference:`, vopr.preference);
+		} else {
+			console.log(`[DEBUG] Задание ${category}/${taskNumber} не имеет preference`);
+		}
+		// === КОНЕЦ ВРЕМЕННЫХ ЛОГОВ ===
+
+		const variantJson = encodeURIComponent(JSON.stringify(variant));
+		htmlContent += `<div class="task-wrapper" data-category="${category}" data-tasknumber="${taskNumber}" data-variant="${variantJson}" data-total-variants="${totalVariants}">`;
 		htmlContent += currentTaskPath.vTag('h2');
+		htmlContent += createVariantInfoIfNeeded(taskNumber, variant, totalVariants);
 		vopr.template = currentTaskPath.replace(/^(\.\.\/)+/,'');
 		vopr.taskNumber = category;
 		htmlContent+=('<br/>'+vopr.txt.vTag('div')+'<br/>');
@@ -34,6 +79,56 @@ function generateHtmlForTask(category, taskNumber, actionsArray) {
 		return htmlContent;
 	} catch(e) {
 		return handleTaskError(category, taskNumber, e);
+	}
+}
+
+
+
+// ============================================================================
+// ФУНКЦИИ ДЛЯ РАБОТЫ С ПРЕДПОЧТЕНИЯМИ ВАРИАНТОВ
+// ============================================================================
+
+/**
+ * Получает варианты предпочтений для задания
+ * @param {string} taskNumber - Номер задания
+ * @returns {Array} Массив вариантов предпочтений
+ */
+function getTaskVariants(taskNumber) {
+	let variants = [null];
+	const hasExplicitPreferences = window.nabor.preferences && window.nabor.preferences[taskNumber];
+
+	if (vopr.preference && Array.isArray(vopr.preference) && vopr.preference.length > 0) {
+		if (hasExplicitPreferences) {
+			variants = [window.nabor.preferences[taskNumber]];
+		} else {
+			variants = generateVariations(vopr.preference);
+		}
+	}
+
+	return variants;
+}
+
+/**
+ * Применяет предпочтения для конкретного варианта
+ * @param {string} taskNumber - Номер задания
+ * @param {any} variant - Предпочтения варианта
+ */
+function applyVariantPreferences(taskNumber, variant) {
+	if (variant !== null) {
+		window.nabor.preferences = window.nabor.preferences || {};
+		window.nabor.preferences[taskNumber] = variant;
+	}
+}
+
+/**
+ * Восстанавливает состояние предпочтений
+ * @param {string} taskNumber - Номер задания
+ * @param {any} originalPreference - Оригинальные предпочтения
+ */
+function restoreVariantState(taskNumber, originalPreference) {
+	if (originalPreference !== undefined) {
+		window.nabor.preferences = window.nabor.preferences || {};
+		window.nabor.preferences[taskNumber] = originalPreference;
 	}
 }
 
@@ -57,7 +152,23 @@ function generateKatalog() {
 		toc += buildCategoryTocLink(kat, br);
 
 		for(var zdn of getIncludableTasksForCategory(kat)) {
-			rez += generateHtmlForTask(kat,zdn,masdey);
+			// Сначала генерируем задание, чтобы получить vopr.preference
+			vopr.podg();
+			nabor.upak[kat][zdn]();
+
+			// Получаем варианты предпочтений
+			const variants = getTaskVariants(zdn);
+
+			// Для каждого варианта генерируем задание
+			for (var variant of variants) {
+				if (variants.length > 1) {
+					// Если вариантов несколько, применяем предпочтение и пересгенерируем
+					applyVariantPreferences(zdn, variant);
+					vopr.podg();
+					nabor.upak[kat][zdn]();
+				}
+				rez += generateHtmlForTask(kat, zdn, masdey, true, variant, variants.length);
+			}
 		}
 		rez += '</div>';
 	}
@@ -240,11 +351,32 @@ function copyTask() {
 	});
 }
 
+/**
+ * Извлекает информацию о варианте из task-wrapper и применяет преференсы
+ * @param {HTMLElement} wrapper - элемент task-wrapper
+ * @returns {Object} объект с variant и totalVariants
+ */
+function extractAndApplyVariant(wrapper) {
+	var variantJson = decodeURIComponent(wrapper.getAttribute('data-variant'));
+	var variant = variantJson ? JSON.parse(variantJson) : null;
+	var totalVariants = parseInt(wrapper.getAttribute('data-total-variants')) || 1;
+	
+	// If there's a specific variant, apply it before regenerating
+	if (variant !== null) {
+		applyVariantPreferences(wrapper.getAttribute('data-tasknumber'), variant);
+	}
+	
+	return {variant, totalVariants};
+}
+
 function renewTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.task-wrapper')[0];
 	var actions = [];
-	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
+	
+	var {variant, totalVariants} = extractAndApplyVariant(wrapper);
+	
+	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions, true, variant, totalVariants));
 	$(wrapper).replaceWith(taskHtml);
 	actions[0]();
 	triggerMathJaxRendering(taskHtml[0]);
@@ -255,7 +387,10 @@ function addTask() {
 	console.log(this);
 	var wrapper = $(this).parents('div.task-wrapper')[0];
 	var actions = [];
-	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions));
+	
+	var {variant, totalVariants} = extractAndApplyVariant(wrapper);
+	
+	var taskHtml = $(generateHtmlForTask(wrapper.getAttribute('data-category'),wrapper.getAttribute('data-tasknumber'),actions, true, variant, totalVariants));
 	taskHtml.insertAfter(wrapper);
 	actions[0]();
 	triggerMathJaxRendering(taskHtml[0]);
