@@ -312,6 +312,15 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('изобрёл', 3), 'изобрели');
     });
 
+    QUnit.test('толок: о между л и к выпадает', function (assert) {
+        assert.equal(selectVerbGender('толок', 1), 'толкла', 'не толокла');
+        assert.equal(selectVerbGender('толок', 2), 'толкло');
+        assert.equal(selectVerbGender('толок', 3), 'толкли');
+        assert.equal(selectVerbGender('растолок', 1), 'растолкла');
+        assert.equal(selectVerbGender('истолок', 3), 'истолкли');
+        assert.equal(selectVerbGender('волок', 1), 'волокла', 'а волок — правилом');
+    });
+
     QUnit.test('Неправильные формы без ё', function (assert) {
         assert.equal(selectVerbGender('пошел', 1), 'пошла', 'ё в шаблонах пишут не всегда');
         assert.equal(selectVerbGender('пришел', 3), 'пришли');
