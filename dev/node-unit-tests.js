@@ -393,6 +393,16 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('мёрз', 1), 'мёрзла');
     });
 
+    QUnit.test('отпёр: ё только в мужском роде', function (assert) {
+        assert.equal(selectVerbGender('отпёр', 1), 'отперла');
+        assert.equal(selectVerbGender('отпёр', 2), 'отперло');
+        assert.equal(selectVerbGender('отпёр', 3), 'отперли');
+        assert.equal(selectVerbGender('отпер', 1), 'отперла', 'без ё — правилом');
+        assert.equal(selectVerbGender('отпёрся', 1), 'отперлась');
+        assert.equal(selectVerbGender('упёр', 1), 'упёрла', 'а здесь ё сохраняется');
+        assert.equal(selectVerbGender('запер', 1), 'заперла');
+    });
+
     QUnit.test('Глаголы на -ёг: лёг, берёг и жёг ведут себя по-разному', function (assert) {
         assert.equal(selectVerbGender('лёг', 1), 'легла');
         assert.equal(selectVerbGender('лёг', 2), 'легло');
