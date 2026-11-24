@@ -51,8 +51,9 @@ const opts = {
 	filepaths: [], batchStdin: false, iterations: 1,
 	seed: null, tex: true, json: false, quiet: false, evals: [],
 };
-// Ошибка в ключах — сразу выход с кодом 1: молча пропущенное значение
-// (забытое значение у --seed) даёт не те задачи, и заметить это по выводу трудно
+// Ошибка в ключах — сразу выход с кодом 1: молча пропущенный ключ
+// (опечатка --iteration, забытое значение у --seed) даёт не те задачи,
+// и заметить это по выводу трудно
 const argError = function (message) {
 	console.error(message);
 	console.error('Ключи: --filepath <путь> --iterations N --seed S --eval <выражение> --batch-stdin --no-tex --json --quiet');
@@ -90,7 +91,9 @@ for (let i = 0; i < args.length; i++) {
 		opts.quiet = true;
 	} else if (args[i] === '--eval') {
 		opts.evals.push(takeValue(i++));
-	} else if (!args[i].startsWith('--')) {
+	} else if (args[i].startsWith('--')) {
+		argError('Неизвестный ключ ' + args[i] + '.');
+	} else {
 		opts.filepaths.push(args[i]); // позиционные пути тоже принимаем
 	}
 }
