@@ -21,16 +21,17 @@
 		}, ].iz(2);
 
 		let paint1 = function(ct) {
+			const drawScale = 15;
 			ct.translate(50, 10);
-			ct.scale(15, 15);
-			ct.lineWidth = 2 / 15;
+			ct.scale(drawScale, drawScale);
+			ct.lineWidth = 2 / drawScale;
 			const cubeEdge = 12;
 			const cubeDepth = cubeEdge / 2.5;
 			const cubeAngle = 40;
 			const sizeRatio = 1.5;
 			if (measurements.some(m => m.name.ie === 'объём')) {
 				ct.save();
-				ct.translate(44 / 15, 71 / 15);
+				ct.translate(44 / drawScale, 71 / drawScale);
 				ct.drawParallelepiped({
 					width: cubeEdge / sizeRatio,
 					height: cubeEdge / sizeRatio,
