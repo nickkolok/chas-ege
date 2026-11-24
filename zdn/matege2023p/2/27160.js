@@ -11,14 +11,13 @@
 		].shuffle();
 		let name = sklonlxkand(variable);
 		let moreLess = variable[0] === 'площадь боковой поверхности' ? 'больше' : 'меньше';
-		let answ = 60;
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
 			let cx = 200, cy = 280; //центр основания
 			let r = 120, ry = 36; //полуоси эллипса основания
 			let apexY = 72; //вершина конуса над центром основания
-			
+
 			//эллипс (передняя часть)
 			ctx.drawEllipse(cx, cy, r, ry, 0, 0, Math.PI);
 
@@ -32,16 +31,16 @@
 			ctx.drawLine(cx + r, cy, cx, apexY);
 
 			//радиус (синий)
-			ctx.strokeStyle = "blue";
+			ctx.strokeStyle = 'blue';
 			ctx.drawLine(cx, cy, cx + r, cy);
-			
+
 			//высота (красная, пунктирная)
-			ctx.strokeStyle = "red";
+			ctx.strokeStyle = 'red';
 			ctx.setLineDash([5, 5]);
 			ctx.drawLine(cx, cy, cx, apexY);
 			ctx.setLineDash([]);
-			
-			ctx.strokeStyle = "black";
+
+			ctx.strokeStyle = 'black';
 		};
 
 		NAtask.setTask({
@@ -49,9 +48,11 @@
 				'. ' +
 				'Найдите угол между образующей конуса и плоскостью основания. ' +
 				'Ответ дайте в градусах.',
-			answers: answ,
+			answers: 60,
 			authors: ['Суматохина Александра'],
-			analys: '',
+			analys: 'Пусть радиус основания равен $r$, а образующая — $l$. Из $S_{бок}=2S_{осн}$ получаем ' +
+				'$\\pi rl=2\\pi r^2$, поэтому $l=2r$. Косинус угла между образующей и её проекцией на основание ' +
+				'равен $r/l=1/2$. Искомый угол равен $60^\\circ$.',
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 400,
@@ -61,3 +62,4 @@
 	}, 1000);
 })();
 //27160 509461
+
