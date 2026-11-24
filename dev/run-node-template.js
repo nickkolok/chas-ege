@@ -258,7 +258,8 @@ if (opts.evals.length) {
 		}
 	}
 	if (opts.json) console.log(JSON.stringify(evalResults, null, 2));
-	process.exit(evalFailed ? 1 : 0);
+	exitAfterFlush(evalFailed ? 1 : 0);
+	return; // дальше — генерация по шаблонам: в режиме --eval она не нужна
 }
 
 // ---------------------------------------------------------------------------
