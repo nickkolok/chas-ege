@@ -142,7 +142,7 @@ ctx.drawFigure(figure.vertices, figure.connectionMatrix);
 ```js
 ctx.drawExternalAngle(points[0], points[1], points[2], {
 	radius: 15,
-	rayLength: 60,
+	rayLength: 40,
 	arcStrokeStyle: om.primaryBrandColors.iz(),
 });
 ```
