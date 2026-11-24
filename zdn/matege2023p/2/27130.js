@@ -3,16 +3,17 @@
 		lx_declareClarifiedPhrase('площадь', 'поверхности');
 		lx_declareClarifiedPhrase('квадрат', 'диагонали');
 		NAinfo.requireApiVersion(0, 2);
+		const volumeMeasurement = {
+			name: 'объём',
+			power: 3,
+		};
 		let measurements = [{
 			name: 'ребро',
 			power: 1,
 		}, {
 			name: 'площадь поверхности',
 			power: 2,
-		}, {
-			name: 'объём',
-			power: 3,
-		}, {
+		}, volumeMeasurement, {
 			name: 'диагональ',
 			power: 1,
 		}, {
@@ -31,7 +32,7 @@
 			const sizeRatio = 1.5;
 			const smallCubeColor = '#8080ff';
 			const cubeColor = 'black';
-			if (measurements.some(m => m.name.ie === 'объём')) {
+			if (measurements.includes(volumeMeasurement)) {
 				ct.save();
 				ct.translate(44 / drawScale, 71 / drawScale);
 				ct.drawParallelepiped({
