@@ -6,18 +6,17 @@
 		let rand = sl1();
 
 		let rhombus = new Rhombus({
-			length: sl(1,50),
+			length: sl(1, 50),
 			angles: {
-			    angle: { angleA: slKrome(90, 30, 150) },
-			    angleInDegree: true,
+				angle: { angleA: slKrome(90, 30, 150) },
+				angleInDegree: true,
 			},
 		});
 
-		rhombus.connectVerticesInConnectionMatrix([
-			[[0, 2], [1, 3]][rand],
-		]);
+		const diagonalPairs = [[0, 2], [1, 3]];
+		rhombus.connectVerticesInConnectionMatrix([diagonalPairs[rand]]);
 
-		let oppositeVertices = [vertices.filter((_, i) => i % 2 === 0), vertices.filter((_, i) => i % 2 === 1)];
+		let oppositeVertices = diagonalPairs.map(pair => pair.map(i => vertices[i]));
 		let angleQ = [oppositeVertices[rand].shuffleJoin() + oppositeVertices[1 - rand].iz(), [rhombus.angleAInDegrees, rhombus.angleBInDegrees][rand] / 2];
 		angleQ[0] = sl1() ? angleQ[0] : angleQ[0].reverse();
 		
@@ -56,4 +55,3 @@
 	}, 1000);
 })();
 //3353
-
