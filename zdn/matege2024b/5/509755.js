@@ -15,10 +15,10 @@
 
 		let objects = sklonlxkand([
 			['чёрный', 'зелёный', 'красный', 'белый', 'жёлтый'],
-			om.trickyColors, 
+			om.trickyColors,
 			['курица', 'гусь', 'индюк', 'перепел', 'утка', 'цесарка', 'страус']
 		][variant].iz(2));
-		
+
 		let container = sklonlxkand(['ящик', 'коробка'].iz());
 		let selected = majority ? 0 : 1;
 
@@ -54,4 +54,3 @@
 // FA27E6, 1D5F8F
 // C3E952, 823297, DA4C41, AE9FFC, 6A58FE, 7E2FC1, E406E3, 634E6B, BEB1D7, 1901C5, A00C8C
 // D257B9, EE68AE, 9B2F60
-
