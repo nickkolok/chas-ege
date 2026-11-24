@@ -13,19 +13,19 @@
 		let change = ['на $' + deltaHeight + '~\\mbox{' + unit + '}$', 'в $' + (deltaHeight + height).texrndfrac(height) + '$ раза']
 			.iz();
 
+		const liquidColor = om.transparentBrandColors.iz();
+		const k = sl(1.3, 4, 0.1);
 		let paint1 = function(ctx) {
 			ctx.translate(0, 30);
 			ctx.lineWidth = 2;
 			let picHeight = 180;
-			ctx.fillStyle = om.transparentBrandColors.iz();
-
-			let k = sl(1.3, 4, 0.1);
+			ctx.fillStyle = liquidColor;
 
 			//жидкость
 			ctx.beginPath();
-			ctx.ellipse(150, picHeight / k, 20, 90, Math.PI / 2, 0.5 * Math.PI, 1.5 * Math.PI);
+			ctx.ellipse(150, picHeight / k, 20, 90, Math.PI / 2, 0.5 * Math.PI, -0.5 * Math.PI, true);
 			ctx.lineTo(240, picHeight);
-			ctx.ellipse(150, picHeight, 20, 90, Math.PI / 2, -0.5 * Math.PI, -1.5 * Math.PI);
+			ctx.ellipse(150, picHeight, 20, 90, Math.PI / 2, -0.5 * Math.PI, 0.5 * Math.PI);
 			ctx.fill();
 			ctx.closePath();
 
@@ -70,3 +70,4 @@
 })();
 //27045 4905 4907 72053 72057 517175 517213 4909 4911 4913 4915 4917 72009 72011 72013 72015 72017 72019 72021 72023 72025 72027 72029 72031 72033 72035 72037 72039 72041 72043 72045 72047 72049 72051 72055
 //27091 74093 509994 74095 74097 74099 74101 74103 74105 74107 74109 74111 74113 74115 74117 74119 74121 74123 74125 74127 74129 74131 74133 74135 74137 74139 74141 74143 74145 74147 74149 74151
+
