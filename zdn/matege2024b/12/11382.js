@@ -72,9 +72,7 @@
 				ctx.arcBetweenSegments([points[2].x, points[2].y, points[3].x, points[3].y, points[0].x, points[0].y], 15);
 			}
 
-			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
+			ctx.signVertices(points, letters, {above: [2]});
 		};
 
 		NAtask.setTask({
