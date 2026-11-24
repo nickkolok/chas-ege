@@ -12,7 +12,7 @@
 			baseArea: 0.5 * pyr1.baseArea,
 		});
 
-		pyr1.verticesOfFigure = coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[4]);
+		pyr1.verticesOfFigure = coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[pyr1.numberSide]);
 
 		let camera = {
 			x: 0,
@@ -40,7 +40,7 @@
 
 		
 		let faces = [[0,1,2,3],[0,1,4],[1,2,4],[2,3,4],[3,0,4]];
-		let visibility = facesVisibility(pyr1.verticesOfFigure.slice(0, 5), point2DPyr, faces);
+		let visibility = facesVisibility(pyr1.verticesOfFigure.slice(0, pyr1.numberSide + 1), point2DPyr, faces);
 		let figureMatrix = dashHiddenEdges(pyr1.connectionMatrix, faces, visibility, dash);
 		if (!figureMatrix[2]) figureMatrix[2] = [];
 		figureMatrix[2][1] = isOnVisibleFace(faces, visibility, [1, 3]) ? 1 : dash;
@@ -55,7 +55,7 @@
 			ctx.drawFigure(point2DPyr, figureMatrix);
 
 			ctx.font = '30px liberation_sans';
-			point2DPyr.forEach((elem, i) => ctx.fillText(letters[i], elem.x, elem.y + ((i <= point2DPyr.length - 3) ? 15 : -
+			point2DPyr.forEach((elem, i) => ctx.fillText(letters[i], elem.x, elem.y + ((i < pyr1.numberSide) ? 15 : -
 				10)));
 
 		};
