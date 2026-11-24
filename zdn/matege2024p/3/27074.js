@@ -20,17 +20,8 @@
             ];
         }
 
-        let strok = [5, 4];
+        let dash = [5, 4];
 
-        let matrixPar = [
-            [strok],
-            [0, 1],
-            [strok, 0, 1],
-            [0, 0, 0, 1],
-            [strok, 0, 0, 0, 1],
-            [0, 1, 0, 0, 0, 1],
-            [0, 0, 1, 0, 1, 0, 1],
-        ];
 
         let camera = {
             x: 0,
@@ -46,23 +37,25 @@
         let point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
         genAssert((point2DPar[0].x - point2DPar[2].x).abs() > 20, 'Сечение не видно');
 
-        autoScale(par, camera, point2DPar, {
+        point2DPar = autoScale(par.verticesOfFigure, camera, point2DPar, {
             startX: -180,
             finishX: 160,
             startY: -160,
             finishY: 160,
             maxScale: 50,
         });
-
-        point2DPar = par.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
         genAssert((point2DPar[0].x - point2DPar[2].x).abs() > 20, 'Сечение не видно');
 
-        let paint1 = function (ctx) {
+		let faces = [[0,1,2,3],[5,6,7,4],[0,1,6,5],[1,2,7,6],[2,3,4,7],[3,0,5,4]];
+		let visibility = facesVisibility(par.verticesOfFigure.slice(0, 8), point2DPar, faces);
+		let figureMatrix = dashHiddenEdges(par.connectionMatrix, faces, visibility, dash);
+
+		let paint1 = function (ctx) {
             ctx.translateToCenter();
             ctx.lineWidth = 2;
-            ctx.strokeStyle = om.secondaryBrandColors;
-            ctx.drawFigure(point2DPar, matrixPar);
-            ctx.font = "25px liberation_sans";
+            ctx.strokeStyle = om.secondaryBrandColors.iz();
+            ctx.drawFigure(point2DPar, figureMatrix);
+            ctx.font = '25px liberation_sans';
 
             point2DPar.forEach((elem, i) => ctx.fillText(letter[i], elem.x, elem.y + ((i < point2DPar.length / 2) ? 15 : -10)));
         };
