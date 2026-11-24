@@ -3,21 +3,16 @@
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 	retryWhileError(function() {
 
-
-		let variable = [
-			['площадь боковой поверхности', [
-				['больше', 30],
-				['меньше', 60]
-			].iz()],
-			['площадь основания', [
-				['больше', 60],
-				['меньше', 30]
-			].iz()]
-		].shuffle();
-
-		let name = sklonlxkand(variable.T()[0]);
-		let moreLess = variable.T()[1][0][0];
-		let answ = variable.T()[1][0][1];
+		const variable = [
+			['площадь боковой поверхности', 'больше'],
+			['площадь основания', 'меньше']
+		];
+		const variant = sl1();
+		const name = sklonlxkand(variable.map(row => row[0]));
+		const moreLess = variable[variant][1];
+		const first = name[variant];
+		const second = name[1 - variant];
+		const answ = 60;
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
@@ -30,6 +25,7 @@
 			ctx.setLineDash([5, 5]);
 			ctx.drawEllipse(150, 180, 20, 90, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 
+			ctx.setLineDash([]);
 			//радиус
 			ctx.drawLine(150, 180, 240, 180);
 			//высота
@@ -38,13 +34,13 @@
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
-			text: name[0].ie.toZagl() + ' конуса в два раза ' + moreLess + ' ' + name[1].re +
+			text: first.ie.toZagl() + ' конуса в два раза ' + moreLess + ' ' + second.re +
 				'. ' +
 				'Найдите угол между образующей конуса и плоскостью основания. ' +
 				'Ответ дайте в градусах.',
 			answers: answ,
 			authors: ['Суматохина Александра'],
-			analys: '',
+			analys: 'Из $\\pi rl=2\\pi r^2$ получаем $l=2r$. Поэтому косинус угла между образующей и основанием равен $r/l=1/2$, а угол равен $60^\\circ$.',
 		});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 300,
@@ -54,3 +50,4 @@
 	}, 1000);
 })();
 //27160 509461
+

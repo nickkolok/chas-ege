@@ -20,87 +20,34 @@
 	lx_declareClarifiedPhrase('площадь', 'основания');
 	lx_declareClarifiedPhrase('длина', 'окружности основания');
 	retryWhileError(function() {
+				const measurement0 = {name: 'радиус основания', power: 1};
+		const measurement1 = {name: 'длина окружности основания', power: 1};
+		const measurement2 = {name: 'объём', power: 2};
+		const measurement3 = {name: 'высоты', wordToClarify: true};
+		const measurement4 = {name: 'площадь основания', power: 2};
+		const measurement5 = {name: 'площади оснований', wordToClarify: true};
+		const measurement6 = {name: 'радиусы оснований', wordToClarify: true};
+		const measurement7 = {name: 'высота', power: 1};
+		const measurement8 = {name: 'образующая', power: 1};
+		const measurement9 = {name: 'объём', power: 1};
+		const measurement10 = {name: 'площадь боковой поверхности', power: 1};
+		const measurement11 = {name: 'образующие', wordToClarify: true};
+		const measurement12 = {name: 'длины окружностей основания', wordToClarify: true};
 		let measurements = [
 			[
-				[{
-					name: 'радиус основания',
-					power: 1,
-				}, {
-					name: 'длина окружности основания',
-					power: 1,
-				}, ].iz(), {
-					name: 'объём',
-					power: 2,
-				}, {
-					name: 'высоты',
-					wordToClarify: true,
-				},
+				[measurement0, measurement1, ].iz(), measurement2, measurement3,
 			],
 			[
-				[{
-					name: 'радиус основания',
-					power: 1,
-				}, {
-					name: 'длина окружности основания',
-					power: 1,
-				}, ].iz(), {
-					name: 'площадь основания',
-					power: 2,
-				}
+				[measurement0, measurement1, ].iz(), measurement4
 			],
 			[
-				[{
-					name: 'площади оснований',
-					wordToClarify: true,
-				}, {
-					name: 'радиусы оснований',
-					wordToClarify: true,
-				}].iz(), [{
-					name: 'высота',
-					power: 1,
-				}, {
-					name: 'образующая',
-					power: 1,
-				}, ].iz(), {
-					name: 'объём',
-					power: 1,
-				}
+				[measurement5, measurement6].iz(), [measurement7, measurement8, ].iz(), measurement9
 			],
 			[
-				[{
-					name: 'радиус основания',
-					power: 1,
-				}, {
-					name: 'длина окружности основания',
-					power: 1,
-				}, {
-					name: 'площадь основания',
-					power: 2,
-				}, ].iz(), {
-					name: 'площадь боковой поверхности',
-					power: 1,
-				}, {
-					name: 'образующие',
-					wordToClarify: true,
-				}
+				[measurement0, measurement1, measurement4, ].iz(), measurement10, measurement11
 			],
 			[
-				[{
-					name: 'радиусы оснований',
-					wordToClarify: true,
-				}, {
-					name: 'длины окружностей основания',
-					wordToClarify: true,
-				}, {
-					name: 'площади оснований',
-					wordToClarify: true,
-				}, ].iz(), {
-					name: 'площадь боковой поверхности',
-					power: 1,
-				}, {
-					name: 'образующая',
-					power: 1,
-				}
+				[measurement6, measurement12, measurement5, ].iz(), measurement10, measurement8
 			]
 		].iz();
 
@@ -122,15 +69,15 @@
 			ctx.setLineDash([]);
 			for (let i = 0; i < copy.length; i++) {
 				//радиус
-				if (copy[i].name.ie == 'радиус основания')
+				if (copy[i] === measurement0)
 					ctx.drawLine(150, 180, 240, 180);
 				//высота
-				if (copy[i].name.ie == 'высота')
+				if (copy[i] === measurement7)
 					ctx.drawLine(150, 180, 150, 10);
 			}
 
 			//конус поменьше
-			ctx.setLineDash([0, 0]);
+			ctx.setLineDash([]);
 			ctx.translate(200, 0);
 			//образующие
 			ctx.drawLine(60, 180, 150, 50);
@@ -144,10 +91,10 @@
 			ctx.setLineDash([]);
 			for (let i = 0; i < copy.length; i++) {
 				//радиус
-				if (copy[i].name.ie == 'радиус основания')
+				if (copy[i] === measurement0)
 					ctx.drawLine(150, 180, 240, 180);
 				//высота
-				if (copy[i].name.ie == 'высота')
+				if (copy[i] === measurement7)
 					ctx.drawLine(150, 180, 150, 50);
 			}
 		};
@@ -174,3 +121,4 @@
 	}, 10000);
 })();
 //172
+
