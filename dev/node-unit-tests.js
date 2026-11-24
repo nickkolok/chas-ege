@@ -296,7 +296,7 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('перешёл', 2), 'перешло');
         assert.equal(selectVerbGender('привёз', 1), 'привезла');
         assert.equal(selectVerbGender('принёс', 3), 'принесли');
-        assert.equal(selectVerbGender('поджёг', 1), 'поджгла');
+        assert.equal(selectVerbGender('поджёг', 1), 'подожгла');
         assert.equal(selectVerbGender('приобрёл', 1), 'приобрела');
         assert.equal(selectVerbGender('свёл', 1), 'свела');
         assert.equal(selectVerbGender('стерёг', 1), 'стерегла');
@@ -412,8 +412,17 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('налёг', 1), 'налегла');
         assert.equal(selectVerbGender('влёг', 1), 'влегла');
         assert.equal(selectVerbGender('жёг', 1), 'жгла', 'здесь гласная выпадает');
-        assert.equal(selectVerbGender('сжёг', 1), 'сжгла');
-        assert.equal(selectVerbGender('поджёг', 1), 'поджгла');
+        assert.equal(selectVerbGender('сжёг', 1), 'сожгла', 'после приставки на согласный — о');
+        assert.equal(selectVerbGender('поджёг', 1), 'подожгла');
+        assert.equal(selectVerbGender('обжёг', 2), 'обожгло');
+        assert.equal(selectVerbGender('разжёг', 3), 'разожгли');
+        assert.equal(selectVerbGender('отжёг', 1), 'отожгла');
+        assert.equal(selectVerbGender('изжёг', 1), 'изожгла');
+        assert.equal(selectVerbGender('сжег', 1), 'сожгла', 'и без ё');
+        assert.equal(selectVerbGender('поджег', 1), 'подожгла');
+        assert.equal(selectVerbGender('зажёг', 1), 'зажгла', 'после приставки на гласный о нет');
+        assert.equal(selectVerbGender('пережёг', 1), 'пережгла');
+        assert.equal(selectVerbGender('обжёгся', 1), 'обожглась');
         assert.equal(selectVerbGender('берёг', 1), 'берегла');
         assert.equal(selectVerbGender('стерёг', 1), 'стерегла');
         assert.equal(selectVerbGender('сберёг', 1), 'сберегла');
