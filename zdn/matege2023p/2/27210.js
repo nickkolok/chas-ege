@@ -6,6 +6,9 @@
 		let key = '27210';
 		let preferenceQuestion = ['объём', 'площадь поверхности'];
 		let question = preferenceQuestion[getSelectedPreferenceFromList(key, preferenceQuestion)];
+		// Формулировка Открытого банка (27210) или ФИПИ («Деталь имеет форму…», ЕГЭ-база, задание 11)
+		let preferenceWording = ['многогранник', 'деталь'];
+		let wording = preferenceWording[getSelectedPreferenceFromList(key, preferenceWording)];
 
 		// Нижний параллелепипед a × d × (H − c), на нём в заднем левом углу
 		// верхний параллелепипед w × e × c; H — общая высота.
@@ -74,11 +77,18 @@
 				lowerArea + '+' + upperArea + '-' + contactArea + '=' + answer + '$.';
 		}
 
+		let text = wording === 'многогранник' ?
+			'Найдите ' + question + ' многогранника, изображённого на рисунке (все двугранные углы прямые).' :
+			'Деталь имеет форму изображённого на рисунке многогранника (все двугранные углы прямые). ' +
+			'Числа на рисунке обозначают длины рёбер в сантиметрах. ' +
+			'Найдите ' + question + ' этой детали. ' +
+			'Ответ дайте в ' + (question === 'объём' ? 'кубических' : 'квадратных') + ' сантиметрах.';
+
 		NAtask.setTask({
-			text: 'Найдите ' + question + ' многогранника, изображённого на рисунке (все двугранные углы прямые).',
+			text: text,
 			answers: answer,
 			analys: analys,
-			preference: [preferenceQuestion],
+			preference: [preferenceQuestion, preferenceWording],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
