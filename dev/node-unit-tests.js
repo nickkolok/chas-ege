@@ -375,6 +375,20 @@ module.exports = function registerNodeTests(QUnit) {
         }, /Удлинение имеет слишком много знаков/, 'сообщение автора шаблона сохранено');
     });
 
+    QUnit.test('все функции lib/func_assert.js доступны в node', function (assert) {
+        [
+            'retryWhileUndefined', 'retryWhileError', 'genAssert', 'genAssertNonempty',
+            'genAssertDecimalPlaces', 'genAssertZ1000', 'genAssertAlmostInteger', 'genAssertIrreducible',
+            'genAssertSaneDecomposition', 'genAssertGraphIntersectsPointWithNeighborhood',
+        ].forEach(function (name) {
+            assert.equal(typeof global[name], 'function', name + ' экспортирована в global');
+        });
+        assert.equal(retryWhileError(function () { return 42; }, 1), 42, 'retryWhileError вызывается');
+        assert.throws(function () {
+            genAssertAlmostInteger(1.5, 'Не целое');
+        }, /Не целое/, 'genAssertAlmostInteger вызывается');
+    });
+
     QUnit.test('genAssertZ1000 ведёт себя как раньше', function (assert) {
         genAssertZ1000(0.001);
         genAssertZ1000(2);
@@ -623,6 +637,25 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Расстояние между точками плоскости  (lib/figure.js)
+    // ============================================================
+    QUnit.module('lengthInPlane (lib/figure.js)');
+
+    QUnit.test('lengthInPlane: расстояние между точками плоскости', function (assert) {
+        assert.equal(geometry.lengthInPlane({ x: 0, y: 0 }, { x: 3, y: 4 }), 5, 'треугольник 3-4-5');
+        assert.equal(geometry.lengthInPlane({ x: 3, y: 4 }, { x: 0, y: 0 }), 5, 'симметрично');
+        assert.equal(geometry.lengthInPlane({ x: -2, y: -1 }, { x: 1, y: 3 }), 5, 'отрицательные координаты');
+        assert.equal(geometry.lengthInPlane({ x: 7, y: -2 }, { x: 7, y: -2 }), 0, 'совпадающие точки');
+    });
+
+    QUnit.test('lengthInPlane: плоские точки без z, как после autoScale', function (assert) {
+        var p1 = { x: 1, y: 2 };
+        var p2 = { x: 4, y: 6 };
+        assert.ok(Number.isFinite(geometry.lengthInPlane(p1, p2)), 'без z даёт число, а не NaN');
+        assert.equal(geometry.lengthInPlane(p1, p2), 5, 'расстояние 3-4-5');
+    });
+
+    // ============================================================
     //  Circle  (lib/circle.js)
     // ============================================================
     QUnit.module('Circle');
@@ -857,6 +890,97 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Canvas: подписи вершин фигуры  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: signVertices');
+
+    QUnit.test('ctx.signVertices подписывает каждую вершину своей буквой', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.signVertices === 'function', 'метод signVertices определён');
+        var calls = [];
+        var ctx = {
+            font: '',
+            save: function () { calls.push({ op: 'save' }); },
+            restore: function () { calls.push({ op: 'restore' }); },
+            scale: function (x, y) { calls.push({ op: 'scale', x: x, y: y }); },
+            fillText: function (text, x, y) { calls.push({ op: 'text', text: text, x: x, y: y, font: this.font }); },
+        };
+        var points = [{ x: 10, y: 20 }, { x: -30, y: 40 }, { x: 50, y: -60 }];
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C']);
+        var texts = calls.filter(function (c) { return c.op === 'text'; });
+        assert.equal(texts.length, 3, 'по одной подписи на вершину');
+        assert.deepEqual(texts[0], { op: 'text', text: 'A', x: 10, y: 5, font: '20px liberation_sans' }, 'первая половина вершин: подпись под вершиной (-y + 25)');
+        assert.deepEqual(texts[1], { op: 'text', text: 'B', x: -30, y: -15, font: '20px liberation_sans' }, 'вторая вершина тоже в первой половине (i < 3/2)');
+        assert.deepEqual(texts[2], { op: 'text', text: 'C', x: 50, y: 55, font: '20px liberation_sans' }, 'вторая половина вершин: подпись над вершиной (-y - 5)');
+        assert.deepEqual(calls.filter(function (c) { return c.op === 'scale'; }), [{ op: 'scale', x: 1, y: -1 }], 'ось Y отражается ровно один раз');
+        assert.equal(calls[0].op, 'save', 'контекст сохраняется до переворота оси');
+        assert.equal(calls[calls.length - 1].op, 'restore', 'контекст восстанавливается после подписей');
+    });
+
+    QUnit.test('ctx.signVertices: чётное число вершин и пустой список', function (assert) {
+        var calls = [];
+        var ctx = {
+            font: '',
+            save: function () {},
+            restore: function () {},
+            scale: function () {},
+            fillText: function (text, x, y) { calls.push({ text: text, x: x, y: y }); },
+        };
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, [{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }], ['A', 'B', 'C', 'D']);
+        assert.deepEqual(calls.map(function (c) { return c.y; }), [25, 24, -7, -8], 'первые две вершины +25, последние две -5');
+        calls = [];
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, [], []);
+        assert.equal(calls.length, 0, 'пустой список вершин - ни одной подписи');
+    });
+
+    QUnit.test('ctx.signVertices: настройка above задаёт вершины для подписи сверху', function (assert) {
+        var calls = [];
+        var ctx = {
+            font: '',
+            save: function () {},
+            restore: function () {},
+            scale: function () {},
+            fillText: function (text, x, y) { calls.push({ text: text, x: x, y: y }); },
+        };
+        var points = [{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }, { x: 4, y: 4 }];
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C', 'K', 'M'], { above: [2, 3] });
+        assert.deepEqual(calls.map(function (c) { return c.y; }), [25, 24, -7, -8, 21], 'вершины 2 и 3 сверху (-5), остальные снизу (+25)');
+        assert.deepEqual(calls.map(function (c) { return c.text; }), ['A', 'B', 'C', 'K', 'M'], 'буквы в порядке вершин');
+        calls = [];
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C', 'K', 'M']);
+        assert.deepEqual(calls.map(function (c) { return c.y; }), [25, 24, 23, -8, -9], 'без above сохраняется правило половин');
+        assert.throws(function () {
+            CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C', 'K', 'M'], [2, 3]);
+        }, /above/, 'массив третьим аргументом — ошибка с подсказкой про {above: [...]}');
+    });
+
+    QUnit.test('ctx.signVertices: необязательные настройки options', function (assert) {
+        var calls;
+        function makeCtx() {
+            calls = [];
+            return {
+                font: 'контекст', textAlign: 'start', textBaseline: 'alphabetic', fillStyle: '#000',
+                save: function () {},
+                restore: function () {},
+                scale: function () {},
+                fillText: function (text, x, y) {
+                    calls.push({ text: text, y: y, font: this.font, textAlign: this.textAlign, textBaseline: this.textBaseline, fillStyle: this.fillStyle });
+                },
+            };
+        }
+        var points = [{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 }];
+        CanvasRenderingContext2D.prototype.signVertices.call(makeCtx(), points, ['A', 'B', 'C'], {
+            font: '16px liberation_sans', textAlign: 'center', textBaseline: 'middle', fillStyle: '#f00', offsetBelow: 20, offsetAbove: -10,
+        });
+        assert.deepEqual(calls.map(function (c) { return c.y; }), [20, 19, -12], 'отступы из options, без above — правило половин');
+        assert.deepEqual([calls[0].font, calls[0].textAlign, calls[0].textBaseline, calls[0].fillStyle],
+            ['16px liberation_sans', 'center', 'middle', '#f00'], 'шрифт, выравнивание и цвет из options');
+        CanvasRenderingContext2D.prototype.signVertices.call(makeCtx(), points, ['A', 'B', 'C'], { above: [0], textAlign: 'center' });
+        assert.deepEqual(calls.map(function (c) { return c.y; }), [-5, 24, 23], 'не заданные отступы — по умолчанию');
+        assert.deepEqual([calls[0].font, calls[0].textAlign, calls[0].textBaseline, calls[0].fillStyle],
+            ['20px liberation_sans', 'center', 'alphabetic', '#000'], 'не заданное — шрифт по умолчанию, остальное из контекста');
+    });
+
+    // ============================================================
     //  Canvas: ломаная по массивам точек  (lib/canvas.js)
     // ============================================================
     QUnit.module('Canvas: drawPolyline');
@@ -1057,5 +1181,81 @@ module.exports = function registerNodeTests(QUnit) {
             if (events[i][0] === 'dash') dashCalls++;
         }
         assert.equal(dashCalls, 0, 'setLineDash не вызывается');
+    });
+
+    // ============================================================
+    //  Прототипные обёртки chislitM / chislitlx  (lib/number.js)
+    // ============================================================
+    QUnit.module('Number.prototype.chislitM / chislitlx: проброс аргументов');
+
+    QUnit.test('chislitM: tex, nots и separator доходят до функции', function (assert) {
+        assert.equal((2).chislitM('метр', 'метра', 'метров'), '2 метра', 'без флагов — как раньше');
+        assert.equal((2).chislitM('метр', 'метра', 'метров', true), '$ 2 $ метра', 'tex пробрасывается');
+        assert.equal((2).chislitM('метр', 'метра', 'метров', true, true), '$2$ метра', 'nots пробрасывается');
+        assert.equal((2).chislitM('метр', 'метра', 'метров', false, false, '~'), '2~метра', 'separator пробрасывается');
+        assert.equal((2).chislitM('метр', 'метра', 'метров', true), chislitM(2, 'метр', 'метра', 'метров', true), 'обёртка совпадает с функцией');
+    });
+
+    QUnit.test('chislitlx: separator доходит до функции', function (assert) {
+        assert.equal((2).chislitlx('метр'), '2 метра', 'без разделителя — как раньше');
+        assert.equal((2).chislitlx('метр', '$'), '$ 2 $ метра', 'падеж и флаги работают');
+        assert.equal((2).chislitlx('метр', '$', '~'), '$ 2 $~метра', 'separator пробрасывается');
+        assert.equal((2).chislitlx('метр', '$', '~'), chislitlx(2, 'метр', '$', '~'), 'обёртка совпадает с функцией');
+    });
+
+    QUnit.test('Регресс: соседние обёртки не затронуты', function (assert) {
+        assert.equal((5).chislit('день', 'дня', 'дней'), 'дней');
+        assert.equal((90).toChMin(), '1 час 30 минут');
+        assert.equal((1500).rub(), '1500 рублей');
+        assert.equal((2).chislitlx('населённый пункт'), '2 населённых пункта', 'счётная форма r2 сохраняется');
+    });
+
+    // ============================================================
+    //  Словарь числительных: последовательность «ё»  (lib/lxchisl.js)
+    // ============================================================
+    QUnit.module('lxchisl: ё в формах числительных');
+
+    QUnit.test('«три»: предложный падеж с ё, как остальные формы', function (assert) {
+        var tri = sklonlxkand('три');
+        assert.equal(tri.r, 'трёх', 'родительный');
+        assert.equal(tri.d, 'трём', 'дательный');
+        assert.equal(tri.p, 'трёх', 'предложный: была опечатка «трех»');
+        assert.equal(sklonlxkand('четыре').p, 'четырёх', 'соседнее числительное для сравнения');
+    });
+
+    // ============================================================
+    //  Словарь: кукла  (lib/lx.js)
+    // ============================================================
+    QUnit.module('lx: кукла');
+
+    QUnit.test('Счётные формы: 5 кукол, а не «5 кукл»', function (assert) {
+        assert.equal(chislitlx(1, 'кукла'), '1 кукла');
+        assert.equal(chislitlx(2, 'кукла'), '2 куклы');
+        assert.equal(chislitlx(5, 'кукла'), '5 кукол');
+        assert.equal(chislitlx(11, 'кукла'), '11 кукол');
+        assert.equal(chislitlx(21, 'кукла'), '21 кукла');
+        assert.equal(chislitlx(1.5, 'кукла'), '1,5 куклы');
+    });
+
+    QUnit.test('Винительный падеж', function (assert) {
+        assert.equal(chislitlx(1, 'кукла', 'v'), '1 куклу');
+        assert.equal(chislitlx(2, 'кукла', 'v'), '2 куклы');
+        assert.equal(chislitlx(5, 'кукла', 'v'), '5 кукол');
+        assert.equal(chislitlx(21, 'кукла', 'v'), '21 куклу');
+    });
+
+    QUnit.test('Формы слова и признаки', function (assert) {
+        var k = sklonlxkand('кукла');
+        assert.equal(k.re, 'куклы');
+        assert.equal(k.te, 'куклой');
+        assert.equal(k.pe, 'кукле');
+        assert.equal(k.im, 'куклы');
+        assert.equal(k.rm, 'кукол', 'беглая гласная: кукла — кукол');
+        assert.equal(k.dm, 'куклам');
+        assert.equal(k.vm, 'кукол');
+        assert.equal(k.tm, 'куклами');
+        assert.equal(k.pm, 'куклах');
+        assert.equal(k.rod, 1, 'женский род');
+        assert.equal(k.skl, 1, 'первое склонение');
     });
 };
