@@ -23,6 +23,7 @@
 
 		let x = sl(8, 12).pm();
 		let rhs = a * x + d;
+		genAssertZ1000(a * b * c * d);
 		let variants = [
 			['корень уравнения $ax+d=' + rhs.ts() + '$', x, false],
 			['сумму $a+b+c+d$', a + b + c + d, true],
