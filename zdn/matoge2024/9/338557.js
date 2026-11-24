@@ -3,7 +3,7 @@
     let b=sluchch(1,50).pm();
     let c=slKrome(b,1,50).pm();
     let e=sluchch(1,50).pm();
-    d=(e-a)/(b-c);
+    let d=(e-a)/(b-c);
     genAssertZ1000(d, 'Корень не должен быть слишком дробным');
     
     NAtask.setEquationTask({

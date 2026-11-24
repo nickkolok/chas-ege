@@ -2,6 +2,9 @@
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
 
+		let key = "26595";
+		let preference = ['first_worker', 'second_worker'];
+		let v = getSelectedPreferenceFromList(key, preference);
 		let A = sl(10,600);//кол-во деталей1
 		let B = sl([A/2,10].maxE(),[1.5*A,600].minE());//кол-во деталей2
 		genAssert(A!==B,'Заказ одинаковый: А: '+A+' B: '+B);
@@ -13,7 +16,6 @@
 
 		let detail = sklonlxkand(['деталь','заготовка','продукт','предмет','горшок','беляш','пирожок','бутерброд','кувшин','молоток','инструмент','игрушка'].iz());
 		let rab = sklonlxkand(['рабочий','сотрудник','работник','мастер'].iz());
-		let v=sl1();
 		let rab_num=['первый','второй'];
 		let izgot=['изготовление','производство'].iz();
 
@@ -24,7 +26,8 @@
 				'. Известно, что первый '+rab.ie+' '+['в','за'].iz()+' час делает на '+chislitlx(k, detail.ie,'v')+' больше, чем второй.'+
 				' Сколько '+detail.rm+' '+['в','за'].iz()+' час делает '+rab_num[v]+' '+rab.ie+'?',
 			answers: v==1 ? x : x+k,
-			authors: ['Aisse-258']
+			authors: ['Aisse-258'],
+			preference: preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000000);

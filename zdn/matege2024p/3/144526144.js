@@ -57,15 +57,13 @@
 
 			let point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
 
-			autoScale(vertex3D, camera, point2D, {
+			point2D = autoScale(vertex3D, camera, point2D, {
 				startX: -180,
 				finishX: 160,
 				startY: -160,
 				finishY: 160,
 				maxScale: 100,
 			});
-
-			point2D = vertex3D.map((coord3D) => project3DTo2D(coord3D, camera));
 			genAssert((point2D[4].x - point2D[8].x).abs() > 20);
 			genAssert((point2D[4].y - point2D[13].y).abs() > 50);
 			genAssert((point2D[12].x - point2D[14].x).abs() > 40);
@@ -76,21 +74,20 @@
 			let paint1 = function(ctx) {
 				ctx.translateToCenter();
 				ctx.lineWidth = 2;
-				ctx.strokeStyle = om.secondaryBrandColors;
+				ctx.strokeStyle = om.secondaryBrandColors.iz();
 				ctx.drawFigureVer2(point2D, matrixConnections);
-				
+
 				let point = [];
-				ctx.drawLine(point2D[4].x, point2D[4].y, point.x, point.y);
 				if (point2D[6].x < point2D[15].x)
 					point = [point2D[10], point2D[15], point2D[6], point2D[7]].mt_coordinatesOfIntersectionOfTwoSegments();
 				else
 					point = [point2D[10], point2D[15], point2D[6], point2D[9]].mt_coordinatesOfIntersectionOfTwoSegments();
 				ctx.drawLine(point2D[15].x, point2D[15].y, point.x, point.y);
-				
+
 				point = [point2D[12], point2D[13], point2D[4], point2D[11]].mt_coordinatesOfIntersectionOfTwoSegments();
 				ctx.drawLine(point2D[4].x, point2D[4].y, point.x, point.y);
 
-				ctx.font = "20px liberation_sans";
+				ctx.font = '20px liberation_sans';
 				ctx.signSegmentInMiddle(point2D[2].x, point2D[2].y, point2D[7].x, point2D[7].y, par1.height, 10, 20);
 				ctx.signSegmentInMiddle(point2D[9].x, point2D[9].y, point2D[14].x, point2D[14].y, par2.height, -24, 20);
 				ctx.signSegmentInMiddle(point2D[12].x, point2D[12].y, point2D[15].x, point2D[15].y, par2.width, -10, 20);
@@ -99,10 +96,10 @@
 			};
 
 			NAtask.setTask({
-				text: 'Найдите ' + ['площадь поверхности', 'объём'][rand] +	' многогранника, изображённого на рисунке.',
+				text: 'Найдите ' + ['площадь поверхности', 'объём'][rand] + ' многогранника, изображённого на рисунке.',
 				answers: [par1.surfaceArea - deltaWidth * (par2.height + par2.depth) + 2 * par2.height * par2.depth + 2 *
 					diagonal * par2.depth,
-					par1.volume - par2.height * deltaWidth * par2.width
+					par1.volume - par2.height * deltaWidth * par2.depth / 2
 				][rand],
 				author: ['Суматохина Александра']
 			});
