@@ -439,4 +439,18 @@ console.error('\n--- Тайминги ---');
 console.error('Загрузка бандла chas-uijs.js: ' + (tBundle - t0) + ' мс');
 console.error('Генерация (' + allResults.length + ' примеров из ' + opts.filepaths.length + ' шаблонов): ' + (tEnd - tBundle) + ' мс');
 console.error('Итого: ' + (tEnd - t0) + ' мс');
-process.exit(hadFailures ? 1 : 0);
+exitAfterFlush(hadFailures ? 1 : 0);
+
+/**
+ * Завершить процесс, когда stdout и stderr записаны до конца.
+ * process.exit() не ждёт асинхронной записи в канал: в конвейере
+ * (`… --json | jq`) всё, что не поместилось в буфер канала (64 КиБ),
+ * терялось, и JSON обрывался. Выходить же нужно явно: окно jsdom держит
+ * таймеры, и само приложение не завершится.
+ * @param {number} code - код возврата
+ */
+function exitAfterFlush(code) {
+	process.stdout.write('', () => {
+		process.stderr.write('', () => process.exit(code));
+	});
+}
