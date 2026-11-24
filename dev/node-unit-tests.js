@@ -393,6 +393,9 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(selectVerbGender('тёр', 1), 'тёрла', 'ё на основе сохраняется');
         assert.equal(selectVerbGender('пёр', 1), 'пёрла');
         assert.equal(selectVerbGender('мёрз', 1), 'мёрзла');
+        assert.equal(selectVerbGender('блёк', 1), 'блёкла', 'блёкнуть: ё сохраняется, хотя окончание -ёк');
+        assert.equal(selectVerbGender('поблёк', 1), 'поблёкла');
+        assert.equal(selectVerbGender('поблёк', 3), 'поблёкли');
     });
 
     QUnit.test('отпёр: ё только в мужском роде', function (assert) {
