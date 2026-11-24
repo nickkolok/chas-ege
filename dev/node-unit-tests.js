@@ -545,7 +545,7 @@ module.exports = function registerNodeTests(QUnit) {
         ['figure.js', 'project3DTo2D.js'].forEach(function (file) {
             vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'lib', file), 'utf8'), context);
         });
-        vm.runInContext('this.Cube = Cube; this.RegularPyramid = RegularPyramid; this.RegularPrism = RegularPrism;', context);
+        vm.runInContext('this.Cube = Cube; this.Parallelepiped = Parallelepiped; this.RegularPyramid = RegularPyramid; this.RegularPrism = RegularPrism;', context);
         return context;
     })();
 
@@ -567,7 +567,7 @@ module.exports = function registerNodeTests(QUnit) {
         var cube = new geometry.Cube(4);
         var vertices = cube.verticesOfFigure;
         // Нумерация Cube: 0-3 - нижнее основание (z < 0), 4-7 - верхнее
-        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var faces = cube.faces;
         var visibility = geometry.facesVisibility(vertices, project(vertices), faces);
         assert.equal(count(visibility), 3, 'видны три грани');
         assert.ok(visibility[1], 'верхнее основание видно (взгляд сверху)');
@@ -580,7 +580,7 @@ module.exports = function registerNodeTests(QUnit) {
     QUnit.test('Порядок обхода грани и масштаб чертежа не влияют на ответ', function (assert) {
         var cube = new geometry.Cube(4);
         var vertices = cube.verticesOfFigure;
-        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var faces = cube.faces;
         var reversed = faces.map(function (face) {
             return face.slice().reverse();
         });
@@ -597,7 +597,7 @@ module.exports = function registerNodeTests(QUnit) {
     QUnit.test('Взгляд снизу: видимость меняется на противоположную', function (assert) {
         var cube = new geometry.Cube(4);
         var vertices = cube.verticesOfFigure;
-        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var faces = cube.faces;
         var below = Object.assign({}, camera, { rotationX: -Math.PI / 2 - Math.PI / 11 });
         var visibility = geometry.facesVisibility(vertices, project(vertices, below), faces);
         assert.ok(visibility[0], 'нижнее основание видно');
@@ -634,6 +634,36 @@ module.exports = function registerNodeTests(QUnit) {
         assert.notOk(geometry.isOnVisibleFace(prismFaces, rVisibility, [2, 5]), 'боковое ребро 2-5 скрыто');
         assert.ok(geometry.isOnVisibleFace(prismFaces, rVisibility, [0, 1, 3, 4]),
             'отрезок между точками на рёбрах 0-1 и 3-4 лежит в видимой грани');
+    });
+
+    QUnit.test('Parallelepiped.faces: грани согласованы с connectionMatrix и verticesOfFigure', function (assert) {
+        var par = new geometry.Parallelepiped({ depth: 3, height: 4, width: 5 });
+        assert.deepEqual(par.faces,
+            [[0, 1, 2, 3], [5, 6, 7, 4], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]],
+            'два основания и четыре боковые грани; верхнее основание начинается с вершины над D');
+        assert.equal(par.faces.length, 6, 'шесть граней');
+        par.connectionMatrix.forEach(function (row, i) {
+            row.forEach(function (value, j) {
+                if (!value) { return; }
+                var edge = [i + 1, j];
+                var incident = par.faces.filter(function (face) {
+                    return edge.every(function (v) { return face.includes(v); });
+                });
+                assert.equal(incident.length, 2, 'ребро ' + (i + 1) + '-' + j + ' лежит в двух гранях');
+            });
+        });
+        var v = par.verticesOfFigure;
+        var vis = geometry.facesVisibility(v, project(v), par.faces);
+        assert.ok(vis[1], 'верхнее основание видно (взгляд сверху)');
+        assert.notOk(vis[0], 'нижнее основание не видно');
+        var dashed = geometry.dashHiddenEdges(par.connectionMatrix, par.faces, vis, [5, 4]);
+        var dashedCount = 0;
+        dashed.forEach(function (row) {
+            row.forEach(function (value) { if (Array.isArray(value)) { dashedCount++; } });
+        });
+        assert.ok(dashedCount > 0, 'невидимые рёбра рисуются пунктиром');
+        assert.deepEqual(par.connectionMatrix[0], [1], 'исходная матрица не изменилась');
+        assert.deepEqual(new geometry.Cube(4).faces, par.faces, 'Cube наследует грани параллелепипеда');
     });
 
     // ============================================================
