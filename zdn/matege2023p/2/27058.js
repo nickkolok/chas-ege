@@ -30,6 +30,9 @@
 		].iz(3);
 
 		const transposed = variable.T();
+		genAssert(!(transposed[0].slice(0, 2).includes('объём') &&
+			transposed[0].slice(0, 2).includes('площадь полной поверхности')),
+			'Объём и полная площадь поверхности не определяют цилиндр однозначно');
 		let name = sklonlxkand(transposed[0]);
 		let number = transposed[1];
 		let answer = number[2];
