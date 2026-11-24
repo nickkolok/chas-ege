@@ -13,28 +13,17 @@
 		].iz();
 
 		let paint1 = function(ctx) {
-			ctx.lineWidth = 0.5;
-			ctx.translate(20, 100);
-
-			ctx.scale(10, 10);
-			ctx.lineWidth = 0.2;
-
-			let width = 13;
-			let depth = 13;
-			let height = 20;
-
-
-			ctx.font = "3px liberation_sans";
-			ctx.drawPrism6({
-				width: width,
-				height: height,
-				depth: depth,
-				angle: Math.PI / 1.5,
-				angleCamera: Math.PI / 5,
-				scale: 20,
-				lettersOnVertex: allLet,
-			}, [9, 10, 11, 16, 17], [0.5, 0.6]);
-
+			let figure = new RegularPrism({height:1,baseSide:1,numberSide:6});
+			let vertices = figure.verticesOfFigure;
+			let camera = {x:0,y:0,z:0,scale:1,rotationX:-Math.PI/2+Math.PI/9,rotationY:0,rotationZ:Math.PI/5};
+			let points = autoScale(vertices,camera,[],{startX:-150,finishX:150,startY:-150,finishY:150,maxScale:200,shrink:true,center:true});
+			let faces = [[0,1,2,3,4,5],[6,7,8,9,10,11],[0,1,7,6],[1,2,8,7],[2,3,9,8],[3,4,10,9],[4,5,11,10],[5,0,6,11]];
+			ctx.translateToCenter();
+			ctx.lineWidth=2;
+			ctx.strokeStyle=om.secondaryBrandColors.iz();
+			ctx.drawFigure(points,dashHiddenEdges(figure.connectionMatrix,faces,facesVisibility(vertices,points,faces),[5,4]));
+			ctx.font = '20px liberation_sans';
+			points.forEach((point,i) => {let label=labelPositionAwayFrom(point,{x:0,y:0},18);ctx.fillText(allLet[i],label.x,label.y);});
 		};
 		NAtask.setTask({
 			text: 'В правильной шестиугольной призме $ABCDEFA_1B_1C_1D_1E_1F_1$, все рёбра которой ' +
