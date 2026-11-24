@@ -45,13 +45,12 @@
             ctx.strokeStyle = om.primaryBrandColors.iz();
             ctx.arcBetweenSegments([points[0].x, points[0].y, points[4].x, points[4].y, points[2].x, points[2].y], 15);
 
+            ctx.signVertices(points, letters, {above: [2]});
             ctx.scale(1, -1);
-            ctx.font = "20px liberation_sans";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
         };
 
         NAtask.setTask({
-            text: `В треугольнике $ABC$ сторона $AB = ${triangle.lengthAB}$, $CM$ – медиана, $CH$ – высота, $${[`BC`, `CA`][rand]}=CM$. Найдите длину отрезка $${[`A`, `B`][rand]}H$.`,
+            text: `В треугольнике $ABC$ сторона $AB = ${triangle.lengthAB.ts()}$, $CM$ – медиана, $CH$ – высота, $${[`BC`, `CA`][rand]}=CM$. Найдите длину отрезка $${[`A`, `B`][rand]}H$.`,
             answers: answ,
             authors: ['Александра Суматохина'],
         });
@@ -66,3 +65,4 @@
 
 })();
 // https://base.mathege.ru/clones/?position=16&parent=6603
+
