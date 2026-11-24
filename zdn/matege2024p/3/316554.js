@@ -44,7 +44,6 @@
 				angle: 40,
 				scale: 20,
 				lettersOnVertex: allLet,
-				strokeStyle: om.secondaryBrandColors.iz(),
 				diagonalStrokeStyle: om.primaryBrandColors.iz(),
 			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
