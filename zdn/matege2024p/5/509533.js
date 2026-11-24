@@ -29,6 +29,7 @@
 			analys: 'Событию $\\{X=' + targetX + '\\}$ благоприятствуют исходы со значением случайной величины ' + targetX +
 				'. Сложим их вероятности: $P(X=' + targetX + ')=' + terms.map(value => value.ts()).join('+') + '=' + probTarget.ts() + '$.',
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
@@ -51,7 +52,6 @@
 				ctx.restore();
 			},
 		});
-		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
 })();
 // 509533
