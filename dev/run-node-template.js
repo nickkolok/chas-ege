@@ -51,15 +51,36 @@ const opts = {
 	filepaths: [], batchStdin: false, iterations: 1,
 	seed: null, tex: true, json: false, quiet: false, evals: [],
 };
+// Ошибка в ключах — сразу выход с кодом 1: молча пропущенное значение
+// (забытое значение у --seed) даёт не те задачи, и заметить это по выводу трудно
+const argError = function (message) {
+	console.error(message);
+	console.error('Ключи: --filepath <путь> --iterations N --seed S --eval <выражение> --batch-stdin --no-tex --json --quiet');
+	process.exit(1);
+};
+// Значение ключа — следующий аргумент. Значение, начинающееся с «--», —
+// это почти наверняка следующий ключ (`--seed --json`), поэтому ошибка.
+// Выражение, которое и правда начинается с «--», пишут с пробелом: --eval ' --x'
+const takeValue = function (i) {
+	const value = args[i + 1];
+	if (value === undefined || value.startsWith('--')) {
+		argError('Ключ ' + args[i] + ' требует значения' + (value === undefined ? '' : ', а за ним идёт ' + value) + '.');
+	}
+	return value;
+};
 for (let i = 0; i < args.length; i++) {
-	if (args[i] === '--filepath' && args[i + 1]) {
-		opts.filepaths.push(args[++i]);
+	if (args[i] === '--filepath') {
+		opts.filepaths.push(takeValue(i++));
 	} else if (args[i] === '--batch-stdin') {
 		opts.batchStdin = true;
-	} else if (args[i] === '--iterations' && args[i + 1]) {
-		opts.iterations = parseInt(args[++i], 10);
-	} else if (args[i] === '--seed' && args[i + 1]) {
-		opts.seed = args[++i];
+	} else if (args[i] === '--iterations') {
+		const value = takeValue(i++);
+		if (!/^[1-9][0-9]*$/.test(value)) {
+			argError('--iterations — целое число не меньше 1, а не ' + JSON.stringify(value) + '.');
+		}
+		opts.iterations = parseInt(value, 10);
+	} else if (args[i] === '--seed') {
+		opts.seed = takeValue(i++);
 	} else if (args[i] === '--no-tex') {
 		opts.tex = false;
 	} else if (args[i] === '--json') {
@@ -67,8 +88,8 @@ for (let i = 0; i < args.length; i++) {
 		opts.quiet = true;
 	} else if (args[i] === '--quiet') {
 		opts.quiet = true;
-	} else if (args[i] === '--eval' && args[i + 1] !== undefined) {
-		opts.evals.push(args[++i]);
+	} else if (args[i] === '--eval') {
+		opts.evals.push(takeValue(i++));
 	} else if (!args[i].startsWith('--')) {
 		opts.filepaths.push(args[i]); // позиционные пути тоже принимаем
 	}
