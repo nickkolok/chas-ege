@@ -70,8 +70,8 @@
 		let halfAngle = Math.acos(distance / cylinder.radius); // полуугол дуги хорды
 
 		let paint = function (ct) {
-			let w = 400;
-			let h = 320;
+			let w = ct.canvas.width;
+			let h = ct.canvas.height;
 			let r = cylinder.radius;
 			let H = cylinder.height;
 			let scale = Math.min((w - 40) / (2 * r), (h - 40) / (H + 2 * flat * r));

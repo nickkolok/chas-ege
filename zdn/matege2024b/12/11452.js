@@ -29,17 +29,17 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
-			let rightRayEnd = ctx.drawLineAtAngle(points[1].x, points[1].y, 0, 160 - points[1].x);
-			let leftRayEnd = ctx.drawLineAtAngle(points[0].x, points[0].y, Math.PI, 160 + points[0].x);
+			let rayReachX = 160, arcRadius = 15;
+			let rightRayEnd = ctx.drawLineAtAngle(points[1].x, points[1].y, 0, rayReachX - points[1].x);
+			let leftRayEnd = ctx.drawLineAtAngle(points[0].x, points[0].y, Math.PI, rayReachX + points[0].x);
 
 			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, rightRayEnd.x, rightRayEnd.y], 15);
+			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, rightRayEnd.x, rightRayEnd.y], arcRadius);
 
-			ctx.arcBetweenSegments([leftRayEnd.x, leftRayEnd.y, points[0].x, points[0].y, points[2].x, points[2].y], 15);
+			ctx.arcBetweenSegments([leftRayEnd.x, leftRayEnd.y, points[0].x, points[0].y, points[2].x, points[2].y], arcRadius);
 
+			ctx.signVertices(points, letters, {above: [2]});
 			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
@@ -59,3 +59,4 @@
 
 })();
 // https://base.mathege.ru/clones/?position=16&parent=11452
+
