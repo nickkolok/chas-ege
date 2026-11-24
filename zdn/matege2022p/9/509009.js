@@ -22,11 +22,12 @@
 			exponent = -exponent;
 		let x = a ** exponent;
 		let y = exponent + b;
+		let graphMaxX = 8.5;
 
 		genAssert(x < 1000);
 		genAssertZ1000(x);
 		x = Math.round(x * 1000) / 1000;
-		genAssert(x > 8.5, 'Аргумент должен находиться за пределами изображённого участка графика');
+		genAssert(x > graphMaxX, 'Аргумент должен находиться за пределами изображённого участка графика');
 		if (!randA)
 			genAssert(Math.abs(y) > [6, 2][randB]);
 
@@ -58,7 +59,7 @@
 
 			graph9AdrawFunction(ct, f, {
 				minX: 0,
-				maxX: 8.5,
+				maxX: graphMaxX,
 				minY: -8.8,
 				maxY: 8.5,
 				step: 0.05
