@@ -32,7 +32,7 @@
 			villagePoints: sl(10, 15),
 			villageSize: 4.2,
 			lakePoints: sl(6, 8),
-			lakeCount: [2, nameCityWithLakes[1].length].maxE(),
+			lakeCount: nameCityWithLakes[1].length,
 			minLakeSize: 1,
 			maxLakeSize: 4,
 			colorFillLake: '#a0d3ff50',
@@ -49,7 +49,7 @@
 		let rand = sl(lakes.length - 1);
 		let chooseLake = lakes[rand];
 		let answ = chooseLake.polygon.area();
-		genAssert((answ - answ.floor() < 0.3) || (answ.ceil() - answ < 0.3), 'Ответ не читаем');
+		genAssert((answ - answ.floor() < 0.3) || (answ.ceil() - answ < 0.3), 'Ответ нечитаем');
 
 		let paint1 = function(ctx) {
 			let height = ctx.canvas.height;
@@ -106,3 +106,4 @@
 })();
 
 // https://mathb-ege.sdamgia.ru/problem?id=527391
+
