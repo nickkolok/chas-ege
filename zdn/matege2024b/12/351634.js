@@ -10,8 +10,9 @@
 		let a = sl(1, 40);
 		let c = slKrome(a, 1, 20);
 		let height = sl(1, 30, 0.5);
-		genAssert(height >= Math.max(a, c) / 8, 'Слишком плоская трапеция — плохой чертёж');
-		genAssert(Math.min(a, c) >= Math.max(a, c) / 8, 'Основания слишком разные — подписи короткого наезжают друг на друга');
+		let minSize = Math.max(a, c) / 8;
+		genAssert(height >= minSize, 'Слишком плоская трапеция — плохой чертёж');
+		genAssert(Math.min(a, c) >= minSize, 'Основания слишком разные — подписи короткого наезжают друг на друга');
 		let trp = new Trapezoid({
 			lengths: {
 				lengthAB: a,
@@ -24,22 +25,15 @@
 				},
 				angleInDegree: true,
 			},
-			supplementary: {
-				calculateDiagonals: true,
-			}
 		});
 
-		genAssert(trp.area().isAlmostInteger(), 'Площадь трапеции не целая');
+		genAssertAlmostInteger(trp.area(), 'Площадь трапеции не целая');
 		genAssert(!trp.angleCInRadians.isAlmostEqual(Math.PI / 2, 1e-9), 'Получилась прямоугольная трапеция');
 		genAssert(!trp.angleDInRadians.isAlmostEqual(Math.PI / 2, 1e-9), 'Получилась прямоугольная трапеция');
 
 
 		let trian = new Triangle({
-			lengths: {
-				lengthAB: trp.lengthDiagonalAC,
-				lengthBC: trp.lengthCD,
-				lengthCA: trp.lengthDA,
-			},
+			points: [trp.pointA, trp.pointD, trp.pointC],
 		});
 		genAssertAlmostInteger(trian.area(), 'Площадь треугольника не целая');
 
@@ -59,9 +53,8 @@
 			ctx.lineWidth = 2;
 			ctx.drawFigure(points, trp.connectionMatrix);
 
+			ctx.signVertices(points, letters, {above: [2, 3]});
 			ctx.scale(1, -1);
-			ctx.font = '20px liberation_sans';
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
 		};
 
 		NAtask.setTask({
@@ -80,3 +73,4 @@
 	}, 2000);
 })();
 // https://oge.sdamgia.ru/problem?id=351634
+
