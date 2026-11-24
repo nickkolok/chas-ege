@@ -184,4 +184,5 @@
         NAtask.modifiers.allDecimalsToStandard();
     }, 2000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=509639
+// 509639
+
