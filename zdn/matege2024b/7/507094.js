@@ -184,8 +184,6 @@
 			answAboutDecreasing(intervals, listOfIntervals);
 		}
 
-
-
 		if (variableML) {
 			// добавляем ответ про потребления воды меньше
 			answAboutLessP(intervals, listOfIntervals, LessP);
@@ -226,7 +224,6 @@
 		genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
 		let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
-
 
 		let paint1 = function (ctx) {
 			let cellWidth = 20, cellHeight = 30;
@@ -272,4 +269,5 @@
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 1000);
 })();
-//https://mathb-ege.sdamgia.ru/problem?id=507094
+// 507094
+
