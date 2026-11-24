@@ -92,25 +92,25 @@
         let production = [sl(5, 8)]; // шкала продаж
         let count = 1;
 
-        while (production.length <= time.length && count < 100) {
-            let interI = ((time.length / 1.6).floor());
-            for (let j = 0; j < interI; j++) {
+        while (production.length < time.length && count < 100) {
+            let interI = (time.length / 1.6).floor();
+            for (let j = 0; j < interI && production.length < time.length; j++) {
                 let lastProduction = production[production.length - 1];
-                let newProduction = sl1() ? lastProduction : lastProduction + (sl(0.5, 1.5, 0.1) * (-1).pow(count % 2));
+                let newProduction = sl1() ? lastProduction : lastProduction + (sl(1, 3) * (-1).pow(count % 2));
                 if (newProduction > 1 && newProduction <= 8)
                     production.push(newProduction);
             }
             count++;
         }
 
-        genAssert(production.length > time.length, 'Не удалось сгенерировать значения объёма продаж');
+        genAssert(production.length === time.length, 'Не удалось сгенерировать значения объёма продаж');
 
         let intervals = Array.from({
             length: 4
         }, (_, i) =>
             production.slice(i * 3, i * 3 + 3));
 
-        let listOfIntervals = intervals.map((interval, i) => {
+        let listOfIntervals = intervals.map((_, i) => {
             return {
                 expr: `${season[i]}`,
                 solution: []
@@ -208,4 +208,5 @@
         NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=510205
+// 510205
+
