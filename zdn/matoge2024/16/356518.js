@@ -43,23 +43,25 @@
             ctx.translateToCenter();
 
             ctx.scale(1, -1);
-            ctx.strokeStyle = om.secondaryBrandColors.iz();
+            let strokeColor = om.secondaryBrandColors.iz();
+            ctx.strokeStyle = strokeColor;
 
             ctx.lineWidth = 2;
             ctx.drawFigure(points, triangle.connectionMatrix);
             if (rand == 2) {
                 // Как на чертеже ФИПИ: описанная окружность, центр O и перпендикуляр из O к стороне AB
                 let foot = coordinatesMiddleOfSegment(points[0].x, points[0].y, points[1].x, points[1].y);
-                new Circle(new Point(points[3].x, points[3].y), Math.hypot(points[0].x - points[3].x, points[0].y - points[3].y)).drawOnto(ctx);
+                new Circle(new Point(points[3].x, points[3].y), lengthInPlane(points[0], points[3])).drawOnto(ctx);
                 ctx.drawLine(points[3].x, points[3].y, foot[0], foot[1]);
                 ctx.arcBetweenSegments([points[3].x, points[3].y, foot[0], foot[1], points[1].x, points[1].y], 10, true);
-                ctx.fillStyle = om.secondaryBrandColors.iz();
+                ctx.fillStyle = strokeColor;
                 ctx.drawFilledCircle(points[3].x, points[3].y, 3);
                 ctx.scale(1, -1);
                 ctx.font = '20px liberation_sans';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText('O', points[3].x, -points[3].y - 18);
+                let labelO = labelPositionAwayFrom(points[3], {x: foot[0], y: foot[1]}, 18);
+                ctx.fillText('O', labelO.x, -labelO.y);
             } else {
                 let inradiusOnCanvas = (points[3].y - points[0].y).abs(); // AB горизонтальна.
                 new Circle(new Point(points[3].x, points[3].y), inradiusOnCanvas).drawOnto(ctx);
