@@ -41,7 +41,7 @@
 
 			ctx.scale(1, -1);
 			ctx.font = '20px liberation_sans';
-			ctx.textAlign = "center";
+			ctx.textAlign = 'center';
 			points.slice(0, 4).forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + (i < 2 ? 25 : -5)));
 		};
 
