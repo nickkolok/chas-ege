@@ -13,7 +13,7 @@
         let minMultiplier = Math.ceil(0.2 * a * b / lcm);
         let maxMultiplier = Math.floor(0.9 * a * b / lcm);
         genAssert(minMultiplier <= maxMultiplier, 'Нет площади с целыми высотами');
-        let area = lcm * sl(minMultiplier, maxMultiplier);
+        let area = sl(minMultiplier * lcm, maxMultiplier * lcm, lcm);
 
         let par = new Parallelogram({
             lengths: {
