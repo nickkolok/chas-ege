@@ -34,7 +34,7 @@
 
 		let point2DPyr = pyr.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		point2DPyr = autoScale(pyr, camera, point2DPyr, {
+		point2DPyr = autoScale(pyr.verticesOfFigure, camera, point2DPyr, {
 			startX: -180,
 			finishX: 160,
 			startY: -160,
@@ -44,30 +44,35 @@
 
 		let letters = ['A', 'B', 'C', 'D', 'S', 'O'];
 
-		let strok = [5, 4];
+		let dash = [5, 4];
 
+		
+		let faces = [[0,1,2,3],[0,1,4],[1,2,4],[2,3,4],[3,0,4]];
+		let visibility = facesVisibility(pyr.verticesOfFigure.slice(0, 5), point2DPyr, faces);
+		let figureMatrix = dashHiddenEdges(pyr.connectionMatrix, faces, visibility, dash);
+		if (!figureMatrix[1]) figureMatrix[1] = [];
+		figureMatrix[1][0] = dash;
+		if (!figureMatrix[2]) figureMatrix[2] = [];
+		figureMatrix[2][1] = dash;
+		if (!figureMatrix[3]) figureMatrix[3] = [];
+		figureMatrix[3][5] = dash;
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.drawFigure(point2DPyr, [
-				[1],
-				[strok, strok],
-				[1, strok, strok],
-				[1, 1, strok, 1, 0, strok],
-			]);
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawFigure(point2DPyr, figureMatrix);
 
-			ctx.font = "30px liberation_sans";
+			ctx.font = '30px liberation_sans';
 			point2DPyr.forEach((elem, i) => ctx.fillText(letters[i], elem.x, elem.y + ((i != point2DPyr.length - 2) ? 15 : -
 				10)));
 		};
 
 		NAtask.setTask({
 			text: 'В правильной четырёхугольной пирамиде $SABCD$ с ' +
-				'основанием $ABCD$ ' + 
-				[question[0][0].ie + ' ' + om.ravno[question[0][0].rod] + ' $' + question[0][1].pow(2).texsqrt(1) + '$',
-				question[1][0].ie + ' ' + om.ravno[question[1][0].rod] + ' $' + question[1][1].pow(2).texsqrt(1) +'$'
+				'основанием $ABCD$ ' +
+				[question[0][0].ie + ' ' + om.ravno[question[0][0].rod] + ' $' + (question[0][0].ie === 'боковое ребро' ? question[0][1].pow(2).texsqrt(1) : question[0][1].ts()) + '$',
+				question[1][0].ie + ' ' + om.ravno[question[1][0].rod] + ' $' + (question[1][0].ie === 'боковое ребро' ? question[1][1].pow(2).texsqrt(1) : question[1][1].ts()) +'$'
 				].shuffleJoin(', ') +
 				'. Найдите ' + question[2][0].ve + ' пирамиды.',
 			answers: question[2][1],
@@ -84,5 +89,4 @@
 		NAtask.modifiers.allDecimalsToStandard(true);
 	});
 })();
-//https://ege314.ru/8-stereometriya-ege/reshenie-3011/
 //3011
