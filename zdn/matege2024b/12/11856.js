@@ -23,9 +23,10 @@
 			text: `Обе диагонали параллелограмма равны $${rect.lengthDiagonalAC}$. Одна из сторон параллелограмма равна $${rect.lengthAB}$. Найдите ${['другую сторону параллелограмма', 'сторону параллелограмма, соседнюю с данной'][rand]}.`,
 			answers: rect.lengthBC,
 			authors: ['Александра Суматохина'],
-			preference: [preference],
+			preference: preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 2000);
 })();
 // https://base.mathege.ru/clones/?position=16&parent=11856
+
