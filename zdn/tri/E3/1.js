@@ -1,16 +1,17 @@
-(function(){'use strict';
-
-window.vopr.txt='$ \\sin{(\\frac{\\pi}{2}-a)}=$<br/>';
-window.vopr.ver=[
-	'$ \\cos{a}  $',
-];
-window.vopr.nev=[
-	'$ \\sin{a}  $',
-	'$ \\mathrm{tg~}{a}  $',
-	'$ -\\cos{a}  $',
-	'$ -\\sin{a}   $',
-];
-AtoB();
-
+(function() {
+	'use strict';
+	chas2.task.setTask({
+		text: '$2 \\sin{a}\\cdot\\cos{a} =$<br/>',
+		answers: [
+			'$ \\sin{2a}  $',
+		],
+		wrongAnswers: [
+			'$ \\cos{2a}  $',
+			'$ \\sin{(a+b)}  $',
+			'$ \\cos{(a+b)}  $',
+			'$ \\sin^{2}{a}  $',
+		],
+	});
+	AtoB();
 })();
 //Любовь Ерышова

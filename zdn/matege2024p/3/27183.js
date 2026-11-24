@@ -28,7 +28,7 @@
 
 		let point2DPar = cube.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
 
-		autoScale(cube, camera, point2DPar, {
+		point2DPar = autoScale(cube.verticesOfFigure, camera, point2DPar, {
 			startX: -180,
 			finishX: 160,
 			startY: -160,
@@ -36,26 +36,26 @@
 			maxScale: 100,
 		});
 
-		point2DPar = cube.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+		let dash = [5, 4];
 
-		let strok = [5, 4];
+		
+		let faces = [[0,1,2,3],[5,6,7,4],[0,1,6,5],[1,2,7,6],[2,3,4,7],[3,0,5,4]];
+		let visibility = facesVisibility(cube.verticesOfFigure.slice(0, 8), point2DPar, faces);
+		let figureMatrix = dashHiddenEdges(cube.connectionMatrix, faces, visibility, dash);
+		if (!figureMatrix[7]) figureMatrix[7] = [];
+		figureMatrix[7][9] = dash;
+		if (!figureMatrix[7]) figureMatrix[7] = [];
+		figureMatrix[7][11] = 1;
+		if (!figureMatrix[9]) figureMatrix[9] = [];
+		figureMatrix[9][9] = dash;
+		if (!figureMatrix[9]) figureMatrix[9] = [];
+		figureMatrix[9][11] = 1;
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = om.secondaryBrandColors;
-			ctx.drawFigure(point2DPar, [
-				[1],
-				[0, 1],
-				[strok, 0, strok],
-				[0, 0, 0, strok],
-				[1, 0, 0, 0, 1],
-				[0, 1, 0, 0, 0, 1],
-				[0, 0, 1, 0, 1, 0, 1],
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, strok, 0, 1],
-				[],
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, strok, 0, 1],
-			]);
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawFigure(point2DPar, figureMatrix);
 		};
 
 		NAinfo.requireApiVersion(0, 2);
