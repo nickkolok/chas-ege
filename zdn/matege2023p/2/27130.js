@@ -29,6 +29,8 @@
 			const cubeDepth = cubeEdge / 2.5;
 			const cubeAngle = 40;
 			const sizeRatio = 1.5;
+			const smallCubeColor = '#8080ff';
+			const cubeColor = 'black';
 			if (measurements.some(m => m.name.ie === 'объём')) {
 				ct.save();
 				ct.translate(44 / drawScale, 71 / drawScale);
@@ -37,8 +39,8 @@
 					height: cubeEdge / sizeRatio,
 					depth: cubeDepth / sizeRatio,
 					angle: cubeAngle,
-					strokeStyle: '#8080ff',
-					diagonalStrokeStyle: '#8080ff'
+					strokeStyle: smallCubeColor,
+					diagonalStrokeStyle: smallCubeColor
 				}, [0, 2, 3, 4, 6], true, [1, 0.5]);
 				ct.restore();
 			}
@@ -48,8 +50,8 @@
 				height: cubeEdge,
 				depth: cubeDepth,
 				angle: cubeAngle,
-				strokeStyle: 'black',
-				diagonalStrokeStyle: 'black'
+				strokeStyle: cubeColor,
+				diagonalStrokeStyle: cubeColor
 			}, [0, 3, 4], true, [0.5, 0.2]);
 
 		};
