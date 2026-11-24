@@ -9,7 +9,7 @@
         // (в ФИПИ от 0,25 до 0,8): параллелограмм не вырождается в отрезок и не похож на прямоугольник
         let a = sl(2, 30);
         let b = slKrome(a, 2, 30);
-        let lcm = a * b / a.nod(b);
+        let lcm = a.nok(b);
         let minMultiplier = Math.ceil(0.2 * a * b / lcm);
         let maxMultiplier = Math.floor(0.9 * a * b / lcm);
         genAssert(minMultiplier <= maxMultiplier, 'Нет площади с целыми высотами');
