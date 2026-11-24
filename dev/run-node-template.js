@@ -243,14 +243,38 @@ if (opts.seed !== null) {
 // 3.1. --eval: вычислить выражения в окружении бандла и выйти
 // ---------------------------------------------------------------------------
 if (opts.evals.length) {
-	const show = (v) => (v === undefined ? 'undefined' : typeof v === 'function' ? String(v) : JSON.stringify(v));
+	// JSON.stringify пишет NaN и ±Infinity как null, а -0 как 0: для проверки
+	// математики это неверный ответ. Поэтому такие числа печатаются как в JS,
+	// в том числе внутри массивов и объектов ([NaN,-0]), а в --json
+	// поле result у такого значения не пишется — только repr.
+	const specialNumber = (x) => (typeof x !== 'number' ? null :
+		Object.is(x, -0) ? '-0' : Number.isFinite(x) ? null : String(x));
+	const marker = '\u0000number:';
+	// repr — строка, как значение печатается без --json; lossless — значение
+	// можно записать в JSON без потерь
+	const describe = function (v) {
+		if (v === undefined) return { repr: 'undefined', lossless: false };
+		if (typeof v === 'function') return { repr: String(v), lossless: false };
+		let special = false;
+		const json = JSON.stringify(v, function (key, x) {
+			const s = specialNumber(x);
+			if (s === null) return x;
+			special = true;
+			return marker + s;
+		});
+		if (!special) return { repr: json, lossless: true };
+		return { repr: json.replace(/"\\u0000number:([^"]*)"/g, '$1'), lossless: false };
+	};
 	const evalResults = [];
 	let evalFailed = false;
 	for (const expr of opts.evals) {
 		try {
 			const value = evalInWindow(expr, '<eval>');
-			evalResults.push({ expr: expr, type: typeof value, result: typeof value === 'function' ? String(value) : value });
-			if (!opts.json) console.log(show(value));
+			const d = describe(value);
+			const entry = { expr: expr, type: typeof value, repr: d.repr };
+			if (d.lossless) entry.result = value;
+			evalResults.push(entry);
+			if (!opts.json) console.log(d.repr);
 		} catch (e) {
 			evalFailed = true;
 			evalResults.push({ expr: expr, error: String(e && e.message || e) });
