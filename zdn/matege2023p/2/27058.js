@@ -14,22 +14,24 @@
 		let radius = sl(1, 50);
 		let height = sl(1, 50);
 
+		const cyl = new Cylinder({radius, height});
 		let variable = [
 
 			['высота', height],
 			[
 				['радиус основания', radius],
 				['длина окружности основания', 2 * radius + '\\pi'],
-				['площадь основания', radius.pow(2) + '\\pi'],
+				['площадь основания', Math.round(cyl.baseArea / Math.PI) + '\\pi'],
 				['диаметр основания', 2 * radius],
 			].iz(),
-			['объём', height * radius.pow(2) + '\\pi'],
-			['площадь боковой поверхности', 2 * height * radius + '\\pi'],
-			['площадь полной поверхности', 2 * radius * (radius + height) + '\\pi'],
+			['объём', Math.round(cyl.volume / Math.PI) + '\\pi'],
+			['площадь боковой поверхности', Math.round(cyl.sideSurfaceArea / Math.PI) + '\\pi'],
+			['площадь полной поверхности', Math.round(cyl.surfaceArea / Math.PI) + '\\pi'],
 		].iz(3);
 
-		let name = sklonlxkand(variable.T()[0]);
-		let number = variable.T()[1];
+		const transposed = variable.T();
+		let name = sklonlxkand(transposed[0]);
+		let number = transposed[1];
 		let answer = number[2];
 
 		let ps = '';
@@ -57,10 +59,10 @@
 			//радиус
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 
-			if (variable.T()[0].includes('радиус основания'))
+			if (transposed[0].includes('радиус основания'))
 				ctx.drawLine(150, height, 300, height);
 			//высота
-			if (variable.T()[0].includes('высота'))
+			if (transposed[0].includes('высота'))
 				ctx.drawLine(150, height, 150, 10);
 		};
 
@@ -81,3 +83,4 @@
 	}, 1000);
 })();
 //27058 72673 72675 72677 72679 72681 72683 72685 72687 72689 72691 72693 72695 72697 72699 72701 72703 72705 72707 72709 72711 72713 72715 72717
+

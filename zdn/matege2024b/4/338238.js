@@ -11,7 +11,7 @@
 		let d_2 = sl(10, 25);
 		let d_1 = sl(3, d_2 - 2);
 		let deNum = sl(3, 15);
-		let num = (1, deNum - 1);
+		let num = sl(1, deNum - 1);
 		let S = 0.5 * d_2 * d_1 * (num / deNum);
 
 		genAssertZ1000(S, 'не более 3-х знаков после запятой');
@@ -35,4 +35,6 @@
 })();
 //zer00player
 //https://oge.sdamgia.ru/test?likes=338238
-
+// ФИПИ: сопоставленные позиции категории 4 и все исходные коды.
+// 4.47: E441B5, EFD51F, 17D5D2, E7E75A, AEBFA0, CAE2A0, AF24EA, FF303D, 171F7B, 433AB1, 1BF024, 445159, D61450, 5567A6, 9E9DCE, 47FE38, FAE9F6, 754A20, D8BEE7, E3038C
+// 4.48: EEA729, B05009, 3ED87B, 4B7827, 2D90FB
