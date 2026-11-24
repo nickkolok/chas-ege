@@ -10,7 +10,7 @@
 			cube -= radiuses[radiuses.length - 1];
 		}
 		genAssert(radiuses.length < 5 && radiuses.length > 1, 'radiusNew');
-		
+
 		let radiusView = radiuses.map((elem) => elem.texcbrt(1));
 
 		let paint1 = function(ctx) {
@@ -20,13 +20,13 @@
 			let r = 150;
 			//шар 1
 			ctx.drawCircle(r);
-			
-			// Внешняя окружность
+
+			// Экватор
 			ctx.drawEllipse(0, 0, 20, r, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
 			ctx.setLineDash([5, 5]);
 			ctx.drawEllipse(0, 0, 20, r, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
-			
+
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.setLineDash([]);
 			ctx.drawLine(0, 0, 0, -r);
@@ -47,3 +47,4 @@
 	}, 1000);
 })();
 //27125 75307 75309 75311 75313
+
