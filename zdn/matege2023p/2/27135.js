@@ -37,6 +37,9 @@
 			variable.push(['объём', volume + '\\pi']);
 
 		variable = variable.iz(3);
+		genAssert(variable.slice(0, 2).some(value => ['высота', 'диаметр основания', 'радиус основания',
+			'длина окружности основания', 'площадь окружности основания'].includes(value[0])),
+			'Данные однозначно определяют размеры конуса');
 
 		let name = sklonlxkand(variable.T()[0]);
 		let number = variable.T()[1];
