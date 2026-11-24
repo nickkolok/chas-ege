@@ -5,11 +5,12 @@
 		let key = '4508611';
 		let preference = ['withinBracket', 'atUpperBound'];
 		let variant = getSelectedPreferenceFromList(key, preference);
+		let isAtUpperBound = preference[variant] === 'atUpperBound';
 		let bounds = [100, 125, 150, 175, 200, 225, 250];
 		let rates = [12, 25, 35, 45, 50, 65, 75, 150];
-		let selected = sl(0, variant ? bounds.length - 1 : rates.length - 1);
+		let selected = sl(0, isAtUpperBound ? bounds.length - 1 : rates.length - 1);
 		let lower = selected ? bounds[selected - 1] : 0;
-		let power = variant ? bounds[selected] : sl(lower + 1, selected < bounds.length ? bounds[selected] : 300);
+		let power = isAtUpperBound ? bounds[selected] : sl(lower + 1, selected < bounds.length ? bounds[selected] : 300);
 		let rows = [['Мощность двигателя, л.с.', 'Ставка, руб. за 1 л.с. в год'].tr('th')];
 		for (let i = 0; i < rates.length; i++) {
 			let interval = i === 0 ? 'До ' + bounds[0] + ' включительно' : i === rates.length - 1 ? 'Свыше ' + bounds[bounds.length - 1] :
