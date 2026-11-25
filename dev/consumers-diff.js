@@ -14,7 +14,7 @@
  *      или возьмутся из кеша):
  *        node dev/consumers-diff.js --before devel --after 3803 --grep 'arcBetweenSegments\('
  *   4. Первая строка отчёта — итог («байт в байт: 29»), ниже — таблица того, что
- *      изменилось и как (ответы, рисунки, текст, падения). Код возврата 1 — есть
+ *      изменилось и как (ответы, рисунки, текст, решения, падения). Код возврата 1 — есть
  *      неожиданное. JSON обеих сторон — в каталоге из последней строки.
  *
  * Примеры:
@@ -223,16 +223,17 @@ async function runTemplate(build, cwd, file, o, outFile) {
 function describe(a, b) {
 	const img = (t) => (t.txt.match(/<img[^>]*>/g) || []).join();
 	const txt = (t) => t.txt.replace(/<img[^>]*>/g, '');
-	const d = { ver: 0, img: 0, txt: 0 };
+	const d = { ver: 0, img: 0, txt: 0, rsh: 0 };
 	const n = Math.min(a.length, b.length);
 	for (let i = 0; i < n; i++) {
 		if (JSON.stringify(a[i].ver) !== JSON.stringify(b[i].ver)) d.ver++;
 		if (img(a[i]) !== img(b[i])) d.img++;
 		if (txt(a[i]) !== txt(b[i])) d.txt++;
+		if (a[i].rsh !== b[i].rsh) d.rsh++;
 	}
 	const parts = [];
 	if (a.length !== b.length) parts.push('задач ' + a.length + ' → ' + b.length);
-	parts.push('ответ ≠ ' + d.ver, 'рисунок ≠ ' + d.img, 'текст ≠ ' + d.txt + ' из ' + n);
+	parts.push('ответ ≠ ' + d.ver, 'рисунок ≠ ' + d.img, 'текст ≠ ' + d.txt, 'решение ≠ ' + d.rsh + ' из ' + n);
 	return parts.join(', ');
 }
 
