@@ -39,6 +39,18 @@ ctx.signVertices(points, letters);
 ctx.signVertices(points, letters, {above: [2, 3]});
 ```
 
+Если подписи нужны не по вертикальным отступам, а наружу от центра фигуры,
+задайте `awayFrom` — точку, от которой подписи отодвигаются, и `distance`
+(по умолчанию 20): положение считает `labelPositionAwayFrom()`, а `above`,
+`offsetBelow` и `offsetAbove` не используются. Координаты `awayFrom` — те же,
+что у `points` (до отражения оси Y); для фигуры, центрированной в начале
+координат, это `{x: 0, y: 0}`. Расстояние отсчитывается от точки привязки текста,
+поэтому вместе с `awayFrom` задавайте `textAlign: 'center'` и `textBaseline: 'middle'`:
+
+```js
+ctx.signVertices(points, letters, {textAlign: 'center', textBaseline: 'middle', awayFrom: {x: 0, y: 0}, distance: 18});
+```
+
 
 ## Построение чертежа
 
