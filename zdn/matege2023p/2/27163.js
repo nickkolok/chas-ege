@@ -8,7 +8,7 @@
 		let scale = sl(1, 5);
 		radiuses = radiuses.map(radius => radius * scale);
 
-		let radiusNew = [radiuses.reduce((a, b) => a + b.pow(2), 0), ['площадь поверхности', 'площадь большого круга']
+		let radiusNew = [radiuses.veclengthSquared(), ['площадь поверхности', 'площадь большого круга']
 			.iz()
 		];
 
