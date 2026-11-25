@@ -5,7 +5,7 @@
 
 		let rand = sl1();
 
-		let sphere = new Sphere(3 * sl(1, 33));
+		let sphere = new Sphere(sl(3, 99, 3));
 		let cyl = new Cylinder({
 			radius: sphere.radius,
 			height: 2 * sphere.radius
