@@ -5,23 +5,14 @@
 
 		// Пифагорова тройка: один катет — расстояние от оси до сечения,
 		// другой — половина хорды основания, гипотенуза — радиус основания.
-		// Перебираем все тройки (не только примитивные) с гипотенузой до 30:
+		// Все тройки (не только примитивные) с гипотенузой до 30:
 		// у ФИПИ (1DD343, 3BC472, 67A05C) радиусы от 5 до 29, в том числе
 		// тройка 20, 21, 29, которой нет в om.pifagtr.
-		let triples = [];
-		for (let x = 1; x < 30; x++) {
-			for (let y = 1; y < 30; y++) {
-				let z = Math.sqrt(x * x + y * y);
-				if (z <= 30 && z.isAlmostInteger()) {
-					triples.push([x, y, Math.round(z)]);
-				}
-			}
-		}
-		// В тройке [x, y, z] x — расстояние до оси, y — половина хорды
-		let triple = triples.iz();
+		// genPifag() отдаёт катеты по возрастанию, а расстоянием до оси у ФИПИ
+		// бывает и меньший катет (25 и 15), и больший (25 и 24), поэтому катеты перемешиваются.
+		let triple = genPifag(30);
 		let radius = triple[2];
-		let distance = triple[0];
-		let halfChord = triple[1];
+		let [distance, halfChord] = triple.slice(0, 2).shuffle();
 		let chord = 2 * halfChord;
 		// Образующая от четверти радиуса до трёх с половиной радиусов: так достижимы
 		// все наборы ФИПИ (самый плоский цилиндр — 25 и 7, самый высокий — 5 и 17),
@@ -70,8 +61,8 @@
 		let halfAngle = Math.acos(distance / cylinder.radius); // полуугол дуги хорды
 
 		let paint = function (ct) {
-			let w = 400;
-			let h = 320;
+			let w = ct.canvas.width;
+			let h = ct.canvas.height;
 			let r = cylinder.radius;
 			let H = cylinder.height;
 			let scale = Math.min((w - 40) / (2 * r), (h - 40) / (H + 2 * flat * r));

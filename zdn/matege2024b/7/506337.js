@@ -129,7 +129,6 @@
         let deltaMore = sl(2,3);
         answAboutDeltaMWOneMonth(intervals, listOfIntervals, deltaMore);
 
-
         listOfIntervals.forEach(item => {
             genAssert(item.solution.length > 0, 'У интервала нет характеристик');
             item.solution = item.solution.iz();
@@ -142,10 +141,10 @@
         let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
-            let scale = 40;
+            let scale = 40, gridHeight = 440;
             ctx.drawGridWithArrows({
                 gridWidth: 460,
-                gridHeight: 440,
+                gridHeight: gridHeight,
                 cellWidth: scale,
                 cellHeight: scale,
                 stepX: 1,
@@ -159,7 +158,7 @@
                 arrowLengthY: 8.9,
             });
 
-            ctx.translate(scale, scale * 9);
+            ctx.translate(scale, gridHeight - 2 * scale);
             ctx.scale(scale, -scale);
             ctx.lineWidth = 2 / scale;
 
@@ -186,4 +185,5 @@
         NAtask.modifiers.allDecimalsToStandard();
     }, 2000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=506337
+// 506337
+
