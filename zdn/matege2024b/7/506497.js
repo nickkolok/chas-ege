@@ -70,7 +70,7 @@
 			addUniqueAnsw(wasCondition, answ, 'давление росло, но не превышало ' + convert(more));
 		}
 
-		function answAboutDecreasingNonLess(intervals, answ, less) {
+		function answAboutDecreasingMore(intervals, answ, less) {
 			let wasCondition = intervals.map(interval => isDecreasing(interval) && isMore(interval, less));
 			addUniqueAnsw(wasCondition, answ, 'давление упало, но осталось больше ' + convert(less));
 		}
@@ -80,12 +80,12 @@
 			addUniqueAnsw(wasConst, answ, 'давление не изменилось');
 		}
 
-		function answAboutConstNotLess(intervals, answ, less) {
+		function answAboutConstMore(intervals, answ, less) {
 			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isMore(interval, less));
 			addUniqueAnsw(wasCondition, answ, 'давление не изменилось и было выше ' + convert(less));
 		}
 
-		function answAboutConstNotMore(intervals, answ, more) {
+		function answAboutConstLess(intervals, answ, more) {
 			let wasCondition = intervals.map(interval => constValueByFirst(interval) && isLess(interval, more));
 			addUniqueAnsw(wasCondition, answ, 'давление не изменилось и было ниже ' + convert(more));
 		}
@@ -96,7 +96,7 @@
 		let time = [0].zapMonot(13, 0, 1, 1); // шкала времени
 		let value = [sl(0, pressureMaxK, 0.5)]; // шкала давления
 
-		for (; value.length <= time.length;) {
+		while (value.length <= time.length) {
 			let interI = (time.length / sl(2, 8)).floor();
 			for (let j = 0; j < interI; j++) {
 				value.push([sl(0, pressureMaxK, 0.5), value[value.length - 1]][Number([0, 0, 0, 1].iz() && value[value.length - 1] != 0)]);
@@ -145,7 +145,7 @@
 			answAboutIncreasingNonMore(intervals, listOfIntervals, MoreP1);
 		} else {
 			// добавляем ответ про понижение давления но больше
-			answAboutDecreasingNonLess(intervals, listOfIntervals, LessP1);
+			answAboutDecreasingMore(intervals, listOfIntervals, LessP1);
 		}
 
 		if (sl1()) {
@@ -161,9 +161,9 @@
 			answAboutConstP(intervals, listOfIntervals);
 		} else {
 			// давление не изменилось и было ниже
-			answAboutConstNotMore(intervals, listOfIntervals, MoreP1);
+			answAboutConstLess(intervals, listOfIntervals, MoreP1);
 			// давление не изменилось и было выше
-			answAboutConstNotLess(intervals, listOfIntervals, LessP1);
+			answAboutConstMore(intervals, listOfIntervals, LessP1);
 		}
 
 		// добавляем ответ про максимальное давление
@@ -238,4 +238,5 @@
 	}, 1000);
 })();
 // 506497
+
 
