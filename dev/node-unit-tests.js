@@ -1306,6 +1306,13 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(calls, [[points, 20], [points, 25]], 'точки уходят в arcBetweenSegments как есть, шаг радиуса 5');
     });
 
+    QUnit.test('ctx.arcBetweenSegments: не три и не четыре точки — ошибка', function (assert) {
+        var five = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 2, y: 2 }];
+        assert.throws(function () { arcBetweenSegmentsCalls(five); }, /три или четыре точки, получено 5/, 'пять точек');
+        assert.throws(function () { arcBetweenSegmentsCalls(five.slice(0, 2)); }, /получено 2/, 'две точки');
+        assert.throws(function () { arcBetweenSegmentsCalls([0, 0, 1, 0, 1, 1, 0, 1, 2, 2]); }, /получено 5/, 'плоский массив из пяти точек');
+    });
+
     // ============================================================
     //  Canvas: ломаная по массивам точек  (lib/canvas.js)
     // ============================================================
