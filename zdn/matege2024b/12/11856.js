@@ -29,4 +29,4 @@
 	}, 2000);
 })();
 // https://base.mathege.ru/clones/?position=16&parent=11856
-
+// ФИПИ BE85F9 FCA10A AAEEB2 AF61BE 47BF16 03E52F 0DCE26 30F8DC CE4F53 87E150 5E11C9 1AEB90 36368A A41548
