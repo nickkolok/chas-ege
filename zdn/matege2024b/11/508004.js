@@ -15,10 +15,12 @@
 		let e = sl(1, h - 2);
 		let q = sl(1, h - e - 1);
 		let w = sl(1, 4);
+		let xRight = a + w;
+		let zTop = q + e;
 
 		let detail = new RectilinearSolid([
 			[0, 0, 0, a, d, h],
-			[a, 0, q, a + w, d, q + e],
+			[a, 0, q, xRight, d, zTop],
 		]);
 
 		let answer = question === 'объём' ? detail.volume() : detail.surfaceArea();
@@ -28,8 +30,8 @@
 				labels: [
 					{ from: [0, 0, h], to: [0, d, h], text: d },
 					{ from: [0, d, h], to: [a, d, h], text: a },
-					{ from: [a, d, q + e], to: [a + w, d, q + e], text: w, direction: [0, -1] },
-					{ from: [a + w, d, q], to: [a + w, d, q + e], text: e, direction: [1, 0] },
+					{ from: [a, d, zTop], to: [xRight, d, zTop], text: w, direction: [0, -1] },
+					{ from: [xRight, d, q], to: [xRight, d, zTop], text: e, direction: [1, 0] },
 					{ from: [0, 0, 0], to: [0, 0, h], text: h },
 				],
 			});
