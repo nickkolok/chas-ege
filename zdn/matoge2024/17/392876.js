@@ -4,26 +4,33 @@
 
         let letters = latbukv.slice(0, 4).concat('O');
 
+        // Как в ФИПИ: диагонали AC < BD — чётные (AC от 6 до 26, BD от 12 до 30), сторона AB целая,
+        // ответ DO = BD/2 целый. AB — сторона треугольника ABO со сторонами AC/2 и BD/2.
+        let diagonalAC = sl(6, 30, 2);
+        let diagonalBD = sl(diagonalAC + 2, 40, 2);
+        let sideAB = sl((diagonalBD - diagonalAC) / 2 + 1, (diagonalAC + diagonalBD) / 2 - 1);
+        // Вторая сторона — по сумме квадратов диагоналей, угол A — по теореме косинусов для BD
+        let sideAD = ((diagonalAC ** 2 + diagonalBD ** 2) / 2 - sideAB ** 2).sqrt();
+        let cosA = (sideAB ** 2 + sideAD ** 2 - diagonalBD ** 2) / (2 * sideAB * sideAD);
+
         let par = new Parallelogram({
             lengths: {
-                lengthAB: sl(1, 50),
-                lengthBC: sl(1, 50),
+                lengthAB: sideAB,
+                lengthBC: sideAD,
             },
             angles: {
                 angle: {
-                    angleA: [60, 120].iz(),
+                    angleA: cosA.acos(),
                 },
-                angleInDegree: true,
             },
             supplementary: {
                 calculateDiagonals: true
             }
         });
+        genAssert(par.lengthDiagonalAC.isAlmostEqual(diagonalAC, 1e-9) && par.lengthDiagonalBD.isAlmostEqual(diagonalBD, 1e-9),
+            'Диагонали параллелограмма не совпали с заданными');
 
-        genAssertZ1000(par.lengthDiagonalAC.pow(2));
-        genAssertZ1000(par.lengthDiagonalBD);
-
-        let answ = par.lengthDiagonalBD / 2;
+        let answ = diagonalBD / 2;
 
         par.connectVerticesInConnectionMatrix([
             [0, 2],
@@ -48,7 +55,7 @@
         };
 
         NAtask.setTask({
-            text: `Диагонали $AC$ и $BD$ параллелограмма $ABCD$ пересекаются в точке $O$, $AC = ${par.lengthDiagonalAC.pow(2).texsqrt(1)}$, $BD = ${par.lengthDiagonalBD}$, $AB = ${par.lengthAB}$. Найдите $DO$.`,
+            text: `Диагонали $AC$ и $BD$ параллелограмма $ABCD$ пересекаются в точке $O$, $AC = ${diagonalAC}$, $BD = ${diagonalBD}$, $AB = ${sideAB}$. Найдите $DO$.`,
             answers: answ,
             authors: ['Александра Суматохина'],
         });
