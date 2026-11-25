@@ -74,3 +74,4 @@
 
 })();
 // https://oge.sdamgia.ru/test?likes=311956
+// ФИПИ 0B92BF 20B8B4 074CAF 3A4AAE 7533C8 DE7F8E 473A79 9DA99C D00D8E 24D584
