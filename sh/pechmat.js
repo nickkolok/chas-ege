@@ -3,7 +3,7 @@
 var vr1 = chas.mode.svinta ? 100 : 200;
 var vr2 = chas.mode.svinta ? 100 : 1500;
 
-var variantNumber;
+var variantNumber = 0;
 var nV = 1;
 var nZ = 1;
 var aZ = [];
@@ -33,11 +33,7 @@ function vse0() {
 	$('#cV').val(1);
 }
 
-function zapusk() {
-	//Сохраняем параметры генерации
-	chasStorage.domData.save();
-
-	//Читаем настройки
+function readOptions() {
 	options.editable = $('#redakt').is(':checked');
 	options.largeFont = $('#largeFont').is(':checked');
 	options.customNumber = $('#customNumber').is(':checked');
@@ -55,16 +51,35 @@ function zapusk() {
 	options.startTransitNumber = 1 * $('#start-transit-number').val();
 	options.prepareLaTeX = $('#prepareLaTeX').is(':checked');
 	options.forceIntegers = $('#forceIntegers').is(':checked');
+	options.onlyIntegers = $('#onlyIntegers').is(':checked');
+	options.randomSeed = $('#randomSeed').val();
+	if (options.randomSeed === '') {
+		options.randomSeed = Date.now();
+	}
 
-	if (customNumber) {
+	if (options.customNumber) {
 		variantNumber = $('#start-number').val() - 1;
 	}
 
-	sluchch.forceIntegers = (options.forceIntegers) ? true : false; 	
+	sluchch.forceIntegers = !!options.forceIntegers;
+	sluchch.onlyIntegers = !!options.onlyIntegers;
 
 	if ($('#htmlcss').is(':checked')) {
 		MathJax.Hub.setRenderer('HTML-CSS');
 	}
+}
+
+
+async function zapusk() {
+	//Если файлы подгружены, то запускаем их сразу
+	//Например, чтобы выставить ими количество вариантов.
+	await processArbitraryCodeFiles();
+
+	//Сохраняем параметры генерации
+	chasStorage.domData.save();
+
+	//Читаем настройки
+	readOptions();
 
 	//Читаем количество заданий
 	aV = nV = 1 * $('#cV').val();
@@ -80,12 +95,12 @@ function zapusk() {
 	iZ = aZ.slice();
 	nZ = 0;
 	$('#panel').html('Тесты составляются, подождите...');
-	$('#gotov').show();
+	$('#readiness-message').show();
 	zadan();
 }
 
 function testGotov() {
-	$('#gotov').hide();
+	$('#readiness-message').hide();
 	if (options.editable) {
 		$('#rez, #otv, #rsh').attr('contenteditable', 'true');
 	}
@@ -119,13 +134,11 @@ function konecSozd() {
 	convertCanvasToImagesIfNeeded();
 	if (options.prepareLaTeX) {
 		for (var id in generatedTasks) {
-			tasksInLaTeX[id] = replaceCanvasWithImgInTask(
+			tasksInLaTeX[id] = roughHTML2LaTeX(replaceCanvasWithImgInTask(
 				getTaskTextContainerByTaskId(id),
-				generatedTasks[id].txt
-			).
-			 // Escape LaTeX comments,
-			 // but don't ruin if they've been already escaped!
-			 replace(/\\?%/g, '\\%').replace(/<br>/g, '\\\\').replace(/<br\/>/g, '\\\\').replace(/<b>/g, '\\textbf{').replace(/<\/b>/g, '}');
+				generatedTasks[id].txt,
+				generatedTasks[id].taskCategory
+			));
 		}
 	}
 
@@ -227,8 +240,14 @@ function zadan() {
 			nZ++;
 			zadan();
 		} else {
+			let tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
+			// Именно в этой точке происходит подсидовка -
+			// использование предсказуемых псевдослучайных чисел вместо встроенных случайных,
+			// позволяющее перегенерировать только отдельные задания из варианта
+			let seed = options.randomSeed + "__" + variantsGenerated.length + "__" + tasksReadyInCurrentVariant;
+			Math.seedrandom(seed);
+
 			if (options.splitAnswerTables) {
-				var tasksReadyInCurrentVariant = aZ.sum() - iZ.sum();
 				if (tasksReadyInCurrentVariant && (tasksReadyInCurrentVariant % options.splitAnswersNumber === 0)) {
 					appendVariantAnswersEnding();
 					appendVariantAnswersCaption();
@@ -309,7 +328,7 @@ function obnov() {
 	strOtv  += html.ver;
 	strResh += html.rsh;
 
-	generatedTasks[vopr.taskId] = vopr.clone();
+	grabCurrentTask();
 
 	var sdel = aZ.sum() * (aV - nV + 1) - iZ.sum();
 	var w = sdel / kZ;
@@ -371,13 +390,20 @@ function optimcopyd(n) {
 var startShell = function () {
 	window.vopr.txt = '';
 	$('#zadaniya').html(sozdKolvoHtml('pech'));
-	$('#gotov').hide();
+	$('#readiness-message').hide();
 	galkiKat('#galki_kat', 'pech');
 }
 
 
 function getTaskTextContainerByTaskId(taskId) {
 	return $('div.d[data-task-id="' + taskId + '"]')[0];
+}
+
+function grabCurrentTask(){
+	generatedTasks[vopr.taskId] = vopr.clone();
+	generatedTasks[vopr.taskId].address =
+		window.nabor.adres + dvig.getzadname(nZ) + '/' + window.nomer;
+		generatedTasks[vopr.taskId].taskCategory = vopr.taskCategory;
 }
 
 function renewTask() {
@@ -400,9 +426,9 @@ function renewTask() {
 		solution .replaceWith(taskHtml.rsh);
 		window.vopr.dey();
 		convertCanvasToImagesIfNeeded();
-		generatedTasks[vopr.taskId] = vopr.clone();
+		grabCurrentTask();
 		if (options.prepareLaTeX) {
-			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt);
+			tasksInLaTeX[taskId] = replaceCanvasWithImgInTask(getTaskTextContainerByTaskId(taskId), vopr.txt, window.vopr.taskCategory);
 			refreshLaTeXarchive();
 		}
 		MathJax.Hub.Typeset(taskHtml[0]);
@@ -453,16 +479,23 @@ function removeGridFields() {
 
 
 function getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX) {
-	var hline = "\n\\\\\n\\hline\n";
-	return (
-		'\\begin{tabular}{' + (new Array(cellsInFirstRow)).fill('|l').join('')+ '|' + '}' +
+	const maxRows = options.splitAnswersNumber || 60;
+	const hline = "\n\\\\\n\\hline\n";
+	const colFormat = (new Array(cellsInFirstRow)).fill('|l').join('') + '|';
+
+	let res = '';
+	for (let i = 0; i < answersParsedToTeX.length; i += maxRows) {
+		const chunk = answersParsedToTeX.slice(i, i + maxRows);
+		res += '\\begin{tabular}{' + colFormat + '}' +
 			'\n\\hline\n' +
-			answersParsedToTeX.join(hline) +
+			chunk.join(hline) +
 			hline +
-		'\\end{tabular}' +
-		'\n\n\n'
-	);
+			'\\end{tabular}' +
+			'\n\n\n';
+	}
+	return res;
 }
+
 
 function createLaTeXbunchAnswers(variantN) {
 
@@ -481,7 +514,7 @@ function createLaTeXbunchAnswers(variantN) {
 	return getAnswersSubtableLaTeX(cellsInFirstRow, answersParsedToTeX);
 }
 
-function replaceCanvasWithImgInTask(element, text) {
+function replaceCanvasWithImgInTask(element, text, taskCategory) {
 	if (!(/<canvas/i.test(text))) {
 		// Nothing to do
 		return text;
@@ -491,7 +524,7 @@ function replaceCanvasWithImgInTask(element, text) {
 	for (var i = 0; i < canvases.length; i++) {
 		var imageName = canvases[i].getAttribute('data-nonce').substr(3) + "n" + i;
 		preparedImages[imageName] = canvases[i].toDataURL().replace('data:image/png;base64,','');
-		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[0.4\\linewidth]{'+imageName+'}');
+		text = text.replace(/<canvas.*?<\/canvas>/, '\\addpictoright[\\size{'+taskCategory+'}][\\scale{'+taskCategory+'}]{'+imageName+'}');
 	}
 	if (canvases.length) {
 		text =
@@ -511,6 +544,7 @@ function createLaTeXbunchTasks(variantN) {
 			bunchText +=
 				'\n' +
 				'\\begin{taskBN}{' + generatedTasks[taskId].taskCategory + '}' + '\n' +
+					'% ' + generatedTasks[taskId].address + '\n' +
 					tasksInLaTeX[taskId] + '\n' +
 				'\\end{taskBN}' + '\n';
 		}
@@ -526,7 +560,7 @@ function refreshLaTeXarchive() {
 	}
 	var zip = new JSZip();
 	var bunchTasks = "";
-	var answers = "\\begin{document}\n\n\\begin{multicols}{"+(variantsGenerated.length>10)?6:variantsGenerated.length+"}";
+	var answers = "\\begin{document}\n\n\\begin{multicols}{"+((variantsGenerated.length>6)?6:variantsGenerated.length)+"}";
 
 	for(var variantN of variantsGenerated){
 		var head =
@@ -543,6 +577,8 @@ function refreshLaTeXarchive() {
 
 	answers += "\n\n\\end{multicols}\n\n\\end{document}";
 
+	bunchTasks += "\n\n%Random seed:" + options.randomSeed;
+
 	zip.file("tasks.tex", bunchTasks);
 	zip.file("answers.tex", "\\documentclass[a4paper]{article}\n\\usepackage[T2A]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[english,russian]{babel}\n\\usepackage{multicol}\n\n\\setlength{\\columnsep}{0pt}\n\\usepackage[\n\tleft = 0.5cm,\n\tright = 0.5cm,\n\ttop = 0.5cm,\n\tbottom = 0.5cm,\n]{geometry}" + answers);
 
@@ -554,4 +590,47 @@ function refreshLaTeXarchive() {
 		$('#latex-archive-placeholder').show();
 		$('#latex-archive-placeholder')[0].href = "data:application/zip;base64," + base64;
 	});
+}
+
+function processArbitraryCodeFiles() {
+	const files = $('#arbitraryCodeInput')[0].files;
+
+	if (!files.length) {
+		console.log('Не найдено файлов для запуска произвольного кода.');
+		return Promise.resolve(); // resolve immediately if no files
+	}
+
+	console.log('Файлов для запуска произвольного кода: ' + files.length);
+
+	const promises = Array.from(files).map(file => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+
+			reader.onload = function (e) {
+				const content = e.target.result;
+				try {
+					eval(content);
+					console.log(`Исполнен файл ${file.name}`);
+					resolve();
+				} catch (err) {
+					console.error(`Не удалось исполнить файл ${file.name}:`, err);
+					resolve(); // or reject(err); depending on whether you want to halt on errors
+				}
+			};
+
+			reader.onerror = function () {
+				console.error(`Не удалось прочитать файл  ${file.name}`);
+				resolve(); // or reject() if you want to handle errors differently
+			};
+
+			reader.readAsText(file);
+		});
+	});
+
+	// Return a Promise that resolves when all files are processed
+	return Promise.all(promises);
+}
+
+function clearArbitraryCodeInput() {
+	document.getElementById('arbitraryCodeInput').value = '';
 }

@@ -1,5 +1,6 @@
 window.nomer=[
-	774550002,
+	77455,
 ].iz()
-window.comment='774550002';
+window.comment='77455 sqrt';
+window.nabor.preferences['77455'] = ['sqrt'];
 chas2.task.setMinimaxFunctionTask.forbidOpenEnds = true;

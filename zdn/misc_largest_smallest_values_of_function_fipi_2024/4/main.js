@@ -1,5 +1,6 @@
 window.nomer=[
-	774550001,
+	77455,
 ].iz()
-window.comment='774550001';
+window.comment='77455 pow';
+window.nabor.preferences['77455'] = ['pow'];
 chas2.task.setMinimaxFunctionTask.forbidOpenEnds = true;
