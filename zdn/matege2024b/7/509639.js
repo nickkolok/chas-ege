@@ -144,7 +144,7 @@
 
         let paint1 = function (ctx) {
             let cellWidth = 40, cellHeight = 40;
-            ctx.drawGridWithArrows({
+            let origin = ctx.drawGridWithArrows({
                 gridWidth: 460,
                 gridHeight: 360,
                 cellWidth: cellWidth,
@@ -160,7 +160,7 @@
                 arrowLengthY: 6.9,
             });
 
-            ctx.translate(cellWidth, cellHeight * 7);
+            ctx.translate(origin.originX, origin.originY);
             ctx.scale(cellWidth, -cellHeight);
             ctx.lineWidth = 2 / cellHeight;
 
