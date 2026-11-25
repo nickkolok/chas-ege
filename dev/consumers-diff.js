@@ -65,7 +65,11 @@
  * Ошибка в чертеже (поле drawError раннера) считается отдельно: «чертёж стал падать» —
  * неожиданное изменение, даже если картинки совпали.
  *
- * Код возврата 1 — есть неожиданные изменения, или шаблон стал падать.
+ * Раннер возвращает 1, если не сгенерировалась хотя бы одна задача; остальные задачи
+ * всё равно сравниваются, а в подробностях — «часть задач не сгенерирована» (до, после
+ * или и там и там; «стал падать», если только после).
+ *
+ * Код возврата 1 — есть неожиданные изменения, или шаблон стал падать (целиком или частью задач).
  */
 
 const fs = require('fs');
@@ -302,8 +306,12 @@ async function main() {
 	for (const { it, b1, b2, a } of results) {
 		let kind;
 		let note = '';
-		const failB = b1.code !== 0 || !b1.tasks;
-		const failA = a.code !== 0 || !a.tasks;
+		// Раннер возвращает 1, если упала хотя бы одна генерация, но остальные задачи
+		// он выдаёт: их сравниваем, а «часть не сгенерирована» — отдельной пометкой
+		const failB = !(b1.tasks && b1.tasks.length);
+		const failA = !(a.tasks && a.tasks.length);
+		const partB = !failB && b1.code !== 0;
+		const partA = !failA && a.code !== 0;
 		if (failB && failA) {
 			kind = 'падает и до, и после';
 			note = a.error;
@@ -320,6 +328,14 @@ async function main() {
 		} else {
 			kind = 'изменился';
 			note = describe(b1.tasks, a.tasks);
+		}
+		if (partA && !partB) {
+			kind = 'стал падать';
+			note = 'часть задач не сгенерирована: ' + a.error + (note ? '; ' + note : '');
+		} else if (partA && partB) {
+			note = (note ? note + '; ' : '') + 'часть задач не сгенерирована и до, и после: ' + a.error;
+		} else if (partB) {
+			note = (note ? note + '; ' : '') + 'до часть задач не генерировалась: ' + b1.error;
 		}
 		// Ошибки в чертеже (поле drawError): задача сгенерирована, но рисунок недорисован
 		const drawErrors = (r) => (r.tasks || []).filter((t) => t.drawError !== undefined);
@@ -340,7 +356,7 @@ async function main() {
 		if (kind === 'байт в байт' && expected) kind = 'ожидали изменений, их нет';
 		if (kind === 'стал падать' || kind === 'изменился неожиданно' || kind === 'чертёж стал падать') bad++;
 		count[kind] = (count[kind] || 0) + 1;
-		if (kind !== 'байт в байт') rows.push('| ' + it.label + ' | ' + kind + ' | ' + note.replace(/\|/g, '\\|') + ' |');
+		if (kind !== 'байт в байт' || note) rows.push('| ' + it.label + ' | ' + kind + ' | ' + note.replace(/\|/g, '\\|') + ' |');
 	}
 
 	const lines = [];
