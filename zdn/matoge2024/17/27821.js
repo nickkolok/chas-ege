@@ -29,7 +29,9 @@
             ]
         );
 
-        let points = autoScale(trp.vertices);
+        // Поле уже холста на 40 px с каждой стороны: подписи вершин стоят в 18 px
+        // от вершины наружу и иначе обрезаются краем холста
+        let points = autoScale(trp.vertices, undefined, [], {startX: -160, finishX: 160, startY: -160, finishY: 160});
         let letters = latbukv.slice(0, 4);
 
         let key = '27821';
