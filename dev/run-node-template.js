@@ -13,6 +13,7 @@
  *   node dev/run-node-template.js --filepath zdn/matege2024p/10/15.js [опции]
  *   node dev/run-node-template.js --filepath t1.js --filepath t2.js ...   (пакетно)
  *   find zdn -name '*.js' | node dev/run-node-template.js --batch-stdin --json
+ *   node dev/run-node-template.js --eval '(-1).arcctg()' --eval '(12).nod(18)'
  *
  * Опции:
  *   --filepath <путь>   путь к шаблону (.js или .cpp); можно указать несколько
@@ -20,8 +21,12 @@
  *   --iterations <n>    сколько примеров сгенерировать для каждого шаблона (1)
  *   --seed <строка>     зерно ГСЧ (seedrandom) — воспроизводимость вывода
  *   --no-tex            не печатать LaTeX-блок
- *   --json              машинный вывод: JSON-массив результатов
+ *   --json              машинный вывод: JSON-массив результатов; у задачи, чей чертёж
+ *                       бросил исключение, есть поле drawError (и строка в stderr)
  *   --quiet             не транслировать console.log из недр библиотек
+ *   --eval <выражение>  вычислить выражение в окружении бандла (как в консоли
+ *                       otladka.html) и напечатать результат; можно указать
+ *                       несколько; с --filepath не сочетается
  *
  * Канвасы: если установлен npm-пакет «canvas» (node-canvas), jsdom получает
  * настоящие 2D-контексты: vopr.dey() рисует, а <canvas> в тексте задания
@@ -45,17 +50,39 @@ const projectRoot = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
 const opts = {
 	filepaths: [], batchStdin: false, iterations: 1,
-	seed: null, tex: true, json: false, quiet: false,
+	seed: null, tex: true, json: false, quiet: false, evals: [],
+};
+// Ошибка в ключах — сразу выход с кодом 1: молча пропущенный ключ
+// (опечатка --iteration, забытое значение у --seed) даёт не те задачи,
+// и заметить это по выводу трудно
+const argError = function (message) {
+	console.error(message);
+	console.error('Ключи: --filepath <путь> --iterations N --seed S --eval <выражение> --batch-stdin --no-tex --json --quiet');
+	process.exit(1);
+};
+// Значение ключа — следующий аргумент. Значение, начинающееся с «--», —
+// это почти наверняка следующий ключ (`--seed --json`), поэтому ошибка.
+// Выражение, которое и правда начинается с «--», пишут с пробелом: --eval ' --x'
+const takeValue = function (i) {
+	const value = args[i + 1];
+	if (value === undefined || value.startsWith('--')) {
+		argError('Ключ ' + args[i] + ' требует значения' + (value === undefined ? '' : ', а за ним идёт ' + value) + '.');
+	}
+	return value;
 };
 for (let i = 0; i < args.length; i++) {
-	if (args[i] === '--filepath' && args[i + 1]) {
-		opts.filepaths.push(args[++i]);
+	if (args[i] === '--filepath') {
+		opts.filepaths.push(takeValue(i++));
 	} else if (args[i] === '--batch-stdin') {
 		opts.batchStdin = true;
-	} else if (args[i] === '--iterations' && args[i + 1]) {
-		opts.iterations = parseInt(args[++i], 10);
-	} else if (args[i] === '--seed' && args[i + 1]) {
-		opts.seed = args[++i];
+	} else if (args[i] === '--iterations') {
+		const value = takeValue(i++);
+		if (!/^[1-9][0-9]*$/.test(value)) {
+			argError('--iterations — целое число не меньше 1, а не ' + JSON.stringify(value) + '.');
+		}
+		opts.iterations = parseInt(value, 10);
+	} else if (args[i] === '--seed') {
+		opts.seed = takeValue(i++);
 	} else if (args[i] === '--no-tex') {
 		opts.tex = false;
 	} else if (args[i] === '--json') {
@@ -63,7 +90,11 @@ for (let i = 0; i < args.length; i++) {
 		opts.quiet = true;
 	} else if (args[i] === '--quiet') {
 		opts.quiet = true;
-	} else if (!args[i].startsWith('--')) {
+	} else if (args[i] === '--eval') {
+		opts.evals.push(takeValue(i++));
+	} else if (args[i].startsWith('--')) {
+		argError('Неизвестный ключ ' + args[i] + '.');
+	} else {
 		opts.filepaths.push(args[i]); // позиционные пути тоже принимаем
 	}
 }
@@ -74,9 +105,17 @@ if (opts.batchStdin) {
 	);
 }
 
-if (!opts.filepaths.length) {
+if (!opts.filepaths.length && !opts.evals.length) {
 	console.error('Использование: node dev/run-node-template.js --filepath <путь> [--iterations N] [--seed S] [--no-tex] [--json] [--quiet] [--batch-stdin]');
+	console.error('         или: node dev/run-node-template.js --eval <выражение> [--eval …] [--seed S] [--json]');
 	process.exit(1);
+}
+if (opts.filepaths.length && opts.evals.length) {
+	console.error('--eval не сочетается с --filepath: запустите их отдельными командами.');
+	process.exit(1);
+}
+if (opts.evals.length) {
+	opts.quiet = true; // в stdout — только результаты выражений
 }
 
 const t0 = Date.now();
@@ -215,25 +254,74 @@ window.dvig.dgn = 0;
 evalInWindow('window.__originalNaborPreferences = window.nabor.preferences;', '<save-prefs>');
 
 if (opts.seed !== null) {
-	// В dev-репозитории ext/seedrandom.min.js отсутствует (concat молча его
-	// пропускает), зато seedrandom@3 есть в dependencies — грузим в окно:
-	// UMD без module сам навесит Math.seedrandom (как urljson.js и ожидает).
-	const seedrandomCandidates = [
-		path.join(projectRoot, 'node_modules', 'seedrandom', 'seedrandom.min.js'),
-		// для копии раннера в build/: node_modules лежит в корне репозитория
-		path.join(projectRoot, '..', 'node_modules', 'seedrandom', 'seedrandom.min.js'),
-	];
-	const seedrandomPath = seedrandomCandidates.find((p) => fs.existsSync(p));
-	if (!seedrandomPath) {
-		console.error('Не найден seedrandom.min.js (искал: ' + seedrandomCandidates.join(', ') + ') — выполните `npm install`.');
-		process.exit(1);
-	}
-	evalInWindow(fs.readFileSync(seedrandomPath, 'utf8'), 'seedrandom.min.js');
+	// seedrandom теперь внутри бандла chas-uijs.js (lib/load-chas-lib.js берёт его
+	// через choosePath из node_modules, как остальные npm-библиотеки).
+	// UMD без module сам навешивает Math.seedrandom — отдельная загрузка не нужна.
 	if (typeof window.Math.seedrandom !== 'function') {
-		console.error('Не удалось инициализировать seedrandom');
+		console.error('Math.seedrandom не найден в бандле chas-uijs.js — выполните `grunt`.');
 		process.exit(1);
 	}
 	window.Math.seedrandom(String(opts.seed));
+}
+
+// ---------------------------------------------------------------------------
+// 3.1. --eval: вычислить выражения в окружении бандла и выйти
+// ---------------------------------------------------------------------------
+if (opts.evals.length) {
+	// JSON.stringify пишет NaN и ±Infinity как null, а -0 как 0: для проверки
+	// математики это неверный ответ. Поэтому такие числа печатаются как в JS,
+	// в том числе внутри массивов и объектов ([NaN,-0]), а в --json
+	// поле result у такого значения не пишется — только repr.
+	const specialNumber = (x) => (typeof x !== 'number' ? null :
+		Object.is(x, -0) ? '-0' : Number.isFinite(x) ? null : String(x));
+	const marker = '\u0000number:';
+	// Одной строкой и не длиннее 2000 знаков: window и подобные объекты огромны
+	const inspectShort = function (v) {
+		const s = require('util').inspect(v, { depth: 2, compact: true, breakLength: Infinity, maxArrayLength: 20, maxStringLength: 200 });
+		return s.length > 2000 ? s.slice(0, 2000) + ' …' : s;
+	};
+	// repr — строка, как значение печатается без --json; lossless — значение
+	// можно записать в JSON без потерь
+	const describe = function (v) {
+		if (v === undefined) return { repr: 'undefined', lossless: false };
+		if (typeof v === 'function') return { repr: String(v), lossless: false };
+		let special = false;
+		let json;
+		try {
+			json = JSON.stringify(v, function (key, x) {
+				const s = specialNumber(x);
+				if (s === null) return x;
+				special = true;
+				return marker + s;
+			});
+		} catch (e) {
+			// Циклические ссылки (window), BigInt: выражение вычислилось,
+			// а в JSON значение не записывается — печатаем его как node
+			return { repr: inspectShort(v), lossless: false };
+		}
+		if (json === undefined) return { repr: inspectShort(v), lossless: false }; // Symbol
+		if (!special) return { repr: json, lossless: true };
+		return { repr: json.replace(/"\\u0000number:([^"]*)"/g, '$1'), lossless: false };
+	};
+	const evalResults = [];
+	let evalFailed = false;
+	for (const expr of opts.evals) {
+		try {
+			const value = evalInWindow(expr, '<eval>');
+			const d = describe(value);
+			const entry = { expr: expr, type: typeof value, repr: d.repr };
+			if (d.lossless) entry.result = value;
+			evalResults.push(entry);
+			if (!opts.json) console.log(d.repr);
+		} catch (e) {
+			evalFailed = true;
+			evalResults.push({ expr: expr, error: String(e && e.message || e) });
+			console.error('Ошибка в --eval ' + JSON.stringify(expr) + ': ' + (e && e.message || e));
+		}
+	}
+	if (opts.json) console.log(JSON.stringify(evalResults, null, 2));
+	exitAfterFlush(evalFailed ? 1 : 0);
+	return; // дальше — генерация по шаблонам: в режиме --eval она не нужна
 }
 
 // ---------------------------------------------------------------------------
@@ -258,7 +346,8 @@ function renderAndSwapCanvases(snapshot) {
 			var q = document.getElementById('question');
 			q.innerHTML = v.txt;
 			try { window.vopr.dey(); } catch (e) {
-				console.log('[dey] ' + (e && e.message ? e.message : e));
+				// Чертёж недорисован: в JSON — поле drawError, в stderr — строка (см. reportDrawError)
+				v.drawError = e && e.message ? e.message : String(e);
 			}
 			var canvases = q.getElementsByTagName('canvas');
 			for (var i = 0; i < canvases.length; i++) {
@@ -367,6 +456,13 @@ function processTemplate(filepath) {
 		: opts.iterations;
 	const results = [];
 
+	// Ошибка в paint не роняет генерацию, но чертёж недорисован: сообщаем при любых ключах
+	function reportDrawError(item) {
+		if (item.drawError !== undefined) {
+			console.error('[' + filepath + ' / ' + item.label + '] Ошибка в чертеже: ' + item.drawError);
+		}
+	}
+
 	function emitOne(label, comboIdx) {
 		let snapshot;
 		try {
@@ -379,6 +475,7 @@ function processTemplate(filepath) {
 		const item = Object.assign({ template: filepath, label: label }, snapshot);
 		results.push(item);
 		allResults.push(item);
+		reportDrawError(item);
 
 		if (opts.json) return;
 
@@ -419,6 +516,7 @@ function processTemplate(filepath) {
 		const item = Object.assign({ template: filepath, label: 'Example 1/' + opts.iterations }, first);
 		results.push(item);
 		allResults.push(item);
+		reportDrawError(item);
 		if (!opts.json) {
 			console.log('\n=== ' + filepath + ' :: Example 1/' + opts.iterations + ' ===');
 			console.log('--- Текст задания ---');
@@ -450,4 +548,22 @@ console.error('\n--- Тайминги ---');
 console.error('Загрузка бандла chas-uijs.js: ' + (tBundle - t0) + ' мс');
 console.error('Генерация (' + allResults.length + ' примеров из ' + opts.filepaths.length + ' шаблонов): ' + (tEnd - tBundle) + ' мс');
 console.error('Итого: ' + (tEnd - t0) + ' мс');
-process.exit(hadFailures ? 1 : 0);
+exitAfterFlush(hadFailures ? 1 : 0);
+
+/**
+ * Завершить процесс, когда stdout и stderr записаны до конца.
+ * process.exit() не ждёт асинхронной записи в канал: в конвейере
+ * (`… --json | jq`) всё, что не поместилось в буфер канала (64 КиБ),
+ * терялось, и JSON обрывался. Выходить же нужно явно: окно jsdom держит
+ * таймеры, и само приложение не завершится.
+ * @param {number} code - код возврата
+ */
+function exitAfterFlush(code) {
+	// Пока вывод дописывается, окно jsdom не должно ничего исполнять:
+	// иначе успевают сработать его события и таймеры (например, обработчик
+	// load из бандла) и напечатать в stderr постороннюю ошибку
+	window.close();
+	process.stdout.write('', () => {
+		process.stderr.write('', () => process.exit(code));
+	});
+}
