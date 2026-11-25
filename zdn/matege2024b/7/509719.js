@@ -90,16 +90,6 @@
             return maxIndex;
         }
 
-        function addUniqueAnsw(was, answ, text) {
-            for (let i = 0; i < was.length; i++) {
-                if (was[i]) {
-                    if (!answ[i].solution.includes(text)) {
-                        answ[i].solution.push(text);
-                    }
-                }
-            }
-        }
-
         function answAboutMax(intervals, answ) {
             let max1 = findMaximums(func, 0, 4);
             let max2 = findMaximums(func, 4, 8);
@@ -214,9 +204,7 @@
             );
         });
 
-        let listOfIntervals = Array.from({
-            length: 4
-        }, (_, i) => {
+        let listOfIntervals = intervals.map((_, i) => {
             let startTime = i * 2;
             let endTime = startTime + 2;
             return {
@@ -273,14 +261,15 @@
         }
         genAssert(success, 'Не удалось подобрать уникальные решения');
 
-        let listView = listOfIntervals.map(item => item.expr + ':' + item.solution);
+        let listView = listOfIntervals.map(item => item.expr + ': ' + item.solution);
 
         let paint1 = function (ctx) {
+            const cell = 40, gridHeight = 320;
             ctx.drawGridWithArrows({
                 gridWidth: 341,
-                gridHeight: 320,
-                cellWidth: 40,
-                cellHeight: 40,
+                gridHeight: gridHeight,
+                cellWidth: cell,
+                cellHeight: cell,
                 stepX: 1,
                 stepY: pulseStep,
                 maxX: 8,
@@ -291,14 +280,11 @@
                 arrowLengthY: 5.9,
             });
 
-            ctx.translate(40, 40 * 6);
-            ctx.scale(40, -40);
-            ctx.lineWidth = 2 / 40;
+            ctx.translate(cell, gridHeight - 2 * cell);
+            ctx.scale(cell, -cell);
+            ctx.lineWidth = 2 / cell;
 
-            let step = 0.1;
-            for (let i = 0; i < time.length - 1; i += step) {
-                ctx.drawLine(i, func(i), i + step, func(i + step));
-            }
+            ctx.drawPolyline(time, value);
         };
 
         NAtask.setCorrespondenceTask({
@@ -318,4 +304,5 @@
         NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=509719
+// 509719
+
