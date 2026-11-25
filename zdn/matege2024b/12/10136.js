@@ -35,7 +35,6 @@
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
 			ctx.signVertices(points, letters, {above: [2]});
-			ctx.scale(1, -1);
 		};
 
 		NAtask.setTask({
