@@ -354,6 +354,14 @@ module.exports = function(grunt) {
 
 		qunit: {
 			options: {
+				// grunt-contrib-qunit запускает Chrome через puppeteer, а Chrome не стартует
+				// под root без --no-sandbox («Running as root without --no-sandbox is not
+				// supported», crbug.com/638180) — типично для контейнеров и docker-CI.
+				// Флаг опциональный: без переменной окружения аргументы не добавляются
+				// и поведение ровно прежнее. Запуск: PUPPETEER_NO_SANDBOX=1 grunt qunit
+				puppeteer: {
+					args: process.env.PUPPETEER_NO_SANDBOX ? ['--no-sandbox', '--disable-setuid-sandbox'] : [],
+				},
 				get console() {
 					var suppress = false;
 					process.argv.forEach(function(arg) {
