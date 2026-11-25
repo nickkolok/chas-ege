@@ -18,9 +18,10 @@
 		genAssertZ1000(probability);
 
 		NAtask.setTask({
-			text: ('Из ящика, где хранятся ' + declensionOfAdjectives(color1, colorName[0]) + ' и ' + declensionOfAdjectives(color2, colorName[1]) + chislitlx(color2, item.ie, 're').replace(color2, '') + ', ' +
-				'не глядя достали два ' + item.re + '. Известно, что первый ' + item.ie + ' оказался ' + sklonlxkand(colorName[0]).te + '. ' +
-				'Найдите вероятность того, что второй ' + item.ie + ' оказался ' + colorSecond + sklonlxkand(colorName[targetColor]).te + '.').replace('оев', 'ых').replace('иев', 'их'),
+			text: 'Из ящика, где хранятся ' + chislitlx(color1, item.ie) + ' цвета «' + colorName[0] + '» и ' +
+				chislitlx(color2, item.ie) + ' цвета «' + colorName[1] + '», не глядя достали два ' + item.re + '. ' +
+				'Известно, что первый ' + item.ie + ' был цвета «' + colorName[0] + '». ' +
+				'Найдите вероятность того, что второй ' + item.ie + ' был ' + colorSecond + 'цвета «' + colorName[targetColor] + '».',
 			answers: probability,
 			preference: preference,
 		});
