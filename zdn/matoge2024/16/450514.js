@@ -26,10 +26,10 @@
 		// Крайние точки окружности задают границы всего рисунка.
 		let box = circle.box;
 		let bounds = [box.low, box.high];
-		let scaled = autoScale([AB.ps, AB.pe, PC.vertices[0]].concat(bounds));
+		let scaled = autoScale([AB.ps, AB.pe, PC.vertices[0], circle.pc].concat(bounds));
 		let points = scaled.slice(0, 3);
 		// autoScale возвращает обычные объекты; фабрика окружности принимает Point.
-		let scaleCircle = CircleByPoints.fromCenterAndPoint(new Point((scaled[3].x + scaled[4].x) / 2, (scaled[3].y + scaled[4].y) / 2), new Point(points[2].x, points[2].y));
+		let scaleCircle = CircleByPoints.fromCenterAndPoint(new Point(scaled[3].x, scaled[3].y), new Point(points[2].x, points[2].y));
 
 		let paint1 = function(ctx) {
 
