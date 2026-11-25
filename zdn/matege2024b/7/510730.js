@@ -50,8 +50,8 @@
             addUniqueAnsw(wasDecreasing, answ, 'скорость погружения постоянно падала');
         }
 
-        function answAboutNonDecreasingAndWasConst(intervals, answ) {
-            let wasCondition = intervals.map(interval => isNonIncreasing(interval) && wasConst(interval));
+        function answAboutNonIncreasingAndWasConst(intervals, answ) {
+            let wasCondition = intervals.map(interval => isNonIncreasing(interval) && wasConst(interval) && isMore(interval, 0));
             addUniqueAnsw(wasCondition, answ, 'скорость погружения не увеличивалась на всём интервале, но батискаф не останавливался');
         }
 
@@ -78,7 +78,6 @@
             let length = intervals.map(interval => (lengthOfZeroInterval(interval) - 1) * secondsPerUnit);
             let secTexts = intervals.map((_, i) => {
                 let sec = chislitlx(length[i], 'секунда', 'v');
-                if (length[i] == 60) sec = 'минуту';
                 if (length[i] == 30 && sl1()) sec = 'полминуты';
                 return sec;
             });
@@ -98,7 +97,7 @@
         let value = [0]; // шкала скорости
 
         for (; value.length <= time.length;) {
-            let interI = (time.length / sl(2, 3).floor());
+            let interI = (time.length / sl(2, 3)).ceil();
             for (let j = 0; j < interI; j++) {
                 value.push([sl(1, 5), value[value.length - 1]][Number([0, 0, 0, 1].iz() && value[value.length - 1] != 0)]);
             }
@@ -148,7 +147,7 @@
             // добавляем ответ про не повышение скорости
             answAboutNonIncreasing(intervals, listOfIntervals, variable);
             // добавляем ответ про не понижение скорости и не остановку на интервале
-            answAboutNonDecreasingAndWasConst(intervals, listOfIntervals);
+            answAboutNonIncreasingAndWasConst(intervals, listOfIntervals);
         }
         // добавляем ответ про скорость была не более
         answAboutNonMore(intervals, listOfIntervals, moreV);
@@ -214,4 +213,5 @@
     }, 1000);
 })();
 // 510730
+
 
