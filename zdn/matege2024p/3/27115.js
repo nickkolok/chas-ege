@@ -40,7 +40,7 @@
 		});
 
 		let faces = [[0,1,2],[0,1,3],[1,2,3],[2,0,3]];
-		let visibility = facesVisibility(pyr1.verticesOfFigure.slice(0, 4), point2DPyr, faces);
+		let visibility = facesVisibility(pyr1.verticesOfFigure.slice(0, pyr1.numberSide + 1), point2DPyr, faces);
 		let figureMatrix = dashHiddenEdges(pyr1.connectionMatrix, faces, visibility, dash);
 		if (!figureMatrix[2]) figureMatrix[2] = [];
 		figureMatrix[2][4] = 1;
