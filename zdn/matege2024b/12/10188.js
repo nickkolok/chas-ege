@@ -26,7 +26,7 @@
 		let b = triangle.vertices[1];
 		let extension = [a, b].mt_vectorDivisionPoint(3, -1); // точка на продолжении AB за B: AP:PB = 3:(-1)
 		triangle.addVertexToConnectionMatrix(extension, 'B');
-		let points = autoScale(triangle.vertices);
+		let points = autoScale(triangle.vertices, undefined, [], {center: true});
 		let rayEnd = points[3];
 
 		let paint1 = function(ctx) {
