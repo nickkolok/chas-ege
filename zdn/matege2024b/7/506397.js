@@ -2,7 +2,7 @@
     'use strict';
     retryWhileError(function () {
         /* На графике изображена зависимость скорости движения легкового автомобиля от времени. На вертикальной оси отмечена скорость легкового автомобиля в км/ч, на горизонтальной – время в секундах, прошедшее с начала движения автомобиля. */
-       
+
         let secondsPerUnit = 15, speedPerUnit = 20;
 
         function answAboutStop(intervals, answ) {
@@ -13,7 +13,7 @@
             }
 
             let index = wasStop.indexOf(true);
-            let text = 'автомобиль сделал остановку на ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1)*15, 'секунда');
+            let text = 'автомобиль сделал остановку на ' + chislitlx((lengthOfZeroInterval(intervals[index]) - 1) * secondsPerUnit, 'секунда', 'v');
             answ[index].solution.push(text);
         }
 
@@ -82,7 +82,7 @@
 
             let index = wasConstFlags.indexOf(true);
             let text = 'автомобиль ровно ' +
-                chislitlx((lengthConst(intervals[index]) - 1) * secondsPerUnit, 'секунда') +
+                chislitlx((lengthConst(intervals[index]) - 1) * secondsPerUnit, 'секунда', 'v') +
                 ' ехал с постоянной скоростью';
             answ[index].solution.push(text);
         }
@@ -238,4 +238,5 @@
         NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=506397
+// 506397
+
