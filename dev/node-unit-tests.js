@@ -1244,6 +1244,45 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Canvas: цвет диагонали параллелепипеда  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawParallelepiped diagonalStrokeStyle');
+
+    QUnit.test('drawParallelepiped: цвет диагонали по умолчанию — элемент om.primaryBrandColors, а не массив', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawParallelepiped === 'function', 'метод drawParallelepiped определён');
+        var draws = [];
+        var ctx = {
+            strokeStyle: '',
+            drawLine: function () {
+                draws.push({ strokeStyle: this.strokeStyle, args: Array.prototype.slice.call(arguments) });
+            },
+            setLineDash: function () {},
+        };
+        CanvasRenderingContext2D.prototype.drawParallelepiped.call(ctx,
+            { width: 2, height: 2, depth: 1, angle: Math.PI / 6 }, [], true);
+        var diagonal = draws[draws.length - 1];
+        assert.deepEqual(diagonal.args.slice(0, 2), [0, 0], 'диагональ — последний отрезок, из начала координат');
+        assert.ok(typeof diagonal.strokeStyle === 'string', 'strokeStyle — строка цвета: массив canvas молча игнорирует');
+        assert.ok(om.primaryBrandColors.includes(diagonal.strokeStyle), 'цвет диагонали по умолчанию взят из om.primaryBrandColors');
+        var edgeColors = draws.slice(0, -1).map(function (d) { return d.strokeStyle; });
+        assert.ok(edgeColors.every(function (c) { return c === om.secondaryBrandColors[0]; }), 'рёбра остаются цвета strokeStyle');
+    });
+
+    QUnit.test('drawParallelepiped: явный diagonalStrokeStyle уважается', function (assert) {
+        var draws = [];
+        var ctx = {
+            strokeStyle: '',
+            drawLine: function () {
+                draws.push({ strokeStyle: this.strokeStyle, args: Array.prototype.slice.call(arguments) });
+            },
+            setLineDash: function () {},
+        };
+        CanvasRenderingContext2D.prototype.drawParallelepiped.call(ctx,
+            { width: 2, height: 2, depth: 1, angle: Math.PI / 6, diagonalStrokeStyle: '#123456' }, [], true);
+        assert.equal(draws[draws.length - 1].strokeStyle, '#123456', 'диагональ рисуется заданным цветом');
+    });
+
+    // ============================================================
     //  Canvas: подписи вершин фигуры  (lib/canvas.js)
     // ============================================================
     QUnit.module('Canvas: signVertices');
