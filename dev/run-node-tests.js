@@ -63,10 +63,12 @@ try {
 }
 
 // 2.2. Пробрасываем появившиеся в window классы в глобальную область Node.js
-if (dom.window.Triangle) {
-    global.Triangle = dom.window.Triangle;
-    console.log('  ↳ Triangle проброшен в global');
-}
+['Triangle', 'Square', 'Trapezoid'].forEach(className => {
+    if (dom.window[className]) {
+        setGlobal(className, dom.window[className]);
+        console.log(`  ↳ ${className} проброшен в global`);
+    }
+});
 
 // 2.3. Загружаем @flatten-js/core (источник Circle, Point, Vector и др.)
 try {
@@ -91,7 +93,7 @@ flattenClassesToExpose.forEach(className => {
 });
 console.log(`  ↳ Проброшено классов из @flatten-js/core в global: ${exposedCount} (включая Circle)`);
 
-// 2.3. Теперь загружаем основную библиотеку, которая зависит от Triangle
+// 2.5. Загружаем основную библиотеку после геометрических классов
 try {
     require('../build/lib/chas-lib.js');
     console.log('  ↳ chas-lib.js загружен');
