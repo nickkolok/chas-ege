@@ -147,7 +147,9 @@ async function main() {
 				if (!map.has(name)) continue;
 				const local = 'refs/remotes/review-silentpr/' + f + '/' + p.author.toLowerCase() + '/' + p.branch;
 				L.git(['fetch', '--quiet', '--no-tags', 'https://github.com/' + f + '/chas-ege', '+refs/heads/' + name + ':' + local], root);
-				const pending = Number(L.git(['rev-list', '--count', p.head + '..' + local], root));
+				// Непринятые — те, которых нет в PR и под другим хешем: коммит, перенесённый
+				// в PR через cherry-pick (тот же патч), принят
+				const pending = Number(L.git(['rev-list', '--count', '--cherry-pick', '--right-only', p.head + '...' + local], root));
 				// Непринятые коммиты могли устареть: сольётся ли silentpr с нынешней головой PR
 				const clean = pending ? !L.mergeCommit(root, p.head, local).conflict : true;
 				p.silentpr.push({ fork: f, branch: name, pending, clean });
