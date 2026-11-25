@@ -129,6 +129,27 @@ ctx.drawFigure(figure.vertices, figure.connectionMatrix);
 из текущего `fillStyle`, внутренний круг остаётся пустым. Обводку окружностей
 делайте отдельно — `ctx.drawCircle(...)` или `circle.drawOnto(ctx)`.
 
+## Внешние углы
+
+Внешний угол при вершине — продление стороны за вершину и дуга между
+продлением и второй стороной — рисует `ctx.drawExternalAngle(previous, vertex, next, options)`
+(`lib/canvas.js`). Точки берутся из фигуры после `autoScale`: `previous` и `next` —
+точки на двух сторонах угла, `vertex` — сама вершина. Продление рисуется текущим
+`strokeStyle`, дуга — цветом `options.arcStrokeStyle`, если он задан;
+`options.radius` (по умолчанию 20) — радиус дуги, `options.rayLength`
+(по умолчанию 40) — длина продления. Возвращается конец продления.
+
+```js
+ctx.drawExternalAngle(points[0], points[1], points[2], {
+	radius: 15,
+	rayLength: 40,
+	arcStrokeStyle: om.primaryBrandColors.iz(),
+});
+```
+
+Подбирать координату конца продления под размер холста и записывать её
+дважды — в отрезке и в дуге — не нужно.
+
 ## Невидимые рёбра многогранника
 
 Невидимые рёбра рисуются пунктиром (или не рисуются, если так в образце).

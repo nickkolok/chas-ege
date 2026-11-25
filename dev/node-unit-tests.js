@@ -1400,6 +1400,59 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Canvas: внешний угол при вершине  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawExternalAngle');
+
+    function externalAngleStubCtx(calls) {
+        return {
+            strokeStyle: '#123456',
+            drawLineAtAngle: function (x, y, angle, length) {
+                calls.push(['ray', x, y, angle, length]);
+                return { x: x + Math.cos(angle) * length, y: y + Math.sin(angle) * length };
+            },
+            arcBetweenSegments: function (coordinates, radius) {
+                calls.push(['arc', coordinates, radius, this.strokeStyle]);
+            },
+        };
+    }
+
+    QUnit.test('ctx.drawExternalAngle продлевает сторону за вершину и рисует дугу до второй стороны', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawExternalAngle === 'function', 'метод drawExternalAngle определён');
+        var calls = [];
+        var ctx = externalAngleStubCtx(calls);
+        var ray = CanvasRenderingContext2D.prototype.drawExternalAngle.call(
+            ctx, { x: 0, y: 0 }, { x: 10, y: 0 }, { x: 5, y: 8 }, { radius: 15, rayLength: 40 }
+        );
+        assert.deepEqual(calls[0], ['ray', 10, 0, 0, 40], 'продление из вершины вдоль стороны на 40');
+        assert.ok(Math.abs(ray.x - 50) < 1e-9 && Math.abs(ray.y) < 1e-9, 'возвращается конец продления');
+        assert.equal(calls[1][0], 'arc', 'дуга нарисована');
+        assert.deepEqual(calls[1][1].slice(0, 4), [5, 8, 10, 0], 'дуга между второй стороной и вершиной');
+        assert.ok(Math.abs(calls[1][1][4] - 50) < 1e-9 && Math.abs(calls[1][1][5]) < 1e-9, 'третья точка дуги — конец продления');
+        assert.equal(calls[1][2], 15, 'радиус дуги из options');
+    });
+
+    QUnit.test('ctx.drawExternalAngle: направление продления берётся из стороны, значения по умолчанию', function (assert) {
+        var calls = [];
+        var ctx = externalAngleStubCtx(calls);
+        CanvasRenderingContext2D.prototype.drawExternalAngle.call(ctx, { x: 1, y: 1 }, { x: 4, y: 5 }, { x: 0, y: 0 });
+        assert.deepEqual(calls[0].slice(1, 3), [4, 5], 'продление начинается в вершине');
+        assert.ok(Math.abs(calls[0][3] - Math.atan2(4, 3)) < 1e-12, 'угол продления — направление previous→vertex');
+        assert.equal(calls[0][4], 40, 'длина продления по умолчанию 40');
+        assert.equal(calls[1][2], 20, 'радиус дуги по умолчанию 20');
+    });
+
+    QUnit.test('ctx.drawExternalAngle: arcStrokeStyle применяется к дуге и восстанавливается', function (assert) {
+        var calls = [];
+        var ctx = externalAngleStubCtx(calls);
+        CanvasRenderingContext2D.prototype.drawExternalAngle.call(
+            ctx, { x: 0, y: 0 }, { x: 10, y: 0 }, { x: 5, y: 8 }, { arcStrokeStyle: '#abcdef' }
+        );
+        assert.equal(calls[1][3], '#abcdef', 'дуга нарисована цветом arcStrokeStyle');
+        assert.equal(ctx.strokeStyle, '#123456', 'после вызова strokeStyle прежний');
+    });
+
+    // ============================================================
     //  chislit / chislitlx: отрицательные числа  (lib/func.js)
     // ============================================================
     QUnit.module('chislit / chislitlx: отрицательные числа');
@@ -1724,5 +1777,4 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(dashes[10], [6, 4], 'невидимое ребро 10 - пунктиром');
         assert.deepEqual(dashes[0], [], 'видимое ребро - сплошное');
     });
-
 };
