@@ -20,7 +20,7 @@
  *   --out <файл.png>    куда записать лист (по умолчанию — рядом с JSON, .png)
  *   --limit <n>         сколько задач взять (15), по порядку
  *   --pick <номера>     какие задачи взять: через запятую, с нуля (0,1,300,301);
- *                       вместе с --limit не используется
+ *                       с --limit не сочетается: вместе они — ошибка
  *   --cols <n>          столбцов в сетке (5)
  *   --cell <ш>x<в>      размер клетки в пикселях (240x230); чертёж вписывается
  *                       в клетку с сохранением пропорций
@@ -40,7 +40,7 @@ const fs = require('fs');
 const path = require('path');
 
 const args = process.argv.slice(2);
-const opts = { input: null, out: null, limit: 15, pick: null, cols: 5, cellWidth: 240, cellHeight: 230 };
+const opts = { input: null, out: null, limit: 15, limitGiven: false, pick: null, cols: 5, cellWidth: 240, cellHeight: 230 };
 
 const argError = function (message) {
 	console.error(message);
@@ -65,6 +65,7 @@ for (let i = 0; i < args.length; i++) {
 		opts.out = takeValue(i++);
 	} else if (args[i] === '--limit') {
 		opts.limit = positiveInteger('--limit', takeValue(i++));
+		opts.limitGiven = true;
 	} else if (args[i] === '--pick') {
 		const value = takeValue(i++);
 		if (!/^[0-9]+(,[0-9]+)*$/.test(value)) {
@@ -90,6 +91,9 @@ for (let i = 0; i < args.length; i++) {
 }
 if (opts.input === null) {
 	argError('Не указан JSON раннера.');
+}
+if (opts.pick && opts.limitGiven) {
+	argError('--pick и --limit вместе не используются: --pick уже задаёт, какие задачи взять.');
 }
 if (opts.out === null) {
 	opts.out = opts.input.replace(/\.json$/i, '') + '.png';
