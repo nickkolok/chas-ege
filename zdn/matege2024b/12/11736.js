@@ -8,8 +8,9 @@
         let rand = getSelectedPreferenceFromList(key, preference);
 
         let letters = latbukv.slice(0, 4);
-        // Generate a Pythagorean pair directly for the sine variant.
-        let [a, b] = om.pifagtr.iz();
+        // Синус: стороны и диагональ — пифагорова тройка, катеты в любом порядке,
+        // как в ФИПИ (ответы 0,6; 0,8; 0,28; 0,96, тройки и с множителем: 12, 16, 20)
+        let [a, b] = genPifag(50).slice(0, 2).shuffle();
         if (rand) { a = sl(5, 20); b = slKrome(a, 5, 20); }
 
         let rect = new Rectangle({
