@@ -30,6 +30,14 @@
  * («Combination k/n …, Example i/N») номер свой: с единицы и внутри комбинации.
  * При --iterations 300 и двух комбинациях #300 — это «Combination 2/2 …, Example 1/300».
  *
+ * Края холста: скрипт проверяет все чертежи в JSON (а не только те, что попали
+ * в лист), пусты ли их крайние пиксели — прозрачные или белые. Если до края
+ * доходят не все чертежи, подпись или линия у этих задач, скорее всего,
+ * обрезана: скрипт перечисляет их номера (готовым --pick), а на листе обводит
+ * такие клетки оранжевой рамкой. Если до края доходят все чертежи, так,
+ * вероятно, задумано (клетчатая бумага до края холста) — об этом одна строка.
+ * На код возврата проверка не влияет.
+ *
  * Нужен npm-пакет «canvas» (тот же, что нужен раннеру для чертежей).
  *
  * Код возврата: 0 — лист записан, 1 — ошибка в ключах, нет пакета canvas
@@ -135,12 +143,51 @@ const caption = function (task, index) {
 	return '#' + index + ' ' + variant + '→ ' + answer;
 };
 
+// Первый чертёж задачи (PNG в base64) или null
+const drawingOf = function (task) {
+	const m = /<img[^>]*src="data:image\/png;base64,([^"]+)"/.exec(task.txt || '');
+	return m ? Buffer.from(m[1], 'base64') : null;
+};
+
+// Доходит ли чертёж до края: есть ли среди крайних пикселей непрозрачный и не белый
+const touchesEdge = function (image) {
+	const w = image.width;
+	const h = image.height;
+	const canvas = createCanvas(w, h);
+	const context = canvas.getContext('2d');
+	context.drawImage(image, 0, 0);
+	const strips = [[0, 0, w, 1], [0, h - 1, w, 1], [0, 0, 1, h], [w - 1, 0, 1, h]];
+	return strips.some(function (strip) {
+		const data = context.getImageData(strip[0], strip[1], strip[2], strip[3]).data;
+		for (let k = 0; k < data.length; k += 4) {
+			const empty = data[k + 3] === 0 || (data[k] >= 240 && data[k + 1] >= 240 && data[k + 2] >= 240);
+			if (!empty) {
+				return true;
+			}
+		}
+		return false;
+	});
+};
+
 (async function () {
+	// Края проверяются у всех чертежей JSON, не только у попавших в лист
+	const atEdge = new Set();
+	let drawings = 0;
+	for (let i = 0; i < tasks.length; i++) {
+		const png = drawingOf(tasks[i]);
+		if (png) {
+			drawings++;
+			if (touchesEdge(await loadImage(png))) {
+				atEdge.add(i);
+			}
+		}
+	}
+
 	const cells = [];
 	for (const i of indices) {
-		const m = /<img[^>]*src="data:image\/png;base64,([^"]+)"/.exec(tasks[i].txt || '');
-		if (m) {
-			cells.push({ image: await loadImage(Buffer.from(m[1], 'base64')), caption: caption(tasks[i], i) });
+		const png = drawingOf(tasks[i]);
+		if (png) {
+			cells.push({ image: await loadImage(png), caption: caption(tasks[i], i), atEdge: atEdge.has(i) });
 		}
 	}
 	if (!cells.length) {
@@ -172,13 +219,32 @@ const caption = function (task, index) {
 		ctx.drawImage(cell.image, x + padding, y + captionHeight, cell.image.width * scale, cell.image.height * scale);
 		ctx.fillStyle = '#cc0000';
 		ctx.fillText(cell.caption, x + padding, y + 3, opts.cellWidth - 2 * padding);
-		// Тонкая рамка клетки, чтобы чертежи не сливались
-		ctx.strokeStyle = '#dddddd';
-		ctx.strokeRect(x + 0.5, y + 0.5, opts.cellWidth - 1, opts.cellHeight - 1);
+		// Тонкая рамка клетки, чтобы чертежи не сливались; у чертежа, который доходит
+		// до края холста (а другие — нет), рамка оранжевая и толще
+		if (cell.atEdge && atEdge.size < drawings) {
+			ctx.strokeStyle = '#ff8800';
+			ctx.lineWidth = 3;
+			ctx.strokeRect(x + 1.5, y + 1.5, opts.cellWidth - 3, opts.cellHeight - 3);
+			ctx.lineWidth = 1;
+		} else {
+			ctx.strokeStyle = '#dddddd';
+			ctx.strokeRect(x + 0.5, y + 0.5, opts.cellWidth - 1, opts.cellHeight - 1);
+		}
 	});
 
 	fs.writeFileSync(opts.out, sheet.toBuffer('image/png'));
 	console.error('Лист: ' + opts.out + ' — чертежей: ' + cells.length + ', сетка ' + cols + ' × ' + rows + '.');
+	if (atEdge.size === drawings) {
+		console.error('Все чертежи JSON (' + drawings + ') доходят до края холста: похоже, так задумано '
+			+ '(клетчатая бумага, рамка), и проверка краёв ничего не говорит.');
+	} else if (atEdge.size) {
+		const list = Array.from(atEdge);
+		const shown = list.slice(0, 20);
+		console.error('ВНИМАНИЕ: до края холста доходят ' + list.length + ' из ' + drawings
+			+ ' чертежей JSON — подпись или линия, вероятно, обрезана: #' + shown.join(', #')
+			+ (list.length > shown.length ? ' и ещё ' + (list.length - shown.length) : '') + '. На листе такие клетки — в оранжевой рамке.');
+		console.error('Посмотреть их: --pick ' + shown.join(','));
+	}
 })().catch(function (e) {
 	console.error('Не удалось собрать лист: ' + (e && e.stack ? e.stack : e));
 	process.exit(1);
