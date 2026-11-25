@@ -5,7 +5,8 @@
         let preference = ['radius', 'side'];
         let rand = getSelectedPreferenceFromList(key, preference);
 
-        let circle = new Circle(new Point(0, 0), sl(1, 20) * [1, (3).sqrt()][rand]);
+        let radiusStep = [1, (3).sqrt()][rand];
+        let circle = new Circle(new Point(0, 0), sl(radiusStep, 20 * radiusStep, radiusStep));
 
         let AB = circle.chordByAngles(90, 210, {
             angleInDegrees: true
