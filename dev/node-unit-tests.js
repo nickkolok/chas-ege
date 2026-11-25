@@ -1300,6 +1300,25 @@ module.exports = function registerNodeTests(QUnit) {
         }, /distance/, 'нечисловое distance — ошибка с подсказкой');
     });
 
+    QUnit.test('ctx.signVertices: вершина в самой точке awayFrom — RangeError, ничего не нарисовано', function (assert) {
+        var calls = [];
+        var ctx = {
+            font: '',
+            save: function () { calls.push('save'); },
+            restore: function () { calls.push('restore'); },
+            scale: function () { calls.push('scale'); },
+            fillText: function (text) { calls.push(text); },
+        };
+        var points = [{ x: 3, y: 4 }, { x: 0, y: 0 }, { x: -3, y: 4 }];
+        assert.throws(function () {
+            CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'O', 'B'], { awayFrom: { x: 0, y: 0 } });
+        }, function (e) { return e instanceof RangeError && /вершина 1 \(O\) совпадает с awayFrom/.test(e.message); },
+        'RangeError с номером и буквой вершины');
+        assert.deepEqual(calls, [], 'ни save(), ни подписей: контекст не тронут');
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'O', 'B']);
+        assert.equal(calls.filter(function (c) { return c.length === 1; }).length, 3, 'без awayFrom та же вершина подписывается как раньше');
+    });
+
     QUnit.test('ctx.signVertices: awayFrom — по умолчанию буквы по центру, явные textAlign/textBaseline сильнее', function (assert) {
         var calls = [];
         var ctx = {
