@@ -76,3 +76,4 @@
     }, 2000);
 })();
 // https://ege.sdamgia.ru/problem?id=27821
+// ФИПИ 146E47 8131F5 7C9C1D A11227 1C57C9 6F74CD 5ECD98 C432E5 98EEE4 8F7CEA
