@@ -10,6 +10,8 @@
 
 [Как делать ревью пуллреквеста](how_to_review_PR.md)
 
+[Ревью пачки пуллреквестов](review_batch.md)
+
 ## Экзотика
 [Коммит через GitHub REST API](commit_via_GitHub_API.md)
 
