@@ -3,7 +3,7 @@
         NAinfo.requireApiVersion(0, 2);
 
         let key = '11736';
-        let preference = ['sin_CAD', 'tg_CAB'];
+        let preference = ['sin_CAD', 'tg_CAB', 'tg_CAD'];
 
         let rand = getSelectedPreferenceFromList(key, preference);
 
@@ -19,7 +19,12 @@
             // не целой: у 16844F площадь 300 и AB = 9
             let tg = sl(0.1, 0.9, 0.005);
             b = sl(4, 20);
-            area = b * b / tg;
+            // Тангенс CAD = AB/BC = S/BC² при данной BC — группа ФИПИ «тангенс угла CAD
+            // по площади и стороне BC»: BC от 8 до 55, тангенс от 0,16 до 0,85
+            if (rand == 2) {
+                b = sl(5, 60);
+            }
+            area = (rand == 1) ? b * b / tg : tg * b * b;
             genAssertAlmostInteger(area, 'Площадь не целая');
             area = area.round();
             a = area / b;
@@ -35,7 +40,7 @@
         let angleCAD = new Angle(rect.pointC, rect.pointA, rect.pointD).angleInRadians;
         let angleCAB = new Angle(rect.pointC, rect.pointA, rect.pointB).angleInRadians;
 
-        let answ = [angleCAD.sin(), angleCAB.tg()][rand];
+        let answ = [angleCAD.sin(), angleCAB.tg(), angleCAD.tg()][rand];
 
         genAssertZ1000(answ);
 
@@ -59,7 +64,7 @@
         };
 
         NAtask.setTask({
-            text: `Площадь прямоугольника $ABCD$ равна $${area}$, $${[[`AB`, rect.lengthAB], [`BC`, rect.lengthBC]][rand].join(`=`)}$. Найдите ${[`синус`, `тангенс`][rand]} угла $${[`CAD`, `CAB`][rand]}$.`,
+            text: `Площадь прямоугольника $ABCD$ равна $${area}$, ${[`$AB=${a}$`, `сторона $BC=${b}$`, `сторона $BC=${b}$`][rand]}. Найдите ${[`синус`, `тангенс`, `тангенс`][rand]} угла $${[`CAD`, `CAB`, `CAD`][rand]}$.`,
             answers: answ,
             authors: ['Александра Суматохина'],
             preference: preference,
