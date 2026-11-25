@@ -11,6 +11,8 @@
 [Как делать ревью пуллреквеста](how_to_review_PR.md)
 
 ## Экзотика
+[`silentpr`: правки в чужой пуллреквест](silentpr.md)
+
 [Коммит через GitHub REST API](commit_via_GitHub_API.md)
 
 [Делаем *пачку команд* для вставки в консоль](make_cli_bunch.md)
