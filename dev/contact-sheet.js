@@ -169,7 +169,7 @@ const caption = function (task, index) {
 	});
 
 	fs.writeFileSync(opts.out, sheet.toBuffer('image/png'));
-	console.error('Лист: ' + opts.out + ' — ' + cells.length + ' чертежей, ' + cols + ' × ' + rows + '.');
+	console.error('Лист: ' + opts.out + ' — чертежей: ' + cells.length + ', сетка ' + cols + ' × ' + rows + '.');
 })().catch(function (e) {
 	console.error('Не удалось собрать лист: ' + (e && e.stack ? e.stack : e));
 	process.exit(1);
