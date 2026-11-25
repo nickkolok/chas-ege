@@ -263,7 +263,9 @@ async function main() {
 	materialize(root, srcRef, files, srcDir('base'));
 	if (afterSrcRef !== srcRef) materialize(root, afterSrcRef, files, srcDir('after'));
 	const pick = (dir, f, fallback) => (dir && fs.existsSync(path.join(dir, f)) ? path.resolve(dir) : fallback);
-	const items = files.filter((f) => fs.existsSync(path.join(srcDir('base'), f)) || fs.existsSync(path.join(srcDir('after'), f))).map((f) => ({
+	// Шаблон может лежать только в правленых копиях (например, из открытого PR): берём и его
+	const known = (f) => [srcDir('base'), srcDir('after'), o.beforeDir, o.afterDir].some((dir) => dir && fs.existsSync(path.join(dir, f)));
+	const items = files.filter(known).map((f) => ({
 		file: f, label: f,
 		before: pick(o.beforeDir, f, srcDir('base')),
 		after: pick(o.afterDir, f, afterSrcRef !== srcRef ? srcDir('after') : srcDir('base')),
