@@ -20,7 +20,7 @@
 			},
 		});
 
-		genAssertDecimalPlaces(triangle.sinA, 2, 'sinA треугольника не целый');
+		genAssertDecimalPlaces(triangle.sinA, 2, 'sinA содержит больше двух знаков после запятой');
 
 		let points = autoScale(triangle.vertices);
 
