@@ -1335,6 +1335,58 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Canvas: подпись ребра с заданной стороны  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: signSegmentOnSide');
+
+    QUnit.test('ctx.signSegmentOnSide ставит подпись у середины отрезка по нормали с заданной стороны', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.signSegmentOnSide === 'function', 'метод signSegmentOnSide определён');
+        var calls = [];
+        var ctx = {
+            markSegmentWithLetter: CanvasRenderingContext2D.prototype.markSegmentWithLetter,
+            fillText: function () { calls.push(Array.prototype.slice.call(arguments)); },
+        };
+        CanvasRenderingContext2D.prototype.signSegmentOnSide.call(ctx, 0, 0, 10, 0, 'p', 5, 50, 1);
+        assert.equal(calls.length, 1, 'fillText вызван ровно один раз');
+        assert.equal(calls[0][0], 'p', 'текст подписи');
+        assert.ok(Math.abs(calls[0][1] - 5) < 1e-9 && Math.abs(calls[0][2] - 5) < 1e-9, 'side = 1: середина (5,0) + нормаль (0,1)*5 = (5,5)');
+        assert.equal(calls[0][3], 50, 'maxLength проброшен');
+    });
+
+    QUnit.test('ctx.signSegmentOnSide: side = -1 — противоположная сторона', function (assert) {
+        var calls = [];
+        var ctx = {
+            markSegmentWithLetter: CanvasRenderingContext2D.prototype.markSegmentWithLetter,
+            fillText: function () { calls.push(Array.prototype.slice.call(arguments)); },
+        };
+        CanvasRenderingContext2D.prototype.signSegmentOnSide.call(ctx, 0, 0, 10, 0, 'p', 5, 50, -1);
+        assert.ok(Math.abs(calls[0][1] - 5) < 1e-9 && Math.abs(calls[0][2] + 5) < 1e-9, 'side = -1: (5,-5)');
+    });
+
+    QUnit.test('ctx.signSegmentOnSide: нормаль через atan2 — перестановка концов меняет сторону', function (assert) {
+        var calls = [];
+        var ctx = {
+            markSegmentWithLetter: CanvasRenderingContext2D.prototype.markSegmentWithLetter,
+            fillText: function () { calls.push(Array.prototype.slice.call(arguments)); },
+        };
+        CanvasRenderingContext2D.prototype.signSegmentOnSide.call(ctx, 10, 0, 0, 0, 'p', 5, 50, 1);
+        assert.ok(Math.abs(calls[0][1] - 5) < 1e-9 && Math.abs(calls[0][2] + 5) < 1e-9, 'отрезок справа налево, side = 1: (5,-5)');
+    });
+
+    QUnit.test('ctx.signSegmentOnSide: наклонный отрезок и значения по умолчанию', function (assert) {
+        var calls = [];
+        var ctx = {
+            markSegmentWithLetter: CanvasRenderingContext2D.prototype.markSegmentWithLetter,
+            fillText: function () { calls.push(Array.prototype.slice.call(arguments)); },
+        };
+        CanvasRenderingContext2D.prototype.signSegmentOnSide.call(ctx, 200, 60, 100, 160, 'p');
+        var k = Math.SQRT1_2 * 10;
+        assert.ok(Math.abs(calls[0][1] - (150 - k)) < 1e-9 && Math.abs(calls[0][2] - (110 - k)) < 1e-9,
+            'length и side по умолчанию (10 и 1): середина (150,110), нормаль (-sqrt(2)/2,-sqrt(2)/2)*10');
+        assert.equal(calls[0][3], 10, 'maxLength по умолчанию 10');
+    });
+
+    // ============================================================
     //  Canvas: ломаная по массивам точек  (lib/canvas.js)
     // ============================================================
     QUnit.module('Canvas: drawPolyline');
