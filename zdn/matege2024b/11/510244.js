@@ -25,8 +25,6 @@
 
 		let paint1 = function (ct) {
 			ct.drawRectilinearSolid(detail, {
-				width: 300,
-				height: 300,
 				labels: [
 					{ from: [p, d, c + e], to: [p + w, d, c + e], text: w, direction: [0, -1] },
 					{ from: [p + w, d, c], to: [p + w, d, c + e], text: e, direction: [1, 0] },
