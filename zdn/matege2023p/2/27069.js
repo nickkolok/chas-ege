@@ -8,17 +8,19 @@
 			numberSide: sl(3, 10)
 		});
 
+		let baseAreaName = 'площадь основания';
+		let baseSideName = 'сторона основания';
 		let question = [
-			['площадь основания', pyr.baseArea],
+			[baseAreaName, pyr.baseArea],
 			['площадь боковой поверхности', pyr.sideSurfaceArea],
 			['апофема', pyr.apothem],
 			['высота', pyr.height],
-			['сторона основания', pyr.baseSide],
+			[baseSideName, pyr.baseSide],
 		].iz(3);
 
 		let name = question.T()[0];
 		let number = question.T()[1];
-		genAssert(!name.slice(0, 2).every(value => ['площадь основания', 'сторона основания'].includes(value)),
+		genAssert(!name.slice(0, 2).every(value => [baseAreaName, baseSideName].includes(value)),
 			'Даны независимые размеры пирамиды');
 
 		let camera = {
