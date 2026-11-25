@@ -155,10 +155,10 @@
         let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
-            let cell = 60, gridHeight = 420;
-            ctx.drawGridWithArrows({
+            let cell = 60;
+            let origin = ctx.drawGridWithArrows({
                 gridWidth: 570,
-                gridHeight: gridHeight,
+                gridHeight: 420,
                 cellWidth: cell,
                 cellHeight: cell,
                 stepX: 1,
@@ -172,7 +172,7 @@
                 arrowLengthY: 4.9,
             });
 
-            ctx.translate(cell, gridHeight - 2 * cell);
+            ctx.translate(origin.originX, origin.originY);
             ctx.scale(cell, -cell);
             ctx.lineWidth = 2 / cell;
 
