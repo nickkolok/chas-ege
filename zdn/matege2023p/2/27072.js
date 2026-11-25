@@ -39,7 +39,7 @@
 			ctx.fillKrug(100, 150, radius1);
 		else if (isCircleArea) {
 			ctx.beginPath();
-			ctx.ellipse(100, 150, 20, radius1, Math.PI / 2, 0, 2 * Math.PI);
+			ctx.ellipse(100, 150, radius1 / 2, radius1, Math.PI / 2, 0, 2 * Math.PI);
 			ctx.fill();
 			ctx.closePath();
 		}
@@ -48,10 +48,10 @@
 		ctx.strokeStyle = color1;
 		ctx.drawCircle(100, 150, radius1);
 
-		ctx.drawEllipse(100, 150, 20, radius1, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
+		ctx.drawEllipse(100, 150, radius1 / 2, radius1, Math.PI / 2, 1.5 * Math.PI, Math.PI / 2);
 
 		ctx.setLineDash([5, 5]);
-		ctx.drawEllipse(100, 150, 20, radius1, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
+		ctx.drawEllipse(100, 150, radius1 / 2, radius1, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 		ctx.setLineDash([]);
 
 		ctx.drawLine(100, 150, 100 + radius1, 150);
