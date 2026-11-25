@@ -41,10 +41,10 @@
             ctx.lineWidth = 2;
             ctx.drawFigure(points, par.connectionMatrix);
 
+            ctx.signVertices(points, letters.slice(0, 4));
             ctx.scale(1, -1);
             ctx.font = '20px liberation_sans';
             ctx.fillText(letters[4], par.diagonalIntersectionPoint.x, -par.diagonalIntersectionPoint.y);
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < points.length / 2) ? 25 : -5)));
         };
 
         NAtask.setTask({
