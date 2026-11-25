@@ -181,7 +181,7 @@
             for (let i = 0; i < 4; i++) {
                 const point = time[i] * 40 + 40 * 2 * i + 40;
                 if (i < 3)
-                    ctx.drawLine(point + 60, 30, point + 60, -360)
+                    ctx.drawLine(point + 60, 30, point + 60, -360);
                 ctx.fillText(season[i], point, 40);
             }
         };
@@ -209,4 +209,5 @@
     }, 1000);
 })();
 // 510205
+
 
