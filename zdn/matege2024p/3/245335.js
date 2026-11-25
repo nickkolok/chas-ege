@@ -46,16 +46,16 @@
         });
 
 		let faces = [[0,1,2,3],[5,6,7,4],[0,1,6,5],[1,2,7,6],[2,3,4,7],[3,0,5,4]];
-		let visibility = facesVisibility(par.verticesOfFigure.slice(0, 8), point2DPar, faces);
-		let figureMatrix = dashHiddenEdges(par.connectionMatrix, faces, visibility, dash);
-		if (!figureMatrix[1]) figureMatrix[1] = [];
-		figureMatrix[1][0] = [dash, 0][v];
-		if (!figureMatrix[3]) figureMatrix[3] = [];
-		figureMatrix[3][2] = [1, 0][1 - v];
-		if (!figureMatrix[4]) figureMatrix[4] = [];
-		figureMatrix[4][1] = [dash, 0][1 - v];
-		if (!figureMatrix[6]) figureMatrix[6] = [];
-		figureMatrix[6][5] = [1, 0][v];
+		let visibility = facesVisibility(par.verticesOfFigure, point2DPar, faces);
+		let matrixPar = par.connectionMatrix;
+		if (v) {
+			matrixPar[3][2] = 1; // CD1
+			matrixPar[4][1] = 1; // A1B
+		} else {
+			matrixPar[1][0] = 1; // AC
+			matrixPar[6][5] = 1; // A1C1
+		}
+		let figureMatrix = dashHiddenEdges(matrixPar, faces, visibility, dash);
 
 		let paint1 = function (ctx) {
             ctx.translateToCenter();
