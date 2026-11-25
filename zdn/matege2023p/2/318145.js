@@ -28,13 +28,13 @@
 			let rxLiq = baseRX * frac;
 			let ryLiq = baseRY * frac;
 
-			ctx.fillStyle = "#61DC9A";
-			ctx.beginPath();
-			ctx.moveTo(apexX - rxLiq, yLiq);
-			ctx.lineTo(apexX + rxLiq, yLiq);
-			ctx.lineTo(apexX, apexY);
-			ctx.closePath();
-			ctx.fill();
+			let liquidColor = "#61DC9A";
+			ctx.drawSection([
+				[apexX - rxLiq, yLiq],
+				[apexX + rxLiq, yLiq],
+				[apexX, apexY],
+			], liquidColor);
+			ctx.fillStyle = liquidColor;
 
 			ctx.beginPath();
 			ctx.ellipse(apexX, yLiq, rxLiq, ryLiq, 0, 0, 2 * Math.PI);
