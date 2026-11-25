@@ -23,8 +23,6 @@
         triangle.addVertexToConnectionMatrix(triangle.medianCEndPoint, 'C');
         triangle.addVertexToConnectionMatrix(triangle.heightCEndPoint, 'C');
 
-        genAssert((triangle.medianCEndPoint.x - triangle.heightCEndPoint.x).abs() > 2, 'Высота и медиана сливаются');
-
         let answ = 0.75 * triangle.lengthAB;
         genAssertZ1000(answ);
 
@@ -46,12 +44,11 @@
             ctx.arcBetweenSegments([points[0].x, points[0].y, points[4].x, points[4].y, points[2].x, points[2].y], 15);
 
             ctx.signVertices(points, letters, {above: [2]});
-            ctx.scale(1, -1);
         };
 
         NAtask.setTask({
             text: `В треугольнике $ABC$ сторона $AB = ${triangle.lengthAB.ts()}$, $CM$ – медиана, $CH$ – высота, $${[`BC`, `CA`][rand]}=CM$. Найдите длину отрезка $${[`A`, `B`][rand]}H$.`,
-            answers: answ,
+            answers: answ.ts(),
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.variativeABC(letters);
