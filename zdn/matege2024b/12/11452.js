@@ -30,16 +30,15 @@
 			ctx.drawFigure(points, triangle.connectionMatrix);
 
 			let rayReachX = 160, arcRadius = 15;
-			let rightRayEnd = ctx.drawLineAtAngle(points[1].x, points[1].y, 0, rayReachX - points[1].x);
-			let leftRayEnd = ctx.drawLineAtAngle(points[0].x, points[0].y, Math.PI, rayReachX + points[0].x);
-
-			ctx.strokeStyle = om.primaryBrandColors.iz();
-			ctx.arcBetweenSegments([points[2].x, points[2].y, points[1].x, points[1].y, rightRayEnd.x, rightRayEnd.y], arcRadius);
-
-			ctx.arcBetweenSegments([leftRayEnd.x, leftRayEnd.y, points[0].x, points[0].y, points[2].x, points[2].y], arcRadius);
+			let arcStrokeStyle = om.primaryBrandColors.iz();
+			ctx.drawExternalAngle(points[0], points[1], points[2], {
+				radius: arcRadius, rayLength: rayReachX - points[1].x, arcStrokeStyle,
+			});
+			ctx.drawExternalAngle(points[1], points[0], points[2], {
+				radius: arcRadius, rayLength: rayReachX + points[0].x, arcStrokeStyle,
+			});
 
 			ctx.signVertices(points, letters, {above: [2]});
-			ctx.scale(1, -1);
 		};
 
 		NAtask.setTask({
