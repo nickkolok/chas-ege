@@ -155,11 +155,22 @@ async function forkBranches(fork) {
 	return map;
 }
 
-/** База PR: из GitHub, иначе по содержимому — PR только в md/ идёт в ветку документации */
+/**
+ * База PR: из GitHub (REST), иначе по содержимому — PR только в md/ идёт в ветку документации.
+ * Смотреть надо от обеих баз: ветка документации ушла от devel, и PR, начатый от неё,
+ * в диффе devel...PR тащит её собственные коммиты (dev/, md/) — «только md/» там не видно.
+ */
 function prBase(root, U, n, gh) {
 	if (gh && gh.base) return gh.base;
-	const files = git(['diff', '--name-only', U + '/devel...' + prRef(U, n)], root).split('\n').filter(Boolean);
-	return files.length && files.every((f) => f.startsWith('md/')) ? DOC_BRANCH : 'devel';
+	// Уже влит в ветку документации, но не в devel: дифф с ней пуст, а с devel — чужие коммиты
+	const head = prRef(U, n);
+	if (gitOk(['merge-base', '--is-ancestor', head, U + '/' + DOC_BRANCH], root) &&
+		!gitOk(['merge-base', '--is-ancestor', head, U + '/devel'], root)) return DOC_BRANCH;
+	const onlyMd = (base) => {
+		const files = git(['diff', '--name-only', U + '/' + base + '...' + head], root).split('\n').filter(Boolean);
+		return files.length > 0 && files.every((f) => f.startsWith('md/'));
+	};
+	return onlyMd('devel') || onlyMd(DOC_BRANCH) ? DOC_BRANCH : 'devel';
 }
 
 /** Коммит «a, слитый с b» без рабочей копии: {commit, tree} или {conflict: [файлы]} */
