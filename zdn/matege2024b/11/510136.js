@@ -14,10 +14,11 @@
 		let d = sl(2, 6);
 		let s = sl(1, d - 1);
 		let h = sl(2, 6);
+		let xCut = a - w;
 
 		let detail = new RectilinearSolid([
-			[0, 0, 0, a - w, d, h],
-			[a - w, s, 0, a, d, h],
+			[0, 0, 0, xCut, d, h],
+			[xCut, s, 0, a, d, h],
 		]);
 
 		let answer = question === 'объём' ? detail.volume() : detail.surfaceArea();
@@ -28,8 +29,8 @@
 					{ from: [0, 0, h], to: [0, d, h], text: d },
 					{ from: [0, d, h], to: [a, d, h], text: a },
 					{ from: [0, 0, 0], to: [0, 0, h], text: h },
-					{ from: [a - w, 0, 0], to: [a - w, s, 0], text: s, direction: [0, 1] },
-					{ from: [a - w, s, 0], to: [a, s, 0], text: w, direction: [0, 1] },
+					{ from: [xCut, 0, 0], to: [xCut, s, 0], text: s, direction: [0, 1] },
+					{ from: [xCut, s, 0], to: [a, s, 0], text: w, direction: [0, 1] },
 				],
 			});
 		};
