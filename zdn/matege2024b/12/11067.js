@@ -65,4 +65,4 @@
 })();
 // https://base.mathege.ru/clones/?position=16&parent=11067
 // https://base.mathege.ru/clones/?position=16&parent=10983
-
+// ФИПИ 09CFDB 60BF62 0D9384 66198C A4C078 EFD55A 4FE6FE 9CD0D5 143DC9 F0D28B 50FBF6 3B8906 E88A15 2AFE28 E856DF A03373
