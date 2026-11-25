@@ -48,7 +48,7 @@
 		});
 
 		let faces = [[0,1,2,3,4,5],[6,7,8,9,10,11],[0,1,7,6],[1,2,8,7],[2,3,9,8],[3,4,10,9],[4,5,11,10],[5,0,6,11]];
-		let visibility = facesVisibility(prism.verticesOfFigure.slice(0, 12), point2DPar, faces);
+		let visibility = facesVisibility(prism.verticesOfFigure, point2DPar, faces);
 		let figureMatrix = dashHiddenEdges(prism.connectionMatrix, faces, visibility, dash);
 
 		let paint1 = function(ctx) {
