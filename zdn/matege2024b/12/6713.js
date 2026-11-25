@@ -28,6 +28,9 @@
 			genAssertAlmostInteger(trp.lengthHeightACD, 'Высота не целая');
 		}
 		genAssert(trp.lengthHeightACD >= Math.max(trp.lengthAB, trp.lengthCD) / 8, 'Слишком плоская трапеция — плохой чертёж');
+		// Острый угол при основании не больше 80°, иначе трапеция на чертеже не отличается
+		// от прямоугольника; в ФИПИ он от 37° до 77° (21, 57 и 82 у 668719)
+		genAssert(Math.min(trp.angleAInDegrees, trp.angleDInDegrees) <= 80, 'Трапеция похожа на прямоугольник — плохой чертёж');
 
 		if (rand == 1) {
 			trp.connectVerticesInConnectionMatrix([
