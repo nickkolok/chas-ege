@@ -179,7 +179,8 @@ async function main() {
 	const pairConflicts = [];
 	for (const a of live) {
 		for (const b of live) {
-			if (a >= b) continue;
+			// PR в разные ветки (devel и ветка документации) вместе не сливаются: их не сравниваем
+			if (a >= b || pr[a].base !== pr[b].base) continue;
 			const m = L.mergeCommit(root, pr[a].head, pr[b].head);
 			if (m.conflict) pairConflicts.push([a, b, m.conflict]);
 		}
