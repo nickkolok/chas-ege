@@ -35,15 +35,14 @@
 
 		// Заливка (если нужно показать площадь)
 		ctx.fillStyle = color1;
-		ctx.beginPath();
 		if (isSurfaceArea)
 			ctx.fillKrug(100, 150, radius1);
-		else if (isCircleArea)
+		else if (isCircleArea) {
+			ctx.beginPath();
 			ctx.ellipse(100, 150, 20, radius1, Math.PI / 2, 0, 2 * Math.PI);
-
-		ctx.fillStyle = color1;
-		ctx.fill();
-		ctx.closePath();
+			ctx.fill();
+			ctx.closePath();
+		}
 
 		// шар 1 - контур
 		ctx.strokeStyle = color1;
@@ -62,15 +61,14 @@
 
 		// Заливка
 		ctx.fillStyle = color2;
-		ctx.beginPath();
 		if (isSurfaceArea)
 			ctx.fillKrug(100, 150, radius2);
-		else if (isCircleArea)
+		else if (isCircleArea) {
+			ctx.beginPath();
 			ctx.ellipse(100, 150, radius2 / 2, radius2, Math.PI / 2, 0, 2 * Math.PI);
-
-		ctx.fillStyle = color2;
-		ctx.fill();
-		ctx.closePath();
+			ctx.fill();
+			ctx.closePath();
+		}
 
 		// шар 2 - контур
 		ctx.strokeStyle = color2;
