@@ -8,12 +8,13 @@
 
 		let cube = new Cube(sl(1, 50));
 		let sphere = new Sphere(0.5 * cube.baseSide);
+		let diagonalSquared = 3 * cube.baseSide.pow(2);
 
 		let nameCube = [
 			['ребро', cube.baseSide],
 			['площадь поверхности', cube.surfaceArea],
 			['объём', cube.volume],
-			['квадрат диагонали', 3 * cube.baseSide.pow(2)],
+			['квадрат диагонали', diagonalSquared],
 			['диагональ', cube.mainDiagonal]
 		].iz();
 		let nameSphere = [
@@ -25,7 +26,7 @@
 		let sphereHasPi = ['площадь поверхности', 'объём'].includes(nameSphere[0]);
 		let sphereValue = nameSphere[0] === 'объём' ? cube.baseSide.pow(3).texfrac(6) + '\\pi' :
 			(sphereHasPi ? cube.baseSide.pow(2) + '\\pi' : nameSphere[1]);
-		let cubeValue = nameCube[0] === 'диагональ' ? (3 * cube.baseSide.pow(2)).texsqrt(1) : nameCube[1];
+		let cubeValue = nameCube[0] === 'диагональ' ? diagonalSquared.texsqrt(1) : nameCube[1];
 		let answer = rand ? nameCube[1] : (sphereHasPi ? nameSphere[1] / Math.PI : nameSphere[1]);
 		let ps = !rand && sphereHasPi ? ' Ответ разделите на $\\pi$.' : '';
 
