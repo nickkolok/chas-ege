@@ -783,6 +783,50 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  RectilinearSolid  (lib/rectilinearSolid.js)
+    // ============================================================
+    QUnit.module('RectilinearSolid');
+
+    QUnit.test('Параллелепипед', function (assert) {
+        var box = new RectilinearSolid([[0, 0, 0, 2, 3, 4]]);
+        assert.equal(box.volume(), 24, 'V = 2·3·4');
+        assert.equal(box.surfaceArea(), 52, 'S = 2(6 + 8 + 12)');
+        assert.equal(box.edges().length, 12, '12 рёбер');
+    });
+
+    QUnit.test('Касающиеся и перекрывающиеся параллелепипеды', function (assert) {
+        var halves = new RectilinearSolid([[0, 0, 0, 1, 3, 4], [1, 0, 0, 2, 3, 4]]);
+        assert.equal(halves.volume(), 24, 'две половины дают тот же объём');
+        assert.equal(halves.surfaceArea(), 52, 'общая грань не входит в поверхность');
+        assert.equal(halves.edges().length, 12, 'шов по общей грани — не ребро');
+        var overlap = new RectilinearSolid([[0, 0, 0, 2, 3, 4], [1, 1, 1, 2, 2, 2]]);
+        assert.equal(overlap.volume(), 24, 'вложенный параллелепипед не меняет объём');
+    });
+
+    QUnit.test('Детали из открытого банка ФИПИ', function (assert) {
+        // 02985D: Г-образный профиль, объём 20
+        var l = new RectilinearSolid([[0, 0, 0, 2, 2, 4], [2, 0, 0, 3, 2, 2]]);
+        assert.equal(l.volume(), 20, 'Г-образная деталь: V = 20');
+        assert.equal(l.edges().length, 18, 'Г-образная деталь: 18 рёбер');
+        // 510136 (Решу ЕГЭ): параллелепипед 2×2×3 с вырезом 1×1 по всей высоте, объём 9
+        var notch = new RectilinearSolid([[0, 0, 0, 1, 2, 3], [1, 1, 0, 2, 2, 3]]);
+        assert.equal(notch.volume(), 9, 'деталь с вырезом: V = 9');
+        assert.equal(notch.surfaceArea(), 2 * (4 + 6 + 6) - 2, 'деталь с вырезом: S = 30');
+        // 6DF52F: «С»-образная деталь 3×4×6 с выемкой глубиной 2 и высотой 3, площадь 108
+        var c = new RectilinearSolid([[0, 0, 0, 3, 4, 2], [0, 2, 2, 3, 4, 5], [0, 0, 5, 3, 4, 6]]);
+        assert.equal(c.surfaceArea(), 108, '«С»-образная деталь: S = 108');
+    });
+
+    QUnit.test('Видимость точек', function (assert) {
+        var box = new RectilinearSolid([[0, 0, 0, 2, 2, 2]]);
+        var toViewer = [0.4, -1, 0.4];
+        assert.notOk(box.isPointHidden([1, 0, 1], toViewer), 'точка передней грани видна');
+        assert.notOk(box.isPointHidden([2, 0, 2], toViewer), 'передняя верхняя правая вершина видна');
+        assert.ok(box.isPointHidden([0, 2, 0], toViewer), 'задняя нижняя левая вершина не видна');
+        assert.ok(box.isPointHidden([1, 2, 0], toViewer), 'точка заднего нижнего ребра не видна');
+    });
+
+    // ============================================================
     //  Progressions  (lib/arithm_progression.js, lib/geom_progression.js)
     // ============================================================
     QUnit.module('Progressions');
