@@ -24,7 +24,7 @@
 
         let answ = [angleCAD.sin(), angleCAB.tg()][rand];
 
-        genAssertZ1000(answ * 1000);
+        genAssertZ1000(answ);
 
         rect.connectVerticesInConnectionMatrix([0, 2]);
 
