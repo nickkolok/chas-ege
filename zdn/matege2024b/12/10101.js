@@ -40,9 +40,7 @@
 			ctx.drawFigure(points, connectionMatrix);
 			ctx.drawArc(0, 0, points[1].x, 0, 2 * Math.PI);
 
-			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2) ? 25 : -5)));
+			ctx.signVertices(points, letters, {above: [2]});
 		};
 
 		NAtask.setTask({
