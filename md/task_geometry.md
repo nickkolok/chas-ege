@@ -171,6 +171,8 @@ let visibility = facesVisibility(vertices, points2D, faces);
 ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibility, [7, 5]));
 ```
 
+У параллелепипеда (`Parallelepiped`) и куба (`Cube`) грани тоже есть — `par.faces` (нижнее основание, верхнее, затем четыре боковые; порядок вершин см. `verticesOfFigure` — верхнее основание начинается с вершины над `D`), перечислять их вручную не нужно.
+
 Примеры: `zdn/matege2024b/13/510140.js`, `514225.js`, `526994.js`.
 
 ## Деталь с прямыми двугранными углами
