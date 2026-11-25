@@ -106,14 +106,12 @@
 
         let beginYear = sl1();
 
-        let intervals = Array.from({
-            length: 4
-        }, (_, i) =>
-            production.slice(i * 2 + beginYear, i * 2 + 3 + beginYear));
+        let intervalStarts = Array.from({length: 4}, (_, i) => i * 2 + beginYear);
+        let intervals = intervalStarts.map(start => production.slice(start, start + 3));
 
-        let listOfIntervals = intervals.map((_, i) => {
+        let listOfIntervals = intervalStarts.map(start => {
             return {
-                expr: `${year0 + i * 2 + beginYear}-${year0 + i * 2 + 2 + beginYear}`,
+                expr: `${year0 + start}-${year0 + start + 2}`,
                 solution: []
             };
         });
@@ -199,4 +197,5 @@
     }, 2000);
 })();
 // 510154
+
 
