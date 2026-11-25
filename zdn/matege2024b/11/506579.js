@@ -51,7 +51,7 @@
 		let paint1 = function (ct) {
 			ct.drawRectilinearSolid(detail, {
 				labels: [
-					{ from: [0, s, c], to: [0, s, h], text: h - c },
+					{ from: [0, s, c], to: [0, s, h], text: upperHeight },
 					{ from: [0, 0, c], to: [0, s, c], text: s, direction: [-1, 0] },
 					{ from: [a, d, 0], to: [a, d, h], text: h, direction: [1, 0] },
 					{ from: [0, 0, 0], to: [a, 0, 0], text: a },
