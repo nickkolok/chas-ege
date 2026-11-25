@@ -86,3 +86,4 @@
     }, 2000);
 })();
 // https://oge.sdamgia.ru/problem?id=356767
+// ФИПИ 925604 9E760F 8DCDA9 DE5CEA 0D236F 214369 336633 FE1E2B EA5060 74F13B
