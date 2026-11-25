@@ -97,7 +97,7 @@
 			wasCondition.forEach((condition, i) => {
 				if (condition) {
 					let deltaFloor = deltaValues[i];
-					let text = 'в течение всего периода потребление воды выросло более чем ' + times[(deltaFloor - 2)];
+					let text = 'в течение всего периода потребление воды выросло более чем ' + times[deltaFloor - 2];
 					if (hasNoDuplicateValue(wasCondition, true)) {
 						answ[i].solution.push(text);
 					}
@@ -129,7 +129,7 @@
 			wasCondition.forEach((condition, i) => {
 				if (condition) {
 					let deltaFloor = deltaValues[i];
-					let text = 'в течение всего периода потребление воды упало более чем ' + times[(deltaFloor - 2)];
+					let text = 'в течение всего периода потребление воды упало более чем ' + times[deltaFloor - 2];
 					if (hasNoDuplicateValue(wasCondition, true)) {
 						answ[i].solution.push(text);
 					}
@@ -143,7 +143,7 @@
 		let times = ['вдвое', 'втрое', 'вчетверо', 'впятеро'];
 
 		for (; p.length < time.length && count < 100;) {
-			let interI = ((time.length / (sl(1.5, 2.5, 0.5))).floor());
+			let interI = (time.length / sl(1.5, 2.5, 0.5)).floor();
 			for (let j = 0; j < interI; j++) {
 				let newPoint = p[p.length - 1] + sl(0.1, 1, 0.1) * [-1, 1][count % 2];
 				if (newPoint > 0 && newPoint < 6)
@@ -157,14 +157,15 @@
 		p = p.slice(0, time.length);
 		genAssert(p.length === time.length, 'Недостаточно точек графика');
 
-		let intervals = Array.from({length: 4}, (_, i) => p.slice(i * 6, i * 6 + 7));
+		const hoursPerPeriod = 6;
+		let intervals = Array.from({length: 4}, (_, i) => p.slice(i * hoursPerPeriod, i * hoursPerPeriod + hoursPerPeriod + 1));
 
 		let timeDay = ['ночь', 'утро', 'день', 'вечер'];
 		//  			0-6		6-12	12-18	18-0
 
 		let listOfIntervals = intervals.map((interval, i) => {
 			return {
-				expr: `${timeDay[i]} (с ${(i * 6)} до ${(i * 6 + 6)} часов)`,
+				expr: `${timeDay[i]} (с ${i * hoursPerPeriod} до ${i * hoursPerPeriod + hoursPerPeriod} часов)`,
 				solution: []
 			};
 		});
@@ -270,4 +271,5 @@
 	}, 1000);
 })();
 // 507094
+
 
