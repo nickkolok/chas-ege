@@ -1,13 +1,16 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let side = sl(5, 10);
         let letters = latbukv.slice(0, 3).concat('M');
 
         let key = "10116";
         let preference = ['side', 'median'];
 
         let rand = getSelectedPreferenceFromList(key, preference);
+
+        // Как в ФИПИ: в задаче на боковую сторону дана медиана — целая, от 16 до 77;
+        // в задаче на медиану дана боковая сторона — чётная, от 14 до 44, и медиана тоже целая
+        let side = (rand == 0) ? 2 * sl(10, 80) : sl(10, 50, 2);
 
         let triangle = new Triangle({
             lengths: {
