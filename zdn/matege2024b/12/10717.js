@@ -25,7 +25,7 @@
         let pointTwo = [points[5], points[6], points[3], points[4]].mt_coordinatesOfIntersectionOfTwoSegments();
         let pointThree = calculateEndpointLineAtAngle(0, 0.75 * radius, ((-angleB - (angleA - angleB) / 2) * Math.PI) / 180, 40);
 
-        let paint1 = function (ctx) {
+        let paint = function (ctx) {
             let h = 400;
             let w = 400;
 
@@ -55,7 +55,7 @@
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
-            paint: paint1,
+            paint,
         });
     }, 2000);
     NAtask.modifiers.allDecimalsToStandard(true);

@@ -31,7 +31,7 @@
 			ps = 'Ответ разделите на $\\pi$.';
 		}
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.translate(50, -40);
 			ctx.lineWidth = 2;
 			//шар 1
@@ -65,7 +65,7 @@
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 300,
 			height: 250,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();

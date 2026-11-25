@@ -13,7 +13,7 @@
 			let answ = [f * k * (d + b) + a * b * c, 2 * (k * (b + d) + k * f + f * (b + d)) + 2 * (a * c + c * b)][rand];
 
 
-			let paint1 = function(ctx) {
+			let paint = function(ctx) {
 				ctx.translate(115, 50);
 				let koefA = (a > 11 && c > 10) ? 10 : 15;
 				a *= koefA;
@@ -76,7 +76,7 @@
 			NAtask.modifiers.addCanvasIllustration({
 				width: 400,
 				height: 400,
-				paint: paint1,
+				paint,
 			});
 		},
 		1000);

@@ -31,7 +31,7 @@
 
         let points = autoScale([pointA.vertices[0], pointIntersect1[0], pointC.vertices[0], pointIntersect2[0], tan1[0][0]]);
 
-        let paint1 = function (ctx) {
+        let paint = function (ctx) {
             let h = 400;
             let w = 400;
 
@@ -62,7 +62,7 @@
         NAtask.modifiers.addCanvasIllustration({
             width: 400,
             height: 400,
-            paint: paint1,
+            paint,
         });
     }, 1000);
 

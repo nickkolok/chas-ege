@@ -9,7 +9,7 @@
 			['меньший', 180 - angle]
 		].iz();
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawLine(50, 80, 350, 80);
@@ -27,7 +27,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();

@@ -7,7 +7,7 @@
 		let question = sl1() ? [vertices[0], [vertices[3], vertices[2], vertices[1]].join('')] : 
 		[vertices[1],[vertices[0], vertices[2], vertices[3]].join('')];
 
-		let paint1 = function(ctx) {
+		let paint = function(ctx) {
 			ctx.lineWidth = 2;
 
 			let angle = Math.PI / 2.9;
@@ -43,7 +43,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
-			paint: paint1,
+			paint,
 		});
 	}, 1000);
 })();
