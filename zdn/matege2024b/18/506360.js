@@ -53,7 +53,7 @@
 				let a = sl(2, 15), b = sl(2, 15);
 				let c = sl(1, 4), d = sl(1, 4);
 				let v = Math.sqrt(a), w = Math.sqrt(b);
-				let sign = sl1() ? 1 : -1;
+				let sign = (1).pm();
 				let offset = sl(-10, 3);
 				return [
 					[coefficient(c) + root(a) + (sign > 0 ? '+' : '-') + coefficient(d) + root(b), c * v + sign * d * w],
