@@ -95,7 +95,7 @@
 		let visibility = facesVisibility(vertices, points2D, faces);
 		let matrix = dashHiddenEdges(drawPyramid.connectionMatrix, faces, visibility, [7, 5]);
 
-		let paint1 = function (ct) {
+		let paint = function (ct) {
 			ct.translate(200, 175);
 			ct.lineWidth = 2;
 			ct.strokeStyle = om.secondaryBrandColors.iz();
@@ -112,7 +112,7 @@
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 350,
-			paint: paint1,
+			paint,
 		});
 
 		NAtask.modifiers.allDecimalsToStandard();
