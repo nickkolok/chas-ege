@@ -4,7 +4,7 @@
         /* На рисунке точками показана среднесуточная температура воздуха в Москве в январе 2011 года. По горизонтали указываются числа месяца, по вертикали  — температура в градусах Цельсия. Для наглядности точки соединены линией. */
 
         function convert(value) {
-            return (value - yOffset) + '${}^{\\circ} C$';
+            return (value - yOffset) + '${}^{\\circ}\\mathrm{C}$';
         }
 
         function answAboutConstN(intervals, answ) {
@@ -172,7 +172,7 @@
         solutions.forEach(item => genAssertNonempty(item));
         genAssert(!solutions.hasDubl(), 'Дубликаты решений');
 
-        let listView = listOfIntervals.map(list => list.expr + ':' + list.solution);
+        let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
             ctx.translate(15, 0);
@@ -202,11 +202,22 @@
             ctx.scale(15, -15);
             ctx.lineWidth = 2 / 15;
 
+            // Границы семидневных периодов проходят между соседними днями.
+            ctx.save();
+            ctx.lineWidth = 1 / 15;
+            ctx.setLineDash([0.25, 0.25]);
+            for (let i = 0; i <= intervals.length; i++) {
+                let boundary = beginDay + 7 * i - 0.5;
+                ctx.drawLine(boundary, 0, boundary, 18);
+            }
+            ctx.restore();
+
+            // Смещение температуры уже задано подписями minY/maxY сетки.
             for (let i = 0; i < time.length; i++) {
-                let plotValue = values[i] - yOffset;
+                let plotValue = values[i];
                 ctx.drawFilledCircle(time[i], plotValue, 3 / 17);
                 if (i < time.length - 1)
-                    ctx.drawLine(time[i], plotValue, time[i + 1], values[i + 1] - yOffset);
+                    ctx.drawLine(time[i], plotValue, time[i + 1], values[i + 1]);
             }
         };
 
@@ -219,13 +230,14 @@
             postText: 'Пользуясь рисунком, поставьте в соответствие каждому из указанных периодов времени характеристику изменения температуры.',
             analys: listView.join('<br/>'),
         });
+        NAtask.modifiers.allDecimalsToStandard();
         NAtask.modifiers.addCanvasIllustration({
             width: 800,
             height: 600,
             paint: paint1,
         });
-        NAtask.modifiers.allDecimalsToStandard();
     }, 500);
 })();
 // https://mathb-ege.sdamgia.ru/problem?id=510147
+
 
