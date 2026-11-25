@@ -68,9 +68,14 @@ ctx.signVertices(points, letters, {above: [2, 3]});
 (по умолчанию 20), третий — `true`, если значок прямого угла нужен
 независимо от величины угла. Несколько дуг подряд рисует
 `ctx.arcBetweenSegmentsCount(points, radius, number, step)`.
+Весь массив `points` передают, только если в нём ровно три точки:
+у треугольника с добавленной вершиной (например, основанием высоты)
+их четыре, и это уже угол между отрезками, а не при вершине;
+в таком случае нужные точки перечисляют явно.
 
 ```js
-ctx.arcBetweenSegments(points);//угол при вершине points[1]
+ctx.arcBetweenSegments(points);//угол при вершине points[1], если в points три точки
+ctx.arcBetweenSegments([points[0], points[1], points[2]]);//то же, когда точек у фигуры больше
 ctx.arcBetweenSegments([points[2], points[0], points[3]], 15, true);//значок прямого угла при points[0]
 ```
 
