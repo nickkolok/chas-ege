@@ -1591,6 +1591,81 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Canvas: начало координат данных drawGridWithArrows  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: drawGridWithArrows origin');
+
+    // Стаб следит за преобразованием координат и запоминает стрелки осей
+    // в координатах контекста на момент вызова drawGridWithArrows.
+    function gridTransformStubCtx(arrows) {
+        var st = { sx: 1, sy: 1, tx: 0, ty: 0 };
+        var stack = [];
+        return {
+            lineWidth: 0, font: '', textAlign: '', textBaseline: '',
+            save: function () { stack.push({ sx: st.sx, sy: st.sy, tx: st.tx, ty: st.ty }); },
+            restore: function () {
+                var s = stack.pop();
+                st.sx = s.sx; st.sy = s.sy; st.tx = s.tx; st.ty = s.ty;
+            },
+            translate: function (x, y) { st.tx += st.sx * x; st.ty += st.sy * y; },
+            scale: function (x, y) { st.sx *= x; st.sy *= y; },
+            setLineDash: function () {},
+            fillText: function () {},
+            irregularGrid: function () {},
+            drawArrow: function (x1, y1, x2, y2) {
+                arrows.push([st.tx + st.sx * x1, st.ty + st.sy * y1, st.tx + st.sx * x2, st.ty + st.sy * y2]);
+            },
+            drawLine: function () {},
+        };
+    }
+
+    QUnit.test('drawGridWithArrows возвращает точку пересечения осей', function (assert) {
+        assert.ok(typeof CanvasRenderingContext2D.prototype.drawGridWithArrows === 'function', 'метод drawGridWithArrows определён');
+        var arrows = [];
+        var ctx = gridTransformStubCtx(arrows);
+        var origin = CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, {
+            gridWidth: 460, gridHeight: 440, cellWidth: 40, cellHeight: 40,
+            minX: 0, maxX: 12, minY: 90, maxY: 130, stepY: 5,
+        });
+        assert.deepEqual(origin, { originX: 40, originY: 360 }, 'начало — (cellWidth, gridHeight - 2 * cellHeight)');
+        assert.equal(arrows[0][1], origin.originY, 'ось X лежит на возвращённой ординате');
+        assert.equal(arrows[0][3], origin.originY, 'ось X горизонтальна');
+        assert.equal(arrows[1][0], origin.originX, 'ось Y лежит на возвращённой абсциссе');
+        assert.equal(arrows[1][2], origin.originX, 'ось Y вертикальна');
+    });
+
+    QUnit.test('начало координат по умолчанию', function (assert) {
+        var arrows = [];
+        var ctx = gridTransformStubCtx(arrows);
+        var origin = CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, {});
+        assert.deepEqual(origin, { originX: 30, originY: 330 }, 'cellWidth 30, gridHeight 390 → (30, 330)');
+        assert.equal(arrows[0][1], origin.originY, 'ось X на той же ординате');
+        assert.equal(arrows[1][0], origin.originX, 'ось Y на той же абсциссе');
+    });
+
+    QUnit.test('неквадратная клетка: originX от cellWidth, originY от cellHeight', function (assert) {
+        var arrows = [];
+        var ctx = gridTransformStubCtx(arrows);
+        var origin = CanvasRenderingContext2D.prototype.drawGridWithArrows.call(ctx, {
+            gridWidth: 200, gridHeight: 300, cellWidth: 25, cellHeight: 20, maxX: 8, maxY: 10,
+        });
+        assert.deepEqual(origin, { originX: 25, originY: 260 }, '(25, 300 - 2 * 20)');
+        assert.equal(arrows[0][1], origin.originY, 'ось X на той же ординате');
+        assert.equal(arrows[1][0], origin.originX, 'ось Y на той же абсциссе');
+    });
+
+    QUnit.test('minX/minY подписывают засечки, но начало координат не сдвигают', function (assert) {
+        var arrows1 = [], arrows2 = [];
+        var o1 = CanvasRenderingContext2D.prototype.drawGridWithArrows.call(gridTransformStubCtx(arrows1), {
+            gridWidth: 200, gridHeight: 300, cellWidth: 25, cellHeight: 20, minX: 0, minY: 0, maxX: 8, maxY: 10,
+        });
+        var o2 = CanvasRenderingContext2D.prototype.drawGridWithArrows.call(gridTransformStubCtx(arrows2), {
+            gridWidth: 200, gridHeight: 300, cellWidth: 25, cellHeight: 20, minX: 5, minY: 90, maxX: 13, maxY: 130,
+        });
+        assert.deepEqual(o2, o1, 'начало координат зависит только от размеров сетки и клетки');
+    });
+
+    // ============================================================
     //  Прототипные обёртки chislitM / chislitlx  (lib/number.js)
     // ============================================================
     QUnit.module('Number.prototype.chislitM / chislitlx: проброс аргументов');
