@@ -41,7 +41,7 @@
 			answers: question[1].sqrt(),
 			authors: ['Александра Суматохина','_zevs'],
 		});
-		NAtask.modifiers.multiplyAnswerBySqrt(21,sl1());
+		NAtask.modifiers.multiplyAnswerBySqrt(21, {useMultiples: sl1()});
 		chas2.task.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 300,
