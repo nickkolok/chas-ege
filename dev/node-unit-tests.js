@@ -827,7 +827,7 @@ module.exports = function registerNodeTests(QUnit) {
         ['figure.js', 'project3DTo2D.js'].forEach(function (file) {
             vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'lib', file), 'utf8'), context);
         });
-        vm.runInContext('this.Cube = Cube; this.RegularPyramid = RegularPyramid; this.RegularPrism = RegularPrism;', context);
+        vm.runInContext('this.Cube = Cube; this.RegularPyramid = RegularPyramid; this.RegularPrism = RegularPrism; this.RegularTetrahedron = RegularTetrahedron;', context);
         return context;
     })();
 
@@ -916,6 +916,33 @@ module.exports = function registerNodeTests(QUnit) {
         assert.notOk(geometry.isOnVisibleFace(prismFaces, rVisibility, [2, 5]), 'боковое ребро 2-5 скрыто');
         assert.ok(geometry.isOnVisibleFace(prismFaces, rVisibility, [0, 1, 3, 4]),
             'отрезок между точками на рёбрах 0-1 и 3-4 лежит в видимой грани');
+    });
+
+    QUnit.test('RegularTetrahedron: все шесть рёбер равны, размеры выводятся из ребра', function (assert) {
+        var a = 6;
+        var tetrahedron = new geometry.RegularTetrahedron(a);
+        assert.ok(tetrahedron instanceof geometry.RegularPyramid, 'наследник RegularPyramid');
+        assert.equal(tetrahedron.numberSide, 3, 'основание - правильный треугольник');
+        assert.equal(tetrahedron.baseSide, a, 'ребро основания');
+        assert.ok(Math.abs(tetrahedron.height - a * Math.sqrt(6) / 3) < 1e-9, 'высота a√6/3');
+        assert.ok(Math.abs(tetrahedron.sideEdge - a) < 1e-9, 'боковое ребро равно ребру основания');
+        assert.ok(Math.abs(tetrahedron.baseArea - a * a * Math.sqrt(3) / 4) < 1e-9, 'площадь грани √3a²/4');
+        assert.ok(Math.abs(tetrahedron.sideSurfaceArea - 3 * a * a * Math.sqrt(3) / 4) < 1e-9, 'боковая поверхность - три грани');
+        assert.ok(Math.abs(tetrahedron.surfaceArea - a * a * Math.sqrt(3)) < 1e-9, 'полная поверхность √3a²');
+        assert.ok(Math.abs(tetrahedron.volume - a * a * a * Math.sqrt(2) / 12) < 1e-9, 'объём a³√2/12');
+        assert.deepEqual(tetrahedron.connectionMatrix, [[1], [1, 1], [1, 1, 1]], 'матрица смежности тетраэдра');
+
+        var vertices = tetrahedron.verticesOfFigure;
+        assert.equal(vertices.length, 4, 'четыре вершины');
+        for (var i = 0; i < vertices.length; i++) {
+            for (var j = i + 1; j < vertices.length; j++) {
+                var dx = vertices[i].x - vertices[j].x;
+                var dy = vertices[i].y - vertices[j].y;
+                var dz = vertices[i].z - vertices[j].z;
+                assert.ok(Math.abs(Math.sqrt(dx * dx + dy * dy + dz * dz) - a) < 1e-9,
+                    'ребро ' + i + '-' + j + ' равно a');
+            }
+        }
     });
 
     // ============================================================
