@@ -218,6 +218,9 @@ git show pr-1234:zdn/matoge2024/16/392118.js > /tmp/392118.js
 node build/dev/run-node-template.js --filepath /tmp/392118.js --iterations 300 --json --seed 1 > /tmp/392118.json
 ```
 
+Чертежи из этого JSON — одним листом, а не по одному: `node dev/contact-sheet.js /tmp/392118.json --out /tmp/392118.png`
+(ключи `--limit`, `--pick` и остальное — в шапке `dev/contact-sheet.js`).
+
 Если PR меняет `lib/`, собирать нужно саму ветку PR (`git checkout pr-1234`, затем `grunt`).
 
 Полезные ключи:
