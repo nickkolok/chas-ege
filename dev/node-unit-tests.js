@@ -1263,6 +1263,50 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Canvas: дуга угла по массиву точек  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: arcBetweenSegments — вход массивом точек');
+
+    // Какие вызовы рисования сделал arcBetweenSegments
+    function arcBetweenSegmentsCalls(coordinates, radius, drawRightAngle) {
+        var calls = [];
+        var ctx = {
+            drawArc: function () { calls.push(['arc'].concat(Array.prototype.slice.call(arguments))); },
+            drawLineAtAngle: function () { calls.push(['line'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        CanvasRenderingContext2D.prototype.arcBetweenSegments.call(ctx, coordinates, radius, drawRightAngle);
+        return calls;
+    }
+
+    QUnit.test('ctx.arcBetweenSegments: три точки равнозначны плоскому массиву координат', function (assert) {
+        var points = [{ x: 30, y: 10 }, { x: -20, y: -40 }, { x: 50, y: -40 }];
+        var flat = [30, 10, -20, -40, 50, -40];
+        assert.deepEqual(arcBetweenSegmentsCalls(points), arcBetweenSegmentsCalls(flat), 'умолчание радиуса: вызовы совпадают');
+        assert.deepEqual(arcBetweenSegmentsCalls(points, 15), arcBetweenSegmentsCalls(flat, 15), 'радиус передаётся как прежде');
+        assert.deepEqual(arcBetweenSegmentsCalls(points, 15, true), arcBetweenSegmentsCalls(flat, 15, true), 'значок прямого угла: вызовы совпадают');
+        assert.deepEqual(arcBetweenSegmentsCalls(points, 15, true).map(function (c) { return c[0]; }), ['line', 'line'],
+            'drawRightAngle: два отрезка, а не дуга');
+    });
+
+    QUnit.test('ctx.arcBetweenSegments: четыре точки — угол между отрезками', function (assert) {
+        // Отрезки (0,0)-(6,0) и (0,-3)-(6,3) пересекаются в (3,0) под углом 45 градусов
+        var points = [{ x: 0, y: 0 }, { x: 6, y: 0 }, { x: 0, y: -3 }, { x: 6, y: 3 }];
+        var flat = [0, 0, 6, 0, 0, -3, 6, 3];
+        assert.deepEqual(arcBetweenSegmentsCalls(points, 12), arcBetweenSegmentsCalls(flat, 12), 'вызовы совпадают');
+        assert.deepEqual(arcBetweenSegmentsCalls(points, 12)[0].slice(0, 4), ['arc', 3, 0, 12], 'дуга радиуса 12 при точке пересечения отрезков (3, 0)');
+    });
+
+    QUnit.test('ctx.arcBetweenSegmentsCount пробрасывает массив точек без изменений', function (assert) {
+        var calls = [];
+        var ctx = {
+            arcBetweenSegments: function (coordinates, radius) { calls.push([coordinates, radius]); },
+        };
+        var points = [{ x: 1, y: 2 }, { x: 3, y: 4 }, { x: 5, y: 6 }];
+        CanvasRenderingContext2D.prototype.arcBetweenSegmentsCount.call(ctx, points, 20, 2);
+        assert.deepEqual(calls, [[points, 20], [points, 25]], 'точки уходят в arcBetweenSegments как есть, шаг радиуса 5');
+    });
+
+    // ============================================================
     //  Canvas: ломаная по массивам точек  (lib/canvas.js)
     // ============================================================
     QUnit.module('Canvas: drawPolyline');
