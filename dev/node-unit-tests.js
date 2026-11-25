@@ -197,6 +197,14 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal((2.5).texsqrt(), '\\sqrt{2,5}', 'нецелое — как раньше');
     });
 
+    QUnit.test('texsqrtfrac: знаменатель 1 не пишется', function (assert) {
+        assert.equal((3).texsqrtfrac(1), '\\sqrt{3}', '√3, а не \\frac{\\sqrt{3}}{1}');
+        assert.equal((36).texsqrtfrac(1), '6', '6, а не \\frac{6}{1}');
+        assert.equal((2.9999999999999996).texsqrtfrac(1), '\\sqrt{3}', 'tg² 60°, посчитанный в плавающей точке');
+        assert.equal((0.75).texsqrtfrac(1), '\\frac{\\sqrt{3}}{2}', 'дробь — как раньше');
+        assert.equal((12).texsqrtfrac(5), '\\frac{2\\sqrt{15}}{5}', 'дробь — как раньше');
+    });
+
     QUnit.test('Number.prototype.negativeBrackets', function (assert) {
         assert.equal((-5).negativeBrackets(), '(-5)', '-5 → (-5)');
         assert.equal((5).negativeBrackets(), '5', '5 → 5');
