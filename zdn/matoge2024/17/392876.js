@@ -70,3 +70,4 @@
     }, 2000);
 })();
 // https://oge.sdamgia.ru/problem?id=392876
+// ФИПИ F77141 EF6511 8D3F15 F609D2 F499CB 99F180 FF47FC 5CB1D4 111C58 2E3469
