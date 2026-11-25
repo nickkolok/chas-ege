@@ -1300,6 +1300,25 @@ module.exports = function registerNodeTests(QUnit) {
         }, /distance/, 'нечисловое distance — ошибка с подсказкой');
     });
 
+    QUnit.test('ctx.signVertices: awayFrom — по умолчанию буквы по центру, явные textAlign/textBaseline сильнее', function (assert) {
+        var calls = [];
+        var ctx = {
+            font: '', textAlign: 'start', textBaseline: 'alphabetic',
+            save: function () {},
+            restore: function () {},
+            scale: function () {},
+            fillText: function () { calls.push([this.textAlign, this.textBaseline]); },
+        };
+        var points = [{ x: 3, y: 4 }];
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A'], { awayFrom: { x: 0, y: 0 } });
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A'], { awayFrom: { x: 0, y: 0 }, textAlign: 'left', textBaseline: 'top' });
+        ctx.textAlign = 'start';
+        ctx.textBaseline = 'alphabetic';
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A']);
+        assert.deepEqual(calls, [['center', 'middle'], ['left', 'top'], ['start', 'alphabetic']],
+            'awayFrom: center/middle; явные опции важнее; без awayFrom выравнивание контекста не трогается');
+    });
+
     // ============================================================
     //  Canvas: ломаная по массивам точек  (lib/canvas.js)
     // ============================================================
