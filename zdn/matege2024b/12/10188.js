@@ -61,3 +61,4 @@
 
 })();
 // https://base.mathege.ru/clones/?position=16&parent=10188
+// ФИПИ 2F6D42 1B8077 10F4AE 24303F 253E75
