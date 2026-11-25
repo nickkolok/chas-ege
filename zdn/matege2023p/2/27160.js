@@ -5,12 +5,13 @@
 	retryWhileError(function() {
 
 
-		let variable = [
+		let phrases = [
 			'площадь боковой поверхности',
 			'площадь основания'
-		].shuffle();
+		];
+		let variable = phrases.slice().shuffle();
 		let name = sklonlxkand(variable);
-		let moreLess = variable[0] === 'площадь боковой поверхности' ? 'больше' : 'меньше';
+		let moreLess = ['больше', 'меньше'][phrases.indexOf(variable[0])];
 
 		let paint1 = function(ctx) {
 			ctx.lineWidth = 2;
