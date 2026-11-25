@@ -186,6 +186,12 @@ ct.drawFigure(points2D, dashHiddenEdges(prism.connectionMatrix, faces, visibilit
 * `ct.drawRectilinearSolid(solid, {labels})` рисует деталь в кабинетной проекции,
   вписанной в холст: невидимые рёбра — штрихом, подписи `labels` — у середины
   ребра `from`–`to`, снаружи от рисунка или в сторону `direction` (в координатах холста).
+* `rectilinearSolidProjection(o)` — проекция `drawRectilinearSolid()`:
+  `{depthScale, depthAngle, kx, kz, project, toViewer}`, где
+  `kx = depthScale·cos(depthAngle)`, `kz = depthScale·sin(depthAngle)` — сдвиг
+  заднего ребра относительно переднего. Нужна, чтобы проверить положение подписей
+  (`genAssert`), не переписывая формулу проекции в шаблоне; тот же `o` передаётся
+  в `drawRectilinearSolid()`. Ср. `parallelepipedVertices()`/`parallelepipedSize()`.
 
 ```js
 // Ступенька: нижний параллелепипед a × d × c, сзади на нём верхний a × (d − s) × (h − c)
