@@ -140,6 +140,21 @@ find zdn -maxdepth 2 -type l -lname '*matege2015p/4'   # симлинки на �
 опечатки в именах переменных и тексте,
 пропущенные `;` и прочее такое вот.
 
+Замечания не по опечаткам сверяйте с соглашениями проекта. Например, просьба заменить
+`preference: [preferenceQuestion]` на `preference: preferenceQuestion` неверна:
+`preference` в `setTask` — массив массивов, и единственный список тоже оборачивают
+(«[Механизм предпочтений](create_a_task.md#механизм-предпочтений-preference)»; так было в #3711).
+Как шаблон понял `preference`, показывает раннер: с `--iterations 1` он выдаёт по задаче
+на каждую комбинацию, и их столько, сколько произведение длин списков:
+
+```bash
+node build/dev/run-node-template.js --filepath zdn/matege2024b/4/513771.js --iterations 1 --json --quiet |
+	node -e 'for (const t of JSON.parse(require("fs").readFileSync(0))) console.log(t.label)'
+# Combination 1/4 [["useQ","lessWords"]], Example 1/1
+# …
+# Combination 4/4 [["useU","moreWords"]], Example 1/1
+```
+
 
 
 ## Юнит-тесты: убедиться, что они действительно прогнались
