@@ -4,6 +4,7 @@
         /* На графике изображена зависимость крутящего момента двигателя от числа оборотов в минуту. На горизонтальной оси отмечено число оборотов в минуту, на вертикальной оси – крутящий момент в Н⋅м. */
 
         let nmPerUnit = 20; // Н·м на единицу сетки — цена деления по вертикали
+        const sampleStep = 0.1;
         let rpmPerUnit = 500; // об./мин на единицу сетки — цена деления по горизонтали
 
         function convert(value) {
@@ -126,12 +127,15 @@
         rangeIntervals.push(12 - rangeIntervals.sum());
         genAssert(rangeIntervals.every(length => length > 0), 'Пустой интервал');
 
+        const boundaries = rangeIntervals.map((length, i) => {
+            const start = rangeIntervals.slice(0, i).sum();
+            return [start, start + length];
+        });
         let intervals = Array.from({
             length: 4
         }, (_, i) => {
-            let start = rangeIntervals.slice(0, i).sum();
-            let end = start + rangeIntervals[i];
-            let step = 0.1;
+            let [start, end] = boundaries[i];
+            let step = sampleStep;
             let points = Math.floor((end - start) / step) + 1;
 
             return Array.from({
@@ -158,8 +162,7 @@
         let listOfIntervals = Array.from({
             length: 4
         }, (_, i) => {
-            let startTime = rangeIntervals.slice(0, i).sum();
-            let endTime = startTime + rangeIntervals[i];
+            let [startTime, endTime] = boundaries[i];
             return {
                 expr: startTime * rpmPerUnit + '-' + endTime * rpmPerUnit + ' об./мин.',
                 solution: [],
@@ -189,29 +192,27 @@
         let listView = listOfIntervals.map(list => list.expr + ': ' + list.solution);
 
         let paint1 = function (ctx) {
-            let cellWidth = 40, cellHeight = 40;
+            let cellWidth = 40, cellHeight = 40, gridHeight = 400;
             ctx.drawGridWithArrows({
                 gridWidth: 500,
-                gridHeight: 400,
+                gridHeight: gridHeight,
                 cellWidth: cellWidth,
                 cellHeight: cellHeight,
                 stepX: rpmPerUnit,
                 stepY: nmPerUnit,
-                maxX: 6000,
+                maxX: time.at(-1) * rpmPerUnit,
                 minY: 0,
-                maxY: 140,
+                maxY: 7 * nmPerUnit,
                 stepByCeilX: 2,
                 arrowLengthX: 11.5,
                 arrowLengthY: 7.9,
             });
 
-            ctx.translate(cellWidth, cellHeight * 8);
+            ctx.translate(cellWidth, gridHeight - 2 * cellHeight);
             ctx.scale(cellWidth, -cellHeight);
             ctx.lineWidth = 2 / cellHeight;
 
-            for (let i = 0; i < valuesView.length - 1; i++) {
-                ctx.drawLine(i * 0.1, valuesView[i], (i + 1) * 0.1, valuesView[i + 1]);
-            }
+            ctx.drawPolyline(valuesView.map((_, i) => i * sampleStep), valuesView);
         };
 
         NAtask.setCorrespondenceTask({
@@ -231,4 +232,5 @@
         NAtask.modifiers.allDecimalsToStandard();
     }, 1000);
 })();
-// https://mathb-ege.sdamgia.ru/problem?id=507051
+// 507051
+
