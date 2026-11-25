@@ -7,10 +7,10 @@
 		let preference = ['oneCountry', 'twoCountry', 'notCountry'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
-		var totalAthletes = sluchiz([20, 25, 40, 80, 100, 125])[0];
-		var count1 = sl(2, totalAthletes / 3);
-		var count2 = sl(2, totalAthletes / 3 - 2);
-		var count3 = totalAthletes - count1 - count2;
+		let totalAthletes = sluchiz([20, 25, 40, 80, 100, 125])[0];
+		let count1 = sl(2, totalAthletes / 3);
+		let count2 = sl(2, totalAthletes / 3 - 2);
+		let count3 = totalAthletes - count1 - count2;
 		let counts = [count1, count2, count3].shuffle();
 
 		let countries = om.strany.re.iz(3);
