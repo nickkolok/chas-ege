@@ -826,6 +826,22 @@ module.exports = function registerNodeTests(QUnit) {
         assert.ok(box.isPointHidden([1, 2, 0], toViewer), 'точка заднего нижнего ребра не видна');
     });
 
+    QUnit.test('Проекция rectilinearSolidProjection', function (assert) {
+        var pr = rectilinearSolidProjection();
+        var kx = 0.6 * Math.cos(Math.PI / 4);
+        var kz = 0.6 * Math.sin(Math.PI / 4);
+        assert.ok(Math.abs(pr.kx - kx) < 1e-12, 'kx = 0.6·cos(π/4) по умолчанию');
+        assert.ok(Math.abs(pr.kz - kz) < 1e-12, 'kz = 0.6·sin(π/4) по умолчанию');
+        var p = pr.project([2, 3, 4]);
+        assert.ok(Math.abs(p[0] - (2 + kx * 3)) < 1e-12, 'project: x + kx·y');
+        assert.ok(Math.abs(p[1] + (4 + kz * 3)) < 1e-12, 'project: −(z + kz·y)');
+        assert.ok(Math.abs(pr.toViewer[0] - kx) < 1e-12 && pr.toViewer[1] === -1 &&
+            Math.abs(pr.toViewer[2] - kz) < 1e-12, 'toViewer = [kx, −1, kz]');
+        var custom = rectilinearSolidProjection({depthScale: 0.5, depthAngle: Math.PI / 6});
+        assert.ok(Math.abs(custom.kx - 0.5 * Math.cos(Math.PI / 6)) < 1e-12, 'свой depthScale/depthAngle: kx');
+        assert.ok(Math.abs(custom.kz - 0.5 * Math.sin(Math.PI / 6)) < 1e-12, 'свой depthScale/depthAngle: kz');
+    });
+
     // ============================================================
     //  Progressions  (lib/arithm_progression.js, lib/geom_progression.js)
     // ============================================================
