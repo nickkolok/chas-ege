@@ -13,11 +13,12 @@
 		let t1 = sl(1, 2);
 		let t2 = sl(1, 2);
 		let h = t1 + e + t2;
+		let zNotchTop = t1 + e;
 
 		let detail = new RectilinearSolid([
 			[0, 0, 0, a, d, t1],
-			[0, g, t1, a, d, t1 + e],
-			[0, 0, t1 + e, a, d, h],
+			[0, g, t1, a, d, zNotchTop],
+			[0, 0, zNotchTop, a, d, h],
 		]);
 
 		let paint1 = function (ct) {
@@ -26,7 +27,7 @@
 					{ from: [0, 0, h], to: [0, d, h], text: d },
 					{ from: [0, d, h], to: [a, d, h], text: a },
 					{ from: [a, d, 0], to: [a, d, h], text: h, direction: [1, 0] },
-					{ from: [a, g, t1], to: [a, g, t1 + e], text: e, direction: [-1, 0] },
+					{ from: [a, g, t1], to: [a, g, zNotchTop], text: e, direction: [-1, 0] },
 					{ from: [0, 0, t1], to: [0, g, t1], text: g, direction: [-1, 0] },
 				],
 			});
