@@ -24,11 +24,12 @@
 		];
 
 		// Крайние точки окружности задают границы всего рисунка.
-		let bounds = [new Point(circle.r, 0), new Point(-circle.r, 0), new Point(0, circle.r), new Point(0, -circle.r)];
+		let box = circle.box;
+		let bounds = [new Point(box.xmin, box.ymin), new Point(box.xmax, box.ymax)];
 		let scaled = autoScale([AB.ps, AB.pe, PC.vertices[0]].concat(bounds));
 		let points = scaled.slice(0, 3);
 		// autoScale возвращает обычные объекты; фабрика окружности принимает Point.
-		let scaleCircle = CircleByPoints.fromCenterAndPoint(new Point(0, 0), new Point(points[2].x, points[2].y));
+		let scaleCircle = CircleByPoints.fromCenterAndPoint(new Point((scaled[3].x + scaled[4].x) / 2, (scaled[3].y + scaled[4].y) / 2), new Point(points[2].x, points[2].y));
 
 		let paint1 = function(ctx) {
 
@@ -42,8 +43,13 @@
 			scaleCircle.drawOnto(ctx);
 
 			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
+			ctx.font = '20px liberation_sans';
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			points.forEach((point, i) => {
+				let label = labelPositionAwayFrom(point, scaleCircle.pc, 20);
+				ctx.fillText(letters[i], label.x, -label.y);
+			});
 		};
 
 		NAtask.setTask({
