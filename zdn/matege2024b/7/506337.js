@@ -142,7 +142,7 @@
 
         let paint1 = function (ctx) {
             let scale = 40, gridHeight = 440;
-            ctx.drawGridWithArrows({
+            const origin = ctx.drawGridWithArrows({
                 gridWidth: 460,
                 gridHeight: gridHeight,
                 cellWidth: scale,
@@ -158,7 +158,7 @@
                 arrowLengthY: 8.9,
             });
 
-            ctx.translate(scale, gridHeight - 2 * scale);
+            ctx.translate(origin.originX, origin.originY);
             ctx.scale(scale, -scale);
             ctx.lineWidth = 2 / scale;
 
@@ -186,4 +186,5 @@
     }, 2000);
 })();
 // 506337
+
 
