@@ -39,10 +39,7 @@
 			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.arcBetweenSegments([points[0].x, points[0].y, points[4].x, points[4].y, points[vertexIndex].x, points[vertexIndex].y], 15);
 
-			ctx.scale(1, -1);
-			ctx.font = '20px liberation_sans';
-			ctx.textAlign = 'center';
-			points.slice(0, 4).forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + (i < 2 ? 25 : -5)));
+			ctx.signVertices(points.slice(0, 4), letters, {textAlign: 'center'});
 		};
 
 		NAtask.setTask({
