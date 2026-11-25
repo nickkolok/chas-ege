@@ -46,7 +46,10 @@ ctx.signVertices(points, letters, {above: [2, 3]});
 что у `points` (до отражения оси Y); для фигуры, центрированной в начале
 координат, это `{x: 0, y: 0}`. Расстояние отсчитывается от точки привязки текста,
 поэтому при `awayFrom` буквы по умолчанию ставятся по центру (`textAlign: 'center'`,
-`textBaseline: 'middle'`); явно заданные `textAlign` и `textBaseline` важнее:
+`textBaseline: 'middle'`); явно заданные `textAlign` и `textBaseline` важнее.
+Вершина, совпадающая с `awayFrom` (например, центр O среди подписываемых точек), — `RangeError`:
+направление «наружу» для неё не определено, поэтому такую точку в `points` не включают
+и подписывают отдельно.
 
 ```js
 ctx.signVertices(points, letters, {awayFrom: {x: 0, y: 0}, distance: 18});
