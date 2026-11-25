@@ -177,6 +177,26 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal((3).toFixedLess(2), '3', '3 → 3');
     });
 
+    QUnit.test('Number.prototype.withoutFalsePrecision', function (assert) {
+        assert.strictEqual((6.000000000000001).pow(2).withoutFalsePrecision(), 36, '(6.000000000000001)² → 36');
+        assert.strictEqual((20 * (3).sqrt()).pow(2).withoutFalsePrecision(), 1200, '(20√3)² → 1200');
+        assert.strictEqual((0.1 + 0.2).withoutFalsePrecision(), 0.3, '0.1 + 0.2 → 0.3');
+        assert.strictEqual((2.5).withoutFalsePrecision(), 2.5, 'без ложной точности число не меняется');
+        assert.strictEqual((-35.99999999999999).withoutFalsePrecision(), -36, 'отрицательное → -36');
+    });
+
+    QUnit.test('texsqrt, texsqrtfrac, texcbrt: ложная точность — как у целого', function (assert) {
+        // Квадрат длины, посчитанный в плавающей точке, печатался как \sqrt{36} и \sqrt{1200}
+        assert.equal((6.000000000000001).pow(2).texsqrt(1), '6', '(6.000000000000001)² → 6, а не \\sqrt{36}');
+        assert.equal((35.99999999999999).texsqrt(), '6', '35.99999999999999 → 6');
+        assert.equal((20 * (3).sqrt()).pow(2).texsqrt(1), '20\\sqrt{3}', '(20√3)² с выносом множителя → 20√3');
+        assert.equal((20 * (3).sqrt()).pow(2).texsqrt(), (1200).texsqrt(), 'без выноса множителя — как у 1200');
+        assert.equal((1199.9999999999998).texsqrtfrac(7), (1200).texsqrtfrac(7), 'texsqrtfrac: как у 1200, а не исключение');
+        assert.equal((53.99999999999999).texcbrt(1), '3\\sqrt[3]{2}', 'texcbrt: как у 54, а не исключение');
+        assert.equal((12).texsqrt(1), '2\\sqrt{3}', 'целое — как раньше');
+        assert.equal((2.5).texsqrt(), '\\sqrt{2,5}', 'нецелое — как раньше');
+    });
+
     QUnit.test('Number.prototype.negativeBrackets', function (assert) {
         assert.equal((-5).negativeBrackets(), '(-5)', '-5 → (-5)');
         assert.equal((5).negativeBrackets(), '5', '5 → 5');
