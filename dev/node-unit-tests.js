@@ -330,6 +330,27 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual([].generatePairs(), [], 'пары из 0');
     });
 
+    QUnit.test('Array.prototype.allPermutations', function (assert) {
+        assert.deepEqual([].allPermutations(), [[]], 'пустой массив — одна пустая перестановка');
+        assert.deepEqual([7].allPermutations(), [[7]], 'один элемент');
+        var perms = [1, 2, 3].allPermutations();
+        assert.equal(perms.length, 6, 'из 3 элементов — 6 перестановок');
+        var keys = perms.map(function(p){ return p.join(','); });
+        assert.equal(keys.filter(function(k, i){ return keys.indexOf(k) === i; }).length, 6, 'все перестановки различны');
+        perms.forEach(function(p){
+            assert.deepEqual(p.slice().sort(), [1, 2, 3], 'состав элементов сохранён');
+        });
+        var src = [1, 2, 3];
+        src.allPermutations();
+        assert.deepEqual(src, [1, 2, 3], 'исходный массив не изменён');
+        assert.equal([5, 5].allPermutations().length, 2, 'повторяющиеся элементы не дедуплицируются');
+        var nested = [[1], [2]].allPermutations();
+        assert.equal(nested.length, 2, 'элементы-массивы: 2 перестановки');
+        nested.forEach(function(p){
+            assert.ok(Array.isArray(p[0]) && Array.isArray(p[1]), 'вложенные массивы не плющятся');
+        });
+    });
+
     // ============================================================
     //  Лексика: род глагола в прошедшем времени  (lib/func.js + lib/lxglagol.js)
     // ============================================================
