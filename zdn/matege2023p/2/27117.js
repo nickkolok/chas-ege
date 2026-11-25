@@ -18,11 +18,10 @@
 			ctx.drawParallelepiped(cube, [0, 3, 4, 9, 1, 7, 5], false, [0, 0.1]);
 			ctx.translate(2 * cube.width, 0);
 			ctx.drawParallelepiped(cube, [0, 3, 4], false, [0, 0.1]);
-			const dx = cube.depth * cube.angle.cos();
-			const dy = cube.depth / 2;
-			ctx.translate(dx - cube.width, dy);
+			const depthShift = parallelepipedVertices(cube)[4];
+			ctx.translate(depthShift[0] - cube.width, depthShift[1]);
 			ctx.drawParallelepiped(cube, [0, 2, 1, 3, 4], false, [0, 0.1]);
-			ctx.translate(-dx + cube.width, -dy - patch.height);
+			ctx.translate(-depthShift[0] + cube.width, -depthShift[1] - patch.height);
 			ctx.drawParallelepiped(patch, [0, 3, 4, 5, 6, 8, 9, 10, 11], false, [0, 0.1]);
 			ctx.fillStyle = 'white';
 			ctx.fillRect(-126, 10, 30, 20);
