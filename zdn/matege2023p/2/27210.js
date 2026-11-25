@@ -72,7 +72,7 @@
 			genAssert(lowerVolume + upperVolume === answer, 'решение расходится с ответом');
 			analys += 'Объём многогранника равен сумме их объёмов: ' +
 				'$' + a + '\\cdot' + d + '\\cdot' + zStep + '+' + w + '\\cdot' + e + '\\cdot' + c + '=' +
-				lowerVolume + '+' + upperVolume + '=' + answer + '$.';
+				lowerVolume + '+' + upperVolume + '=' + answer + '$' + (wording === 'деталь' ? ' см$^3$' : '') + '.';
 		} else {
 			genAssert(lowerArea + upperArea - contactArea === answer, 'решение расходится с ответом');
 			analys += 'Площадь поверхности многогранника равна сумме площадей поверхностей параллелепипедов ' +
