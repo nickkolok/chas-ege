@@ -44,12 +44,16 @@
 				});
 				vertices.forEach(([x, y]) => ctx.drawFilledCircle(x, y, 4));
 				const leafY = vertices[3][1];
-				ctx.drawEllipse((vertices[3][0] + vertices[5][0]) / 2, leafY, 135, 45);
-				ctx.drawEllipse((vertices[4][0] + vertices[6][0]) / 2, leafY, 135, 45);
+				const eventRadiusX = 135;
+				const eventRadiusY = 45;
+				const eventCenterA = (vertices[3][0] + vertices[5][0]) / 2;
+				const eventCenterB = (vertices[4][0] + vertices[6][0]) / 2;
+				ctx.drawEllipse(eventCenterA, leafY, eventRadiusX, eventRadiusY);
+				ctx.drawEllipse(eventCenterB, leafY, eventRadiusX, eventRadiusY);
 				ctx.fillText('S', vertices[0][0], vertices[0][1] - 18);
 				['a', 'b', 'c', 'd'].forEach((letter, i) => ctx.fillText(letter, vertices[i + 3][0], vertices[i + 3][1] + 27));
-				ctx.fillText('A', 30, 340);
-				ctx.fillText('B', 370, 340);
+				ctx.fillText('A', eventCenterA - eventRadiusX + 5, leafY + eventRadiusY + 25);
+				ctx.fillText('B', eventCenterB + eventRadiusX - 5, leafY + eventRadiusY + 25);
 				ctx.restore();
 			},
 		});
