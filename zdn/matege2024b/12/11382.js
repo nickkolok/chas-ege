@@ -13,15 +13,11 @@
 		let median, side, base, areaTex = '';
 		if (rand < 2) {
 			// Первые два варианта (как в ФИПИ): все данные и ответ целые —
-			// медиана, половина основания и боковая сторона образуют пифагорову тройку k(m² − n², 2mn, m² + n²)
-			let m = sl(2, 10);
-			let n = sl(1, m - 1);
-			genAssertIrreducible(m, n, 'Тройка непримитивная');
-			genAssert((m - n) % 2 === 1, 'Тройка непримитивная');
-			let k = sl(1, 21);
-			side = k * (m * m + n * n);
-			genAssert(side <= 105, 'Слишком большая сторона');
-			let legs = [k * (m * m - n * n), k * 2 * m * n].shuffle();
+			// медиана, половина основания и боковая сторона образуют пифагорову тройку
+			// (боковая сторона до 105: в ФИПИ есть 101 при медиане 20 и основании 198)
+			let triple = genPifag(105);
+			side = triple[2];
+			let legs = triple.slice(0, 2).shuffle();
 			median = legs[0];
 			base = 2 * legs[1];
 		} else {
