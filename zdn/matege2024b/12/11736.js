@@ -58,9 +58,7 @@
             ctx.lineWidth = 2;
             ctx.drawFigure(points, rect.connectionMatrix);
 
-            ctx.scale(1, -1);
-            ctx.font = "20px liberation_sans";
-            points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 2) ? 25 : -5)));
+            ctx.signVertices(points, letters);
         };
 
         NAtask.setTask({
