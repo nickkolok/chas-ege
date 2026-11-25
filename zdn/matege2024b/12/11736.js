@@ -11,7 +11,19 @@
         // Синус: стороны и диагональ — пифагорова тройка, катеты в любом порядке,
         // как в ФИПИ (ответы 0,6; 0,8; 0,28; 0,96, тройки и с множителем: 12, 16, 20)
         let [a, b] = genPifag(50).slice(0, 2).shuffle();
-        if (rand) { a = sl(5, 20); b = slKrome(a, 5, 20); }
+        let area = a * b;
+        if (rand) {
+            // Тангенс CAB = BC/AB = BC²/S при данной BC — в ФИПИ та же задача с другими буквами
+            // (тангенс CAD по площади и стороне AB): данная сторона от 4 до 15, площадь целая,
+            // тангенс от 0,1 до 0,9, не больше трёх знаков. Вторая сторона может быть
+            // не целой: у 16844F площадь 300 и AB = 9
+            let tg = sl(0.1, 0.9, 0.005);
+            b = sl(4, 20);
+            area = b * b / tg;
+            genAssertAlmostInteger(area, 'Площадь не целая');
+            area = area.round();
+            a = area / b;
+        }
 
         let rect = new Rectangle({
             lengths: {
@@ -47,7 +59,7 @@
         };
 
         NAtask.setTask({
-            text: `Площадь прямоугольника $ABCD$ равна $${rect.area()}$, $${[[`AB`, rect.lengthAB], [`BC`, rect.lengthBC]][rand].join(`=`)}$. Найдите ${[`синус`, `тангенс`][rand]} угла $${[`CAD`, `CAB`][rand]}$.`,
+            text: `Площадь прямоугольника $ABCD$ равна $${area}$, $${[[`AB`, rect.lengthAB], [`BC`, rect.lengthBC]][rand].join(`=`)}$. Найдите ${[`синус`, `тангенс`][rand]} угла $${[`CAD`, `CAB`][rand]}$.`,
             answers: answ,
             authors: ['Александра Суматохина'],
             preference: preference,
