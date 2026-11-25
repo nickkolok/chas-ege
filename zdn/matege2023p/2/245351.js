@@ -8,7 +8,7 @@
 		NAinfo.requireApiVersion(0, 2);
 		let rand = sl1();
 
-		let sphere = new Sphere(3 * sl(1, 33));
+		let sphere = new Sphere(sl(3, 99, 3));
 		let cone = new Cone({
 			radius: sphere.radius,
 			height: sphere.radius
