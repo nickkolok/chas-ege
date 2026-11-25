@@ -53,11 +53,8 @@
                 ctx.fillText(letters[i], label.x, -label.y);
             });
             // Центр — с той стороны от O, где подпись дальше всего от отрезков чертежа
-            let segments = [[0, 1], [0, 2], [1, 2], [0, 3], [1, 3]].map(([i, j]) => [points[i], points[j]]);
-            let labelPosition = [...Array(12).keys()]
-                .map(k => ({ x: 20 * Math.cos(k * Math.PI / 6), y: 20 * Math.sin(k * Math.PI / 6) }))
-                .map(p => ({ p, gap: segments.map(([p1, p2]) => distanceFromPointToSegment(p, p1, p2)).minE() }))
-                .sort((l1, l2) => l2.gap - l1.gap)[0].p;
+            let segments = segmentsFromConnectionMatrix(points, connectionMatrix);
+            let labelPosition = labelPositionAwayFromSegments(circle.pc, segments, 20);
             ctx.fillText(letters[3], labelPosition.x, -labelPosition.y);
         };
 
