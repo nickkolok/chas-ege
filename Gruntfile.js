@@ -117,7 +117,12 @@ module.exports = function(grunt) {
 		concat: {
 			options: {
 				reload: true,
-				separator: '\n;;;\n'
+				separator: '\n;;;\n',
+				// 'use strict' действует только в начале скрипта: директивы из
+				// середины склеенного бандла не работают. Первым в chas-lib.js
+				// идёт seedrandom без 'use strict', поэтому ставим директиву
+				// баннером перед всеми файлами бандла.
+				banner: "'use strict';\n"
 			},
 			chasLib: {
 				src: libListChasLib.libList,
