@@ -80,7 +80,7 @@
 				'$2\\cdot(' + a + '\\cdot' + d + '+' + a + '\\cdot' + zStep + '+' + d + '\\cdot' + zStep + ')+' +
 				'2\\cdot(' + w + '\\cdot' + e + '+' + w + '\\cdot' + c + '+' + e + '\\cdot' + c + ')-' +
 				'2\\cdot' + w + '\\cdot' + e + '=' +
-				lowerArea + '+' + upperArea + '-' + contactArea + '=' + answer + '$.';
+				lowerArea + '+' + upperArea + '-' + contactArea + '=' + answer + '$' + (wording === 'деталь' ? ' см$^2$' : '') + '.';
 		}
 
 		let text = wording === 'многогранник' ?
