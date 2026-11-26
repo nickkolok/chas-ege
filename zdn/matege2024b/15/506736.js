@@ -30,7 +30,7 @@
             answers: [numberOfPeopleWhoVotedThatWeNeed, numberOfParticipants][randUpgrade],
             preference: [preference1, preference2],
         });
-    }, 100);
+    }, 10000);
 })();
 //https://mathb-ege.sdamgia.ru/test?likes=506736
 //zer00player
