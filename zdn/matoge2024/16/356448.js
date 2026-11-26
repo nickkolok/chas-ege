@@ -63,7 +63,7 @@
             text: `Угол $A$ трапеции $ABCD$ с основаниями $AD$ и $BC$, вписанной в окружность, равен $${angleA}^\\circ$. Найдите угол $${['B', 'C'][rand]}$ этой трапеции. Ответ дайте в градусах.`,
             answers: 180 - angleA,
             authors: ['Александра Суматохина'],
-            preference: preference,
+            preference: [preference],
         });
         NAtask.modifiers.variativeABC(letters);
         NAtask.modifiers.allDecimalsToStandard(true);
