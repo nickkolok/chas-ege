@@ -22,7 +22,7 @@
 				'Скольким градусам по шкале ' + reverseDegreeName + ' соответствует '
 				+ givenText + ' по шкале ' + degreeName + '?',
 			answers: [degreeNumberFahrenheit, degreeNumberCelsius][rand],
-			preference: preference,
+			preference: [preference],
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000);
