@@ -63,10 +63,12 @@
 		let analys = 'Многогранник составлен из двух прямоугольных параллелепипедов: ' +
 			'нижнего с рёбрами $' + a + '$, $' + d + '$ и $' + H + '-' + c + '=' + zStep + '$ ' +
 			'и верхнего с рёбрами $' + w + '$, $' + e + '$ и $' + c + '$. ';
-		let lowerVolume = a * d * zStep;
-		let upperVolume = w * e * c;
-		let lowerArea = 2 * (a * d + a * zStep + d * zStep);
-		let upperArea = 2 * (w * e + w * c + e * c);
+		let lower = new Parallelepiped({width: a, depth: d, height: zStep});
+		let upper = new Parallelepiped({width: w, depth: e, height: c});
+		let lowerVolume = lower.volume;
+		let upperVolume = upper.volume;
+		let lowerArea = lower.surfaceArea;
+		let upperArea = upper.surfaceArea;
 		let contactArea = 2 * w * e;
 		if (question === 'объём') {
 			genAssert(lowerVolume + upperVolume === answer, 'решение расходится с ответом');
