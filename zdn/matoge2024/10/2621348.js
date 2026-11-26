@@ -29,7 +29,7 @@
 			text: 'Симметричный игральный кубик бросают два раза. ' +
 				'Найдите вероятность события «сумма выпавших очков равна ' + sumsStr + '».',
 			answers: probability,
-			preference: preference,
+			preference: [preference],
 		});
 	}, 1000);
 })();
