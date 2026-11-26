@@ -15,7 +15,7 @@
 			rightEnd: '' + d,
 			primaryStep: 1,
 			secondaryStep: 0.001,
-			preference: ['pow', 'sqrt'],
+			preference: [['pow', 'sqrt']],
 			authors: ['Алендарь Сергей'],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
