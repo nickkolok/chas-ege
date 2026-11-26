@@ -5,6 +5,9 @@
 
 		let A = sl(1000, 4999);
 		let B = 2 * A;
+		let preference = ['any', 'above'];
+		let mode = getSelectedPreferenceFromList('514131', preference);
+		let lower = Math.floor(A / 100) * 100;
 		
 		let sA = String(A);
 		let sB = String(B);
@@ -26,7 +29,7 @@
 					for(let l = 0; l < 4; l++){
 						if(i === l || j === l || k === l) continue;
 						let cand = parseInt(digitsAArray[i] + digitsAArray[j] + digitsAArray[k] + digitsAArray[l], 10);
-						if(cand >= 1000){
+						if (cand >= 1000 && (mode === 0 || cand > lower)) {
 							let candB = 2 * cand;
 							if(candB >= 1000 && candB <= 9999){
 								let sCandB = String(candB);
@@ -46,11 +49,13 @@
 		genAssert(validAnswers.length > 0, 'No valid answers found');
 		
 		NAtask.setTask({
-			text: 'Четырёхзначное число $A$ состоит из цифр ' + digitsA + ', а четырёхзначное число $B$ — из цифр ' + digitsB + '. Известно, что $B = 2A$. Найдите число $A$. В ответе укажите какое-нибудь одно такое число.',
+			text: 'Четырёхзначное число $A$ состоит из цифр ' + digitsA + ', а четырёхзначное число $B$ — из цифр ' + digitsB + '. Известно, что $B = 2A$. Найдите число $A$. В ответе укажите какое-нибудь одно такое число' + (mode ? ', большее $' + lower + '$.' : '.'),
 			answers: validAnswers,
+			preference,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000);
 })();
 //https://mathb-ege.sdamgia.ru/test?likes=514131
 //zer00player
+// DFD319, 451EBF, 245014, A45957, 5CFF94, FEB655

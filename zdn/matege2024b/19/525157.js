@@ -14,28 +14,37 @@
 			{a: 2, b: 0, d: 30},
 		];
 
-		let c = cases.iz();
+		let length = [6, 7].iz();
+		let c = length === 6 ? cases.concat([{a: 2, b: 0, d: 120}]).iz() :
+			{a: 1, b: [2, 4, 6, 8].iz(), d: [24, 36, 72].iz()};
 		let a = c.a;
 		let b = c.b;
 		let d = c.d;
 
 		let validAnswers = [];
-		for (let i = 100000; i <= 999999; i++) {
-			let s = String(i);
-			if (s.split('').every(ch => ch == String(a) || ch == String(b))) {
-				if (i % d === 0) {
-					validAnswers.push(s);
+		function build(number, count) {
+			if (count === length) {
+				if (number % d === 0) {
+					validAnswers.push(number);
+				}
+				return;
+			}
+			for (let digit of [a, b]) {
+				if (count > 0 || digit !== 0) {
+					build(10 * number + digit, count + 1);
 				}
 			}
 		}
+		build(0, 0);
 
 		genAssert(validAnswers.length > 0, 'Нет решений');
 
 		NAtask.setTask({
-			text: 'Найдите шестизначное натуральное число, которое записывается только цифрами ' + a + ' и ' + b +
+			text: 'Найдите ' + (length === 6 ? 'шестизначное' : 'семизначное') + ' натуральное число, которое записывается только цифрами ' + a + ' и ' + b +
 				' и делится на ' + d + '. В ответе укажите какое-нибудь одно такое число.',
 			answers: validAnswers,
 		});
 		NAtask.modifiers.allDecimalsToStandard();
 	}, 2000);
 })();
+// 36900B, A24AE1
