@@ -45,7 +45,7 @@
 			text: `В прямоугольнике $ABCD$ сторона $${[[`BC`, rect.lengthBC], [`AB`, rect.lengthAB]][rand].join(`$ равна $`)}$, $${[[`\\sin \\angle CAD`, `\\tg \\angle CAB`][rand], func.texsqrtfrac(1)].join(`=`)}$. Найдите площадь прямоугольника.`,
 			answers: rect.area(),
 			authors: ['Александра Суматохина'],
-			preference: preference,
+			preference: [preference],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
