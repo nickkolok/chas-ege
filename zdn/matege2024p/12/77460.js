@@ -1,7 +1,8 @@
 (function() {
 	retryWhileError(function() {
 		'use strict';
-		const v = getSelectedPreferenceFromList('77460', ['pow', 'sqrt']);
+		const preference = ['pow', 'sqrt'];
+		const v = getSelectedPreferenceFromList('77460', preference);
 		let a = sl(1, 30, 0.5).pm();
 		let b = sl(1, 30, 0.5);
 		let c = sl(1, 15);
@@ -15,7 +16,7 @@
 			rightEnd: '' + d,
 			primaryStep: 1,
 			secondaryStep: 0.001,
-			preference: [['pow', 'sqrt']],
+			preference: [preference],
 			authors: ['Алендарь Сергей'],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
