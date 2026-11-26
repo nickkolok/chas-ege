@@ -68,7 +68,7 @@
 				}][rand]
 			],
 			authors: ['Александра Суматохина'],
-			preference: preference
+			preference: [preference]
 		});
 		NAtask.modifiers.variativeABC(letters);
 
