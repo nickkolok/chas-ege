@@ -56,7 +56,7 @@
 		rightHeader: 'ХАРАКТЕРИСТИКИ',
 		right: selected.map(([description]) => description),
 		postText: 'Запишите номера характеристик в порядке, в котором перечислены месяцы.',
-		preference,
+		preference: [preference],
 	});
 })();
 // A1BD44, D69ABD, 294E9F, E9A3EB, 16A788
