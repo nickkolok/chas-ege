@@ -69,7 +69,7 @@
                 }][rand]
             ],
             authors: ['Александра Суматохина'],
-            preference: preference,
+            preference: [preference],
         });
 
         NAtask.modifiers.addCanvasIllustration({
