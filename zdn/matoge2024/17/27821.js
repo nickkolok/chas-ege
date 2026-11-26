@@ -63,7 +63,7 @@
             text: `Основания трапеции равны $${trp.lengthAB}$ и $${trp.lengthCD}$. Найдите ${[`больший`, `меньший`][rand]} из отрезков, на которые делит среднюю линию этой трапеции одна из её диагоналей.`,
             answers: answ,
             authors: ['Александра Суматохина'],
-            preference
+            preference: [preference]
         });
         NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
