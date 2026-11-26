@@ -16,10 +16,19 @@
 		let pow = sl(2, 30, 2) * [1, -1][rand1] + [0, 1][rand3];
 		let [forbidMinY, forbidMaxY] = (preference2[rand2] === 'minimum') ? [0, 1] : [1, 0];
 		let b = sl(1,30).pm();
+		//Знак линейного коэффициента берём так, чтобы ноль производной попал
+		//в область определения x > -b: при pow > 0 нужен m < 0, при pow < 0 — m > 0.
+		let m = sl(1,30) * [-1, 1][rand1];
+		//Ноль производной m + pow/(x+b) считаем сами. На отрицательных степенях
+		//mathjs оставляет в производной несвёрнутое (-6 - 1), nerdamer на нём
+		//возвращает [] — и шаблон получал «Искать-то нечего!» при любом m.
+		let theExtremum = -pow / m - b;
+		genAssertZ1000(theExtremum);
 
 		NAtask.setLocalExtremumTask({
+			extremums: ['' + theExtremum],
 			expr: [
-				'' + sl(1,30).pm() + 'x',
+				'' + m + 'x',
 				'ln((x +' + b +')^' + pow + ')',
 				'' +  sl(1,30).pm(),
 			].joinPlusMinus(),
