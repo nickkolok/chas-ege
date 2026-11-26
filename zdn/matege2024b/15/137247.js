@@ -21,7 +21,7 @@
                 answers: answer,
                 analys: 'Всего ' + chislitlx(state + privateShare, 'часть') + '. На одну часть приходится ' + onePart +
                     ' млн рублей, поэтому выплата ' + recipient + ' составит ' + answer + ' млн рублей.',
-                preference,
+                preference: [preference],
             });
             return;
         }
@@ -71,7 +71,7 @@
                 },
             ],
             postquestion: '?',
-            preference,
+            preference: [preference],
         });
     }, 100);
 })();
