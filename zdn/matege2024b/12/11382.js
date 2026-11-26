@@ -65,7 +65,7 @@
 				ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[2].x, points[2].y, 7, 2);
 				ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[2].x, points[2].y, 7, 2);
 			} else {
-				ctx.arcBetweenSegments([points[2].x, points[2].y, points[3].x, points[3].y, points[0].x, points[0].y], 15);
+				ctx.arcBetweenSegments([points[2], points[3], points[0]], 15);
 			}
 
 			ctx.signVertices(points, letters, {above: [2]});
