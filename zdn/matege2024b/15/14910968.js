@@ -38,7 +38,7 @@
 		analys: variant === 2 ? 'При равных количествах процентная концентрация равна $\\frac{x\\cdot' + percent1 + '+x\\cdot' + percent2 + '}{x+x}=' + answer + '$.' : 'Количество растворённого вещества при смешивании сохраняется. ' +
 			'Процентная концентрация смеси равна $\\frac{' + first + '\\cdot' + percent1 + '+' +
 			second + '\\cdot' + percent2 + '}{' + first + '+' + second + '}=' + answer + '$.',
-		preference,
+		preference: [preference],
 	});
 })();
 // Открытый банк заданий ФИПИ
