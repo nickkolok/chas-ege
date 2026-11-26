@@ -39,7 +39,7 @@
 			answers: Math.cbrt(radiusNew),
 			authors: ['Суматохина Александра'],
 		});
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
