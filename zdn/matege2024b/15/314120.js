@@ -19,7 +19,7 @@
             NAtask.setTask({
                 text,
                 answers: count * price * (100 + percent) / 100,
-                preference,
+                preference: [preference],
             });
             NAtask.modifiers.allDecimalsToStandard();
             return;
@@ -46,7 +46,7 @@
                 }
             ],
             postquestion: '?',
-            preference,
+            preference: [preference],
         });
         NAtask.modifiers.allDecimalsToStandard();
     }, 100);
