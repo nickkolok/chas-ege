@@ -63,7 +63,7 @@
 				`$${medianSegment}=${medianLength}$`
 			].shuffleJoin(', ')}. Найдите $${[sideDano.iz(), pointMedian].shuffleJoin()}$.`,
 			answers: valueDano / 2,
-			preference: preference,
+			preference: [preference],
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.variativeABC(letters);
