@@ -18,7 +18,7 @@
 				'На горизонтальной оси отмечена высота в километрах, на вертикальной — давление в миллиметрах ртутного столба. ' +
 				(variant ? 'Чему равно атмосферное давление на высоте ' + selected[0].ts() + ' км? Ответ дайте в миллиметрах ртутного столба.' :
 					'На какой высоте атмосферное давление равно ' + selected[1].ts() + ' мм рт. ст.? Ответ дайте в километрах.'),
-			answers: selected[variant], preference,
+			answers: selected[variant], preference: [preference],
 		});
 		NAtask.modifiers.addJqplot({
 			dataArray: [points], width: '700px', height: '460px',
