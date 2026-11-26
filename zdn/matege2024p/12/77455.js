@@ -8,7 +8,7 @@
 				sl(1,20) + 'x',
 				sl(0,100)
 			].joinPlusMinus(),
-			preference: ['pow', 'sqrt'],
+			preference: [['pow', 'sqrt']],
 			authors: ['Николай Авдеев'],
 		});
 	}, 200);
