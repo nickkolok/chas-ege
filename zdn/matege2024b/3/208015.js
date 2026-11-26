@@ -11,7 +11,7 @@
 		NAtask.setTask({
 			text: 'В таблице представлены данные о стоимости одной модели ' + product + ' в различных магазинах.' +
 				rows.join('').toTable() + ' Найдите наименьшую стоимость среди представленных предложений. Ответ дайте в рублях.',
-			answers: prices.minE(), preference,
+			answers: prices.minE(), preference: [preference],
 		});
 	}, 1000);
 })();
