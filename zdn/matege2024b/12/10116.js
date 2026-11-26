@@ -57,7 +57,7 @@
                 answers: triangle.heightCLength,
             }
             ][rand]],
-            preference: preference,
+            preference: [preference],
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.variativeABC(letters);
