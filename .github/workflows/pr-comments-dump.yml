@@ -1,0 +1,65 @@
+name: pr-comments-dump
+
+# Автоматический дамп комментариев к PR в rolling-релиз pr-comments-latest.
+# Зачем: у части ревьюеров заблокирован API комментариев, но веб github.com
+# открывается. Этот workflow собирает точные дампы на стороне GitHub (где API
+# доступен) и публикует их как ассеты релиза — их можно скачать браузером:
+#   https://github.com/nickkolok/chas-ege/releases/download/pr-comments-latest/{n}.json
+# Формат файла совпадает с dev/scripts/pr-comments-html.py.
+
+on:
+  issue_comment:
+    types: [created, edited, deleted]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+  pull_request_review_comment:
+    types: [created, edited, deleted]
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+  issues: read
+
+concurrency:
+  group: pr-comments-dump
+  cancel-in-progress: false
+
+jobs:
+  dump:
+    # issue_comment приходит и на обычные issues — нам нужны только PR.
+    if: >-
+      github.event_name != 'issue_comment' ||
+      github.event.issue.pull_request != null
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Вычислить номера PR
+        id: nums
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] || \
+             [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "args=--all-open" >> "$GITHUB_OUTPUT"
+          else
+            echo "args=${{ github.event.issue.number || github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Собрать дампы
+        env:
+          GITHUB_TOKEN: ${{ secrets.DUMP_TOKEN || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          OUT: comments
+        run: python3 dev/scripts/dump-pr-comments.py ${{ steps.nums.outputs.args }}
+
+      - name: Опубликовать rolling-релиз
+        env:
+          GITHUB_TOKEN: ${{ secrets.DUMP_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view pr-comments-latest --repo "${{ github.repository }}" >/dev/null 2>&1 || \
+            gh release create pr-comments-latest --repo "${{ github.repository }}" \
+              --title "PR comments dump (rolling)" \
+              --notes "Автообновляемый дамп комментариев к PR. Файл {n}.json — комментарии PR #n. Обновляется при каждом комментарии/ревью и по расписанию."
+          gh release upload pr-comments-latest comments/*.json --clobber --repo "${{ github.repository }}"
