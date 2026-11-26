@@ -16,7 +16,7 @@ var vyr2=[
 ].iz()
 .replace(')^\\circ','^\\circ)'); // A sever co-style! TODO!
 
-		y,
+		var y,
 		answer;
 	if(sl1()){
 		y = '\\frac{' + b.ts() + '~' + vyr1 +
