@@ -1,11 +1,11 @@
 #include <iostream>
 #include<cstdlib>
-#include <ctime>
 using namespace std;
 
 int main()
 {
-  srand (time(0));
+  //JSCPP не знает ни ctime, ни srand. Его rand() и так берёт Math.random,
+  //который в chas-ege зернится: задания выходят разными и воспроизводимыми.
   system ("chcp 1251");
   int membersCount = rand() % 20 + 3;
   int a1 = rand() % 20 + 3;
