@@ -17,12 +17,13 @@
 			let cx = 200, cy = 280; //центр основания
 			let r = 120, ry = 36; //полуоси эллипса основания
 			let apexY = 72; //вершина конуса над центром основания
+			let dash = [5, 5]; //пунктир невидимых линий
 
 			//эллипс (передняя часть)
 			ctx.drawEllipse(cx, cy, r, ry, 0, 0, Math.PI);
 
 			//эллипс (задняя часть, пунктиром)
-			ctx.setLineDash([5, 5]);
+			ctx.setLineDash(dash);
 			ctx.drawEllipse(cx, cy, r, ry, 0, Math.PI, 2 * Math.PI);
 			ctx.setLineDash([]);
 
@@ -36,7 +37,7 @@
 
 			//высота (красная, пунктирная)
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
-			ctx.setLineDash([5, 5]);
+			ctx.setLineDash(dash);
 			ctx.drawLine(cx, cy, cx, apexY);
 			ctx.setLineDash([]);
 
