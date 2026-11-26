@@ -50,7 +50,7 @@
 				'Порядок, в котором спортсмены выступают, определяется жребием. ' +
 				'Найдите вероятность того, что ' + targetPosition + ' будет выступать спортсмен ' + conditionText + '.',
 			answers: answerProbability,
-			preference,
+			preference: [preference],
 		});
 
 		NAtask.modifiers.allDecimalsToStandard();
