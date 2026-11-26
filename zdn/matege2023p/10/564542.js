@@ -54,7 +54,7 @@ retryWhileUndefined(function() {
 		answers: answer,
 		analys: '$f(x)=' + solution.plusminus() + '$',
 	});
-	chas2.task.modifiers.addCanvasIllustration({
+	NAtask.modifiers.addCanvasIllustration({
 		width: canvasSize,
 		height: canvasSize,
 		paint: function(ct) {
