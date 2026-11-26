@@ -213,12 +213,7 @@
             ctx.restore();
 
             // Смещение температуры уже задано подписями minY/maxY сетки.
-            for (let i = 0; i < time.length; i++) {
-                let plotValue = values[i];
-                ctx.drawFilledCircle(time[i], plotValue, 3 / 17);
-                if (i < time.length - 1)
-                    ctx.drawLine(time[i], plotValue, time[i + 1], values[i + 1]);
-            }
+            ctx.drawPolyline(time, values, 3 / 17);
         };
 
         NAtask.setCorrespondenceTask({
