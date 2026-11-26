@@ -60,7 +60,7 @@
 			right: values.map(item => item[0]),
 			autoLaTeXRight: true,
 			postText: 'Запишите номера чисел в порядке букв таблицы.',
-			preference,
+			preference: [preference],
 		});
 		NAtask.modifiers.addCanvasIllustration({
 			width: 640, height: 100,
