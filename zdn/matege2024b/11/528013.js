@@ -28,7 +28,8 @@
 
 		let paint1 = function (ct) {
 			let angle = Math.PI / 6;
-			let scale = Math.min((ct.canvas.width - 60) / (a + c * Math.cos(angle)), (ct.canvas.height - 60) / (b + c * Math.sin(angle)));
+			let size = parallelepipedSize({width: a, height: b, depth: c, angle: angle});
+			let scale = Math.min((ct.canvas.width - 60) / size.width, (ct.canvas.height - 60) / size.height);
 			let w = a * scale, h = b * scale, d = c * scale;
 			ct.translate(30, ct.canvas.height - 30);
 			ct.scale(1, -1);
