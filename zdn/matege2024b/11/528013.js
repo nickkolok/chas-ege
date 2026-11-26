@@ -47,7 +47,7 @@
 			[ 'со стороной $' + a + '$ см','с размерами $' + a + '$ см $\\times$ $' + b + '$ см $\\times$ $' + c + '$ см'][variant] + 
 			'. Сколько литров составляет объём аквариума? В одном литре $1000$ кубических сантиметров.',
 			answers: volumeLiters,
-			preference: preference,
+			preference: [preference],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
