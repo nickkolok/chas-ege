@@ -28,7 +28,7 @@
 			text: 'На графике показано изменение атмосферного давления в течение трёх суток. По горизонтали указаны дни недели и время, ' +
 				'по вертикали — атмосферное давление в миллиметрах ртутного столба. ' + questions[variant] + ' Ответ дайте в миллиметрах ртутного столба.',
 			answers: variant === 4 ? values[dayStart + hour / hourStep] : variant % 2 ? selected.maxE() : selected.minE(),
-			preference,
+			preference: [preference],
 		});
 		NAtask.modifiers.addJqplot({
 			dataArray: [[times, values].T()], width: '780px', height: '420px',
