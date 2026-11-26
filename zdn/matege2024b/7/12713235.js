@@ -37,7 +37,7 @@
 		rightHeader: 'ХАРАКТЕРИСТИКИ',
 		right: solutions,
 		postText: 'Запишите номера характеристик в порядке, в котором перечислены функции.',
-		preference,
+		preference: [preference],
 	});
 	if (showGraph) {
 		NAtask.modifiers.addCanvasIllustration({
