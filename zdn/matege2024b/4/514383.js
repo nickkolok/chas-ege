@@ -16,7 +16,7 @@
 			text: 'Площадь треугольника можно вычислить по формуле $S=\\frac{abc}{4R}$, где $a$, $b$ и $c$ — стороны треугольника, ' +
 				'а $R$ — радиус описанной окружности. Пользуясь этой формулой, найдите $' + ['S', 'b'][variant] +
 				'$, если $a=' + a + '$, $c=' + c + '$, $' + ['b=' + b, 'S=' + S][variant] + '$ и $R=' + radius + '$.',
-			answers: [S, b][variant], preference,
+			answers: [S, b][variant], preference: [preference],
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 20000);
