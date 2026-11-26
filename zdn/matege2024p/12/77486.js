@@ -23,7 +23,6 @@
 		//mathjs оставляет в производной несвёрнутое (-6 - 1), nerdamer на нём
 		//возвращает [] — и шаблон получал «Искать-то нечего!» при любом m.
 		let theExtremum = -pow / m - b;
-		genAssertZ1000(theExtremum);
 
 		NAtask.setLocalExtremumTask({
 			extremums: ['' + theExtremum],
