@@ -68,9 +68,9 @@
 			ctx.lineWidth = 3;
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.drawArrow(scaledVectors[0][0], scaledVectors[0][1], scaledVectors[0][2], scaledVectors[0][3]);
-			ctx.strokeStyle = om.primaryBrandColors[0];
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.drawArrow(scaledVectors[1][0], scaledVectors[1][1], scaledVectors[1][2], scaledVectors[1][3]);
-			ctx.strokeStyle = om.primaryBrandColors[1];
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.drawArrow(scaledVectors[2][0], scaledVectors[2][1], scaledVectors[2][2], scaledVectors[2][3]);
 
 
