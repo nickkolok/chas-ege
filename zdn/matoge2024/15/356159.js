@@ -65,7 +65,7 @@
         NAtask.setTask({
             text: `В треугольнике $ABC$ известно, что $${[`${sides[0]}=${sideFirst}`, `${sides[1]}=${sideSecond}`].concat(`\\sin \\angle ${angleDano.join('')} = ${sinNumerator.texfrac(sinDenominator)}`).shuffleJoin('$, $')}$. Найдите площадь треугольника $ABC$.`,
             answers: area,
-            preference: preference,
+            preference: [preference],
             authors: ['Александра Суматохина'],
         });
         NAtask.modifiers.variativeABC(letters);
