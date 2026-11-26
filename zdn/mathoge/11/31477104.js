@@ -89,7 +89,7 @@ retryWhileError(function() {
 			'Формулы: <br>' + funcShuffle.join('<br>') + '',
 		answers: answers.join(''),
 	});
-	chas2.task.modifiers.addCanvasIllustration({
+	NAtask.modifiers.addCanvasIllustration({
 		width: 640,
 		height: 640,
 		paint: paint1,
