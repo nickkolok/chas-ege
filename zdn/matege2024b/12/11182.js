@@ -60,7 +60,7 @@
 		};
 
 		NAtask.setTask({
-			text: `На окружности радиуса $${(radiusFactor * radiusFactor * rootPart).texsqrt(1)}$ отмечена точка $C$. Отрезок $AB$ – диаметр окружности, $AC = ${AC2.texsqrt(1)}$. Найдите $\\${[`sin`, `cos`][rand]} \\angle ${[`ABC`, `BAC`][rand]}$.`,
+			text: `На окружности радиуса $${circle.r.pow(2).texsqrt(1)}$ отмечена точка $C$. Отрезок $AB$ – диаметр окружности, $AC = ${AC2.texsqrt(1)}$. Найдите $\\${[`sin`, `cos`][rand]} \\angle ${[`ABC`, `BAC`][rand]}$.`,
 			answers: theAnswer,
 			authors: ['Александра Суматохина'],
 			preference,
