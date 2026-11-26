@@ -54,7 +54,7 @@
 				'$\\pi rl=2\\pi r^2$, поэтому $l=2r$. Косинус угла между образующей и её проекцией на основание ' +
 				'равен $r/l=1/2$. Искомый угол равен $60^\\circ$.',
 		});
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
 			paint: paint1,
