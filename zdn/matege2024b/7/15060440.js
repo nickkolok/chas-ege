@@ -26,7 +26,7 @@
 		rightHeader: 'КОЭФФИЦИЕНТЫ ИЛИ ИХ ХАРАКТЕРИСТИКИ',
 		right: graphs.map(graph => graph.solution),
 		postText: 'Запишите номера ответов в порядке, в котором перечислены графики в таблице.',
-		preference,
+		preference: [preference],
 	});
 	NAtask.modifiers.addCanvasIllustration({
 		width: 400,
