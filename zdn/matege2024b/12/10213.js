@@ -32,7 +32,7 @@
             ctx.drawLine(points[0].x, points[0].y, tan[0][1].ps.x, tan[0][1].ps.y);
             ctx.drawLine(points[2].x, points[2].y, tan[1][1].ps.x, tan[1][1].ps.y);
 
-            ctx.strokeStyle = om.primaryBrandColors[1];
+            ctx.strokeStyle = om.primaryBrandColors.iz();
 
             ctx.scale(1, -1);
             ctx.font = "20px liberation_sans";
