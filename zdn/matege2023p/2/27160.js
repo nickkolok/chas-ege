@@ -31,11 +31,11 @@
 			ctx.drawLine(cx + r, cy, cx, apexY);
 
 			//радиус (синий)
-			ctx.strokeStyle = 'blue';
+			ctx.strokeStyle = om.primaryBrandColors.iz();
 			ctx.drawLine(cx, cy, cx + r, cy);
 
 			//высота (красная, пунктирная)
-			ctx.strokeStyle = 'red';
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
 			ctx.setLineDash([5, 5]);
 			ctx.drawLine(cx, cy, cx, apexY);
 			ctx.setLineDash([]);
