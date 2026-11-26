@@ -23,7 +23,7 @@
 				'Известно, что первый ' + item.ie + ' был цвета «' + colorName[0] + '». ' +
 				'Найдите вероятность того, что второй ' + item.ie + ' был ' + colorSecond + 'цвета «' + colorName[targetColor] + '».',
 			answers: probability,
-			preference: preference,
+			preference: [preference],
 		});
 	}, 1000);
 })();
