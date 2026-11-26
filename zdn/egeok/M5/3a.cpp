@@ -20,9 +20,9 @@ void ordinal(int n)
 
 int main()
 {
-  //JSCPP не знает ни ctime, ни srand. Его rand() и так берёт Math.random,
-  //который в chas-ege зернится: задания выходят разными и воспроизводимыми.
-  system ("chcp 1251");
+  //JSCPP не знает ни ctime, ни srand, а system() падает внутри интерпретатора.
+  //rand() в JSCPP и так берёт Math.random, который в chas-ege зернится:
+  //задания выходят разными и воспроизводимыми.
   int membersCount = rand() % 20 + 3;
   int a1 = rand() % 20 + 3;
   int d = rand() % 20 - 20;
