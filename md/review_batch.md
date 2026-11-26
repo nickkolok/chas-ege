@@ -8,6 +8,9 @@
 
 ## 1. Подготовка — один раз на пачку
 
+В облачной песочнице Claude Code remote `upstream` и пакетов нет, а REST к основному
+репозиторию закрыт — сначала [ограничения и приёмы песочницы](claude_sandbox.md).
+
 ```bash
 git fetch upstream
 git fetch upstream '+refs/pull/*/head:refs/remotes/upstream/pr/*'   # головы всех PR, за секунды
