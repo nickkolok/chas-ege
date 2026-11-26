@@ -64,7 +64,7 @@
                     ctx.drawLine(points[near].x, points[near].y, points[foot].x, points[foot].y);
                     ctx.setLineDash([]);
                 }
-                ctx.strokeStyle = om.primaryBrandColors[1];
+                ctx.strokeStyle = om.primaryBrandColors.iz();
                 ctx.arcBetweenSegments([points[3].x, points[3].y, points[foot].x, points[foot].y, points[far].x, points[far].y], 15, true);
                 ctx.strokeStyle = strokeColor;
             });
