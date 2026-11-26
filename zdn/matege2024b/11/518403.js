@@ -242,7 +242,7 @@
 				'Найдите площадь окрашенной поверхности, если глубина каждой ступеньки равна $' + depth + '$ см, ' +
 				'высота — $' + height + '$ см, а ширина — $' + width + '$ см. Ответ дайте в квадратных сантиметрах.',
 			answers: answer,
-			preference: preference,
+			preference: [preference],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
