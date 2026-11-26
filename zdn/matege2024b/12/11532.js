@@ -50,7 +50,7 @@
 			],
 			postquestion: `.`,
 			authors: ['Александра Суматохина'],
-			preference: preference,
+			preference: [preference],
 		});
 		NAtask.modifiers.multiplyAnswerBySqrt(13);
 
