@@ -2010,7 +2010,7 @@ chas2.task = {
 	 * @param {String|String[]} explanations пояснения
 	 */
 	replaceCodeInText : function(code, explanations) {
-		vopr.txt = vopr.txt.replaceCode(code, explanations[i]);
+		vopr.txt = vopr.txt.replaceCode(code, explanations);
 	},
 
 
