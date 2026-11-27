@@ -45,11 +45,9 @@
 		let figureMatrix = dashHiddenEdges(cube.connectionMatrix, faces, visibility, dash);
 		if (!figureMatrix[7]) figureMatrix[7] = [];
 		figureMatrix[7][9] = dash;
-		if (!figureMatrix[7]) figureMatrix[7] = [];
 		figureMatrix[7][11] = 1;
 		if (!figureMatrix[9]) figureMatrix[9] = [];
 		figureMatrix[9][9] = dash;
-		if (!figureMatrix[9]) figureMatrix[9] = [];
 		figureMatrix[9][11] = 1;
 
 		let paint1 = function(ctx) {
