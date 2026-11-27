@@ -1,0 +1,1 @@
+../dev/scripts/fast_set.sh
