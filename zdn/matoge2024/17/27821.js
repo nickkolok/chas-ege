@@ -1,7 +1,10 @@
 (function () {
     retryWhileError(function () {
         NAinfo.requireApiVersion(0, 2);
-        let rand = sl1();
+        let key = '27821';
+        // В ФИПИ спрашивают только больший из отрезков; меньший — расширение шаблона
+        let preferenceSegment = ['larger', 'smaller'];
+        let rand = getSelectedPreferenceFromList(key, preferenceSegment);
 
         let side = sl(10, 20);
         const baseRange = [1, 20];
@@ -34,9 +37,8 @@
         let points = autoScale(trp.vertices, undefined, [], {startX: -160, finishX: 160, startY: -160, finishY: 160});
         let letters = latbukv.slice(0, 4);
 
-        let key = '27821';
-        let preference = ['noLetters', 'withLetters'];
-        let randLetters = getSelectedPreferenceFromList(key, preference);
+        let preferenceLetters = ['noLetters', 'withLetters'];
+        let randLetters = getSelectedPreferenceFromList(key, preferenceLetters);
 
         let paint1 = function (ctx) {
             ctx.translateToCenter();
@@ -63,7 +65,7 @@
             text: `Основания трапеции равны $${trp.lengthAB}$ и $${trp.lengthCD}$. Найдите ${[`больший`, `меньший`][rand]} из отрезков, на которые делит среднюю линию этой трапеции одна из её диагоналей.`,
             answers: answ,
             authors: ['Александра Суматохина'],
-            preference: [preference]
+            preference: [preferenceSegment, preferenceLetters]
         });
         NAtask.modifiers.allDecimalsToStandard(true);
         NAtask.modifiers.addCanvasIllustration({
