@@ -12,7 +12,9 @@
 		genAssertAlmostInteger(area, 'Площадь не целая');
 		area = area.round();
 
-		let halfBase = height / tgA;
+		// Треугольник нужен только для чертежа. При tg A < 0,25 он вытягивается в полоску,
+		// поэтому такой рисуется как при tg A = 0,25: пропорции здесь не так важны, как читаемость
+		let halfBase = height / Math.max(tgA, 0.25);
 		let triangle = new Triangle({
 			lengths: {
 				lengthAB: 2 * halfBase,
@@ -26,7 +28,7 @@
 
 		triangle.addVertexToConnectionMatrix([triangle.heightC.pe], 'C');
 
-		let points = autoScale(triangle.vertices);
+		let points = autoScale(triangle.vertices, undefined, [], {center: true});
 
 		let paint1 = function(ctx) {
 
