@@ -10,7 +10,9 @@
 			preferenceValue: index
 		})), sl(preference.length - 1));
 
-		let circle = new Circle(new Point(0, 0), sl(2, 50) * sl(1, 3).sqrt());
+		let rootPart = sl(1, 3);
+		let radiusFactor = sl(2, 50);
+		let circle = new Circle(new Point(0, 0), radiusFactor * rootPart.sqrt());
 
 		let PA = circle.pointOnCircle(180, {
 			angleInDegrees: true
@@ -20,10 +22,16 @@
 			angleInDegrees: true
 		});
 
-		let PC = circle.pointOnCircle((0.5 * (sl(1, (2 * circle.r).pow(2) - 1).sqrt() / circle.r)).asin());
+		//Хорду берём вида c*sqrt(rootPart): тогда AC^2 = c^2*rootPart - целое,
+		//а ответ c/(2*radiusFactor) - конечная десятичная дробь.
+		//Иначе genAssertZ1000 отбраковывает почти всё и попытки исчерпываются.
+		let chordFactor = sl(1, 2 * radiusFactor - 1);
+		let AC2 = chordFactor * chordFactor * rootPart;
+		let theAnswer = chordFactor / (2 * radiusFactor);
+		genAssertZ1000(theAnswer);
 
-		let AC = PA.distanceTo(PC)[0];
-		genAssertZ1000(AC / (2 * circle.r));
+		//AC = 2R*cos(angle/2), где angle - центральный угол точки C от B
+		let PC = circle.pointOnCircle(2 * theAnswer.acos());
 
 		let connectionMatrix = [
 			[1],
@@ -52,8 +60,8 @@
 		};
 
 		NAtask.setTask({
-			text: `На окружности радиуса $${circle.r.pow(2).texsqrt(1)}$ отмечена точка $C$. Отрезок $AB$ – диаметр окружности, $AC = ${AC.pow(2).texsqrt(1)}$. Найдите $\\${[`sin`, `cos`][rand]} \\angle ${[`ABC`, `BAC`][rand]}$.`,
-			answers: AC / (2 * circle.r),
+			text: `На окружности радиуса $${circle.r.pow(2).texsqrt(1)}$ отмечена точка $C$. Отрезок $AB$ – диаметр окружности, $AC = ${AC2.texsqrt(1)}$. Найдите $\\${[`sin`, `cos`][rand]} \\angle ${[`ABC`, `BAC`][rand]}$.`,
+			answers: theAnswer,
 			authors: ['Александра Суматохина'],
 			preference,
 		});
