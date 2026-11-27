@@ -1,67 +1,58 @@
 (function() {
-	'use strict';
-	NAinfo.requireApiVersion(0, 2);
 	retryWhileError(function() {
+		NAinfo.requireApiVersion(0, 2);
 
 		let letters = ['A', 'B', 'C', 'D'];
 		let letterWithIndex = letters.map((elem) => elem + '₁');
 		let allLet = letters.concat(letterWithIndex);
 
-		let diagonal = sl1();
-		let upper = sl1();
-		let preference = ['parallel', 'perpendicular', 'inclined'];
-		let variant = getSelectedPreferenceFromList('316554', preference);
-		let first = [letters[diagonal], letters[diagonal + 2]];
-		if (upper) {
-			first = first.map(letter => letter + '_1');
-		}
-		let second;
-		if (variant === 0) {
-			second = [letters[diagonal], letters[diagonal + 2]];
-			if (!upper) {
-				second = second.map(letter => letter + '_1');
-			}
-		} else if (variant === 1) {
-			second = [letters[1 - diagonal], letters[3 - diagonal]];
+		let letters1, letters2;
+
+		switch (sl1()) {
+		case 0:
+			letters1 = letters.slice().iz();
+			letters1 += letters1 + '_1';
+			letters2 = [letters[0] + letters[2], letters[1] + letters[3]].iz();
+			break;
+		case 1:
+			letters1 = [
+				[letters[0], letters[3]],
+				[letters[1], letters[2]]
+			].iz();
+			letters1 = (sl1()) ? letters1.join('_1') : letters1.join('') + '_1';
+
+			letters2 = [letters.slice(0, 2), letters.slice(2, 4)].iz();
 			if (sl1()) {
-				second = second.map(letter => letter + '_1');
+				letters2 = letters2.map((elem) => elem + '_1');
 			}
-		} else {
-			second = letters.slice().permuteCyclic(sl(1, 4)).slice(0, 2);
-			second[sl1()] += '_1';
+			letters2 = letters2.join('');
+			break;
 		}
-		let letters1 = first.shuffle().join('');
-		let letters2 = second.shuffle().join('');
-		let objects = ['прямыми', 'отрезками'].iz();
-		let answer = [0, 90, 60][variant];
 
-		let paint1 = function(ctx) {
-			ctx.translate(110, 50);
-			let edge = 25;
-			ctx.scale(10, 10);
 
-			ctx.lineWidth = 0.2;
-			ctx.font = "3px liberation_sans";
-			ctx.drawParallelepiped({
-				width: edge,
-				height: edge,
-				depth: edge / 2,
+		let paint1 = function(ct) {
+			ct.translate(110, 60);
+			ct.scale(10, 10);
+			ct.lineWidth = 2 / 10;
+			let cubeEdge = 26;
+
+			ct.font = '2.5px liberation_sans';
+			ct.drawParallelepiped({
+				width: cubeEdge,
+				height: cubeEdge,
+				depth: cubeEdge / (2.5),
 				angle: 40,
 				scale: 20,
 				lettersOnVertex: allLet,
-				internalLinesWithDash: [
-					[sl(0, 7), sl(0, 7)]
-				],
-			}, [0, 3, 4], false, [0.4, 0.5]);
+			}, [0, 3, 4], false, [0.5, 0.2]);
 		};
 		NAtask.setTask({
-			text: 'В кубе $ABCDA_1B_1C_1D_1$ найдите угол между ' + objects + ' $' + letters1 + '$ и $' + letters2 +
+			text: 'В кубе $ABCDA_1B_1C_1D_1$ найдите угол между прямыми $' + letters1 + '$ и $' + letters2 +
 				'$. Ответ дайте в градусах.',
-			answers: answer,
-			preference: preference,
+			answers: 90,
 			author: ['Суматохина Александра']
 		});
-		NAtask.modifiers.variativeABC(allLet);
+		NAtask.modifiers.variativeABC();
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
