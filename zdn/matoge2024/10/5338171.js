@@ -27,6 +27,8 @@
 		let coordinateNotAB = [arrayOfUniqueValues(numberOfCoordinateNot, -9, 9, 0.5), arrayOfUniqueValues(numberOfCoordinateNot, 5, 8, 0.5)];
 		coordinateNotAB = coordinateNotAB.T();
 
+		let the_orderToFind = decor.orderToFind.iz(); // ["найдите","определите","вычислите"]
+
 		let paint = function (ctx) {
 			let w = 400;
 			let h = 400;
