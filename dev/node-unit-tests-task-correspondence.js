@@ -105,6 +105,7 @@ module.exports = function registerTaskCorrespondenceTests(QUnit) {
         assert.ok(task.text.includes('Установите соответствие между функциями и их графиками.'), 'текст задания на месте');
         assert.ok(task.text.includes('ФУНКЦИИ') && task.text.includes('ГРАФИКИ'), 'заголовки столбцов на месте');
         assert.ok(!task.text.includes('Разбор.'), 'разбор не попадает в условие');
+        assert.notOk(/<br\s*\/?>\s*<\/td>/i.test(task.text), 'в конце столбцов нет пустых строк');
         assert.equal(task.answers.length, 1, 'ответ один');
         assert.deepEqual(String(task.answers[0]).split('').sort(), ['1', '2', '3'], 'ответ — перестановка цифр 1, 2, 3');
 
@@ -115,7 +116,8 @@ module.exports = function registerTaskCorrespondenceTests(QUnit) {
         const consistent = leftItems.every(function (item, index) {
             const expr = item.replace(/^[A-C]\) /, '').replace(/\$/g, '');
             const number = String(task.answers[0])[index];
-            return task.text.includes(number + ') ' + solutions[expr] + '<br>');
+            const itemText = number + ') ' + solutions[expr];
+            return task.text.includes(itemText + '<br>') || task.text.includes(itemText + '</td>');
         });
         assert.ok(consistent, 'каждой функции сопоставлен свой график');
     });

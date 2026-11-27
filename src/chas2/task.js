@@ -1419,14 +1419,14 @@ chas2.task = {
 		for (let i = 0; i < left.length; i++) {
 			let letter = String.fromCharCode(65 + i);
 			let the$ = '$'.esli(autoLaTeXLeft && (left[i].expr.search('\\$') === -1));
-			leftCol += letter + ') ' + the$ + left[i].expr + the$ + '<br>';
+			leftCol += letter + ') ' + the$ + left[i].expr + the$ + '<br>'.esli(i + 1 < left.length);
 		}
 		let rightCol = '';
 		let solutionToIndex = {};
 		for (let i = 0; i < shuffledSolutions.length; i++) {
 			let num = i + 1;
 			let the$ = '$'.esli(autoLaTeXRight && (shuffledSolutions[i].search('\\$') === -1));
-			rightCol += num + ') ' + the$ + shuffledSolutions[i] + the$ + '<br>';
+			rightCol += num + ') ' + the$ + shuffledSolutions[i] + the$ + '<br>'.esli(i + 1 < shuffledSolutions.length);
 			solutionToIndex[shuffledSolutions[i]] = num;
 		}
 		let answerSequence = left.map(item => solutionToIndex[item.solution]);
