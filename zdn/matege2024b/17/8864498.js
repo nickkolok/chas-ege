@@ -32,7 +32,7 @@
 		roots: x,
 		enablePartsExchange: 0,
 		enablePartsDivision: 0,
-		preference: preference,
+		preference: [preference],
 	}, { tags: { pokaz: 1 } });
 })();
 
