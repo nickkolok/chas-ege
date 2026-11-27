@@ -4,22 +4,25 @@
 
 		let letters = latbukv.slice(0, 3).concat('M');
 
-		let a = sl(1, 25);
-		let base = slKrome(a, 1, 25);
-		let doubleHeight = Math.sqrt(4 * a ** 2 - base ** 2);
-		genAssert(doubleHeight > 0 && Number.isInteger(doubleHeight));
+		// Как в ФИПИ: высота целая (от 2 до 26), tg A — десятичная дробь с шагом 0,05 (от 0,1 до 2,5),
+		// площадь h²/tg A целая; основание и боковые стороны при этом бывают нецелыми
+		let height = sl(2, 26);
+		let tgA = sl(0.1, 2.5, 0.05);
+		let area = height ** 2 / tgA;
+		genAssertAlmostInteger(area, 'Площадь не целая');
+		area = area.round();
+
+		let halfBase = height / tgA;
 		let triangle = new Triangle({
 			lengths: {
-				lengthAB: base,
-				lengthBC: a,
-				lengthCA: a,
+				lengthAB: 2 * halfBase,
+				lengthBC: Math.hypot(height, halfBase),
+				lengthCA: Math.hypot(height, halfBase),
 			},
 			supplementary: {
 				calculateHeights: true,
 			}
 		});
-
-		genAssertZ1000(triangle.area());
 
 		triangle.addVertexToConnectionMatrix([triangle.heightC.pe], 'C');
 
@@ -49,8 +52,8 @@
 		};
 
 		NAtask.setTask({
-			text: `В равнобедренном треугольнике $ABC$ высота $CM$, проведённая к основанию, равна $${triangle.heightCLength.pow(2).texsqrt(1)}$, а $\\tg A = ${doubleHeight.texfrac(base)}$. Найдите площадь треугольника $ABC$.`,
-			answers: triangle.area(),
+			text: `В равнобедренном треугольнике $ABC$ высота $CM$, проведённая к основанию, равна $${height}$, а $\\tg A = ${tgA}$. Найдите площадь треугольника $ABC$.`,
+			answers: area,
 			authors: ['Александра Суматохина'],
 		});
 		NAtask.modifiers.variativeABC(letters);
