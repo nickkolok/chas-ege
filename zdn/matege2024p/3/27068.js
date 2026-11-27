@@ -10,8 +10,10 @@
 			sideC: sl(10, 20),
 		});
 
-		let rand1 = sl1();
-		let rand2 = sl1();
+		const preference = ["lateralArea","volume"];
+		let rand1 = getSelectedPreferenceFromList('27068', preference);
+		const directionPreference = ['findCutPrism', 'findOriginalPrism'];
+		let rand2 = getSelectedPreferenceFromList('27068', directionPreference);
 		let question = [
 			['площадь боковой поверхности', 0.5],
 			['объём', 0.25]
@@ -70,6 +72,7 @@
 		};
 
 		NAtask.setTask({
+			preference: [preference, directionPreference],
 			text: 'Через среднюю линию основания треугольной призмы проведена плоскость, параллельная боковому ребру. ' +
 				question.ie.toZagl() +
 				' отсечённой'.esli(rand2) + ' призмы рав' + ['ен', 'на'][question.rod] + ' $' + number.ts() +
