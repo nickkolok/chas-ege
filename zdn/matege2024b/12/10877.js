@@ -53,7 +53,6 @@
 			ctx.arcBetweenSegments([points[0], points[3], points[2]], 20);
 
 			ctx.signVertices(points, letters, {above: [2]});
-			ctx.scale(1, -1);
 		};
 
 		NAtask.setTask({
