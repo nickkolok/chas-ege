@@ -1961,4 +1961,46 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(dashes[10], [6, 4], 'невидимое ребро 10 - пунктиром');
         assert.deepEqual(dashes[0], [], 'видимое ребро - сплошное');
     });
+
+    // ============================================================
+    //  rootSelectionWord: слово-признак корня  (lib/func.js)
+    // ============================================================
+    QUnit.module('rootSelectionWord: выбор слова для корня');
+
+    QUnit.test('равные корни — пустая строка', function (assert) {
+        assert.equal(rootSelectionWord(3, 3), '', '3 и 3');
+        assert.equal(rootSelectionWord(0, 0), '', '0 и 0');
+        assert.equal(rootSelectionWord(-2, -2), '', '-2 и -2');
+    });
+
+    QUnit.test('оба положительные / оба отрицательные — детерминировано', function (assert) {
+        assert.equal(rootSelectionWord(2, 5), 'наименьший', '2 при 5');
+        assert.equal(rootSelectionWord(5, 2), 'наибольший', '5 при 2');
+        assert.equal(rootSelectionWord(-2, -5), 'наибольший', '-2 при -5');
+        assert.equal(rootSelectionWord(-5, -2), 'наименьший', '-5 при -2');
+    });
+
+    QUnit.test('разные знаки — подходящий вариант из списка', function (assert) {
+        var pos = ['наибольший', 'положительный', 'неотрицательный'];
+        var neg = ['наименьший', 'отрицательный', 'неположительный'];
+        for (var i = 0; i < 20; i++) {
+            assert.ok(pos.includes(rootSelectionWord(5, -3)), '5 при -3 входит в допустимые');
+            assert.ok(neg.includes(rootSelectionWord(-3, 5)), '-3 при 5 входит в допустимые');
+        }
+    });
+
+    QUnit.test('нулевой корень — подходящий вариант из списка', function (assert) {
+        var cases = [
+            [0, 5, ['наименьший', 'неположительный']],
+            [0, -5, ['наибольший', 'неотрицательный']],
+            [5, 0, ['наибольший', 'положительный']],
+            [-5, 0, ['наименьший', 'отрицательный']],
+        ];
+        cases.forEach(function (c) {
+            for (var i = 0; i < 20; i++) {
+                assert.ok(c[2].includes(rootSelectionWord(c[0], c[1])), c[0] + ' при ' + c[1] + ' входит в допустимые');
+            }
+        });
+    });
+
 };
