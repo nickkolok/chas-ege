@@ -31,10 +31,13 @@
 			[0, 0, 0, 0, strok, 0, 1, 0, 0, 0, 1],
 		];
 
-		let vert = ['A', 'B', 'C', 'D', 'E', 'F'];
-		vert = vert.permuteCyclic(sl(0, 5));
-		vert = vert.slice(0, 2).concat(vert.slice(3, 5))
-		vert = vert.concat(vert.map((elem) => elem + '_1'));
+		let hexagon = ['A', 'B', 'C', 'D', 'E', 'F'];
+		let shift = sl(0, 5);
+		hexagon = hexagon.permuteCyclic(shift);
+		let baseVert = [hexagon[0], hexagon[1], hexagon[3], hexagon[4]];
+		let topVert = baseVert.map(v => v + '_1');
+		let prismName = baseVert.join('') + topVert.join('');
+		let allVertices = baseVert.concat(topVert);
 
 		let camera = {
 			x: 0,
@@ -72,7 +75,7 @@
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
-			text: ['Найдите ', 'Дан параллелепипед $' + vert.join('') + '$, площадь основания которого равна $' +
+			text: ['Найдите ', 'Дан параллелепипед $'+ prismName + '$, площадь основания которого равна $' +
 				prism4.baseArea.pow(2).texsqrt(1) + '$, а высота, проведённая к этому основанию, равна $' + prism4.height + '$. Найдите '
 			][v],
 			questions: [{
@@ -80,7 +83,7 @@
 				answers: [prism4.volume, prism6.volume][v],
 			}, ],
 			postquestion: [' многогранника, ' +
-				'вершинами которого являются вершины $' + vert.shuffleJoin(', ') +
+				'вершинами которого являются вершины $' + allVertices.join(', ') +
 				'$ правильной шестиугольной призмы ' +
 				'$ABCDFEA_1B_1C_1D_1F_1E_1$, площадь основания которой равна $' + prism6.baseArea.pow(2).texsqrt(1) +
 				'$, а боковое ребро равно $' + prism6.height + '$', ' прямой призмы с вершинами $' + ['A', 'B', 'C', 'D', 'E', 'F', 'A_1', 'B_1', 'C_1', 'D_1', 'E_1', 'F_1']
