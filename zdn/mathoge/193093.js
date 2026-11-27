@@ -9,7 +9,7 @@ retryWhileError(function() {
 	let bi = [];
 	let ci = [];
 	for (let i = 0; i < 4; i++) {
-		ai.push(slKrome(ai, 1, 5).pm());
+		ai.push(slKrome(ai.concat([0]), -5, 5));
 		bi.push(sl(0, 5).pm());
 		ci.push(sl(0, 5).pm());
 	}
