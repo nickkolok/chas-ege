@@ -6,6 +6,10 @@
 		let preference = ['height', 'hypotenuse'];
 
 		let rand = getSelectedPreferenceFromList(key, preference);
+		// Формулировка: обычная или как у части заданий ФИПИ. В задаче на гипотенузу второй вариант —
+		// без «равна» и «равен»: «Площадь прямоугольного треугольника 210. Один из катетов 21» (09CFDB и ещё 5)
+		let preferenceWording = ['mainWording', 'altWording'];
+		let randWording = getSelectedPreferenceFromList(key, preferenceWording);
 
 		let a = sl(1, 50);
 
@@ -26,7 +30,7 @@
 			text: `В прямоугольном треугольнике катеты равны $${triangle.lengthAB}$ и $${triangle.lengthBC}$. Найдите высоту, опущенную на гипотенузу.`,
 			answers: triangle.heightBLength,
 		},{
-			text: `Площадь прямоугольного треугольника равна $${triangle.area()}$. Один из катетов равен $${[triangle.lengthAB, triangle.lengthBC].iz()}$. Найдите гипотенузу этого треугольника.`,
+			text: `Площадь прямоугольного треугольника${[' равна', ''][randWording]} $${triangle.area()}$. Один из катетов${[' равен', ''][randWording]} $${[triangle.lengthAB, triangle.lengthBC].iz()}$. Найдите гипотенузу этого треугольника.`,
 			answers: triangle.lengthCA,
 		}][rand];
 		genAssertZ1000(question.answers);
@@ -51,7 +55,7 @@
 			text: ``,
 			questions: [question],
 			authors: ['Александра Суматохина'],
-			preference: preference,
+			preference: [preference, preferenceWording],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
