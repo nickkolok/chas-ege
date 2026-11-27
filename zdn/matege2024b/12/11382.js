@@ -4,15 +4,16 @@
 
 		let key = "11382";
 		let letters = om.latbukv.slice(0, 3).concat('M');
-		let preference = ['length_BC_by_median_and_base', 'median', 'length_BC_by_median_and_area'];
+		// Четвёртый вариант — медиана по сторонам, но словами, без букв и без чертежа, как в 7337B8
+		let preference = ['length_BC_by_median_and_base', 'median', 'length_BC_by_median_and_area', 'median_without_letters'];
 		let rand = getSelectedPreferenceFromList(key, preference);
 
 
 		// Равнобедренный треугольник с основанием AB: медиана CM — она же высота,
 		// так что медиана, половина основания и боковая сторона — прямоугольный треугольник.
 		let median, side, base, areaTex = '';
-		if (rand < 2) {
-			// Первые два варианта (как в ФИПИ): все данные и ответ целые —
+		if (rand != 2) {
+			// Первый, второй и четвёртый варианты (как в ФИПИ): все данные и ответ целые —
 			// медиана, половина основания и боковая сторона образуют пифагорову тройку
 			// (боковая сторона до 105: в ФИПИ есть 101 при медиане 20 и основании 198)
 			let triple = genPifag(105);
@@ -72,7 +73,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ `,
+			text: (rand == 3) ? `В треугольнике ` : `В треугольнике $ABC$ `,
 			questions: [
 				[{
 					text: `медиана $CM$ перпендикулярна $AB$. Найдите $BC$, если $CM = ${median}$, $AB = ${base}$.`,
@@ -83,6 +84,9 @@
 				}, {
 					text: `известно, что $BC = CA$, медиана $CM$ равна $${median}$. Площадь треугольника $ABC$ равна $${areaTex}$. Найдите длину стороны $BC$.`,
 					answers: side,
+				}, {
+					text: `каждая из двух сторон равна $${side}$, а третья сторона равна $${base}$. Найдите длину медианы, проведённой к третьей стороне треугольника.`,
+					answers: median,
 				}][rand]
 			],
 			authors: ['Александра Суматохина'],
@@ -90,11 +94,13 @@
 		});
 		NAtask.modifiers.variativeABC(letters);
 
-		NAtask.modifiers.addCanvasIllustration({
-			width: 400,
-			height: 400,
-			paint: paint1,
-		});
+		if (rand != 3) { // в задаче без букв чертежа нет, как в 7337B8
+			NAtask.modifiers.addCanvasIllustration({
+				width: 400,
+				height: 400,
+				paint: paint1,
+			});
+		}
 	}, 2000);
 	NAtask.modifiers.allDecimalsToStandard(true);
 })();
