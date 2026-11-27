@@ -88,7 +88,7 @@ retryWhileError(function() {
 			'$. Укажите номер этого рисунка.',
 		answers: answ + 1,
 	});
-	chas2.task.modifiers.addCanvasIllustration({
+	NAtask.modifiers.addCanvasIllustration({
 		width: 640,
 		height: 640,
 		paint: paint1,
