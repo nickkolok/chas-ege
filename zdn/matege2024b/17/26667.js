@@ -67,7 +67,7 @@ if (variant === 1 && sl1()) {
 
 chas2.task.setAdditiveEquationTask({
     customPreamble: 'Найдите ' + preamble(x1, x2) + ' корень уравнения',
-    preference: preference,
+    preference: [preference],
     parts: [
         a+'x^2',
         ...((x1+x2) ? [(-1)*a*(x1+x2)+'x'] : []),
