@@ -40,7 +40,7 @@
 		let dash = [5, 4];
 
 		
-		let faces = [[0,1,2,3],[5,6,7,4],[0,1,6,5],[1,2,7,6],[2,3,4,7],[3,0,5,4]];
+		let faces = cube.faces;
 		let visibility = facesVisibility(cube.verticesOfFigure.slice(0, 8), point2DPar, faces);
 		let figureMatrix = dashHiddenEdges(cube.connectionMatrix, faces, visibility, dash);
 		if (!figureMatrix[7]) figureMatrix[7] = [];
