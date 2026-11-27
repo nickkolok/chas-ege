@@ -203,6 +203,30 @@ evalInWindow(`
 		Ajax: { loadComplete: function () {}, Require: function () {} },
 	};
 	window.alert = function (msg) { console.log('[alert] ' + msg); };
+	// jsdom не реализует URL.createObjectURL — на нём падают шаблоны, которые
+	// подкладывают картинку через Blob (например, matege2024p/9/324467).
+	// Отдаём data: URL: содержимое Blob достаём синхронно из его jsdom-реализации.
+	// Buffer внутри окна нет, поэтому base64 собираем через btoa.
+	if (typeof window.URL.createObjectURL !== 'function') {
+		window.URL.createObjectURL = function (blob) {
+			try {
+				var implSym = Object.getOwnPropertySymbols(blob).find(function (s) {
+					return String(s).indexOf('impl') !== -1;
+				});
+				var bytes = implSym ? blob[implSym]._buffer : null;
+				if (bytes) {
+					var str = '';
+					for (var i = 0; i < bytes.length; i += 8192) {
+						str += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+					}
+					return 'data:' + (blob.type || 'application/octet-stream') +
+						';base64,' + window.btoa(str);
+				}
+			} catch (e) { /* незнакомый Blob — отдадим заглушку */ }
+			return 'blob:jsdom-stub';
+		};
+		window.URL.revokeObjectURL = function () {};
+	}
 	// lib/canvas.js расширяет CanvasRenderingContext2D.prototype при загрузке.
 	// С npm-пакетом «canvas» jsdom даёт настоящие 2D-контексты, но сам класс на
 	// window не выставляет — достаём его через пробный контекст, иначе
