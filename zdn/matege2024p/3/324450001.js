@@ -6,11 +6,13 @@
 		let s = a.pow(2) * (3).sqrt() / 4;
 		let h = 0.5 * a / (2).sqrt();
 
+		const preference = ['volume', 'lateralArea', 'height'];
+		const questionIndex = getSelectedPreferenceFromList('324450001', preference);
 		let question = [
 			['объём', v],
 			['площадь боковой поверхности', s],
 			['высоту', h]
-		].iz();
+		][questionIndex];
 
 		let paint1 = function(ctx) {
             let pyramid = new RegularPyramid({height: 1 / Math.sqrt(2), baseSide: 1, numberSide: 4});
@@ -30,6 +32,7 @@
         };
 
 		NAtask.setTask({
+			preference: [preference],
 			text: 'В правильной четырёхугольной пирамиде все рёбра равны $' + a + '$. ' +
 				'Найдите ' + question[0] + ' пирамиды, отсечённой плоскостью, проходящей через середины боковых рёбер.',
 			answers: question[1],
