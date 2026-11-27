@@ -1,48 +1,52 @@
 (function() {
 	retryWhileError(function() {
 		NAinfo.requireApiVersion(0, 2);
-
-		let angle = slKrome(90, 1, 179);
-
-		let vertices = om.latbukv.iz(4);
-	
-		let numbers = [
-			[0, 1, 3],
-			[3, 1, 2],
-			[0, 3, 1],
-			[1, 3, 2]
-		].iz();
-		//не придумала ничего умнее, чем просто перечислить спрашиваемые вершины
-		let letters = numbers.map((elem) => vertices[elem]);
-		letters = letters.randomReverse();
 		
-		let subangle = [vertices[1],[vertices[0], vertices[2]].iz(), vertices[3]];
-		vertices=(angle<90)?vertices.slice().permuteCyclic(1):vertices.slice();
+		let vertices = latbukv.slice(0, 4);
+		let rand = sl1();
+
+		let rhombus = new Rhombus({
+			length: sl(1, 50),
+			angles: {
+				angle: { angleA: slKrome(90, 30, 150) },
+				angleInDegree: true,
+			},
+		});
+
+		const diagonalPairs = [[0, 2], [1, 3]];
+		rhombus.connectVerticesInConnectionMatrix([diagonalPairs[rand]]);
+
+		let oppositeVertices = diagonalPairs.map(pair => pair.map(i => vertices[i]));
+		let angleQ = [oppositeVertices[rand].shuffleJoin() + oppositeVertices[1 - rand].iz(), [rhombus.angleAInDegrees, rhombus.angleBInDegrees][rand] / 2];
+		angleQ[0] = sl1() ? angleQ[0] : angleQ[0].reverse();
+		
+		let points = autoScale(rhombus.rotate(rhombus.angleAInRadians / 2).vertices, undefined, [], {startX: -160, finishX: 160});
 
 		let paint1 = function(ctx) {
-			ctx.lineWidth = 2;
+
+			ctx.translateToCenter();
+			ctx.scale(1, -1);
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
-			ctx.drawLine(100, 80, 350, 80);
-			ctx.drawLine(10, 320, 270, 320);
-			ctx.drawLine(100, 80, 10, 320);
-			ctx.drawLine(270, 320, 350, 80);
-
-			(angle<90)?ctx.drawLine(100, 80, 270, 320):ctx.drawLine(10, 320, 350, 80);
-
-			ctx.font = "23px liberation_sans";
-			ctx.fillText(vertices[0], 100, 80 - 10);
-			ctx.fillText(vertices[1], 350, 80 - 10);
-			ctx.fillText(vertices[2], 270, 320 + 20);
-			ctx.fillText(vertices[3], 10, 320 + 20);
-
+			ctx.lineWidth = 2;
+			ctx.drawFigure(points, rhombus.connectionMatrix);
+			
+			ctx.scale(1, -1);
+			ctx.font = '20px liberation_sans';
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			const center = {x: points.map(point => point.x).sum() / points.length, y: -points.map(point => point.y).sum() / points.length};
+			points.forEach((point, i) => {
+				const label = labelPositionAwayFrom({x: point.x, y: -point.y}, center, 18);
+				ctx.fillText(vertices[i], label.x, label.y);
+			});
+			
 		};
 
 		NAtask.setTask({
-			text: 'В ромбе $' + vertices.slice().randomReverse().permuteCyclic(sl(0, 3)).join('') + '$ угол $' + subangle.slice().randomReverse().join('') +
-				'$ равен $' + angle + '^\\circ$. Найдите ' +
-				'угол $' + letters.join('') + '$. Ответ дайте в градусах',
-			answers: 0.5 * (180 - angle),
+			text: `В ромбе $ABCD$ угол $${[vertices.slice(0, 3), vertices.slice(1, 4)][rand].randomReverse().join('')}$ равен $${[rhombus.angleBInDegrees, rhombus.angleAInDegrees][rand]}^\\circ$. Найдите угол $${angleQ[0]}$. Ответ дайте в градусах.`,
+			answers: angleQ[1],
 		});
+		NAtask.modifiers.allDecimalsToStandard(true);
 		NAtask.modifiers.addCanvasIllustration({
 			width: 400,
 			height: 400,
@@ -51,4 +55,3 @@
 	}, 1000);
 })();
 //3353
-
