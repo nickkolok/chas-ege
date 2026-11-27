@@ -54,7 +54,13 @@
 			ctx.arcBetweenSegments([points[0], points[2], points[1]], 15);
 			ctx.arcBetweenSegments([points[0], points[3], points[2]], 20);
 
-			ctx.signVertices(points, letters, {above: [2]});
+			// Основание высоты H близко к B при малом sin A и к A при малом cos A. Подпись по умолчанию
+			// начинается от вершины и идёт вправо, поэтому подпись A наезжала на H, а подпись H — на B.
+			// Подпись A — левее вершины (наружу от треугольника), подпись H — в сторону от близкой вершины:
+			// левее H, когда H близко к B (вариант с синусом), правее, когда близко к A (с косинусом).
+			ctx.signVertices([points[1], points[2]], [letters[1], letters[2]], {above: [1]});
+			ctx.signVertices([points[0]], [letters[0]], {above: [], textAlign: 'right'});
+			ctx.signVertices([points[3]], [letters[3]], {above: [], textAlign: ['right', 'left'][rand]});
 		};
 
 		NAtask.setTask({
