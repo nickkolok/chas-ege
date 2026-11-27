@@ -42,9 +42,7 @@
 			ctx.drawFigure(points, connectionMatrix);
 			circle.drawOnto(ctx);
 
-			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i < 3) ? 20 : -5)));
+			ctx.signVertices(points, letters, {above: [3], offsetBelow: 20});
 		};
 
 		let angleABC = (A - C) / 2;
