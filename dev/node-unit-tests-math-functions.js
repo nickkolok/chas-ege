@@ -97,6 +97,7 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         'extremumsX', 'extremumsY', 'findMinimums', 'findMaximums', 'minimumsX', 'maximumsX',
     ]);
     const { transformExtremumsToIntervals } = loadMathFunctions(['transformExtremumsToIntervals']);
+    const { findSinusoidExtremumsAroundZero } = loadMathFunctions(['findSinusoidExtremumsAroundZero']);
     const { addRoots } = loadMathFunctions(['addRoots']);
     const {
         findIntervalsOfIncreaseAndDecrease, findIncreasingIntervals, findDecreasingIntervals,
@@ -940,6 +941,74 @@ module.exports = function registerMathFunctionsTests(QUnit) {
         assertPoints(assert, extremums.minP, [[1.15, 0]], 'отклонение 0,15 в пределах допуска 0,2');
         extremums = findIntExtremumsOfFunction(shifted, -1.5, 3, 0.1);
         assertPoints(assert, extremums.minP, [], 'отклонение 0,15 больше допуска 0,1');
+    });
+
+    // ============================================================
+    //  findSinusoidExtremumsAroundZero  (lib/math_functions.js)
+    // ============================================================
+    QUnit.module('Math Functions: findSinusoidExtremumsAroundZero');
+
+    QUnit.test('findSinusoidExtremumsAroundZero: sin и cos без сдвига фазы', function (assert) {
+        assert.deepEqual(findSinusoidExtremumsAroundZero('sin', 0), [-0.5, 0.5], 'sin(pi*x): экстремумы в ±0,5');
+        assert.deepEqual(findSinusoidExtremumsAroundZero('cos', 0), [0, 1], 'cos(pi*x): экстремумы в 0 и 1');
+        assert.deepEqual(findSinusoidExtremumsAroundZero('sin', 0, 3), [-1.5, 1.5], 'полупериод 3');
+        assert.deepEqual(findSinusoidExtremumsAroundZero('cos', 0, 2), [0, 2], 'полупериод 2');
+    });
+
+    QUnit.test('findSinusoidExtremumsAroundZero: сдвиг фазы, в том числе за пределами [0; 1)', function (assert) {
+        assert.deepEqual(findSinusoidExtremumsAroundZero('sin', 0.25, 2), [-1.5, 0.5], 'sin(pi*(x/2 + 1/4))');
+        assert.deepEqual(findSinusoidExtremumsAroundZero('cos', 0.5, 3), [-1.5, 1.5], 'cos(pi*(x/3 + 1/2))');
+        assert.deepEqual(findSinusoidExtremumsAroundZero('sin', -0.25), [-0.25, 0.75], 'отрицательная фаза');
+        assert.deepEqual(findSinusoidExtremumsAroundZero('sin', 1.25), [-0.75, 0.25], 'фаза больше 1');
+        assert.deepEqual(findSinusoidExtremumsAroundZero('cos', -1), [0, 1], 'целая фаза у cos ничего не сдвигает');
+    });
+
+    QUnit.test('findSinusoidExtremumsAroundZero: сетка параметров шаблонов 564542/564543 — экстремумы и соседство', function (assert) {
+        // phase = factor*c, как в шаблонах; a и d на абсциссы экстремумов не влияют
+        const a = 3, d = 1;
+        ['sin', 'cos'].forEach(function (trig) {
+            [0.5, 1, 1.5].forEach(function (factor) {
+                [-1, 0, 1].forEach(function (c) {
+                    [1, 2, 3, 4, 5].forEach(function (halfPeriod) {
+                        const phase = factor * c;
+                        const xs = findSinusoidExtremumsAroundZero(trig, phase, halfPeriod);
+                        const f = x => a * Math[trig](Math.PI * (x / halfPeriod + phase)) + d;
+                        const df = x => (f(x + 1e-4) - f(x - 1e-4)) / 2e-4;
+                        const label = trig + ', phase ' + phase + ', полупериод ' + halfPeriod;
+                        assert.ok(xs[0] <= 0 && xs[1] > 0, label + ': экстремумы по обе стороны от нуля');
+                        assertClose(assert, xs[1] - xs[0], halfPeriod, label + ': расстояние между ними = полупериод');
+                        assertClose(assert, df(xs[0]), 0, label + ': производная в первой точке нулевая');
+                        assertClose(assert, df(xs[1]), 0, label + ': производная во второй точке нулевая');
+                        // посередине между соседними экстремумами — точка перегиба, |производная| максимальна
+                        assertClose(assert, Math.abs(df((xs[0] + xs[1]) / 2)), Math.abs(a) * Math.PI / halfPeriod,
+                            label + ': между ними нет других экстремумов');
+                    });
+                });
+            });
+        });
+    });
+
+    QUnit.test('findSinusoidExtremumsAroundZero: совпадает с расчётом из шаблонов 564542/564543', function (assert) {
+        ['sin', 'cos'].forEach(function (trig) {
+            [0.5, 1, 1.5].forEach(function (factor) {
+                [-1, 0, 1].forEach(function (c) {
+                    [1, 2, 3, 4, 5].forEach(function (halfPeriod) {
+                        const phase = factor * c;
+                        // Расчёт из zdn/matege2023p/10/564543.js; 564542 — частный случай halfPeriod = 1
+                        let firstExtremum = ((trig === 'sin' ? 0.5 : 0) - phase) % 1;
+                        if (firstExtremum > 0)
+                            firstExtremum -= 1;
+                        const expected = [firstExtremum * halfPeriod, (firstExtremum + 1) * halfPeriod];
+                        assert.deepEqual(findSinusoidExtremumsAroundZero(trig, phase, halfPeriod), expected,
+                            trig + ', phase ' + phase + ', полупериод ' + halfPeriod);
+                    });
+                });
+            });
+        });
+    });
+
+    QUnit.test('findSinusoidExtremumsAroundZero: неизвестная trig — ошибка', function (assert) {
+        assert.throws(function () { findSinusoidExtremumsAroundZero('tg', 0); }, /sin или cos/, 'tg не поддерживается');
     });
 
     // ============================================================
