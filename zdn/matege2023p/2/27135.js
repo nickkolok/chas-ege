@@ -83,7 +83,7 @@
 			authors: ['Суматохина Александра'],
 			analys: name[2].ie.toZagl() + ': $' + number[2] + '$',
 		});
-		chas2.task.modifiers.addCanvasIllustration({
+		NAtask.modifiers.addCanvasIllustration({
 			width: 300,
 			height: 300,
 			paint: paint1,
