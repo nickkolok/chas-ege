@@ -117,7 +117,7 @@ retryWhileError(function () {
 		answers: answ,
 		wrongAnswers: wrongAnsw,
 	});
-	chas2.task.modifiers.addCanvasIllustration({
+	NAtask.modifiers.addCanvasIllustration({
 		width: 300,
 		height: 300,
 		paint: paint1,
