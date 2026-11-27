@@ -6,15 +6,19 @@
         let preferenceSegment = ['larger', 'smaller'];
         let rand = getSelectedPreferenceFromList(key, preferenceSegment);
 
-        let side = sl(10, 20);
         const baseRange = [1, 20];
         let a = sl(...baseRange);
+        let b = slKrome(a, ...baseRange);
+        // Боковые стороны в условие не входят: подбираем их по высоте, чтобы трапеция не была
+        // ни «стаканом», ни полоской — высота от 0,3 до 1 большего основания
+        let height = Math.max(a, b) * sl(0.3, 1, 0.05);
+        let side = Math.hypot(height, (a - b) / 2);
 
         const trp = new Trapezoid({
             lengths: {
                 lengthAB: a,
                 lengthBC: side,
-                lengthCD: slKrome(a, ...baseRange),
+                lengthCD: b,
                 lengthDA: side,
             },
             supplementary: {
