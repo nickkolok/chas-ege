@@ -1,6 +1,7 @@
 (function() {
 	retryWhileError(function() {
-		let v = sl1();
+		const preference = ["findCubeVolume","findPrismVolume"];
+		let v = getSelectedPreferenceFromList('27183', preference);
 
 		let cube = new Cube(sl(2, 50));
 
@@ -64,6 +65,7 @@
 			'выходящему из этой же вершины';
 
 		NAtask.setTask({
+			preference: [preference],
 			text: ['Объём треугольной призмы, отсекаемой от куба ' + cutByPlane +
 				', равен $' + prism.volume + '$', 'Объём куба равен $' + cube.volume + '$'
 			][v] + '. Найдите ',
