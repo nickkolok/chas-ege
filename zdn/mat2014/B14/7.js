@@ -1,5 +1,11 @@
 (function() {
-	var b = 0.5, x, a, s;
+	'use strict';
+	NAinfo.requireApiVersion(0, 2);
+	let key = "7";
+	const preference = ['river_speed', 'boat_speed', 'time_difference', 'total_distance'];
+	const variant = getSelectedPreferenceFromList(key, preference);
+	
+	let b = 0.5, x, a, s;
 	for (; !(b.isZ() && b > 0);) {
 		x = sluchch(5, 20);
 		a = sluchch(2, x - 1);
@@ -18,31 +24,32 @@
 		vel: 'скорость течения',
 		zna: a,
 		rod: 1,
-		nah: 1,
+		nah: (variant == 0),
 		nmn: 'км/ч',
 	}, {
 		vel: 'скорость лодки в неподвижной воде',
 		zna: x,
 		rod: 1,
-		nah: 1,
+		nah: (variant == 1),
 		nmn: 'км/ч'
 	}, {
 		utv: 'лодка затратила на обратный путь на ' + chislitlx(b, 'час') + ' меньше',
 		vpr: 'насколько меньше времени затратила лодка на обратный путь',
 		zna: b,
-		nah: 1
+		nah: (variant == 2)
 	}, {
 		vel: 'суммарное пройденное лодкой расстояние',
 		zna: s * 2,
 		rod: 2,
-		nah: 1,
+		nah: (variant == 3),
 		nmn: 'км'
 	}, ], {
 		preambula: 'Моторная лодка прошла против течения реки и вернулась в пункт отправления. ',
-	});
+	}, {preference});
 })();
 	 
 //Обзад 26585 26586
 //Николай Авдеев
 //Рефактринг проводил  Shellge
 //Довела до ума Суматохина Александра
+
