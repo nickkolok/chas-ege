@@ -74,7 +74,7 @@
 		autoLaTeXLeft: true,
 		autoLaTeXRight: true,
 		postText: 'Запишите номера решений в порядке букв.',
-		preference,
+		preference: [preference],
 	});
 })();
 
