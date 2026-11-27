@@ -12,8 +12,7 @@
 		let degreeNumberFahrenheit = 1.8 * degreeNumberCelsius + 32;
 
 		let givenDegree = [degreeNumberCelsius, degreeNumberFahrenheit][rand];
-		let givenText = chislitlx(givenDegree.abs(), 'градус', '$');
-		if (givenDegree < 0) givenText = givenText.replace('$', '$-');
+		let givenText = chislitlx(givenDegree, 'градус', '$');
 
 		NAtask.setTask({
 
