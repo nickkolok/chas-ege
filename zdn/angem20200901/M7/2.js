@@ -32,21 +32,11 @@
 		}	
 	}
 	
-	var line = 
-	
+	var line = generateStraightLine();
+
 	NAtask.setTask({
 		text: 'Составьте общее уравнение прямой, параметрическое уравнение которой имеет вид:' +
-		'$$' + [
-			'\\begin{pmatrix}x\\\\y\\end{pmatrix} = ' +
-			'\\begin{pmatrix}' + p + '\\\\' + q + '\\end{pmatrix}+t' +
-			'\\begin{pmatrix}' + s + '\\\\' + r + '\\end{pmatrix}'
-		,	
-			'\\begin{cases}'+
-				('x = ' + p + '+' + s + 't').plusminus()+
-			'\\\\'+
-				('y = ' + q + '+' + r + 't').plusminus()+
-			'\\end{cases}'
-		].iz() + '.$$',
-		answers: (A + 'x+' + B + 'y+' + C + '=0').plusminus(),
+		'$$' + [line.parametricVector, line.parametricSystem].iz() + '.$$',
+		answers: line.common,
 	});
 })();
