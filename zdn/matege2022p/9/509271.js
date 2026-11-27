@@ -13,9 +13,13 @@
 		let key = '509271';
 		let preference1 = ['findAbscissa', 'findOrdinate'];
 		let preference2 = ['withB', 'withoutB'];
-		let preference3 = ['withC', 'withoutC'];
 		let randFind = getSelectedPreferenceFromList(key, preference1);
 		let randB = getSelectedPreferenceFromList(key, preference2);
+		//При withB вариант withoutC недостижим: c = 0 вместе с целыми k и a
+		//оставляет лишь четыре набора (x1=1, y1=+-4, x2=9, y2=+-12 и
+		//x1=1, y1=+-5, x2=16, y2=+-20), и все четыре отсекаются проверкой
+		//«Графики слиплись». Поэтому withoutC предлагаем только при withoutB.
+		let preference3 = randB ? ['withC', 'withoutC'] : ['withC'];
 		let randC = getSelectedPreferenceFromList(key, preference3);
 
 		let x1 = [Math.pow(sluchch(1, 2), 2), 0][randB];
