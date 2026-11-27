@@ -15,10 +15,14 @@
 			z: pyr.verticesOfFigure[0].z
 		});
 
+		const preference = ['volume', 'sideEdge'];
+		const questionIndex = getSelectedPreferenceFromList('3011', preference);
 		let question = [
 			[sklonlxkand('боковое ребро'), pyr.sideEdge],
 			[sklonlxkand('объём'), pyr.volume],
-		].shuffle();
+		];
+		if (questionIndex)
+			question.reverse();
 		question.unshift([sklonlxkand('сторона основания'), pyr.baseSide]);
 
 		let camera = {
@@ -69,6 +73,7 @@
 		};
 
 		NAtask.setTask({
+			preference: [preference],
 			text: 'В правильной четырёхугольной пирамиде $SABCD$ с ' +
 				'основанием $ABCD$ ' +
 				[question[0][0].ie + ' ' + om.ravno[question[0][0].rod] + ' $' + (question[0][0].ie === 'боковое ребро' ? question[0][1].pow(2).texsqrt(1) : question[0][1].ts()) + '$',
