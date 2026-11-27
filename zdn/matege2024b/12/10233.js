@@ -38,9 +38,7 @@
 			ctx.drawFigure(points, connectionMatrix);
 			circle.drawOnto(ctx);
 
-			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText([`O`, `A`, `B`][i], elem.x, -elem.y + 25));
+			ctx.signVertices(points, [`O`, `A`, `B`], {above: []});
 		};
 
 		NAtask.setTask({
