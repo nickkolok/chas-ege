@@ -24,7 +24,7 @@
 			[
 				['диаметр основания', cone.diameter],
 				['радиус основания', radius],
-				['длина окружности основания', 2 * radius + '\\pi'],
+				['длина окружности основания', cone.diameter + '\\pi'],
 				['площадь окружности основания', Number((cone.baseArea / Math.PI).toFixed(10)) + '\\pi']
 			].iz(), ['образующая', cone.generatrix],
 			[
