@@ -1,85 +1,111 @@
-(function() {
-	retryWhileError(function() {
-			NAinfo.requireApiVersion(0, 2);
-			let a = sl(7, 13);
-			let b = sl(2, 8);
-			let c = sl(5, 7);
-			let d = sl(2, 10);
-			let f = sl(a, 17);
-			let k = sl(2, 6);
+(function () {
+	'use strict';
+	retryWhileError(function () {
+		NAinfo.requireApiVersion(0, 2);
 
-			let rand = sl1();
-			let question = ['объём', 'площадь поверхности'][rand];
-			let answ = [f * k * (d + b) + a * b * c, 2 * (k * (b + d) + k * f + f * (b + d)) + 2 * (a * c + c * b)][rand];
+		let key = '27210';
+		let preferenceQuestion = ['объём', 'площадь поверхности'];
+		let question = preferenceQuestion[getSelectedPreferenceFromList(key, preferenceQuestion)];
+		// Формулировка Открытого банка (27210) или ФИПИ («Деталь имеет форму…», ЕГЭ-база, задание 11)
+		let preferenceWording = ['многогранник', 'деталь'];
+		let wording = preferenceWording[getSelectedPreferenceFromList(key, preferenceWording)];
 
+		// Нижний параллелепипед a × d × (H − c), на нём в заднем левом углу
+		// верхний параллелепипед w × e × c; H — общая высота.
+		let a = sl(3, 7);
+		let d = sl(3, 7);
+		let w = sl(2, a - 1);
+		let e = sl(2, d - 1);
+		let c = sl(2, 6);
+		let H = c + sl(1, 4);
+		// Координаты ступеньки: они же — концы подписываемых рёбер
+		let yStep = d - e;
+		let zStep = H - c;
+		// Глубина рисуется под углом depthAngle с сокращением depthScale,
+		// поэтому заднее ребро сдвинуто вправо на depthScale·cos(depthAngle)·e
+		// относительно переднего ребра верхнего параллелепипеда
+		let depthScale = 0.6;
+		let depthAngle = Math.PI / 4;
+		// Полная высота H подписана у заднего пунктирного ребра, как в прототипе.
+		// Это ребро должно лежать внутри передней грани верхнего параллелепипеда
+		// с запасом на подпись: иначе H читается как длина его правого ребра (а это c)
+		genAssert(w - depthScale * Math.cos(depthAngle) * e >= 1.1, 'подпись высоты у правого ребра верхнего параллелепипеда');
+		// Середина заднего ребра (там подпись H) должна быть внутри передней грани
+		// верхнего параллелепипеда, а не на шве с нижним: иначе H читается как длина
+		// передней кромки нижнего параллелепипеда
+		genAssert(H / 2 + depthScale * Math.sin(depthAngle) * e - zStep >= 0.5, 'подпись высоты на шве параллелепипедов');
+		// и ниже верхнего ребра этой грани: иначе H читается как длина этого ребра (а это w)
+		genAssert(H / 2 - depthScale * Math.sin(depthAngle) * e >= 0.5, 'подпись высоты на верхнем ребре верхнего параллелепипеда');
 
-			let paint1 = function(ctx) {
-				ctx.translate(115, 50);
-				let koefA = (a > 11 && c > 10) ? 10 : 15;
-				a *= koefA;
-				f *= koefA;
-				let depth = 80;
-				c *= koefA;
-				angle = -Math.PI - Math.PI / 3;
-				ctx.drawParallelepiped({
-					width: a,
-					height: c,
-					depth: depth,
-					angle: angle
-				}, [0, 3, 4], false, [4, 5]);
+		let polyhedron = new RectilinearSolid([
+			[0, 0, 0, a, d, zStep],
+			[0, yStep, zStep, w, d, H],
+		]);
 
-
-				ctx.translate(0, c);
-				ctx.drawParallelepiped({
-					width: f,
-					height: c,
-					depth: depth * 2,
-					angle: angle
-				}, [0, 2, 3, 4, 6], false, [4, 5]);
-
-				//возрат к начальной точке
-				ctx.translate(0, -c);
-				ctx.drawLine(a, c, f, c);
-				ctx.drawLine(depth * angle.cos(), c - depth * angle.cos(), 2 * depth * angle.cos(), c - 2 * depth * angle.cos());
-
-				//цифорки
-				ctx.beginPath();
-				ctx.font = "20px serif";
-				ctx.fillText(a / koefA, a / 2, -5, 15); //a
-				ctx.stroke();
-				ctx.moveTo(0, 0);
-				ctx.fillText(b, depth * angle.cos() / 2 - 18, -depth * angle.cos() / 2, 15); //b
-				ctx.fillText(c / koefA, depth * angle.cos() - 18, c / 2 - depth * angle.cos(), 15); //c
-
-				ctx.stroke();
-
-				ctx.beginPath();
-				ctx.translate(depth * angle.cos(), c - depth * angle.cos());
-				ctx.moveTo(0, 0);
-				ctx.fillText(d, depth * angle.cos() / 2 - 15, -depth * angle.cos() / 2, 15); //d
-				ctx.stroke();
-
-				ctx.beginPath();
-				ctx.translate(depth * angle.cos(), -depth * angle.cos());
-				ctx.moveTo(0, 0);
-				ctx.fillText(k, -18, c / 2, 15); //k
-				if (a != f)
-					ctx.fillText(f / koefA, f / 2 - depth * angle.cos(), k + c + 15, 15); //k
-				ctx.stroke();
-
-			};
-			NAtask.setTask({
-				text: 'Найдите ' + question +
-					' многогранника, изображённого на рисунке (все двугранные углы – прямые).',
-				answers: answ,
+		let paint1 = function (ct) {
+			ct.drawRectilinearSolid(polyhedron, {
+				depthScale: depthScale,
+				depthAngle: depthAngle,
+				labels: [
+					{ from: [0, yStep, H], to: [0, d, H], text: e },
+					{ from: [0, d, H], to: [w, d, H], text: w },
+					{ from: [0, yStep, zStep], to: [0, yStep, H], text: c },
+					{ from: [0, d, 0], to: [0, d, H], text: H, direction: [1, 0] },
+					{ from: [0, 0, 0], to: [a, 0, 0], text: a },
+					{ from: [a, 0, 0], to: [a, d, 0], text: d },
+				],
 			});
-			NAtask.modifiers.addCanvasIllustration({
-				width: 400,
-				height: 400,
-				paint: paint1,
-			});
-		},
-		1000);
+		};
 
+		let answer = question === 'объём' ? polyhedron.volume() : polyhedron.surfaceArea();
+
+		// Решение: многогранник — нижний параллелепипед a × d × (H − c) и верхний w × e × c
+		let analys = 'Многогранник составлен из двух прямоугольных параллелепипедов: ' +
+			'нижнего с рёбрами $' + a + '$, $' + d + '$ и $' + H + '-' + c + '=' + zStep + '$ ' +
+			'и верхнего с рёбрами $' + w + '$, $' + e + '$ и $' + c + '$. ';
+		let lower = new Parallelepiped({width: a, depth: d, height: zStep});
+		let upper = new Parallelepiped({width: w, depth: e, height: c});
+		let lowerVolume = lower.volume;
+		let upperVolume = upper.volume;
+		let lowerArea = lower.surfaceArea;
+		let upperArea = upper.surfaceArea;
+		let contactArea = 2 * w * e;
+		if (question === 'объём') {
+			genAssert(lowerVolume + upperVolume === answer, 'решение расходится с ответом');
+			analys += 'Объём многогранника равен сумме их объёмов: ' +
+				'$' + a + '\\cdot' + d + '\\cdot' + zStep + '+' + w + '\\cdot' + e + '\\cdot' + c + '=' +
+				lowerVolume + '+' + upperVolume + '=' + answer + '$' + (wording === 'деталь' ? ' см$^3$' : '') + '.';
+		} else {
+			genAssert(lowerArea + upperArea - contactArea === answer, 'решение расходится с ответом');
+			analys += 'Площадь поверхности многогранника равна сумме площадей поверхностей параллелепипедов ' +
+				'без двух прямоугольников $' + w + '\\times' + e + '$, которыми они соприкасаются: ' +
+				'$2\\cdot(' + a + '\\cdot' + d + '+' + a + '\\cdot' + zStep + '+' + d + '\\cdot' + zStep + ')+' +
+				'2\\cdot(' + w + '\\cdot' + e + '+' + w + '\\cdot' + c + '+' + e + '\\cdot' + c + ')-' +
+				'2\\cdot' + w + '\\cdot' + e + '=' +
+				lowerArea + '+' + upperArea + '-' + contactArea + '=' + answer + '$' + (wording === 'деталь' ? ' см$^2$' : '') + '.';
+		}
+
+		let text = wording === 'многогранник' ?
+			'Найдите ' + question + ' многогранника, изображённого на рисунке (все двугранные углы прямые).' :
+			'Деталь имеет форму изображённого на рисунке многогранника (все двугранные углы прямые). ' +
+			'Числа на рисунке обозначают длины рёбер в сантиметрах. ' +
+			'Найдите ' + question + ' этой детали. ' +
+			'Ответ дайте в ' + (question === 'объём' ? 'кубических' : 'квадратных') + ' сантиметрах.';
+
+		NAtask.setTask({
+			text: text,
+			answers: answer,
+			analys: analys,
+			preference: [preferenceQuestion, preferenceWording],
+		});
+
+		NAtask.modifiers.addCanvasIllustration({
+			width: 300,
+			height: 300,
+			paint: paint1,
+		});
+	}, 1000);
 })();
-// 27210 25871 25875 25873 25877 25879
+// 27210 25871 25875 25873 25877 25879 (объём)
+// 25881 25883 25885 25887 25889 (площадь поверхности)
+// https://math-ege.sdamgia.ru/problem?id=27210
