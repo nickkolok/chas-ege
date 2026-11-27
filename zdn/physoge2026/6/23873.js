@@ -4,9 +4,9 @@
 		NAinfo.requireApiVersion(0, 2);
 
 		let type = [
-			{name: 'Пешеход', place: 'по шоссе', verb: 'прошёл', gen: 'пешехода'},
-			{name: 'Велосипедист', place: 'по дороге', verb: 'проехал', gen: 'велосипедиста'},
-			{name: 'Велосипедистка', place: 'по дороге', verb: 'проехала', gen: 'велосипедистки'},
+			{name: 'пешеход', place: 'по шоссе', verb: 'прошёл'},
+			{name: 'велосипедист', place: 'по дороге', verb: 'проехал'},
+			{name: 'велосипедистка', place: 'по дороге', verb: 'проехал'},
 			{name: 'Металлический шарик', ball: true},
 		].iz();
 
@@ -30,12 +30,13 @@
 			return;
 		}
 
+		let subject = sklonlxkand(type.name);
 		let V = sl(1, 6);
 		let T = sl(5, 20);
 		let S = V * T * 60;
 
 		NAtask.setTask({
-			text: type.name + ', двигаясь ' + type.place + ', ' + type.verb + ' ' + S + ' м за ' + T + ' мин. Чему равна средняя скорость ' + type.gen + '? Ответ дайте в м/с.',
+			text: subject.ie.toZagl() + ', двигаясь ' + type.place + ', ' + selectVerbGender(type.verb, subject) + ' ' + S + ' м за ' + T + ' мин. Чему равна средняя скорость ' + subject.re + '? Ответ дайте в м/с.',
 			answers: V,
 			analys: 'Средняя скорость: v = S/t. Переведём время: t = ' + T + ' мин = ' + (T * 60) + ' с. Тогда v = ' + S + '/' + (T * 60) + ' = ' + V + ' м/с.',
 		});
