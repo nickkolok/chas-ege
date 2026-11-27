@@ -41,8 +41,9 @@
 			'длина окружности основания', 'площадь окружности основания'].includes(value[0])),
 			'Данные однозначно определяют размеры конуса');
 
-		let name = sklonlxkand(variable.T()[0]);
-		let number = variable.T()[1];
+		let tv = variable.T();
+		let name = sklonlxkand(tv[0]);
+		let number = tv[1];
 		let answer = String(number[2]);
 
 		let ps = '';
@@ -64,12 +65,12 @@
 			ctx.drawEllipse(cx, baseY, ry, r, Math.PI / 2, Math.PI / 2, 1.5 * Math.PI);
 			ctx.setLineDash([]);
 			//радиус
-			if (variable.T()[0].includes('радиус основания'))
+			if (tv[0].includes('радиус основания'))
 				ctx.drawLine(cx, baseY, cx + r, baseY);
 			//высота
-			if (variable.T()[0].includes('высота') || variable.T()[0].includes('площадь осевого сечения'))
+			if (tv[0].includes('высота') || tv[0].includes('площадь осевого сечения'))
 				ctx.drawLine(cx, baseY, cx, apexY);
-			if (variable.T()[0].includes('площадь осевого сечения') || variable.T()[0].includes('диаметр основания')) {
+			if (tv[0].includes('площадь осевого сечения') || tv[0].includes('диаметр основания')) {
 				ctx.drawLine(cx - r, baseY, cx + r, baseY);
 			}
 		};
