@@ -56,10 +56,9 @@
             // Основание высоты может попасть на продолжение стороны — тогда продолжение пунктиром.
             // В отметке прямого угла второй точкой на прямой берётся дальний от основания конец стороны
             [[4, 0, 1], [5, 1, 2]].forEach(([foot, end1, end2]) => {
-                let sideLength = lengthInPlane(points[end1], points[end2]);
                 let near = lengthInPlane(points[foot], points[end1]) < lengthInPlane(points[foot], points[end2]) ? end1 : end2;
                 let far = near == end1 ? end2 : end1;
-                if (lengthInPlane(points[foot], points[far]) > sideLength + 0.5) {
+                if (distanceFromPointToSegment(points[foot], points[end1], points[end2]) > 0.5) {
                     ctx.setLineDash([6, 4]);
                     ctx.drawLine(points[near].x, points[near].y, points[foot].x, points[foot].y);
                     ctx.setLineDash([]);
