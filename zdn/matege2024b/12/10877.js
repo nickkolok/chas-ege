@@ -57,7 +57,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В треугольнике $ABC$ угол $C$ равен $90^\\circ$, $CH$ – высота, $BC=${triangle.lengthBC}$, `,
+			text: `В треугольнике $ABC$ угол $C$ равен $90^\\circ$, $CH$ — высота, $BC=${triangle.lengthBC}$, `,
 			questions: [
 				[{
 					text: `$\\sin A=${trigA}$. Найдите длину отрезка $BH$.`,
