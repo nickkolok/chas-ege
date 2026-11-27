@@ -25,7 +25,7 @@
 				'то сумма всех делителей числа $p_1 \\cdot p_2 \\cdot p_3$ равна $(p_1 +1)(p_2 +1)(p_3 +1)$. ' +
 				the_orderToFind.toZagl() + ' сумму всех делителей числа $' + number + ['', ' = ' + p_1 + '\\cdot' + p_2 + '\\cdot' + p_3][rand] + '$.',
 			answers: answer,
-			preference: preference,
+			preference: [preference],
 
 		});
 		NAtask.modifiers.allDecimalsToStandard();
