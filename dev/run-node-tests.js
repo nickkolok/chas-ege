@@ -63,9 +63,11 @@ try {
 }
 
 // 2.2. Пробрасываем появившиеся в window классы в глобальную область Node.js
-if (dom.window.Triangle) {
-    global.Triangle = dom.window.Triangle;
-    console.log('  ↳ Triangle проброшен в global');
+for (const name of ['Triangle', 'Square', 'Trapezoid', 'isValidTriangle']) {
+    if (dom.window[name]) {
+        global[name] = dom.window[name];
+        console.log('  ↳ ' + name + ' проброшен в global');
+    }
 }
 
 // 2.3. Загружаем @flatten-js/core (источник Circle, Point, Vector и др.)
