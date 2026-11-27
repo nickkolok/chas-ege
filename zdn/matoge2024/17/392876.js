@@ -4,11 +4,16 @@
 
         let letters = latbukv.slice(0, 4).concat('O');
 
-        // Как в ФИПИ: диагонали AC < BD — чётные (AC от 6 до 26, BD от 12 до 30), сторона AB целая,
-        // ответ DO = BD/2 целый. AB — сторона треугольника ABO со сторонами AC/2 и BD/2.
+        // Диагонали AC < BD — чётные (AC от 6 до 30, BD до 40; в ФИПИ AC от 6 до 26, BD от 12 до 30),
+        // сторона AB целая, ответ DO = BD/2 целый. AB — сторона треугольника ABO
+        // со сторонами AC/2 и BD/2. Как во всех заданиях ФИПИ, AB < DO: угол AOB острый.
         let diagonalAC = sl(6, 30, 2);
         let diagonalBD = sl(diagonalAC + 2, 40, 2);
-        let sideAB = sl((diagonalBD - diagonalAC) / 2 + 1, (diagonalAC + diagonalBD) / 2 - 1);
+        let sideAB = sl((diagonalBD - diagonalAC) / 2 + 1, diagonalBD / 2 - 1);
+        // Угол между диагоналями не меньше 12°, иначе параллелограмм — почти отрезок
+        // (в ФИПИ наименьший угол — около 14°, у F77141: AC = 22, BD = 24, AB = 3)
+        let angleAOB = findTriangleAngles(sideAB, diagonalAC / 2, diagonalBD / 2).angleA;
+        genAssert(angleAOB * 180 / Math.PI >= 12, 'Параллелограмм слишком узкий');
         // Вторая сторона — по сумме квадратов диагоналей, угол A — по теореме косинусов для BD
         let sideAD = ((diagonalAC ** 2 + diagonalBD ** 2) / 2 - sideAB ** 2).sqrt();
         let cosA = (sideAB ** 2 + sideAD ** 2 - diagonalBD ** 2) / (2 * sideAB * sideAD);
