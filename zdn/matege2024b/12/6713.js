@@ -5,15 +5,21 @@
 		let key = '6713';
 		let preference = ['height', 'diagonal'];
 		let rand = getSelectedPreferenceFromList(key, preference);
+		// Какое основание на чертеже внизу: большее (как во всех заданиях ФИПИ) или меньшее
+		let preferenceOrientation = ['biggerBaseBelow', 'biggerBaseAbove'];
+		let randOrientation = getSelectedPreferenceFromList(key, preferenceOrientation);
 
 		let side = sl(5, 85);
 		let a = sl(5, 110);
+		let b = slKrome(a, 5, 110);
+		// AB на чертеже внизу, CD вверху; в условии основания идут в порядке a, b, как и раньше
+		let [lowerBase, upperBase] = [a, b].sort((x, y) => (randOrientation == 0) ? y - x : x - y);
 
 		const trp = new Trapezoid({
 			lengths: {
-				lengthAB: a,
+				lengthAB: lowerBase,
 				lengthBC: side,
-				lengthCD: slKrome(a, 5, 110),
+				lengthCD: upperBase,
 				lengthDA: side,
 			},
 			supplementary: {
@@ -58,7 +64,7 @@
 		};
 
 		NAtask.setTask({
-			text: `Основания равнобедренной трапеции равны $${trp.lengthAB}$ и $${trp.lengthCD}$, боковая сторона равна $${trp.lengthBC}$. Найдите `,
+			text: `Основания равнобедренной трапеции равны $${a}$ и $${b}$, боковая сторона равна $${trp.lengthBC}$. Найдите `,
 			questions: [
 				[{
 					text: `высоту`,
@@ -70,7 +76,7 @@
 			],
 			postquestion: ` трапеции.`,
 			authors: ['Александра Суматохина'],
-			preference: [preference],
+			preference: [preference, preferenceOrientation],
 		});
 
 		NAtask.modifiers.addCanvasIllustration({
