@@ -109,6 +109,15 @@ ctx.arcBetweenSegments([points[2], points[0], points[3]], 15, true);//значо
   истинный `connectionMatrix[i][j]` даёт отрезок `points[i+1]`—`points[j]`.
   Рёбра уже заданы матрицей — не перечисляйте их вручную второй раз.
 
+Центр тяжести вершин фигуры — опорная точка для подписей снаружи — считает
+`centroidOfPoints(points)` из `lib/figure.js`: среднее арифметическое координат
+(у пространственных точек — вместе с `z`). Считать его в шаблоне вручную не нужно:
+
+```js
+let centroid = centroidOfPoints(points);
+let label = labelPositionAwayFrom(vertex, centroid, 16);
+```
+
 Расстояние от точки до отрезка: `distanceFromPointToSegment(point, segmentStart, segmentEnd)`.
 Расстояние между двумя точками плоскости (например, вершинами после `autoScale()`)
 считает `lengthInPlane(p1, p2)` из `lib/figure.js`; `lengthInSpace()` — для точек с координатой `z`.
