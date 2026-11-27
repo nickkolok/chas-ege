@@ -10,10 +10,11 @@
 			sideC: sl(10, 20),
 		});
 
+		const key = '27068';
 		const preference = ["lateralArea","volume"];
-		let rand1 = getSelectedPreferenceFromList('27068', preference);
+		let rand1 = getSelectedPreferenceFromList(key, preference);
 		const directionPreference = ['findCutPrism', 'findOriginalPrism'];
-		let rand2 = getSelectedPreferenceFromList('27068', directionPreference);
+		let rand2 = getSelectedPreferenceFromList(key, directionPreference);
 		let question = [
 			['площадь боковой поверхности', 0.5],
 			['объём', 0.25]
