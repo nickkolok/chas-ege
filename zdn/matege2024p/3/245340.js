@@ -29,12 +29,8 @@
 			[0, 1, [strok, 0][1 - v1], 1, 1]
 		];
 
-		let vert = [
-			['A', 'B', 'C'],
-			['A_1', 'B_1', 'C_1']
-		];
-		vert = (v1) ? vert.reverse() : vert;
-		vert = vert[0].concat(['C_1', 'C'][v1]);
+		let baseVert = ['A', 'B', 'C'];
+		let apexVert = v1 ? 'C' : 'C_1';
 
 		let camera = {
 			x: 0,
@@ -74,7 +70,7 @@
 
 		NAinfo.requireApiVersion(0, 2);
 		NAtask.setTask({
-			text: ['Найдите ', 'Дана пирамида $' + vert.shuffleJoin('') + '$, площадь основания которой равна $' +
+			text: ['Найдите ', 'Дана пирамида $' + baseVert.shuffleJoin('') + apexVert + '$, площадь основания которой равна $' +
 				pyr.baseArea + '$, а высота, проведённая к этому основанию, равна $' + pyr.height + '$. Найдите '
 			][v2],
 			questions: [{
@@ -82,7 +78,7 @@
 				answers: [pyr.volume, pyr.volume * 3][v2],
 			}, ],
 			postquestion: [' многогранника, ' +
-				'вершинами которого являются вершины $' + vert.shuffleJoin(', ') +
+				'вершинами которого являются вершины $' + baseVert.shuffleJoin(', ') + ', ' + apexVert +
 				'$ правильной треугольной призмы ' +
 				'$ABCA_1B_1C_1$, площадь основания которой равна $' + pyr.baseArea + '$, а боковое ребро равно $' + prism.height +
 				'$', ' прямой призмы с вершинами $' + ['A', 'B', 'C', 'A_1', 'B_1', 'C_1'].shuffleJoin(', ') + '$'
