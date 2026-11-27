@@ -21,7 +21,8 @@
  *   --iterations <n>    сколько примеров сгенерировать для каждого шаблона (1)
  *   --seed <строка>     зерно ГСЧ (seedrandom) — воспроизводимость вывода
  *   --no-tex            не печатать LaTeX-блок
- *   --json              машинный вывод: JSON-массив результатов
+ *   --json              машинный вывод: JSON-массив результатов; у задачи, чей чертёж
+ *                       бросил исключение, есть поле drawError (и строка в stderr)
  *   --quiet             не транслировать console.log из недр библиотек
  *   --eval <выражение>  вычислить выражение в окружении бандла (как в консоли
  *                       otladka.html) и напечатать результат; можно указать
@@ -345,7 +346,8 @@ function renderAndSwapCanvases(snapshot) {
 			var q = document.getElementById('question');
 			q.innerHTML = v.txt;
 			try { window.vopr.dey(); } catch (e) {
-				console.log('[dey] ' + (e && e.message ? e.message : e));
+				// Чертёж недорисован: в JSON — поле drawError, в stderr — строка (см. reportDrawError)
+				v.drawError = e && e.message ? e.message : String(e);
 			}
 			var canvases = q.getElementsByTagName('canvas');
 			for (var i = 0; i < canvases.length; i++) {
@@ -454,6 +456,13 @@ function processTemplate(filepath) {
 		: opts.iterations;
 	const results = [];
 
+	// Ошибка в paint не роняет генерацию, но чертёж недорисован: сообщаем при любых ключах
+	function reportDrawError(item) {
+		if (item.drawError !== undefined) {
+			console.error('[' + filepath + ' / ' + item.label + '] Ошибка в чертеже: ' + item.drawError);
+		}
+	}
+
 	function emitOne(label, comboIdx) {
 		let snapshot;
 		try {
@@ -466,6 +475,7 @@ function processTemplate(filepath) {
 		const item = Object.assign({ template: filepath, label: label }, snapshot);
 		results.push(item);
 		allResults.push(item);
+		reportDrawError(item);
 
 		if (opts.json) return;
 
@@ -506,6 +516,7 @@ function processTemplate(filepath) {
 		const item = Object.assign({ template: filepath, label: 'Example 1/' + opts.iterations }, first);
 		results.push(item);
 		allResults.push(item);
+		reportDrawError(item);
 		if (!opts.json) {
 			console.log('\n=== ' + filepath + ' :: Example 1/' + opts.iterations + ' ===');
 			console.log('--- Текст задания ---');
