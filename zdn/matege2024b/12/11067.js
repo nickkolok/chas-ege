@@ -7,7 +7,8 @@
 
 		let rand = getSelectedPreferenceFromList(key, preference);
 		// Формулировка: обычная или как у части заданий ФИПИ. В задаче на гипотенузу второй вариант —
-		// без «равна» и «равен»: «Площадь прямоугольного треугольника 210. Один из катетов 21» (09CFDB и ещё 5)
+		// без «равна» и «равен»: «Площадь прямоугольного треугольника 210. Один из катетов 21» (09CFDB и ещё 5),
+		// в задаче на высоту — «Найдите длину высоты, опущенной на гипотенузу этого треугольника» (A03373)
 		let preferenceWording = ['mainWording', 'altWording'];
 		let randWording = getSelectedPreferenceFromList(key, preferenceWording);
 
@@ -27,7 +28,7 @@
 		});
 
 		let question = [{
-			text: `В прямоугольном треугольнике катеты равны $${triangle.lengthAB}$ и $${triangle.lengthBC}$. Найдите высоту, опущенную на гипотенузу.`,
+			text: `В прямоугольном треугольнике катеты равны $${triangle.lengthAB}$ и $${triangle.lengthBC}$. Найдите ${['высоту, опущенную на гипотенузу', 'длину высоты, опущенной на гипотенузу этого треугольника'][randWording]}.`,
 			answers: triangle.heightBLength,
 		},{
 			text: `Площадь прямоугольного треугольника${[' равна', ''][randWording]} $${triangle.area()}$. Один из катетов${[' равен', ''][randWording]} $${[triangle.lengthAB, triangle.lengthBC].iz()}$. Найдите гипотенузу этого треугольника.`,
