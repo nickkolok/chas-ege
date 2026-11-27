@@ -49,7 +49,7 @@
 		};
 
 		NAtask.setTask({
-			text: `В равнобедренном треугольнике $ABC$ высота $CM$, проведённая к основанию, равна $${triangle.heightCLength.pow(2).texsqrt(1)}$, а $\\tg A = ${doubleHeight.texfrac(base)}$. Найдите площадь треугольника.`,
+			text: `В равнобедренном треугольнике $ABC$ высота $CM$, проведённая к основанию, равна $${triangle.heightCLength.pow(2).texsqrt(1)}$, а $\\tg A = ${doubleHeight.texfrac(base)}$. Найдите площадь треугольника $ABC$.`,
 			answers: triangle.area(),
 			authors: ['Александра Суматохина'],
 		});
