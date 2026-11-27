@@ -15,22 +15,6 @@
 		});
 
 		let letter = ['A', 'B', 'C', 'D', 'E', 'F', 'F₁', 'A₁', 'B₁', 'C₁', 'D₁', 'E₁', ];
-		let strok = [5, 4];
-
-		let matrixPrism = [
-			[1],
-			[0, 1],
-			[0, 0, strok],
-			[0, 0, 0, strok],
-			[1, 0, 0, 0, strok],
-			[0, 0, 0, 0, 0, 1],
-			[1, 0, 0, 0, 0, 0, 1],
-			[0, 1, 0, 0, 0, 0, 0, 1],
-			[0, 0, 1, 0, 0, 0, 0, 0, 1],
-			[0, 0, 0, strok, 0, 0, 0, 0, 0, 1],
-			[0, 0, 0, 0, strok, 0, 1, 0, 0, 0, 1],
-		];
-
 		let hexagon = ['A', 'B', 'C', 'D', 'E', 'F'];
 		let shift = sl(0, 5);
 		hexagon = hexagon.permuteCyclic(shift);
@@ -61,6 +45,15 @@
 		});
 
 		point2DPar = prism6.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		// Матрица смежности — из prism6.connectionMatrix, невидимые рёбра — пунктиром
+		// через facesVisibility()/dashHiddenEdges() (lib/figure.js).
+		let faces = [[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]];
+		for (let i = 0; i < 6; i++) {
+			faces.push([i, (i + 1) % 6, (i + 1) % 6 + 6, i + 6]);
+		}
+		let visibility = facesVisibility(prism6.verticesOfFigure, point2DPar, faces);
+		let matrixPrism = dashHiddenEdges(prism6.connectionMatrix, faces, visibility, [5, 4]);
 
 		let paint1 = function(ctx) {
 			ctx.translateToCenter();
