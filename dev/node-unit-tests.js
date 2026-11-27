@@ -177,6 +177,34 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal((3).toFixedLess(2), '3', '3 → 3');
     });
 
+    QUnit.test('Number.prototype.withoutFalsePrecision', function (assert) {
+        assert.strictEqual((6.000000000000001).pow(2).withoutFalsePrecision(), 36, '(6.000000000000001)² → 36');
+        assert.strictEqual((20 * (3).sqrt()).pow(2).withoutFalsePrecision(), 1200, '(20√3)² → 1200');
+        assert.strictEqual((0.1 + 0.2).withoutFalsePrecision(), 0.3, '0.1 + 0.2 → 0.3');
+        assert.strictEqual((2.5).withoutFalsePrecision(), 2.5, 'без ложной точности число не меняется');
+        assert.strictEqual((-35.99999999999999).withoutFalsePrecision(), -36, 'отрицательное → -36');
+    });
+
+    QUnit.test('texsqrt, texsqrtfrac, texcbrt: ложная точность — как у целого', function (assert) {
+        // Квадрат длины, посчитанный в плавающей точке, печатался как \sqrt{36} и \sqrt{1200}
+        assert.equal((6.000000000000001).pow(2).texsqrt(1), '6', '(6.000000000000001)² → 6, а не \\sqrt{36}');
+        assert.equal((35.99999999999999).texsqrt(), '6', '35.99999999999999 → 6');
+        assert.equal((20 * (3).sqrt()).pow(2).texsqrt(1), '20\\sqrt{3}', '(20√3)² с выносом множителя → 20√3');
+        assert.equal((20 * (3).sqrt()).pow(2).texsqrt(), (1200).texsqrt(), 'без выноса множителя — как у 1200');
+        assert.equal((1199.9999999999998).texsqrtfrac(7), (1200).texsqrtfrac(7), 'texsqrtfrac: как у 1200, а не исключение');
+        assert.equal((53.99999999999999).texcbrt(1), '3\\sqrt[3]{2}', 'texcbrt: как у 54, а не исключение');
+        assert.equal((12).texsqrt(1), '2\\sqrt{3}', 'целое — как раньше');
+        assert.equal((2.5).texsqrt(), '\\sqrt{2,5}', 'нецелое — как раньше');
+    });
+
+    QUnit.test('texsqrtfrac: знаменатель 1 не пишется', function (assert) {
+        assert.equal((3).texsqrtfrac(1), '\\sqrt{3}', '√3, а не \\frac{\\sqrt{3}}{1}');
+        assert.equal((36).texsqrtfrac(1), '6', '6, а не \\frac{6}{1}');
+        assert.equal((2.9999999999999996).texsqrtfrac(1), '\\sqrt{3}', 'tg² 60°, посчитанный в плавающей точке');
+        assert.equal((0.75).texsqrtfrac(1), '\\frac{\\sqrt{3}}{2}', 'дробь — как раньше');
+        assert.equal((12).texsqrtfrac(5), '\\frac{2\\sqrt{15}}{5}', 'дробь — как раньше');
+    });
+
     QUnit.test('Number.prototype.negativeBrackets', function (assert) {
         assert.equal((-5).negativeBrackets(), '(-5)', '-5 → (-5)');
         assert.equal((5).negativeBrackets(), '5', '5 → 5');
@@ -871,7 +899,7 @@ module.exports = function registerNodeTests(QUnit) {
         ['figure.js', 'project3DTo2D.js'].forEach(function (file) {
             vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'lib', file), 'utf8'), context);
         });
-        vm.runInContext('this.Cube = Cube; this.RegularPyramid = RegularPyramid; this.RegularPrism = RegularPrism;', context);
+        vm.runInContext('this.Cube = Cube; this.Parallelepiped = Parallelepiped; this.RegularPyramid = RegularPyramid; this.RegularPrism = RegularPrism;', context);
         return context;
     })();
 
@@ -893,7 +921,7 @@ module.exports = function registerNodeTests(QUnit) {
         var cube = new geometry.Cube(4);
         var vertices = cube.verticesOfFigure;
         // Нумерация Cube: 0-3 - нижнее основание (z < 0), 4-7 - верхнее
-        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var faces = cube.faces;
         var visibility = geometry.facesVisibility(vertices, project(vertices), faces);
         assert.equal(count(visibility), 3, 'видны три грани');
         assert.ok(visibility[1], 'верхнее основание видно (взгляд сверху)');
@@ -906,7 +934,7 @@ module.exports = function registerNodeTests(QUnit) {
     QUnit.test('Порядок обхода грани и масштаб чертежа не влияют на ответ', function (assert) {
         var cube = new geometry.Cube(4);
         var vertices = cube.verticesOfFigure;
-        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var faces = cube.faces;
         var reversed = faces.map(function (face) {
             return face.slice().reverse();
         });
@@ -923,7 +951,7 @@ module.exports = function registerNodeTests(QUnit) {
     QUnit.test('Взгляд снизу: видимость меняется на противоположную', function (assert) {
         var cube = new geometry.Cube(4);
         var vertices = cube.verticesOfFigure;
-        var faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]];
+        var faces = cube.faces;
         var below = Object.assign({}, camera, { rotationX: -Math.PI / 2 - Math.PI / 11 });
         var visibility = geometry.facesVisibility(vertices, project(vertices, below), faces);
         assert.ok(visibility[0], 'нижнее основание видно');
@@ -960,6 +988,36 @@ module.exports = function registerNodeTests(QUnit) {
         assert.notOk(geometry.isOnVisibleFace(prismFaces, rVisibility, [2, 5]), 'боковое ребро 2-5 скрыто');
         assert.ok(geometry.isOnVisibleFace(prismFaces, rVisibility, [0, 1, 3, 4]),
             'отрезок между точками на рёбрах 0-1 и 3-4 лежит в видимой грани');
+    });
+
+    QUnit.test('Parallelepiped.faces: грани согласованы с connectionMatrix и verticesOfFigure', function (assert) {
+        var par = new geometry.Parallelepiped({ depth: 3, height: 4, width: 5 });
+        assert.deepEqual(par.faces,
+            [[0, 1, 2, 3], [5, 6, 7, 4], [0, 1, 6, 5], [1, 2, 7, 6], [2, 3, 4, 7], [3, 0, 5, 4]],
+            'два основания и четыре боковые грани; верхнее основание начинается с вершины над D');
+        assert.equal(par.faces.length, 6, 'шесть граней');
+        par.connectionMatrix.forEach(function (row, i) {
+            row.forEach(function (value, j) {
+                if (!value) { return; }
+                var edge = [i + 1, j];
+                var incident = par.faces.filter(function (face) {
+                    return edge.every(function (v) { return face.includes(v); });
+                });
+                assert.equal(incident.length, 2, 'ребро ' + (i + 1) + '-' + j + ' лежит в двух гранях');
+            });
+        });
+        var v = par.verticesOfFigure;
+        var vis = geometry.facesVisibility(v, project(v), par.faces);
+        assert.ok(vis[1], 'верхнее основание видно (взгляд сверху)');
+        assert.notOk(vis[0], 'нижнее основание не видно');
+        var dashed = geometry.dashHiddenEdges(par.connectionMatrix, par.faces, vis, [5, 4]);
+        var dashedCount = 0;
+        dashed.forEach(function (row) {
+            row.forEach(function (value) { if (Array.isArray(value)) { dashedCount++; } });
+        });
+        assert.ok(dashedCount > 0, 'невидимые рёбра рисуются пунктиром');
+        assert.deepEqual(par.connectionMatrix[0], [1], 'исходная матрица не изменилась');
+        assert.deepEqual(new geometry.Cube(4).faces, par.faces, 'Cube наследует грани параллелепипеда');
     });
 
     // ============================================================
@@ -1332,6 +1390,57 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(calls.map(function (c) { return c.y; }), [-5, 24, 23], 'не заданные отступы — по умолчанию');
         assert.deepEqual([calls[0].font, calls[0].textAlign, calls[0].textBaseline, calls[0].fillStyle],
             ['20px liberation_sans', 'center', 'alphabetic', '#000'], 'не заданное — шрифт по умолчанию, остальное из контекста');
+    });
+
+    // ============================================================
+    //  Canvas: дуга угла по массиву точек  (lib/canvas.js)
+    // ============================================================
+    QUnit.module('Canvas: arcBetweenSegments — вход массивом точек');
+
+    // Какие вызовы рисования сделал arcBetweenSegments
+    function arcBetweenSegmentsCalls(coordinates, radius, drawRightAngle) {
+        var calls = [];
+        var ctx = {
+            drawArc: function () { calls.push(['arc'].concat(Array.prototype.slice.call(arguments))); },
+            drawLineAtAngle: function () { calls.push(['line'].concat(Array.prototype.slice.call(arguments))); },
+        };
+        CanvasRenderingContext2D.prototype.arcBetweenSegments.call(ctx, coordinates, radius, drawRightAngle);
+        return calls;
+    }
+
+    QUnit.test('ctx.arcBetweenSegments: три точки равнозначны плоскому массиву координат', function (assert) {
+        var points = [{ x: 30, y: 10 }, { x: -20, y: -40 }, { x: 50, y: -40 }];
+        var flat = [30, 10, -20, -40, 50, -40];
+        assert.deepEqual(arcBetweenSegmentsCalls(points), arcBetweenSegmentsCalls(flat), 'умолчание радиуса: вызовы совпадают');
+        assert.deepEqual(arcBetweenSegmentsCalls(points, 15), arcBetweenSegmentsCalls(flat, 15), 'радиус передаётся как прежде');
+        assert.deepEqual(arcBetweenSegmentsCalls(points, 15, true), arcBetweenSegmentsCalls(flat, 15, true), 'значок прямого угла: вызовы совпадают');
+        assert.deepEqual(arcBetweenSegmentsCalls(points, 15, true).map(function (c) { return c[0]; }), ['line', 'line'],
+            'drawRightAngle: два отрезка, а не дуга');
+    });
+
+    QUnit.test('ctx.arcBetweenSegments: четыре точки — угол между отрезками', function (assert) {
+        // Отрезки (0,0)-(6,0) и (0,-3)-(6,3) пересекаются в (3,0) под углом 45 градусов
+        var points = [{ x: 0, y: 0 }, { x: 6, y: 0 }, { x: 0, y: -3 }, { x: 6, y: 3 }];
+        var flat = [0, 0, 6, 0, 0, -3, 6, 3];
+        assert.deepEqual(arcBetweenSegmentsCalls(points, 12), arcBetweenSegmentsCalls(flat, 12), 'вызовы совпадают');
+        assert.deepEqual(arcBetweenSegmentsCalls(points, 12)[0].slice(0, 4), ['arc', 3, 0, 12], 'дуга радиуса 12 при точке пересечения отрезков (3, 0)');
+    });
+
+    QUnit.test('ctx.arcBetweenSegmentsCount пробрасывает массив точек без изменений', function (assert) {
+        var calls = [];
+        var ctx = {
+            arcBetweenSegments: function (coordinates, radius) { calls.push([coordinates, radius]); },
+        };
+        var points = [{ x: 1, y: 2 }, { x: 3, y: 4 }, { x: 5, y: 6 }];
+        CanvasRenderingContext2D.prototype.arcBetweenSegmentsCount.call(ctx, points, 20, 2);
+        assert.deepEqual(calls, [[points, 20], [points, 25]], 'точки уходят в arcBetweenSegments как есть, шаг радиуса 5');
+    });
+
+    QUnit.test('ctx.arcBetweenSegments: не три и не четыре точки — ошибка', function (assert) {
+        var five = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 2, y: 2 }];
+        assert.throws(function () { arcBetweenSegmentsCalls(five); }, /три или четыре точки, получено 5/, 'пять точек');
+        assert.throws(function () { arcBetweenSegmentsCalls(five.slice(0, 2)); }, /получено 2/, 'две точки');
+        assert.throws(function () { arcBetweenSegmentsCalls([0, 0, 1, 0, 1, 1, 0, 1, 2, 2]); }, /получено 5/, 'плоский массив из пяти точек');
     });
 
     // ============================================================
