@@ -49,9 +49,15 @@
             ctx.drawFigure(points, par.connectionMatrix);
 
             ctx.signVertices(points, letters.slice(0, 4));
+            // O — середина диагонали AC на чертеже, то есть в координатах после autoScale;
+            // подпись — в стороне от диагоналей и сторон, а не на их пересечении
+            let center = {x: (points[0].x + points[2].x) / 2, y: (points[0].y + points[2].y) / 2};
+            let label = labelPositionAwayFromSegments(center, segmentsFromConnectionMatrix(points, par.connectionMatrix), 18);
             ctx.scale(1, -1);
             ctx.font = '20px liberation_sans';
-            ctx.fillText(letters[4], par.diagonalIntersectionPoint.x, -par.diagonalIntersectionPoint.y);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(letters[4], label.x, -label.y);
         };
 
         NAtask.setTask({
