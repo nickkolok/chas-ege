@@ -1879,6 +1879,34 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Порядковые числительные: porchisl  (lib/osnmas.js)
+    // ============================================================
+    QUnit.module('osnmas: porchisl');
+
+    QUnit.test('Все формы порядковых записаны кириллицей (без латинских гомоглифов)', function (assert) {
+        // lib/osnmas.js не входит в chas-lib.js; грузим его в изолированный контекст,
+        // чтобы не трогать global.om. Из расширений библиотеки файлу нужен только Array.prototype.iz.
+        var fs = require('fs'), vm = require('vm'), path = require('path');
+        var sandbox = { window: {} };
+        vm.createContext(sandbox);
+        vm.runInContext('Array.prototype.iz = function () { return this[Math.floor(Math.random() * this.length)]; };', sandbox);
+        vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'lib', 'osnmas.js'), 'utf8'), sandbox);
+        var porchisl = sandbox.om.porchisl;
+        var bad = [];
+        Object.keys(porchisl).forEach(function (n) {
+            Object.keys(porchisl[n]).forEach(function (p) {
+                porchisl[n][p].forEach(function (w) {
+                    if (/[a-zA-Z]/.test(w)) {
+                        bad.push(n + '.' + p + ': ' + w);
+                    }
+                });
+            });
+        });
+        assert.deepEqual(bad, [], 'латинских букв в формах porchisl нет');
+        assert.deepEqual(porchisl[10].i, ['десятый', 'десятая', 'десятое', 'десятые'], '«десятый» — с кириллической «с»');
+    });
+
+    // ============================================================
     //  Проекция параллелепипеда  (lib/canvas.js)
     // ============================================================
     QUnit.module('parallelepipedVertices, parallelepipedSize');
