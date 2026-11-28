@@ -40,7 +40,7 @@
 				'Плотность ' + substanceName + ' составляет $\\rho = ' + (density * 1000) + '$ кг/м$^3 = ' + density + '$ кг/л. ' +
 				'Тогда объём ' + vesselRe + ': ' +
 				'$$V = \\frac{' + m + '}{' + density + '} = ' + V + ' \\text{ л}.$$ ' +
-				'Таким образом, ёмкость ' + vesselRe + ' составляет $' + V + '$ литров.',
+				'Таким образом, ёмкость ' + vesselRe + ' составляет ' + chislitlx(V, 'литр', '$') + '.',
 		});
 		NAtask.modifiers.allDecimalsToStandard(true);
 	}, 1000);
