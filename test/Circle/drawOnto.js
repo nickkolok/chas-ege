@@ -9,7 +9,7 @@ module.exports = function registerCircleDrawOntoTests(QUnit) {
 
     function drawCalls(circle) {
         const calls = [];
-        const ctx = { drawCircle: function(x, y, r) { calls.push([x, y, r]); } };
+        const ctx = { drawCircle: function() { calls.push(Array.prototype.slice.call(arguments)); } };
         const ret = circle.drawOnto(ctx);
         return { calls: calls, ret: ret };
     }
