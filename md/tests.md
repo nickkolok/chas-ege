@@ -157,11 +157,19 @@ module.exports = function registerCircleDrawOntoTests(QUnit) {
 ## Как запускать
 
 ```bash
-npm install     # зависимости
-grunt           # сборка — нужна для build/lib/chas-lib.js
-npm test        # node-тесты (QUnit + jsdom); Node 22.12.0, как в CI
-grunt qunit     # старые браузерные тесты из test/old/ (собираются в build/test/old/)
+npm install
+npm install --no-save grunt-cli canvas   # одной командой, см. how_to_review_PR.md, «Подводные камни»
+./node_modules/.bin/grunt                 # сборка — нужна для build/lib/chas-lib.js
+npm test                                  # node-тесты (QUnit + jsdom); Node 22.12.0, как в CI
 ```
+
+Голого `grunt` в `PATH` обычно нет: его даёт `grunt-cli` из `node_modules`.
+
+Старые браузерные тесты из `test/old/` (собираются в `build/test/old/`) запускаются
+`./node_modules/.bin/grunt qunit`, но сейчас эта команда не работает, ни на `devel`,
+ни после переноса в `old/`: страница падает с `QUnit.on is not a function`
+(мост `grunt-contrib-qunit` 6 рассчитан на QUnit 2, а `templ-test.html` подключает
+`qunitjs` 1.23) и `math is not defined`, и Chrome выходит по тайм-ауту.
 
 CI (`.github/workflows/ci.yml`) гоняет `grunt` + `node test/run-node-tests.js`
 на Node 22.12.0; браузерный `grunt qunit` в CI не запускается.
