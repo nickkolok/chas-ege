@@ -210,6 +210,14 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal((5).negativeBrackets(), '5', '5 → 5');
     });
 
+    QUnit.test('Number.prototype.texsqrtfrac (ноль)', function (assert) {
+        // Регрессия строгости склеенного бандла: в нестриктовом chas-lib.js
+        // this у метода — объект Number, проверка this === 0 не срабатывает,
+        // и вместо раннего возврата '0' считается \frac{0}{…}.
+        assert.strictEqual((0).texsqrtfrac(4), '0', '(0).texsqrtfrac(4) = "0"');
+        assert.strictEqual((0).texsqrtfrac(1), '0', '(0).texsqrtfrac(1) = "0"');
+    });
+
     // ============================================================
     //  Array Utility Functions  (lib/array.js)
     // ============================================================
