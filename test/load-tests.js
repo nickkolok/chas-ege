@@ -9,7 +9,10 @@ const path = require('path');
 const TEST_DIR = __dirname;
 const SKIP_FILES = new Set(['run-node-tests.js', 'load-tests.js']);
 const SKIP_DIRS = new Set(['old']); // старые браузерные QUnit-тесты собирает grunt
-const isLegacy = (name) => /^node-unit-tests.*\.js$/.test(name); // подключаются раннером явно
+// Раннер, лоадер и легаси node-unit-tests*.js (их раннер подключает явно) пропускаются
+// только в корне test/: в test/<Модуль>/ файл с таким именем — обычный тест.
+const isRootSkipped = (full) => path.dirname(full) === TEST_DIR &&
+    (SKIP_FILES.has(path.basename(full)) || /^node-unit-tests.*\.js$/.test(path.basename(full)));
 
 function collect(dir, out) {
     for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -17,7 +20,7 @@ function collect(dir, out) {
         if (ent.isDirectory()) {
             if (!SKIP_DIRS.has(ent.name)) collect(full, out);
         } else if (ent.isFile() && ent.name.endsWith('.js')) {
-            if (!SKIP_FILES.has(ent.name) && !isLegacy(ent.name)) out.push(full);
+            if (!isRootSkipped(full)) out.push(full);
         }
     }
     return out;
