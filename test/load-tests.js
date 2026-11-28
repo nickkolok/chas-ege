@@ -40,8 +40,11 @@ function collect(dir, out) {
 
 module.exports = function loadTests(QUnit) {
     const files = collect(TEST_DIR, []).sort();
+    const loaded = [];
     for (const full of files) {
         const rel = path.relative(TEST_DIR, full);
+        // Уже подключён раннером явным require(): второй раз тесты не регистрируются
+        if (require.cache[full]) continue;
         let register;
         try {
             register = require(full);
@@ -59,8 +62,9 @@ module.exports = function loadTests(QUnit) {
             console.error('\n❌ Ошибка регистрации тестов из ' + rel + ':\n' + (err && err.stack || err));
             process.exit(1);
         }
+        loaded.push(full);
         console.log('  ↳ тест подключён: ' + rel);
     }
-    console.log('📂 Покадровых файлов тестов подключено: ' + files.length);
-    return files;
+    console.log('📂 Покадровых файлов тестов подключено: ' + loaded.length);
+    return loaded;
 };
