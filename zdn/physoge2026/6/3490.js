@@ -11,13 +11,8 @@
 		let substance = ['керосин', 'машинное масло'].iz();
 		let density, substanceName;
 		
-		if (substance === 'керосин') {
-			density = 0.8;
-			substanceName = 'керосина';
-		} else {
-			density = 0.9;
-			substanceName = 'машинного масла';
-		}
+		density = (substance === 'керосин') ? 0.8 : 0.9;
+		substanceName = sklonlxkand(substance).re;
 		
 		// Ёмкость, л: бак трактора — десятки и сотни литров, канистра — до 40 л (DC23AC: 40 л)
 		let vessel = [
