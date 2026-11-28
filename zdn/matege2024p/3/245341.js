@@ -15,16 +15,8 @@
 			baseArea: prism.baseSide*prism.height,
 		});
 
-		let letter = ['A', 'B', 'C', 'C₁', 'A₁', 'B₁', ];
+		let letter = ['A', 'B', 'C', 'A₁', 'B₁', 'C₁', ];
 		let strok = [5, 4];
-
-		let matrixPrism = [
-			[1],
-			[strok, strok],
-			[0,	0, strok],
-			[1, 0, 0, 1],
-			[0, 1, 0, 1, 1]
-		];
 
 		let vert = [
 			['A', 'B', 'C',],
@@ -61,8 +53,12 @@
 			ctx.translateToCenter();
 			ctx.lineWidth = 2;
 			ctx.strokeStyle = om.secondaryBrandColors.iz();
-			ctx.drawFigure(point2DPar, matrixPrism);
-			ctx.font = "25px liberation_sans";
+			let faces = [[0,1,2],[3,4,5],[0,1,4,3],[1,2,5,4],[2,0,3,5]];
+    		let visibility = facesVisibility(prism.verticesOfFigure, point2DPar, faces);
+    		let figureMatrix = dashHiddenEdges(prism.connectionMatrix, faces, visibility, strok);
+    
+    		ctx.drawFigure(point2DPar, figureMatrix);
+     		ctx.font = "25px liberation_sans";
 
 			point2DPar.forEach((elem, i) => ctx.fillText(letter[i], elem.x, elem.y + ((i < point2DPar.length / 2) ? 15 : -10)));
 		};
