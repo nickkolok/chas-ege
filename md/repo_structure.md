@@ -146,6 +146,8 @@ src/
 - `run-node-tests.js` — раннер node-тестов (`npm test`): jsdom + `build/lib/chas-lib.js`.
 - `node-unit-tests*.js` — тесты (QUnit), подключаются раннером через `require()`.
 - `old/` — старые браузерные QUnit-тесты; grunt собирает их в `build/test/old/`, прогон — `grunt qunit`.
+  Сейчас `grunt qunit` не работает (так же и до переноса в `old/`): страница падает с
+  `QUnit.on is not a function` и `math is not defined`, и Chrome выходит по тайм-ауту.
 
 ---
 
