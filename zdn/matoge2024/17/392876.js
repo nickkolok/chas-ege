@@ -1,0 +1,84 @@
+(function () {
+    retryWhileError(function () {
+        NAinfo.requireApiVersion(0, 2);
+
+        let letters = latbukv.slice(0, 4).concat('O');
+
+        // Диагонали AC < BD — чётные (AC от 6 до 30, BD до 40; в ФИПИ AC от 6 до 26, BD от 12 до 30),
+        // сторона AB целая, ответ DO = BD/2 целый. AB — сторона треугольника ABO
+        // со сторонами AC/2 и BD/2. Как во всех заданиях ФИПИ, AB < DO: угол AOB острый.
+        let diagonalAC = sl(6, 30, 2);
+        let diagonalBD = sl(diagonalAC + 2, 40, 2);
+        let sideAB = sl((diagonalBD - diagonalAC) / 2 + 1, diagonalBD / 2 - 1);
+        // Угол между диагоналями не меньше 12°, иначе параллелограмм — почти отрезок
+        // (в ФИПИ наименьший угол — около 14°, у F77141: AC = 22, BD = 24, AB = 3)
+        let angleAOB = findTriangleAngles(sideAB, diagonalAC / 2, diagonalBD / 2).angleA;
+        genAssert(angleAOB * 180 / Math.PI >= 12, 'Параллелограмм слишком узкий');
+        // Вторая сторона — по сумме квадратов диагоналей, угол A — по теореме косинусов для BD
+        let sideAD = ((diagonalAC ** 2 + diagonalBD ** 2) / 2 - sideAB ** 2).sqrt();
+        let cosA = (sideAB ** 2 + sideAD ** 2 - diagonalBD ** 2) / (2 * sideAB * sideAD);
+
+        let par = new Parallelogram({
+            lengths: {
+                lengthAB: sideAB,
+                lengthBC: sideAD,
+            },
+            angles: {
+                angle: {
+                    angleA: cosA.acos(),
+                },
+            },
+            supplementary: {
+                calculateDiagonals: true
+            }
+        });
+        genAssert(par.lengthDiagonalAC.isAlmostEqual(diagonalAC, 1e-9) && par.lengthDiagonalBD.isAlmostEqual(diagonalBD, 1e-9),
+            'Диагонали параллелограмма не совпали с заданными');
+
+        let answ = diagonalBD / 2;
+
+        par.connectVerticesInConnectionMatrix([
+            [0, 2],
+            [1, 3]
+        ]);
+
+        let points = autoScale(par.vertices);
+
+        let paint1 = function (ctx) {
+            ctx.translateToCenter();
+
+            ctx.scale(1, -1);
+            ctx.strokeStyle = om.secondaryBrandColors.iz();
+
+            ctx.lineWidth = 2;
+            ctx.drawFigure(points, par.connectionMatrix);
+
+            ctx.signVertices(points, letters.slice(0, 4));
+            // O — середина диагонали AC на чертеже, то есть в координатах после autoScale;
+            // подпись — в стороне от диагоналей и сторон, а не на их пересечении
+            let center = {x: (points[0].x + points[2].x) / 2, y: (points[0].y + points[2].y) / 2};
+            let label = labelPositionAwayFromSegments(center, segmentsFromConnectionMatrix(points, par.connectionMatrix), 18);
+            ctx.scale(1, -1);
+            ctx.font = '20px liberation_sans';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(letters[4], label.x, -label.y);
+        };
+
+        NAtask.setTask({
+            text: `Диагонали $AC$ и $BD$ параллелограмма $ABCD$ пересекаются в точке $O$, $AC = ${diagonalAC}$, $BD = ${diagonalBD}$, $AB = ${sideAB}$. Найдите $DO$.`,
+            answers: answ,
+            authors: ['Александра Суматохина'],
+        });
+        NAtask.modifiers.variativeABC(letters);
+
+        NAtask.modifiers.allDecimalsToStandard(true);
+        NAtask.modifiers.addCanvasIllustration({
+            width: 400,
+            height: 400,
+            paint: paint1,
+        });
+    }, 2000);
+})();
+// https://oge.sdamgia.ru/problem?id=392876
+// ФИПИ F77141 EF6511 8D3F15 F609D2 F499CB 99F180 FF47FC 5CB1D4 111C58 2E3469
