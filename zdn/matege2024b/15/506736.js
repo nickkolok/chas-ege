@@ -24,13 +24,13 @@
 
         NAtask.setTask({
             text:
-                'На пост ' + post + ' ' + educationPlace + ' совета претендовали два кандидата.' + [' В голосовании приняли участие ' + chislitlx(numberOfParticipants, 'выборщик', 'v$') + '.', ''][randUpgrade] +
+                'На пост ' + post + ' ' + educationPlace + ' совета претендовали два кандидата.' + [' В голосовании приняли участие ' + chislitlx(numberOfParticipants, 'выборщик', '$') + '.', ''][randUpgrade] +
                 ' Голоса между кандидатами распределились в отношении ' + '$' + loserRatio + ':' + winnerRatio + '$' + ['. Сколько голосов получил ' + winOrLose,
                 '. Сколько голосов было изначально, если ' + winOrLose + ' получил ' + chislitlx(numberOfPeopleWhoVotedThatWeNeed, 'голос', '$')][randUpgrade] + '?',
             answers: [numberOfPeopleWhoVotedThatWeNeed, numberOfParticipants][randUpgrade],
             preference: [preference1, preference2],
         });
-    }, 100);
+    }, 10000);
 })();
 //https://mathb-ege.sdamgia.ru/test?likes=506736
 //zer00player
