@@ -1961,4 +1961,28 @@ module.exports = function registerNodeTests(QUnit) {
         assert.deepEqual(dashes[10], [6, 4], 'невидимое ребро 10 - пунктиром');
         assert.deepEqual(dashes[0], [], 'видимое ребро - сплошное');
     });
+
+    // ============================================================
+    //  chislitlx: счётная форма «человек»  (lib/lx.js)
+    // ============================================================
+    QUnit.module('chislitlx: счётная форма «человек»');
+
+    QUnit.test('chislitlx: «человек» с числительными (именительный)', function (assert) {
+        assert.equal(chislitlx(1, 'человек'), '1 человек', '1 человек');
+        assert.equal(chislitlx(2, 'человек'), '2 человека', '2 человека');
+        assert.equal(chislitlx(5, 'человек'), '5 человек', '5 человек (не «людей»)');
+        assert.equal(chislitlx(17, 'человек'), '17 человек', '17 человек');
+        assert.equal(chislitlx(21, 'человек'), '21 человек', '21 человек');
+        assert.equal(chislitlx(22, 'человек'), '22 человека', '22 человека');
+        assert.equal(chislitlx(101, 'человек'), '101 человек', '101 человек');
+        assert.equal(chislitlx(1.5, 'человек'), '1,5 человека', '1,5 человека');
+    });
+
+    QUnit.test('chislitlx: «человек» в родительном падеже', function (assert) {
+        assert.equal(chislitlx(1, 'человек', 'r'), '1 человека', 'не больше 1 человека');
+        assert.equal(chislitlx(3, 'человек', 'r'), '3 человек', 'не больше 3 человек');
+        assert.equal(chislitlx(4, 'человек', 'r'), '4 человек', 'не больше 4 человек');
+        assert.equal(chislitlx(5, 'человек', 'r'), '5 человек', 'не больше 5 человек');
+    });
+
 };
