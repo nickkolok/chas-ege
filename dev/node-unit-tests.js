@@ -1851,6 +1851,34 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  Словосочетание: машинное масло  (lib/lxsoch.js)
+    // ============================================================
+    QUnit.module('lxsoch: машинное масло');
+
+    QUnit.test('Родительный падеж: машинного масла', function (assert) {
+        var m = sklonlxkand('машинное масло');
+        assert.equal(m.ie, 'машинное масло');
+        assert.equal(m.re, 'машинного масла', 'склоняются и прилагательное, и существительное');
+        assert.equal(m.de, 'машинному маслу');
+        assert.equal(m.te, 'машинным маслом');
+        assert.equal(m.pe, 'машинном масле');
+        assert.equal(m.rod, 2, 'средний род');
+        assert.equal(m.odu, 0, 'неодушевлённое');
+    });
+
+    QUnit.test('Счётные формы и множественное число', function (assert) {
+        assert.equal(chislitlx(1, 'машинное масло'), '1 машинное масло');
+        assert.equal(chislitlx(2, 'машинное масло'), '2 машинных масла');
+        assert.equal(chislitlx(5, 'машинное масло'), '5 машинных масел');
+        assert.equal(chislitlx(11, 'машинное масло'), '11 машинных масел');
+        var m = sklonlxkand('машинное масло');
+        assert.equal(m.im, 'машинные масла');
+        assert.equal(m.rm, 'машинных масел');
+        assert.equal(m.tm, 'машинными маслами');
+        assert.equal(m.pm, 'машинных маслах');
+    });
+
+    // ============================================================
     //  Проекция параллелепипеда  (lib/canvas.js)
     // ============================================================
     QUnit.module('parallelepipedVertices, parallelepipedSize');
