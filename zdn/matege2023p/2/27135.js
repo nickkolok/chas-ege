@@ -7,6 +7,7 @@
 	};
 	lx_declareClarifiedPhrase('площадь', 'поверхности');
 	lx_declareClarifiedPhrase('радиус', 'основания');
+	lx_declareClarifiedPhrase('диаметр', 'основания');
 	lx_declareClarifiedPhrase('площадь', 'боковой поверхности');
 	lx_declareClarifiedPhrase('длина', 'окружности основания');
 	lx_declareClarifiedPhrase('площадь', 'окружности основания');
