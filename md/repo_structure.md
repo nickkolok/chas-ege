@@ -27,10 +27,10 @@ chas-ege/
 ├── src/          ← Ядро движка (chas2, chaslib, утилиты сборки)
 ├── css/          ← Стили
 ├── ext/          ← Внешние библиотеки (jQuery, MathJax, jqplot, bootstrap…)
-├── dev/          ← Dev-инструменты, скрипты, node-тесты, документация
+├── dev/          ← Dev-инструменты, скрипты, документация
 ├── doc/          ← HTML-документация
 ├── md/           ← markdown-документация (по содержанию не совпадает с doc)
-├── test/         ← QUnit-тесты
+├── test/         ← Тесты: node-QUnit (npm test); old/ — старые браузерные QUnit-тесты
 ├── .github/workflows/  ← CI (ci.yml, Node 22.12.0)
 └── .vscode/      ← Настройки редактора
 ```
@@ -136,9 +136,16 @@ src/
 - `scripts/` — вспомогательные скрипты (fast_set и др.)
 - `parser/` — скрипты, которые очень помогают с лексическим модулем
 - `txtdocs/` — текстовая документация (vocabulary.txt, random.txt)
-- `node-unit-tests.js`, `run-node-tests.js` — node-тесты
 - `nabor-override-*.js` — переопределения наборов для отладки
 - `zdn_ustar/` — устаревшие задачи
+
+---
+
+## `test/` — тесты
+
+- `run-node-tests.js` — раннер node-тестов (`npm test`): jsdom + `build/lib/chas-lib.js`.
+- `node-unit-tests*.js` — тесты (QUnit), подключаются раннером через `require()`.
+- `old/` — старые браузерные QUnit-тесты; grunt собирает их в `build/test/old/`, прогон — `grunt qunit`.
 
 ---
 
