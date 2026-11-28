@@ -25,7 +25,7 @@
 			(dirV === 1 ? vCoeff*vCoeff : 1/(vCoeff*vCoeff));
 		
 		let aFactor = v2Factor / rFactor;
-		genAssert(!aFactor.isAlmostEqual(1, 1e-9), 'Ускорение не изменилось');
+		// aFactor = 1 допускаем: ФИПИ F7869E (R увеличили в 4 раза, v в 2 раза) — ускорение не меняется, ответ 1.
 		
 		// Определяем глагол результата
 		let resultVerb, resultN;
