@@ -253,7 +253,9 @@ async function buildCommit(root, commit, { cache, log } = {}) {
 		git(['worktree', 'remove', '--force', wt], root);
 		return { dir: null, error: 'grunt не собрал бандл, лог: ' + logFile };
 	}
-	const t = await run('node', ['dev/run-node-tests.js'], { cwd: wt });
+	// npm test, а не путь к раннеру: с #3848 раннер лежит в test/, а не в dev/,
+	// и scripts.test в package.json самой рабочей копии ведёт к нужному
+	const t = await run('npm', ['test'], { cwd: wt });
 	const total = /Всего тестов:\s*(\d+),\s*Прошло:\s*(\d+),\s*Упало:\s*(\d+)/.exec(t.out);
 	const result = {
 		tree, commit, buildMs: Date.now() - t0,
