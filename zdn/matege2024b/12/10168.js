@@ -49,9 +49,7 @@
 			ctx.strokeInMiddleOfSegment(points[0].x, points[0].y, points[4].x, points[4].y, 7);
 			ctx.strokeInMiddleOfSegment(points[1].x, points[1].y, points[4].x, points[4].y, 7);
 
-			ctx.scale(1, -1);
-			ctx.font = "20px liberation_sans";
-			points.forEach((elem, i) => ctx.fillText(letters[i], elem.x, -elem.y + ((i != 2 && i != 3) ? 25 : -5)));
+			ctx.signVertices(points, letters, {above: [2, 3]});
 		};
 
 		NAtask.setTask({
