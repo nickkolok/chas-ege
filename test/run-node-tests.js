@@ -130,7 +130,7 @@ try {
     registerTaskCorrespondenceTests(QUnit);
     console.log('✅ Тесты setCorrespondenceTask (node-unit-tests-task-correspondence.js) подключены.');
 } catch (err) {
-    console.error('❌ Не удалось загрузить тест:', err);
+    console.error('❌ Не удалось загрузить тест node-unit-tests-task-correspondence.js:', err);
     process.exit(1);
 }
 
@@ -165,7 +165,7 @@ try {
     registerNodeTests(QUnit);
     console.log('✅ Дополнительные тесты (node-unit-tests.js) подключены.');
 } catch (err) {
-    console.error('❌ Не удалось загрузить тест:', err);
+    console.error('❌ Не удалось загрузить тест node-unit-tests.js:', err);
     process.exit(1);
 }
 
@@ -174,7 +174,7 @@ try {
     registerMathFunctionsTests(QUnit);
     console.log('✅ Тесты lib/math_functions.js (node-unit-tests-math-functions.js) подключены.');
 } catch (err) {
-    console.error('❌ Не удалось загрузить тест:', err);
+    console.error('❌ Не удалось загрузить тест node-unit-tests-math-functions.js:', err);
     process.exit(1);
 }
 
@@ -183,7 +183,7 @@ try {
     registerTaskGraphDerivativeTests(QUnit);
     console.log('✅ Тесты setTaskWithGraphOfFunctionDerivative (node-unit-tests-task-graph-derivative.js) подключены.');
 } catch (err) {
-    console.error('❌ Не удалось загрузить тест:', err);
+    console.error('❌ Не удалось загрузить тест node-unit-tests-task-graph-derivative.js:', err);
     process.exit(1);
 }
 
@@ -192,7 +192,7 @@ try {
     registerSeedrandomTests(QUnit);
     console.log('✅ Тесты seedrandom в бандле (node-unit-tests-seedrandom.js) подключены.');
 } catch (err) {
-    console.error('❌ Не удалось загрузить тест:', err);
+    console.error('❌ Не удалось загрузить тест node-unit-tests-seedrandom.js:', err);
     process.exit(1);
 }
 
