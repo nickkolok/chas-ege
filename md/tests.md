@@ -58,8 +58,12 @@ module.exports = function (QUnit) {
 - Чистые функции удобно грузить исходником через `vm` (см. пример ниже).
 - Если код опирается на всю сборку (`build/lib/chas-lib.js`), окружение уже поднято
   раннером к моменту подключения тестов: jsdom-`window`/`document`, классы
-  `Triangle`, `Circle` и др. доступны глобально (образец использования —
-  `node-unit-tests-task-correspondence.js`).
+  `Triangle`, `Circle`, `Point` и др. доступны глобально, как и методы бандла вроде
+  `Number.prototype.pow`. Образец — тест `Triangle` в самом `run-node-tests.js`
+  и раздел `QUnit.module('Number Math Functions')` в `node-unit-tests.js`.
+  А `node-unit-tests-task-correspondence.js` (и `-task-graph-derivative.js`, `-seedrandom.js`)
+  окружением раннера не пользуется: он поднимает свой `new JSDOM(...)` со своим `window.chas`.
+  Так делают, только когда тесту нужно окружение, отличное от раннера.
 
 ---
 
