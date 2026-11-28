@@ -1,0 +1,132 @@
+(function() {
+	retryWhileError(function() {
+		let a = sluchch(-5, 1);
+		let b = slKrome(0, a + 1, a + 2);
+		let d = slKrome(0, b + 1, b + 2);
+		let slNum = sl1();
+		let sign = ['+', '-', ''];
+		let sign2 = ['-', '+', ''];
+		let sign3 = ['-', ''];
+		let denominator = sluchch(2, 5);
+		let root = [b, d][slNum];
+		let numerator = denominator * root - root.sgn();
+
+		genAssertIrreducible(numerator, denominator, 'Дробь должна быть несократима');
+		genAssert(numerator / denominator > b, 'Правый конец должен быть больше левого');
+		genAssert(numerator / denominator < d, 'Правый конец должен быть больше левого');
+
+		let c = numerator + '/' + denominator;
+		let e = d + sluchch(1, 2);
+		let up = [a, b, d, e].shuffle();
+		let down = up.filter(item => item !== up[0]);
+		down = down.sortNumeric();
+		let slSign = sl1();
+		let slSign2 = sl1();
+
+		const checkSign = (member) =>
+			member > 0 ? 1 : member < 0 ? 0 : 2;
+		const checkAnswer = (member) =>
+			up[0] == member ? 0 : 1;
+		const checkZero = (member) =>
+			member == 0 ? "" : member;
+		const checkOne = (member) =>
+			member == 1 ? "" : member;
+		const checkZeroWithCases = (member) =>
+			member == 0 ? "x" : "(x" + sign[checkSign(member)] + Math.abs(member) + ")";
+
+		let answer = ["(-∞;" + a + ["]", ")"][checkAnswer(a)] + "U" + ["[", "("][checkAnswer(b)] + b + ";" + c + "]U" + [
+				"[", "("
+			][checkAnswer(d)] + d + ";" + e + ["]", ")"][checkAnswer(e)],
+			["[", "("][checkAnswer(a)] + a + ";" + b + ["]", ")"][checkAnswer(b)] + "U[" + c + ";" + d + ["]", ")"][
+				checkAnswer(d)
+			] + "U" + ["[", "("][checkAnswer(e)] + e + ";+∞)"
+		][slSign2];
+
+
+		let k1 = -down[0];
+		let k2 = -down[1];
+		let k3 = -down[2];
+		let am = denominator;
+		let bm = denominator * up[0] + numerator;
+		let cm = numerator * up[0];
+
+		let N_A = (am * k1 * k1 + bm * k1 + cm) / ((k1 - k2) * (k1 - k3));
+		let N_B = (am * k2 * k2 + bm * k2 + cm) / ((k2 - k1) * (k2 - k3));
+		let N_C = (am * k3 * k3 + bm * k3 + cm) / ((k3 - k1) * (k3 - k2));
+
+		//Приведение к общему знаменателю
+		let fracA = new Fraction(N_A);
+		let fracB = new Fraction(N_B);
+		let fracC = new Fraction(N_C);
+
+		let commonDen = fracA.denominator.nok(fracB.denominator, fracC.denominator);
+
+		let A_int = fracA.numerator * (commonDen / fracA.denominator);
+		let B_int = fracB.numerator * (commonDen / fracB.denominator);
+		let C_int = fracC.numerator * (commonDen / fracC.denominator);
+
+		//Сокращение общего множителя
+		let g_all = A_int.nod(B_int).nod(C_int);
+		if (g_all > 1) {
+			A_int /= g_all;
+			B_int /= g_all;
+			C_int /= g_all;
+		}
+
+		genAssert(A_int < 1000, "Числитель должен быть меньше 1000");
+		genAssert(B_int < 1000, "Числитель должен быть меньше 1000");
+		genAssert(C_int < 1000, "Числитель должен быть меньше 1000");
+
+		NAtask.setTask({
+			text: 'Решите неравенство: $$' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(A_int) + '}{' + 'x' + sign[checkSign(down[0])] + checkZero(Math.abs(down[0])) + '}' +
+				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(B_int) + '}{' + 'x' + sign[checkSign(down[1])] + checkZero(Math.abs(down[1])) + '}' +
+				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + 
+				['\\ge', '\\le'][Math.abs(1 + [0, -1][slSign])] + '0' + '$$',
+			analys: 'Решение: ' +
+				'$$' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(A_int) + '}{' + 'x' + sign[checkSign(down[0])] +
+				checkZero(Math.abs(down[0])) + '}' +
+				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(B_int) + '}{' + 'x' + sign[checkSign(down[1])] + checkZero(Math.abs(down[1])) + '}' +
+				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] +
+				'\\frac{' + Math.abs(C_int) + '}{' + 'x' + sign[checkSign(down[2])] + checkZero(Math.abs(down[2])) + '}' + 
+				['\\ge', '\\le'][Math.abs(1 + [0, -1][slSign])] + '0' +
+				'\\Leftrightarrow' +
+				'\\frac{' + sign3[Math.abs(checkSign(A_int) + [0, -1][slSign])] + checkOne(Math.abs(A_int)) +
+				checkZeroWithCases(down[1]) + checkZeroWithCases(down[2]) +
+				sign2[Math.abs(checkSign(B_int) + [0, -1][slSign])] + checkOne(Math.abs(B_int)) +
+				checkZeroWithCases(down[0]) + checkZeroWithCases(down[2]) +
+				sign2[Math.abs(checkSign(C_int) + [0, -1][slSign])] + checkOne(Math.abs(C_int)) +
+				checkZeroWithCases(down[0]) + checkZeroWithCases(down[1]) + '}{' +
+				checkZeroWithCases(down[0]) +
+				checkZeroWithCases(down[1]) +
+				checkZeroWithCases(down[2]) + '}' + ['\\ge', '\\le'][Math.abs(1 + [0, -1][slSign])] + '0' +
+				'\\Leftrightarrow' +
+				'\\frac{' + denominator + 'x^2' +
+				sign[checkSign(bm)] + checkOne(Math.abs(bm)) + 'x' +
+				sign2[checkSign(cm)] + checkZero(Math.abs(cm)) + '}{' +
+				checkZeroWithCases(down[0]) +
+				checkZeroWithCases(down[1]) +
+				checkZeroWithCases(down[2]) + '}' + ['\\le', '\\ge'][slSign2] + '0' +
+				' \\Leftrightarrow \\\\~\\\\ \\Leftrightarrow' +
+				'\\frac{(' + denominator + 'x' + sign[checkSign(numerator)] + Math.abs(numerator) + ')' +
+				checkZeroWithCases(up[0]) + '}{' +
+				checkZeroWithCases(down[0]) +
+				checkZeroWithCases(down[1]) +
+				checkZeroWithCases(down[2]) + '}' + ['\\le', '\\ge'][slSign2] + '0' +
+				'\\Leftrightarrow' +
+				'\\left[\\begin{aligned} x ' + [['\\le', '<'][checkAnswer(a)] + a, ['\\ge', '>'][checkAnswer(e)] + e][slSign2] +
+				',\\\\' + [b + ['\\le', '<'][checkAnswer(b)], numerator.texfrac(denominator) + '\\le'][slSign2] + ' x ' +
+				['\\le' + numerator.texfrac(denominator), ['\\le', '<'][checkAnswer(d)] + d ][slSign2] +
+				',\\\\' + [d + ['\\le', '<'][checkAnswer(d)], a + ['\\le', '<'][checkAnswer(a)]][slSign2] + ' x ' +
+				[['\\le', '<'][checkAnswer(e)] + e, ['\\le', '<'][checkAnswer(b)] + b ][slSign2] +
+				'.\\end{aligned}\\right.$$',
+			answers: answer,
+			authors: ['Сергей Алендарь'],
+		});
+	}, 1000);
+})();
+//508440
