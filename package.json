@@ -52,8 +52,8 @@
     "time-grunt": "^1.2.1"
   },
   "scripts": {
-    "test": "node dev/run-node-tests.js",
-    "test:node": "node dev/run-node-tests.js"
+    "test": "node test/run-node-tests.js",
+    "test:node": "node test/run-node-tests.js"
   },
   "repository": {
     "type": "git",

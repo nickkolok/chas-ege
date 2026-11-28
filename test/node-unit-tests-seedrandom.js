@@ -7,7 +7,7 @@
  *
  * Проверяем, что Math.seedrandom навешивается бандлом БЕЗ отдельной загрузки
  * seedrandom.min.js и что повторная установка сида даёт воспроизводимый
- * Math.random(). Подключается через require() в dev/run-node-tests.js.
+ * Math.random(). Подключается через require() в test/run-node-tests.js.
  */
 
 const fs = require('fs');

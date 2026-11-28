@@ -43,7 +43,7 @@ jobs:
       run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets
 
     - name: Run Node.js unit tests
-      run: node dev/run-node-tests.js
+      run: node test/run-node-tests.js
 
     - name: Check task sets
       run: ./node_modules/.bin/grunt process-task-sets packTasks process-task-sets

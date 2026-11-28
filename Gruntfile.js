@@ -55,7 +55,7 @@ module.exports = function(grunt) {
 			},
 			unitTest: {
 				dest: 'build/test/',
-				src: ['test/*.html', '!test/templ-*.html'],
+				src: ['test/old/*.html', '!test/old/templ-*.html'],
 			}
 		},
 		copy: {
@@ -110,7 +110,7 @@ module.exports = function(grunt) {
 			},
 			unitTest: {
 				files: [
-					{ expand: true, src: ['test/*.js'], dest: 'build/' },
+					{ expand: true, cwd: 'test/old/', src: ['*.js'], dest: 'build/test/old/' },
 				]
 			},
 		},
@@ -312,7 +312,7 @@ module.exports = function(grunt) {
 			},
 			unitTest: {
 				files: [
-					'test/*'
+					'test/old/*'
 				],
 				tasks: ['process-unit-test']
 			}
@@ -326,7 +326,7 @@ module.exports = function(grunt) {
 				src: [
 					'src/*/*.js',
 					'c2/*.js',
-					'test/*.js',
+					'test/old/*.js',
 					'Gruntfile.js',
 
 					// Всё равно никто исправлять их не будет
@@ -364,7 +364,7 @@ module.exports = function(grunt) {
 					return !suppress;
 				},
 			},
-			all: ['build/test/*.html']
+			all: ['build/test/old/*.html']
 		},
 
 		clean: {

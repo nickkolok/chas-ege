@@ -131,7 +131,7 @@ try {
 } catch (e) { /* остаёмся без канвасов */ }
 
 // ---------------------------------------------------------------------------
-// 2. jsdom-окружение (приём обкатан в dev/run-node-tests.js)
+// 2. jsdom-окружение (приём обкатан в test/run-node-tests.js)
 // ---------------------------------------------------------------------------
 const virtualConsole = new VirtualConsole();
 const spamPatterns = ['отработал', 'загружен', 'добавлен', 'запрошен', 'Не удалось выделить настройки'];
@@ -213,7 +213,7 @@ evalInWindow(`
 		if (__probeCtx) window.CanvasRenderingContext2D = __probeCtx.constructor;
 	}
 	// В jsdom без npm-пакета «canvas» этого класса нет — даём пустой прототип
-	// (тот же приём, что в dev/run-node-tests.js). Рисование (vopr.dey) без
+	// (тот же приём, что в test/run-node-tests.js). Рисование (vopr.dey) без
 	// бэкенда не вызывается, а генерация тегов <canvas> — чисто строковая.
 	if (!window.CanvasRenderingContext2D) {
 		window.CanvasRenderingContext2D = function () {};
