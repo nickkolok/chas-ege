@@ -185,6 +185,16 @@ module.exports = function registerNodeTests(QUnit) {
         assert.strictEqual((-35.99999999999999).withoutFalsePrecision(), -36, 'отрицательное → -36');
     });
 
+    QUnit.test('withoutFalsePrecision: ложная точность у больших чисел', function (assert) {
+        // У больших чисел погрешность больше 1e-10: округления до 10 знаков после запятой не хватает
+        assert.strictEqual((1039.2304845413262).pow(2).withoutFalsePrecision(), 1080000, '(600√3)² → 1080000');
+        assert.strictEqual((42187499.99999999).withoutFalsePrecision(), 42187500, '42187499.99999999 → 42187500');
+        assert.strictEqual((1234567.123456789).withoutFalsePrecision(), 1234567.123456789, 'значащие цифры не теряются');
+        assert.strictEqual((0.0000000001).withoutFalsePrecision(), 0.0000000001, 'малое число не обнуляется');
+        assert.equal((1039.2304845413262).pow(2).texsqrtfrac(4), (4320000).texsqrtfrac(4), 'texsqrtfrac: как у точного 27k⁴ при k=20');
+        assert.equal((1039.2304845413262).pow(2).texsqrtfrac(4), '600\\sqrt{3}', 'площадь ромба со стороной 20√3 и углом 60°');
+    });
+
     QUnit.test('texsqrt, texsqrtfrac, texcbrt: ложная точность — как у целого', function (assert) {
         // Квадрат длины, посчитанный в плавающей точке, печатался как \sqrt{36} и \sqrt{1200}
         assert.equal((6.000000000000001).pow(2).texsqrt(1), '6', '(6.000000000000001)² → 6, а не \\sqrt{36}');
