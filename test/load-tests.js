@@ -11,10 +11,20 @@ const SKIP_FILES = new Set(['run-node-tests.js', 'load-tests.js']);
 // old/ — старые браузерные QUnit-тесты, их собирает grunt;
 // helpers/ — вспомогательные модули тестов: они не регистрируют тестов, их подключают через require()
 const SKIP_DIRS = new Set(['old', 'helpers']);
-// Раннер, лоадер и легаси node-unit-tests*.js (их раннер подключает явно) пропускаются
-// только в корне test/: в test/<Модуль>/ файл с таким именем — обычный тест.
+// Легаси-файлы, которые раннер подключает явно (run-node-tests.js). Список явный:
+// новый файл в корне test/, которого раннер не подключил, лоадер подключит сам,
+// а не пропустит молча.
+const LEGACY_FILES = new Set([
+    'node-unit-tests.js',
+    'node-unit-tests-math-functions.js',
+    'node-unit-tests-seedrandom.js',
+    'node-unit-tests-task-correspondence.js',
+    'node-unit-tests-task-graph-derivative.js',
+]);
+// Раннер, лоадер и легаси-файлы пропускаются только в корне test/:
+// в test/<Модуль>/ файл с таким именем — обычный тест.
 const isRootSkipped = (full) => path.dirname(full) === TEST_DIR &&
-    (SKIP_FILES.has(path.basename(full)) || /^node-unit-tests.*\.js$/.test(path.basename(full)));
+    (SKIP_FILES.has(path.basename(full)) || LEGACY_FILES.has(path.basename(full)));
 
 function collect(dir, out) {
     for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
