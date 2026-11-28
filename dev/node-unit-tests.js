@@ -1850,6 +1850,26 @@ module.exports = function registerNodeTests(QUnit) {
         assert.equal(k.skl, 1, 'первое склонение');
     });
 
+QUnit.module('lx: образующая');
+
+    QUnit.test('Субстантивированное прилагательное женского рода: все формы из словаря', function (assert) {
+        var o = sklonlxkand('образующая');
+        assert.equal(o.ie, 'образующая');
+        assert.equal(o.re, 'образующей');
+        assert.equal(o.de, 'образующей');
+        assert.equal(o.ve, 'образующую', 'Найдите образующую конуса');
+        assert.equal(o.te, 'образующей');
+        assert.equal(o.pe, 'образующей');
+        assert.equal(o.im, 'образующие');
+        assert.equal(o.rm, 'образующих');
+        assert.equal(o.dm, 'образующим');
+        assert.equal(o.vm, 'образующие', 'неодушевлённое: вин. мн. = им. мн.');
+        assert.equal(o.tm, 'образующими');
+        assert.equal(o.pm, 'образующих');
+        assert.equal(o.rod, 1, 'женский род');
+        assert.equal(o.odu, 0, 'неодушевлённое');
+    });
+
     // ============================================================
     //  Проекция параллелепипеда  (lib/canvas.js)
     // ============================================================
