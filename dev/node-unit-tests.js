@@ -1392,6 +1392,82 @@ module.exports = function registerNodeTests(QUnit) {
             ['20px liberation_sans', 'center', 'alphabetic', '#000'], 'не заданное — шрифт по умолчанию, остальное из контекста');
     });
 
+    QUnit.test('ctx.signVertices: awayFrom ставит подписи наружу от точки', function (assert) {
+        var calls = [];
+        var ctx = {
+            font: '', textAlign: 'start', textBaseline: 'alphabetic',
+            save: function () {},
+            restore: function () {},
+            scale: function () {},
+            fillText: function (text, x, y) { calls.push({ text: text, x: x, y: y, textAlign: this.textAlign, textBaseline: this.textBaseline }); },
+        };
+        var points = [{ x: 3, y: 4 }, { x: -4, y: 3 }, { x: -3, y: -4 }, { x: 4, y: -3 }];
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'B', 'C', 'D'], {
+            textAlign: 'center', textBaseline: 'middle', awayFrom: { x: 0, y: 0 }, distance: 10,
+        });
+        assert.deepEqual(calls.map(function (c) { return [c.text, c.x, c.y]; }), [
+            ['A', 9, -12],
+            ['B', -12, -9],
+            ['C', -9, 12],
+            ['D', 12, 9],
+        ], 'каждая подпись на 10 дальше от центра, ось Y отражена при выводе');
+        assert.deepEqual([calls[0].textAlign, calls[0].textBaseline], ['center', 'middle'], 'выравнивание из options');
+    });
+
+    QUnit.test('ctx.signVertices: awayFrom — distance по умолчанию 20, above не используется', function (assert) {
+        var calls = [];
+        var ctx = {
+            font: '',
+            save: function () {},
+            restore: function () {},
+            scale: function () {},
+            fillText: function (text, x, y) { calls.push({ text: text, x: x, y: y }); },
+        };
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, [{ x: 3, y: 4 }], ['A'], { awayFrom: { x: 0, y: 0 }, above: [0] });
+        assert.deepEqual(calls, [{ text: 'A', x: 15, y: -20 }], 'distance 20: (3,4) -> (15,20), подпись сверху не применяется');
+        assert.throws(function () {
+            CanvasRenderingContext2D.prototype.signVertices.call(ctx, [{ x: 3, y: 4 }], ['A'], { awayFrom: { x: 0, y: 0 }, distance: 'далеко' });
+        }, /distance/, 'нечисловое distance — ошибка с подсказкой');
+    });
+
+    QUnit.test('ctx.signVertices: вершина в самой точке awayFrom — RangeError, ничего не нарисовано', function (assert) {
+        var calls = [];
+        var ctx = {
+            font: '',
+            save: function () { calls.push('save'); },
+            restore: function () { calls.push('restore'); },
+            scale: function () { calls.push('scale'); },
+            fillText: function (text) { calls.push(text); },
+        };
+        var points = [{ x: 3, y: 4 }, { x: 0, y: 0 }, { x: -3, y: 4 }];
+        assert.throws(function () {
+            CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'O', 'B'], { awayFrom: { x: 0, y: 0 } });
+        }, function (e) { return e instanceof RangeError && /вершина 1 \(O\) совпадает с awayFrom/.test(e.message); },
+        'RangeError с номером и буквой вершины');
+        assert.deepEqual(calls, [], 'ни save(), ни подписей: контекст не тронут');
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A', 'O', 'B']);
+        assert.equal(calls.filter(function (c) { return c.length === 1; }).length, 3, 'без awayFrom та же вершина подписывается как раньше');
+    });
+
+    QUnit.test('ctx.signVertices: awayFrom — по умолчанию буквы по центру, явные textAlign/textBaseline сильнее', function (assert) {
+        var calls = [];
+        var ctx = {
+            font: '', textAlign: 'start', textBaseline: 'alphabetic',
+            save: function () {},
+            restore: function () {},
+            scale: function () {},
+            fillText: function () { calls.push([this.textAlign, this.textBaseline]); },
+        };
+        var points = [{ x: 3, y: 4 }];
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A'], { awayFrom: { x: 0, y: 0 } });
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A'], { awayFrom: { x: 0, y: 0 }, textAlign: 'left', textBaseline: 'top' });
+        ctx.textAlign = 'start';
+        ctx.textBaseline = 'alphabetic';
+        CanvasRenderingContext2D.prototype.signVertices.call(ctx, points, ['A']);
+        assert.deepEqual(calls, [['center', 'middle'], ['left', 'top'], ['start', 'alphabetic']],
+            'awayFrom: center/middle; явные опции важнее; без awayFrom выравнивание контекста не трогается');
+    });
+
     // ============================================================
     //  Canvas: дуга угла по массиву точек  (lib/canvas.js)
     // ============================================================
