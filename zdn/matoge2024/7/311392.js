@@ -32,15 +32,15 @@
 					})),
 					{ value: a, mark: "dot", label: "A", labelPos: "overAxis" }
 				],
-				width: 400,
-				height: 100,
+				width: ct.canvas.width,
+				height: ct.canvas.height,
 				margin: 20
 			});
 		};
 
 		let correct = (numeratorA + sum * denominatorA).texfrac(denominatorA);
 		let wrAns = [];
-		let usedNumerators = [numeratorA]; 
+		let usedNumerators = [numeratorA];
 
 		while (wrAns.length < 3) {
 			let wrongNumerator = slKrome(function (x) {
@@ -66,7 +66,7 @@
 			text: 'Одно из чисел ' + ['', '$' + numbersList + '$'][rand] + ' отмечено на прямой точкой $A$. Какое это число?',
 			answers: '$' + correct + '$',
 			wrongAnswers: wrAns.map(e => '$' + e + '$'),
-			preference: preference,
+			preference: [preference],
 		});
 		AtoB(3);
 
