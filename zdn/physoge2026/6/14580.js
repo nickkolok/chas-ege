@@ -6,15 +6,15 @@
 		let f1 = sl(20, 90, 10);
 		let f2 = sl(110, 250, 10);
 		
-		let characters = [
+		let characters = sklonlxkand([
 			['мальчик', 'девочка'],
 			['мужчина', 'женщина'],
 			['дедушка', 'бабушка'],
 			['брат', 'сестра']
-		].iz();
+		].iz());
 		
-		let char1_im = characters[0];
-		let char2_im = characters[1];
+		let char1_im = characters[0].ie;
+		let char2_im = characters[1].ie;
 		
 		NAtask.setTask({
 			text: char1_im.toZagl() + ' и ' + char2_im + ' тянут верёвку за противоположные концы. ' +
