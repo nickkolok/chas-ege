@@ -764,6 +764,28 @@ module.exports = function registerNodeTests(QUnit) {
     });
 
     // ============================================================
+    //  allDecimalsToStandard  (lib/string.js)
+    // ============================================================
+    QUnit.module('allDecimalsToStandard');
+
+    QUnit.test('без пробелов у ограничителя $ формулы', function (assert) {
+        assert.equal('$29.999999999999996$'.allDecimalsToStandard(true), '$30$', 'одиноко стоящее число');
+        assert.equal('$2.5$'.allDecimalsToStandard(true), '$2{,}5$', 'дробь');
+        assert.equal('$$2.5$$'.allDecimalsToStandard(true), '$$2{,}5$$', 'выключная формула $$');
+        assert.equal('$149.99999999999997^\\circ$'.allDecimalsToStandard(true), '$150 ^\\circ$', 'слева — $, справа — нет');
+        assert.equal('$BC=29.999999999999996$'.allDecimalsToStandard(true), '$BC= 30$', 'слева — не $, справа — $');
+        assert.equal('$a$ и $b=2.5$, $c=0.5$'.allDecimalsToStandard(true), '$a$ и $b= 2{,}5$, $c= 0{,}5$', 'вторая и третья формулы');
+    });
+
+    QUnit.test('вне формул и без p1 — как раньше', function (assert) {
+        assert.equal('\\log_{3}5.4+\\log_{3}14.999999999999998'.allDecimalsToStandard(true), '\\log_{3} 5{,}4 +\\log_{3} 15 ', 'строка без $ (вывод toTex)');
+        assert.equal('$x$2.5 см'.allDecimalsToStandard(true), '$x$ 2{,}5  см', 'число после закрывающего $ — вне формулы');
+        assert.equal('цена \\$2.5'.allDecimalsToStandard(true), 'цена \\$ 2{,}5 ', '\\$ — не ограничитель');
+        assert.equal('$2.5$'.allDecimalsToStandard(), '$2,5$', 'без p1 пробелов нет и не было');
+        assert.equal('<canvas data-nonce="0.25"></canvas>$x=1.5$'.allDecimalsToStandard(true), '<canvas data-nonce=" 0{,}25 "></canvas>$x= 1{,}5$', 'атрибут перед формулой — как раньше');
+    });
+
+    // ============================================================
     //  Chaslib Number Functions  (src/chaslib/Number.js)
     // ============================================================
     QUnit.module('Chaslib Number Functions');
