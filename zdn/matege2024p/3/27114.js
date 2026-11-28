@@ -1,0 +1,77 @@
+(function() {
+	retryWhileError(function() {
+
+		let pyr1 = new RegularPyramid({
+			height: sl(30, 70),
+			baseSide: sl(20, 50),
+			numberSide: 4
+		});
+
+		let pyr2 = new Pyramid({
+			height: 0.5 * pyr1.height,
+			baseArea: 0.5 * pyr1.baseArea,
+		});
+
+		pyr1.verticesOfFigure = coordinatesMiddleOfSegment3D(pyr1.verticesOfFigure[0], pyr1.verticesOfFigure[pyr1.numberSide]);
+
+		let camera = {
+			x: 0,
+			y: 0,
+			z: 0,
+			scale: 5,
+
+			rotationX: -Math.PI / 2 + Math.PI / 14,
+			rotationY: 0,
+			rotationZ: [1, 2].iz() * Math.PI / 3,
+		};
+
+		let point2DPyr = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		point2DPyr = autoScale(pyr1.verticesOfFigure, camera, point2DPyr, {
+			finishX: 160,
+			maxScale: 50,
+		});
+
+		let letters = ['A', 'B', 'C', 'D', 'S', 'E'];
+		let dash = [5, 4];
+
+		
+		let faces = [[0,1,2,3],[0,1,4],[1,2,4],[2,3,4],[3,0,4]];
+		let visibility = facesVisibility(pyr1.verticesOfFigure.slice(0, pyr1.numberSide + 1), point2DPyr, faces);
+		let figureMatrix = dashHiddenEdges(pyr1.connectionMatrix, faces, visibility, dash);
+		if (!figureMatrix[2]) figureMatrix[2] = [];
+		figureMatrix[2][1] = isOnVisibleFace(faces, visibility, [1, 3]) ? 1 : dash;
+		if (!figureMatrix[4]) figureMatrix[4] = [];
+		figureMatrix[4][1] = isOnVisibleFace(faces, visibility, [pyr1.numberSide, 0, 1]) ? 1 : dash;
+		figureMatrix[4][3] = isOnVisibleFace(faces, visibility, [pyr1.numberSide, 0, 3]) ? 1 : dash;
+
+		let paint1 = function(ctx) {
+			ctx.translateToCenter();
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+			ctx.drawFigure(point2DPyr, figureMatrix);
+
+			ctx.font = '30px liberation_sans';
+			point2DPyr.forEach((elem, i) => ctx.fillText(letters[i], elem.x, elem.y + ((i < pyr1.numberSide) ? 15 : -
+				10)));
+
+		};
+
+		NAtask.setTask({
+			text: 'Объём правильной четырёхугольной пирамиды $SABCD$ равен $' + pyr1.volume.pow(2).texsqrt(1) + '$. ' +
+				'Точка $E$ – середина ребра $SA$. Найдите объём треугольной пирамиды $EABD$.',
+			answers: pyr2.volume,
+			author: ['Суматохина Александра'],
+		});
+		NAtask.modifiers.variativeABC(letters);
+		NAtask.modifiers.multiplyAnswerBySqrt(13);
+		NAtask.modifiers.assertSaneDecimals();
+		NAtask.modifiers.addCanvasIllustration({
+			width: 400,
+			height: 400,
+			paint: paint1,
+		});
+		NAtask.modifiers.allDecimalsToStandard(true);
+	});
+})();
+//27114 75015 75063 519535 75017 75019 75021 75023 75025 75027 75029 75031 75033 75035 75037 75039 75041 75043 75045 75047 75049 75051 75053 75055 75057 75059 75061
