@@ -13,7 +13,7 @@
 test/
 ├── run-node-tests.js      ← раннер node-тестов (npm test): jsdom + build/lib/chas-lib.js
 ├── load-tests.js          ← покадровый лоадер: сканирует test/ и подключает файлы тестов
-├── node-unit-tests*.js    ← легаси: большие файлы тестов, раннер грузит их явно
+├── node-unit-tests*.js    ← легаси: пять больших файлов тестов, раннер грузит их явно
 ├── Circle/
 │   └── drawOnto.js        ← пример покадрового теста: test/<Модуль>/<метод>.js
 ├── helpers/               ← вспомогательные модули тестов; лоадер сюда не заходит
@@ -93,7 +93,7 @@ module.exports = function registerCircleDrawOntoTests(QUnit) {
 
     function drawCalls(circle) {
         const calls = [];
-        const ctx = { drawCircle: function(x, y, r) { calls.push([x, y, r]); } };
+        const ctx = { drawCircle: function() { calls.push(Array.prototype.slice.call(arguments)); } };
         const ret = circle.drawOnto(ctx);
         return { calls: calls, ret: ret };
     }
@@ -128,8 +128,9 @@ module.exports = function registerCircleDrawOntoTests(QUnit) {
    - каталоги с именем `old/` — браузерные тесты, их собирает grunt;
    - каталоги с именем `helpers/` — вспомогательные модули (см. ниже);
    - в корне `test/`: `run-node-tests.js` и `load-tests.js` — служебные файлы,
-     и `node-unit-tests*.js` — легаси, раннер подключает их явно (чтобы не задвоить).
-     В подкаталогах файлы с такими именами — обычные тесты.
+     и пять легаси-файлов `node-unit-tests*.js` из списка `LEGACY_FILES` — раннер подключает
+     их явно (чтобы не задвоить). Другой файл в корне, в том числе новый `node-unit-tests-*.js`,
+     лоадер подключает сам. В подкаталогах файлы с такими именами — обычные тесты.
 3. Для каждого файла: `require()` → проверяет, что экспортируется функция
    регистрации → вызывает её с `QUnit`.
 4. Пишет в лог `↳ тест подключён: Circle/drawOnto.js` и итоговое количество
@@ -141,7 +142,7 @@ module.exports = function registerCircleDrawOntoTests(QUnit) {
 ### Вспомогательные модули: `test/helpers/`
 
 Общие заглушки, фабрики объектов и прочее, что не регистрирует тестов, кладут
-в `test/helpers/` (каталог держится пустым файлом `.gitlock`), а тесты подключают
+в `test/helpers/` (каталог держится пустым файлом `.gitkeep`), а тесты подключают
 их сами: `require('../helpers/имя.js')`. Вне `helpers/` такой файл роняет прогон:
 лоадер требует от каждого `.js` функцию регистрации (см. «Fail-fast»).
 
@@ -150,9 +151,12 @@ module.exports = function registerCircleDrawOntoTests(QUnit) {
 Лоадер об этих файлах ничего не пишет, `npm test` проходит без них:
 
 - всё, что не `.js`: `.cjs`, `.mjs`, `.json` и т. п.;
-- символьные ссылки на файлы (лоадер берёт только обычные файлы);
-- новый `node-unit-tests-*.js` в корне `test/`, если его не подключили в `run-node-tests.js`
-  явным `require()`. Новые тесты поэтому кладут в `test/<Модуль>/<метод>.js`.
+- символьные ссылки на файлы (лоадер берёт только обычные файлы).
+
+Новый `node-unit-tests-*.js` в корне `test/` лоадер подключает сам, как любой другой `.js`.
+Дописывать его в `run-node-tests.js` явным `require()` не нужно: тесты зарегистрируются
+дважды и «Всего тестов» вырастет на удвоенное число проверок. Новые тесты всё равно
+кладут в `test/<Модуль>/<метод>.js`.
 
 Проверить, что файл подключён, — по строке `↳ тест подключён: <путь>` в выводе `npm test`.
 
