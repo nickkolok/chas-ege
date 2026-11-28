@@ -21,7 +21,7 @@
 		let answer = (complement ? total - count : count) / total;
 		genAssertZ1000(answer);
 		NAtask.setTask({
-			text: 'В сборнике билетов по ' + topics[0] + ' всего ' + total + ' билетов, в ' + count +
+			text: 'В сборнике билетов по ' + topics[0] + ' всего ' + chislitlx(total, 'билет') + ', в ' + count +
 				' из них встречается вопрос по ' + topics[1] + '. Найдите вероятность того, что в случайно выбранном на экзамене билете ' +
 				student + (complement ? ' не' : '') + ' достанется вопрос по ' + topics[1] + '.',
 			answers: answer,
