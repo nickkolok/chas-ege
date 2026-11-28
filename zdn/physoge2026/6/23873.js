@@ -1,0 +1,46 @@
+(function () {
+	'use strict';
+	retryWhileError(function () {
+		NAinfo.requireApiVersion(0, 2);
+
+		let type = [
+			{name: 'пешеход', place: 'по шоссе', verb: 'прошёл'},
+			{name: 'велосипедист', place: 'по дороге', verb: 'проехал'},
+			{name: 'велосипедистка', place: 'по дороге', verb: 'проехал'},
+			{name: 'Металлический шарик', ball: true},
+		].iz();
+
+		if (type.ball) {
+			// Шарик на столе (ФИПИ 67E0F4): путь — десятки сантиметров, время — секунды или доли минуты
+			let t = [10, 15, 20, 30, 40, 60].iz();
+			// путь подбирается под время так, чтобы скорость в м/с была не длиннее трёх знаков после запятой
+			let S_cm = slKrome(s => (s * 10) % t !== 0, 50, 200, 10);
+			let S_m = S_cm / 100;
+			let V = S_m / t;
+			genAssertZ1000(V, 'Скорость шарика должна иметь не более 3 знаков после запятой');
+			let tText = (t % 30 === 0) ? (t / 60).ts() + ' мин' : t + ' с';
+
+			NAtask.setTask({
+				text: 'Металлический шарик движется по демонстрационному столу учителя и за ' + tText +
+					' проходит путь, равный ' + S_cm + ' см. Чему равна средняя скорость шарика? Ответ дайте в м/с.',
+				answers: V,
+				analys: 'Средняя скорость $v = \\frac{S}{t}$. Переведём величины в СИ: $S = ' + S_cm + '$ см $= ' + S_m.ts(true) +
+					'$ м, $t = ' + t + '$ с. Тогда $v = \\frac{' + S_m.ts(true) + '}{' + t + '} = ' + V.ts(true) + '$ м/с.',
+			});
+			return;
+		}
+
+		let subject = sklonlxkand(type.name);
+		let V = sl(1, 6);
+		let T = sl(5, 20);
+		let S = V * T * 60;
+
+		NAtask.setTask({
+			text: subject.ie.toZagl() + ', двигаясь ' + type.place + ', ' + selectVerbGender(type.verb, subject) + ' ' + S + ' м за ' + T + ' мин. Чему равна средняя скорость ' + subject.re + '? Ответ дайте в м/с.',
+			answers: V,
+			analys: 'Средняя скорость: v = S/t. Переведём время: t = ' + T + ' мин = ' + (T * 60) + ' с. Тогда v = ' + S + '/' + (T * 60) + ' = ' + V + ' м/с.',
+		});
+	}, 1000);
+})();
+// https://phys-oge.sdamgia.ru/problem?id=23873
+// ФИПИ 3E2AD4 67E0F4
