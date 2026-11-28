@@ -145,7 +145,7 @@ node -r ./font-setup.js dev/run-node-template.js \
 - **Бандл vs релиз-ассет:** размер + `sha256` + голова.
 - **Детерминизм:** один и тот же `--seed` → идентичный JSON. seedrandom теперь
   приезжает из самого бандла (без отдельной загрузки), это проверяет
-  `dev/node-unit-tests-seedrandom.js`.
+  `test/node-unit-tests-seedrandom.js`.
 - **До/после правки:** по [how_to_review_PR.md](how_to_review_PR.md) — каждый
   шаблон отдельным процессом, одно зерно на процесс, эталон прогнать дважды.
 
