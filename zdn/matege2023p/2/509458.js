@@ -1,0 +1,110 @@
+(function() {
+	retryWhileError(function() {
+		NAinfo.requireApiVersion(0, 2);
+		lx_declareClarifiedPhrase('сторона', 'основания');
+
+		let r1 = sl(1.1, 2, 0.01);
+		let r2 = sl(1.1, 2, 0.01);
+
+		let pyr1 = new RegularPyramid({
+			height: sl(45, 50),
+			baseSide: sl(10, 50),
+			numberSide: 4
+		});
+		let pyr2 = new RegularPyramid({
+			height: pyr1.height * r1,
+			baseSide: pyr1.baseSide * r2,
+			numberSide: 4
+		});
+
+		let data = [
+			['объём', pyr1.volume, pyr2.volume, pyr2.volume / pyr1.volume],
+			['сторона основания', pyr1.baseSide, pyr2.baseSide, pyr2.baseSide / pyr1.baseSide],
+			['высота', pyr1.height, pyr2.height, pyr2.height / pyr1.height]
+		].shuffle();
+
+		let name = (data.T()[0]);
+		let value = data.T()[1][0];
+		let answer = data.T()[2][0];
+		let ratio = data.T()[3];
+
+		let camera = {
+			x: 0,
+			y: 0,
+			z: 0,
+			scale: 1,
+
+			rotationX: -Math.PI / 2 + Math.PI / 13,
+			rotationY: 0,
+			rotationZ: -2 * Math.PI / 3,
+		};
+
+		const width = 500, height = 400;
+		let strok = [5, 4];
+
+		let point2DPyr2 = pyr2.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		point2DPyr2 = autoScale(pyr2.verticesOfFigure, camera, point2DPyr2, {
+			startX: -(width - 50) / 4,
+			finishX: (width - 50) / 4,
+			startY: -height / 2,
+			finishY: height / 2,
+			maxScale: 100,
+			step: 0.1,
+		});
+
+
+		let point2DPyr1 = pyr1.verticesOfFigure.map((coord3D) => project3DTo2D(coord3D, camera));
+
+		let faces = [[0, 1, 2, 3], [0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]];
+		let matrixPyr1 = dashHiddenEdges(pyr1.connectionMatrix, faces, facesVisibility(pyr1.verticesOfFigure, point2DPyr1, faces), strok);
+		let matrixPyr2 = dashHiddenEdges(pyr2.connectionMatrix, faces, facesVisibility(pyr2.verticesOfFigure, point2DPyr2, faces), strok);
+
+		let x = point2DPyr1.map((elem) => elem.x).maxE();
+		let y = point2DPyr1.map((elem) => elem.y).maxE();
+		let y2 = point2DPyr2.map((elem) => elem.y).maxE();
+
+
+		genAssert(verticesInGivenRange(point2DPyr2, {
+			startX: -width / 4,
+			finishX: width / 4,
+			startY: -height / 2,
+			finishY: height / 3,
+		}), 'Не влезло');
+
+		let paint1 = function(ctx) {
+			let h = ctx.canvas.height;
+			let w = ctx.canvas.width;
+
+			ctx.translate(w / 4, h / 2);
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = om.secondaryBrandColors.iz();
+
+
+
+			ctx.drawFigure(point2DPyr1, matrixPyr1);
+			ctx.translate(w / 4 + x, y - y2);
+			ctx.drawFigure(point2DPyr2, matrixPyr2);
+
+		};
+		NAtask.setTask({
+			text: 'Даны две правильные четырёхугольные пирамиды. ' + name[0].toZagl() + ' первой пирамиды составляет $' +
+				value.pow(2).texsqrt(1) + '$. ' +
+				'У второй пирамиды ' + name[1] + ' в ' + chislitlx(ratio[1], 'раз', 'v$') + ' больше, а ' +
+				name[2] + ' в ' +
+				chislitlx(ratio[2], 'раз', 'v$') + ' больше, чем у первой. ' +
+				'Найдите ' + sklonlxkand(name[0]).ve +
+				' второй пирамиды.',
+			answers: answer,
+		});
+		NAtask.modifiers.assertSaneDecimals();
+		NAtask.modifiers.addCanvasIllustration({
+			width: width,
+			height: height,
+			paint: paint1,
+		});
+		NAtask.modifiers.allDecimalsToStandard(true);
+	}, 1000);
+
+})();
+
