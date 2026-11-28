@@ -8,7 +8,9 @@ const path = require('path');
 
 const TEST_DIR = __dirname;
 const SKIP_FILES = new Set(['run-node-tests.js', 'load-tests.js']);
-const SKIP_DIRS = new Set(['old']); // старые браузерные QUnit-тесты собирает grunt
+// old/ — старые браузерные QUnit-тесты, их собирает grunt;
+// helpers/ — вспомогательные модули тестов: они не регистрируют тестов, их подключают через require()
+const SKIP_DIRS = new Set(['old', 'helpers']);
 // Раннер, лоадер и легаси node-unit-tests*.js (их раннер подключает явно) пропускаются
 // только в корне test/: в test/<Модуль>/ файл с таким именем — обычный тест.
 const isRootSkipped = (full) => path.dirname(full) === TEST_DIR &&
