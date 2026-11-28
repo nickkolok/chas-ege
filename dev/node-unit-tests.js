@@ -589,6 +589,58 @@ module.exports = function registerNodeTests(QUnit) {
         }
     });
 
+    // Режим печати «Генерировать ТОЛЬКО целые числа» (sh/pechmat.js) включает sluchch.onlyIntegers.
+    // На время теста режим включается, а Math.random подменяется генератором с постоянным зерном
+    function withOnlyIntegers(seed, fn) {
+        var originalRandom = Math.random;
+        var originalOnlyIntegers = sluchch.onlyIntegers;
+        Math.random = require('seedrandom')(seed);
+        sluchch.onlyIntegers = true;
+        try {
+            fn();
+        } finally {
+            Math.random = originalRandom;
+            sluchch.onlyIntegers = originalOnlyIntegers;
+        }
+    }
+
+    // Все значения sl(n, k, s) за 2000 вызовов, по возрастанию (крайние выпадают вдвое реже,
+    // но за 2000 вызовов пропустить их практически невозможно)
+    function slValues(n, k, s) {
+        var seen = {};
+        for (var i = 0; i < 2000; i++) {
+            seen[sl(n, k, s)] = true;
+        }
+        return Object.keys(seen).map(Number).sort(function (a, b) { return a - b; });
+    }
+
+    QUnit.test('sl в режиме «только целые»: не выходит за конец диапазона', function (assert) {
+        withOnlyIntegers('sl только целые: конец', function () {
+            assert.deepEqual(slValues(1.5, 3.7), [2, 3], 'sl(1.5, 3.7): начало вверх до 2, конец не дальше 3');
+            assert.deepEqual(slValues(0.1, 0.9, 0.005), [1], 'sl(0.1, 0.9, 0.005): целых в диапазоне нет — как прежде, округлённое начало');
+            assert.deepEqual(slValues(2, 5), [2, 3, 4, 5], 'sl(2, 5): целый диапазон — без изменений');
+        });
+    });
+
+    QUnit.test('sl в режиме «только целые»: целый шаг сохраняется, дробный — заменяется на 1', function (assert) {
+        withOnlyIntegers('sl только целые: шаг', function () {
+            var even = [];
+            for (var x = 20; x <= 160; x += 2) {
+                even.push(x);
+            }
+            assert.deepEqual(slValues(20, 160, 2), even, 'sl(20, 160, 2): все чётные от 20 до 160 и только они');
+            assert.deepEqual(slValues(1, 9, 2), [1, 3, 5, 7, 9], 'sl(1, 9, 2): нечётные');
+            assert.deepEqual(slValues(6, 30, 6), [6, 12, 18, 24, 30], 'sl(6, 30, 6): кратные 6');
+            assert.deepEqual(slValues(0.5, 4.5, 2), [1, 3], 'sl(0.5, 4.5, 2): начало вверх до 1, шаг 2, не дальше 4.5');
+            assert.deepEqual(slValues(1, 3, 0.5), [1, 2, 3], 'sl(1, 3, 0.5): дробный шаг — 1');
+        });
+    });
+
+    QUnit.test('sl в обычном режиме: целый шаг', function (assert) {
+        var values = slValues(20, 160, 2);
+        assert.ok(values.every(function (x) { return x % 2 === 0 && x >= 20 && x <= 160; }), 'sl(20, 160, 2): только чётные от 20 до 160');
+    });
+
     // genPifag() выбирает тройку через sl(), то есть через Math.random:
     // на время теста подставляется генератор с постоянным зерном,
     // чтобы тест каждый раз проверял одни и те же тройки
