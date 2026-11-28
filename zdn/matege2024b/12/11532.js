@@ -41,7 +41,7 @@
 			text: ``,
 			questions: [
 				[{
-					text: `Сторона ромба $${(3 * k * k).texsqrt(1)}$, одна из диагоналей равна $${rhombus.lengthDiagonalAC}$. Найдите площадь ромба`,
+					text: `Сторона ромба $${rhombus.lengthAB.pow(2).texsqrt(1)}$, одна из диагоналей равна $${rhombus.lengthDiagonalAC}$. Найдите площадь ромба`,
 					answers: rhombus.area(),
 				}, {
 					text: `Одна из диагоналей ромба равна $${rhombus.lengthDiagonalAC}$, а его площадь равна $${(27 * k ** 4).texsqrtfrac(4)}$. Найдите сторону ромба`,
