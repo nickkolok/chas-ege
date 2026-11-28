@@ -8,6 +8,7 @@ const path = require('path');
 
 const TEST_DIR = __dirname;
 const SKIP_FILES = new Set(['run-node-tests.js', 'load-tests.js']);
+// Каталоги в корне test/ (в test/<Модуль>/ каталог с таким именем — обычный):
 // old/ — старые браузерные QUnit-тесты, их собирает grunt;
 // helpers/ — вспомогательные модули тестов: они не регистрируют тестов, их подключают через require()
 const SKIP_DIRS = new Set(['old', 'helpers']);
@@ -30,7 +31,7 @@ function collect(dir, out) {
     for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
         const full = path.join(dir, ent.name);
         if (ent.isDirectory()) {
-            if (!SKIP_DIRS.has(ent.name)) collect(full, out);
+            if (!(dir === TEST_DIR && SKIP_DIRS.has(ent.name))) collect(full, out);
         } else if (ent.isFile() && ent.name.endsWith('.js')) {
             if (!isRootSkipped(full)) out.push(full);
         }
